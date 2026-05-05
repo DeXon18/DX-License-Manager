@@ -5,7 +5,7 @@
 
 ---
 
-## [2026-05-05] — Autenticación JWT y Refactor de Login (Fase 3 🔜)
+## [2026-05-05] — Autenticación JWT y Verificación (Fase 3 ✅)
 
 ### Added
 - **Servicio JWT**: Implementación de `JwtService` para generación y validación de tokens HS256.
@@ -13,11 +13,14 @@
 - **Middleware RBAC**: `JwtAuth` y `CheckPermission` para control de acceso jerárquico (`admin`, `technician`, `staff`, `viewer`).
 - **Vista de Login Premium**: Implementación de diseño *Full Background* con *Glassmorphism*.
 - **Persistencia de Tema**: Integración de `localStorage` con Alpine.js para mantener el modo oscuro/claro.
-- **Fondo Corporativo**: Nueva imagen y layout optimizado para pantallas ultra-panorámicas (50/50 split).
+- **Fondo Corporativo**: Nueva imagen y layout optimizado para pantallas ultra-panorámicas (Centrado 50/50).
+- **Seguridad**: Implementado **Rate Limiting** (throttle:5,1) en la ruta de login.
+- **Tests Automatizados**: Creado `AuthTest.php` con verificación de login, redirecciones y bloqueo de usuarios inactivos (PASS).
 
 ### Fixed
 - **CSS Conflicts**: Eliminación de selectores heredados que causaban franjas blancas en el layout de login.
-- **Toggle UI**: Rediseño del selector de tema para evitar solapamientos y mejorar la fluidez visual.
+- **Ultra-Wide Layout**: Solucionado el problema de dispersión de elementos en monitores panorámicos mediante contenedor centralizado.
+- **PHPUnit Config**: Activado SQLite en memoria para ejecución de tests segura.
 
 ## [2026-05-05] — Resolución de Assets y Refactor de Layout (Fase 1 y 2 ✅)
 
