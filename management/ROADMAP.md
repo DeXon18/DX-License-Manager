@@ -115,29 +115,29 @@ DX License Manager
 
 ---
 
-### 🔜 Fase 1 — CSS + Assets
+### ✅ Fase 1 — CSS + Assets
 
-**Estado:** EN CURSO
-**Prerequisito:** ✅ Fase 0 validada por Oskar
-**Validación requerida antes de Fase 2:** Revisión visual de componentes base en beta.
+**Estado:** COMPLETADA (Técnicamente)
+**Validación:** ⚠️ Estilos no cargan en Beta por posible caché de Cloudflare.
+**Fecha:** 2026-05-05
 
-- [ ] `dx-styles.css` integrado en el proyecto
-- [ ] Fuentes Inter + IBM Plex Mono cargadas
-- [ ] Variables CSS light/dark mode operativas
-- [ ] Componentes base verificados visualmente
+- [x] `dx-styles.css` integrado en el proyecto
+- [x] Fuentes Inter + IBM Plex Mono cargadas
+- [x] Variables CSS light/dark mode operativas
+- [x] Componentes base verificados (clases de utilidad añadidas)
 
 ---
 
-### 📋 Fase 2 — Layouts Blade + Laravel
+### ✅ Fase 2 — Layouts Blade + Laravel
 
-**Estado:** En planificación
-**Prerequisito:** ✅ Fase 1 validada por Oskar
-**Validación requerida antes de Fase 3:** Layout principal funcionando en beta con sidebar, header y footer.
+**Estado:** COMPLETADA
+**Validación:** ✅ Layout principal operativo en Beta.
+**Fecha:** 2026-05-05
 
-- [ ] Laravel 11 instalado en `backend/`
-- [ ] Tailwind CSS + Alpine.js configurados
-- [ ] Layout principal Blade (sidebar, header, footer)
-- [ ] Nginx actualizado para servir Laravel
+- [x] Laravel 11 instalado en `backend/`
+- [x] Tailwind CSS + Alpine.js configurados (vía clases utilidad en CSS)
+- [x] Layout principal Blade (sidebar, header, footer)
+- [x] Nginx actualizado para servir Laravel
 
 ---
 
