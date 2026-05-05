@@ -127,7 +127,7 @@ Consecuencia: [qué se perderá]
 | :----------------------------------------------------------- | :----------------- |
 | `backend/`, `management/`, `task.md`, `.agent/`              | ✅ Libre           |
 | `infra/`, `scripts/`, `.gitignore`, `AGENTS.md`, `DESIGN.md` | ⚠️ Confirmar antes |
-| `infra/.env.*`, `.agent/secrets/`, `storage/`                | ❌ Nunca           |
+| `infra/.env.*`, `.agent/secrets/`, `storage/`                | 👁️ Solo Lectura    |
 
 ---
 
@@ -414,10 +414,16 @@ Clases relevantes:
  
 | Fase                              | Estado            | Descripción                                    |
 | :-------------------------------- | :---------------- | :--------------------------------------------- |
-| 0 — Verificación Infraestructura  | 🔜 Pendiente      | nginx + HTML estático en beta y prod           |
-| 1 a 7                             | 📋 En planificación | Sin definir — se detallan tras Fase 0        |
+| 0 — Infraestructura               | ✅ COMPLETADA     | Repo, Ramas, Docker Beta/Prod, CI/CD           |
+| 1 — CSS + Assets                  | ✅ COMPLETADA     | Integración `dx-styles.css` y Fuentes          |
+| 2 — Layouts Blade + Laravel       | ✅ COMPLETADA     | Estructura base Blade y Nginx Laravel          |
+| 3 — Login                         | ✅ COMPLETADA     | JWT, RBAC, Rate Limiting y Tests               |
+| 4 — Importación CSV               | 🔜 SIGUIENTE      | Migraciones y Lógica de Importación            |
+| 5 a 6 — Portal Principal          | 📋 Planificado    | Inicio y Gestión de Clientes/Contratos         |
+| 7 a 9 — Herramientas              | 📋 Planificado    | Hub, Siemens y Moldex3D                        |
+| 10 a 16 — Sistema                 | 📋 Planificado    | Usuarios, Backups, IA y Logs                   |
  
-**Ahora mismo estamos iniciando la Fase 0.**
+**Ahora mismo estamos iniciando la Fase 4.**
  
 ---
 
