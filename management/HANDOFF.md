@@ -11,7 +11,7 @@
 | Elemento                         | Estado                        |
 | :------------------------------- | :---------------------------- |
 | Repo GitHub `DX-License-Manager` | ✅ Creado y vinculado         |
-| Stack beta `beta.dxpro.es`       | ❌ Pendiente de primer deploy |
+| Stack beta `beta.dxpro.es`       | ✅ Verificado (index.html)    |
 | Stack prod `portal.dxpro.es`     | ❌ Pendiente de primer deploy |
 | Deploy automático GitHub Actions | ✅ Configurado                |
 | Laravel                          | ❌ No instalado — Fase 1      |
@@ -21,10 +21,9 @@
 
 ## Qué se hizo en esta sesión
 
-- **Inicialización de Git**: Repositorio local vinculado con GitHub. Ramas `main` y `dev` creadas y sincronizadas.
-- **Workflows**: Configurados pipelines de CI y despliegue automático vía SSH para Beta y Prod.
-- **Preparación de Servidor**: Repositorio clonado en el servidor LXC 600 y archivos `.env` locales subidos manualmente por el desarrollador.
-- **Secretos**: Configurados los secretos de GitHub Actions para el acceso SSH.
+- **Sincronización de Sesión**: Commiteados cambios pendientes de la sesión anterior (`eb14f5c`).
+- **Despliegue Beta**: Verificado exitosamente `http://beta.dxpro.es` (usuario confirma visualización).
+- **Verificación SSH**: El desarrollador está revisando la conectividad SSH. localmente no disponible.
 
 ---
 
@@ -32,9 +31,9 @@
 
 **Fase 0 — Verificación de Infraestructura**
 
-1. Realizar un commit de prueba en `dev` y verificar que el workflow "Deploy Beta" se ejecuta correctamente.
-2. Comprobar que `http://beta.dxpro.es:8002` muestra la página de mantenimiento estática.
-3. Repetir el proceso en `main` para Producción (`http://portal.dxpro.es:8001`).
+1. ✅ Realizar un commit de prueba en `dev` (Hecho: `eb14f5c`).
+2. ✅ Verificar que `http://beta.dxpro.es` muestra la página de mantenimiento.
+3. 🔄 Repetir el proceso en `main` para Producción (`http://portal.dxpro.es`).
 4. Una vez verificado el despliegue automático en ambos entornos, proceder a la **Fase 1**.
 
 ---
@@ -50,7 +49,8 @@
 
 ## Pendiente Sin Resolver
 
-- Primer despliegue exitoso vía GitHub Actions (pendiente de trigger).
+- Confirmación visual de `portal.dxpro.es` (pendiente de deploy a main).
+- Verificación de stacks en el servidor (en revisión por el desarrollador).
 
 ---
 

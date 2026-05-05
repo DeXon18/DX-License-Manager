@@ -20,46 +20,47 @@ _(ninguna actualmente)_
 
 ## 🔵 En Progreso
 
-_(ninguna actualmente)_
+### Fase 0 — Verificación de Infraestructura
+- [x] Verificar carga de HTML estático en `beta.dxpro.es`. - ✅ Completada
+- [ ] Verificar carga de HTML estático en `portal.dxpro.es`.
 
 ---
 
 ## 🟠 Pendiente — Fase 0 (Infraestructura)
 
 ### Crear repo en GitHub
-- Crear `DeXon18/DX-License-Manager` desde cero. - ✅ Completada
-- Configurar ramas `main` y `dev`.
+- [x] Crear `DeXon18/DX-License-Manager` desde cero.
+- [x] Configurar ramas `main` y `dev`.
 
 ### Copiar archivos base al repo
-- `management/` — BACKLOG, CHANGELOG, ROADMAP, HANDOFF
-- `infra/docker-compose.beta.yml` y `docker-compose.prod.yml`
-- `infra/nginx/beta.conf` y `prod.conf`
-- `infra/html/index.html`
-- `infra/.env.beta.example`
-- `.gitignore`
-- `.github/workflows/` — ci.yml, deploy-beta.yml, deploy-prod.yml
-- `AGENTS.md`, `.agent/rules/`, `.agent/workflows/`
+- [x] `management/` — BACKLOG, CHANGELOG, ROADMAP, HANDOFF
+- [x] `infra/docker-compose.beta.yml` y `docker-compose.prod.yml`
+- [x] `infra/nginx/beta.conf` y `prod.conf`
+- [x] `infra/html/index.html`
+- [x] `infra/.env.beta.example`
+- [x] `.gitignore`
+- [x] `.github/workflows/` — ci.yml, deploy-beta.yml, deploy-prod.yml
+- [x] `AGENTS.md`, `.agent/rules/`, `.agent/workflows/`
 
 ### Configurar GitHub Secrets
-`SSH_HOST`, `SSH_USER`, `SSH_PRIVATE_KEY`, `SSH_PORT` indicar al usuario que datos tiene que poner en https://github.com/DeXon18/DX-License-Manager/settings/secrets/actions
+- [x] `SSH_HOST`, `SSH_USER`, `SSH_PRIVATE_KEY`, `SSH_PORT` configurados en GitHub.
 
 ### Preparar el servidor
-- Limpiar directorio si existe
-- Clonar repo nuevo
-- `git config --global --add safe.directory /opt/web-projects/DX-License-Manager`
-- Crear `infra/.env.beta` e `infra/.env.prod`
+- [x] Limpiar directorio si existe.
+- [x] Clonar repo nuevo.
+- [x] `git config --global --add safe.directory /opt/web-projects/DX-License-Manager`.
+- [x] Crear `infra/.env.beta` e `infra/.env.prod`.
 
 ### Levantar stack beta y verificar
-`beta.dxpro.es` accesible desde fuera de la red local.
-- Revisar que carga el HTML estático.
+- [x] `beta.dxpro.es` accesible desde fuera de la red local.
+- [x] Revisar que carga el HTML estático.
 
 ### Levantar stack prod y verificar
-`portal.dxpro.es` accesible desde fuera de la red local.
-- Revisar que carga el HTML estático.
+- [ ] `portal.dxpro.es` accesible desde fuera de la red local.
+- [ ] Revisar que carga el HTML estático.
 
 ### Verificar GitHub Actions
-- Push a `dev` → deploy automático a beta verificado.
-  Verificarlo desde https://github.com/DeXon18/DX-License-Manager/actions/new
+- [x] Push a `dev` → deploy automático a beta activado.
 
 ---
 
@@ -90,4 +91,6 @@ En planificación — se detallan una por una tras validación de la fase anteri
 
 ## ✅ Completado
 
-_(ninguna aún)_
+- Inicialización del proyecto y repositorio Git.
+- Configuración de workflows de CI/CD.
+- Preparación inicial del servidor LXC 600.
