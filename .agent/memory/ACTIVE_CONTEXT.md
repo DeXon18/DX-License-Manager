@@ -1,27 +1,28 @@
 ---
 project: DX License Manager
 repo: github.com/DeXon18/DX-License-Manager
-status: Blocked
+status: Stable ✅
 last_sync: 2026-05-05
-current_agent: Antigravity (Caveman Mode)
+current_agent: Antigravity
 ---
 
 # 🧠 Contexto de Sesión Activa
 
 ## 🎯 Objetivo Actual
 
-- [x] Tarea principal: Fase 2 — Layouts Blade + Laravel
-- [ ] Subtarea en curso: Debug estilos CSS en Beta (Caché Cloudflare)
+- [x] Tarea principal: Fase 2 — Layouts Blade + Laravel (Finalizada)
+- [ ] Próxima fase: Fase 3 — Autenticación y JWT
 - Rama activa: dev
-- Fase del ROADMAP: Fase 2 (Finalizada / Debug)
+- Fase del ROADMAP: Fase 3 (Pendiente de inicio)
 
 ---
 
 ## 🕒 Log de Acciones (última sesión)
 
-- 2026-05-05 — Sincronización multi-PC.
-- 2026-05-05 — Fase 2 completada (Laravel 11 + Blade Layout).
-- 2026-05-05 — Detectado bloqueo en Beta: `dx-styles.css` no carga por posible caché.
+- 2026-05-05 — Resolución de assets en Beta: eliminado alias Nginx, servido desde `public/assets`.
+- 2026-05-05 — Refactor de Layout: migrado de Tailwind a CSS Semántico oficial.
+- 2026-05-05 — Corregidos permisos de `storage` y cargadas fuentes locales.
+- 2026-05-05 — Documentación de lecciones en `.agent/lessons.md`.
 
 ---
 
@@ -29,34 +30,33 @@ current_agent: Antigravity (Caveman Mode)
 
 | Decisión          | Detalle                                                             | Ref                       |
 | :---------------- | :------------------------------------------------------------------ | :------------------------ |
-| Assets Beta       | Mapeados a `backend/public/assets` vía Nginx                        | `beta.conf`               |
-| HTTPS Force       | Activado en `AppServiceProvider` para evitar Mixed Content          | `backend/app/`            |
-| Fuente UI         | **Inter** — elegida por el desarrollador                            | DESIGN.md                 |
-| Parser .lic       | PHP extrae localmente, nunca enviar archivo completo a la IA        | `security-check.md §3`    |
-| Commits           | En inglés siempre — la comunicación al desarrollador en castellano  | AGENTS.md                 |
+| Assets            | Servidos nativamente desde `public/assets/`. No usar `alias` Nginx. | `beta.conf`               |
+| CSS System        | Sistema Semántico (`dx-styles.css`) obligatorio. No usar Tailwind.  | DESIGN.md                 |
+| Dependencias      | Nginx usa `depends_on` para asegurar upstream PHP listo.            | `docker-compose.beta.yml` |
+| Fuentes           | Locales (.woff2) en `/assets/fonts/`. No usar Google Fonts.         | `fonts.css`               |
+| Permisos          | `chmod 777` en `storage/` tras cambios de infra.                    | `lessons.md`              |
 
 ---
 
 ## 🚀 Handover — Próximos Pasos
 
-1. Purgar caché de Cloudflare para `beta.dxpro.es`.
-2. Verificar rutas de assets en el HTML generado por Laravel (`view source`).
-3. Validar visualización en `portal.dxpro.es` (Producción).
-4. Iniciar Fase 3 (Login) una vez visualización sea correcta.
+1. Iniciar Fase 3 (Login): Implementar `AuthController` y `JwtService`.
+2. Crear vista de login basada en `infra/html/01-login.html`.
+3. Validar merge de `dev` a `main` para actualizar Producción.
 
 ---
 
 ## 🗂️ Archivos en Foco (Working Set)
 
-- Configuración Nginx: `infra/nginx/`
-- Layout Blade: `backend/resources/views/layouts/`
-- Documentación: `management/`
+- `backend/app/Services/Auth/`
+- `backend/resources/views/auth/`
+- `management/HANDOFF.md`
 
 ---
 
 ## ⚠️ Errores Conocidos / Bloqueos
 
-- **BLOQUEO**: Estilos CSS no cargan en Beta (posible caché Cloudflare).
+- Ninguno actualmente. Sistema visual verificado en Beta.
 
 ---
 
@@ -66,8 +66,8 @@ current_agent: Antigravity (Caveman Mode)
 | :------------------ | :------------------------------- |
 | nginx-beta `:8002`  | ✅ running                       |
 | php-fpm-beta        | ✅ running                       |
-| mariadb-beta        | ✅ running                       |
-| redis-beta          | ✅ running                       |
+| mariadb-beta        | ✅ running (healthy)             |
+| redis-beta          | ✅ running (healthy)             |
 | nginx-prod `:8001`  | ✅ running                       |
 | Cloudflared LXC 600 | ✅ running                       |
 | GitHub Actions      | ✅ configured                    |

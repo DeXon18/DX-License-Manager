@@ -1,1 +1,0 @@
-Fase 2 completada. Stack Laravel 11 y layouts Blade operativos. Bloqueo actual: los estilos CSS no cargan en el entorno Beta (beta.dxpro.es), posiblemente por caché de Cloudflare o configuración de assets en Nginx. Fase 3 (Login) en pausa hasta resolver la visualización. Sincronización multi-PC realizada.
