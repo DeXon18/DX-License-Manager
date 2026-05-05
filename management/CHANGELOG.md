@@ -20,6 +20,7 @@
 - Instalación de Laravel 11 en `backend/`.
 - Configuración de Docker para PHP 8.4-FPM, MariaDB y Redis.
 - Implementación de `AppServiceProvider` para forzar HTTPS en assets.
+- **Cleanup**: Eliminadas ramas locales y remotas ya integradas (`feature/fix-layout-css`, `feature/css-assets`, `feature/laravel-install`, etc.).
 
 ## [2026-05-05] — Inicialización de Infraestructura (Fase 0)
 ...
