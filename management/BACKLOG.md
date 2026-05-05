@@ -20,10 +20,10 @@ _(ninguna actualmente)_
 
 ## 🔵 En Progreso
 
-### Fase 3 — Autenticación y JWT
-- [ ] Vista de login siguiendo `infra/html/01-login.html`.
-- [ ] Implementar `JwtService` y `AuthController`.
-- [ ] Middleware de RBAC.
+- [x] Implementar `JwtService` y `AuthController`.
+- [x] Middleware de RBAC.
+- [ ] Afinar estilos finales del login (Beta).
+- [ ] Tests feature: login, logout, refresh, acceso denegado.
 
 ---
 

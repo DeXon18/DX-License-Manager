@@ -147,12 +147,13 @@ DX License Manager
 **Prerequisito:** ✅ Fase 2 validada por Oskar
 **Validación requerida antes de Fase 4:** Login funcional con roles y acceso denegado verificados en beta.
 
-- [ ] Vista de login siguiendo `infra/html/01-login.html`
-- [ ] JWT — access token 15min + refresh 24h con rotación
-- [ ] Middleware `JwtAuth` y `CheckPermission`
-- [ ] Migraciones: `users`, `roles`, `feature_flags`
-- [ ] Seeders: roles + usuario admin Oskar
+- [x] Vista de login siguiendo `infra/html/01-login.html` (Rediseñada a Full Background)
+- [x] JWT — access token 15min + refresh 24h con rotación
+- [x] Middleware `JwtAuth` y `CheckPermission`
+- [x] Migraciones: `users`, `roles`, `feature_flags`
+- [x] Seeders: roles + usuario admin Oskar
 - [ ] Tests feature: login, logout, refresh, acceso denegado
+- [ ] Afinar estilos finales del login
 
 ---
 
