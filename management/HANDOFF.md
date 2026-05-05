@@ -2,7 +2,7 @@
 
 > Última actualización: 2026-05-05
 > Rama activa: dev
-> Fase actual: Fase 0 — Verificación de Infraestructura
+> Fase actual: Fase 2 — Layouts Blade + Laravel (BLOQUEADA)
 
 ---
 
@@ -11,46 +11,46 @@
 | Elemento                         | Estado                        |
 | :------------------------------- | :---------------------------- |
 | Repo GitHub `DX-License-Manager` | ✅ Creado y vinculado         |
-| Stack beta `beta.dxpro.es`       | ✅ Verificado (index.html)    |
+| Stack beta `beta.dxpro.es`       | ⚠️ Estilos no cargan (Caché)  |
 | Stack prod `portal.dxpro.es`     | ✅ Verificado (index.html)    |
 | Deploy automático GitHub Actions | ✅ Configurado                |
-| Laravel                          | ❌ No instalado — Fase 1      |
-| Base de datos                    | ❌ No existe — Fase 1         |
+| Laravel 11                       | ✅ Instalado y configurado    |
+| Base de datos                    | ✅ Migraciones base (Fase 2)  |
 
 ---
 
 ## Qué se hizo en esta sesión
 
-- **Sincronización de Sesión**: Commiteados cambios pendientes de la sesión anterior (`eb14f5c`).
-- **Despliegue Beta**: Verificado exitosamente `http://beta.dxpro.es` (usuario confirma visualización).
-- **Verificación SSH**: El desarrollador está revisando la conectividad SSH. localmente no disponible.
+- **Fase 2 Finalizada**: Stack Laravel 11 operativo, layouts Blade base creados.
+- **Sincronización Multi-PC**: Actualización de documentos de gestión tras cambio de entorno de desarrollo.
+- **Detección de Error**: Identificado problema de carga de CSS en el entorno Beta.
 
 ---
 
 ## Tarea Inmediata — Empezar Aquí
 
-**Fase 0 — Verificación de Infraestructura**
+**Fase 2 — Layouts Blade + Laravel (DEBUG)**
 
-1. ✅ Realizar un commit de prueba en `dev` (Hecho: `eb14f5c`).
-2. ✅ Verificar que `http://beta.dxpro.es` muestra la página de mantenimiento.
-3. ✅ Fusionar `dev` a `main` y verificar `http://portal.dxpro.es`. (Hecho: `6a3de1c`).
-4. ✅ Fase 0 completada. Procediendo a la **Fase 1**.
+1. 🔴 **BLOQUEO**: Los estilos CSS (`dx-styles.css`) no se reflejan en `beta.dxpro.es`.
+2. Investigar purga de caché en Cloudflare o configuración de volúmenes Nginx para assets.
+3. Verificar que el layout Blade carga correctamente los assets vía `asset()` o rutas relativas.
+4. **Fase 3 (Login)**: En pausa hasta resolver visualización en Beta.
 
 ---
 
 ## Contexto Técnico Importante
 
-- **Cambio de ruta**: El directorio local es ahora `y:\DX-License-Manager`.
-- **Despliegue SSH**: El workflow usa `appleboy/ssh-action` para conectarse al puerto `2222` del servidor.
-- **Docker**: Los stacks se levantan con `--project-directory .` desde la raíz.
-- **Fase 0**: Actualmente solo se levanta el servicio `dx-nginx-beta/prod`. Los servicios PHP/MariaDB se añadirán en fases posteriores.
+- **Ruta local**: `z:\DX-License-Manager`.
+- **Docker**: Uso de `--project-directory .` obligatorio.
+- **Assets**: Mapeados en `infra/nginx/beta.conf` hacia `backend/public/assets`.
+- **HTTPS**: Forzado vía middleware/config en Laravel para evitar mixed content.
 
 ---
 
 ## Pendiente Sin Resolver
 
-- Confirmación visual de `portal.dxpro.es` (pendiente de deploy a main).
-- Verificación de stacks en el servidor (en revisión por el desarrollador).
+- ⚠️ **Estilos en Beta**: `beta.dxpro.es` muestra contenido pero sin el diseño `impeccable`.
+- Confirmación visual de `portal.dxpro.es` con el nuevo stack Laravel.
 
 ---
 
@@ -58,17 +58,19 @@
 
 | Archivo                          | Estado                                    |
 | :------------------------------- | :---------------------------------------- |
-| `infra/.env.beta`                | ✅ Creado en servidor y local             |
-| `infra/.env.prod`                | ✅ Creado en servidor y local             |
+| `infra/.env.beta`                | ✅ Configurado (DB, Redis, App URL)       |
+| `infra/.env.prod`                | ✅ Configurado                            |
 | `.agent/secrets/identities.json` | ✅ Válido                                 |
-| `backend/`                       | ❌ No existe — se crea en Fase 1          |
+| `backend/`                       | ✅ Estructura completa Laravel 11         |
 
 ---
 
 ## Comandos Útiles para la Próxima Sesión
 
 ```bash
-# Verificar despliegue manual en el servidor (si Actions falla)
-cd /opt/web-projects/DX-License-Manager
-docker compose --project-directory . -f infra/docker-compose.beta.yml ps
+# Limpiar caché de Laravel dentro del contenedor
+docker exec dx-php-beta php artisan view:clear
+docker exec dx-php-beta php artisan cache:clear
+docker exec dx-php-beta php artisan config:clear
 ```
+

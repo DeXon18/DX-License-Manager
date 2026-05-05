@@ -1,25 +1,27 @@
 ---
 project: DX License Manager
 repo: github.com/DeXon18/DX-License-Manager
-status: Planning
-last_sync: 2026-05-04
-current_agent: Claude
+status: Blocked
+last_sync: 2026-05-05
+current_agent: Antigravity (Caveman Mode)
 ---
 
 # 🧠 Contexto de Sesión Activa
 
 ## 🎯 Objetivo Actual
 
-- [ ] Tarea principal: Fase 0 — Verificación de Infraestructura
-- [ ] Subtarea en curso: Crear repo en GitHub y estructura base
-- Rama activa: main
-- Fase del ROADMAP: Fase 0
+- [x] Tarea principal: Fase 2 — Layouts Blade + Laravel
+- [ ] Subtarea en curso: Debug estilos CSS en Beta (Caché Cloudflare)
+- Rama activa: dev
+- Fase del ROADMAP: Fase 2 (Finalizada / Debug)
 
 ---
 
 ## 🕒 Log de Acciones (última sesión)
 
-- 2026-05-04 — Documentación de gestión reseteada al estado real. El proyecto parte desde cero.
+- 2026-05-05 — Sincronización multi-PC.
+- 2026-05-05 — Fase 2 completada (Laravel 11 + Blade Layout).
+- 2026-05-05 — Detectado bloqueo en Beta: `dx-styles.css` no carga por posible caché.
 
 ---
 
@@ -27,35 +29,34 @@ current_agent: Claude
 
 | Decisión          | Detalle                                                             | Ref                       |
 | :---------------- | :------------------------------------------------------------------ | :------------------------ |
+| Assets Beta       | Mapeados a `backend/public/assets` vía Nginx                        | `beta.conf`               |
+| HTTPS Force       | Activado en `AppServiceProvider` para evitar Mixed Content          | `backend/app/`            |
 | Fuente UI         | **Inter** — elegida por el desarrollador                            | DESIGN.md                 |
-| Referencia visual | HTMLs estáticos en `infra/html/` — replicar en Blade sin improvisar | `infra/html/*.html`       |
-| Verificación      | Tinker antes de tests formales                                      | IDENTITY.md               |
 | Parser .lic       | PHP extrae localmente, nunca enviar archivo completo a la IA        | `security-check.md §3`    |
 | Commits           | En inglés siempre — la comunicación al desarrollador en castellano  | AGENTS.md                 |
-| Merge             | Solo via `/merge` workflow con CI en verde — nunca manual           | `merge-feature.md`        |
 
 ---
 
 ## 🚀 Handover — Próximos Pasos
 
-1. Crear repo `DeXon18/DX-License-Manager` en GitHub
-2. Configurar ramas `main` y `dev`
-3. Subir estructura base de carpetas y archivos
-4. Configurar GitHub Secrets
-5. Preparar servidor LXC 600 y levantar stacks
+1. Purgar caché de Cloudflare para `beta.dxpro.es`.
+2. Verificar rutas de assets en el HTML generado por Laravel (`view source`).
+3. Validar visualización en `portal.dxpro.es` (Producción).
+4. Iniciar Fase 3 (Login) una vez visualización sea correcta.
 
 ---
 
 ## 🗂️ Archivos en Foco (Working Set)
 
-- Documentación de gestión: `management/`
-- Infraestructura: `infra/` (por crear)
+- Configuración Nginx: `infra/nginx/`
+- Layout Blade: `backend/resources/views/layouts/`
+- Documentación: `management/`
 
 ---
 
 ## ⚠️ Errores Conocidos / Bloqueos
 
-- Ninguno actualmente
+- **BLOQUEO**: Estilos CSS no cargan en Beta (posible caché Cloudflare).
 
 ---
 
@@ -63,10 +64,10 @@ current_agent: Claude
 
 | Capa                | Estado                           |
 | :------------------ | :------------------------------- |
-| nginx-beta `:8002`  | ❌ no levantado aún              |
-| php-fpm-beta        | ❌ no levantado aún              |
-| mariadb-beta        | ❌ no levantado aún              |
-| redis-beta          | ❌ no levantado aún              |
-| nginx-prod `:8001`  | ❌ no levantado aún              |
-| Cloudflared LXC 600 | ❌ no configurado aún            |
-| GitHub Actions      | ❌ no configurado aún            |
+| nginx-beta `:8002`  | ✅ running                       |
+| php-fpm-beta        | ✅ running                       |
+| mariadb-beta        | ✅ running                       |
+| redis-beta          | ✅ running                       |
+| nginx-prod `:8001`  | ✅ running                       |
+| Cloudflared LXC 600 | ✅ running                       |
+| GitHub Actions      | ✅ configured                    |
