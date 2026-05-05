@@ -131,6 +131,19 @@
 .divider { border: 0; border-top: 1px solid var(--border); margin: 32px 0; }
 .login-footer { text-align: center; font-size: 12px; color: var(--muted); }
 
+.form-group { margin-bottom: 24px; text-align: left; }
+.form-group label {
+  display: block; font-size: 13px; font-weight: 500; color: var(--secondary);
+  margin-bottom: 8px;
+}
+.form-group input {
+  width: 100%; padding: 12px; background: var(--bg); border: 1px solid var(--border);
+  border-radius: 8px; font-size: 14px; color: var(--primary); transition: all 0.2s;
+}
+.form-group input:focus {
+  border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-muted);
+}
+
 /* 3. VARIABLES — MODO OSCURO */
 [data-theme="dark"] {
   --bg: #0D1117;
@@ -383,34 +396,6 @@ footer {
   font-size:11px; color:var(--left-muted); font-family:'IBM Plex Mono',monospace;
   display:flex; align-items:center; justify-content:space-between;
 }
-.right {
-  background:var(--surface); display:flex; align-items:center; justify-content:center;
-  padding:48px 40px; border-left:1px solid var(--border); transition:background 0.2s,border-color 0.2s;
-}
-.login-box    { width:100%; max-width:340px; }
-.login-title  { font-size:20px; font-weight:600; letter-spacing:-0.02em; margin-bottom:4px; }
-.login-sub    { font-size:13px; color:var(--muted); margin-bottom:32px; }
-.version-badge {
-  display:inline-flex; align-items:center; gap:5px; background:var(--bg); border:1px solid var(--border);
-  border-radius:4px; padding:3px 8px; font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--muted); margin-bottom:24px;
-}
-.form-group   { margin-bottom:16px; }
-label         { display:block; font-size:12px; font-weight:500; color:var(--secondary); margin-bottom:6px; }
-input[type="email"], input[type="password"] {
-  width:100%; background:var(--bg); border:1px solid var(--border); border-radius:7px; padding:9px 12px;
-  font-size:14px; font-family:'Inter',sans-serif; color:var(--primary); outline:none; transition:border-color 0.15s,background 0.2s;
-}
-input[type="email"]:focus, input[type="password"]:focus { border-color:var(--accent); background:var(--surface); }
-input::placeholder { color:var(--muted); }
-.btn-login {
-  width:100%; background:var(--primary); color:var(--surface); border:none; border-radius:7px;
-  padding:10px; font-size:14px; font-weight:600; font-family:'Inter',sans-serif; cursor:pointer;
-  margin-top:8px; letter-spacing:0.01em; transition:opacity 0.15s;
-}
-[data-theme="dark"] .btn-login { background:var(--accent); color:#000; }
-.btn-login:hover   { opacity:0.85; }
-.divider           { border:none; border-top:1px solid var(--border); margin:24px 0; }
-.login-footer      { font-size:11px; color:var(--muted); text-align:center; font-family:'IBM Plex Mono',monospace; }
 
 /* ============================================================
    19. PÁGINA: INICIO  (02-inicio.html)

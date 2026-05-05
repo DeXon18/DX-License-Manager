@@ -48,7 +48,7 @@
 <div class="right">
     <div class="inner-col">
         <div class="login-box">
-            <div class="version-badge"><div class="dot"></div>v2.6 · Beta</div>
+            <div class="version-badge"><div class="dot"></div>v2.7 · Beta</div>
             <h2 class="login-title">Acceso al portal</h2>
             <p class="login-sub">Introduce tus credenciales para continuar</p>
 
