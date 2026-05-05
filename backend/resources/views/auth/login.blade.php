@@ -8,7 +8,16 @@
     <link rel="stylesheet" href="{{ asset('assets/css/dx-styles.css') }}?v={{ time() }}">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="login-page" x-data="{ theme: 'light' }" :data-theme="theme">
+<body class="login-page" 
+    x-data="{ 
+        theme: localStorage.getItem('theme') || 'light',
+        toggle() {
+            this.theme = this.theme === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', this.theme);
+        }
+    }" 
+    x-init="$watch('theme', val => localStorage.setItem('theme', val))"
+    :data-theme="theme">
 
 <div class="left">
     <div class="brand">
@@ -23,19 +32,20 @@
 
     <div class="left-footer">
         <span>© 2026 DX Control Center</span>
-        <div class="theme-toggle" @click="theme = (theme === 'dark' ? 'light' : 'dark')">
-            <span class="toggle-icon">☀️</span>
-            <div class="toggle-track">
-                <div class="toggle-knob" :style="theme === 'dark' ? 'transform: translateX(20px)' : 'transform: translateX(0)'"></div>
+        <div class="theme-switch" @click="toggle()" :class="theme === 'dark' ? 'is-dark' : ''">
+            <div class="switch-track">
+                <div class="switch-knob">
+                    <span x-show="theme === 'light'">☀️</span>
+                    <span x-show="theme === 'dark'">🌙</span>
+                </div>
             </div>
-            <span class="toggle-icon">🌙</span>
         </div>
     </div>
 </div>
 
 <div class="right">
     <div class="login-box">
-        <div class="version-badge"><div class="dot"></div>v2.2 · Beta</div>
+        <div class="version-badge"><div class="dot"></div>v2.3 · Beta</div>
         <h2 class="login-title">Acceso al portal</h2>
         <p class="login-sub">Introduce tus credenciales para continuar</p>
 
