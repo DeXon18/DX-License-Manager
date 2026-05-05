@@ -2,7 +2,7 @@
 
 > Última actualización: 2026-05-05
 > Rama activa: dev
-> Fase actual: Fase 2 — Layouts Blade + Laravel (BLOQUEADA)
+> Fase actual: Fase 2 — Layouts Blade + Laravel ✅
 
 ---
 
@@ -11,7 +11,7 @@
 | Elemento                         | Estado                        |
 | :------------------------------- | :---------------------------- |
 | Repo GitHub `DX-License-Manager` | ✅ Creado y vinculado         |
-| Stack beta `beta.dxpro.es`       | ⚠️ Estilos no cargan (Caché)  |
+| Stack beta `beta.dxpro.es`       | ✅ Fix Assets & Layout        |
 | Stack prod `portal.dxpro.es`     | ✅ Verificado (index.html)    |
 | Deploy automático GitHub Actions | ✅ Configurado                |
 | Laravel 11                       | ✅ Instalado y configurado    |
@@ -29,12 +29,12 @@
 
 ## Tarea Inmediata — Empezar Aquí
 
-**Fase 2 — Layouts Blade + Laravel (DEBUG)**
+**Fase 3 — Autenticación y JWT**
 
-1. 🔴 **BLOQUEO**: Los estilos CSS (`dx-styles.css`) no se reflejan en `beta.dxpro.es`.
-2. Investigar purga de caché en Cloudflare o configuración de volúmenes Nginx para assets.
-3. Verificar que el layout Blade carga correctamente los assets vía `asset()` o rutas relativas.
-4. **Fase 3 (Login)**: En pausa hasta resolver visualización en Beta.
+1. Implementar `AuthController` con login básico.
+2. Configurar `JwtService` para emisión y validación de tokens.
+3. Aplicar middleware de RBAC (`admin`, `technician`, `viewer`).
+4. **Verificación**: Asegurar que el login use el layout refactorizado.
 
 ---
 
@@ -49,8 +49,8 @@
 
 ## Pendiente Sin Resolver
 
-- ⚠️ **Estilos en Beta**: `beta.dxpro.es` muestra contenido pero sin el diseño `impeccable`.
-- Confirmación visual de `portal.dxpro.es` con el nuevo stack Laravel.
+- Confirmación visual de `portal.dxpro.es` con el nuevo stack Laravel (requiere merge de `dev` a `main`).
+- Iniciar flujo de login JWT.
 
 ---
 
