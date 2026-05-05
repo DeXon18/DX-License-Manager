@@ -1,9 +1,61 @@
 /* 
-   FUENTES CORE — DX License Manager
-   Tipografía industrial-técnica: Inter (UI) + IBM Plex Mono (Datos)
+   FUENTES LOCALES — DX License Manager
+   Asegura funcionamiento 100% offline y privacidad.
 */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+/* Inter — Regular (400) */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../fonts/inter-v20-latin-regular.woff2') format('woff2');
+}
+
+/* Inter — Medium (500) */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../fonts/inter-v20-latin-500.woff2') format('woff2');
+}
+
+/* Inter — SemiBold (600) */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../fonts/inter-v20-latin-600.woff2') format('woff2');
+}
+
+/* Inter — Bold (700) */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../fonts/inter-v20-latin-700.woff2') format('woff2');
+}
+
+/* IBM Plex Mono — Medium (500) */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('../fonts/ibm-plex-mono-v20-latin-500.woff2') format('woff2');
+}
+
+/* IBM Plex Mono — SemiBold (600) */
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../fonts/ibm-plex-mono-v20-latin-600.woff2') format('woff2');
+}
 
 :root {
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
