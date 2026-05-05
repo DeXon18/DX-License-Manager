@@ -1,0 +1,20 @@
+name: CI Verification
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check directory structure
+        run: |
+          ls -R
+          [ -d "infra" ] && echo "Infra directory exists" || exit 1
+          [ -d "management" ] && echo "Management directory exists" || exit 1

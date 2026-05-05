@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DX Control Center — Designcenter & TC</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dx-styles.css">
+</head>
+<body>
+
+<header>
+  <a class="brand" href="herramientas.html">
+    <div class="brand-mark">DX</div>
+    <span class="brand-name">DX Control Center</span>
+  </a>
+  <nav class="nav-links">
+    <a class="nav-link" href="portal.html">Inicio</a>
+    <a class="nav-link" href="#">Clientes</a>
+    <a class="nav-link active" href="herramientas.html">Herramientas</a>
+    <a class="nav-link" href="admin.html">Administración</a>
+  </nav>
+  <div class="nav-right">
+    <div class="theme-toggle" onclick="toggleTheme()">
+      <span class="toggle-icon">☀️</span>
+      <div class="toggle-track"><div class="toggle-knob"></div></div>
+      <span class="toggle-icon">🌙</span>
+    </div>
+    <div class="user-btn">
+      <div class="avatar">OS</div>
+      <span class="user-name">Oskar</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="breadcrumb">
+    <a href="portal.html">Portal</a> ›
+    <a href="herramientas.html">Herramientas</a> ›
+    Designcenter & TC
+  </div>
+
+  <div class="tool-header">
+    <div class="tool-icon-lg">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+    </div>
+    <div class="tool-header-text">
+      <h1>Designcenter & TC <span class="tool-badge">Siemens PLM</span></h1>
+      <p class="tool-sub">Transformación de licencias para Designcenter, Teamcenter, Simcenter 3D y Amesim</p>
+    </div>
+  </div>
+
+  <!-- MOTOR SELECTOR -->
+  <div class="motor-selector">
+    <button class="motor-btn" onclick="setMotor('legacy', this)">
+      <div class="motor-dot"></div>
+      Modo Legacy (ugslmd)
+      <span class="motor-label-badge">hasta NX 2206</span>
+    </button>
+    <button class="motor-btn active" onclick="setMotor('new', this)">
+      <div class="motor-dot"></div>
+      Nueva Generación (saltd)
+    </button>
+  </div>
+
+  <div class="grid-main">
+    <div>
+      <div class="dropzone" onclick="this.querySelector('input').click()">
+        <input type="file" accept=".lic,.txt,.dat,.sid" style="display:none">
+        <div class="drop-icon">📦</div>
+        <div class="drop-title">Arrastra tu archivo aquí o haz clic para seleccionar</div>
+        <div class="drop-sub">Se procesará inmediatamente al soltar</div>
+        <div class="drop-tags">
+          <span class="drop-tag">.lic</span>
+          <span class="drop-tag">.txt</span>
+          <span class="drop-tag">.dat</span>
+          <span class="drop-tag">.sid</span>
+        </div>
+      </div>
+
+      <div class="productos-card">
+        <div class="card-section-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>
+          Productos compatibles
+        </div>
+        <div class="producto-list">
+          <div class="producto-item"><div class="producto-check">✓</div> Designcenter</div>
+          <div class="producto-item"><div class="producto-check">✓</div> Teamcenter</div>
+          <div class="producto-item"><div class="producto-check">✓</div> Simcenter 3D</div>
+          <div class="producto-item"><div class="producto-check">✓</div> Amesim</div>
+        </div>
+      </div>
+
+      <div class="funciones-card" style="margin-top:16px">
+        <div class="card-section-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Función automática
+        </div>
+        <div class="funcion-list">
+          <div class="funcion-item"><span class="funcion-arrow">›</span> Reemplazo de <code>HOSTNAME</code> por <code>localhost</code></div>
+          <div class="funcion-item"><span class="funcion-arrow">›</span> Normalización del daemon según motor seleccionado</div>
+          <div class="funcion-item"><span class="funcion-arrow">›</span> Clasificación contractual automática</div>
+          <div class="funcion-item"><span class="funcion-arrow">›</span> Normalización de Sold-To e Install</div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:10px;margin-top:16px">
+        <a class="btn-back" href="herramientas.html">← Volver a Herramientas</a>
+      </div>
+    </div>
+
+    <div class="sidebar-panel">
+      <div class="info-card">
+        <div class="info-card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Motor activo
+        </div>
+        <div class="info-card-body">
+          <div id="motor-info" style="font-family:'IBM Plex Mono',monospace;font-size:12px;padding:8px 10px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--tool-color)">
+            saltd — Nueva generación
+          </div>
+          <p style="margin-top:8px">Selecciona el modo según la versión de NX del servidor de licencias del cliente.</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Inteligencia Artificial
+        </div>
+        <div class="info-card-body">
+          Nuestra IA analiza automáticamente el contenido de la licencia para extraer metadatos, validar caducidades y registrar la actividad en el historial centralizado.
+          <div class="audit-toggle-row">
+            <span class="audit-toggle-label">Auditoría Silenciosa</span>
+            <button class="switch" onclick="this.classList.toggle('off')"></button>
+          </div>
+          <p class="audit-note">Si se desactiva, la transformación será puramente mecánica y no se guardarán registros detallados.</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-card-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+          Cambiar herramienta
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;margin-top:4px">
+          <a href="tool-starccm.html" style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:6px;border:1px solid var(--border);text-decoration:none;color:var(--text-2);font-size:13px;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--border-md)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div style="width:8px;height:8px;border-radius:50%;background:#0369a1;flex-shrink:0"></div> STAR-CCM+
+          </a>
+          <a href="tool-heeds.html" style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:6px;border:1px solid var(--border);text-decoration:none;color:var(--text-2);font-size:13px;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--border-md)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div style="width:8px;height:8px;border-radius:50%;background:#7e22ce;flex-shrink:0"></div> HEEDS
+          </a>
+          <a href="tool-moldex.html" style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:6px;border:1px solid var(--border);text-decoration:none;color:var(--text-2);font-size:13px;transition:border-color 0.15s" onmouseover="this.style.borderColor='var(--border-md)'" onmouseout="this.style.borderColor='var(--border)'">
+            <div style="width:8px;height:8px;border-radius:50%;background:#b91c1c;flex-shrink:0"></div> Auditor Moldex3D
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span>© 2026 DX Control Center</span>
+  <div class="footer-status"><div class="dot-live"></div>Sistema operativo · v2.0</div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  }
+  function setMotor(mode, btn) {
+    document.querySelectorAll('.motor-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const info = document.getElementById('motor-info');
+    if (mode === 'legacy') {
+      info.textContent = 'ugslmd — Modo Legacy';
+    } else {
+      info.textContent = 'saltd — Nueva generación';
+    }
+  }
+</script>
+</body>
+</html>

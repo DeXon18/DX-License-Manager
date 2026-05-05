@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DX Control Center — Administración</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dx-styles.css">
+</head>
+<body>
+
+<header>
+  <a class="brand" href="#">
+    <div class="brand-mark">DX</div>
+    <span class="brand-name">DX Control Center</span>
+  </a>
+  <nav class="nav-links">
+    <a class="nav-link" href="#">Inicio</a>
+    <a class="nav-link" href="#">Clientes</a>
+    <a class="nav-link" href="#">Herramientas</a>
+    <a class="nav-link active" href="#">Administración</a>
+  </nav>
+  <div class="nav-right">
+    <div class="theme-toggle" onclick="toggleTheme()">
+      <span>☀️</span>
+      <div class="toggle-track"><div class="toggle-knob"></div></div>
+      <span>🌙</span>
+    </div>
+    <div class="user-btn">
+      <div class="avatar">OS</div>
+      <span class="user-name">Oskar</span>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Sistema</div>
+      <a class="sidebar-item active" href="#">🏠 Vista General</a>
+      <a class="sidebar-item" href="#">🔌 Servicios y APIs</a>
+      <a class="sidebar-item" href="#">📜 Logs Globales</a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Gestión</div>
+      <a class="sidebar-item" href="#">👥 Usuarios</a>
+      <a class="sidebar-item" href="#">🚩 Herramientas</a>
+      <a class="sidebar-item" href="#">📊 Renovaciones</a>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="page-header">
+      <h1 class="page-title">Centro de Mando</h1>
+      <p class="page-sub">Estado de la infraestructura y servicios técnicos</p>
+    </div>
+
+    <div class="system-grid">
+      <div class="system-card">
+        <div style="display:flex; justify-content:space-between; align-items:center">
+          <span class="sys-label">PHP Runtime</span>
+          <div class="dot online"></div>
+        </div>
+        <div class="sys-value">8.2.30</div>
+        <div class="sys-meta">Linux / nginx 1.25</div>
+      </div>
+      <div class="system-card">
+        <div style="display:flex; justify-content:space-between; align-items:center">
+          <span class="sys-label">MariaDB Engine</span>
+          <div class="dot online"></div>
+        </div>
+        <div class="sys-value">10.11.16</div>
+        <div class="sys-meta">Conexión establecida</div>
+      </div>
+      <div class="system-card">
+        <div style="display:flex; justify-content:space-between; align-items:center">
+          <span class="sys-label">Redis Cache</span>
+          <div class="dot online"></div>
+        </div>
+        <div class="sys-value">v7.2.4</div>
+        <div class="sys-meta">Queue & Cache OK</div>
+      </div>
+    </div>
+
+    <!-- SECCIÓN ALMACENAMIENTO (MEJORADA) -->
+    <div class="card" style="--accent: var(--accent)">
+      <div class="card-header">
+        <span class="card-title">Repositorio Central de Licencias</span>
+      </div>
+      <div style="padding: 24px">
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom: 4px">
+          <div class="sys-value">185.4 MB <span style="font-size:14px; color:var(--muted); font-weight:400">/ 881 GB</span></div>
+          <span class="sys-meta" style="color:var(--accent); font-size:14px">0.02% en uso</span>
+        </div>
+        <div class="storage-track"><div class="storage-fill" style="width: 15%"></div></div>
+        <div style="display:flex; align-items:center; gap:8px; margin-top:12px">
+          <span style="font-size:16px">📂</span>
+          <span class="sys-meta" style="font-size:13px; color:var(--text-2)">247 archivos .lic detectados en el repositorio central</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:grid; grid-template-columns: 1.2fr 0.8fr; gap:16px">
+      <!-- USUARIOS -->
+      <div class="card" style="--accent: var(--siemens)">
+        <div class="card-header">
+          <span class="card-title">Gestión de Acceso</span>
+          <button style="padding:4px 12px; border-radius:6px; background:var(--text); color:var(--bg); border:none; font-size:11px; font-weight:600; cursor:pointer">+ NUEVO</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Rol</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div style="font-weight:600">Oskar</div>
+                <div class="sys-meta" style="font-size:11px">dexon18@gmail.com</div>
+              </td>
+              <td><span class="badge badge-admin">Admin</span></td>
+              <td><span class="sys-meta" style="color:var(--success)">● Activo</span></td>
+            </tr>
+            <tr>
+              <td>
+                <div style="font-weight:600">Técnico DX</div>
+                <div class="sys-meta" style="font-size:11px">tech@dxpro.es</div>
+              </td>
+              <td><span class="badge" style="background:var(--bg); border:1px solid var(--border)">Staff</span></td>
+              <td><span class="sys-meta" style="color:var(--success)">● Activo</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- SERVICIOS -->
+      <div class="card" style="--accent: var(--warn)">
+        <div class="card-header">
+          <span class="card-title">APIs Externas</span>
+        </div>
+        <div style="padding: 8px 0">
+          <div style="display:flex; align-items:center; gap:12px; padding:12px 20px; border-bottom:1px solid var(--border)">
+            <span style="font-size:18px">🤖</span>
+            <div style="flex:1">
+              <div style="font-size:13px; font-weight:600">Gemini 1.5 Pro</div>
+              <div class="sys-meta" style="font-size:11px">Auditoría IA Activa</div>
+            </div>
+            <div class="dot online"></div>
+          </div>
+          <div style="display:flex; align-items:center; gap:12px; padding:12px 20px">
+            <span style="font-size:18px">✈️</span>
+            <div style="flex:1">
+              <div style="font-size:13px; font-weight:600">Telegram Bot</div>
+              <div class="sys-meta" style="font-size:11px">Notificaciones OFF</div>
+            </div>
+            <div class="dot" style="background:var(--danger)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<footer>
+  <span>© 2026 DX CONTROL CENTER · INFRAESTRUCTURA CRÍTICA</span>
+  <div style="display:flex; align-items:center; gap:8px">
+    <div class="dot online" style="width:6px; height:6px"></div>
+    V2.0-BETA LIVE
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    html.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
+  }
+</script>
+
+</body>
+</html>
