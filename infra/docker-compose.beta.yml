@@ -8,7 +8,7 @@ services:
     volumes:
       - ./infra/nginx/beta.conf:/etc/nginx/conf.d/default.conf
       - ./infra/html:/var/www/html:ro
-      - ./infra/assets:/var/www/html/assets:ro
+      - ./infra/assets:/var/www/assets:ro
 
 # ============================================================
 # Fase 1 — Descomentar cuando Laravel esté listo
