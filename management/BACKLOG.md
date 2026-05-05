@@ -20,10 +20,8 @@ _(ninguna actualmente)_
 
 ## 🔵 En Progreso
 
-- [x] Implementar `JwtService` y `AuthController`.
-- [x] Middleware de RBAC.
-- [ ] Afinar estilos finales del login (Beta).
-- [ ] Tests feature: login, logout, refresh, acceso denegado.
+- [ ] Fase 4: Estructura de base de datos para Clientes y Contratos.
+- [ ] Implementar importador CSV base.
 
 ---
 
@@ -50,6 +48,15 @@ En planificación — se detallan una por una tras validación de la fase anteri
 ---
 
 ## ✅ Completado
+
+### Fase 3 — Login
+- [x] Implementación de `JwtService` y `AuthController`.
+- [x] Middleware de RBAC (`JwtAuth`, `CheckPermission`).
+- [x] Refinamiento de UI Login para ultra-panorámicas.
+- [x] Implementación de Rate Limiting en login.
+- [x] Suite de tests `AuthTest.php` (PASS).
+- [x] Persistencia de tema dark/light.
+
 
 ### Fase 2 — Layouts Blade + Laravel
 - [x] Instalación de Laravel 11 en `backend/`.

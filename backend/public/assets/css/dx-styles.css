@@ -40,15 +40,19 @@
   background: linear-gradient(135deg, rgba(13, 17, 23, 0.9), rgba(13, 17, 23, 0.7)), 
               url('../img/login-bg-corporate.png');
   background-size: cover; background-position: center;
-  color: #fff; overflow: hidden; justify-content: center;
+  color: #fff; overflow: hidden; justify-content: center; align-items: center;
+}
+
+.login-container {
+  display: flex; width: 100%; max-width: 1100px; height: 80vh; align-items: center; gap: 60px; padding: 20px;
 }
 
 .login-page .left, .login-page .right {
-  flex: 1; display: flex; align-items: center; padding: 60px;
+  flex: 1; display: flex; align-items: center;
 }
 
-.login-page .left { justify-content: flex-end; }
-.login-page .right { justify-content: flex-start; }
+.login-page .left { justify-content: center; }
+.login-page .right { justify-content: center; }
 
 .inner-col { width: 100%; max-width: 500px; display: flex; flex-direction: column; }
 
@@ -178,7 +182,7 @@ body {
   transition:background 0.2s,color 0.2s;
 }
 
-body.login-page { display:grid; grid-template-columns:1fr 460px; flex-direction:unset; }
+/* body.login-page removed to avoid grid conflict */
 
 /* 5. HEADER */
 header {
