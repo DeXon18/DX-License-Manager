@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DX Control Center — Solicitar Cambio de Licencia</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dx-styles.css">
+</head>
+<body>
+
+<header>
+  <a class="brand" href="herramientas.html">
+    <div class="brand-mark">DX</div>
+    <span class="brand-name">DX Control Center</span>
+  </a>
+  <nav class="nav-links">
+    <a class="nav-link" href="portal.html">Inicio</a>
+    <a class="nav-link" href="#">Clientes</a>
+    <a class="nav-link active" href="herramientas.html">Herramientas</a>
+    <a class="nav-link" href="admin.html">Administración</a>
+  </nav>
+  <div class="nav-right">
+    <div class="theme-toggle" onclick="toggleTheme()">
+      <span class="toggle-icon">☀️</span>
+      <div class="toggle-track"><div class="toggle-knob"></div></div>
+      <span class="toggle-icon">🌙</span>
+    </div>
+    <div class="user-btn">
+      <div class="avatar">OS</div>
+      <span class="user-name">Oskar</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="breadcrumb">
+    <a href="portal.html">Portal</a> ›
+    <a href="herramientas.html">Herramientas</a> ›
+    Solicitar Cambio de Licencia
+  </div>
+
+  <div class="tool-header">
+    <div class="tool-icon-lg">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+    </div>
+    <div class="tool-header-text">
+      <h1>Solicitar Cambio de Licencia</h1>
+      <p class="tool-sub">Genera el documento oficial de solicitud de Siemens para tramitar el cambio de licencia</p>
+    </div>
+  </div>
+
+  <div class="trazabilidad-banner">
+    <span class="trazabilidad-icon">🔒</span>
+    <span><strong>Trazabilidad Activa:</strong> Esta solicitud será registrada en el historial del cliente. Deberá subir el COD firmado una vez tramitado el cambio.</span>
+  </div>
+
+  <form id="change-form" method="post" action="CompositeTemplates.php" enctype="multipart/form-data" autocomplete="off">
+
+    <!-- DATOS EMPRESA -->
+    <div class="form-section">
+      <div class="section-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Datos de la Empresa
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Número de Licencia (Sold To) <span class="req">*</span></label>
+          <div class="input-wrap">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <input type="text" name="Data_SoldTo" class="gui-input" placeholder="p.ej. 80012345" required data-validate="license" maxlength="8" style="font-family:'IBM Plex Mono',monospace">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row" style="margin-top:12px">
+        <div class="form-group">
+          <label>Solicitante <span class="req">*</span></label>
+          <div class="input-wrap">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input type="text" name="Data_Solicitante" class="gui-input" placeholder="Nombre del solicitante" required data-validate="name">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Empresa <span class="req">*</span></label>
+          <div class="input-wrap">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            <input type="text" name="Data_Empresa" class="gui-input" placeholder="Nombre de la empresa" required data-validate="company">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIPO SOLICITUD -->
+    <div class="form-section">
+      <div class="section-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg>
+        Tipo de Solicitud
+      </div>
+
+      <div class="segmented" id="docType-control">
+        <button type="button" class="seg-btn" data-value="Change_Full" data-info="Para transferir una licencia fija completa de un equipo a otro.">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          Cambio Completo
+        </button>
+        <button type="button" class="seg-btn" data-value="Change_Composite" data-info="Para transferir una licencia flotante, sin afectar a las licencias fijas.">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          Cambio de Composite
+        </button>
+        <button type="button" class="seg-btn" data-value="Change_NodeLocked" data-info="Para modificar solo la(s) MAC(s) asociadas al HostID de la licencia.">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+          Cambio NodeLocked
+        </button>
+        <input type="hidden" name="docType" id="docType-value" required>
+      </div>
+
+      <div class="info-box" id="info-box"></div>
+    </div>
+
+    <!-- MÁQUINAS -->
+    <div class="form-section">
+      <div class="section-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Datos de Máquina
+      </div>
+
+      <div class="columns-2">
+        <div class="column-section is-disabled" id="section-current">
+          <div class="column-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
+            Máquina Actual
+          </div>
+
+          <div class="field-row">
+            <div class="field-label">Hostname</div>
+            <div class="input-wrap">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
+              <input type="text" name="Hostname_Old" class="gui-input" placeholder="ej. SRV-LIC-01" data-validate="hostname" disabled>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field-label">Composite ID</div>
+            <div class="input-wrap">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              <input type="text" name="Composite_Old" class="gui-input" placeholder="12 caracteres alfanuméricos" data-validate="composite" maxlength="12" disabled style="font-family:'IBM Plex Mono',monospace">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field-label">Host ID (MAC)</div>
+            <div class="input-wrap">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>
+              <input type="text" name="MAC_Old" class="gui-input" placeholder="12 hex sin separadores" data-validate="mac" maxlength="12" disabled style="font-family:'IBM Plex Mono',monospace">
+            </div>
+          </div>
+        </div>
+
+        <div class="column-section is-disabled" id="section-new">
+          <div class="column-title">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            Nueva Máquina
+          </div>
+
+          <div class="field-row">
+            <div class="field-label">Hostname</div>
+            <div class="input-wrap">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/></svg>
+              <input type="text" name="Hostname_New" class="gui-input" placeholder="ej. SRV-LIC-02" data-validate="hostname" disabled>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field-label">Composite ID</div>
+            <div class="input-wrap">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              <input type="text" name="Composite_New" class="gui-input" placeholder="12 caracteres alfanuméricos" data-validate="composite" maxlength="12" disabled style="font-family:'IBM Plex Mono',monospace">
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field-label">Host ID (MAC)</div>
+            <div class="input-wrap">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>
+              <input type="text" name="MAC_New" class="gui-input" placeholder="12 hex sin separadores" data-validate="mac" maxlength="12" disabled style="font-family:'IBM Plex Mono',monospace">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NODELOCKED MACs -->
+    <div class="form-section nodelocked-section" id="nodelocked-section">
+      <div class="section-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>
+        Gestión de Pares de HostID
+      </div>
+      <div id="mac-fields-container"></div>
+      <button type="button" class="btn-add-pair" id="add-mac">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Añadir Par de HostIDs
+      </button>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="form-section">
+      <div class="form-footer">
+        <div class="footer-selectors">
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <span class="selector-label">Idioma del documento</span>
+            <div class="toggle-group">
+              <input type="radio" name="Language" value="Spanish" id="lang-es" checked>
+              <label for="lang-es">🇪🇸 Castellano</label>
+              <input type="radio" name="Language" value="English" id="lang-en">
+              <label for="lang-en">🇬🇧 English</label>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px">
+            <span class="selector-label">Sistema Operativo</span>
+            <div class="toggle-group">
+              <input type="radio" name="OperatingSystem" value="Windows" id="os-win" checked>
+              <label for="os-win">🪟 Windows</label>
+              <input type="radio" name="OperatingSystem" value="Linux" id="os-lin">
+              <label for="os-lin">🐧 Linux</label>
+            </div>
+          </div>
+        </div>
+        <div class="footer-buttons">
+          <button type="reset" class="btn-secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.51"/></svg>
+            Limpiar
+          </button>
+          <button type="submit" class="btn-primary" id="submit-btn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Generar Documento
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </form>
+
+  <a class="btn-back" href="herramientas.html">← Volver a Herramientas</a>
+</main>
+
+<footer>
+  <span>© 2026 DX Control Center</span>
+  <div class="footer-status"><div class="dot-live"></div>Sistema operativo · v2.0</div>
+</footer>
+
+<!-- OVERLAY + PDF PREVIEW -->
+<div id="overlay"></div>
+<div id="pdf-preview">
+  <div class="preview-header">
+    <h3>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Vista Previa del Documento
+    </h3>
+    <button class="btn-secondary" id="close-preview">Cerrar</button>
+  </div>
+  <div class="preview-content">
+    <div class="preview-loader" id="preview-loader"><div class="spinner"></div></div>
+    <iframe name="pdf_preview_frame" title="Vista previa PDF"></iframe>
+  </div>
+</div>
+
+<script>
+  // Theme
+  function toggleTheme() {
+    const html = document.documentElement;
+    html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('change-form');
+    const docTypeControl = document.getElementById('docType-control');
+    const docTypeValue = document.getElementById('docType-value');
+    const infoBox = document.getElementById('info-box');
+    const sectionCurrent = document.getElementById('section-current');
+    const sectionNew = document.getElementById('section-new');
+    const nodelockedSection = document.getElementById('nodelocked-section');
+    const macContainer = document.getElementById('mac-fields-container');
+    const addMacBtn = document.getElementById('add-mac');
+    const overlay = document.getElementById('overlay');
+    const pdfPreview = document.getElementById('pdf-preview');
+    const closePreview = document.getElementById('close-preview');
+    const previewLoader = document.getElementById('preview-loader');
+
+    // Validators
+    const validators = {
+      license: v => /^\d{5,8}$/.test(v),
+      composite: v => /^[a-zA-Z0-9]{12}$/.test(v),
+      hostname: v => /^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?$/.test(v),
+      mac: v => /^[a-fA-F0-9]{12}$/.test(v),
+      name: v => /^[\p{L}\s'-]+$/u.test(v),
+      company: v => /^[\p{L}\p{N}\s&@#%+()\\/\\.,:;'"-]+$/u.test(v.trim())
+    };
+
+    const validateField = (input) => {
+      const type = input.dataset.validate;
+      const value = input.value;
+      if (!type || input.disabled) return true;
+      const isEmpty = value.trim() === '';
+      if (isEmpty && !input.required) { input.classList.remove('is-valid','is-invalid'); return true; }
+      const isValid = !isEmpty && validators[type] ? validators[type](value.trim()) : !isEmpty;
+      input.classList.toggle('is-valid', isValid);
+      input.classList.toggle('is-invalid', !isValid);
+      return isValid;
+    };
+
+    form.addEventListener('input', e => {
+      if (e.target.matches('[data-validate]')) validateField(e.target);
+    });
+
+    // Sold To — solo números
+    form.querySelector('[name="Data_SoldTo"]').addEventListener('keydown', e => {
+      if (!/\d/.test(e.key) && !['Backspace','Delete','Tab','ArrowLeft','ArrowRight','Home','End'].includes(e.key) && !(e.ctrlKey||e.metaKey)) e.preventDefault();
+    });
+
+    // Segmented control
+    const segBtns = docTypeControl.querySelectorAll('.seg-btn');
+
+    segBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        segBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const val = btn.dataset.value;
+        docTypeValue.value = val;
+        infoBox.textContent = btn.dataset.info;
+        infoBox.classList.add('visible');
+        updateFormState(val);
+      });
+    });
+
+    const updateFormState = (type) => {
+      const isNodeLocked = type === 'Change_NodeLocked';
+      const isComposite = type === 'Change_Composite';
+
+      sectionCurrent.classList.remove('is-disabled');
+      sectionNew.classList.remove('is-disabled');
+      nodelockedSection.classList.toggle('visible', isNodeLocked);
+
+      form.querySelectorAll('.section-columns .gui-input, #section-current .gui-input, #section-new .gui-input').forEach(input => {
+        const isMac = input.name.startsWith('MAC_');
+        const isComp = input.name.startsWith('Composite_');
+        const isHost = input.name.startsWith('Hostname_');
+        let disabled = false;
+        if (isNodeLocked) disabled = isComp || isHost;
+        if (isComposite) disabled = isMac;
+        input.disabled = disabled;
+        input.required = !disabled && input.name !== 'Hostname_Old';
+        if (disabled) input.classList.remove('is-valid','is-invalid');
+      });
+
+      macContainer.querySelectorAll('.gui-input').forEach(input => {
+        input.disabled = !isNodeLocked;
+        input.required = isNodeLocked;
+        if (!isNodeLocked) input.classList.remove('is-valid','is-invalid');
+      });
+    };
+
+    // MAC pairs
+    const addMacPair = () => {
+      const pair = document.createElement('div');
+      pair.className = 'mac-pair';
+      pair.innerHTML = `
+        <div class="form-group">
+          <div class="field-label">Antigua MAC</div>
+          <div class="input-wrap">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>
+            <input type="text" name="MAC_Old_Extra[]" class="gui-input" placeholder="MAC antigua" maxlength="12" data-validate="mac" style="font-family:'IBM Plex Mono',monospace">
+          </div>
+        </div>
+        <div class="mac-arrow">→</div>
+        <div class="form-group">
+          <div class="field-label">Nueva MAC</div>
+          <div class="input-wrap">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>
+            <input type="text" name="MAC_New_Extra[]" class="gui-input" placeholder="MAC nueva" maxlength="12" data-validate="mac" style="font-family:'IBM Plex Mono',monospace">
+          </div>
+        </div>
+        <button type="button" class="btn-remove-pair" title="Quitar">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      `;
+      pair.querySelector('.btn-remove-pair').addEventListener('click', () => pair.remove());
+      macContainer.appendChild(pair);
+    };
+
+    addMacBtn.addEventListener('click', addMacPair);
+
+    // Form reset
+    form.addEventListener('reset', () => {
+      setTimeout(() => {
+        segBtns.forEach(b => b.classList.remove('active'));
+        docTypeValue.value = '';
+        infoBox.classList.remove('visible');
+        infoBox.textContent = '';
+        macContainer.innerHTML = '';
+        sectionCurrent.classList.add('is-disabled');
+        sectionNew.classList.add('is-disabled');
+        nodelockedSection.classList.remove('visible');
+        form.querySelectorAll('[data-validate]').forEach(i => i.classList.remove('is-valid','is-invalid'));
+      }, 10);
+    });
+
+    // Validate + submit
+    const validateForm = () => {
+      let valid = true;
+      let first = null;
+      form.querySelectorAll('[required]:not([disabled])').forEach(input => {
+        if (!validateField(input)) {
+          valid = false;
+          if (!first) first = input;
+        }
+      });
+      if (!valid && first) { first.focus(); first.scrollIntoView({behavior:'smooth',block:'center'}); }
+      return valid;
+    };
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      if (!validateForm()) {
+        const btn = document.getElementById('submit-btn');
+        btn.classList.add('shake');
+        setTimeout(() => btn.classList.remove('shake'), 400);
+        return;
+      }
+      overlay.classList.add('visible');
+      pdfPreview.classList.add('visible');
+      previewLoader.style.display = 'flex';
+      form.target = 'pdf_preview_frame';
+      const iframe = pdfPreview.querySelector('iframe');
+      iframe.addEventListener('load', () => {
+        setTimeout(() => previewLoader.style.display = 'none', 300);
+      }, {once:true});
+      form.submit();
+    });
+
+    closePreview.addEventListener('click', () => { overlay.classList.remove('visible'); pdfPreview.classList.remove('visible'); });
+    overlay.addEventListener('click', () => { overlay.classList.remove('visible'); pdfPreview.classList.remove('visible'); });
+  });
+</script>
+</body>
+</html>

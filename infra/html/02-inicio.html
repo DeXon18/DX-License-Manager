@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DX Control Center — Inicio</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dx-styles.css">
+</head>
+<body>
+
+<header>
+  <a class="brand" href="#">
+    <div class="brand-mark">DX</div>
+    <span class="brand-name">DX Control Center</span>
+  </a>
+  <nav class="nav-links">
+    <a class="nav-link active" href="#">Inicio</a>
+    <a class="nav-link" href="#">Clientes</a>
+    <a class="nav-link" href="#">Herramientas</a>
+    <a class="nav-link" href="#">Administración</a>
+  </nav>
+  <div class="nav-right">
+    <div class="theme-toggle" onclick="toggleTheme()">
+      <span class="toggle-icon">☀️</span>
+      <div class="toggle-track"><div class="toggle-knob"></div></div>
+      <span class="toggle-icon">🌙</span>
+    </div>
+    <div class="user-btn">
+      <div class="avatar">OS</div>
+      <span class="user-name">Oskar</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="page-header">
+    <h1 class="welcome">Bienvenido, <span>Oskar</span></h1>
+    <p class="welcome-sub">Estado actual del ecosistema · Última actualización: hace 2 min</p>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-label">Clientes</span>
+      <span class="stat-value accent">336</span>
+      <span class="stat-meta">Base instalada activa</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Contratos</span>
+      <span class="stat-value accent">527</span>
+      <span class="stat-meta">Siemens + Moldex3D</span>
+    </div>
+    <div class="stat-card warn">
+      <span class="stat-label">Próximos a caducar</span>
+      <span class="stat-value warn">18</span>
+      <span class="stat-meta">En los próximos 30 días</span>
+    </div>
+    <div class="stat-card danger">
+      <span class="stat-label">Críticos</span>
+      <span class="stat-value danger">5</span>
+      <span class="stat-meta">0–7 días · Acción inmediata</span>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Caducidades próximas</span>
+        <a class="card-action" href="#">Ver todas →</a>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Vendor · Contrato</th>
+            <th>Caducidad</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Universidad Politécnica Madrid</strong></td>
+            <td>
+              <div class="vendor-chip"><div class="vendor-dot" style="background:var(--siemens)"></div>Siemens</div>
+              <div style="font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace">CONH1006420</div>
+            </td>
+            <td>
+              <div class="date-main">03/01/2026</div>
+              <div class="date-sub">Caducado</div>
+            </td>
+            <td><span class="badge badge-danger">Caducado</span></td>
+          </tr>
+          <tr>
+            <td><strong>Metro Madrid</strong></td>
+            <td>
+              <div class="vendor-chip"><div class="vendor-dot" style="background:var(--siemens)"></div>Siemens</div>
+              <div style="font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace">CONH1006142</div>
+            </td>
+            <td>
+              <div class="date-main">09/01/2026</div>
+              <div class="date-sub">En 2 días</div>
+            </td>
+            <td><span class="badge badge-danger">Crítico</span></td>
+          </tr>
+          <tr>
+            <td><strong>Fundación Andaltec</strong></td>
+            <td>
+              <div class="vendor-chip"><div class="vendor-dot" style="background:var(--moldex)"></div>Moldex3D</div>
+              <div style="font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace">1005998</div>
+            </td>
+            <td>
+              <div class="date-main">14/01/2026</div>
+              <div class="date-sub warn">En 7 días</div>
+            </td>
+            <td><span class="badge badge-warn">Próximo</span></td>
+          </tr>
+          <tr>
+            <td><strong>Plastibor</strong></td>
+            <td>
+              <div class="vendor-chip"><div class="vendor-dot" style="background:var(--moldex)"></div>Moldex3D</div>
+              <div style="font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace">1006053</div>
+            </td>
+            <td>
+              <div class="date-main">18/01/2026</div>
+              <div class="date-sub warn">En 11 días</div>
+            </td>
+            <td><span class="badge badge-warn">Próximo</span></td>
+          </tr>
+          <tr>
+            <td><strong>Colegio Hogar Afundación</strong></td>
+            <td>
+              <div class="vendor-chip"><div class="vendor-dot" style="background:var(--siemens)"></div>Siemens</div>
+              <div style="font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace">CONH1002940</div>
+            </td>
+            <td>
+              <div class="date-main">03/03/2026</div>
+              <div class="date-sub muted">En 55 días</div>
+            </td>
+            <td><span class="badge badge-warn">Próximo</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="card-title">Acciones rápidas</span>
+      </div>
+      <div class="quick-actions">
+        <a class="action-btn" href="#">
+          <div class="action-btn-icon">📥</div>
+          <div class="action-btn-label">Importar CSV</div>
+          <div class="action-btn-sub">Actualizar base instalada</div>
+        </a>
+        <a class="action-btn" href="#">
+          <div class="action-btn-icon">🔧</div>
+          <div class="action-btn-label">Herramientas</div>
+          <div class="action-btn-sub">NX, STAR-CCM+, HEEDS</div>
+        </a>
+        <a class="action-btn" href="#">
+          <div class="action-btn-icon">👥</div>
+          <div class="action-btn-label">Clientes</div>
+          <div class="action-btn-sub">Ver base instalada</div>
+        </a>
+        <a class="action-btn" href="#">
+          <div class="action-btn-icon">📋</div>
+          <div class="action-btn-label">Solicitar cambio</div>
+          <div class="action-btn-sub">Documento Siemens</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span>© 2026 DX Control Center</span>
+  <div class="footer-status">
+    <div class="dot-live"></div>
+    Sistema operativo · v2.0
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  }
+</script>
+
+</body>
+</html>
