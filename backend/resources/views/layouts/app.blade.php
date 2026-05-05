@@ -8,7 +8,6 @@
     <title>{{ config('app.name', 'DX License Manager') }} - @yield('title', 'Portal')</title>
 
     <!-- Fonts & Styles -->
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/dx-styles.css') }}">
     
     <!-- Alpine.js (Legacy mode - no build step) -->
