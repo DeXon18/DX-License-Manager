@@ -26,6 +26,7 @@
           width: 100%; max-width: 400px; padding: 40px;
           background: var(--surface); border: 1px solid var(--border);
           border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+          position: relative; z-index: 1;
         }
         .brand { display: flex; align-items: center; gap: 12px; }
         .brand-mark {
@@ -94,7 +95,7 @@
 
 <div class="right">
     <div class="login-box">
-        <div class="version-badge"><div class="dot"></div>v2.0 · Beta</div>
+        <div class="version-badge"><div class="dot"></div>v2.1 · Beta</div>
         <h2 class="login-title">Acceso al portal</h2>
         <p class="login-sub">Introduce tus credenciales para continuar</p>
 
