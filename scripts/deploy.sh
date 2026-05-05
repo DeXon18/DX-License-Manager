@@ -20,11 +20,14 @@ echo "🐳 Levantando contenedores..."
 docker compose -f $COMPOSE_FILE up -d --build
 
 echo "🗃️ Ejecutando migraciones..."
-docker compose -f $COMPOSE_FILE exec -T php-fpm-${ENV} php artisan migrate --force
-
-echo "🔧 Limpiando caché..."
-docker compose -f $COMPOSE_FILE exec -T php-fpm-${ENV} php artisan config:cache
-docker compose -f $COMPOSE_FILE exec -T php-fpm-${ENV} php artisan route:cache
-docker compose -f $COMPOSE_FILE exec -T php-fpm-${ENV} php artisan view:cache
+if docker compose -f $COMPOSE_FILE ps | grep -q "php-fpm-${ENV}"; then
+    docker compose -f $COMPOSE_FILE exec -T php-fpm-${ENV} php artisan migrate --force
+    echo "🔧 Limpiando caché..."
+    docker compose -f $COMPOSE_FILE exec -T php-fpm-${ENV} php artisan config:cache
+    docker compose -f $COMPOSE_FILE exec -T php-fpm-${ENV} php artisan route:cache
+    docker compose -f $COMPOSE_FILE exec -T php-fpm-${ENV} php artisan view:cache
+else
+    echo "⚠️ Servicio php-fpm-${ENV} no detectado. Saltando tareas de Laravel (Fase 0)."
+fi
 
 echo "✅ Deploy $ENV completado"
