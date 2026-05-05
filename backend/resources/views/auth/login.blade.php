@@ -20,23 +20,25 @@
     :data-theme="theme">
 
 <div class="left">
-    <div class="brand">
-        <div class="brand-mark">DX</div>
-        <span class="brand-name">DX Control Center</span>
-    </div>
+    <div class="inner-col">
+        <div class="brand">
+            <div class="brand-mark">DX</div>
+            <span class="brand-name">DX Control Center</span>
+        </div>
 
-    <div class="left-content">
-        <h1 class="tagline">Gestión inteligente de <span>licencias</span> de software industrial</h1>
-        <p class="desc">Portal centralizado para el seguimiento, auditoría y renovación de licencias Siemens PLM y Moldex3D.</p>
-    </div>
+        <div class="left-content">
+            <h1 class="tagline">Gestión inteligente de <span>licencias</span> de software industrial</h1>
+            <p class="desc">Portal centralizado para el seguimiento, auditoría y renovación de licencias Siemens PLM y Moldex3D.</p>
+        </div>
 
-    <div class="left-footer">
-        <span>© 2026 DX Control Center</span>
-        <div class="theme-switch" @click="toggle()" :class="theme === 'dark' ? 'is-dark' : ''">
-            <div class="switch-track">
-                <div class="switch-knob">
-                    <span x-show="theme === 'light'">☀️</span>
-                    <span x-show="theme === 'dark'">🌙</span>
+        <div class="left-footer">
+            <span>© 2026 DX Control Center</span>
+            <div class="theme-switch" @click="toggle()" :class="theme === 'dark' ? 'is-dark' : ''">
+                <div class="switch-track">
+                    <div class="switch-knob">
+                        <span x-show="theme === 'light'">☀️</span>
+                        <span x-show="theme === 'dark'">🌙</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -44,35 +46,37 @@
 </div>
 
 <div class="right">
-    <div class="login-box">
-        <div class="version-badge"><div class="dot"></div>v2.3 · Beta</div>
-        <h2 class="login-title">Acceso al portal</h2>
-        <p class="login-sub">Introduce tus credenciales para continuar</p>
+    <div class="inner-col">
+        <div class="login-box">
+            <div class="version-badge"><div class="dot"></div>v2.4 · Beta</div>
+            <h2 class="login-title">Acceso al portal</h2>
+            <p class="login-sub">Introduce tus credenciales para continuar</p>
 
-        <form action="{{ url('/login') }}" method="POST">
-            @csrf
+            <form action="{{ url('/login') }}" method="POST">
+                @csrf
 
-            @if ($errors->any())
-                <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 14px;">
-                    @foreach ($errors->all() as $error)
-                        <div>{{ $error }}</div>
-                    @endforeach
+                @if ($errors->any())
+                    <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #ef4444; padding: 12px; border-radius: 8px; margin-bottom: 20px; font-size: 14px;">
+                        @foreach ($errors->all() as $error)
+                            <div>{{ $error }}</div>
+                        @endforeach
+                    </div>
+                @endif
+
+                <div class="form-group">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" name="email" id="email" value="{{ old('email') }}" placeholder="usuario@dxpro.es" required autofocus>
                 </div>
-            @endif
+                <div class="form-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" name="password" id="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-login">Iniciar sesión</button>
+            </form>
 
-            <div class="form-group">
-                <label for="email">Correo electrónico</label>
-                <input type="email" name="email" id="email" value="{{ old('email') }}" placeholder="usuario@dxpro.es" required autofocus>
-            </div>
-            <div class="form-group">
-                <label for="password">Contraseña</label>
-                <input type="password" name="password" id="password" placeholder="••••••••" required>
-            </div>
-            <button type="submit" class="btn-login">Iniciar sesión</button>
-        </form>
-
-        <hr class="divider">
-        <div class="login-footer">Acceso restringido · Solo personal autorizado</div>
+            <hr class="divider">
+            <div class="login-footer">Acceso restringido · Solo personal autorizado</div>
+        </div>
     </div>
 </div>
 
