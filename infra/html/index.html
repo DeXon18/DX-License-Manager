@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DX Control Center</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace;
+            background: #0a0a0a;
+            color: #e5e5e5;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 9999px;
+            padding: 0.35rem 1rem;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #4ade80;
+            margin-bottom: 2rem;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            background: #4ade80;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            font-size: 0.85rem;
+            color: #555;
+            letter-spacing: 0.02em;
+        }
+
+        .env {
+            margin-top: 2rem;
+            font-size: 0.7rem;
+            color: #333;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="status">
+            <span class="dot"></span>
+            servidor operativo
+        </div>
+        <h1>DX Control Center</h1>
+        <p>Infraestructura verificada. Fase 0 completada.</p>
+        <div class="env">nginx · docker · fase 0</div>
+    </div>
+</body>
+</html>

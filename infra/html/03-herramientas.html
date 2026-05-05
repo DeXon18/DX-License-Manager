@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DX Control Center — Herramientas</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dx-styles.css">
+</head>
+<body>
+
+<header>
+  <a class="brand" href="#">
+    <div class="brand-mark">DX</div>
+    <span class="brand-name">DX Control Center</span>
+  </a>
+  <nav class="nav-links">
+    <a class="nav-link" href="#">Inicio</a>
+    <a class="nav-link" href="#">Clientes</a>
+    <a class="nav-link active" href="#">Herramientas</a>
+    <a class="nav-link" href="#">Administración</a>
+  </nav>
+  <div class="nav-right">
+    <div class="theme-toggle" onclick="toggleTheme()">
+      <span class="toggle-icon">☀️</span>
+      <div class="toggle-track"><div class="toggle-knob"></div></div>
+      <span class="toggle-icon">🌙</span>
+    </div>
+    <div class="user-btn">
+      <div class="avatar">OS</div>
+      <span class="user-name">Oskar</span>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Siemens PLM</div>
+      <a class="sidebar-item active" href="#">
+        <div class="sidebar-icon" style="background:rgba(194,87,10,0.1)">🎨</div>
+        Designcenter & TC
+      </a>
+<a class="sidebar-item" href="#">
+        <div class="sidebar-icon" style="background:rgba(3,105,161,0.1)">💧</div>
+        STAR-CCM+
+      </a>
+      <a class="sidebar-item" href="#">
+        <div class="sidebar-icon" style="background:rgba(126,34,206,0.1)">⚡</div>
+        HEEDS
+      </a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Documentos</div>
+      <a class="sidebar-item" href="#">
+        <div class="sidebar-icon" style="background:rgba(2,132,199,0.1)">📋</div>
+        Solicitar Cambio
+      </a>
+      <a class="sidebar-item" href="#">
+        <div class="sidebar-icon" style="background:rgba(109,40,217,0.1)">🔗</div>
+        Recursos
+      </a>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-heading">Moldex3D</div>
+      <a class="sidebar-item" href="#">
+        <div class="sidebar-icon" style="background:rgba(185,28,28,0.1)">🔴</div>
+        Auditor Moldex3D
+      </a>
+    </div>
+  </aside>
+
+  <div class="content">
+    <div class="page-header">
+      <div class="breadcrumb">Portal › Herramientas</div>
+      <h1 class="page-title">Herramientas de Licencia</h1>
+      <p class="page-sub">Motores de transformación y utilidades avanzadas de licencias</p>
+    </div>
+
+    <!-- SIEMENS -->
+    <div class="vendor-section">
+      <div class="vendor-header">
+        <span class="vendor-label siemens">Siemens PLM</span>
+        <span class="vendor-desc">Transformación y gestión de licencias</span>
+        <div class="vendor-line"></div>
+      </div>
+      <div class="tools-grid">
+
+<a class="tool-card" style="--card-accent:#c2570a" href="#">
+          <div class="tool-card-header">
+            <div class="tool-card-header-left">
+              <div class="tool-icon-fallback" style="background:rgba(194,87,10,0.08);color:#c2570a">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              </div>
+              <div class="tool-name">Designcenter & TC</div>
+            </div>
+            <span class="tool-badge badge-ai">AI</span>
+          </div>
+          <div>
+            <div class="tool-desc">Gestión unificada para Simcenter 3D y sistemas PLM. Nueva generación desde NX 2212.</div>
+          </div>
+          <div class="tool-footer">
+            <span class="tool-meta-item">Vendor: SALTD</span>
+            <span class="tool-cta">Abrir →</span>
+          </div>
+        </a>
+
+        <a class="tool-card" style="--card-accent:#0369a1" href="#">
+          <div class="tool-card-header">
+            <div class="tool-card-header-left">
+              <div class="tool-icon-fallback" style="background:rgba(3,105,161,0.08);color:#0369a1">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div class="tool-name">STAR-CCM+</div>
+            </div>
+            <span class="tool-badge badge-ai">AI</span>
+          </div>
+          <div>
+            <div class="tool-desc">Adaptación de licencias para simulación avanzada de fluidos y transferencia térmica.</div>
+          </div>
+          <div class="tool-footer">
+            <span class="tool-meta-item">Vendor: CDLMD</span>
+            <span class="tool-cta">Abrir →</span>
+          </div>
+        </a>
+
+        <a class="tool-card" style="--card-accent:#7e22ce" href="#">
+          <div class="tool-card-header">
+            <div class="tool-card-header-left">
+              <div class="tool-icon-fallback" style="background:rgba(126,34,206,0.08);color:#7e22ce">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+              </div>
+              <div class="tool-name">HEEDS</div>
+            </div>
+            <span class="tool-badge badge-ai">AI</span>
+          </div>
+          <div>
+            <div class="tool-desc">Suite integral de optimización y automatización de procesos multidisciplinares.</div>
+          </div>
+          <div class="tool-footer">
+            <span class="tool-meta-item">Vendor: RCTECH</span>
+            <span class="tool-cta">Abrir →</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- DOCUMENTOS -->
+    <div class="vendor-section">
+      <div class="vendor-header">
+        <span class="vendor-label docs">Documentos · Recursos</span>
+        <span class="vendor-desc">Documentación oficial y acceso a portales externos</span>
+        <div class="vendor-line"></div>
+      </div>
+      <div class="tools-grid two-col">
+
+        <a class="tool-card" style="--card-accent:#0284c7" href="#">
+          <div class="tool-card-header">
+            <div class="tool-card-header-left">
+              <div class="tool-icon-fallback" style="background:rgba(2,132,199,0.08);color:#0284c7">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              </div>
+              <div class="tool-name">Solicitar Cambio de Licencia</div>
+            </div>
+            <span class="tool-badge badge-doc">Documento oficial</span>
+          </div>
+          <div>
+            <div class="tool-desc">Genera el documento oficial de Siemens para tramitar cambios de máquina. Composite, NodeLocked y cambios completos. Trazabilidad activa.</div>
+          </div>
+          <div class="tool-footer">
+            <span class="tool-meta-item">PDF oficial Siemens · Trazabilidad activa</span>
+            <span class="tool-cta">Generar documento →</span>
+          </div>
+        </a>
+
+        <a class="tool-card" style="--card-accent:#6d28d9" href="#">
+          <div class="tool-card-header">
+            <div class="tool-card-header-left">
+              <div class="tool-icon-fallback" style="background:rgba(109,40,217,0.08);color:#6d28d9">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              </div>
+              <div class="tool-name">Recursos y Enlaces</div>
+            </div>
+          </div>
+          <div>
+            <div class="tool-desc">Acceso a portales, documentación oficial, descargas y recursos externos de Siemens PLM y Moldex3D.</div>
+          </div>
+          <div class="tool-footer">
+            <span class="tool-meta-item">Portales · Documentación · Descargas</span>
+            <span class="tool-cta">Ver todos los recursos →</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- MOLDEX3D -->
+    <div class="vendor-section">
+      <div class="vendor-header">
+        <span class="vendor-label moldex">Moldex3D</span>
+        <span class="vendor-desc">Inyección y Simulación</span>
+        <div class="vendor-line"></div>
+      </div>
+      <div class="tools-grid" style="grid-template-columns:repeat(3,1fr)">
+
+        <a class="tool-card" style="--card-accent:#b91c1c" href="#">
+          <div class="tool-card-header">
+            <div class="tool-card-header-left">
+              <div class="tool-icon-fallback" style="background:rgba(185,28,28,0.08);color:#b91c1c">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              </div>
+              <div class="tool-name">Auditor Moldex3D</div>
+            </div>
+            <span class="tool-badge badge-ai">AI</span>
+          </div>
+          <div>
+            <div class="tool-desc">Análisis y gestión proactiva de licencias para el motor de simulación de inyección plástica.</div>
+          </div>
+          <div class="tool-footer">
+            <span class="tool-meta-item">Compatible con .mac · IA integrada</span>
+            <span class="tool-cta">Abrir →</span>
+          </div>
+        </a>
+
+        <a class="tool-card" style="--card-accent:#b91c1c" href="#">
+          <div class="tool-card-header">
+            <div class="tool-card-header-left">
+              <div class="tool-icon-fallback" style="background:rgba(185,28,28,0.08);color:#b91c1c">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              </div>
+              <div class="tool-name">Listado de Versiones</div>
+            </div>
+          </div>
+          <div>
+            <div class="tool-desc">Consulta las versiones disponibles de Moldex3D, compatibilidades y notas de actualización.</div>
+          </div>
+          <div class="tool-footer">
+            <span class="tool-meta-item">Versiones · Compatibilidades</span>
+            <span class="tool-cta">Ver listado →</span>
+          </div>
+        </a>
+
+        <div class="tool-card-add">
+          <div class="add-icon">+</div>
+          <div class="add-label">Añadir utilidad Moldex3D</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="footer-links">
+    <span>Portal</span><span>Clientes</span>
+    <span>Herramientas</span><span>Mi Cuenta</span>
+  </div>
+  <div class="footer-status">
+    <div class="dot-live"></div>
+    Sistema operativo · v2.0
+  </div>
+</footer>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    html.setAttribute('data-theme',
+      html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'
+    );
+  }
+</script>
+
+</body>
+</html>
