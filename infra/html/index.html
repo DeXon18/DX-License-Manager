@@ -1,87 +1,128 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DX Control Center</title>
+    <title>DX Control Center — Mantenimiento</title>
+    <!-- El CSS se carga desde la nueva estructura de assets -->
+    <link rel="stylesheet" href="../assets/css/dx-styles.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
+        /* Ajustes específicos para centrar el contenido de mantenimiento */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', monospace;
-            background: #0a0a0a;
-            color: #e5e5e5;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
             justify-content: center;
-        }
-
-        .container {
+            align-items: center;
             text-align: center;
-            padding: 2rem;
         }
-
-        .status {
+        .maintenance-container {
+            max-width: 480px;
+            padding: 40px;
+        }
+        .status-badge {
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
-            background: #111;
-            border: 1px solid #222;
-            border-radius: 9999px;
-            padding: 0.35rem 1rem;
-            font-size: 0.75rem;
-            letter-spacing: 0.1em;
+            gap: 8px;
+            padding: 6px 16px;
+            background: var(--accent-muted);
+            color: var(--accent);
+            border: 1px solid var(--accent-border);
+            border-radius: 99px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            font-weight: 600;
             text-transform: uppercase;
-            color: #4ade80;
-            margin-bottom: 2rem;
+            letter-spacing: 0.1em;
+            margin-bottom: 32px;
         }
-
-        .dot {
-            width: 6px;
-            height: 6px;
-            background: #4ade80;
+        .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
             border-radius: 50%;
+            box-shadow: 0 0 12px var(--accent);
             animation: pulse 2s infinite;
         }
-
+        .maint-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.03em;
+            margin-bottom: 12px;
+        }
+        .maint-desc {
+            font-size: 15px;
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+        .maint-footer {
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--muted);
+        }
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        h1 {
-            font-size: 1.5rem;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            color: #fff;
-            margin-bottom: 0.5rem;
-        }
-
-        p {
-            font-size: 0.85rem;
-            color: #555;
-            letter-spacing: 0.02em;
-        }
-
-        .env {
-            margin-top: 2rem;
-            font-size: 0.7rem;
-            color: #333;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.9); }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="status">
-            <span class="dot"></span>
-            servidor operativo
+
+    <div class="maintenance-container">
+        <div class="status-badge">
+            <div class="pulse-dot"></div>
+            Sistema Operativo · Fase 1
         </div>
-        <h1>DX Control Center</h1>
-        <p>Infraestructura verificada. Fase 0 completada.</p>
-        <div class="env">nginx · docker · fase 0</div>
+
+        <h1 class="maint-title">DX License Manager</h1>
+        <p class="maint-desc">
+            Estamos integrando el nuevo sistema de diseño unificado. 
+            La infraestructura está lista y el despliegue de assets ha sido verificado.
+        </p>
+
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Estado de Infraestructura</span>
+                <span class="badge badge-success">OK</span>
+            </div>
+            <table>
+                <tr>
+                    <td>Capa Visual</td>
+                    <td><span class="badge badge-ai">Impeccable UI</span></td>
+                </tr>
+                <tr>
+                    <td>Tipografía</td>
+                    <td><span class="vendor-chip"><div class="vendor-dot" style="background:var(--accent)"></div> Inter / IBM Plex</span></td>
+                </tr>
+                <tr>
+                    <td>Pipeline</td>
+                    <td><span class="date-main">GitHub Actions v24.x</span></td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="maint-footer">
+            <span>v2.0.0-beta.1</span>
+            <div class="theme-toggle" onclick="toggleTheme()" style="cursor:pointer">
+                <span class="toggle-icon">☀️</span>
+                <div class="toggle-track"><div class="toggle-knob"></div></div>
+                <span class="toggle-icon">🌙</span>
+            </div>
+        </div>
     </div>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const current = html.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', next);
+        }
+    </script>
 </body>
 </html>
