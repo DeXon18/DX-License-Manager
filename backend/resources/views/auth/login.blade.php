@@ -31,7 +31,7 @@
         <div class="theme-toggle" @click="theme = (theme === 'dark' ? 'light' : 'dark')">
             <span class="toggle-icon">☀️</span>
             <div class="toggle-track">
-                <div class="toggle-knob" :style="theme === 'dark' ? 'transform: translateX(20px)' : ''"></div>
+                <div class="toggle-knob" :style="theme === 'dark' ? 'transform: translateX(20px)' : 'transform: translateX(0)'"></div>
             </div>
             <span class="toggle-icon">🌙</span>
         </div>
