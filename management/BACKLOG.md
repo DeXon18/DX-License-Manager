@@ -22,7 +22,7 @@ _(ninguna actualmente)_
 
 ### Fase 0 — Verificación de Infraestructura
 - [x] Verificar carga de HTML estático en `beta.dxpro.es`. - ✅ Completada
-- [x] Verificar carga de HTML estático en `portal.dxpro.es`. - ✅ Completada (en curso)
+- [x] Verificar carga de HTML estático en `portal.dxpro.es`. - ✅ Completada
 
 ---
 
