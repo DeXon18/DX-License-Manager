@@ -17,7 +17,7 @@ echo "📥 Actualizando código..."
 git pull origin $([ "$ENV" = "prod" ] && echo "main" || echo "dev")
 
 echo "🐳 Levantando contenedores..."
-docker compose -f $COMPOSE_FILE up -d --build
+docker compose --project-directory . -f $COMPOSE_FILE up -d --build
 
 echo "🗃️ Ejecutando migraciones..."
 if docker compose -f $COMPOSE_FILE ps | grep -q "php-fpm-${ENV}"; then

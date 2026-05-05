@@ -6,20 +6,20 @@ services:
     ports:
       - "8002:80"
     volumes:
-      - ./nginx/beta.conf:/etc/nginx/conf.d/default.conf
-      - ../backend:/var/www/html:ro
-      - ./assets:/var/www/assets:ro
+      - ./infra/nginx/beta.conf:/etc/nginx/conf.d/default.conf
+      - ./backend:/var/www/html:ro
+      - ./infra/assets:/var/www/assets:ro
 
   php-fpm-beta:
     build:
-      context: ./php
+      context: ./infra/php
     container_name: dx-php-beta
     restart: always
     mem_limit: 512m
-    env_file: ./.env.beta
+    env_file: ./infra/.env.beta
     volumes:
-      - ../backend:/var/www/html
-      - ../storage:/var/www/html/storage/app
+      - ./backend:/var/www/html
+      - ./storage:/var/www/html/storage/app
     depends_on:
       mariadb-beta:
         condition: service_healthy
@@ -37,10 +37,10 @@ services:
     container_name: dx-mariadb-beta
     restart: always
     mem_limit: 512m
-    env_file: ./.env.beta
+    env_file: ./infra/.env.beta
     volumes:
       - mariadb_beta_data:/var/lib/mysql
-      - ./mariadb/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./infra/mariadb/my.cnf:/etc/mysql/conf.d/my.cnf
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 10s
@@ -63,7 +63,7 @@ services:
     image: node:20-alpine
     container_name: dx-node-beta
     volumes:
-      - ../backend:/var/www/html
+      - ./backend:/var/www/html
     working_dir: /var/www/html
     user: "1000:1000"
     command: ["tail", "-f", "/dev/null"]
