@@ -22,7 +22,7 @@ _(ninguna actualmente)_
 
 ### Fase 0 — Verificación de Infraestructura
 - [x] Verificar carga de HTML estático en `beta.dxpro.es`. - ✅ Completada
-- [ ] Verificar carga de HTML estático en `portal.dxpro.es`.
+- [x] Verificar carga de HTML estático en `portal.dxpro.es`. - ✅ Completada (en curso)
 
 ---
 
@@ -56,8 +56,8 @@ _(ninguna actualmente)_
 - [x] Revisar que carga el HTML estático.
 
 ### Levantar stack prod y verificar
-- [ ] `portal.dxpro.es` accesible desde fuera de la red local.
-- [ ] Revisar que carga el HTML estático.
+- [x] `portal.dxpro.es` accesible desde fuera de la red local.
+- [x] Revisar que carga el HTML estático.
 
 ### Verificar GitHub Actions
 - [x] Push a `dev` → deploy automático a beta activado.

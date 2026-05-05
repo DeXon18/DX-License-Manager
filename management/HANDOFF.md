@@ -12,7 +12,7 @@
 | :------------------------------- | :---------------------------- |
 | Repo GitHub `DX-License-Manager` | ✅ Creado y vinculado         |
 | Stack beta `beta.dxpro.es`       | ✅ Verificado (index.html)    |
-| Stack prod `portal.dxpro.es`     | ❌ Pendiente de primer deploy |
+| Stack prod `portal.dxpro.es`     | 🔄 Despliegue en curso (Actions) |
 | Deploy automático GitHub Actions | ✅ Configurado                |
 | Laravel                          | ❌ No instalado — Fase 1      |
 | Base de datos                    | ❌ No existe — Fase 1         |
@@ -33,7 +33,7 @@
 
 1. ✅ Realizar un commit de prueba en `dev` (Hecho: `eb14f5c`).
 2. ✅ Verificar que `http://beta.dxpro.es` muestra la página de mantenimiento.
-3. 🔄 Repetir el proceso en `main` para Producción (`http://portal.dxpro.es`).
+3. ✅ Fusionar `dev` a `main` y verificar `http://portal.dxpro.es`. (Hecho: `6a3de1c`).
 4. Una vez verificado el despliegue automático en ambos entornos, proceder a la **Fase 1**.
 
 ---
