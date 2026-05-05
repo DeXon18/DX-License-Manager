@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DX Control Center — Acceso</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dx-styles.css">
+</head>
+<body class="login-page">
+
+<div class="left">
+  <div class="brand">
+    <div class="brand-mark">DX</div>
+    <span class="brand-name">DX Control Center</span>
+  </div>
+
+  <div class="left-content">
+    <h1 class="tagline">Gestión inteligente de <span>licencias</span> de software industrial</h1>
+    <p class="desc">Portal centralizado para el seguimiento, auditoría y renovación de licencias Siemens PLM y Moldex3D.</p>
+    <div class="stats">
+      <div class="stat-item"><span class="stat-num">527</span><span class="stat-label">Contratos</span></div>
+      <div class="stat-item"><span class="stat-num">336</span><span class="stat-label">Clientes</span></div>
+      <div class="stat-item"><span class="stat-num">5</span><span class="stat-label">Herramientas</span></div>
+    </div>
+  </div>
+
+  <div class="left-footer">
+    <span>© 2026 DX Control Center</span>
+    <div class="theme-toggle" onclick="toggleTheme()">
+      <span class="toggle-icon">☀️</span>
+      <div class="toggle-track"><div class="toggle-knob"></div></div>
+      <span class="toggle-icon">🌙</span>
+    </div>
+  </div>
+</div>
+
+<div class="right">
+  <div class="login-box">
+    <div class="version-badge"><div class="dot"></div>v2.0 · Beta</div>
+    <h2 class="login-title">Acceso al portal</h2>
+    <p class="login-sub">Introduce tus credenciales para continuar</p>
+    <div class="form-group">
+      <label>Correo electrónico</label>
+      <input type="email" placeholder="usuario@dxpro.es">
+    </div>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" placeholder="••••••••">
+    </div>
+    <button class="btn-login">Iniciar sesión</button>
+    <hr class="divider">
+    <div class="login-footer">Acceso restringido · Solo personal autorizado</div>
+  </div>
+</div>
+
+<script>
+  function toggleTheme() {
+    const html = document.documentElement;
+    html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+  }
+</script>
+</body>
+</html>

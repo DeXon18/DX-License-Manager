@@ -1,0 +1,38 @@
+# ============================================================
+# .gitignore — DX License Manager
+# ============================================================
+
+# --- Secrets y entornos ---
+infra/.env.beta
+infra/.env.prod
+.env
+.env.*
+!.env.beta.example
+!.env.prod.example
+
+# --- Obsidian (vault local, nunca en Git) ---
+obsidian/
+
+# --- Agente (secrets locales) ---
+.agent/secrets/
+
+# --- Laravel ---
+#Pendiente pordefinir
+
+# --- Storage de licencias ---
+storage/
+
+# --- Docker ---
+infra/.env.beta
+infra/.env.prod
+
+# --- Sistema operativo ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- IDEs ---
+.idea/
+.vscode/
+*.suo
+*.user
