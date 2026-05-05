@@ -1,1 +1,1 @@
-Sin sesiones previas. Proyecto parte desde cero — Fase 0 pendiente. Leer HANDOFF.md para el estado actual.
+Fase 0 iniciada. Repositorio inicializado y conectado a GitHub. Workflows de CI/CD creados. Repositorio clonado en el servidor y secretos configurados. Pendiente el primer push a 'dev' para verificar el despliegue automático una vez resuelto el problema del nombre del workspace.

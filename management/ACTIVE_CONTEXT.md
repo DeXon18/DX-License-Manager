@@ -1,8 +1,8 @@
 ---
 project: DX License Manager
 repo: github.com/DeXon18/DX-License-Manager
-status: Planning
-last_sync: 2026-05-04
+status: In Progress
+last_sync: 2026-05-05
 current_agent: Claude
 ---
 
@@ -11,15 +11,18 @@ current_agent: Claude
 ## 🎯 Objetivo Actual
 
 - [ ] Tarea principal: Fase 0 — Verificación de Infraestructura
-- [ ] Subtarea en curso: Crear repo en GitHub y estructura base
-- Rama activa: main
+- [ ] Subtarea en curso: Levantar stacks y verificar despliegue automático
+- Rama activa: dev
 - Fase del ROADMAP: Fase 0
 
 ---
 
 ## 🕒 Log de Acciones (última sesión)
 
-- 2026-05-04 — Documentación de gestión reseteada al estado real. El proyecto parte desde cero.
+- 2026-05-05 — Inicialización de Git local y remoto.
+- 2026-05-05 — Configuración de GitHub Workflows (`ci`, `deploy-beta`, `deploy-prod`).
+- 2026-05-05 — Preparación del servidor LXC 600 (clonado y archivos .env listos).
+- 2026-05-05 — Configuración de GitHub Secrets finalizada por el desarrollador.
 
 ---
 
@@ -38,24 +41,24 @@ current_agent: Claude
 
 ## 🚀 Handover — Próximos Pasos
 
-1. Crear repo `DeXon18/DX-License-Manager` en GitHub
-2. Configurar ramas `main` y `dev`
-3. Subir estructura base de carpetas y archivos
-4. Configurar GitHub Secrets
-5. Preparar servidor LXC 600 y levantar stacks
+1. Realizar push de prueba a `dev` para verificar el despliegue automático en Beta.
+2. Verificar acceso a `beta.dxpro.es:8002`.
+3. Realizar push de prueba a `main` para verificar el despliegue automático en Producción.
+4. Verificar acceso a `portal.dxpro.es:8001`.
 
 ---
 
 ## 🗂️ Archivos en Foco (Working Set)
 
-- Documentación de gestión: `management/`
-- Infraestructura: `infra/` (por crear)
+- Workflows: `.github/workflows/`
+- Infraestructura: `infra/`
+- Gestión: `management/`
 
 ---
 
 ## ⚠️ Errores Conocidos / Bloqueos
 
-- Ninguno actualmente
+- El directorio del proyecto ha sido renombrado a `DX-License-Manager`.
 
 ---
 
@@ -63,10 +66,10 @@ current_agent: Claude
 
 | Capa                | Estado                           |
 | :------------------ | :------------------------------- |
-| nginx-beta `:8002`  | ❌ no levantado aún              |
-| php-fpm-beta        | ❌ no levantado aún              |
-| mariadb-beta        | ❌ no levantado aún              |
-| redis-beta          | ❌ no levantado aún              |
-| nginx-prod `:8001`  | ❌ no levantado aún              |
-| Cloudflared LXC 600 | ✅ Configurado, se usará para beta y prod |
-| GitHub Actions      | ❌ no configurado aún            |
+| nginx-beta `:8002`  | ❌ Pendiente de primer deploy    |
+| php-fpm-beta        | ❌ No incluido en Fase 0         |
+| mariadb-beta        | ❌ No incluido en Fase 0         |
+| redis-beta          | ❌ No incluido en Fase 0         |
+| nginx-prod `:8001`  | ❌ Pendiente de primer deploy    |
+| Cloudflared LXC 600 | ✅ Operativo                     |
+| GitHub Actions      | ✅ Configurado                   |
