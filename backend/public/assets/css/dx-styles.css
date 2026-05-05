@@ -41,17 +41,23 @@
 }
 
 .login-page .left {
-  flex: 1.2; display: flex; flex-direction: column; justify-content: space-between;
+  flex: 1.2; display: flex; align-items: flex-end; justify-content: flex-end;
   padding: 60px; position: relative; overflow: hidden;
-  background: linear-gradient(135deg, rgba(13, 17, 23, 0.95), rgba(13, 17, 23, 0.8)), 
-              url('../img/login-bg.png');
+  background: linear-gradient(135deg, rgba(13, 17, 23, 0.9), rgba(13, 17, 23, 0.7)), 
+              url('../img/login-bg-corporate.png');
   background-size: cover; background-position: center; color: #fff;
 }
 
 .login-page .right {
-  flex: 1; display: flex; align-items: center; justify-content: center;
+  flex: 1; display: flex; align-items: center; justify-content: flex-start;
   background: var(--bg); padding: 40px;
 }
+
+.inner-col {
+  width: 100%; max-width: 600px; display: flex; flex-direction: column; height: 100%; justify-content: space-between;
+}
+
+.right .inner-col { justify-content: center; height: auto; }
 
 .login-box {
   width: 100%; max-width: 400px; padding: 40px;
