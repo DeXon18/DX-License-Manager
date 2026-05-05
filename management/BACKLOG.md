@@ -51,9 +51,31 @@ En planificación — se detallan una por una tras validación de la fase anteri
 
 ## ✅ Completado
 
-- **Fase 0 — Infraestructura**: Repo creado, Docker stacks beta/prod activos, CI/CD configurado.
-- **Fase 1 — CSS + Assets**: Integración de `dx-styles.css` y fuentes locales.
-- **Fase 2 — Layouts Blade + Laravel**: Refactor de `app.blade.php` y `welcome.blade.php` con CSS Semántico. Desbloqueo de assets en Beta.
-- Inicialización del proyecto y repositorio Git.
-- Configuración de workflows de CI/CD.
-- Preparación inicial del servidor LXC 600.
+### Fase 2 — Layouts Blade + Laravel
+- [x] Instalación de Laravel 11 en `backend/`.
+- [x] Configuración de Docker Compose para Laravel (PHP, MariaDB, Redis).
+- [x] Implementación de layout base Blade (`app.blade.php`).
+- [x] Migración de Dashboard inicial (`welcome.blade.php`).
+- [x] Desbloqueo de assets en Beta (eliminación de alias Nginx).
+- [x] Refactor de vistas: eliminación de Tailwind y uso de CSS Semántico.
+- [x] Fix de permisos de `storage` y `bootstrap/cache` en servidor.
+- [x] Documentación de lecciones aprendidas en `.agent/lessons.md`.
+
+### Fase 1 — CSS + Assets
+- [x] Integración de `dx-styles.css`.
+- [x] Configuración de fuentes locales (Inter + IBM Plex Mono).
+- [x] Verificación de variables CSS light/dark mode.
+
+### Fase 0 — Infraestructura
+- [x] Crear repo `DeXon18/DX-License-Manager` en GitHub.
+- [x] Configurar ramas `main` y `dev`.
+- [x] `management/` — BACKLOG, CHANGELOG, ROADMAP, HANDOFF creados.
+- [x] `infra/docker-compose.*.yml` y `infra/nginx/*.conf` configurados.
+- [x] `.github/workflows/` para CI/CD configurados.
+- [x] `SSH_HOST`, `SSH_USER`, `SSH_PRIVATE_KEY`, `SSH_PORT` en GitHub Secrets.
+- [x] Preparación del servidor LXC 600 y clonación del repo.
+- [x] `git config --global --add safe.directory` en el servidor.
+- [x] Crear `infra/.env.beta` e `infra/.env.prod` en el host.
+- [x] Verificar carga de HTML estático en `beta.dxpro.es` y `portal.dxpro.es`.
+- [x] Push a `dev` → deploy automático a beta verificado.
+- [x] Inicialización del proyecto y repositorio Git.
