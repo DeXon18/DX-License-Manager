@@ -100,24 +100,24 @@ DX License Manager
 
 ---
 
-### 🔜 Fase 0 — Infraestructura
+### ✅ Fase 0 — Infraestructura
 
-**Estado:** Pendiente
-**Validación requerida antes de Fase 1:** nginx respondiendo en beta y prod desde fuera de la red local + GitHub Actions deploy automático verificado.
+**Estado:** COMPLETADA
+**Validación:** ✅ Verificado por Oskar el 2026-05-05.
 
-- [ ] Repo `DeXon18/DX-License-Manager` creado en GitHub
-- [ ] Ramas `main` y `dev` configuradas
-- [ ] Estructura base de carpetas y `.gitignore`
-- [ ] Docker stack beta — nginx sirviendo HTML estático en `beta.dxpro.es`
-- [ ] Docker stack prod — nginx sirviendo HTML estático en `portal.dxpro.es`
-- [ ] Ambas URLs accesibles desde fuera de la red local
-- [ ] GitHub Actions deploy automático verificado
+- [x] Repo `DeXon18/DX-License-Manager` creado en GitHub
+- [x] Ramas `main` y `dev` configuradas
+- [x] Estructura base de carpetas y `.gitignore`
+- [x] Docker stack beta — nginx sirviendo HTML estático en `beta.dxpro.es`
+- [x] Docker stack prod — nginx sirviendo HTML estático en `portal.dxpro.es`
+- [x] Ambas URLs accesibles desde fuera de la red local
+- [x] GitHub Actions deploy automático verificado (Node.js 24 fix incluido)
 
 ---
 
-### 📋 Fase 1 — CSS + Assets
+### 🔜 Fase 1 — CSS + Assets
 
-**Estado:** En planificación
+**Estado:** EN CURSO
 **Prerequisito:** ✅ Fase 0 validada por Oskar
 **Validación requerida antes de Fase 2:** Revisión visual de componentes base en beta.
 
