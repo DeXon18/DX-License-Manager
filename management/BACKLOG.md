@@ -20,59 +20,19 @@ _(ninguna actualmente)_
 
 ## 🔵 En Progreso
 
-### Fase 0 — Verificación de Infraestructura
-- [x] Verificar carga de HTML estático en `beta.dxpro.es`. - ✅ Completada
-- [x] Verificar carga de HTML estático en `portal.dxpro.es`. - ✅ Completada
+### Fase 3 — Autenticación y JWT
+- [ ] Vista de login siguiendo `infra/html/01-login.html`.
+- [ ] Implementar `JwtService` y `AuthController`.
+- [ ] Middleware de RBAC.
 
 ---
 
-## 🟠 Pendiente — Fase 0 (Infraestructura)
-
-### Crear repo en GitHub
-- [x] Crear `DeXon18/DX-License-Manager` desde cero.
-- [x] Configurar ramas `main` y `dev`.
-
-### Copiar archivos base al repo
-- [x] `management/` — BACKLOG, CHANGELOG, ROADMAP, HANDOFF
-- [x] `infra/docker-compose.beta.yml` y `docker-compose.prod.yml`
-- [x] `infra/nginx/beta.conf` y `prod.conf`
-- [x] `infra/html/index.html`
-- [x] `infra/.env.beta.example`
-- [x] `.gitignore`
-- [x] `.github/workflows/` — ci.yml, deploy-beta.yml, deploy-prod.yml
-- [x] `AGENTS.md`, `.agent/rules/`, `.agent/workflows/`
-
-### Configurar GitHub Secrets
-- [x] `SSH_HOST`, `SSH_USER`, `SSH_PRIVATE_KEY`, `SSH_PORT` configurados en GitHub.
-
-### Preparar el servidor
-- [x] Limpiar directorio si existe.
-- [x] Clonar repo nuevo.
-- [x] `git config --global --add safe.directory /opt/web-projects/DX-License-Manager`.
-- [x] Crear `infra/.env.beta` e `infra/.env.prod`.
-
-### Levantar stack beta y verificar
-- [x] `beta.dxpro.es` accesible desde fuera de la red local.
-- [x] Revisar que carga el HTML estático.
-
-### Levantar stack prod y verificar
-- [x] `portal.dxpro.es` accesible desde fuera de la red local.
-- [x] Revisar que carga el HTML estático.
-
-### Verificar GitHub Actions
-- [x] Push a `dev` → deploy automático a beta activado.
-
----
-
-## 🟡 Pendiente — Fases 1 a 16
+## 🟠 Pendiente — Fases 4 a 16
 
 En planificación — se detallan una por una tras validación de la fase anterior.
 
 | Fase | Nombre | Prerequisito |
 | :--- | :----- | :----------- |
-| 1 | CSS + Assets | ✅ Fase 0 validada |
-| 2 | Layouts Blade + Laravel | ✅ Fase 1 validada |
-| 3 | Login | ✅ Fase 2 validada |
 | 4 | Importación CSV | ✅ Fase 3 validada |
 | 5 | Inicio | ✅ Fase 4 validada |
 | 6 | Clientes (6.1→6.4) | ✅ Fase 5 validada |
@@ -91,6 +51,9 @@ En planificación — se detallan una por una tras validación de la fase anteri
 
 ## ✅ Completado
 
+- **Fase 0 — Infraestructura**: Repo creado, Docker stacks beta/prod activos, CI/CD configurado.
+- **Fase 1 — CSS + Assets**: Integración de `dx-styles.css` y fuentes locales.
+- **Fase 2 — Layouts Blade + Laravel**: Refactor de `app.blade.php` y `welcome.blade.php` con CSS Semántico. Desbloqueo de assets en Beta.
 - Inicialización del proyecto y repositorio Git.
 - Configuración de workflows de CI/CD.
 - Preparación inicial del servidor LXC 600.
