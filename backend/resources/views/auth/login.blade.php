@@ -19,11 +19,6 @@
     <div class="left-content">
         <h1 class="tagline">Gestión inteligente de <span>licencias</span> de software industrial</h1>
         <p class="desc">Portal centralizado para el seguimiento, auditoría y renovación de licencias Siemens PLM y Moldex3D.</p>
-        <div class="stats">
-            <div class="stat-item"><span class="stat-num">527</span><span class="stat-label">Contratos</span></div>
-            <div class="stat-item"><span class="stat-num">336</span><span class="stat-label">Clientes</span></div>
-            <div class="stat-item"><span class="stat-num">5</span><span class="stat-label">Herramientas</span></div>
-        </div>
     </div>
 
     <div class="left-footer">

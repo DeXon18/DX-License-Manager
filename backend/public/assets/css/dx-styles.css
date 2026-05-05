@@ -36,8 +36,8 @@
    4. LOGIN PAGE & THEME TOGGLE (BASE)
    ============================================================ */
 .login-page {
-  display: flex; min-height: 100vh; font-family: 'Inter', sans-serif;
-  background: var(--bg); color: var(--primary);
+  display: flex; height: 100vh; font-family: 'Inter', sans-serif;
+  background: var(--bg); color: var(--primary); overflow: hidden;
 }
 
 .login-page .left {
