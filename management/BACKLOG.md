@@ -20,8 +20,7 @@ _(ninguna actualmente)_
 
 ## 🔵 En Progreso
 
-- [x] Fase 4: Estructura de base de datos para Clientes y Contratos.
-- [x] Implementar importador CSV base con detección inteligente.
+- [ ] Fase 5: Dashboard de Inicio con métricas reales.
 
 ---
 
@@ -29,35 +28,40 @@ _(ninguna actualmente)_
 
 En planificación — se detallan una por una tras validación de la fase anterior.
 
-| Fase | Nombre | Prerequisito |
-| :--- | :----- | :----------- |
-| 4 | Importación CSV | ✅ Fase 3 validada |
-| 5 | Inicio | ✅ Fase 4 validada |
-| 6 | Clientes (6.1→6.4) | ✅ Fase 5 validada |
-| 7 | Hub de Herramientas | ✅ Fase 6 validada |
-| 8 | Siemens (8.1→8.5) | ✅ Fase 7 validada |
-| 9 | Moldex3D (9.1→9.2) | ✅ Fase 8 validada |
-| 10 | Dashboard del Sistema | ✅ Fase 9 validada |
-| 11 | Usuarios y Acceso | ✅ Fase 10 validada |
-| 12 | Repositorio de Licencias | ✅ Fase 11 validada |
-| 13 | Alertas y Notificaciones | ✅ Fase 12 validada |
-| 14 | Backups | ✅ Fase 13 validada |
-| 15 | Integraciones IA | ✅ Fase 14 validada |
-| 16 | Logs y Auditoría | ✅ Fase 15 validada |
+| Fase | Nombre                   | Prerequisito        |
+| :--- | :----------------------- | :------------------ |
+| 4    | Importación CSV          | ✅ Fase 3 validada  |
+| 5    | Inicio                   | ✅ Fase 4 validada  |
+| 6    | Clientes (6.1→6.4)       | ✅ Fase 5 validada  |
+| 7    | Hub de Herramientas      | ✅ Fase 6 validada  |
+| 8    | Siemens (8.1→8.5)        | ✅ Fase 7 validada  |
+| 9    | Moldex3D (9.1→9.2)       | ✅ Fase 8 validada  |
+| 10   | Dashboard del Sistema    | ✅ Fase 9 validada  |
+| 11   | Usuarios y Acceso        | ✅ Fase 10 validada |
+| 12   | Repositorio de Licencias | ✅ Fase 11 validada |
+| 13   | Alertas y Notificaciones | ✅ Fase 12 validada |
+| 14   | Backups                  | ✅ Fase 13 validada |
+| 15   | Integraciones IA         | ✅ Fase 14 validada |
+| 16   | Logs y Auditoría         | ✅ Fase 15 validada |
 
 ---
 
 ## ✅ Completado
- 
+
 ### Fase 4 — Importación CSV
+
+- **Completada:** 2026-05-06
+- **Rama:** feature/csv-importer-base
+- **Resumen:** Implementación del motor de importación masiva con lógica de Upsert/Bajas, normalización de clientes y soporte para campo `sub_product`. UI administrativa optimizada.
 - [x] Migraciones incrementales para `vendors`, `clients`, `contracts` e `import_logs`.
-- [x] Implementación de `CsvImportService` (Auto-separator, Smart Header).
-- [x] Normalización de clientes en *Title Case*.
+- [x] Implementación de `CsvImportService` (Auto-separator, Smart Header, 9 columnas).
+- [x] Normalización de clientes en _Title Case_.
 - [x] Lógica de marcado automático como "Baja" para contratos ausentes.
-- [x] UI administrativa `/admin/import` alineada con `DESIGN.md`.
+- [x] UI administrativa `/admin/import` alineada con `DESIGN.md` y balanceada (5/4).
 - [x] Centralización de `.env` vía volúmenes de Docker.
- 
+
 ### Fase 3 — Login
+
 - [x] Implementación de `JwtService` y `AuthController`.
 - [x] Middleware de RBAC (`JwtAuth`, `CheckPermission`).
 - [x] Refinamiento de UI Login para ultra-panorámicas.
@@ -65,8 +69,8 @@ En planificación — se detallan una por una tras validación de la fase anteri
 - [x] Suite de tests `AuthTest.php` (PASS).
 - [x] Persistencia de tema dark/light.
 
-
 ### Fase 2 — Layouts Blade + Laravel
+
 - [x] Instalación de Laravel 11 en `backend/`.
 - [x] Configuración de Docker Compose para Laravel (PHP, MariaDB, Redis).
 - [x] Implementación de layout base Blade (`app.blade.php`).
@@ -77,11 +81,13 @@ En planificación — se detallan una por una tras validación de la fase anteri
 - [x] Documentación de lecciones aprendidas en `.agent/lessons.md`.
 
 ### Fase 1 — CSS + Assets
+
 - [x] Integración de `dx-styles.css`.
 - [x] Configuración de fuentes locales (Inter + IBM Plex Mono).
 - [x] Verificación de variables CSS light/dark mode.
 
 ### Fase 0 — Infraestructura
+
 - [x] Crear repo `DeXon18/DX-License-Manager` en GitHub.
 - [x] Configurar ramas `main` y `dev`.
 - [x] `management/` — BACKLOG, CHANGELOG, ROADMAP, HANDOFF creados.
