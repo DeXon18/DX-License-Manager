@@ -262,7 +262,7 @@ DX License Manager
 **Prerequisito:** ✅ Fase 7 validada por Oskar
 **Validación requerida antes de Fase 9:** Todas las subherramientas Siemens funcionando en beta.
 
-#### 8.1 — NX Suite ✅
+#### 8.1 — NX Suite (`siemens_nx_suite`) ✅
 - [x] Mecanismo de transformación Siemens NX (Standard, Dongle, Unificada)
 - [x] Normalización estricta de nomenclatura (MAYÚSCULAS)
 - [x] Almacenamiento jerárquico y gestión de duplicados
@@ -272,21 +272,21 @@ DX License Manager
 - [x] Optimización de Auditoría IA (v2.2): Soporte Dongle e IDs Numéricos
 - [x] **Validación UI:** ✅ Verificado por Oskar el 2026-05-08 (Unificación total).
 
-#### 8.2 — STAR-CCM+ ✅
+#### 8.2 — STAR-CCM+ (`siemens_star_ccm`) ✅
 - [x] Parser PHP local de archivos `.lic` cdlmd
 - [x] Transformación automática a SALT (29000/29001) e identificador STARCCM
 - [x] Almacenamiento jerárquico por Mes-Año (MM-YYYY)
 - [x] Auditoría IA via n8n FallbackChain
 - [x] **Validación:** ✅ Motor y UI unificada OK.
 
-#### 8.3 — HEEDS ✅
+#### 8.3 — HEEDS (`siemens_heeds`) ✅
 - [x] Parser PHP local de archivos `.lic` RCTECH (Extracción avanzada de cabecera)
 - [x] Transformación automática a SALT (29000/29001) e identificador HEEDS
 - [x] Almacenamiento jerárquico por Cliente/Mes-Año
 - [x] Auditoría IA via n8n FallbackChain
 - [x] **Validación:** ✅ Motor y UI unificada OK.
 
-#### 8.4 — COD ✅
+#### 8.4 — COD (`siemens_cod`) ✅
 **Estado:** COMPLETADA
 **Validación:** ✅ Verificado por Oskar el 2026-05-08. Generador bilingüe con fidelidad Calibri.
 - [x] Formulario: Sold-To, solicitante, empresa, tipo de cambio con múltiples MACs.
