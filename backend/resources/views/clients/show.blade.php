@@ -22,7 +22,7 @@
     <!-- Contratos Tab -->
     <div x-show="tab === 'contracts'" class="tab-content">
         <div class="card">
-            <table class="table">
+            <table class="table text-sm">
                 <thead>
                     <tr>
                         <th>ContraHeader</th>
