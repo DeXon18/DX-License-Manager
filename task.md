@@ -27,12 +27,30 @@ El agente NO marca `[x]` una tarea hasta que todos sus checks están completados
 
 ## Tareas de la Sesión Actual
 
-- [ ] 0. Verificación de memoria (last_brain leído y aplicado)
-  - [ ] Regla aplicada: AGENTS.md §0.8.1 (Ley 6)
-  - [ ] Check pre-ejecución: ¿Se leyó .agent/last_brain y ACTIVE_CONTEXT.md?
-  - [ ] Evidencia: Confirmación en las notas de sesión.
+- [x] 0. Verificación de memoria (last_brain leído y aplicado)
+  - [x] Regla aplicada: AGENTS.md §0.8.1 (Ley 6)
+  - [x] Check pre-ejecución: ¿Se leyó .agent/last_brain y ACTIVE_CONTEXT.md?
+  - [x] Evidencia: Confirmación en las notas de sesión.
 
-_(El agente rellena esto al inicio de cada sesión tras leer el HANDOFF)_
+## Tareas de la Sesión Actual (Fase 6)
+
+- [x] 1. Modelado de Contactos y Certificados
+  - [x] Regla aplicada: clean-code §naming-semantico
+  - [x] Check pre-ejecución: Revisar tabla `clients` para FKs. Definir `position` y `phone` como nullable.
+  - [x] Evidencia: `php artisan migrate:status` -> ✅ Ran
+  - [x] Rama: feature/clients-base
+
+- [ ] 2. Listado de Clientes (Frontend)
+  - [ ] Regla aplicada: impeccable §minimalismo-funcional
+  - [ ] Check pre-ejecución: Consultar `04-admin.html` como referencia.
+  - [ ] Evidencia: Visualización de 603 clientes en `/clients`.
+  - [ ] Rama: feature/clients-base
+
+- [ ] 3. Detalle de Cliente y Tabs Alpine.js
+  - [ ] Regla aplicada: ui-ux-pro-max §tabs-consistentes
+  - [ ] Check pre-ejecución: Verificar roles para pestañas sensibles.
+  - [ ] Evidencia: Cambio de tabs sin recarga de página.
+  - [ ] Rama: feature/clients-base
 
 ---
 
