@@ -77,15 +77,21 @@
             </table>
         </div>
 
-        <!-- Status Legend (Ultra-compact) -->
-        <div class="mt-6 pt-4 border-t border-gray-800/50 flex flex-wrap gap-4 items-center justify-center">
-            <span class="badge badge-info"><i class="fa-solid fa-file-signature"></i> Ofertado</span>
-            <span class="badge badge-primary"><i class="fa-solid fa-handshake"></i> Negociación</span>
-            <span class="badge badge-accent"><i class="fa-solid fa-circle-check"></i> Aceptado</span>
-            <span class="badge badge-warn"><i class="fa-solid fa-gears"></i> Procesado</span>
-            <span class="badge badge-warning"><i class="fa-solid fa-file-invoice-dollar"></i> Facturado</span>
-            <span class="badge badge-success"><i class="fa-solid fa-lock"></i> Cerrado</span>
-            <span class="badge badge-danger"><i class="fa-solid fa-circle-xmark"></i> Baja</span>
+        <!-- Status Legend Card -->
+        <div class="card mt-8 p-4">
+            <div class="flex items-center gap-2 mb-4">
+                <i class="fa-solid fa-circle-info muted" style="font-size: 10px;"></i>
+                <h4 class="text-[10px] uppercase font-bold tracking-widest muted">Leyenda de estados operativos</h4>
+            </div>
+            <div class="flex flex-wrap gap-3 items-center">
+                <span class="badge badge-info"><i class="fa-solid fa-file-signature"></i> Ofertado</span>
+                <span class="badge badge-primary"><i class="fa-solid fa-handshake"></i> Negociación</span>
+                <span class="badge badge-accent"><i class="fa-solid fa-circle-check"></i> Aceptado</span>
+                <span class="badge badge-warn"><i class="fa-solid fa-gears"></i> Procesado</span>
+                <span class="badge badge-warning"><i class="fa-solid fa-file-invoice-dollar"></i> Facturado</span>
+                <span class="badge badge-success"><i class="fa-solid fa-lock"></i> Cerrado</span>
+                <span class="badge badge-danger"><i class="fa-solid fa-circle-xmark"></i> Baja</span>
+            </div>
         </div>
     </div>
 
