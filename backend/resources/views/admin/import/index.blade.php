@@ -72,19 +72,11 @@
                 <span>Mapeo de Columnas</span>
             </div>
             
-            <div class="producto-list" style="margin-top: 16px; gap: 12px;">
-                <div class="producto-item" style="justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
-                    <span style="font-size: 13px; font-weight: 500; color: var(--secondary);">Contraheader</span>
-                    <code style="font-family: var(--font-mono); font-size: 11px; background: var(--bg); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border);">COL_1</code>
-                </div>
-                <div class="producto-item" style="justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
-                    <span style="font-size: 13px; font-weight: 500; color: var(--secondary);">Client_Name</span>
-                    <code style="font-family: var(--font-mono); font-size: 11px; background: var(--bg); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border);">COL_3</code>
-                </div>
-                <div class="producto-item" style="justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
-                    <span style="font-size: 13px; font-weight: 500; color: var(--secondary);">End_Date</span>
-                    <code style="font-family: var(--font-mono); font-size: 11px; background: var(--bg); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border);">COL_6</code>
-                </div>
+            <div style="margin-top: 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px; font-family: var(--font-mono); font-size: 11px; line-height: 1.6;">
+                <div style="color: var(--muted); margin-bottom: 4px;">// Mapping Config</div>
+                <div style="color: var(--primary);">Contraheader <span style="color: var(--accent);">-></span> COL_1</div>
+                <div style="color: var(--primary);">Client_Name  <span style="color: var(--accent);">-></span> COL_3</div>
+                <div style="color: var(--primary);">End_Date     <span style="color: var(--accent);">-></span> COL_6</div>
             </div>
 
             <div style="margin-top: 16px; font-size: 11px; color: var(--muted); line-height: 1.4;">
