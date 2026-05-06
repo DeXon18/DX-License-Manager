@@ -395,8 +395,10 @@ DX License Manager
 | Caché / Colas  | Redis 7.x                      |
 | Web server     | Nginx 1.25+                    |
 | Contenedores   | Docker 24+ / Compose V2        |
-| SSL            | Cloudflare                     |
-| CI/CD          | GitHub Actions                 |
+| SSL            | Cloudflare       
+| 5 — Portal Principal          
+| ✅ COMPLETADA     
+| Inicio y Gestión de Clientes/Contratos         |        |
 | Automatización | n8n                            |
 | Auditoría IA   | Gemini → DeepSeek → OpenRouter |
 | Notificaciones | Telegram                       |

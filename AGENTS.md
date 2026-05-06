@@ -467,12 +467,13 @@ Clases relevantes:
 | 1 — CSS + Assets                  | ✅ COMPLETADA     | Integración `dx-styles.css` y Fuentes          |
 | 2 — Layouts Blade + Laravel       | ✅ COMPLETADA     | Estructura base Blade y Nginx Laravel          |
 | 3 — Login                         | ✅ COMPLETADA     | JWT, RBAC, Rate Limiting y Tests               |
-| 4 — Importación CSV               | 🔜 SIGUIENTE      | Migraciones y Lógica de Importación            |
-| 5 a 6 — Portal Principal          | 📋 Planificado    | Inicio y Gestión de Clientes/Contratos         |
+| 4 — Importación CSV               | ✅ COMPLETADA     | Migraciones y Lógica de Importación            |
+| 5 — Portal Principal (Dashboard)  | ✅ COMPLETADA     | Inicio y Métricas del Ecosistema               |
+| 6 — Gestión de Clientes           | 🔜 SIGUIENTE      | Listados y Detalles de Clientes/Contratos      |
 | 7 a 9 — Herramientas              | 📋 Planificado    | Hub, Siemens y Moldex3D                        |
 | 10 a 16 — Sistema                 | 📋 Planificado    | Usuarios, Backups, IA y Logs                   |
  
-**Ahora mismo estamos iniciando la Fase 4.**
+**Ahora mismo estamos iniciando la Fase 6.**
  
 ---
 
