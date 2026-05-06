@@ -77,20 +77,41 @@
             </table>
         </div>
 
-        <!-- Status Legend Card -->
-        <div class="card mt-8 p-4">
-            <div class="flex items-center gap-2 mb-4">
-                <i class="fa-solid fa-circle-info muted" style="font-size: 10px;"></i>
-                <h4 class="text-[10px] uppercase font-bold tracking-widest muted">Leyenda de estados operativos</h4>
+        <!-- Integrated Status Legend (Technical Footer) -->
+        <div class="mt-4 flex items-center gap-6 px-2 opacity-60 hover:opacity-100 transition-opacity">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-circle-info" style="font-size: 10px;"></i>
+                <span class="text-[10px] uppercase font-bold tracking-widest muted">Estados:</span>
             </div>
-            <div class="flex flex-wrap gap-3 items-center">
-                <span class="badge badge-info"><i class="fa-solid fa-file-signature"></i> Ofertado</span>
-                <span class="badge badge-primary"><i class="fa-solid fa-handshake"></i> Negociación</span>
-                <span class="badge badge-accent"><i class="fa-solid fa-circle-check"></i> Aceptado</span>
-                <span class="badge badge-warn"><i class="fa-solid fa-gears"></i> Procesado</span>
-                <span class="badge badge-warning"><i class="fa-solid fa-file-invoice-dollar"></i> Facturado</span>
-                <span class="badge badge-success"><i class="fa-solid fa-lock"></i> Cerrado</span>
-                <span class="badge badge-danger"><i class="fa-solid fa-circle-xmark"></i> Baja</span>
+            <div class="flex flex-wrap gap-x-6 gap-y-2">
+                <div class="flex items-center gap-2">
+                    <span class="badge badge-info" style="font-size: 9px; padding: 1px 6px;"><i class="fa-solid fa-file-signature"></i> Ofertado</span>
+                    <span class="text-[9px] uppercase muted">Propuesta</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="badge badge-primary" style="font-size: 9px; padding: 1px 6px;"><i class="fa-solid fa-handshake"></i> Negociación</span>
+                    <span class="text-[9px] uppercase muted">Trámite</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="badge badge-accent" style="font-size: 9px; padding: 1px 6px;"><i class="fa-solid fa-circle-check"></i> Aceptado</span>
+                    <span class="text-[9px] uppercase muted">OK</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="badge badge-warn" style="font-size: 9px; padding: 1px 6px;"><i class="fa-solid fa-gears"></i> Procesado</span>
+                    <span class="text-[9px] uppercase muted">Pte. Fac</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="badge badge-warning" style="font-size: 9px; padding: 1px 6px;"><i class="fa-solid fa-file-invoice-dollar"></i> Facturado</span>
+                    <span class="text-[9px] uppercase muted">Cobro</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="badge badge-success" style="font-size: 9px; padding: 1px 6px;"><i class="fa-solid fa-lock"></i> Cerrado</span>
+                    <span class="text-[9px] uppercase muted">Fin</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="badge badge-danger" style="font-size: 9px; padding: 1px 6px;"><i class="fa-solid fa-circle-xmark"></i> Baja</span>
+                    <span class="text-[9px] uppercase muted">Cancel</span>
+                </div>
             </div>
         </div>
     </div>
