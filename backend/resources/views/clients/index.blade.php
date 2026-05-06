@@ -13,7 +13,9 @@
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                 </svg>
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="Nombre del cliente..." class="gui-input" style="padding-left: 36px;">
+                <input type="text" name="search" value="{{ request('search') }}" 
+                    placeholder="Nombre del cliente..." class="gui-input" style="padding-left: 36px;"
+                    x-on:input.debounce.500ms="$el.closest('form').submit()">
             </form>
         </div>
     </div>

@@ -104,5 +104,28 @@
     </footer>
 
     @stack('scripts')
+    <script>
+        // Atajo global Ctrl + Espacio para buscar
+        window.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.code === 'Space') {
+                const searchInput = document.querySelector('input[name="search"]');
+                if (searchInput) {
+                    e.preventDefault();
+                    searchInput.focus();
+                }
+            }
+        });
+
+        // Mantener foco en el buscador si hay una búsqueda activa tras recargar
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchInput = document.querySelector('input[name="search"]');
+            if (searchInput && searchInput.value) {
+                searchInput.focus();
+                const val = searchInput.value;
+                searchInput.value = '';
+                searchInput.value = val;
+            }
+        });
+    </script>
 </body>
 </html>
