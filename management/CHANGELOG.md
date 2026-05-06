@@ -5,6 +5,12 @@
 
 ---
 
+## [2026-05-06] — Fase 6.1: Perfeccionamiento de Gestión de Clientes
+- **UX**: Implementado atajo global `Ctrl + Espacio` para búsqueda inteligente y persistencia de foco.
+- **UI**: Rediseño del listado de clientes con espaciado optimizado y buscador inteligente (Contratos, Clientes, Estados).
+- **Contratos**: Mapeo granular de estados basado en `identities.json` con iconos FontAwesome y leyenda técnica integrada.
+- **Robustez**: Implementada limpieza de datos (`trim`) en estados de contrato para evitar fallos de mapeo en importación y visualización.
+
 ## [2026-05-06] — Fase 5: Portal Principal (Dashboard) ✅
 
 ### Added
