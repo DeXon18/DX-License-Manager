@@ -57,8 +57,8 @@ class AuthController extends Controller
             'role' => $user->role->slug ?? 'viewer',
         ]);
 
-        // Store in HttpOnly Cookie
-        $cookie = Cookie::make('jwt_token', $token, 15, null, null, true, true, false, 'Strict');
+        // Store in HttpOnly Cookie (60 minutes)
+        $cookie = Cookie::make('jwt_token', $token, 60, null, null, true, true, false, 'Strict');
 
         return redirect()->intended('/')->withCookie($cookie);
     }
