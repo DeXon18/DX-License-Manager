@@ -163,21 +163,21 @@ DX License Manager
 
 ---
 
-### 📋 Fase 4 — Importación CSV
-
-**Estado:** En planificación
+### ✅ Fase 4 — Importación CSV
+ 
+**Estado:** COMPLETADA
 **⚠️ ADVERTENCIA CRÍTICA:** A partir de esta fase, Beta usa datos reales. **PROHIBIDO** `migrate:fresh`. Solo migraciones incrementales.
 **Prerequisito:** ✅ Fase 3 validada por Oskar
-**Validación requerida antes de Fase 5:** CSV real importado, clientes y contratos visibles en BD, badges de caducidad correctos.
-
-- [ ] Migraciones: `vendors`, `clients`, `contracts`, `import_logs`
-- [ ] Panel de importación CSV en admin
-- [ ] Lógica upsert por `contract_number`
-- [ ] Normalización Title Case
-- [ ] Detección de bajas (desaparece del CSV → status Baja)
-- [ ] Informe post-importación con contadores y errores
-- [ ] Historial de importaciones
-- [ ] Tests: upsert, normalización, bajas, formato fecha
+**Validación:** ✅ Verificado por Oskar el 2026-05-06. 603 registros importados correctamente.
+ 
+- [x] Migraciones: `vendors`, `clients`, `contracts`, `import_logs`
+- [x] Panel de importación CSV en admin
+- [x] Lógica upsert por `contract_number`
+- [x] Normalización Title Case
+- [x] Detección de bajas (desaparece del CSV → status Baja)
+- [x] Informe post-importación con contadores y errores
+- [x] Historial de importaciones
+- [x] Tests: upsert, normalización, bajas, formato fecha
 
 ---
 
