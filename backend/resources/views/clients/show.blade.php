@@ -35,8 +35,8 @@
                 <tbody>
                     @forelse($client->contracts as $contract)
                     <tr>
-                        <td class="font-mono">{{ $contract->contract_number }}</td>
-                        <td class="font-mono">
+                        <td class="font-bold">{{ $contract->contract_number }}</td>
+                        <td class="font-bold">
                             @if($contract->vendor->name == 'Siemens')
                                 <span class="vendor-chip"><span class="vendor-dot" style="background:var(--siemens)"></span> Siemens</span>
                             @elseif($contract->vendor->name == 'Moldex3D')
@@ -45,8 +45,8 @@
                                 {{ $contract->vendor->name }}
                             @endif
                         </td>
-                        <td class="font-mono">{{ $contract->type_product }}</td>
-                        <td class="font-mono">{{ $contract->end_date->format('d/m/Y') }}</td>
+                        <td class="font-bold">{{ $contract->type_product }}</td>
+                        <td class="font-bold">{{ $contract->end_date->format('d/m/Y') }}</td>
                         <td>
                             @php
                                 $status = trim($contract->status ?: 'vacio');
