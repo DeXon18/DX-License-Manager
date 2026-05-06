@@ -68,19 +68,42 @@
     <div class="sidebar-panel">
         <div class="info-card">
             <div class="info-card-title">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
-                <span>Mapeo de Columnas</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                <span>Guía de Importación</span>
             </div>
             
-            <div style="margin-top: 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: 12px; font-family: var(--font-mono); font-size: 11px; line-height: 1.6;">
-                <div style="color: var(--muted); margin-bottom: 4px;">// Mapping Config</div>
-                <div style="color: var(--primary);">Contraheader <span style="color: var(--accent);">-></span> COL_1</div>
-                <div style="color: var(--primary);">Client_Name  <span style="color: var(--accent);">-></span> COL_3</div>
-                <div style="color: var(--primary);">End_Date     <span style="color: var(--accent);">-></span> COL_6</div>
+            <div class="info-card-body" style="margin-top: 12px;">
+                <p style="font-size: 12px; margin-bottom: 16px; color: var(--muted);">El sistema procesa el archivo buscando estas columnas específicas:</p>
+                
+                <div style="display: flex; flex-direction: column; gap: 14px;">
+                    <div style="display: flex; align-items: flex-start; gap: 10px;">
+                        <span class="badge badge-ai" style="min-width: 45px; justify-content: center;">COL 1</span>
+                        <div>
+                            <div style="font-size: 13px; font-weight: 600; color: var(--primary);">Contraheader</div>
+                            <div style="font-size: 11px; color: var(--muted);">ID del contrato (ej: CONH100...)</div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: flex-start; gap: 10px;">
+                        <span class="badge badge-ai" style="min-width: 45px; justify-content: center;">COL 3</span>
+                        <div>
+                            <div style="font-size: 13px; font-weight: 600; color: var(--primary);">Cliente</div>
+                            <div style="font-size: 11px; color: var(--muted);">Nombre de la empresa</div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; align-items: flex-start; gap: 10px;">
+                        <span class="badge badge-ai" style="min-width: 45px; justify-content: center;">COL 6</span>
+                        <div>
+                            <div style="font-size: 13px; font-weight: 600; color: var(--primary);">Vencimiento</div>
+                            <div style="font-size: 11px; color: var(--muted);">Fecha en formato DD/MM/AAAA</div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div style="margin-top: 16px; font-size: 11px; color: var(--muted); line-height: 1.4;">
-                Nota: El sistema ignora automáticamente filas sin identificador CONH válido.
+            <div style="margin-top: 20px; padding-top: 12px; border-top: 1px solid var(--border-subtle); font-size: 11px; color: var(--muted); line-height: 1.4;">
+                <strong>Sugerencia:</strong> Verifica que el archivo no tenga filas vacías al inicio y que el separador sea coherente.
             </div>
         </div>
 
