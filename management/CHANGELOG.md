@@ -209,22 +209,25 @@ _Firmado por: **Antigravity (DX Agent)** 🦾_
 ## [2026-05-06] — Fase 7: Hub de Herramientas ✅
 
 ### Added
-- **UI/UX**: Implementado Hub de utilidades dinámico agrupado por Vendor (Siemens / Moldex3D).
-- **Backend**: Creado `ToolController` y modelo `FeatureFlag` para gestión de accesos.
-- **Identidad**: Sincronización total de llaves, etiquetas y daemons con `identities.json`.
-- **Navegación**: Sidebar y Header vinculados al Hub centralizado.
-- **Feature Flags**: Control visual de herramientas no activas ("Próximamente").
+- **Hub de Utilidades**: Implementación de vista dinámica `/herramientas` agrupada por Vendor.
+- **Feature Flags**: Modelo `FeatureFlag` y seeder sincronizado con `identities.json` para control de accesos.
+- **Navegación**: Vinculación de Sidebar y Header con el nuevo Hub centralizado.
+
+### Changed
+- **Sincronización**: Llaves y etiquetas técnicas actualizadas para coincidir estrictamente con el archivo de identidades.
+- **Copy**: Actualización de frases descriptivas para Siemens y Moldex3D según estándares técnicos.
 
 ---
 
 ## [2026-05-06] — Fase 6.3: Gestión de Contactos ✅
 
 ### Added
-- **CRUD**: Implementación de CRUD de contactos vinculados a clientes.
-- **Navegación**: Sistema de pestañas en perfil de cliente con persistencia vía `localStorage`.
-- **UI**: Interfaz de contactos compacta con botones de acción horizontales y modales Alpine.js.
-- **Testing**: Creación de `DemoContactSeeder` para pruebas rápidas.
-- **Deploy**: Corrección de acceso SSH y limpieza de `known_hosts` para despliegue.
+- **CRUD Contactos**: Sistema de gestión de destinatarios vinculados a clientes con modales Alpine.js.
+- **Persistencia**: Sistema de pestañas en perfil de cliente que mantiene el estado tras recargar.
+- **Demo Data**: `DemoContactSeeder` para poblar el sistema con datos de prueba.
+
+### Fixed
+- **Infraestructura**: Limpieza de `known_hosts` y corrección de acceso SSH para despliegues automatizados.
 
 ## [2026-05-06] — Refinamiento UI Clientes
 
@@ -236,13 +239,11 @@ _Firmado por: **Antigravity (DX Agent)** 🦾_
 ## [2026-05-06] — Fase 6.1: Perfeccionamiento de Gestión de Clientes ✅
 
 ### Added
-- **UX**: Implementado atajo global `Ctrl + Espacio` para búsqueda inteligente y persistencia de foco.
-- **UI**: Rediseño del listado de clientes con espaciado optimizado y buscador inteligente (Contratos, Clientes, Estados).
-- **Contratos**: Mapeo granular de estados basado en `identities.json` con iconos FontAwesome y leyenda técnica integrada.
+- **Búsqueda Pro**: Atajo global `Ctrl + Espacio` y buscador inteligente optimizado para grandes volúmenes de datos.
+- **Leyenda Técnica**: Guía visual de estados integrada en el ContraHeader para referencia rápida.
 
-### Fixed
-- **Robustez**: Implementada limpieza de datos (`trim`) en estados de contrato para evitar fallos de mapeo en importación y visualización.
-- **Mejora Leyenda**: Refinado el diseño de la leyenda de estados de los ContraHeader para mayor integración estética.
+### Changed
+- **UX/UI**: Rediseño simétrico del listado de clientes y normalización de datos (`trim`) para evitar desajustes en el mapeo de estados.
 
 ## [2026-05-06] — Fase 5: Portal Principal (Dashboard) ✅
 
