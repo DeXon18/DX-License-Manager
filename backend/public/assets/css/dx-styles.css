@@ -182,6 +182,17 @@ body {
   transition:background 0.2s,color 0.2s;
 }
 
+/* UTILIDADES */
+.text-center { text-align: center !important; }
+.text-right { text-align: right !important; }
+.font-bold { font-weight: 600 !important; }
+.font-mono { font-family: var(--font-mono) !important; }
+.muted { color: var(--muted) !important; }
+.body-sm { font-size: 13px !important; }
+.mb-4 { margin-bottom: 16px !important; }
+.mt-4 { margin-top: 16px !important; }
+.mt-6 { margin-top: 24px !important; }
+
 /* body.login-page removed to avoid grid conflict */
 
 /* 5. HEADER */
