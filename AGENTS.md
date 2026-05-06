@@ -104,6 +104,44 @@ Ver procedimiento completo en `.agent/workflows/switch-task.md`.
 
 ---
 
+## 0.5.2 Validación Manual de Planes — Regla Absoluta
+
+Después de generar un plan de implementación (`implementation_plan.md`), el agente NO debe ejecutarlo automáticamente.
+
+El agente DEBE esperar una confirmación explícita del usuario, como:
+
+- "adelante"
+- "ok"
+- "sí"
+- "procede"
+- "empieza"
+
+Cualquier otra respuesta (incluyendo silencios, confirmaciones parciales o respuestas vagas) NO debe interpretarse como autorización para ejecutar el plan.
+
+**Procedimiento:**
+
+1. Generar `implementation_plan.md`
+2. Presentarlo al usuario
+3. Esperar confirmación explícita
+4. **Solo** si hay confirmación explícita, proceder a ejecutar el plan
+5. Si no hay confirmación, pedir al usuario qué desea hacer a continuación
+
+**Nunca** asumir que una aprobación automática del sistema implica autorización del usuario.
+
+---
+
+## 0.5.3 Escritura de Archivos — Regla Crítica
+
+**SIEMPRE** usar el MCP filesystem con ruta UNC:
+`\\192.168.50.10\webs\[NOMBRE-PROYECTO]\`
+
+**NUNCA:**
+- Usar `write_to_file` con rutas locales
+- Usar rutas tipo `Z:\` o `Y:\`
+- Crear archivos fuera de la ruta UNC del proyecto activo
+
+---
+
 ## 0.6 Acciones Destructivas — Confirmación Obligatoria
 
 Estos comandos requieren "sí" explícito del desarrollador antes de ejecutarse:
@@ -118,6 +156,7 @@ Comando: [comando exacto]
 Consecuencia: [qué se perderá]
 ¿Confirmas? (sí/no)
 ```
+`systemctl stop cloudflared` · `systemctl disable cloudflared` · `rm -rf /etc/cloudflared`
 
 ---
 
@@ -305,6 +344,14 @@ docker compose --project-directory . -f infra/docker-compose.prod.yml logs -f
 
 Cada stack tiene 4 servicios: `nginx`, `php-fpm`, `mariadb`, `redis`.  
 Las variables de entorno viven en `infra/.env.beta` e `infra/.env.prod` — nunca en Git.
+
+### 4.1 Configuración Centralizada (Docker Volumes)
+Para evitar desincronizaciones y centralizar la gestión, el archivo `.env` de Laravel se inyecta mediante volúmenes de Docker desde la carpeta `infra/`.
+
+- **Beta**: Archivo `infra/.env.beta` montado como `/var/www/html/.env` en el contenedor `dx-php-beta`.
+- **Prod**: Archivo `infra/.env.prod` montado como `/var/www/html/.env` en el contenedor `dx-php-prod`.
+
+**Importante**: En el host (Samba), `backend/.env` debe ser un enlace simbólico **relativo** (`../infra/.env.beta`) para facilitar la edición desde el IDE sin duplicar archivos.
 
 ---
 
