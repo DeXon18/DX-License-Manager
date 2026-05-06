@@ -23,13 +23,6 @@ class CsvImportService
     {
         $handle = fopen($filePath, 'r');
         
-        // Skip BOM if present
-        if (fgets($handle, 4) !== "\xef\xbb\xbf") {
-            rewind($handle);
-        }
-
-        $headers = fgetcsv($handle, 0, ';');
-        
         $log = ImportLog::create([
             'filename' => $filename,
             'status' => 'processing',
@@ -42,19 +35,43 @@ class CsvImportService
         try {
             DB::beginTransaction();
 
-            while (($row = fgetcsv($handle, 0, ';')) !== false) {
-                // Basic validation: row must have at least the contract number and client
-                if (empty($row[0]) || empty($row[2])) continue;
+            // 1. Detectar separador automáticamente
+            $firstLine = fgets($handle);
+            $separator = (str_contains($firstLine, ';')) ? ';' : ',';
+            rewind($handle);
+
+            // 2. Omitir BOM si existe
+            $bom = fread($handle, 3);
+            if ($bom !== "\xEF\xBB\xBF") {
+                rewind($handle);
+            }
+
+            while (($row = fgetcsv($handle, 0, $separator)) !== false) {
+                // Si es la primera fila, comprobar si es cabecera o dato
+                if ($rowCount === 0) {
+                    $firstCol = strtoupper(trim($row[0] ?? ''));
+                    // Si NO contiene CONH, es una cabecera, la saltamos
+                    if (!str_contains($firstCol, 'CONH')) {
+                        $rowCount++;
+                        continue;
+                    }
+                }
 
                 $rowCount++;
+
+                // Validar si la fila tiene datos mínimos (identificador CONH en col 1)
+                $contractNumber = trim($row[0] ?? '');
+                if (empty($contractNumber) || !str_contains(strtoupper($contractNumber), 'CONH')) {
+                    continue;
+                }
                 
                 try {
                     // 1. Normalize Client Name (Title Case)
-                    $clientName = Str::title(trim($row[2]));
+                    $clientName = Str::title(trim($row[2] ?? 'Desconocido'));
                     $client = Client::firstOrCreate(['name' => $clientName]);
 
                     // 2. Find/Create Vendor
-                    $vendorName = trim($row[3]);
+                    $vendorName = trim($row[3] ?? '');
                     $vendor = Vendor::firstOrCreate(['name' => $vendorName]);
 
                     // 3. Parse Date (Format d/m/Y)
