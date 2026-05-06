@@ -13,4 +13,14 @@ class Client extends Model
     {
         return $this->hasMany(Contract::class);
     }
+
+    public function contacts(): HasMany
+    {
+        return $this->hasMany(Contact::class);
+    }
+
+    public function certificates(): HasMany
+    {
+        return $this->hasMany(Certificate::class);
+    }
 }
