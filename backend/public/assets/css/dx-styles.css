@@ -186,9 +186,13 @@ body {
 
 /* 5. HEADER */
 header {
-  background:var(--surface); border-bottom:1px solid var(--border); height:56px;
-  display:flex; align-items:center; padding:0 24px; position:sticky; top:0; z-index:100;
+  background:var(--surface); border-bottom:1px solid var(--border);
+  position:sticky; top:0; z-index:100;
   transition:background 0.2s,border-color 0.2s;
+}
+.header-inner {
+  max-width:1280px; width:100%; margin:0 auto; height:56px;
+  display:flex; align-items:center; padding:0 24px;
 }
 
 /* 6. BRAND */
@@ -359,10 +363,13 @@ tr:hover td { background:var(--bg); }
 
 /* 16. FOOTER */
 footer {
-  border-top:1px solid var(--border); background:var(--surface); padding:14px 24px;
-  display:flex; justify-content:space-between; align-items:center; font-size:11px;
-  color:var(--muted); font-family: var(--font-mono); margin-top:auto;
+  border-top:1px solid var(--border); background:var(--surface);
   transition:background 0.2s,border-color 0.2s;
+  margin-top:auto;
+}
+.footer-inner {
+  max-width:1280px; width:100%; margin:0 auto; display:flex; justify-content:space-between; align-items:center;
+  padding:14px 24px; font-size:11px; color:var(--muted); font-family: var(--font-mono);
 }
 .footer-links  { display:flex; gap:20px; }
 .footer-status { display:flex; align-items:center; gap:6px; }

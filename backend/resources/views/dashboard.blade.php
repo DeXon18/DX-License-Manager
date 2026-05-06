@@ -12,7 +12,7 @@
     <div class="stat-card">
         <span class="stat-label">Contratos Activos</span>
         <span class="stat-value accent">{{ number_format($metrics['total']) }}</span>
-        <span class="stat-meta">Siemens + Moldex3D</span>
+        <span class="stat-meta">Ecosistema Multi-Vendor</span>
     </div>
     <div class="stat-card danger">
         <span class="stat-label">Urgentes / Caducados</span>
