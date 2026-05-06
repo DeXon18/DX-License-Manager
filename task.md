@@ -40,11 +40,11 @@ El agente NO marca `[x]` una tarea hasta que todos sus checks están completados
   - [x] Evidencia: `php artisan migrate:status` -> ✅ Ran
   - [x] Rama: feature/clients-base
 
-- [ ] 2. Listado de Clientes (Frontend)
-  - [ ] Regla aplicada: impeccable §minimalismo-funcional
-  - [ ] Check pre-ejecución: Consultar `04-admin.html` como referencia.
-  - [ ] Evidencia: Visualización de 603 clientes en `/clients`.
-  - [ ] Rama: feature/clients-base
+- [x] 2. Listado de Clientes (Frontend)
+  - [x] Regla aplicada: impeccable §minimalismo-funcional
+  - [x] Check pre-ejecución: Consultar `04-admin.html` como referencia.
+  - [x] Evidencia: Visualización de 603 clientes en `/clients`.
+  - [x] Rama: feature/clients-base
 
 - [ ] 3. Detalle de Cliente y Tabs Alpine.js
   - [ ] Regla aplicada: ui-ux-pro-max §tabs-consistentes

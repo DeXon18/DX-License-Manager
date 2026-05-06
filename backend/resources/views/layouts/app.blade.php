@@ -44,7 +44,7 @@
             </a>
             <nav class="nav-links">
                 <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Inicio</a>
-                <a class="nav-link" href="#">Clientes</a>
+                <a class="nav-link {{ request()->routeIs('clients.*') ? 'active' : '' }}" href="{{ route('clients.index') }}">Clientes</a>
                 <a class="nav-link" href="#">Herramientas</a>
                 <a class="nav-link" href="#">Administración</a>
             </nav>
@@ -69,7 +69,7 @@
                 <a class="sidebar-item {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">
                     <span class="sidebar-icon">📊</span> Dashboard
                 </a>
-                <a class="sidebar-item" href="#">
+                <a class="sidebar-item {{ request()->routeIs('clients.*') ? 'active' : '' }}" href="{{ route('clients.index') }}">
                     <span class="sidebar-icon">👥</span> Clientes
                 </a>
                 <a class="sidebar-item" href="#">
