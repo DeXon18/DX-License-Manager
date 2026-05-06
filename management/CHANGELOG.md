@@ -5,6 +5,21 @@
 
 ---
 
+## [2026-05-06] — Fase 5: Portal Principal (Dashboard) ✅
+
+### Added
+- **Dashboard Dinámico**: Implementación de métricas automáticas basadas en el estado real de los contratos (Activos, Urgentes, Próximos, Seguimiento).
+- **Top 10 Vencimientos**: Tabla interactiva con badges de estado y cálculo de días restantes en tiempo real.
+- **Cache Busting**: Sistema de versionado dinámico para `dx-styles.css` mediante `?v={{ time() }}` en el layout.
+- **UX**: Sesión JWT extendida a 1 hora (60 min) para flujos de trabajo prolongados.
+
+### Fixed
+- **Persistencia de Tema**: Corregido fallo que reseteaba el modo oscuro al recargar o navegar. Ahora usa `localStorage` de forma consistente.
+- **Flash de Tema**: Eliminado el parpadeo blanco al cargar la página en modo oscuro mediante script de inicialización síncrono.
+- **Layout Simétrico**: Header y Footer ajustados con contenedores internos (`.header-inner`) para evitar dispersión en monitores panorámicos.
+- **Labeling**: Generalizada la etiqueta de contratos a "Ecosistema Multi-Vendor" para mayor precisión.
+
+
 ## [2026-05-06] — Fase 4: Importación CSV & Modelado de Datos ✅
 
 ### Added

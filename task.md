@@ -77,12 +77,21 @@ _(El agente rellena esto al inicio de cada sesión tras leer el HANDOFF)_
   - [x] Regla aplicada: AGENTS.md §4.1
   - [x] Evidencia: `.env` montado como volumen Docker, eliminado riesgo de desincronización.
 
+- [x] 5. Desarrollo del Dashboard Dinámico (Fase 5)
+  - [x] Regla aplicada: AGENTS.md §0.3 (DESIGN.md obligatorio)
+  - [x] Evidencia: Dashboard funcional con métricas reales, Top 10 vencimientos y responsive.
+  - [x] Rama: feature/dashboard-base
+- [x] 6. Refactorización de UX y Persistencia
+  - [x] Regla aplicada: AGENTS.md §7 (Seguridad y JWT)
+  - [x] Evidencia: Modo oscuro persistente, sesión ampliada a 60 min y layout centrado.
+  - [x] Rama: feature/dashboard-base
+
 ---
 
 ## Notas de Sesión
 
-- **Importación Exitosa**: El archivo `CSV.csv` (603 registros) fue procesado íntegramente tras ajustar el servicio para detectar comas y manejar la ausencia de cabeceras.
-- **UI Consistente**: Se refactorizó la vista de importación para usar exclusivamente `dx-styles.css`, corrigiendo el layout en monitores ultra-wide.
-- **Estabilidad**: La base de datos Beta ahora contiene datos reales. Recordatorio: Prohibido `migrate:fresh`.
-
----
+- **Dashboard Real**: Implementada la lógica de conteo por rangos (Urgente, Próximo, Seguimiento) basada en `identities.json`.
+- **UX Refined**: Corregido el problema de "flashing" del tema oscuro y la persistencia en `localStorage`.
+- **Layout Simétrico**: Header y Footer ajustados para monitores ultra-wide (max-width 1280px).
+- **Estabilidad**: Sesión aumentada a 1 hora para mejorar la productividad del usuario.
+- **Cache Busting**: Añadido parámetro de versión a los assets para garantizar actualizaciones inmediatas.
