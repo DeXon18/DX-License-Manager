@@ -76,6 +76,20 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Leyenda de Estados -->
+        <div class="mt-4 flex flex-wrap gap-4 items-center border-t border-dashed border-gray-800 pt-4" style="opacity: 0.8;">
+            <span class="text-xs uppercase font-bold tracking-wider muted mr-2">Leyenda:</span>
+            <div class="flex items-center gap-4 flex-wrap">
+                <span class="badge badge-info"><i class="fa-solid fa-file-signature"></i> Ofertado</span>
+                <span class="badge badge-primary"><i class="fa-solid fa-handshake"></i> Negociación</span>
+                <span class="badge badge-accent"><i class="fa-solid fa-circle-check"></i> Aceptado</span>
+                <span class="badge badge-warn"><i class="fa-solid fa-gears"></i> Procesado</span>
+                <span class="badge badge-warning"><i class="fa-solid fa-file-invoice-dollar"></i> Facturado</span>
+                <span class="badge badge-success"><i class="fa-solid fa-lock"></i> Cerrado</span>
+                <span class="badge badge-danger"><i class="fa-solid fa-circle-xmark"></i> Baja</span>
+            </div>
+        </div>
     </div>
 
     <!-- Licencias Tab (Placeholder) -->
