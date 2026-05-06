@@ -1,3 +1,10 @@
+## [2026-05-06] — Fase 6.3: Gestión de Contactos ✅
+- Implementación de CRUD de contactos vinculados a clientes.
+- Sistema de pestañas en perfil de cliente con persistencia vía `localStorage`.
+- Interfaz de contactos compacta con botones de acción horizontales y modales Alpine.js.
+- Creación de `DemoContactSeeder` para pruebas rápidas.
+- Corrección de acceso SSH y limpieza de `known_hosts` para despliegue.
+
 ## [2026-05-06] — Refinamiento UI Clientes
 - [x] Leyenda de estados integrada en la Card de contratos (Fase 6.1).
 - [x] Estilo alineado con `DESIGN.md` (jerarquía técnica y card-footer).

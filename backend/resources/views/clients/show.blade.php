@@ -11,12 +11,18 @@
     <p class="page-sub">Perfil de cuenta y gestión de activos del ecosistema.</p>
 </div>
 
-<div x-data="{ tab: 'contracts', modalOpen: false }" class="client-profile">
+<div x-data="{ 
+    tab: localStorage.getItem('activeTab') || '{{ request('tab', 'contracts') }}',
+    setTab(name) {
+        this.tab = name;
+        localStorage.setItem('activeTab', name);
+    }
+}" class="client-profile">
     <div class="tabs">
-        <button class="tab-link" :class="{ 'active': tab === 'contracts' }" @click="tab = 'contracts'">Contratos</button>
-        <button class="tab-link" :class="{ 'active': tab === 'licenses' }" @click="tab = 'licenses'">Licencias</button>
-        <button class="tab-link" :class="{ 'active': tab === 'contacts' }" @click="tab = 'contacts'">Contactos</button>
-        <button class="tab-link" :class="{ 'active': tab === 'certificates' }" @click="tab = 'certificates'">Certificados</button>
+        <button class="tab-link" :class="{ 'active': tab === 'contracts' }" @click="setTab('contracts')">Contratos</button>
+        <button class="tab-link" :class="{ 'active': tab === 'licenses' }" @click="setTab('licenses')">Licencias</button>
+        <button class="tab-link" :class="{ 'active': tab === 'contacts' }" @click="setTab('contacts')">Contactos</button>
+        <button class="tab-link" :class="{ 'active': tab === 'certificates' }" @click="setTab('certificates')">Certificados</button>
     </div>
 
     <!-- Contratos Tab -->
@@ -112,95 +118,136 @@
     <!-- Licencias Tab (Placeholder) -->
     <div x-show="tab === 'licenses'" class="tab-content" style="display: none;">
         <div class="card text-center py-16">
-            <div style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;">🔑</div>
-            <h3 style="font-size: 16px; font-weight: 600;">Gestión de Licencias (Sold-To)</h3>
-            <p class="muted mt-2">Esta funcionalidad estará disponible en la <strong>Fase 6.2 / 8.1</strong>.</p>
-            <div class="badge badge-muted mt-6">Pendiente de Fase correspondiente</div>
+            <div class="text-4xl mb-4 opacity-50">🔑</div>
+            <h3 class="text-lg font-semibold">Gestión de Licencias</h3>
+            <p class="muted mt-2">La subida y gestión de archivos .lic / .mac estará disponible en la <strong>Fase 6.2</strong>.</p>
+            <div class="badge badge-muted mt-6">Pendiente de Desarrollo</div>
         </div>
     </div>
 
     <!-- Contactos Tab -->
     <div x-show="tab === 'contacts'" class="tab-content" style="display: none;">
-        <div class="header-actions mb-6">
-            <h2 style="font-size: 16px; font-weight: 600;">Contactos de Referencia</h2>
-            @if(Auth::user()->role !== 'viewer')
-            <button class="btn-primary sm" @click="modalOpen = true">Añadir Contacto</button>
-            @endif
-        </div>
-        <div class="grid cols-2 gap-4">
-            @forelse($client->contacts as $contact)
-            <div class="card p-5" style="position: relative;">
-                @if(Auth::user()->role !== 'viewer')
-                <form action="{{ route('contacts.destroy', $contact) }}" method="POST" style="position: absolute; top: 12px; right: 12px;">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="muted" style="background: none; border: none; cursor: pointer; font-size: 14px;" onclick="return confirm('¿Eliminar contacto?')">×</button>
-                </form>
-                @endif
-                <div class="font-bold">{{ $contact->name }}</div>
-                <div class="body-sm muted">{{ $contact->position ?? 'Sin cargo' }}</div>
-                <div class="mt-4 font-mono body-sm" style="display: flex; flex-direction: column; gap: 4px;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="opacity: 0.5;">📧</span> {{ $contact->email }}
-                    </div>
-                    @if($contact->phone)
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="opacity: 0.5;">📞</span> {{ $contact->phone }}
-                    </div>
-                    @endif
-                </div>
+        <div class="card p-0">
+            <div class="card-header flex justify-between items-center px-5 py-4">
+                <h3 class="text-sm font-bold uppercase tracking-wider">Personas de Contacto</h3>
+                <button class="btn-primary sm" @click="$dispatch('open-contact-modal')">
+                    <i class="fa-solid fa-plus mr-2"></i> Nuevo Contacto
+                </button>
             </div>
-            @empty
-            <div class="card col-span-2 text-center py-12 muted">
-                No hay contactos registrados para este cliente.
-            </div>
-            @endforelse
+            <table class="table text-sm">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Cargo</th>
+                        <th class="text-right">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($client->contacts as $contact)
+                    <tr>
+                        <td class="font-bold">{{ $contact->name }}</td>
+                        <td>{{ $contact->email }}</td>
+                        <td>
+                            @if($contact->position)
+                                <span class="badge badge-muted">{{ $contact->position }}</span>
+                            @else
+                                <span class="muted">—</span>
+                            @endif
+                        </td>
+                        <td class="text-right" style="width: 100px;">
+                            <div style="display: flex; justify-content: flex-end; align-items: center; gap: 4px; white-space: nowrap;">
+                                <button class="btn-icon" 
+                                    @click="$dispatch('open-contact-modal', { 
+                                        id: {{ $contact->id }}, 
+                                        name: '{{ $contact->name }}', 
+                                        email: '{{ $contact->email }}', 
+                                        position: '{{ $contact->position }}',
+                                        phone: '{{ $contact->phone }}'
+                                    })">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <form action="{{ route('contacts.destroy', [$client, $contact]) }}" method="POST" onsubmit="return confirm('¿Eliminar este contacto?')" style="display: inline-block; margin: 0;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-icon text-danger">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="text-center py-12 muted">
+                            No hay contactos registrados para este cliente.
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <!-- Certificados Tab (Placeholder) -->
-    <div x-show="tab === 'certificates'" class="tab-content" style="display: none;">
-        <div class="card text-center py-16">
-            <div style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;">📜</div>
-            <h3 style="font-size: 16px; font-weight: 600;">Certificados de Cese (CODs)</h3>
-            <p class="muted mt-2">El histórico y gestión de certificados firmados estará disponible en la <strong>Fase 8.4</strong>.</p>
-            <div class="badge badge-muted mt-6">Pendiente de Fase correspondiente</div>
-        </div>
-    </div>
-
-    <!-- Modal Añadir Contacto -->
+    <!-- Contact Modal -->
     <template x-teleport="body">
-        <div x-show="modalOpen" class="modal-overlay" style="display: none;">
-            <div class="modal-content" @click.outside="modalOpen = false">
+        <div x-data="{ 
+                open: false, 
+                editMode: false,
+                action: '{{ route('contacts.store', $client) }}',
+                form: { id: '', name: '', email: '', position: '', phone: '' }
+            }"
+            x-show="open"
+            @open-contact-modal.window="
+                open = true; 
+                if($event.detail.id) {
+                    editMode = true;
+                    action = '{{ url('/clientes/' . $client->id . '/contactos') }}/' + $event.detail.id;
+                    form = $event.detail;
+                } else {
+                    editMode = false;
+                    action = '{{ route('contacts.store', $client) }}';
+                    form = { id: '', name: '', email: '', position: '', phone: '' };
+                }
+            "
+            class="modal-overlay"
+            style="display: none;"
+        >
+            <div class="modal-content" @click.outside="open = false">
                 <div class="modal-header">
-                    <h3 style="font-size: 16px; font-weight: 600;">Añadir Nuevo Contacto</h3>
-                    <button class="muted" @click="modalOpen = false" style="background:none; border:none; cursor:pointer; font-size:20px;">×</button>
+                    <h3 x-text="editMode ? 'Editar Contacto' : 'Nuevo Contacto'"></h3>
+                    <button @click="open = false" class="close-btn">&times;</button>
                 </div>
-                <form action="{{ route('contacts.store', $client) }}" method="POST">
+                <form :action="action" method="POST">
                     @csrf
-                    <div class="modal-body">
-                        <div class="form-group mb-4">
-                            <label>Nombre Completo <span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="gui-input" placeholder="Ej. Juan Pérez" required style="padding-left: 12px;">
-                        </div>
-                        <div class="form-group mb-4">
-                            <label>Email Corporativo <span class="text-danger">*</span></label>
-                            <input type="email" name="email" class="gui-input" placeholder="juan@empresa.com" required style="padding-left: 12px;">
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label>Cargo</label>
-                                <input type="text" name="position" class="gui-input" placeholder="Ej. IT Manager" style="padding-left: 12px;">
+                    <template x-if="editMode">
+                        <input type="hidden" name="_method" value="PUT">
+                    </template>
+                    
+                    <div class="modal-body space-y-5">
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="input-group">
+                                <label>Nombre Completo</label>
+                                <input type="text" name="name" x-model="form.name" required class="gui-input w-full" placeholder="Ej. Juan Pérez">
                             </div>
-                            <div class="form-group">
-                                <label>Teléfono</label>
-                                <input type="text" name="phone" class="gui-input" placeholder="+34..." style="padding-left: 12px;">
+                            <div class="input-group">
+                                <label>Email Corporativo</label>
+                                <input type="email" name="email" x-model="form.email" required class="gui-input w-full" placeholder="email@empresa.com">
                             </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Cargo / Departamento</label>
+                            <input type="text" name="position" x-model="form.position" class="gui-input w-full" placeholder="Ej. IT Manager">
+                        </div>
+                        <div class="input-group">
+                            <label>Teléfono (Opcional)</label>
+                            <input type="text" name="phone" x-model="form.phone" class="gui-input w-full" placeholder="+34 ...">
                         </div>
                     </div>
+                    
                     <div class="modal-footer">
-                        <button type="button" class="btn-secondary sm" @click="modalOpen = false">Cancelar</button>
-                        <button type="submit" class="btn-primary sm">Guardar Contacto</button>
+                        <button type="button" @click="open = false" class="btn-secondary">Cancelar</button>
+                        <button type="submit" class="btn-primary" x-text="editMode ? 'Guardar Cambios' : 'Crear Contacto'"></button>
                     </div>
                 </form>
             </div>
@@ -222,6 +269,40 @@
     
     .client-profile .card { padding: 0; }
     .client-profile .card.p-5 { padding: 20px; }
+
+    /* Table Density */
+    .table.text-sm td { padding: 8px 20px; vertical-align: middle; }
+    .badge-muted { 
+        background: rgba(255, 255, 255, 0.05); 
+        color: var(--muted); 
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 9px;
+        padding: 2px 8px;
+    }
+
+    /* Icon Buttons */
+    .btn-icon {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .btn-icon:hover { 
+        background: var(--border);
+        color: var(--text);
+    }
+    .btn-icon.text-danger:hover {
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        border-color: rgba(239, 68, 68, 0.2);
+    }
 
     /* Legend Styles */
     .card-footer-legend {
@@ -263,6 +344,72 @@
         text-transform: uppercase;
         letter-spacing: 0.05em;
         color: var(--muted);
+    }
+    /* Modal Styles */
+    .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(4px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+        padding: 20px;
+    }
+    .modal-content {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        width: 100%;
+        max-width: 550px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        overflow: hidden;
+    }
+    .modal-header {
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.02);
+    }
+    .modal-header h3 {
+        font-size: 14px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .close-btn {
+        background: none;
+        border: none;
+        color: var(--muted);
+        font-size: 20px;
+        cursor: pointer;
+        padding: 4px;
+        line-height: 1;
+    }
+    .close-btn:hover { color: var(--text); }
+    
+    .modal-body { padding: 24px; }
+    .input-group { margin-bottom: 20px; }
+    .input-group:last-child { margin-bottom: 0; }
+    .input-group label {
+        display: block;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+        margin-bottom: 8px;
+    }
+    .modal-footer {
+        padding: 16px 24px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: end;
+        gap: 12px;
+        background: rgba(255, 255, 255, 0.02);
     }
 </style>
 @endpush
