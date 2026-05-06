@@ -15,7 +15,6 @@
     - Robustez: Limpieza de datos (`trim`) en importador y vista para evitar desajustes de mapeo.
 
 ## ⚠️ Pendiente / Próximos Pasos
-- [ ] **DISEÑO**: Refinar la estética de la **leyenda de estados** en `clients/show.blade.php`. Oskar considera que el diseño actual (barra técnica horizontal) no es lo suficientemente profesional o integrado.
 - [ ] **Fase 6.2**: Integración de archivos `.lic` y `.mac` (Gestión de Licencias).
 - [ ] **Fase 6.3**: Gestión de contactos por cliente.
 
