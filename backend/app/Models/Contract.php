@@ -13,6 +13,7 @@ class Contract extends Model
         'vendor_id',
         'cost_center',
         'type_product',
+        'sub_product',
         'end_date',
         'status',
         'comment'
