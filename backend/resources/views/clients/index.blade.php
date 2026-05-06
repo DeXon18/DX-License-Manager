@@ -7,7 +7,7 @@
             <h1 class="page-title">Gestión de Clientes</h1>
             <p class="page-sub text-sm">Visualización y búsqueda de cuentas del ecosistema.</p>
         </div>
-        <div class="search-box" style="width: 300px;">
+        <div class="search-box mt-4" style="width: 300px;">
             <form action="{{ route('clients.index') }}" method="GET" class="input-wrap">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="left: 12px; opacity: 0.5;">
                     <circle cx="11" cy="11" r="8"></circle>
