@@ -166,6 +166,7 @@ DX License Manager
 ### 📋 Fase 4 — Importación CSV
 
 **Estado:** En planificación
+**⚠️ ADVERTENCIA CRÍTICA:** A partir de esta fase, Beta usa datos reales. **PROHIBIDO** `migrate:fresh`. Solo migraciones incrementales.
 **Prerequisito:** ✅ Fase 3 validada por Oskar
 **Validación requerida antes de Fase 5:** CSV real importado, clientes y contratos visibles en BD, badges de caducidad correctos.
 

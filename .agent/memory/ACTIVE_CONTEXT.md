@@ -10,9 +10,9 @@ current_agent: Antigravity (Caveman Mode)
 
 ## 🎯 Objetivo Actual
 
-- [x] Tarea principal: Fase 3 — Login (Finalizada)
-- [ ] Subtarea en curso: Merge a `dev` e inicio Fase 4
-- Rama activa: feature/auth-rbac-db
+- [x] Tarea principal: Fase 3 — Login (Finalizada y Fusionada)
+- [ ] Subtarea en curso: Preparar Fase 4
+- Rama activa: dev
 - Fase del ROADMAP: Fase 3 (Completada)
 
 ---
