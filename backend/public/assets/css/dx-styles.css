@@ -728,3 +728,18 @@ footer {
 }
 .spinner { width:32px; height:32px; border:3px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin 0.8s linear infinite; }
 
+
+/* 24. PAGINACIÓN */
+.pagination { display: flex; align-items: center; justify-content: space-between; padding: 16px 0; font-size: 13px; color: var(--muted); }
+.pagination-info { font-family: var(--font-mono); font-size: 12px; }
+.pagination-links { display: flex; gap: 4px; }
+.page-link {
+    display: flex; align-items: center; justify-content: center; min-width: 32px; height: 32px;
+    padding: 0 8px; border: 1px solid var(--border); border-radius: 6px;
+    background: var(--surface); color: var(--muted); text-decoration: none;
+    font-weight: 500; transition: all 0.15s;
+}
+.page-link:hover { border-color: var(--border); color: var(--primary); background: var(--bg); }
+.page-link.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.page-link.disabled { opacity: 0.4; cursor: not-allowed; }
+.page-link.dots { border: none; background: none; cursor: default; }

@@ -61,6 +61,6 @@
 </div>
 
 <div class="pagination mt-6">
-    {{ $clients->appends(request()->query())->links() }}
+    {{ $clients->appends(request()->query())->links('vendor.pagination.dx') }}
 </div>
 @endsection
