@@ -115,13 +115,39 @@
         </div>
     </div>
 
-    <!-- Licencias Tab (Placeholder) -->
+    <!-- Licencias Tab (Pendiente Fase 8) -->
     <div x-show="tab === 'licenses'" class="tab-content" style="display: none;">
-        <div class="card text-center py-16">
-            <div class="text-4xl mb-4 opacity-50">🔑</div>
-            <h3 class="text-lg font-semibold">Gestión de Licencias</h3>
-            <p class="muted mt-2">La subida y gestión de archivos .lic / .mac estará disponible en la <strong>Fase 6.2</strong>.</p>
-            <div class="badge badge-muted mt-6">Pendiente de Desarrollo</div>
+        <div class="card text-center py-20 border-dashed opacity-80" style="border: 2px dashed var(--border); background: transparent;">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full mb-6" style="background: rgba(var(--accent-rgb, 0, 122, 255), 0.1); margin: 0 auto 24px;">
+                <i class="fa-solid fa-microchip text-accent" style="font-size: 24px; color: var(--accent);"></i>
+            </div>
+            <h3 class="text-xl font-bold tracking-tight">Gestión de Licencias</h3>
+            <p class="muted mt-3 max-w-md mx-auto" style="margin-left: auto; margin-right: auto;">
+                La subida y gestión automatizada de archivos <code>.lic</code> / <code>.mac</code> 
+                estará disponible tras implementar el motor de auditoría en la <strong>Fase 8</strong>.
+            </p>
+            <div class="flex justify-center gap-3 mt-8" style="display: flex; justify-content: center; gap: 12px; margin-top: 32px;">
+                <span class="badge badge-accent">Próximamente</span>
+                <span class="badge badge-muted">Fase 8.1 — Siemens Suite</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Certificados Tab (Pendiente Fase 8.4) -->
+    <div x-show="tab === 'certificates'" class="tab-content" style="display: none;">
+        <div class="card text-center py-20 border-dashed opacity-80" style="border: 2px dashed var(--border); background: transparent;">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full mb-6" style="background: rgba(var(--accent-rgb, 0, 122, 255), 0.1); margin: 0 auto 24px;">
+                <i class="fa-solid fa-file-contract text-accent" style="font-size: 24px; color: var(--accent);"></i>
+            </div>
+            <h3 class="text-xl font-bold tracking-tight">Certificados de Cese (COD)</h3>
+            <p class="muted mt-3 max-w-md mx-auto" style="margin-left: auto; margin-right: auto;">
+                El historial de certificados firmados y la generación de nuevos documentos 
+                se activará con el módulo de gestión documental de la <strong>Fase 8.4</strong>.
+            </p>
+            <div class="flex justify-center gap-3 mt-8" style="display: flex; justify-content: center; gap: 12px; margin-top: 32px;">
+                <span class="badge badge-accent">En Planificación</span>
+                <span class="badge badge-muted">Fase 8.4 — Siemens COD</span>
+            </div>
         </div>
     </div>
 
