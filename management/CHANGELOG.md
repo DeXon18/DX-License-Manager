@@ -1,15 +1,19 @@
-# CHANGELOG — DX License Manager
+## [2026-05-06] — Refinamiento UI Clientes
+- [x] Leyenda de estados integrada en la Card de contratos (Fase 6.1).
+- [x] Estilo alineado con `DESIGN.md` (jerarquía técnica y card-footer).
+- [x] Refinamiento estético de la leyenda de estados en el ContraHeader.
 
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
 ---
 
-## [2026-05-06] — Fase 6.1: Perfeccionamiento de Gestión de Clientes
+## [2026-05-06] — Fase 6.1: Perfeccionamiento de Gestión de Clientes ✅
 - **UX**: Implementado atajo global `Ctrl + Espacio` para búsqueda inteligente y persistencia de foco.
 - **UI**: Rediseño del listado de clientes con espaciado optimizado y buscador inteligente (Contratos, Clientes, Estados).
 - **Contratos**: Mapeo granular de estados basado en `identities.json` con iconos FontAwesome y leyenda técnica integrada.
 - **Robustez**: Implementada limpieza de datos (`trim`) en estados de contrato para evitar fallos de mapeo en importación y visualización.
+- **Mejora Leyenda**: Refinado el diseño de la leyenda de estados de los ContraHeader para mayor integración estética.
 
 ## [2026-05-06] — Fase 5: Portal Principal (Dashboard) ✅
 

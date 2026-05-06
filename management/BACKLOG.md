@@ -18,9 +18,8 @@ _(ninguna actualmente)_
 
 ---
 
-## 🔵 En Progreso
-- [ ] Fase 6.1: Perfeccionamiento de Gestión de Clientes.
-- [ ] **Mejora Leyenda**: Refinar el diseño de la leyenda de estados de los ContraHeader para mayor integración estética.
+- [x] Fase 6.1: Perfeccionamiento de Gestión de Clientes.
+- [x] **Mejora Leyenda**: Refinar el diseño de la leyenda de estados de los ContraHeader para mayor integración estética.
 
 ---
 
