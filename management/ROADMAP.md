@@ -235,16 +235,15 @@ DX License Manager
 
 ---
 
-### 📋 Fase 7 — Hub de Herramientas
-
-**Estado:** En planificación
-**Prerequisito:** ✅ Fase 6 validada por Oskar
-**Validación requerida antes de Fase 8:** Hub visible con cards por vendor y feature flags funcionando.
-
-- [ ] Vista hub siguiendo `infra/html/03-herramientas.html`
-- [ ] Cards agrupadas por vendor (Siemens / Moldex3D)
-- [ ] Feature flags controlan visibilidad y acceso
-- [ ] Badge "Próximamente" para herramientas inactivas
+### ✅ Fase 7 — Hub de Herramientas
+ 
+**Estado:** COMPLETADA
+**Validación:** ✅ Verificado por Oskar el 2026-05-06. Hub dinámico sincronizado con identities.json.
+ 
+- [x] Vista hub dinámica controlada por Feature Flags
+- [x] Cards agrupadas por vendor (Siemens / Moldex3D)
+- [x] Sincronización de llaves y labels con `identities.json`
+- [x] Badge "Próximamente" para herramientas inactivas
 
 ---
 

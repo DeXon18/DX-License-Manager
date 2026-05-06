@@ -46,7 +46,7 @@
             <nav class="nav-links">
                 <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Inicio</a>
                 <a class="nav-link {{ request()->routeIs('clients.*') ? 'active' : '' }}" href="{{ route('clients.index') }}">Clientes</a>
-                <a class="nav-link" href="#">Herramientas</a>
+                <a class="nav-link {{ request()->routeIs('tools.*') ? 'active' : '' }}" href="{{ route('tools.index') }}">Herramientas</a>
                 <a class="nav-link" href="#">Administración</a>
             </nav>
             <div class="nav-right">
@@ -80,9 +80,10 @@
             
             <div class="sidebar-section">
                 <div class="sidebar-heading">Herramientas</div>
-                <a class="sidebar-item" href="#">
-                    <span class="sidebar-icon">🔧</span> Solicitudes
+                <a class="sidebar-item {{ request()->routeIs('tools.*') ? 'active' : '' }}" href="{{ route('tools.index') }}">
+                    <span class="sidebar-icon">🛠️</span> Hub de Utilidades
                 </a>
+                <a class="sidebar-item" href="#">
                 <a class="sidebar-item" href="#">
                     <span class="sidebar-icon">📂</span> Repositorio
                 </a>

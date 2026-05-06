@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\FeatureFlag;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class FeatureFlagSeeder extends Seeder
 {
@@ -13,6 +13,7 @@ class FeatureFlagSeeder extends Seeder
     public function run(): void
     {
         $flags = [
+            // SIEMENS TOOLS (identities.json keys)
             [
                 'key' => 'siemens_nx_suite',
                 'label' => 'NX Suite',
@@ -45,9 +46,11 @@ class FeatureFlagSeeder extends Seeder
                 'key' => 'siemens_recursos',
                 'label' => 'Recursos & enlaces Siemens',
                 'vendor' => 'Siemens',
-                'description' => 'Documentación oficial y recursos internos Siemens',
+                'description' => 'Documentación oficial y recursos internos Siemens PLM',
                 'is_active' => false,
             ],
+
+            // MOLDEX3D
             [
                 'key' => 'moldex3d_auditor',
                 'label' => 'Moldex3D',
@@ -65,7 +68,10 @@ class FeatureFlagSeeder extends Seeder
         ];
 
         foreach ($flags as $flag) {
-            DB::table('feature_flags')->updateOrInsert(['key' => $flag['key']], $flag);
+            FeatureFlag::updateOrCreate(['key' => $flag['key']], $flag);
         }
+
+        // Limpiar keys antiguas si existieran
+        FeatureFlag::whereIn('key', ['nx_suite', 'star_ccm', 'heeds', 'request_change', 'resources', 'moldex3d_versions'])->delete();
     }
 }
