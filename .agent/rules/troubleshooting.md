@@ -9,6 +9,21 @@ El agente consulta este archivo antes de investigar un error desde cero.
 
 ---
 
+## Errores de Autenticación
+
+### HTTP 401 — "Las credenciales no coinciden con nuestros registros"
+
+**Causa:** El archivo `backend/.env` se ha desincronizado o corrompido, apuntando a una base de datos SQLite vacía en lugar de MariaDB. Laravel no encuentra al usuario porque está buscando en el archivo equivocado.
+
+**Fix:**
+1. Sincronizar el `.env` con la versión de infraestructura (ver sección Infraestructura).
+2. Si el usuario sigue sin existir, ejecutar el seeder de recuperación:
+```bash
+docker exec dx-php-beta php artisan db:seed --class=AdminUserSeeder
+```
+
+---
+
 ## Errores de Infraestructura
 
 ### 502 Bad Gateway en beta.dxpro.es o portal.dxpro.es
