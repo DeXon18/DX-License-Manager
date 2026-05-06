@@ -20,8 +20,8 @@ _(ninguna actualmente)_
 
 ## 🔵 En Progreso
 
-- [ ] Fase 4: Estructura de base de datos para Clientes y Contratos.
-- [ ] Implementar importador CSV base.
+- [x] Fase 4: Estructura de base de datos para Clientes y Contratos.
+- [x] Implementar importador CSV base con detección inteligente.
 
 ---
 
@@ -48,7 +48,15 @@ En planificación — se detallan una por una tras validación de la fase anteri
 ---
 
 ## ✅ Completado
-
+ 
+### Fase 4 — Importación CSV
+- [x] Migraciones incrementales para `vendors`, `clients`, `contracts` e `import_logs`.
+- [x] Implementación de `CsvImportService` (Auto-separator, Smart Header).
+- [x] Normalización de clientes en *Title Case*.
+- [x] Lógica de marcado automático como "Baja" para contratos ausentes.
+- [x] UI administrativa `/admin/import` alineada con `DESIGN.md`.
+- [x] Centralización de `.env` vía volúmenes de Docker.
+ 
 ### Fase 3 — Login
 - [x] Implementación de `JwtService` y `AuthController`.
 - [x] Middleware de RBAC (`JwtAuth`, `CheckPermission`).

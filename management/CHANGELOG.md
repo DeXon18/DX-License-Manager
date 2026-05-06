@@ -5,6 +5,20 @@
 
 ---
 
+## [2026-05-06] — Fase 4: Importación CSV & Modelado de Datos ✅
+
+### Añadido
+- **Motor de Importación**: Implementación de `CsvImportService` con detección inteligente de separador (`,`/`;`) y cabeceras.
+- **Normalización de Datos**: Formateo automático de nombres de clientes (*Title Case*) y gestión de estado *Baja* para contratos ausentes.
+- **Modelo de Datos**: Tablas `vendors`, `clients`, `contracts` e `import_logs` con migraciones incrementales.
+- **UI Administrativa**: Vista `/admin/import` modernizada siguiendo `DESIGN.md`.
+- **Infraestructura**: Centralización de archivos `.env` mediante volúmenes de Docker y symlinks relativos para estabilidad del entorno.
+
+### Corregido
+- **Error de Ingesta**: Solucionado fallo que procesaba 0 registros debido a discrepancia en separadores de CSV.
+- **Layout Dashboard**: Refactor de vistas administrativas para usar clases nativas de `dx-styles.css` y evitar solapamientos visuales.
+
+
 ## [2026-05-05] — Autenticación JWT y Verificación (Fase 3 ✅)
 
 ### Added
