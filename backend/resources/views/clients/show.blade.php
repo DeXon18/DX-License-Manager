@@ -49,13 +49,23 @@
                         <td class="font-mono">{{ $contract->end_date->format('d/m/Y') }}</td>
                         <td>
                             @php
-                                $statusClass = match($contract->status) {
-                                    'Cerrado' => 'badge-success',
-                                    'Baja' => 'badge-danger',
-                                    default => 'badge-warn'
-                                };
+                                $status = $contract->status ?: 'vacio';
+                                $statusMap = [
+                                    'vacio' => ['label' => 'Sin estado', 'class' => 'badge-muted', 'icon' => 'fa-regular fa-circle-question'],
+                                    'Ofertado' => ['label' => 'Ofertado', 'class' => 'badge-info', 'icon' => 'fa-solid fa-file-signature'],
+                                    'En negociación' => ['label' => 'En negociación', 'class' => 'badge-primary', 'icon' => 'fa-solid fa-handshake'],
+                                    'Aceptado por el cliente' => ['label' => 'Aceptado', 'class' => 'badge-accent', 'icon' => 'fa-solid fa-circle-check'],
+                                    'Procesado (M) - Pte fact.' => ['label' => 'Procesado', 'class' => 'badge-warn', 'icon' => 'fa-solid fa-gears'],
+                                    'Facturado - Pte proc. (M)' => ['label' => 'Facturado', 'class' => 'badge-warning', 'icon' => 'fa-solid fa-file-invoice-dollar'],
+                                    'Cerrado' => ['label' => 'Cerrado', 'class' => 'badge-success', 'icon' => 'fa-solid fa-lock'],
+                                    'Baja' => ['label' => 'Baja', 'class' => 'badge-danger', 'icon' => 'fa-solid fa-circle-xmark'],
+                                ];
+                                $data = $statusMap[$status] ?? $statusMap['vacio'];
                             @endphp
-                            <span class="badge {{ $statusClass }}">{{ $contract->status }}</span>
+                            <span class="badge {{ $data['class'] }}">
+                                <i class="{{ $data['icon'] }}" style="margin-right: 6px; font-size: 10px; opacity: 0.8;"></i>
+                                {{ $data['label'] }}
+                            </span>
                         </td>
                     </tr>
                     @empty

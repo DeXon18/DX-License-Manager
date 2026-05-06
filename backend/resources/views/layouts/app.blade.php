@@ -19,6 +19,7 @@
 
     <!-- Fonts & Styles -->
     <link rel="stylesheet" href="{{ asset('assets/css/dx-styles.css?v=' . time()) }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- Alpine.js (Legacy mode - no build step) -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
