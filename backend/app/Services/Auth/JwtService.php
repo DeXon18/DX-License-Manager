@@ -21,7 +21,7 @@ class JwtService
      * @param int $expiration Minutes
      * @return string
      */
-    public function generate(array $payload, int $expiration = 15): string
+    public function generate(array $payload, int $expiration = 60): string
     {
         $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
         

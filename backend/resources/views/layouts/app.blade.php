@@ -1,11 +1,21 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'DX License Manager') }} - @yield('title', 'Portal')</title>
+
+    <!-- Theme Initialization -->
+    <script>
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+        } else {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+        }
+    </script>
 
     <!-- Fonts & Styles -->
     <link rel="stylesheet" href="{{ asset('assets/css/dx-styles.css') }}">
@@ -15,7 +25,16 @@
 
     @stack('styles')
 </head>
-<body x-data="{ darkMode: true, sidebarOpen: true }" :data-theme="darkMode ? 'dark' : 'light'">
+<body x-data="{ 
+    darkMode: localStorage.getItem('theme') !== 'light',
+    sidebarOpen: true,
+    toggleTheme() {
+        this.darkMode = !this.darkMode;
+        const theme = this.darkMode ? 'dark' : 'light';
+        localStorage.setItem('theme', theme);
+        document.documentElement.setAttribute('data-theme', theme);
+    }
+}" @keyup.slash.window="sidebarOpen = !sidebarOpen">
     
     <header>
         <a class="brand" href="{{ url('/') }}">
@@ -29,7 +48,7 @@
             <a class="nav-link" href="#">Administración</a>
         </nav>
         <div class="nav-right">
-            <div class="theme-toggle" @click="darkMode = !darkMode">
+            <div class="theme-toggle" @click="toggleTheme()">
                 <span class="toggle-icon">☀️</span>
                 <div class="toggle-track"><div class="toggle-knob" :style="darkMode ? 'left: 20px' : 'left: 2px'"></div></div>
                 <span class="toggle-icon">🌙</span>
