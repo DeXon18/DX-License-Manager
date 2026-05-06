@@ -327,7 +327,7 @@ tr:hover td { background:var(--bg); }
 /* 14. BADGES */
 .badge {
   display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius:4px;
-  font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; font-family: var(--font-mono);
+  font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; font-family: var(--font-sans);
 }
 .badge-success { background:rgba(46,160,67,0.15); color:#3fb950; border:1px solid rgba(46,160,67,0.3); }
 .badge-danger { background:rgba(248,81,73,0.15); color:#f85149; border:1px solid rgba(248,81,73,0.3); }
