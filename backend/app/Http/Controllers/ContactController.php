@@ -22,15 +22,36 @@ class ContactController extends Controller
 
         $client->contacts()->create($validated);
 
-        return back()->with('success', 'Contacto añadido correctamente.');
+        return redirect()->route('clients.show', [$client, 'tab' => 'contacts'])
+            ->with('success', 'Contacto creado correctamente.');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Update the specified contact in storage.
      */
-    public function destroy(Contact $contact)
+    public function update(Request $request, Client $client, Contact $contact)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'position' => 'nullable|string|max:255',
+            'phone' => 'nullable|string|max:255',
+        ]);
+
+        $contact->update($validated);
+
+        return redirect()->route('clients.show', [$client, 'tab' => 'contacts'])
+            ->with('success', 'Contacto actualizado correctamente.');
+    }
+
+    /**
+     * Remove the specified contact from storage.
+     */
+    public function destroy(Client $client, Contact $contact)
     {
         $contact->delete();
-        return back()->with('success', 'Contacto eliminado correctamente.');
+
+        return redirect()->route('clients.show', [$client, 'tab' => 'contacts'])
+            ->with('success', 'Contacto eliminado correctamente.');
     }
 }

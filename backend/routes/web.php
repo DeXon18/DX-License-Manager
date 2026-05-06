@@ -17,7 +17,8 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::get('/clientes/{client}', [ClientController::class, 'show'])->name('clients.show');
     
     Route::post('/clientes/{client}/contactos', [ContactController::class, 'store'])->name('contacts.store');
-    Route::delete('/contactos/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
+    Route::put('/clientes/{client}/contactos/{contact}', [ContactController::class, 'update'])->name('contacts.update');
+    Route::delete('/clientes/{client}/contactos/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/import', [ImportController::class, 'index'])->name('import.index');

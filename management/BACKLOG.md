@@ -47,6 +47,16 @@ En planificación — se detallan una por una tras validación de la fase anteri
 
 ## ✅ Completado
 
+### Fase 6.3 — Contactos de Envío
+- **Completada:** 2026-05-06
+- **Rama:** feature/clients-base (continuación)
+- **Resumen:** Implementación del sistema de gestión de contactos por cliente con persistencia de pestañas y UI compacta.
+- [x] CRUD de contactos (Modelo, Controlador, Rutas).
+- [x] UI de contactos en perfil de cliente con modales Alpine.js.
+- [x] Persistencia de pestaña activa en `localStorage`.
+- [x] Refinamiento estético de tablas y botones de acción horizontales.
+- [x] Seeder de datos DEMO para pruebas de integración.
+
 ### Fase 5 — Portal Principal (Dashboard)
 
 - **Completada:** 2026-05-06

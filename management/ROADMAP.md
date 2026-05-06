@@ -216,9 +216,10 @@ DX License Manager
 - [ ] Subida de archivos `.lic` y `.mac`
 - [ ] Asociación automática a cliente por nombre
 
-#### 6.3 — Contactos de envío
-- [ ] CRUD de contactos por cliente
-- [ ] Campos: nombre, email, empresa, cargo
+#### 6.3 — Contactos de envío ✅ COMPLETADA
+- [x] CRUD de contactos por cliente (Listado compacto + Modales)
+- [x] Persistencia de pestaña en localStorage
+- [x] Seeder de datos DEMO para pruebas
 
 #### 6.4 — Certificados de cese firmados
 - [ ] Subida y almacenamiento de CODs firmados recibidos
