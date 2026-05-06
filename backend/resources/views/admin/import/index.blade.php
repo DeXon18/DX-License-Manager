@@ -67,31 +67,38 @@
     <!-- Columna Lateral (Sidebar Panel) -->
     <div class="sidebar-panel">
         <div class="info-card">
-            <div class="card-section-title">
-                <span>📋 Estructura Técnica</span>
+            <div class="info-card-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+                <span>Mapeo de Columnas</span>
             </div>
-            <div class="producto-list">
-                <div class="producto-item">
-                    <div class="producto-check" style="background: var(--accent-muted); color: var(--accent);">1</div>
-                    <span style="font-family: var(--font-mono); font-size: 12px;">Contraheader</span>
+            
+            <div class="producto-list" style="margin-top: 16px; gap: 12px;">
+                <div class="producto-item" style="justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
+                    <span style="font-size: 13px; font-weight: 500; color: var(--secondary);">Contraheader</span>
+                    <code style="font-family: var(--font-mono); font-size: 11px; background: var(--bg); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border);">COL_1</code>
                 </div>
-                <div class="producto-item">
-                    <div class="producto-check" style="background: var(--accent-muted); color: var(--accent);">3</div>
-                    <span style="font-family: var(--font-mono); font-size: 12px;">Client_Name</span>
+                <div class="producto-item" style="justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
+                    <span style="font-size: 13px; font-weight: 500; color: var(--secondary);">Client_Name</span>
+                    <code style="font-family: var(--font-mono); font-size: 11px; background: var(--bg); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border);">COL_3</code>
                 </div>
-                <div class="producto-item">
-                    <div class="producto-check" style="background: var(--accent-muted); color: var(--accent);">6</div>
-                    <span style="font-family: var(--font-mono); font-size: 12px;">End_Date</span>
+                <div class="producto-item" style="justify-content: space-between; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
+                    <span style="font-size: 13px; font-weight: 500; color: var(--secondary);">End_Date</span>
+                    <code style="font-family: var(--font-mono); font-size: 11px; background: var(--bg); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border);">COL_6</code>
                 </div>
+            </div>
+
+            <div style="margin-top: 16px; font-size: 11px; color: var(--muted); line-height: 1.4;">
+                Nota: El sistema ignora automáticamente filas sin identificador CONH válido.
             </div>
         </div>
 
-        <div class="info-card" style="border-color: var(--warn-border); background: var(--warn-bg);">
-            <div class="card-section-title" style="color: var(--warning);">
-                <span>▲ Integridad de Datos</span>
+        <div class="info-card" style="border-left: 3px solid var(--warning); background: var(--warning-bg);">
+            <div class="info-card-title" style="color: var(--warning); margin-bottom: 8px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                <span>Sincronización de Estados</span>
             </div>
-            <div class="info-card-body" style="color: var(--warning); opacity: 0.9;">
-                Los contratos activos ausentes en la carga serán movidos a <strong>BAJA</strong> automáticamente.
+            <div class="info-card-body" style="font-size: 12px; color: var(--secondary); line-height: 1.5;">
+                Los contratos activos que <strong>no figuren</strong> en el archivo cargado serán marcados como <span class="badge badge-danger" style="font-size: 9px; padding: 1px 4px;">BAJA</span> automáticamente para mantener la integridad del repositorio.
             </div>
         </div>
     </div>
