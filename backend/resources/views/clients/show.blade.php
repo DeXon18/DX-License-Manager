@@ -11,7 +11,7 @@
     <p class="page-sub">Perfil de cuenta y gestión de activos del ecosistema.</p>
 </div>
 
-<div x-data="{ tab: 'contracts' }" class="client-profile">
+<div x-data="{ tab: 'contracts', modalOpen: false }" class="client-profile">
     <div class="tabs">
         <button class="tab-link" :class="{ 'active': tab === 'contracts' }" @click="tab = 'contracts'">Contratos</button>
         <button class="tab-link" :class="{ 'active': tab === 'licenses' }" @click="tab = 'licenses'">Licencias</button>
@@ -83,12 +83,19 @@
         <div class="header-actions mb-6">
             <h2 style="font-size: 16px; font-weight: 600;">Contactos de Referencia</h2>
             @if(Auth::user()->role !== 'viewer')
-            <button class="btn-primary sm">Añadir Contacto</button>
+            <button class="btn-primary sm" @click="modalOpen = true">Añadir Contacto</button>
             @endif
         </div>
         <div class="grid cols-2 gap-4">
             @forelse($client->contacts as $contact)
-            <div class="card p-5">
+            <div class="card p-5" style="position: relative;">
+                @if(Auth::user()->role !== 'viewer')
+                <form action="{{ route('contacts.destroy', $contact) }}" method="POST" style="position: absolute; top: 12px; right: 12px;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="muted" style="background: none; border: none; cursor: pointer; font-size: 14px;" onclick="return confirm('¿Eliminar contacto?')">×</button>
+                </form>
+                @endif
                 <div class="font-bold">{{ $contact->name }}</div>
                 <div class="body-sm muted">{{ $contact->position ?? 'Sin cargo' }}</div>
                 <div class="mt-4 font-mono body-sm" style="display: flex; flex-direction: column; gap: 4px;">
@@ -119,6 +126,45 @@
             <div class="badge badge-muted mt-6">Pendiente de Fase correspondiente</div>
         </div>
     </div>
+
+    <!-- Modal Añadir Contacto -->
+    <template x-teleport="body">
+        <div x-show="modalOpen" class="modal-overlay" style="display: none;">
+            <div class="modal-content" @click.outside="modalOpen = false">
+                <div class="modal-header">
+                    <h3 style="font-size: 16px; font-weight: 600;">Añadir Nuevo Contacto</h3>
+                    <button class="muted" @click="modalOpen = false" style="background:none; border:none; cursor:pointer; font-size:20px;">×</button>
+                </div>
+                <form action="{{ route('contacts.store', $client) }}" method="POST">
+                    @csrf
+                    <div class="modal-body">
+                        <div class="form-group mb-4">
+                            <label>Nombre Completo <span class="text-danger">*</span></label>
+                            <input type="text" name="name" class="gui-input" placeholder="Ej. Juan Pérez" required style="padding-left: 12px;">
+                        </div>
+                        <div class="form-group mb-4">
+                            <label>Email Corporativo <span class="text-danger">*</span></label>
+                            <input type="email" name="email" class="gui-input" placeholder="juan@empresa.com" required style="padding-left: 12px;">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Cargo</label>
+                                <input type="text" name="position" class="gui-input" placeholder="Ej. IT Manager" style="padding-left: 12px;">
+                            </div>
+                            <div class="form-group">
+                                <label>Teléfono</label>
+                                <input type="text" name="phone" class="gui-input" placeholder="+34..." style="padding-left: 12px;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-secondary sm" @click="modalOpen = false">Cancelar</button>
+                        <button type="submit" class="btn-primary sm">Guardar Contacto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </template>
 </div>
 @endsection
 
