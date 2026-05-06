@@ -12,15 +12,19 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Client::withCount(['contracts' => function ($q) {
-            $q->where('status', '!=', 'Baja');
-        }]);
-
-        if ($request->filled('search')) {
-            $query->where('name', 'like', '%' . $request->search . '%');
-        }
-
-        $clients = $query->orderBy('name')->paginate(20);
+        $clients = Client::withCount('contracts')
+            ->when($request->search, function($query) use ($request) {
+                $search = $request->search;
+                $query->where(function($q) use ($search) {
+                    $q->where('name', 'like', '%' . $search . '%')
+                      ->orWhereHas('contracts', function($cq) use ($search) {
+                          $cq->where('contract_number', 'like', '%' . $search . '%')
+                            ->orWhere('status', 'like', '%' . $search . '%');
+                      });
+                });
+            })
+            ->orderBy('name')
+            ->paginate(20);
 
         return view('clients.index', compact('clients'));
     }
