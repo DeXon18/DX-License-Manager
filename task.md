@@ -26,12 +26,11 @@ El agente NO marca `[x]` una tarea hasta que todos sus checks están completados
 ---
 
 ## Tareas de la Sesión Actual
-
-- [ ] 1. Fase 6.4 — Certificados de cese firmados
-  - [ ] Regla aplicada: AGENTS.md §7 (Seguridad de descargas)
-  - [ ] Check pre-ejecución: Definir estructura de almacenamiento en `storage/app/certificates/`.
-  - [ ] Evidencia: Subida de PDF/DOCX con asociación a contrato y descarga segura vía ID.
-  - [ ] Rama: feature/clients-base
+- [ ] 1. Fase 7 — Hub de Herramientas (Planificación)
+  - [ ] Regla aplicada: AGENTS.md §0.4 (Descomposición)
+  - [ ] Check pre-ejecución: Revisar prototipo `03-herramientas.html`.
+  - [ ] Evidencia: `implementation_plan.md` presentado y aprobado.
+  - [ ] Rama: feature/tools-hub
 
 ---
 

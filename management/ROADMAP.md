@@ -211,7 +211,9 @@ DX License Manager
 - [x] Badges de estado y caducidad por colores (Afinado con Oskar)
 - [x] Vista global de caducidades (Dashboard + Perfil)
 
-#### 6.2 — Licencias
+#### 6.2 — Licencias ⏸️ PAUSADA
+> [!NOTE]
+> Esta sección se desarrollará en paralelo con la **Fase 8**, ya que requiere el motor de auditoría y los parsers de licencias.
 - [ ] Migraciones: `license_files`, `license_products`
 - [ ] Subida de archivos `.lic` y `.mac`
 - [ ] Asociación automática a cliente por nombre
@@ -221,7 +223,9 @@ DX License Manager
 - [x] Persistencia de pestaña en localStorage
 - [x] Seeder de datos DEMO para pruebas
 
-#### 6.4 — Certificados de cese firmados
+#### 6.4 — Certificados de cese firmados ⏸️ PAUSADA
+> [!NOTE]
+> Esta sección depende de la **Fase 8.4 (COD)**, donde se implementará la generación y guardado de los documentos oficiales.
 - [ ] Subida y almacenamiento de CODs firmados recibidos
 - [ ] Historial por cliente
 
