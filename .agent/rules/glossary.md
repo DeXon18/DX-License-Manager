@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 # Glosario de Dominio — DX License Manager
 
 Términos específicos del negocio de licencias Siemens PLM y Moldex3D.
@@ -12,9 +16,6 @@ Identificador numérico único del cliente en el sistema de Siemens. Es el ID pr
 
 **Install**
 Código que identifica el punto de instalación de la licencia. Va siempre junto al Sold-To. Formato: número similar al Sold-To.
-
-**WebKey Access Code**
-Código alfanumérico de 10 caracteres que da acceso al portal de clientes de Siemens (SPLM). Ejemplo: `20HVGJOOIU`. No es una clave criptográfica — es un código de acceso web para descargar licencias.
 
 **Contraheader / Contract Number**
 Número de contrato en el sistema interno. Formato: `CONHxxxxxxx`. Es el identificador único en el CSV semanal y en la BD del portal. Ejemplo: `CONH1006420`. Nunca cambia — es la clave de upsert.

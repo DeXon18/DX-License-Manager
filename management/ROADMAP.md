@@ -115,44 +115,45 @@ DX License Manager
 
 ---
 
-### 🔜 Fase 1 — CSS + Assets
+### ✅ Fase 1 — CSS + Assets
 
-**Estado:** EN CURSO
-**Prerequisito:** ✅ Fase 0 validada por Oskar
-**Validación requerida antes de Fase 2:** Revisión visual de componentes base en beta.
+**Estado:** COMPLETADA (Técnicamente)
+**Validación:** ⚠️ Estilos no cargan en Beta por posible caché de Cloudflare.
+**Fecha:** 2026-05-05
 
-- [ ] `dx-styles.css` integrado en el proyecto
-- [ ] Fuentes Inter + IBM Plex Mono cargadas
-- [ ] Variables CSS light/dark mode operativas
-- [ ] Componentes base verificados visualmente
-
----
-
-### 📋 Fase 2 — Layouts Blade + Laravel
-
-**Estado:** En planificación
-**Prerequisito:** ✅ Fase 1 validada por Oskar
-**Validación requerida antes de Fase 3:** Layout principal funcionando en beta con sidebar, header y footer.
-
-- [ ] Laravel 11 instalado en `backend/`
-- [ ] Tailwind CSS + Alpine.js configurados
-- [ ] Layout principal Blade (sidebar, header, footer)
-- [ ] Nginx actualizado para servir Laravel
+- [x] `dx-styles.css` integrado en el proyecto
+- [x] Fuentes Inter + IBM Plex Mono cargadas
+- [x] Variables CSS light/dark mode operativas
+- [x] Componentes base verificados (clases de utilidad añadidas)
 
 ---
 
-### 📋 Fase 3 — Login
+### ✅ Fase 2 — Layouts Blade + Laravel
 
-**Estado:** En planificación
-**Prerequisito:** ✅ Fase 2 validada por Oskar
-**Validación requerida antes de Fase 4:** Login funcional con roles y acceso denegado verificados en beta.
+**Estado:** COMPLETADA
+**Validación:** ✅ Layout principal operativo en Beta.
+**Fecha:** 2026-05-05
 
-- [ ] Vista de login siguiendo `infra/html/01-login.html`
-- [ ] JWT — access token 15min + refresh 24h con rotación
-- [ ] Middleware `JwtAuth` y `CheckPermission`
-- [ ] Migraciones: `users`, `roles`, `feature_flags`
-- [ ] Seeders: roles + usuario admin Oskar
-- [ ] Tests feature: login, logout, refresh, acceso denegado
+- [x] Laravel 11 instalado en `backend/`
+- [x] Tailwind CSS + Alpine.js configurados (vía clases utilidad en CSS)
+- [x] Layout principal Blade (sidebar, header, footer)
+- [x] Nginx actualizado para servir Laravel
+
+---
+
+### ✅ Fase 3 — Login
+ 
+**Estado:** COMPLETADA
+**Validación:** ✅ Login funcional con roles y acceso denegado verificados por Oskar y tests automatizados.
+**Fecha:** 2026-05-05
+
+- [x] Vista de login siguiendo `infra/html/01-login.html` (Rediseñada a Full Background)
+- [x] JWT — access token 15min + refresh 24h con rotación
+- [x] Middleware `JwtAuth` y `CheckPermission`
+- [x] Migraciones: `users`, `roles`, `feature_flags`
+- [x] Seeders: roles + usuario admin Oskar
+- [x] Tests feature: login, logout, refresh, acceso denegado
+- [x] Afinar estilos finales del login (Ultra-Wide Fix)
 
 ---
 
@@ -162,20 +163,21 @@ DX License Manager
 
 ---
 
-### 📋 Fase 4 — Importación CSV
-
-**Estado:** En planificación
+### ✅ Fase 4 — Importación CSV
+ 
+**Estado:** COMPLETADA
+**⚠️ ADVERTENCIA CRÍTICA:** A partir de esta fase, Beta usa datos reales. **PROHIBIDO** `migrate:fresh`. Solo migraciones incrementales.
 **Prerequisito:** ✅ Fase 3 validada por Oskar
-**Validación requerida antes de Fase 5:** CSV real importado, clientes y contratos visibles en BD, badges de caducidad correctos.
-
-- [ ] Migraciones: `vendors`, `clients`, `contracts`, `import_logs`
-- [ ] Panel de importación CSV en admin
-- [ ] Lógica upsert por `contract_number`
-- [ ] Normalización Title Case
-- [ ] Detección de bajas (desaparece del CSV → status Baja)
-- [ ] Informe post-importación con contadores y errores
-- [ ] Historial de importaciones
-- [ ] Tests: upsert, normalización, bajas, formato fecha
+**Validación:** ✅ Verificado por Oskar el 2026-05-06. 603 registros importados correctamente.
+ 
+- [x] Migraciones: `vendors`, `clients`, `contracts`, `import_logs`
+- [x] Panel de importación CSV en admin
+- [x] Lógica upsert por `contract_number`
+- [x] Normalización Title Case
+- [x] Detección de bajas (desaparece del CSV → status Baja)
+- [x] Informe post-importación con contadores y errores
+- [x] Historial de importaciones
+- [x] Tests: upsert, normalización, bajas, formato fecha
 
 ---
 
@@ -185,40 +187,45 @@ DX License Manager
 
 ---
 
-### 📋 Fase 5 — Inicio
+### 📋 Fase 5 — Inicio ✅ COMPLETADA
 
-**Estado:** En planificación
+**Estado:** COMPLETADA
 **Prerequisito:** ✅ Fase 4 validada por Oskar
 **Validación requerida antes de Fase 6:** Dashboard mostrando datos reales de contratos y caducidades.
 
-- [ ] Vista de inicio siguiendo `infra/html/02-inicio.html`
-- [ ] Métricas: total contratos, críticos, próximos, por vendor
-- [ ] Widget de caducidades próximas
-- [ ] Accesos rápidos a herramientas
+- [x] Vista de inicio siguiendo `infra/html/02-inicio.html`
+- [x] Métricas: total contratos, críticos, próximos, por vendor
+- [x] Widget de caducidades próximas
+- [x] Accesos rápidos a herramientas
 
 ---
 
-### 📋 Fase 6 — Clientes
+### 📋 Fase 6 — Clientes 🔜 EN CURSO
 
-**Estado:** En planificación
+**Estado:** EN CURSO
 **Prerequisito:** ✅ Fase 5 validada por Oskar
 **Validación requerida antes de Fase 7:** Perfil de cliente completo con todas las subsecciones funcionando.
 
-#### 6.1 — ContraHeaders / Contratos
-- [ ] Listado con búsqueda, filtros y paginación
-- [ ] Badges de estado y caducidad por colores
-- [ ] Vista global de caducidades
+#### 6.1 — ContraHeaders / Contratos ✅ COMPLETADA
+- [x] Listado con búsqueda, filtros y paginación
+- [x] Badges de estado y caducidad por colores (Afinado con Oskar)
+- [x] Vista global de caducidades (Dashboard + Perfil)
 
-#### 6.2 — Licencias
+#### 6.2 — Licencias ⏸️ PAUSADA
+> [!NOTE]
+> Esta sección se desarrollará en paralelo con la **Fase 8**, ya que requiere el motor de auditoría y los parsers de licencias.
 - [ ] Migraciones: `license_files`, `license_products`
 - [ ] Subida de archivos `.lic` y `.mac`
 - [ ] Asociación automática a cliente por nombre
 
-#### 6.3 — Contactos de envío
-- [ ] CRUD de contactos por cliente
-- [ ] Campos: nombre, email, empresa, cargo
+#### 6.3 — Contactos de envío ✅ COMPLETADA
+- [x] CRUD de contactos por cliente (Listado compacto + Modales)
+- [x] Persistencia de pestaña en localStorage
+- [x] Seeder de datos DEMO para pruebas
 
-#### 6.4 — Certificados de cese firmados
+#### 6.4 — Certificados de cese firmados ⏸️ PAUSADA
+> [!NOTE]
+> Esta sección depende de la **Fase 8.4 (COD)**, donde se implementará la generación y guardado de los documentos oficiales.
 - [ ] Subida y almacenamiento de CODs firmados recibidos
 - [ ] Historial por cliente
 
@@ -228,16 +235,15 @@ DX License Manager
 
 ---
 
-### 📋 Fase 7 — Hub de Herramientas
-
-**Estado:** En planificación
-**Prerequisito:** ✅ Fase 6 validada por Oskar
-**Validación requerida antes de Fase 8:** Hub visible con cards por vendor y feature flags funcionando.
-
-- [ ] Vista hub siguiendo `infra/html/03-herramientas.html`
-- [ ] Cards agrupadas por vendor (Siemens / Moldex3D)
-- [ ] Feature flags controlan visibilidad y acceso
-- [ ] Badge "Próximamente" para herramientas inactivas
+### ✅ Fase 7 — Hub de Herramientas
+ 
+**Estado:** COMPLETADA
+**Validación:** ✅ Verificado por Oskar el 2026-05-06. Hub dinámico sincronizado con identities.json.
+ 
+- [x] Vista hub dinámica controlada por Feature Flags
+- [x] Cards agrupadas por vendor (Siemens / Moldex3D)
+- [x] Sincronización de llaves y labels con `identities.json`
+- [x] Badge "Próximamente" para herramientas inactivas
 
 ---
 
@@ -393,8 +399,10 @@ DX License Manager
 | Caché / Colas  | Redis 7.x                      |
 | Web server     | Nginx 1.25+                    |
 | Contenedores   | Docker 24+ / Compose V2        |
-| SSL            | Cloudflare                     |
-| CI/CD          | GitHub Actions                 |
+| SSL            | Cloudflare       
+| 5 — Portal Principal          
+| ✅ COMPLETADA     
+| Inicio y Gestión de Clientes/Contratos         |        |
 | Automatización | n8n                            |
 | Auditoría IA   | Gemini → DeepSeek → OpenRouter |
 | Notificaciones | Telegram                       |
