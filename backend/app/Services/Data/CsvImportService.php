@@ -94,8 +94,8 @@ class CsvImportService
                             'type_product' => $row[4] ?? null,
                             'sub_product' => $row[5] ?? null,
                             'end_date' => $endDate,
-                            'status' => $row[7] ?? null,
-                            'comment' => $row[8] ?? null,
+                            'status' => isset($row[7]) ? trim($row[7]) : null,
+                            'comment' => isset($row[8]) ? trim($row[8]) : null,
                         ]
                     );
 

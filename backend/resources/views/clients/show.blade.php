@@ -49,7 +49,7 @@
                         <td class="font-mono">{{ $contract->end_date->format('d/m/Y') }}</td>
                         <td>
                             @php
-                                $status = $contract->status ?: 'vacio';
+                                $status = trim($contract->status ?: 'vacio');
                                 $statusMap = [
                                     'vacio' => ['label' => 'Sin estado', 'class' => 'badge-muted', 'icon' => 'fa-regular fa-circle-question'],
                                     'Ofertado' => ['label' => 'Ofertado', 'class' => 'badge-info', 'icon' => 'fa-solid fa-file-signature'],
