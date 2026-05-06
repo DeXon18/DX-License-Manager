@@ -187,29 +187,29 @@ DX License Manager
 
 ---
 
-### 📋 Fase 5 — Inicio
+### 📋 Fase 5 — Inicio ✅ COMPLETADA
 
-**Estado:** En planificación
+**Estado:** COMPLETADA
 **Prerequisito:** ✅ Fase 4 validada por Oskar
 **Validación requerida antes de Fase 6:** Dashboard mostrando datos reales de contratos y caducidades.
 
-- [ ] Vista de inicio siguiendo `infra/html/02-inicio.html`
-- [ ] Métricas: total contratos, críticos, próximos, por vendor
-- [ ] Widget de caducidades próximas
-- [ ] Accesos rápidos a herramientas
+- [x] Vista de inicio siguiendo `infra/html/02-inicio.html`
+- [x] Métricas: total contratos, críticos, próximos, por vendor
+- [x] Widget de caducidades próximas
+- [x] Accesos rápidos a herramientas
 
 ---
 
-### 📋 Fase 6 — Clientes
+### 📋 Fase 6 — Clientes 🔜 EN CURSO
 
-**Estado:** En planificación
+**Estado:** EN CURSO
 **Prerequisito:** ✅ Fase 5 validada por Oskar
 **Validación requerida antes de Fase 7:** Perfil de cliente completo con todas las subsecciones funcionando.
 
-#### 6.1 — ContraHeaders / Contratos
-- [ ] Listado con búsqueda, filtros y paginación
-- [ ] Badges de estado y caducidad por colores
-- [ ] Vista global de caducidades
+#### 6.1 — ContraHeaders / Contratos ✅ COMPLETADA
+- [x] Listado con búsqueda, filtros y paginación
+- [x] Badges de estado y caducidad por colores (Afinado con Oskar)
+- [x] Vista global de caducidades (Dashboard + Perfil)
 
 #### 6.2 — Licencias
 - [ ] Migraciones: `license_files`, `license_products`
