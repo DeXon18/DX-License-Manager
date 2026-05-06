@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ToolController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -15,6 +16,8 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/clientes', [ClientController::class, 'index'])->name('clients.index');
     Route::get('/clientes/{client}', [ClientController::class, 'show'])->name('clients.show');
+    
+    Route::get('/herramientas', [ToolController::class, 'index'])->name('tools.index');
     
     Route::post('/clientes/{client}/contactos', [ContactController::class, 'store'])->name('contacts.store');
     Route::put('/clientes/{client}/contactos/{contact}', [ContactController::class, 'update'])->name('contacts.update');
