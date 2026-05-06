@@ -77,36 +77,15 @@
             </table>
         </div>
 
-        <!-- Status Ribbon (Compact & Professional) -->
-        <div class="mt-6 pt-4 border-t border-gray-800/50 flex flex-wrap gap-x-8 gap-y-3 items-center justify-center">
-            <div class="flex items-center gap-2">
-                <span class="badge badge-info"><i class="fa-solid fa-file-signature"></i> Ofertado</span>
-                <span class="text-[10px] uppercase tracking-tighter muted">Propuesta</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="badge badge-primary"><i class="fa-solid fa-handshake"></i> Negociación</span>
-                <span class="text-[10px] uppercase tracking-tighter muted">Trámite</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="badge badge-accent"><i class="fa-solid fa-circle-check"></i> Aceptado</span>
-                <span class="text-[10px] uppercase tracking-tighter muted">Confirmado</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="badge badge-warn"><i class="fa-solid fa-gears"></i> Procesado</span>
-                <span class="text-[10px] uppercase tracking-tighter muted">Pte. Factura</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="badge badge-warning"><i class="fa-solid fa-file-invoice-dollar"></i> Facturado</span>
-                <span class="text-[10px] uppercase tracking-tighter muted">Listo</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="badge badge-success"><i class="fa-solid fa-lock"></i> Cerrado</span>
-                <span class="text-[10px] uppercase tracking-tighter muted">Finalizado</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="badge badge-danger"><i class="fa-solid fa-circle-xmark"></i> Baja</span>
-                <span class="text-[10px] uppercase tracking-tighter muted">Cancelado</span>
-            </div>
+        <!-- Status Legend (Ultra-compact) -->
+        <div class="mt-6 pt-4 border-t border-gray-800/50 flex flex-wrap gap-4 items-center justify-center">
+            <span class="badge badge-info"><i class="fa-solid fa-file-signature"></i> Ofertado</span>
+            <span class="badge badge-primary"><i class="fa-solid fa-handshake"></i> Negociación</span>
+            <span class="badge badge-accent"><i class="fa-solid fa-circle-check"></i> Aceptado</span>
+            <span class="badge badge-warn"><i class="fa-solid fa-gears"></i> Procesado</span>
+            <span class="badge badge-warning"><i class="fa-solid fa-file-invoice-dollar"></i> Facturado</span>
+            <span class="badge badge-success"><i class="fa-solid fa-lock"></i> Cerrado</span>
+            <span class="badge badge-danger"><i class="fa-solid fa-circle-xmark"></i> Baja</span>
         </div>
     </div>
 
