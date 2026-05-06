@@ -159,6 +159,8 @@ Consecuencia: [qué se perderá]
 3. **Parar ante problemas:** Nunca aplicar workarounds silenciosos.
 4. **Acciones destructivas:** Confirmación obligatoria (sí/no) para `rm`, `migrate`, etc.
 5. **Descomposición:** Todo plan debe ser dividido en pasos pequeños.
+6. **Integridad de Datos Beta:** A partir de Fase 4, la base de datos Beta contiene datos reales. **PROHIBIDO** el uso de `migrate:fresh`. Solo migraciones incrementales.
+7. **Confirmación Manual Obligatoria:** Tras presentar un plan (`implementation_plan.md`), el agente **DEBE** esperar un "adelante", "ok" o similar explícito de Oskar. Se ignorarán aprobaciones automáticas del sistema para evitar inicios no deseados.
 
 ---
 
