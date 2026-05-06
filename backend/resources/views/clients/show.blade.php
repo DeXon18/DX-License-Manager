@@ -85,31 +85,24 @@
                 <div class="legend-grid">
                     <div class="legend-item">
                         <span class="badge badge-info"><i class="fa-solid fa-file-signature"></i> Ofertado</span>
-                        <span class="legend-label">Propuesta Comercial</span>
                     </div>
                     <div class="legend-item">
                         <span class="badge badge-primary"><i class="fa-solid fa-handshake"></i> Negociación</span>
-                        <span class="legend-label">En Trámite</span>
                     </div>
                     <div class="legend-item">
                         <span class="badge badge-accent"><i class="fa-solid fa-circle-check"></i> Aceptado</span>
-                        <span class="legend-label">Validado</span>
                     </div>
                     <div class="legend-item">
                         <span class="badge badge-warn"><i class="fa-solid fa-gears"></i> Procesado</span>
-                        <span class="legend-label">Pte. Facturación</span>
                     </div>
                     <div class="legend-item">
                         <span class="badge badge-warning"><i class="fa-solid fa-file-invoice-dollar"></i> Facturado</span>
-                        <span class="legend-label">En Cobro</span>
                     </div>
                     <div class="legend-item">
                         <span class="badge badge-success"><i class="fa-solid fa-lock"></i> Cerrado</span>
-                        <span class="legend-label">Contrato Activo</span>
                     </div>
                     <div class="legend-item">
                         <span class="badge badge-danger"><i class="fa-solid fa-circle-xmark"></i> Baja</span>
-                        <span class="legend-label">Finalizado</span>
                     </div>
                 </div>
             </div>
