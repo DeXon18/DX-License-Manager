@@ -46,11 +46,11 @@ El agente NO marca `[x]` una tarea hasta que todos sus checks están completados
   - [x] Evidencia: Visualización de 603 clientes en `/clients`.
   - [x] Rama: feature/clients-base
 
-- [ ] 3. Detalle de Cliente y Tabs Alpine.js
-  - [ ] Regla aplicada: ui-ux-pro-max §tabs-consistentes
-  - [ ] Check pre-ejecución: Verificar roles para pestañas sensibles.
-  - [ ] Evidencia: Cambio de tabs sin recarga de página.
-  - [ ] Rama: feature/clients-base
+- [x] 3. Detalle de Cliente y Tabs Alpine.js
+  - [x] Regla aplicada: ui-ux-pro-max §tabs-consistentes
+  - [x] Check pre-ejecución: Verificar roles para pestañas sensibles.
+  - [x] Evidencia: Cambio de tabs sin recarga de página.
+  - [x] Rama: feature/clients-base
 
 ---
 
