@@ -76,11 +76,11 @@ class CsvImportService
 
                     // 3. Parse Date (Format d/m/Y)
                     $endDate = null;
-                    if (!empty($row[5])) {
+                    if (!empty($row[6])) {
                         try {
-                            $endDate = Carbon::createFromFormat('d/m/Y', trim($row[5]))->startOfDay();
+                            $endDate = Carbon::createFromFormat('d/m/Y', trim($row[6]))->startOfDay();
                         } catch (\Exception $e) {
-                            $errors[] = "Fila $rowCount: Formato de fecha inválido [{$row[5]}]";
+                            $errors[] = "Fila $rowCount: Formato de fecha inválido [{$row[6]}]";
                         }
                     }
 
@@ -92,9 +92,10 @@ class CsvImportService
                             'vendor_id' => $vendor->id,
                             'cost_center' => $row[1] ?? null,
                             'type_product' => $row[4] ?? null,
+                            'sub_product' => $row[5] ?? null,
                             'end_date' => $endDate,
-                            'status' => $row[6] ?? null,
-                            'comment' => $row[7] ?? null,
+                            'status' => $row[7] ?? null,
+                            'comment' => $row[8] ?? null,
                         ]
                     );
 

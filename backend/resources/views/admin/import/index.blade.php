@@ -61,7 +61,8 @@
                             ['C1', 'Contraheader', 'Identificador único del contrato (CONH)'],
                             ['C2', 'Centro Coste', 'Referencia contable del cliente'],
                             ['C3', 'Cliente', 'Nombre fiscal de la empresa'],
-                            ['C4', 'Vendor', 'Proveedor origen (Siemens/Moldex)']
+                            ['C4', 'Vendor', 'Proveedor origen (Siemens/Moldex)'],
+                            ['C5', 'Producto', 'Módulo o paquete de software']
                         ] as $item)
                         <div style="display: flex; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
                             <code style="min-width: 40px; font-family: var(--font-mono); font-size: 10px; color: var(--accent);">{{ $item[0] }}</code>
@@ -75,10 +76,10 @@
                     <!-- Columna Derecha -->
                     <div style="display: flex; flex-direction: column; gap: 12px;">
                         @foreach([
-                            ['C5', 'Producto', 'Módulo o paquete de software'],
-                            ['C6', 'Vencimiento', 'Fecha efectiva de caducidad (DD/MM/AAAA)'],
-                            ['C7', 'Estado', 'Situación actual en origen'],
-                            ['C8', 'Comentarios', 'Observaciones técnicas adicionales']
+                            ['C6', 'Sub-Producto', 'Variante o nivel del producto'],
+                            ['C7', 'Vencimiento', 'Fecha efectiva de caducidad (DD/MM/AAAA)'],
+                            ['C8', 'Estado', 'Situación actual en origen'],
+                            ['C9', 'Comentarios', 'Observaciones técnicas adicionales']
                         ] as $item)
                         <div style="display: flex; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
                             <code style="min-width: 40px; font-family: var(--font-mono); font-size: 10px; color: var(--accent);">{{ $item[0] }}</code>

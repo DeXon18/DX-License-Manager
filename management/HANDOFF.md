@@ -1,55 +1,49 @@
 # HANDOFF — DX License Manager
 
-> Última actualización: 2026-05-05 (Fin de sesión)
-> Rama activa: `feature/auth-rbac-db` (Lista para merge)
-> Fase actual: Fase 3 ✅ | Fase 4 🔜
+## Estado de la Sesión
+- **Fase Actual**: Fase 4 (Importación CSV) ✅ COMPLETADA
+- **Rama Activa**: `feature/csv-importer-base`
+- **Último Hito**: Motor de importación validado con 603 registros reales.
 
 ---
 
-## Estado General
+## Tareas Completadas
 
-| Elemento                         | Estado                        |
-| :------------------------------- | :---------------------------- |
-| Auth JWT + RBAC                  | ✅ Funcional & Auditado       |
-| Login UI (Ultra-Wide Fix)        | ✅ Centrado y pulido          |
-| Rate Limiting                    | ✅ throttle:5,1 activo        |
-| Tests Feature                    | ✅ AuthTest.php (4 PASS)      |
-| Deploy automático Beta           | ✅ Verificado                 |
-
----
-
-## Qué se hizo en esta sesión
-
-- **Fase 3 Finalizada**:
-  - Ajuste de UI para pantallas ultra-panorámicas (contenedor centrado).
-  - Implementación de **Rate Limiting** en el login.
-  - Creación de suite de tests automatizados con SQLite en memoria.
-  - Auditoría de seguridad (OWASP compliance).
-  - Documentación completa en CHANGELOG y ROADMAP.
+| Tarea | Descripción |
+| :--- | :--- |
+| **CsvImportService** | Implementada lógica de auto-separador, normalización Title Case y lógica de Bajas automáticas. |
+| **Modelado BD** | Migraciones de `vendors`, `clients`, `contracts` e `import_logs` ejecutadas. |
+| **UI Administrativa** | Rediseño B2B Impeccable de `/admin/import` con guía técnica expandida de 8 columnas. |
+| **Infraestructura** | Centralización de entorno `.env` mediante volúmenes Docker finalizada y verificada. |
 
 ---
 
-## Tarea Inmediata — Empezar Aquí
+## Bloqueos y Pendientes
 
-**Fase 4: Importación CSV y Modelo de Datos**
-
-1. **Merge**: Realizar merge de `feature/auth-rbac-db` a `dev`.
-2. **Migrations**: Crear tablas `vendors`, `clients`, `contracts`.
-3. **CSV Importer**: Implementar el servicio de importación con lógica upsert.
-4. **UI Admin**: Crear panel básico para subir el CSV.
+- [ ] **Validación Manual**: Verificar visualmente la tabla de contratos en la próxima sesión (Fase 5).
+- [ ] **Fase 5 (Inicio)**: Diseñar dashboard con métricas reales basadas en la nueva data importada.
 
 ---
 
-## Contexto Técnico Importante
+## Estado de Archivos Clave
 
-- **Tests**: Ejecutar con `php artisan test --filter AuthTest`.
-- **DB**: Los tests usan SQLite `:memory:`. La BD real sigue en MariaDB.
-- **Assets**: Versionado mediante `?v={{ time() }}` activo en Blade.
+| Archivo | Estado |
+| :--- | :--- |
+| `backend/.env` | ✅ Sincronizado vía symlink a `infra/.env.beta` |
+| `CsvImportService.php` | ✅ Estable (soporta coma/punto y coma) |
+| `task.md` | ✅ Cerrado y actualizado |
+| `dev` branch | ✅ Sincronizada con feature en GitHub |
+
+---
+
+## Notas de Seguridad
+- **Datos Reales**: La base de datos Beta contiene información de producción. **PROHIBIDO `migrate:fresh`**.
+- **Auditoría**: Cada carga CSV queda registrada en la tabla `import_logs`.
 
 ---
 
 ## Pendiente Sin Resolver
 
-- Ninguno. Fase 3 cerrada satisfactoriamente.
+- Ninguno. Fase 4 cerrada satisfactoriamente.
 
 
