@@ -19,8 +19,8 @@ _(ninguna actualmente)_
 ---
 
 ## 🔵 En Progreso
-
-- [ ] Fase 5: Dashboard de Inicio con métricas reales.
+- [ ] Fase 6.1: Perfeccionamiento de Gestión de Clientes.
+- [ ] **Mejora Leyenda**: Refinar el diseño de la leyenda de estados de los ContraHeader para mayor integración estética.
 
 ---
 
@@ -47,6 +47,16 @@ En planificación — se detallan una por una tras validación de la fase anteri
 ---
 
 ## ✅ Completado
+
+### Fase 5 — Portal Principal (Dashboard)
+
+- **Completada:** 2026-05-06
+- **Rama:** feature/dashboard-base
+- **Resumen:** Implementación del Dashboard interactivo con métricas reales, tabla de vencimientos dinámicos y layouts corregidos para ultra-panorámicas.
+- [x] Implementación de `DashboardController` con métricas de base de datos.
+- [x] UI de Dashboard alineada con `DESIGN.md`.
+- [x] Corrección de layouts (Header/Footer simétricos).
+- [x] Extensión de sesión JWT a 60 minutos.
 
 ### Fase 4 — Importación CSV
 
