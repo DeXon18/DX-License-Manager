@@ -1,3 +1,8 @@
+> Historial completo de cambios desde el inicio del proyecto.
+> **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
+
+---
+
 ## [2026-05-06] — Fase 6.3: Gestión de Contactos ✅
 - Implementación de CRUD de contactos vinculados a clientes.
 - Sistema de pestañas en perfil de cliente con persistencia vía `localStorage`.
@@ -9,11 +14,6 @@
 - [x] Leyenda de estados integrada en la Card de contratos (Fase 6.1).
 - [x] Estilo alineado con `DESIGN.md` (jerarquía técnica y card-footer).
 - [x] Refinamiento estético de la leyenda de estados en el ContraHeader.
-
-> Historial completo de cambios desde el inicio del proyecto.
-> **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
-
----
 
 ## [2026-05-06] — Fase 6.1: Perfeccionamiento de Gestión de Clientes ✅
 - **UX**: Implementado atajo global `Ctrl + Espacio` para búsqueda inteligente y persistencia de foco.
