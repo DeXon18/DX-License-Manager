@@ -152,7 +152,7 @@
                                     <div class="flex flex-wrap gap-1">
                                         @foreach(array_slice($result->results['products'], 0, 3) as $product)
                                             <span class="product-chip">
-                                                {{ $product['name'] }} ({{ $product['qty'] }})
+                                                {{ $product['product_code'] ?? ($product['name'] ?? 'N/A') }} ({{ $product['quantity'] ?? ($product['qty'] ?? 0) }})
                                             </span>
                                         @endforeach
                                         @if(count($result->results['products']) > 3)
