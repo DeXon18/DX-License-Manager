@@ -259,8 +259,8 @@ DX License Manager
 - [x] Mecanismo de transformación Siemens NX (Standard, Dongle, Unificada)
 - [x] Normalización estricta de nomenclatura (MAYÚSCULAS)
 - [x] Almacenamiento jerárquico y gestión de duplicados
-- [ ] 🔴 BLOQUEO: Aumento de límites de subida (Error 413 persiste en archivos > 1MB)
-- [ ] Parte 2: Parser de contenido y Auditoría IA (Próxima Sesión)
+- [x] Aumento de límites de subida (Error 413 resuelto mediante ajuste de env_file)
+- [ ] Parte 2: Parser de contenido (INCREMENT), Auditoría IA y Resultados Estructurados
 
 #### 8.2 — STAR-CCM+
 - [ ] Parser PHP local de archivos `.lic` cdlmd
