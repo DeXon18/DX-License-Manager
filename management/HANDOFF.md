@@ -1,52 +1,51 @@
 # HANDOFF — DX Management Portal
-> Última actualización: 2026-05-07 09:55  
-> Sesión en: ATSESWS1001  
-> Rama activa: feature/siemens-nx-mechanism
+> Última actualización: 2026-05-07 11:20  
+> Sesión en: indeterminado  
+> Rama activa: feature/nx-suite-colors
 
 ---
 
 ## Estado General
 
 **Fase actual:** Fase 8.1 — Siemens NX (Parte 1 Finalizada ✅)  
-**Stack beta:** ✅ running (Limits 100MB)  
+**Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
 ---
 
 ## Qué se hizo en esta sesión
 
-- **Mecanismo NX**: Implementada lógica de transformación y nomenclatura estricta para archivos Siemens NX.
-- **Nomenclatura**: Normalización de Hostname y Cliente a MAYÚSCULAS sin caracteres especiales.
-- **Infraestructura**: Aumentado `client_max_body_size` a 100MB en Nginx y configurado `local.ini` en PHP con 100MB de límite de subida.
-- **Fix Almacenamiento**: Corregidos permisos 777 en `storage/private` para evitar bloqueos de I/O detectados.
-- **Docker**: Corrección de las rutas de `env_file` en los archivos `docker-compose`.
+- **Corrección de Infraestructura:** El error 413 al subir archivos pesados se corrigió ajustando la ruta de `env_file` a `./infra/.env.beta` en `docker-compose.beta.yml` (y agregando permisos 777 en storage y cache). Se documentó en `.agent/lessons.md`.
+- **UI NX Suite:** Rediseño completo de la interfaz de NX Suite.
+  - Se añadieron colores semánticos (Rojo para Legacy ugslmd, Teal para SALT saltd).
+  - Se estructuró igual que la vista `admin/import` (tarjetas con cabeceras, botones explícitos).
+  - Se extendió el soporte de extensiones visuales a `.cid`.
+  - Se ajustaron los textos descriptivos de motores para aclarar su uso por versión (NX 2206 vs NX 2212).
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-1. **Validar subida**: Confirmar con Oskar que la subida de la licencia contractual múltiple funciona sin error 413.
-2. **Fase 8.1 Parte 2**: Implementar el parser de contenido (bloques INCREMENT) y la auditoría IA.
+1. **Fase 8.1 Parte 2:** Hacer merge de `feature/nx-suite-colors` y comenzar con la lógica interna: Implementar el parser de contenido (bloques INCREMENT) y conectarlo con la infraestructura existente de NX Suite.
 
 ### Tareas siguientes
-1. Implementar la visualización de resultados de auditoría.
-2. Preparar la descarga del archivo transformado con el nuevo nombre normalizado.
+1. Auditoría IA de los bloques parseados usando n8n (FallbackChain).
+2. Visualización de los resultados estructurados del archivo .lic tras el análisis.
 
 ---
 
 ## Contexto técnico importante
 
-- El archivo **`infra/php/local.ini`** es crítico para que PHP acepte archivos de más de 2MB.
-- La carpeta **`storage/private`** debe mantener permisos 777 debido a la configuración del montaje Proxmox/Samba.
-- Se ha verificado que la licencia se guarda correctamente en el repositorio jerárquico.
+- El archivo **`infra/php/local.ini`** (100MB) ahora se monta correctamente, porque `docker-compose.beta.yml` ya no falla con el entorno.
+- Las vistas tienen limpieza de caché recién aplicada vía `php artisan view:clear`.
+- **Nomenclatura de ramas:** Estamos en `feature/nx-suite-colors`, pendiente de hacer merge con dev u originar la siguiente.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-- **BLOQUEO CRÍTICO**: Error 413 Request Entity Too Large al subir archivos de > 1MB. Aunque Nginx y PHP están en 100MB, el error persiste.
-- **Resuelto**: Bloqueo de escritura en el sistema de archivos (permisos).
+Ninguno. El bloqueo del error 413 está 100% resuelto y la UI completada con éxito.
 
 ---
 
@@ -54,19 +53,18 @@
 
 | Archivo | Estado |
 |:---|:---|
-| `infra/php/local.ini` | ✅ Creado y montado |
-| `backend/app/Services/Licensing/NXSuiteService.php` | ✅ Actualizado (Nomenclatura) |
-| `infra/docker-compose.beta.yml` | ✅ Corregido |
-| `infra/nginx/beta.conf` | ✅ Actualizado (100MB) |
+| `backend/resources/views/tools/nx-suite.blade.php` | ✅ Rediseñado completamente |
+| `infra/docker-compose.beta.yml` | ✅ Corregido ruta de env_file |
+| `.agent/lessons.md` | ✅ Documentado el error de Docker |
 
 ---
 
 ## Comandos útiles para la próxima sesión
 
 ```bash
-# Ver configuración activa de PHP (límites)
-ssh root@192.168.50.60 -p 22 "docker exec dx-php-beta php -i | grep -E 'upload_max_filesize|post_max_size'"
+# Arrancar beta si está down
+docker compose --project-directory . -f infra/docker-compose.beta.yml up -d
 
-# Ver archivos en el repositorio de licencias
-ssh root@192.168.50.60 -p 22 "find /opt/web-projects/DX-License-Manager/storage/private/licenses/siemens -type f"
+# Limpiar cache si la UI hace cosas raras
+ssh root@192.168.50.60 -p 22 "docker exec dx-php-beta php artisan view:clear"
 ```
