@@ -47,6 +47,13 @@ En planificación — se detallan una por una tras validación de la fase anteri
 
 ## ✅ Completado
 
+### Fase 8.1 (Parte 1) — Siemens NX Suite (Mecanismo)
+- **Completada:** 2026-05-07
+- **Rama:** feature/nx-suite-colors
+- **Resumen:** Rediseño UI con colores semánticos, extensión .cid, corrección límite subida (413).
+- [x] Corrección límite 413.
+- [x] UI NX Suite con colores semánticos.
+
 ### Fase 6.3 — Contactos de Envío
 - **Completada:** 2026-05-06
 - **Rama:** feature/clients-base (continuación)
