@@ -33,3 +33,15 @@ El agente debe revisar este archivo al inicio de cada sesión.
   2. **Respetar lo Validado**: NUNCA sobreescribir o re-imaginar una funcionalidad ya validada por Oskar (como el Hub dinámico) sin permiso explícito.
   3. **Rutas e Idioma**: Mantener la nomenclatura de rutas en castellano si así se ha definido en fases previas.
   4. **Análisis de Layout**: Antes de crear una vista, revisar `layouts/app.blade.php` y las vistas previas de ese módulo para asegurar consistencia.
+
+## [2026-05-07] — Error 413 al Subir Archivos (Límites PHP/Nginx y Docker env_file)
+- **Qué pasó:** Archivos de más de 1MB daban "413 Request Entity Too Large" a pesar de tener configurado `client_max_body_size 100M` en Nginx y `local.ini` en PHP.
+- **Por qué pasó:** 
+  1. El archivo `local.ini` con las directivas de PHP no se estaba montando en el contenedor `php-fpm-beta`.
+  2. El montaje no funcionaba porque el archivo `docker-compose.beta.yml` intentaba cargar `env_file: ./.env.beta`. Al ejecutarse Docker Compose con `--project-directory .` (desde la raíz del repo), buscaba el `.env.beta` en la raíz en lugar de `infra/.env.beta`, fallando silenciosamente en algunos contextos y deteniendo recreaciones completas.
+  3. Los cambios en el `beta.conf` de Nginx requieren `nginx -s reload` (o reiniciar contenedor) para aplicarse, y los volúmenes nuevos en Docker requieren hacer `docker compose up -d` para recrear el contenedor, un simple `docker restart` no monta volúmenes nuevos.
+- **Reglas nuevas:**
+  1. **Rutas en Docker Compose:** Cuando se usa `--project-directory .`, TODAS las rutas dentro del `docker-compose.yml` (`env_file`, `volumes`, `build.context`) se resuelven relativas a la **raíz del proyecto**, no relativas a la carpeta `infra/`.
+  2. **Aplicar Cambios en Contenedores:** 
+     - Cambios en config Nginx -> `docker exec dx-nginx-beta nginx -s reload` o reiniciar el contenedor.
+     - Añadir/modificar volúmenes o variables -> `docker compose up -d` para recrear el contenedor, NUNCA usar solo `docker restart`.

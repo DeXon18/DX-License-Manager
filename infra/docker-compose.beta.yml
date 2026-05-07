@@ -18,7 +18,7 @@ services:
     container_name: dx-php-beta
     restart: always
     mem_limit: 512m
-    env_file: ./.env.beta
+    env_file: ./infra/.env.beta
     volumes:
       - ./backend:/var/www/html
       - ./infra/.env.beta:/var/www/html/.env
@@ -41,7 +41,7 @@ services:
     container_name: dx-mariadb-beta
     restart: always
     mem_limit: 512m
-    env_file: ./.env.beta
+    env_file: ./infra/.env.beta
     volumes:
       - mariadb_beta_data:/var/lib/mysql
       - ./infra/mariadb/my.cnf:/etc/mysql/conf.d/my.cnf
