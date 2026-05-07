@@ -91,6 +91,13 @@ class AuditService
             'status' => 'completed',
         ]);
 
+        // Sincronizar Inventario Activo
+        try {
+            app(InventorySyncService::class)->syncFromResult($audit);
+        } catch (\Exception $e) {
+            Log::error("Error sincronizando inventario: " . $e->getMessage());
+        }
+
         return true;
     }
 }
