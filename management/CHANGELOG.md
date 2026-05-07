@@ -3,6 +3,14 @@
 
 ---
 
+## [2026-05-07] — Gestión de Memoria y Reglas de Control (Sesión Actual)
+- **Skills**: Integrada la habilidad `claude-mem` para persistencia semántica entre sesiones.
+- **Git/GitHub**: Implementada regla innegociable de Puntos de Control (Tags) tras cada fase terminada.
+- **Git/GitHub**: Otorgado permiso explícito al agente para crear Pull Requests.
+- **Cleanup**: Realizada limpieza masiva de ramas locales y remotas ya integradas (`feature/clients-base`, `feature/csv-importer-base`, etc.).
+- **Rollback**: Deshecha la migración `ai_audit_results` y borrado el archivo para mantener `dev` limpio ante el replanteamiento de la Fase 8.
+- **Roadmap**: Bloqueada la Fase 8 (Siemens) por problema grave detectado. Pendiente de investigación por Oskar.
+
 ## [2026-05-06] — Sincronización y Lecciones (Fase 8.1)
 - **Sincronización**: Restaurada la rama `dev` tras un fallo arquitectónico en el inicio de la Fase 8.1.
 - **Lección Aprendida (UI)**: Uso estricto de `dx-styles.css` sin introducir Tailwind CSS no autorizado.
@@ -14,6 +22,8 @@
 - **Identidad**: Sincronización total de llaves, etiquetas y daemons con `identities.json`.
 - **Navegación**: Sidebar y Header vinculados al Hub centralizado.
 - **Feature Flags**: Control visual de herramientas no activas ("Próximamente").
+
+---
 
 ## [2026-05-06] — Fase 6.3: Gestión de Contactos ✅
 - Implementación de CRUD de contactos vinculados a clientes.
