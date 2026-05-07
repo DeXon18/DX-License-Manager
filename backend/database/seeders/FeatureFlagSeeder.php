@@ -19,7 +19,7 @@ class FeatureFlagSeeder extends Seeder
                 'label' => 'NX Suite',
                 'vendor' => 'Siemens',
                 'description' => 'NX, Designcenter, Teamcenter, Simcenter 3D & Amesim',
-                'is_active' => false,
+                'is_active' => true,
             ],
             [
                 'key' => 'siemens_star_ccm',
