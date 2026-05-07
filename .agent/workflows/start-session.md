@@ -121,4 +121,7 @@ Señales de que el contexto está al límite:
 3. Cerrar la sesión
 4. Abrir sesión nueva → `/start`
 
+# Verificar logs de beta
+ssh root@192.168.50.60 -p 22 "docker compose --project-directory /opt/web-projects/DX-License-Manager -f /opt/web-projects/DX-License-Manager/infra/docker-compose.beta.yml logs -f"
+
 El HANDOFF y el CHANGELOG garantizan que no se pierde nada.
