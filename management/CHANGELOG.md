@@ -3,6 +3,11 @@
 
 ---
 
+## [2026-05-06] — Sincronización y Lecciones (Fase 8.1)
+- **Sincronización**: Restaurada la rama `dev` tras un fallo arquitectónico en el inicio de la Fase 8.1.
+- **Lección Aprendida (UI)**: Uso estricto de `dx-styles.css` sin introducir Tailwind CSS no autorizado.
+- **Lección Aprendida (Rutas)**: Respetar la convención de rutas en castellano (`/herramientas`) y no sobreescribir lógica validada en fases anteriores.
+
 ## [2026-05-06] — Fase 7: Hub de Herramientas ✅
 - **UI/UX**: Implementado Hub de utilidades dinámico agrupado por Vendor (Siemens / Moldex3D).
 - **Backend**: Creado `ToolController` y modelo `FeatureFlag` para gestión de accesos.
