@@ -88,19 +88,20 @@ class NXSuiteService
     public function generateFilename(array $metadata): string
     {
         $soldTo   = $metadata['sold_to'] ?? 'UNKNOWN';
-        $hostname = Str::lower($metadata['hostname'] ?? 'nohost');
-        $client   = Str::slug($metadata['client'] ?? 'client');
+        $hostname = Str::upper(str_replace([' ', '.'], '', $metadata['hostname'] ?? 'NOHOST'));
+        $client   = Str::upper(str_replace([' ', '.'], '-', $metadata['client'] ?? 'CLIENT'));
         $version  = $metadata['version'] ?? 'V1';
-        $date     = $metadata['date'] ?? date('Ymd');
+        $date     = date('dmY'); // Formato DDMMYYYY (07052026)
         $type     = $metadata['type'] ?? 'Standard';
 
         // SOLDTO_HOSTNAME_CLIENTE_VERSION_Valida_FECHA.lic
         switch ($type) {
             case 'Temporal':
-                return "{$soldTo}_{$hostname}_{$client}_{$version}_TEMP_Valida_{$date}.lic";
+                // Sin hostname para temporales: SOLDTO_CLIENTE_VERSION_TEMP_Valida_FECHA.lic
+                return "{$soldTo}_{$client}_{$version}_TEMP_Valida_{$date}.lic";
             
             case 'Dongle':
-                // SOLDTO_CLIENTE_VERSION_DongleUSB_Valida_FECHA.lic (Sin Hostname)
+                // Sin Hostname
                 return "{$soldTo}_{$client}_{$version}_DongleUSB_Valida_{$date}.lic";
             
             case 'Unificada':

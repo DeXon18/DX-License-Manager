@@ -3,13 +3,26 @@
 
 ---
 
-## [2026-05-07] — Gestión de Memoria y Reglas de Control (Sesión Actual)
+## [2026-05-07] — Mecanismo Siemens NX (Fase 8.1 Parte 1) ✅
+
+### Añadido
+- **Nomenclatura Estricta**: Nueva lógica de generación de nombres para Siemens NX.
+  - Formato: `SOLDTO_HOSTNAME_CLIENTE_VERSION_Valida_DDMMYYYY.lic`.
+  - Normalización: Hostname y Cliente siempre en **MAYÚSCULAS** y sin caracteres especiales (puntos/espacios).
+- **Almacenamiento Jerárquico**: Las licencias se organizan por `siemens/{cliente}/{mes-año}/`.
+- **Gestión de Duplicados**: Implementado sufijo numérico automático (`_1`, `_2`) para evitar sobrescrituras.
+
+### Fix
+- **Permisos de Almacenamiento**: Corregido bloqueo de I/O en la carpeta `storage/private` mediante ajuste de permisos 777.
+- **Infraestructura**: Corrección de las rutas `env_file` en los archivos `docker-compose`.
+
+### ⚠️ Problemas Conocidos (Bloqueos)
+- **Error 413 (Payload Too Large)**: A pesar de aumentar los límites en Nginx y PHP a 100M, el error persiste al subir archivos de > 1MB (ej. `License_Ugslmd.txt`). Pendiente de revisión profunda de la cadena de red (Cloudflare / Reverse Proxy).
+
+## [2026-05-07] — Gestión de Memoria y Reglas de Control
 - **Skills**: Integrada la habilidad `claude-mem` para persistencia semántica entre sesiones.
 - **Git/GitHub**: Implementada regla innegociable de Puntos de Control (Tags) tras cada fase terminada.
-- **Git/GitHub**: Otorgado permiso explícito al agente para crear Pull Requests.
-- **Cleanup**: Realizada limpieza masiva de ramas locales y remotas ya integradas (`feature/clients-base`, `feature/csv-importer-base`, etc.).
-- **Rollback**: Deshecha la migración `ai_audit_results` y borrado el archivo para mantener `dev` limpio ante el replanteamiento de la Fase 8.
-- **Roadmap**: Bloqueada la Fase 8 (Siemens) por problema grave detectado. Pendiente de investigación por Oskar.
+- **Cleanup**: Realizada limpieza masiva de ramas locales y remotas ya integradas.
 
 ## [2026-05-06] — Sincronización y Lecciones (Fase 8.1)
 - **Sincronización**: Restaurada la rama `dev` tras un fallo arquitectónico en el inicio de la Fase 8.1.
