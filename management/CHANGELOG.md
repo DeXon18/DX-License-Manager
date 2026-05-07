@@ -3,6 +3,20 @@
 
 ---
 
+## [2026-05-07] — Motor de Auditoría Siemens (Fase 8.1 Parte 2) ✅
+- **Base de Datos**: Implementadas tablas `ai_audit_results` y `client_mappings`.
+- **Servicios de Backend**:
+  - `LicenseParserService`: Parser de limpieza para archivos FlexLM (unificación de líneas y filtrado de firmas).
+  - `AuditService`: Orquestador de comunicación con n8n y lógica de auto-vinculación de clientes.
+- **Integración IA**: 
+  - Conexión operativa con el webhook de n8n para procesamiento asíncrono.
+  - Implementado `AuditCallbackController` para recepción de resultados estructurados.
+  - Integración en el flujo de subida de `NXSuiteController`.
+- **UI de Auditoría (Beta)**:
+  - Nueva pestaña "Licencias" en el perfil de cliente con historial de auditorías.
+  - Visualización de productos detectados mediante chips dinámicos.
+  - **Pendiente**: Refinar la apertura del modal de detalle (investigar fallo Alpine.js tras teleport).
+
 ## [2026-05-07] — Mecanismo Siemens NX (Fase 8.1 Parte 1) ✅
 
 ### Añadido
