@@ -3,6 +3,18 @@
 
 ---
 
+## [2026-05-07] — Optimización de Auditoría IA (v2.2) y Soporte Dongle ✅
+
+### Added
+- **n8n Workflow v2.2**: Implementado nuevo prompt de IA con soporte explícito para:
+  - **Hardware Keys (Dongles)**: Detección de `UG_HWKEY_ID` e IDs numéricos cortos.
+  - **Modo Standalone**: Gestión de licencias sin servidor central.
+  - **IDs Numéricos**: Soporte para Host IDs no hexadecimales (ej: 24141).
+- **Backend Sincronización**: Actualizado `InventorySyncService` para reconocer automáticamente IDs numéricos cortos como licencias tipo `dongle`.
+
+### Fixed
+- **Precisión de Inventario**: Mejorada la detección de tipo de licencia basada en el formato del Host ID del producto.
+
 ## [2026-05-07] — Refinamiento del Inventario Activo (Fase 8.1 Finalizada) ✅
 
 ### Added
