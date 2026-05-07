@@ -11,13 +11,11 @@
   - Normalización: Hostname y Cliente siempre en **MAYÚSCULAS** y sin caracteres especiales (puntos/espacios).
 - **Almacenamiento Jerárquico**: Las licencias se organizan por `siemens/{cliente}/{mes-año}/`.
 - **Gestión de Duplicados**: Implementado sufijo numérico automático (`_1`, `_2`) para evitar sobrescrituras.
+- **UI de NX Suite**: Rediseño visual semántico, utilizando tarjetas diferenciadas con colores de vendor (Rojo Legacy / Teal SALT) y estructura de paneles laterales al estilo `admin/import`.
 
 ### Fix
-- **Permisos de Almacenamiento**: Corregido bloqueo de I/O en la carpeta `storage/private` mediante ajuste de permisos 777.
-- **Infraestructura**: Corrección de las rutas `env_file` en los archivos `docker-compose`.
-
-### ⚠️ Problemas Conocidos (Bloqueos)
-- **Error 413 (Payload Too Large)**: A pesar de aumentar los límites en Nginx y PHP a 100M, el error persiste al subir archivos de > 1MB (ej. `License_Ugslmd.txt`). Pendiente de revisión profunda de la cadena de red (Cloudflare / Reverse Proxy).
+- **Error 413 (Payload Too Large)**: Resuelto. Se corrigió la ruta de `env_file` en `docker-compose.beta.yml` a `./infra/.env.beta` lo que permitió montar correctamente el archivo `local.ini` (100MB) en PHP-FPM.
+- **Permisos de Almacenamiento**: Corregido bloqueo de I/O en la carpeta `storage` y `bootstrap/cache` mediante ajuste de permisos 777.
 
 ## [2026-05-07] — Gestión de Memoria y Reglas de Control
 - **Skills**: Integrada la habilidad `claude-mem` para persistencia semántica entre sesiones.
