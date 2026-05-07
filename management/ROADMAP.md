@@ -249,16 +249,18 @@ DX License Manager
 
 ### 📋 Fase 8 — Siemens
 
-**Estado:** 🔴 BLOQUEADA — Replanteamiento necesario
-**Motivo:** Problema grave detectado. Oskar investigando la causa.
-**Acción:** El agente espera resolución antes de continuar.
+**Estado:** 🔜 EN CURSO
+**Motivo:** Parte 1 (Mecanismo y Límites) completada con éxito.
+**Acción:** Preparado para iniciar Parte 2 (Inteligencia).
 **Prerequisito:** ✅ Fase 7 validada por Oskar
 **Validación requerida antes de Fase 9:** Todas las subherramientas Siemens funcionando en beta.
 
-#### 8.1 — NX Suite
-- [ ] Parser PHP local de archivos `.lic` ugslmd
-- [ ] Auditoría IA via n8n FallbackChain
-- [ ] Resultado visual + descarga del archivo transformado
+#### 8.1 — NX Suite ✅ (Parte 1)
+- [x] Mecanismo de transformación Siemens NX (Standard, Dongle, Unificada)
+- [x] Normalización estricta de nomenclatura (MAYÚSCULAS)
+- [x] Almacenamiento jerárquico y gestión de duplicados
+- [ ] 🔴 BLOQUEO: Aumento de límites de subida (Error 413 persiste en archivos > 1MB)
+- [ ] Parte 2: Parser de contenido y Auditoría IA (Próxima Sesión)
 
 #### 8.2 — STAR-CCM+
 - [ ] Parser PHP local de archivos `.lic` cdlmd
