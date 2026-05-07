@@ -52,6 +52,7 @@ En planificación — se detallan una por una tras validación de la fase anteri
 - [x] Rediseño de UI de Inventario Activo con CSS puro (Bento técnico).
 - [x] Soporte para múltiples **Sold-To** agrupados por cliente.
 - [x] Identificación de hardware (**MAC/Dongle**) en la UI.
+- [x] Optimización de Prompt IA v2.2 (Soporte Dongle e IDs Numéricos).
 
 ### Fase 8.1 (Parte 1) — Siemens NX Suite (Mecanismo)
 - **Completada:** 2026-05-07

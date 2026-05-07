@@ -80,6 +80,12 @@ class InventorySyncService
         if (str_contains($hostId, 'UG_HWKEY_ID=')) {
             return str_replace('UG_HWKEY_ID=', '', $hostId);
         }
+        
+        // Si el hostId es un número corto (<= 10 dígitos), probablemente sea un Dongle ID
+        if (is_numeric($hostId) && strlen($hostId) <= 10) {
+            return $hostId;
+        }
+
         return null;
     }
 
@@ -89,13 +95,18 @@ class InventorySyncService
     private function determineType(array $data)
     {
         $hostId = $data['server_host_id'] ?? '';
-        if (str_contains($hostId, 'UG_HWKEY_ID=')) {
+        if (str_contains($hostId, 'UG_HWKEY_ID=') || (is_numeric($hostId) && strlen($hostId) <= 10)) {
             return 'dongle';
         }
         
         $products = $data['products'] ?? [];
         foreach ($products as $p) {
-            if (!empty($p['node_locked_host_id'])) {
+            $prodHostId = $p['node_locked_host_id'] ?? '';
+            if (!empty($prodHostId)) {
+                // Si el hostID del producto es un Dongle ID
+                if (str_contains($prodHostId, 'HWKEY') || (is_numeric($prodHostId) && strlen($prodHostId) <= 10)) {
+                    return 'dongle';
+                }
                 return 'node-locked';
             }
         }
