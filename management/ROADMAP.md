@@ -249,7 +249,9 @@ DX License Manager
 
 ### 📋 Fase 8 — Siemens
 
-**Estado:** En planificación
+**Estado:** 🔴 BLOQUEADA — Replanteamiento necesario
+**Motivo:** Problema grave detectado. Oskar investigando la causa.
+**Acción:** El agente espera resolución antes de continuar.
 **Prerequisito:** ✅ Fase 7 validada por Oskar
 **Validación requerida antes de Fase 9:** Todas las subherramientas Siemens funcionando en beta.
 
