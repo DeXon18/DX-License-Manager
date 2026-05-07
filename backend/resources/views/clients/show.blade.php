@@ -169,7 +169,7 @@
                                 @endif
                             </td>
                             <td class="text-right">
-                                <button class="btn-icon" title="Ver Detalle Auditoría" @click="openAudit({{ json_encode($result) }})">
+                                <button class="btn-icon" title="Ver Detalle Auditoría" @click="openAudit(@js($result))">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
                             </td>
