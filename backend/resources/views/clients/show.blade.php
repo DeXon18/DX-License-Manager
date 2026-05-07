@@ -13,9 +13,14 @@
 
 <div x-data="{ 
     tab: localStorage.getItem('activeTab') || '{{ request('tab', 'contracts') }}',
+    auditDetail: null,
     setTab(name) {
         this.tab = name;
         localStorage.setItem('activeTab', name);
+    },
+    openAudit(result) {
+        this.auditDetail = result;
+        $dispatch('open-audit-modal');
     }
 }" class="client-profile">
     <div class="tabs">
@@ -164,7 +169,7 @@
                                 @endif
                             </td>
                             <td class="text-right">
-                                <button class="btn-icon" title="Ver Detalle Auditoría">
+                                <button class="btn-icon" title="Ver Detalle Auditoría" @click="openAudit({{ json_encode($result) }})">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
                             </td>
@@ -334,6 +339,114 @@
                         <button type="submit" class="btn-primary" x-text="editMode ? 'Guardar Cambios' : 'Crear Contacto'"></button>
                     </div>
                 </form>
+            </div>
+        </div>
+    <!-- Audit Detail Modal -->
+    <template x-teleport="body">
+        <div x-data="{ open: false }"
+            x-show="open"
+            @open-audit-modal.window="open = true"
+            class="modal-overlay"
+            style="display: none; z-index: 1100;"
+        >
+            <div class="modal-content audit-modal" @click.outside="open = false" style="max-width: 900px; background: #0f111a; border-color: #1e2235;">
+                <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
+                    <div class="flex items-center gap-4">
+                        <div class="audit-icon-box">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <div>
+                            <h3 style="margin-bottom: 4px; color: #fff;">Detalle de Auditoría Siemens</h3>
+                            <span class="text-xs muted uppercase tracking-widest font-bold">Analizado por Motor FallbackChain v2.1</span>
+                        </div>
+                    </div>
+                    <button @click="open = false" class="close-btn">&times;</button>
+                </div>
+
+                <div class="modal-body p-8" x-show="auditDetail">
+                    <!-- Top Info Cards -->
+                    <div class="audit-header-grid">
+                        <div class="audit-info-card">
+                            <span class="label">Account / Sold-To</span>
+                            <span class="value" x-text="auditDetail.sold_to || 'N/A'"></span>
+                        </div>
+                        <div class="audit-info-card">
+                            <span class="label">Ecosistema / Daemon</span>
+                            <div class="flex items-center gap-2">
+                                <span class="value daemon" x-text="auditDetail.results?.daemon || 'ugslmd'"></span>
+                                <span class="badge badge-accent sm">SIEMENS</span>
+                            </div>
+                        </div>
+                        <div class="audit-info-card" style="grid-column: span 2;">
+                            <span class="label">Servidor / Hostname</span>
+                            <div class="flex items-baseline gap-3">
+                                <span class="value hostname" x-text="auditDetail.results?.hostname || 'PENDIENTE'"></span>
+                                <span class="text-xs font-mono" style="color: var(--accent)" x-text="auditDetail.results?.composite ? 'Composite: ' + auditDetail.results.composite : ''"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Unified Sold-Tos -->
+                    <div class="unified-box mt-6" x-show="auditDetail.results?.unified_sold_tos?.length">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-solid fa-link text-warn" style="font-size: 10px;"></i>
+                            <span class="label">Sold-Tos Unificados:</span>
+                            <div class="flex flex-wrap gap-2">
+                                <template x-for="st in auditDetail.results?.unified_sold_tos">
+                                    <span class="badge badge-muted sm" x-text="st"></span>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Products Table -->
+                    <div class="mt-10">
+                        <h4 class="section-title">Desglose de Productos y Expiración</h4>
+                        <div class="audit-table-wrapper mt-4">
+                            <table class="audit-table">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Descripción</th>
+                                        <th class="text-center">Cant.</th>
+                                        <th>Expiración</th>
+                                        <th style="width: 40px;"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template x-for="product in (auditDetail.results?.products || [])">
+                                        <tr>
+                                            <td class="font-bold font-mono text-sm" x-text="product.product_code || product.name" style="color: #fff;"></td>
+                                            <td class="muted text-xs" x-text="product.description || '—'"></td>
+                                            <td class="text-center">
+                                                <span class="qty-badge" x-text="product.quantity || product.qty"></span>
+                                            </td>
+                                            <td>
+                                                <span :class="{
+                                                    'expiry-badge': true,
+                                                    'upcoming': (product.expiration_date || product.expiry || '').includes('2026')
+                                                }">
+                                                    <span x-text="product.expiration_date || product.expiry || 'Permanent'"></span>
+                                                    <template x-if="(product.expiration_date || product.expiry || '').includes('2026')">
+                                                        <span class="text-[9px] uppercase font-bold ml-1">(Próxima)</span>
+                                                    </template>
+                                                </span>
+                                            </td>
+                                            <td><i class="fa-solid fa-trash-can text-xs opacity-20"></i></td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer" style="background: transparent; border: none; padding-top: 0;">
+                    <button type="button" @click="open = false" class="btn-secondary">Cerrar Detalle</button>
+                    <button type="button" class="btn-primary">
+                        <i class="fa-solid fa-file-export mr-2"></i> Exportar Reporte
+                    </button>
+                </div>
             </div>
         </div>
     </template>
@@ -513,6 +626,126 @@
         background: rgba(255, 255, 255, 0.03);
         color: var(--muted);
         border-color: var(--border);
+    }
+    /* Audit Modal Styles */
+    .audit-modal {
+        box-shadow: 0 0 50px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
+    }
+    .audit-icon-box {
+        width: 48px;
+        height: 48px;
+        background: linear-gradient(135deg, var(--accent), #1a73e8);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 20px;
+        box-shadow: 0 8px 16px rgba(var(--accent-rgb), 0.3);
+    }
+    .audit-header-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+    .audit-info-card {
+        background: rgba(255,255,255,0.02);
+        border: 1px solid rgba(255,255,255,0.05);
+        padding: 16px 20px;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    .audit-info-card .label {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--muted);
+    }
+    .audit-info-card .value {
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+    }
+    .audit-info-card .value.daemon { color: var(--accent); font-family: var(--font-mono); font-size: 16px; }
+    .audit-info-card .value.hostname { color: #fff; font-family: var(--font-mono); }
+
+    .unified-box {
+        background: rgba(245, 158, 11, 0.03);
+        border: 1px dashed rgba(245, 158, 11, 0.2);
+        padding: 12px 20px;
+        border-radius: 10px;
+    }
+    .unified-box .label {
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #f59e0b;
+        margin-right: 8px;
+    }
+
+    .section-title {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .section-title::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: rgba(255,255,255,0.05);
+    }
+
+    .audit-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 4px;
+    }
+    .audit-table th {
+        text-align: left;
+        padding: 12px 16px;
+        font-size: 10px;
+        text-transform: uppercase;
+        color: var(--muted);
+        font-weight: 700;
+    }
+    .audit-table td {
+        padding: 14px 16px;
+        background: rgba(255,255,255,0.01);
+        border-top: 1px solid rgba(255,255,255,0.03);
+        border-bottom: 1px solid rgba(255,255,255,0.03);
+    }
+    .audit-table td:first-child { border-left: 1px solid rgba(255,255,255,0.03); border-radius: 8px 0 0 8px; }
+    .audit-table td:last-child { border-right: 1px solid rgba(255,255,255,0.03); border-radius: 0 8px 8px 0; }
+
+    .qty-badge {
+        background: #1e2235;
+        color: #fff;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-weight: 800;
+        font-size: 12px;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+    }
+    .expiry-badge {
+        background: rgba(255,255,255,0.03);
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text);
+    }
+    .expiry-badge.upcoming {
+        background: rgba(245, 158, 11, 0.1);
+        color: #f59e0b;
+        border: 1px solid rgba(245, 158, 11, 0.2);
     }
 </style>
 @endpush
