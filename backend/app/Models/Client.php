@@ -23,4 +23,14 @@ class Client extends Model
     {
         return $this->hasMany(Certificate::class);
     }
+
+    public function mappings(): HasMany
+    {
+        return $this->hasMany(ClientMapping::class);
+    }
+
+    public function auditResults(): HasMany
+    {
+        return $this->hasMany(AiAuditResult::class);
+    }
 }
