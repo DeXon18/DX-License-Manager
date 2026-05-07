@@ -1,20 +1,22 @@
-# LAST_BRAIN — Sesión 2026-05-07
+# Memory Dump — DX License Manager
+> Última sesión: 2026-05-07 11:24
+> Rama: feature/nx-suite-colors
 
-## Resumen de la Situación
-Finalizada la **Parte 1 de la Fase 8.1 (Mecanismo Siemens NX)** a nivel de código de transformación y almacenamiento. Sin embargo, persiste un **BLOQUEO CRÍTICO de infraestructura** (Error 413) que impide subir archivos de más de 1MB, a pesar de haber configurado Nginx y PHP a 100MB.
+## 🧠 Contexto Activo (Active Context)
+- **Fase**: 8.1 (Mecanismo Siemens NX)
+- **Problema principal resuelto**: Error 413 "Request Entity Too Large". El contenedor PHP-FPM no estaba montando `local.ini` debido a un bug silencioso en `docker-compose.beta.yml` (`env_file` usaba una ruta relativa al archivo compose y no al project-directory).
+- **Logro secundario**: La UI de NX Suite (`nx-suite.blade.php`) ha sido rediseñada completamente. Ahora usa colores semánticos de Siemens (Rojo para Legacy, Teal para SALT) y una estructura de paneles que replica exactamente la vista de `admin/import`.
+- **Regla aprendida**: Añadida lección en `lessons.md` sobre cómo resolver rutas de `env_file` en docker-compose y cómo reiniciar contenedores Nginx.
 
-## Logros Técnicos
-- **Backend**: `NXSuiteService` normaliza hostname y cliente a **MAYÚSCULAS** y limpia caracteres.
-- **Storage**: Solucionado bloqueo de I/O en `storage/private` mediante permisos 777.
-- **Almacenamiento**: Las licencias se archivan correctamente en la ruta jerárquica con control de duplicados.
+## 🏗 Arquitectura Mental (Mental Model)
+- **Nomenclatura Siemens**: `SOLDTO_HOSTNAME_CLIENTE_VERSION_Valida_DDMMYYYY.lic`.
+- **Motores**: `ugslmd` (Hasta NX 2206 - Rojo) vs `saltd` (Desde NX 2212 - Teal).
+- **Almacenamiento**: Las licencias temporales NO se guardan. Las demás van a `storage/private/licenses/siemens/...` y los duplicados usan sufijos automáticos (`_1`, `_2`).
 
-## Bloqueos Activos
-- 🔴 **Error 413 Payload Too Large**: Persiste en archivos > 1MB. Sospecha de Cloudflare o proxy externo. Requiere investigación de red fuera de los contenedores.
+## 🛑 Dead Ends (Lo que NO funciona)
+- Usar `docker restart` para aplicar volúmenes nuevos (no funciona, hay que hacer `up -d`).
+- Rutas relativas en `env_file` de `docker-compose` asumiendo la carpeta local en vez de la raíz del repo (falla el parseo del env y no se montan archivos clave).
+- Usar clases Tailwind CSS (`nx-suite.blade.php` usa estrictamente CSS vanilla del `DESIGN.md`).
 
-## Próximos Pasos (Fase 8.1 Parte 2)
-1. **Resolver el Bloqueo 413**: Investigar por qué el límite de 100MB no se aplica en la práctica.
-2. **Parser de INCREMENT**: Implementar la extracción granular de productos del archivo `.lic`.
-3. **Auditoría IA**: Conectar con n8n FallbackChain.
-
-## Nota de Rama
-Trabajando en `feature/siemens-nx-mechanism`. Todos los cambios de documentación sincronizados.
+## 🎯 Siguiente Tarea (Next Task)
+Hacer merge de `feature/nx-suite-colors` y comenzar con la lógica interna: Implementar el parser de contenido (bloques `INCREMENT`) y conectarlo con la infraestructura existente de NX Suite y n8n (FallbackChain).
