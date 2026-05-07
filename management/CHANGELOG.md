@@ -3,6 +3,20 @@
 
 ---
 
+## [2026-05-07] — Refinamiento del Inventario Activo (Fase 8.1 Finalizada) ✅
+
+### Added
+- **UI de Inventario Robusta**: Rediseño completo de la interfaz de inventario utilizando CSS puro de alta densidad técnica.
+  - Layout horizontal optimizado para lectura rápida de daemons y productos.
+  - Soporte nativo para visualización de múltiples **Sold-To** bajo un mismo cliente (Ecosistema Siemens).
+  - Identificación visual clara de licencias **Node-Locked** (MAC) y **Hardware Keys** (Dongles).
+- **Consistencia Visual**: Restauración de estilos globales (menú de pestañas, leyenda de estados, modales de auditoría) para asegurar la integridad de toda la vista de cliente.
+- **Tipografía Corporativa**: Integración de Google Fonts (Inter e IBM Plex Mono) para mejorar la legibilidad de datos técnicos.
+
+### Fixed
+- **Layout Bento**: Eliminadas dependencias de Tailwind que causaban fallos de renderizado en monitores panorámicos.
+- **Estabilidad CSS**: Aislados los estilos de inventario en bloques robustos, evitando colisiones con el diseño global del portal.
+
 ## [2026-05-07] — Motor de Auditoría Siemens (Fase 8.1 Parte 2) ✅
 
 ### Added

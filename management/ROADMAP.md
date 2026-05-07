@@ -255,12 +255,14 @@ DX License Manager
 **Prerequisito:** ✅ Fase 7 validada por Oskar
 **Validación requerida antes de Fase 9:** Todas las subherramientas Siemens funcionando en beta.
 
-#### 8.1 — NX Suite ✅ (Parte 1)
+#### 8.1 — NX Suite ✅
 - [x] Mecanismo de transformación Siemens NX (Standard, Dongle, Unificada)
 - [x] Normalización estricta de nomenclatura (MAYÚSCULAS)
 - [x] Almacenamiento jerárquico y gestión de duplicados
-- [x] Aumento de límites de subida (Error 413 resuelto mediante ajuste de env_file)
-- [x] Parte 2: Parser de contenido (INCREMENT), Auditoría IA y Resultados Estructurados ✅ COMPLETADA
+- [x] Parser de contenido (INCREMENT), Auditoría IA y Resultados Estructurados
+- [x] Rediseño de UI de Inventario Activo (Alta Densidad Técnica)
+- [x] Soporte para múltiples Sold-To por cliente
+- **Validación:** ✅ Verificado por Oskar el 2026-05-07. Operativo en Beta.
 
 #### 8.2 — STAR-CCM+
 - [ ] Parser PHP local de archivos `.lic` cdlmd
@@ -391,6 +393,17 @@ DX License Manager
 
 ---
 
+### 📋 Fase 17 — Consolidación y Limpieza UI
+
+**Estado:** Planificado (Fase Final de Bloque 8.1)
+
+- [ ] Auditoría de estilos redundantes en vistas Blade
+- [ ] Migración de componentes CSS de `show.blade.php` a `dx-styles.css`
+- [ ] Optimización de selectores y reducción de especificidad innecesaria
+- [ ] Verificación de consistencia visual en Mobile/Responsive tras la consolidación
+
+---
+
 ## Stack Tecnológico
 
 | Capa           | Tecnología                     |
@@ -410,3 +423,5 @@ DX License Manager
 | Automatización | n8n                            |
 | Auditoría IA   | Gemini → DeepSeek → OpenRouter |
 | Notificaciones | Telegram                       |
+---
+
