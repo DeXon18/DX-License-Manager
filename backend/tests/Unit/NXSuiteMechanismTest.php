@@ -55,8 +55,9 @@ class NXSuiteMechanismTest extends TestCase
             'type'    => 'Dongle'
         ];
         $filename = $this->nxService->generateFilename($metadata);
+        $expectedDate = date('dmY');
 
-        $this->assertEquals('123456_test-client_V1_DongleUSB_Valida_20260507.lic', $filename);
+        $this->assertEquals("123456_TEST-CLIENT_V1_DongleUSB_Valida_{$expectedDate}.lic", $filename);
     }
 
     /** @test */
@@ -71,7 +72,9 @@ class NXSuiteMechanismTest extends TestCase
             'type'     => 'Temporal'
         ];
         $filename = $this->nxService->generateFilename($metadata);
+        $expectedDate = date('dmY');
 
-        $this->assertEquals('123456_localhost_test-client_V1_TEMP_Valida_20260507.lic', $filename);
+        // Sin hostname en temporales: SOLDTO_CLIENTE_VERSION_TEMP_Valida_FECHA.lic
+        $this->assertEquals("123456_TEST-CLIENT_V1_TEMP_Valida_{$expectedDate}.lic", $filename);
     }
 }

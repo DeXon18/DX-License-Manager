@@ -1,1 +1,20 @@
-Fase 8 bloqueada por fallo grave (Oskar investigando). Entorno sincronizado en dev tras rollback de ai_audit_results. Ramas limpias. Integrada skill claude-mem y nuevas reglas de control (Tags + permisos PR). NO TOCAR Fase 8 hasta desbloqueo.
+# LAST_BRAIN — Sesión 2026-05-07
+
+## Resumen de la Situación
+Finalizada la **Parte 1 de la Fase 8.1 (Mecanismo Siemens NX)** a nivel de código de transformación y almacenamiento. Sin embargo, persiste un **BLOQUEO CRÍTICO de infraestructura** (Error 413) que impide subir archivos de más de 1MB, a pesar de haber configurado Nginx y PHP a 100MB.
+
+## Logros Técnicos
+- **Backend**: `NXSuiteService` normaliza hostname y cliente a **MAYÚSCULAS** y limpia caracteres.
+- **Storage**: Solucionado bloqueo de I/O en `storage/private` mediante permisos 777.
+- **Almacenamiento**: Las licencias se archivan correctamente en la ruta jerárquica con control de duplicados.
+
+## Bloqueos Activos
+- 🔴 **Error 413 Payload Too Large**: Persiste en archivos > 1MB. Sospecha de Cloudflare o proxy externo. Requiere investigación de red fuera de los contenedores.
+
+## Próximos Pasos (Fase 8.1 Parte 2)
+1. **Resolver el Bloqueo 413**: Investigar por qué el límite de 100MB no se aplica en la práctica.
+2. **Parser de INCREMENT**: Implementar la extracción granular de productos del archivo `.lic`.
+3. **Auditoría IA**: Conectar con n8n FallbackChain.
+
+## Nota de Rama
+Trabajando en `feature/siemens-nx-mechanism`. Todos los cambios de documentación sincronizados.

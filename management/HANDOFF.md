@@ -1,52 +1,52 @@
 # HANDOFF — DX Management Portal
-> Última actualización: 2026-05-07 08:15  
+> Última actualización: 2026-05-07 09:55  
 > Sesión en: ATSESWS1001  
-> Rama activa: dev
+> Rama activa: feature/siemens-nx-mechanism
 
 ---
 
 ## Estado General
 
-**Fase actual:** Fase 8 — Siemens (🔴 BLOQUEADA)  
-**Stack beta:** ✅ running  
+**Fase actual:** Fase 8.1 — Siemens NX (Parte 1 Finalizada ✅)  
+**Stack beta:** ✅ running (Limits 100MB)  
 **Stack prod:** ✅ running  
 
 ---
 
 ## Qué se hizo en esta sesión
 
-- **Gestión de Memoria**: Instalada habilidad `claude-mem` en `.agent/skills/` e indexada.
-- **Reglas de Control**: Añadida regla innegociable de **Tags de Git** para cada fase terminada en `AGENTS.md`.
-- **Permisos**: Agente con permiso explícito para crear Pull Requests documentado.
-- **Limpieza de Ramas**: Borradas ramas fusionadas locales y remotas (`clients-base`, `csv-importer-base`, `dashboard-base`, `siemens-nx-suite-p1`).
-- **Control de Daños**: Deshecha migración accidental `ai_audit_results` (rollback + rm).
-- **Roadmap**: Documentado bloqueo de la Fase 8 por problema grave detectado.
+- **Mecanismo NX**: Implementada lógica de transformación y nomenclatura estricta para archivos Siemens NX.
+- **Nomenclatura**: Normalización de Hostname y Cliente a MAYÚSCULAS sin caracteres especiales.
+- **Infraestructura**: Aumentado `client_max_body_size` a 100MB en Nginx y configurado `local.ini` en PHP con 100MB de límite de subida.
+- **Fix Almacenamiento**: Corregidos permisos 777 en `storage/private` para evitar bloqueos de I/O detectados.
+- **Docker**: Corrección de las rutas de `env_file` en los archivos `docker-compose`.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-1. **Esperar resolución de Oskar** sobre el fallo grave en la Fase 8.
-2. Una vez desbloqueado, retomar Fase 8.1 (NX Suite Auditor).
+1. **Validar subida**: Confirmar con Oskar que la subida de la licencia contractual múltiple funciona sin error 413.
+2. **Fase 8.1 Parte 2**: Implementar el parser de contenido (bloques INCREMENT) y la auditoría IA.
 
 ### Tareas siguientes
-1. Implementar `SiemensParser.php` (daemon `ugslmd`).
-2. Crear interfaz de auditoría para archivos `.lic` Siemens.
+1. Implementar la visualización de resultados de auditoría.
+2. Preparar la descarga del archivo transformado con el nuevo nombre normalizado.
 
 ---
 
 ## Contexto técnico importante
 
-- El entorno está **limpio y sincronizado** en la rama `dev`.
-- Se ha verificado que `dx-styles.css` usa cache busting, por lo que los cambios visuales deben verse inmediatamente en Beta.
-- No hay migraciones pendientes en el servidor.
+- El archivo **`infra/php/local.ini`** es crítico para que PHP acepte archivos de más de 2MB.
+- La carpeta **`storage/private`** debe mantener permisos 777 debido a la configuración del montaje Proxmox/Samba.
+- Se ha verificado que la licencia se guarda correctamente en el repositorio jerárquico.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-- **Fase 8 BLOQUEADA**: Hay un problema grave detectado por el usuario Oskar que requiere replanteamiento de la fase. No tocar código de Fase 8 hasta aviso.
+- **BLOQUEO CRÍTICO**: Error 413 Request Entity Too Large al subir archivos de > 1MB. Aunque Nginx y PHP están en 100MB, el error persiste.
+- **Resuelto**: Bloqueo de escritura en el sistema de archivos (permisos).
 
 ---
 
@@ -54,19 +54,19 @@
 
 | Archivo | Estado |
 |:---|:---|
-| `infra/.env.prod` | ✅ configurado |
-| `infra/.env.beta` | ✅ configurado |
-| `backend/.env` | ✅ configurado (vía symlink/volume) |
-| `backend/vendor/` | ✅ instalado |
+| `infra/php/local.ini` | ✅ Creado y montado |
+| `backend/app/Services/Licensing/NXSuiteService.php` | ✅ Actualizado (Nomenclatura) |
+| `infra/docker-compose.beta.yml` | ✅ Corregido |
+| `infra/nginx/beta.conf` | ✅ Actualizado (100MB) |
 
 ---
 
 ## Comandos útiles para la próxima sesión
 
 ```bash
-# Verificar estado de migraciones
-ssh root@192.168.50.60 -p 22 "docker exec dx-php-beta php artisan migrate:status"
+# Ver configuración activa de PHP (límites)
+ssh root@192.168.50.60 -p 22 "docker exec dx-php-beta php -i | grep -E 'upload_max_filesize|post_max_size'"
 
-# Ver logs de beta
-ssh root@192.168.50.60 -p 22 "docker compose --project-directory /opt/web-projects/DX-License-Manager -f /opt/web-projects/DX-License-Manager/infra/docker-compose.beta.yml logs -f"
+# Ver archivos en el repositorio de licencias
+ssh root@192.168.50.60 -p 22 "find /opt/web-projects/DX-License-Manager/storage/private/licenses/siemens -type f"
 ```

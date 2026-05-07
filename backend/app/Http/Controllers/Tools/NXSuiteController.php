@@ -53,9 +53,24 @@ class NXSuiteController extends Controller
         if ($metadata['type'] !== 'Temporal') {
             $clientSlug = Str::slug($metadata['client']);
             $dateFolder = date('m-Y');
-            $path = "licenses/{$clientSlug}/siemens/{$dateFolder}/{$filename}";
             
-            Storage::disk('local')->put($path, $transformedContent);
+            // Nueva ruta solicitada: licenses/siemens/{cliente}/{fecha}/
+            $storagePath = "licenses/siemens/{$clientSlug}/{$dateFolder}";
+            $fullPath = "{$storagePath}/{$filename}";
+
+            // Manejo de duplicados (_1, _2, etc.)
+            $counter = 1;
+            $finalFilename = $filename;
+            while (Storage::disk('local')->exists("{$storagePath}/{$finalFilename}")) {
+                $finalFilename = $filename . "_" . $counter;
+                $counter++;
+            }
+            
+            Storage::disk('local')->put("{$storagePath}/{$finalFilename}", $transformedContent);
+            
+            // El archivo para descargar sigue siendo el original o el final? 
+            // El usuario pidió que el guardado tenga el sufijo. Para la descarga mantendremos el final por consistencia.
+            $filename = $finalFilename;
         }
 
         // Devolver para descarga inmediata
