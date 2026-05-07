@@ -320,7 +320,7 @@ Nunca ejecutar sin "sí" explícito del desarrollador:
 ### 3.6 Puntos de Control por Fase — Regla Innegociable
 
 Al terminar cada fase del ROADMAP:
-1.  **Merge obligatorio** a `dev` vía Pull Request (el agente tiene permiso para crear el PR).
+1.  **Merge obligatorio** a `dev` vía Pull Request (el agente tiene permiso para crear el PR) pero siempre pidiendo autorización al usuario.
 2.  **Etiquetado obligatorio**: Crear un Git Tag descriptivo (ej: `v5.0-dashboard-ok`) para marcar el punto estable.
 3.  **Descripción clara**: El commit de cierre debe indicar explícitamente "Fase X Terminada — Punto de Restauración".
 
