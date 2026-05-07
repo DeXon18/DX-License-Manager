@@ -3,7 +3,7 @@
 
 ---
 
-## [2026-05-07] — Optimización de Auditoría IA (v2.2) y Soporte Dongle ✅
+## [2026-05-07] — Optimización de Auditoría IA (v2.2) ⏳ (Pendiente Verificar)
 
 ### Added
 - **n8n Workflow v2.2**: Implementado nuevo prompt de IA con soporte explícito para:
