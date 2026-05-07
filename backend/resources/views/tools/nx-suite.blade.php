@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
-@section('title', 'Designcenter & TC')
+@section('title', 'NX Suite')
 
 @section('content')
 <div class="page-header">
     <div class="breadcrumb">
         <a href="{{ url('/') }}">Portal</a> ›
         <a href="{{ route('tools.index') }}">Herramientas</a> ›
-        Designcenter & TC
+        NX Suite
     </div>
     <div style="display: flex; align-items: center; gap: 12px; margin-top: 8px;">
         <div class="tool-icon-fallback" style="background: rgba(194,87,10,0.08); color: #c2570a; width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
         </div>
         <div>
-            <h1 class="page-title" style="margin: 0;">Designcenter & TC <span class="vendor-label siemens" style="font-size: 10px; padding: 2px 6px; margin-left: 8px;">Siemens PLM</span></h1>
-            <p class="page-sub" style="margin: 0;">Transformación mecánica de licencias para el ecosistema Siemens NX</p>
+            <h1 class="page-title" style="margin: 0;">NX Suite <span class="vendor-label siemens" style="font-size: 10px; padding: 2px 6px; margin-left: 8px;">Siemens PLM</span></h1>
+            <p class="page-sub" style="margin: 0;">Ecosistema de Digital Industries Software y Gestión PLM</p>
         </div>
     </div>
 </div>
@@ -70,6 +70,7 @@
                     <span style="font-size: 10px; padding: 2px 8px; border-radius: 4px; background: var(--bg); border: 1px solid var(--border); color: var(--text-2);">.lic</span>
                     <span style="font-size: 10px; padding: 2px 8px; border-radius: 4px; background: var(--bg); border: 1px solid var(--border); color: var(--text-2);">.txt</span>
                     <span style="font-size: 10px; padding: 2px 8px; border-radius: 4px; background: var(--bg); border: 1px solid var(--border); color: var(--text-2);">.dat</span>
+                    <span style="font-size: 10px; padding: 2px 8px; border-radius: 4px; background: var(--bg); border: 1px solid var(--border); color: var(--text-2);">.cid</span>
                 </div>
             </div>
         </form>
