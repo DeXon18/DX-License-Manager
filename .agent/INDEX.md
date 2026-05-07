@@ -59,6 +59,7 @@ Estas skills no se cargan al inicio de sesión. Se activan únicamente por palab
 - **`laravel-security-audit`** → `.agent/skills/laravel-security-audit/`
 - **`php-security-auditor`** → `.agent/skills/php-security-auditor/`
 - **`docker-expert`** → `.agent/skills/docker-expert/`
+- **`claude-mem`** → `.agent/skills/claude-mem/` — memoria persistente y resúmenes
 
 ---
 
