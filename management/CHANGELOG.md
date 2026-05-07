@@ -40,6 +40,16 @@
 - **Git/GitHub**: Implementada regla innegociable de Puntos de Control (Tags) tras cada fase terminada.
 - **Cleanup**: Realizada limpieza masiva de ramas locales y remotas ya integradas.
 
+## [2026-05-07] — Rediseño de Inventario y Gestión Multi-Vendor
+
+### Added
+- [PLAN] Iniciado rediseño completo de la gestión de licencias hacia un modelo de "Inventario Activo".
+- Definición de nuevas tablas `license_inventory_daemons` y `license_inventory_products` para soportar multi-Sold-To y Node-Locked (MACs).
+- Soporte para licencias de tipo Dongle USB (HW-KEY).
+
+### Fixed
+- Estandarización de etiquetas (### Added, ### Fixed, ### Changed) en el historial de sesiones.
+
 ## [2026-05-06] — Sincronización y Lecciones (Fase 8.1)
 
 ### Changed
