@@ -14,12 +14,7 @@ El agente no avanza hasta recibir "aprobado", "adelante" o similar de forma expl
 
 ## 🟢 En Progreso
 
-- [ ] **Fase 8.1 (Parte 2)**: Implementación del parser Siemens (bloques INCREMENT) e integración con Auditoría IA.
-
----
-
-- [x] Fase 6.1: Perfeccionamiento de Gestión de Clientes.
-- [x] **Mejora Leyenda**: Refinar el diseño de la leyenda de estados de los ContraHeader para mayor integración estética.
+- [ ] **Fase 8.2**: Auditoría STAR-CCM+.
 
 ---
 
@@ -46,6 +41,16 @@ En planificación — se detallan una por una tras validación de la fase anteri
 ---
 
 ## ✅ Completado
+
+### Fase 8.1 (Parte 2) — Siemens NX Suite (Inteligencia & Auditoría)
+- **Completada:** 2026-05-07
+- **Rama:** feature/siemens-audit-motor
+- **Resumen:** Implementación del motor de auditoría IA con limpieza de FlexLM, integración con n8n y callback asíncrono para persistencia.
+- [x] Migración `ai_audit_results` y `client_mappings`.
+- [x] Implementación `LicenseParserService` (limpieza FlexLM).
+- [x] Implementación `AuditService` (integración n8n).
+- [x] Instalación de API Laravel 11 y endpoint de callback.
+- [x] Integración en `NXSuiteController`.
 
 ### Fase 8.1 (Parte 1) — Siemens NX Suite (Mecanismo)
 - **Completada:** 2026-05-07
