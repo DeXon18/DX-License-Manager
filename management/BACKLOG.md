@@ -12,9 +12,9 @@ El agente no avanza hasta recibir "aprobado", "adelante" o similar de forma expl
 
 ---
 
-## 🔴 Bloqueado
+## 🟢 En Progreso
 
-- [ ] **Fase 8 — Siemens**: BLOQUEADA por problema grave. Oskar investigando. El agente espera resolución.
+- [ ] **Fase 8.1 (Parte 2)**: Implementación del parser Siemens (bloques INCREMENT) e integración con Auditoría IA.
 
 ---
 
