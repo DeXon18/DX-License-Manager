@@ -115,22 +115,80 @@
         </div>
     </div>
 
-    <!-- Licencias Tab (Pendiente Fase 8) -->
+    <!-- Licencias Tab (Motor IA Activado) -->
     <div x-show="tab === 'licenses'" class="tab-content" style="display: none;">
-        <div class="card text-center py-20 border-dashed opacity-80" style="border: 2px dashed var(--border); background: transparent;">
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full mb-6" style="background: rgba(var(--accent-rgb, 0, 122, 255), 0.1); margin: 0 auto 24px;">
-                <i class="fa-solid fa-microchip text-accent" style="font-size: 24px; color: var(--accent);"></i>
+        @if($client->auditResults->count() > 0)
+            <div class="card">
+                <div class="card-header flex justify-between items-center">
+                    <h3 class="text-sm font-bold uppercase tracking-wider">Historial de Auditorías IA</h3>
+                    <span class="badge badge-accent">{{ $client->auditResults->count() }} Archivos</span>
+                </div>
+                <table class="table text-sm">
+                    <thead>
+                        <tr>
+                            <th>Sold-To</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                            <th>Productos Detectados</th>
+                            <th class="text-right">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($client->auditResults as $result)
+                        <tr>
+                            <td class="font-bold">{{ $result->sold_to ?? 'Pendiente' }}</td>
+                            <td>{{ $result->created_at->format('d/m/Y H:i') }}</td>
+                            <td>
+                                @if($result->status === 'completed')
+                                    <span class="badge badge-success">Auditado</span>
+                                @elseif($result->status === 'processing')
+                                    <span class="badge badge-warn animate-pulse">Procesando...</span>
+                                @else
+                                    <span class="badge badge-danger">Error</span>
+                                @endif
+                            </td>
+                            <td>
+                                @if($result->status === 'completed' && isset($result->results['products']))
+                                    <div class="flex flex-wrap gap-1">
+                                        @foreach(array_slice($result->results['products'], 0, 3) as $product)
+                                            <span class="product-chip">
+                                                {{ $product['name'] }} ({{ $product['qty'] }})
+                                            </span>
+                                        @endforeach
+                                        @if(count($result->results['products']) > 3)
+                                            <span class="product-chip muted">+{{ count($result->results['products']) - 3 }} más</span>
+                                        @endif
+                                    </div>
+                                @else
+                                    <span class="muted">—</span>
+                                @endif
+                            </td>
+                            <td class="text-right">
+                                <button class="btn-icon" title="Ver Detalle Auditoría">
+                                    <i class="fa-solid fa-eye"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
-            <h3 class="text-xl font-bold tracking-tight">Gestión de Licencias</h3>
-            <p class="muted mt-3 max-w-md mx-auto" style="margin-left: auto; margin-right: auto;">
-                La subida y gestión automatizada de archivos <code>.lic</code> / <code>.mac</code> 
-                estará disponible tras implementar el motor de auditoría en la <strong>Fase 8</strong>.
-            </p>
-            <div class="flex justify-center gap-3 mt-8" style="display: flex; justify-content: center; gap: 12px; margin-top: 32px;">
-                <span class="badge badge-accent">Próximamente</span>
-                <span class="badge badge-muted">Fase 8.1 — Siemens Suite</span>
+        @else
+            <div class="card text-center py-20 border-dashed opacity-80" style="border: 2px dashed var(--border); background: transparent;">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full mb-6" style="background: rgba(var(--accent-rgb, 0, 122, 255), 0.1); margin: 0 auto 24px;">
+                    <i class="fa-solid fa-microchip text-accent" style="font-size: 24px; color: var(--accent);"></i>
+                </div>
+                <h3 class="text-xl font-bold tracking-tight">Gestión de Licencias</h3>
+                <p class="muted mt-3 max-w-md mx-auto" style="margin-left: auto; margin-right: auto;">
+                    No se han encontrado auditorías realizadas para este cliente. 
+                    Suba una licencia en <strong>Herramientas > NX Suite</strong> para iniciar el proceso.
+                </p>
+                <div class="flex justify-center gap-3 mt-8" style="display: flex; justify-content: center; gap: 12px; margin-top: 32px;">
+                    <span class="badge badge-accent">Motor Activo</span>
+                    <span class="badge badge-muted">Fase 8.1 — Siemens Suite</span>
+                </div>
             </div>
-        </div>
+        @endif
     </div>
 
     <!-- Certificados Tab (Pendiente Fase 8.4) -->
@@ -436,6 +494,25 @@
         justify-content: end;
         gap: 12px;
         background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Product Chips */
+    .product-chip {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(var(--accent-rgb, 0, 122, 255), 0.05);
+        color: var(--accent);
+        border: 1px solid rgba(var(--accent-rgb, 0, 122, 255), 0.1);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 10px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+    .product-chip.muted {
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--muted);
+        border-color: var(--border);
     }
 </style>
 @endpush
