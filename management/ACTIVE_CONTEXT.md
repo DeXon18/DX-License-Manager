@@ -2,7 +2,7 @@
 project: DX License Manager
 repo: github.com/DeXon18/DX-License-Manager
 status: In Progress
-last_sync: 2026-05-05
+last_sync: 2026-05-07
 current_agent: Claude
 ---
 
@@ -10,19 +10,19 @@ current_agent: Claude
 
 ## 🎯 Objetivo Actual
 
-- [ ] Tarea principal: Fase 0 — Verificación de Infraestructura
-- [ ] Subtarea en curso: Levantar stacks y verificar despliegue automático
-- Rama activa: dev
-- Fase del ROADMAP: Fase 0
+- [x] Tarea principal: Fase 8.1 Parte 1 — Mecanismo Siemens NX
+- [ ] Subtarea en curso: Fase 8.1 Parte 2 — Inteligencia y Auditoría IA
+- Rama activa: feature/siemens-nx-mechanism
+- Fase del ROADMAP: Fase 8.1
 
 ---
 
 ## 🕒 Log de Acciones (última sesión)
 
-- 2026-05-05 — Inicialización de Git local y remoto.
-- 2026-05-05 — Configuración de GitHub Workflows (`ci`, `deploy-beta`, `deploy-prod`).
-- 2026-05-05 — Preparación del servidor LXC 600 (clonado y archivos .env listos).
-- 2026-05-05 — Configuración de GitHub Secrets finalizada por el desarrollador.
+- 2026-05-07 — Implementación de lógica de nomenclatura estricta para NX.
+- 2026-05-07 — Configuración de límites de subida (100MB) en Nginx y PHP.
+- 2026-05-07 — Corrección de permisos de almacenamiento y rutas de Docker Compose.
+- 2026-05-07 — Normalización de hostname y cliente a MAYÚSCULAS.
 
 ---
 
@@ -30,35 +30,34 @@ current_agent: Claude
 
 | Decisión          | Detalle                                                             | Ref                       |
 | :---------------- | :------------------------------------------------------------------ | :------------------------ |
-| Fuente UI         | **Inter** — elegida por el desarrollador                            | DESIGN.md                 |
-| Referencia visual | HTMLs estáticos en `infra/html/` — replicar en Blade sin improvisar | `infra/html/*.html`       |
-| Verificación      | Tinker antes de tests formales                                      | IDENTITY.md               |
-| Parser .lic       | PHP extrae localmente, nunca enviar archivo completo a la IA        | `security-check.md §3`    |
+| Límites Upload    | **100MB** — configurado en Nginx y PHP (local.ini)                  | `infra/php/local.ini`     |
+| Nomenclatura      | `SOLDTO_HOSTNAME_CLIENTE_VERSION_Valida_DDMMYYYY.lic`               | `NXSuiteService.php`      |
+| Almacenamiento    | Jerárquico: `licenses/siemens/{cliente}/{fecha}/`                   | `NXSuiteController.php`   |
+| Permisos          | **777** en `storage/private` para evitar bloqueos de I/O            | `troubleshooting.md`      |
 | Commits           | En inglés siempre — la comunicación al desarrollador en castellano  | AGENTS.md                 |
-| Merge             | Solo via `/merge` workflow con CI en verde — nunca manual           | `merge-feature.md`        |
 
 ---
 
 ## 🚀 Handover — Próximos Pasos
 
-1. Realizar push de prueba a `dev` para verificar el despliegue automático en Beta.
-2. Verificar acceso a `beta.dxpro.es:8002`.
-3. Realizar push de prueba a `main` para verificar el despliegue automático en Producción.
-4. Verificar acceso a `portal.dxpro.es:8001`.
+1. Validar con el usuario que la subida de archivos > 1MB es fluida.
+2. Iniciar la Fase 8.1 Parte 2: Implementar el parser de bloques `INCREMENT`.
+3. Integrar la Auditoría IA (FallbackChain) para el análisis de productos.
 
 ---
 
 ## 🗂️ Archivos en Foco (Working Set)
 
-- Workflows: `.github/workflows/`
-- Infraestructura: `infra/`
-- Gestión: `management/`
+- Servicios: `app/Services/Licensing/NXSuiteService.php`
+- Controladores: `app/Http/Controllers/Tools/NXSuiteController.php`
+- Infraestructura: `infra/nginx/beta.conf`, `infra/php/local.ini`
 
 ---
 
 ## ⚠️ Errores Conocidos / Bloqueos
 
-- El directorio del proyecto ha sido renombrado a `DX-License-Manager`.
+- **Error 413 (Payload Too Large)**: Persiste en archivos > 1MB a pesar de la configuración Nginx/PHP. Posible bloqueo en capa de red (Cloudflare).
+- **Bloqueo I/O**: Resuelto ajustando permisos en la carpeta `private`.
 
 ---
 
@@ -66,10 +65,9 @@ current_agent: Claude
 
 | Capa                | Estado                           |
 | :------------------ | :------------------------------- |
-| nginx-beta `:8002`  | ❌ Pendiente de primer deploy    |
-| php-fpm-beta        | ❌ No incluido en Fase 0         |
-| mariadb-beta        | ❌ No incluido en Fase 0         |
-| redis-beta          | ❌ No incluido en Fase 0         |
-| nginx-prod `:8001`  | ❌ Pendiente de primer deploy    |
+| nginx-beta `:8002`  | ✅ Operativo (100MB Limit)       |
+| php-fpm-beta        | ✅ Operativo (100MB Limit)       |
+| mariadb-beta        | ✅ Operativo                     |
+| redis-beta          | ✅ Operativo                     |
 | Cloudflared LXC 600 | ✅ Operativo                     |
-| GitHub Actions      | ✅ Configurado                   |
+| Storage             | ✅ Accessible (Permisos 777)     |

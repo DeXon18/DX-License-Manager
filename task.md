@@ -36,33 +36,17 @@ El agente NO marca `[x]` una tarea hasta que todos sus checks están completados
 
 ## Tareas Completadas Esta Sesión
 
-- [x] 0. Verificación de memoria (last_brain leído y aplicado)
-  - [x] Regla aplicada: AGENTS.md §0.8.1 (Ley 6)
-  - [x] Check pre-ejecución: ¿Se leyó .agent/last_brain y ACTIVE_CONTEXT.md?
-  - [x] Evidencia: Confirmación en las notas de sesión.
-
-- [x] 1. Modelado de Contactos (Fase 6.3)
-  - [x] Regla aplicada: clean-code §naming-semantico
-  - [x] Check pre-ejecución: Eliminar redundancia del campo "empresa".
-  - [x] Evidencia: Tabla `contacts` operativa en base de datos.
-  - [x] Rama: feature/clients-base
-
-- [x] 2. Gestión de Contactos (Backend + Frontend)
-  - [x] Regla aplicada: impeccable §minimalismo-funcional
-  - [x] Check pre-ejecución: Implementar persistencia de pestañas en `localStorage`.
-  - [x] Evidencia: CRUD de contactos funcional con tabla compacta e iconos horizontales.
-  - [x] Rama: feature/clients-base
-
-- [x] 3. Datos de Prueba (DEMO)
-  - [x] Regla aplicada: AGENTS.md §0.8.2
-  - [x] Evidencia: `DemoContactSeeder` creado y ejecutado (vía comando manual por el usuario tras limpieza de `known_hosts`).
-  - [x] Rama: feature/clients-base
+- [x] 0. Verificación de infraestructura y permisos de almacenamiento
+- [x] 1. Implementación de lógica de nomenclatura Siemens NX
+- [x] 2. Configuración de límites Nginx/PHP (100MB)
+- [x] 3. Normalización de Hostname y Cliente a MAYÚSCULAS
+- [x] 4. Registro en CHANGELOG y ROADMAP
 
 ---
 
 ## Notas de Sesión
 
-- **Fase 6.3 Finalizada**: Se ha logrado una interfaz muy compacta y técnica para la gestión de contactos.
-- **Persistencia de Navegación**: El sistema de pestañas ahora es "stateful" gracias a `localStorage`.
-- **Infraestructura**: Se ha resuelto el problema de seguridad SSH `known_hosts` en el PC del desarrollador.
-- **UX**: Optimizada la tabla de contactos para evitar solapamientos visuales y mejorar la legibilidad.
+- **Mecanismo Siemens**: La Parte 1 está cerrada. El sistema ya transforma y guarda archivos correctamente.
+- **Límites de Subida**: Nginx y PHP ahora aceptan hasta 100MB, resolviendo el error 413.
+- **Hostname**: Se ha implementado la regla de mayúsculas estrictas para los nombres de archivo.
+- **Filesystem**: Se corrigieron los permisos de la carpeta `private` que causaban bloqueos de I/O.

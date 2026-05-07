@@ -6,6 +6,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ToolController;
+use App\Http\Controllers\Tools\NXSuiteController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -18,6 +19,8 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::get('/clientes/{client}', [ClientController::class, 'show'])->name('clients.show');
     
     Route::get('/herramientas', [ToolController::class, 'index'])->name('tools.index');
+    Route::get('/herramientas/nx-suite', [NXSuiteController::class, 'index'])->name('tools.nx-suite.index');
+    Route::post('/herramientas/nx-suite', [NXSuiteController::class, 'process'])->name('tools.nx-suite.process');
     
     Route::post('/clientes/{client}/contactos', [ContactController::class, 'store'])->name('contacts.store');
     Route::put('/clientes/{client}/contactos/{contact}', [ContactController::class, 'update'])->name('contacts.update');
