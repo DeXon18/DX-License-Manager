@@ -1,8 +1,8 @@
 ---
 project: DX License Manager
 repo: github.com/DeXon18/DX-License-Manager
-status: Ready for Merge
-last_sync: 2026-05-05
+status: Phase 8.1 In Progress
+last_sync: 2026-05-07
 current_agent: Antigravity (Caveman Mode)
 ---
 
@@ -10,18 +10,19 @@ current_agent: Antigravity (Caveman Mode)
 
 ## 🎯 Objetivo Actual
 
-- [x] Tarea principal: Fase 3 — Login (Finalizada y Fusionada)
-- [ ] Subtarea en curso: Preparar Fase 4
-- Rama activa: dev
-- Fase del ROADMAP: Fase 3 (Completada)
+- [x] Tarea principal: Fase 7 — Hub de Herramientas (Finalizada)
+- [ ] Subtarea en curso: Fase 8.1 — Motor de Auditoría Siemens (NX Suite)
+- Rama activa: feature/siemens-audit-motor
+- Fase del ROADMAP: Fase 8.1
 
 ---
 
 ## 🕒 Log de Acciones (última sesión)
 
-- 2026-05-05 — Sincronización multi-PC.
-- 2026-05-05 — Fase 2 completada (Laravel 11 + Blade Layout).
-- 2026-05-05 — Detectado bloqueo en Beta: `dx-styles.css` no carga por posible caché.
+- 2026-05-07 — Inicio sesión. Verificados stacks Docker (UP).
+- 2026-05-07 — Confirmado cache busting en assets beta.
+- 2026-05-06 — Fase 7 completada (Hub dinámico + Feature Flags).
+- 2026-05-06 — Fase 6.3 completada (Gestión de Contactos).
 
 ---
 
@@ -29,34 +30,33 @@ current_agent: Antigravity (Caveman Mode)
 
 | Decisión          | Detalle                                                             | Ref                       |
 | :---------------- | :------------------------------------------------------------------ | :------------------------ |
-| Assets Beta       | Mapeados a `backend/public/assets` vía Nginx                        | `beta.conf`               |
-| HTTPS Force       | Activado en `AppServiceProvider` para evitar Mixed Content          | `backend/app/`            |
-| Fuente UI         | **Inter** — elegida por el desarrollador                            | DESIGN.md                 |
-| Parser .lic       | PHP extrae localmente, nunca enviar archivo completo a la IA        | `security-check.md §3`    |
-| Commits           | En inglés siempre — la comunicación al desarrollador en castellano  | AGENTS.md                 |
+| Assets Beta       | Cache busting con `?v={{ time() }}` en layout                       | `CHANGELOG.md`            |
+| UI Standard       | **NO Tailwind**. Usar `dx-styles.css` exclusivamente                | `last_brain`              |
+| Rutas             | Siempre en castellano (`/herramientas`, `/clientes`)                | `AGENTS.md`               |
+| Parser .lic       | PHP extrae localmente metadatos. IA solo audita extracto            | `security-check.md §3`    |
+| Commits           | Inglés. Comunicación dev: Castellano                                | `AGENTS.md`               |
 
 ---
 
 ## 🚀 Handover — Próximos Pasos
 
-1. Purgar caché de Cloudflare para `beta.dxpro.es`.
-2. Verificar rutas de assets en el HTML generado por Laravel (`view source`).
-3. Validar visualización en `portal.dxpro.es` (Producción).
-4. Iniciar Fase 3 (Login) una vez visualización sea correcta.
+1. Añadir y ejecutar migración `ai_audit_results`.
+2. Implementar `SiemensParser.php` para daemon `ugslmd`.
+3. Crear vista de auditoría NX Suite.
 
 ---
 
 ## 🗂️ Archivos en Foco (Working Set)
 
-- Configuración Nginx: `infra/nginx/`
-- Layout Blade: `backend/resources/views/layouts/`
-- Documentación: `management/`
+- Parser: `backend/app/Services/Audit/`
+- Controlador: `backend/app/Http/Controllers/Tools/`
+- Vista: `backend/resources/views/tools/`
 
 ---
 
 ## ⚠️ Errores Conocidos / Bloqueos
 
-- **BLOQUEO**: Estilos CSS no cargan en Beta (posible caché Cloudflare).
+- Ninguno. Stacks OK.
 
 ---
 

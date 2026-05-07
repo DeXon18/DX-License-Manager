@@ -317,12 +317,14 @@ Nunca ejecutar sin "sí" explícito del desarrollador:
 | `git merge`        | Lo ejecuta el agente SOLO via `/merge` con CI en verde — nunca manualmente |
 | `git stash drop`   | Borra trabajo sin commitear                                                |
 
-### 3.5 Ramas protegidas
+### 3.6 Puntos de Control por Fase — Regla Innegociable
 
-- `main` → producción (`portal.dxpro.es`) — deploy automático en cada push
-- `dev` → integración (`beta.dxpro.es`) — deploy automático en cada push
+Al terminar cada fase del ROADMAP:
+1.  **Merge obligatorio** a `dev` vía Pull Request.
+2.  **Etiquetado obligatorio**: Crear un Git Tag descriptivo (ej: `v5.0-dashboard-ok`) para marcar el punto estable.
+3.  **Descripción clara**: El commit de cierre debe indicar explícitamente "Fase X Terminada — Punto de Restauración".
 
-**Nunca trabajar directamente en `main` ni en `dev`.**
+Esto garantiza que si hay un fallo grave posterior, siempre se puede volver al estado exacto de la fase anterior.
 
 ---
 
