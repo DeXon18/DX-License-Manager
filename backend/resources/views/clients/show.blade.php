@@ -117,201 +117,139 @@
     </div>
 
     <!-- Licencias Tab (Inventario Activo) -->
-    <div x-show="tab === 'licenses'" class="tab-content" style="display: none;">
-        @forelse($inventoryBySoldTo as $soldTo => $daemons)
-            <div class="sold-to-group mb-12">
-                <div class="sold-to-header mb-6 flex items-center gap-4">
-                    <div class="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center border border-accent/20">
-                        <i class="fa-solid fa-id-card text-accent"></i>
+    <div x-show="tab === 'licenses'" style="display: none;">
+        <div class="inv-container">
+            @forelse($inventoryBySoldTo as $soldTo => $daemons)
+                <div class="sold-to-block">
+                    <div class="sold-to-header">
+                        <div class="sold-to-badge-wrapper">
+                            <div class="sold-to-icon"><i class="fa-solid fa-id-card"></i></div>
+                            <div>
+                                <span class="tech-label">Sold-To Account</span>
+                                <div class="sold-to-id">{{ $soldTo }}</div>
+                            </div>
+                        </div>
+                        <div class="tech-label" style="opacity: 0.3; letter-spacing: 0.4em;">Active Inventory</div>
                     </div>
-                    <div>
-                        <h2 class="text-xl font-black tracking-tight text-white uppercase">SOLD-TO: {{ $soldTo }}</h2>
-                        <p class="text-[10px] text-white/30 font-bold uppercase tracking-widest mt-1">Ecosistema de Licencias Siemens</p>
-                    </div>
-                    <div class="h-px flex-grow bg-gradient-to-r from-white/10 to-transparent ml-4"></div>
-                </div>
 
-                <div class="grid grid-cols-1 gap-8">
                     @foreach($daemons as $daemon)
-                        <div class="daemon-block card p-0 overflow-hidden" style="background: #0f111a; border-color: #1e2235; box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);">
-                            <!-- Header Premium -->
-                            <div class="p-8 flex justify-between items-start border-b border-white/5 bg-gradient-to-b from-white/5 to-transparent">
-                                <div class="flex gap-12">
-                                    <!-- Daemon / Vendor -->
-                                    <div>
-                                        <span class="block text-[10px] uppercase tracking-wider text-white/40 font-bold mb-2">Ecosistema / Vendor</span>
-                                        <div class="flex items-center gap-3">
-                                            <span class="text-2xl font-black tracking-tighter" style="color: #009999;">{{ $daemon->daemon }}</span>
-                                            <span class="badge badge-siemens text-[9px] py-0.5 px-2 font-black">SIEMENS</span>
-                                        </div>
-                                    </div>
-                                    <!-- Server/Hostname o Dongle -->
-                                    <div>
-                                        @if($daemon->type === 'dongle')
-                                            <span class="block text-[10px] uppercase tracking-wider text-white/40 font-bold mb-2">Dongle ID / HW-KEY</span>
-                                            <div class="flex items-center gap-2">
-                                                <i class="fa-solid fa-key text-accent/60"></i>
-                                                <span class="text-xl font-bold text-white tracking-tight">{{ $daemon->hardware_id }}</span>
-                                            </div>
-                                        @else
-                                            <span class="block text-[10px] uppercase tracking-wider text-white/40 font-bold mb-2">Servidor / Hostname</span>
-                                            <span class="text-xl font-bold text-white uppercase tracking-tight">{{ $daemon->hostname ?? 'DESCONOCIDO' }}</span>
-                                            <span class="block text-[10px] text-white/20 mt-1 font-mono uppercase">COMPOSITE: <span class="text-white/50">{{ $daemon->composite ?? 'N/A' }}</span></span>
-                                        @endif
+                        <div class="daemon-card {{ str_contains(strtolower($daemon->daemon), 'moldex') ? 'moldex' : 'siemens' }}">
+                            <div class="daemon-header">
+                                <div class="header-col">
+                                    <span class="tech-label">Daemon</span>
+                                    <div style="display: flex; align-items: center;">
+                                        <span class="tech-value daemon-name">{{ $daemon->daemon }}</span>
+                                        <span class="inv-badge badge-siemens">Siemens</span>
                                     </div>
                                 </div>
 
-                                <div class="flex items-center gap-4">
-                                    <div class="flex flex-col items-end gap-1">
-                                        <span class="badge {{ $daemon->type === 'floating' ? 'badge-info' : 'badge-warn' }} uppercase text-[9px] font-black px-2 py-0.5">
-                                            {{ $daemon->type }}
-                                        </span>
-                                        <span class="text-[10px] font-bold text-white/30 uppercase tracking-widest">Version: <span class="text-white/70">{{ $daemon->version }}</span></span>
+                                <div class="header-col grow">
+                                    @if($daemon->type === 'dongle')
+                                        <span class="tech-label">Hardware Key / Dongle</span>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <i class="fa-solid fa-key" style="font-size: 12px; opacity: 0.3;"></i>
+                                            <span class="tech-value">{{ $daemon->hardware_id }}</span>
+                                        </div>
+                                    @else
+                                        <span class="tech-label">Server Hostname</span>
+                                        <span class="tech-value uppercase">{{ $daemon->hostname ?? 'N/A' }}</span>
+                                        <span class="tech-label" style="font-size: 8px; opacity: 0.4; margin-top: 2px;">ID: {{ $daemon->composite ?? '—' }}</span>
+                                    @endif
+                                </div>
+
+                                <div class="header-col" style="min-width: 100px;">
+                                    <span class="tech-label">Configuración</span>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span class="inv-badge badge-type">{{ $daemon->type }}</span>
+                                        <span style="font-family: var(--font-mono); font-size: 10px; opacity: 0.4;">v{{ $daemon->version }}</span>
                                     </div>
-                                    <form action="{{ route('inventory.daemon.destroy', $daemon) }}" method="POST" onsubmit="return confirm('¿Eliminar este bloque de inventario completo?')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn-icon text-white/10 hover:text-red-500 transition-all border-white/5 hover:bg-red-500/10" title="Eliminar este bloque">
-                                            <i class="fa-solid fa-trash-can text-sm"></i>
-                                        </button>
+                                </div>
+
+                                <div class="header-col">
+                                    <form action="{{ route('inventory.daemon.destroy', $daemon) }}" method="POST" onsubmit="return confirm('¿Eliminar bloque?')">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" class="btn-action"><i class="fa-solid fa-trash-can"></i></button>
                                     </form>
                                 </div>
                             </div>
 
-                            <!-- Product Table -->
-                            <div class="p-0 overflow-x-auto">
-                                <table class="w-full text-left border-collapse">
-                                    <thead>
-                                        <tr class="text-[9px] uppercase tracking-widest text-white/30 bg-black/20">
-                                            <th class="px-8 py-3 font-black">Producto</th>
-                                            <th class="px-8 py-3 font-black">Descripción</th>
-                                            <th class="px-8 py-3 font-black">Host ID (MAC)</th>
-                                            <th class="px-8 py-3 font-black text-center">Cant.</th>
-                                            <th class="px-8 py-3 font-black">Expiración</th>
-                                            <th class="px-8 py-3 text-right font-black"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-white/5">
-                                        @foreach($daemon->products as $product)
-                                            <tr class="group hover:bg-white/[0.02] transition-colors {{ $product->status !== 'active' ? 'opacity-40 grayscale' : '' }}">
-                                                <td class="px-8 py-5">
-                                                    <span class="font-mono text-sm font-bold tracking-tight text-accent">{{ $product->product_code }}</span>
-                                                </td>
-                                                <td class="px-8 py-5">
-                                                    <span class="text-sm font-medium text-white/70">{{ $product->description }}</span>
-                                                </td>
-                                                <td class="px-8 py-5">
-                                                    <span class="font-mono text-xs text-white/30 group-hover:text-white/60 transition-colors uppercase">
-                                                        {{ $product->node_locked_host_id ?? '—' }}
-                                                    </span>
-                                                </td>
-                                                <td class="px-8 py-5 text-center">
-                                                    <span class="inline-flex items-center justify-center min-w-[28px] h-7 rounded-lg bg-white/5 border border-white/10 text-white text-[11px] font-black">
-                                                        {{ $product->quantity }}
-                                                    </span>
-                                                </td>
-                                                <td class="px-8 py-5 text-sm">
-                                                    @if(!$product->expiration_date)
-                                                        <span class="text-green-500/60 font-bold uppercase text-[10px] tracking-widest">Permanente</span>
-                                                    @else
-                                                        @php
-                                                            $isNext = $product->expiration_date->isCurrentYear() && !$product->expiration_date->isPast();
-                                                            $isExpired = $product->expiration_date->isPast();
-                                                        @endphp
-                                                        <div class="flex flex-col">
-                                                            <span class="font-bold tracking-tight {{ $isExpired ? 'text-red-500' : ($isNext ? 'text-orange-500' : 'text-white/60') }}">
-                                                                {{ $product->expiration_date->format('d/m/Y') }}
-                                                            </span>
-                                                            @if($isNext) <span class="text-[9px] font-black text-orange-500/50 uppercase tracking-tighter">(Próxima)</span> @endif
-                                                            @if($isExpired) <span class="text-[9px] font-black text-red-500/50 uppercase tracking-tighter">(Caducada)</span> @endif
-                                                        </div>
-                                                    @endif
-                                                </td>
-                                                <td class="px-8 py-5 text-right">
-                                                    <form action="{{ route('inventory.product.destroy', $product) }}" method="POST" onsubmit="return confirm('¿Eliminar este producto del inventario?')">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn-icon opacity-0 group-hover:opacity-100 text-white/10 hover:text-red-500 transition-all border-white/5" title="Eliminar este producto">
-                                                            <i class="fa-solid fa-trash text-xs"></i>
-                                                        </button>
-                                                    </form>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        @empty
-            <div class="card text-center py-24 border-dashed opacity-80" style="border: 2px dashed var(--border); background: transparent;">
-                <div class="inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-8 bg-accent/10 border border-accent/20 mx-auto">
-                    <i class="fa-solid fa-microchip text-accent text-3xl"></i>
-                </div>
-                <h3 class="text-2xl font-black tracking-tight text-white uppercase">Ecosistema de Licencias</h3>
-                <p class="muted mt-4 max-w-md mx-auto text-sm leading-relaxed">
-                    No se han encontrado licencias activas en el inventario. 
-                    Suba un archivo desde <strong>Herramientas > NX Suite</strong> para iniciar la auditoría IA.
-                </p>
-                <div class="flex justify-center gap-4 mt-10">
-                    <span class="badge badge-accent py-1 px-3 font-bold uppercase text-[10px]">Motor IA V2</span>
-                    <span class="badge badge-muted py-1 px-3 font-bold uppercase text-[10px]">Ecosistema Persistente</span>
-                </div>
-            </div>
-        @endforelse
-
-        <!-- Historial de Auditorías (Collapsible) -->
-        @if($client->auditResults->count() > 0)
-            <div class="mt-20 pt-10 border-t border-white/5">
-                <details class="group">
-                    <summary class="flex items-center justify-between cursor-pointer select-none py-4 px-6 rounded-xl hover:bg-white/[0.02] transition-all">
-                        <div class="flex items-center gap-4">
-                            <div class="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center border border-white/10">
-                                <i class="fa-solid fa-clock-rotate-left text-white/40 text-xs"></i>
-                            </div>
-                            <span class="text-xs font-black uppercase tracking-[0.2em] text-white/30 group-hover:text-white/60 transition-colors">Historial de Auditorías (Archivos Originales)</span>
-                        </div>
-                        <i class="fa-solid fa-chevron-down text-white/20 group-open:rotate-180 transition-transform"></i>
-                    </summary>
-                    <div class="mt-8 px-2 animate-fadeIn">
-                        <div class="card p-0 overflow-hidden border-white/5 bg-black/20">
-                            <table class="table text-xs">
-                                <thead class="bg-white/5">
-                                    <tr class="text-white/30 uppercase tracking-widest text-[9px]">
-                                        <th class="py-4">Sold-To</th>
-                                        <th class="py-4">Fecha Subida</th>
-                                        <th class="py-4">Estado</th>
-                                        <th class="py-4">Daemon Detectado</th>
-                                        <th class="py-4 text-right">Acciones</th>
+                            <table class="inv-table">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Descripción Técnica</th>
+                                        <th>Host ID (MAC)</th>
+                                        <th style="text-align: center;">Cant.</th>
+                                        <th>Expiración</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
-                                <tbody class="divide-y divide-white/5">
-                                    @foreach($client->auditResults as $result)
-                                    <tr class="hover:bg-white/[0.02] transition-colors">
-                                        <td class="font-bold text-accent py-4">{{ $result->sold_to ?? 'N/A' }}</td>
-                                        <td class="text-white/60 py-4">{{ $result->created_at->format('d/m/Y H:i') }}</td>
-                                        <td class="py-4">
-                                            <span class="badge {{ $result->status === 'completed' ? 'badge-success' : ($result->status === 'processing' ? 'badge-warn' : 'badge-danger') }} text-[9px] uppercase font-black">
-                                                {{ $result->status }}
-                                            </span>
-                                        </td>
-                                        <td class="font-mono text-white/40 py-4">{{ $result->results['vendor_daemon'] ?? '—' }}</td>
-                                        <td class="text-right py-4">
-                                            <button class="btn-icon text-[10px]" title="Ver Detalle IA" @click="auditDetail = @js($result); $dispatch('open-audit-modal')">
-                                                <i class="fa-solid fa-eye"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
+                                <tbody>
+                                    @foreach($daemon->products as $product)
+                                        <tr style="{{ $product->status !== 'active' ? 'opacity: 0.3;' : '' }}">
+                                            <td class="product-code">{{ $product->product_code }}</td>
+                                            <td>{{ $product->description }}</td>
+                                            <td class="host-id-mono">{{ $product->node_locked_host_id ?? '—' }}</td>
+                                            <td style="text-align: center;"><div class="qty-badge">{{ $product->quantity }}</div></td>
+                                            <td>
+                                                @php
+                                                    $isExpired = $product->expiration_date?->isPast();
+                                                    $color = $isExpired ? '#ef4444' : (!$product->expiration_date ? '#009999' : 'rgba(255,255,255,0.4)');
+                                                @endphp
+                                                <span style="font-family: var(--font-mono); font-weight: 700; color: {{ $color }};">
+                                                    {{ $product->expiration_date ? $product->expiration_date->format('d/m/Y') : 'PERMANENTE' }}
+                                                </span>
+                                            </td>
+                                            <td style="text-align: right;">
+                                                <form action="{{ route('inventory.product.destroy', $product) }}" method="POST">
+                                                    @csrf @method('DELETE')
+                                                    <button type="submit" class="btn-action" style="border:none; width:20px; height:20px;"><i class="fa-solid fa-trash" style="font-size: 9px;"></i></button>
+                                                </form>
+                                            </td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>
                         </div>
+                    @endforeach
+                </div>
+            @empty
+                <div style="text-align: center; padding: 60px; border: 2px dashed #30363d; border-radius: 12px; opacity: 0.5;">
+                    <i class="fa-solid fa-microchip" style="font-size: 40px; margin-bottom: 20px; color: #388bfd;"></i>
+                    <div class="tech-label" style="font-size: 12px;">Sin datos de inventario</div>
+                </div>
+            @endforelse
+
+            @if($client->auditResults->count() > 0)
+                <details>
+                    <summary class="history-toggle">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <i class="fa-solid fa-clock-rotate-left" style="opacity: 0.4;"></i>
+                            <span class="tech-label">Historial de archivos originales</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-down" style="opacity: 0.3;"></i>
+                    </summary>
+                    <div style="padding: 20px; background: rgba(0,0,0,0.1); border: 1px solid #30363d; border-top: none; border-radius: 0 0 12px 12px;">
+                        <table class="inv-table">
+                            <tbody>
+                                @foreach($client->auditResults as $result)
+                                    <tr>
+                                        <td class="product-code" style="color: #fff;">{{ $result->sold_to ?? 'N/A' }}</td>
+                                        <td style="opacity: 0.5;">{{ $result->created_at->format('d/m/Y H:i') }}</td>
+                                        <td class="tech-label" style="color: #009999;">{{ $result->results['vendor_daemon'] ?? '—' }}</td>
+                                        <td style="text-align: right;">
+                                            <button class="btn-action" @click="auditDetail = @js($result); $dispatch('open-audit-modal')">
+                                                <i class="fa-solid fa-eye" style="font-size: 10px;"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </details>
-            </div>
-        @endif
+            @endif
+        </div>
     </div>
 
     <!-- Certificados Tab (Pendiente Fase 8.4) -->
@@ -574,6 +512,8 @@
 
 @push('styles')
 <style>
+    /* DX INVENTORY SYSTEM — ROBUST RECONSTRUCTION */
+    /* ORIGINAL STYLES RESTORED */
     .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 32px; gap: 8px; }
     .tab-link { 
         padding: 12px 20px; border: none; background: none; cursor: pointer;
@@ -586,7 +526,6 @@
     .client-profile .card { padding: 0; }
     .client-profile .card.p-5 { padding: 20px; }
 
-    /* Table Density */
     .table.text-sm td { padding: 8px 20px; vertical-align: middle; }
     .badge-muted { 
         background: rgba(255, 255, 255, 0.05); 
@@ -596,28 +535,18 @@
         padding: 2px 8px;
     }
 
-    /* Icon Buttons */
     .btn-icon {
         background: rgba(255, 255, 255, 0.03);
         border: 1px solid var(--border);
         color: var(--muted);
         width: 32px;
         height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: all 0.2s;
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 4px; cursor: pointer; transition: all 0.2s;
     }
-    .btn-icon:hover { 
-        background: var(--border);
-        color: var(--text);
-    }
+    .btn-icon:hover { background: var(--border); color: var(--text); }
     .btn-icon.text-danger:hover {
-        background: rgba(239, 68, 68, 0.1);
-        color: #ef4444;
-        border-color: rgba(239, 68, 68, 0.2);
+        background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.2);
     }
 
     /* Legend Styles */
@@ -627,277 +556,168 @@
         padding: 16px 20px;
     }
     .legend-header {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 12px;
-        color: var(--muted);
+        display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--muted);
     }
     .legend-header i { font-size: 10px; }
     .legend-header span {
-        font-size: 10px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
+        font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
     }
-    .legend-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px 24px;
-    }
-    .legend-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    .legend-item .badge {
-        font-size: 9px;
-        padding: 1px 6px;
-    }
+    .legend-grid { display: flex; flex-wrap: wrap; gap: 12px 24px; }
+    .legend-item { display: flex; align-items: center; gap: 8px; }
+    .legend-item .badge { font-size: 9px; padding: 1px 6px; }
     .legend-label {
-        font-size: 10px;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: var(--muted);
+        font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted);
     }
+
     /* Modal Styles */
     .modal-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.75);
-        backdrop-filter: blur(4px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1000;
-        padding: 20px;
+        position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75);
+        backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center;
+        z-index: 1000; padding: 20px;
     }
     .modal-content {
-        background: var(--card-bg);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        width: 100%;
-        max-width: 550px;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-        overflow: hidden;
+        background: var(--card-bg); border: 1px solid var(--border);
+        border-radius: 8px; width: 100%; max-width: 550px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); overflow: hidden;
     }
     .modal-header {
-        padding: 16px 20px;
-        border-bottom: 1px solid var(--border);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        padding: 16px 20px; border-bottom: 1px solid var(--border);
+        display: flex; justify-content: space-between; align-items: center;
         background: rgba(255, 255, 255, 0.02);
     }
-    .modal-header h3 {
-        font-size: 14px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-    .close-btn {
-        background: none;
-        border: none;
-        color: var(--muted);
-        font-size: 20px;
-        cursor: pointer;
-        padding: 4px;
-        line-height: 1;
-    }
+    .modal-header h3 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+    .close-btn { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; padding: 4px; line-height: 1; }
     .close-btn:hover { color: var(--text); }
-    
     .modal-body { padding: 24px; }
     .input-group { margin-bottom: 20px; }
-    .input-group:last-child { margin-bottom: 0; }
-    .input-group label {
-        display: block;
-        font-size: 10px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: var(--muted);
-        margin-bottom: 8px;
-    }
+    .input-group label { display: block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 8px; }
     .modal-footer {
-        padding: 16px 24px;
-        border-top: 1px solid var(--border);
-        display: flex;
-        justify-content: end;
-        gap: 12px;
+        padding: 16px 24px; border-top: 1px solid var(--border);
+        display: flex; justify-content: end; gap: 12px;
         background: rgba(255, 255, 255, 0.02);
     }
 
-    /* Product Chips */
+    /* Product Chips & Badges */
     .product-chip {
-        display: inline-flex;
-        align-items: center;
-        background: rgba(var(--accent-rgb, 0, 122, 255), 0.05);
-        color: var(--accent);
-        border: 1px solid rgba(var(--accent-rgb, 0, 122, 255), 0.1);
-        padding: 2px 6px;
-        border-radius: 4px;
-        font-size: 10px;
-        font-weight: 600;
-        white-space: nowrap;
+        display: inline-flex; align-items: center; background: rgba(var(--accent-rgb, 0, 122, 255), 0.05);
+        color: var(--accent); border: 1px solid rgba(var(--accent-rgb, 0, 122, 255), 0.1);
+        padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; white-space: nowrap;
     }
-    .product-chip.muted {
-        background: rgba(255, 255, 255, 0.03);
-        color: var(--muted);
-        border-color: var(--border);
-    }
-    /* Audit Modal Styles */
-    .audit-modal {
-        box-shadow: 0 0 50px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05);
-    }
+    .product-chip.muted { background: rgba(255, 255, 255, 0.03); color: var(--muted); border-color: var(--border); }
+    
+    .expiry-badge { background: rgba(255,255,255,0.03); padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--text); }
+    .expiry-badge.upcoming { background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
+    
+    .badge-siemens { background: #009999; color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+    .badge-info { background: rgba(var(--accent-rgb), 0.1); color: var(--accent); border: 1px solid rgba(var(--accent-rgb), 0.2); }
+    .badge-warn { background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
+
+    /* Audit Detail Modal Styles */
+    .audit-modal { box-shadow: 0 0 50px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05); }
     .audit-icon-box {
-        width: 48px;
-        height: 48px;
-        background: linear-gradient(135deg, var(--accent), #1a73e8);
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        font-size: 20px;
-        box-shadow: 0 8px 16px rgba(var(--accent-rgb), 0.3);
+        width: 48px; height: 48px; background: linear-gradient(135deg, var(--accent), #1a73e8);
+        border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;
     }
-    .audit-header-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-    }
+    .audit-header-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
     .audit-info-card {
-        background: rgba(255,255,255,0.02);
-        border: 1px solid rgba(255,255,255,0.05);
-        padding: 16px 20px;
-        border-radius: 12px;
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
+        background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+        padding: 16px 20px; border-radius: 12px; display: flex; flex-direction: column; gap: 6px;
     }
-    .audit-info-card .label {
-        font-size: 10px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: var(--muted);
-    }
-    .audit-info-card .value {
-        font-size: 18px;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-    }
+    .audit-info-card .label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+    .audit-info-card .value { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
     .audit-info-card .value.daemon { color: var(--accent); font-family: var(--font-mono); font-size: 16px; }
     .audit-info-card .value.hostname { color: #fff; font-family: var(--font-mono); }
+    
+    .unified-box { background: rgba(245, 158, 11, 0.03); border: 1px dashed rgba(245, 158, 11, 0.2); padding: 12px 20px; border-radius: 10px; }
+    .unified-box .label { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #f59e0b; margin-right: 8px; }
+    
+    .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); display: flex; align-items: center; gap: 10px; }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.05); }
 
-    .unified-box {
-        background: rgba(245, 158, 11, 0.03);
-        border: 1px dashed rgba(245, 158, 11, 0.2);
-        padding: 12px 20px;
-        border-radius: 10px;
-    }
-    .unified-box .label {
-        font-size: 10px;
-        font-weight: 700;
-        text-transform: uppercase;
-        color: #f59e0b;
-        margin-right: 8px;
-    }
-
-    .section-title {
-        font-size: 12px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: var(--muted);
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    .section-title::after {
-        content: '';
-        flex: 1;
-        height: 1px;
-        background: rgba(255,255,255,0.05);
-    }
-
-    .audit-table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0 4px;
-    }
-    .audit-table th {
-        text-align: left;
-        padding: 12px 16px;
-        font-size: 10px;
-        text-transform: uppercase;
-        color: var(--muted);
-        font-weight: 700;
-    }
-    .audit-table td {
-        padding: 14px 16px;
-        background: rgba(255,255,255,0.01);
-        border-top: 1px solid rgba(255,255,255,0.03);
-        border-bottom: 1px solid rgba(255,255,255,0.03);
-    }
+    .audit-table { width: 100%; border-collapse: separate; border-spacing: 0 4px; }
+    .audit-table th { text-align: left; padding: 12px 16px; font-size: 10px; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+    .audit-table td { padding: 14px 16px; background: rgba(255,255,255,0.01); border-top: 1px solid rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.03); }
     .audit-table td:first-child { border-left: 1px solid rgba(255,255,255,0.03); border-radius: 8px 0 0 8px; }
     .audit-table td:last-child { border-right: 1px solid rgba(255,255,255,0.03); border-radius: 0 8px 8px 0; }
 
-    .qty-badge {
-        background: #1e2235;
-        color: #fff;
-        padding: 4px 10px;
-        border-radius: 20px;
-        font-weight: 800;
-        font-size: 12px;
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
-    }
-    .expiry-badge {
-        background: rgba(255,255,255,0.03);
-        padding: 6px 12px;
-        border-radius: 6px;
-        font-size: 11px;
-        font-weight: 600;
-        color: var(--text);
-    }
-    .expiry-badge.upcoming {
-        background: rgba(245, 158, 11, 0.1);
-        color: #f59e0b;
-        border: 1px solid rgba(245, 158, 11, 0.2);
-    }
-    .badge-siemens {
-        background: #009999;
-        color: #fff;
-        border: 1px solid rgba(255,255,255,0.2);
-    }
-    .badge-info {
-        background: rgba(var(--accent-rgb), 0.1);
-        color: var(--accent);
-        border: 1px solid rgba(var(--accent-rgb), 0.2);
-    }
-    .badge-warn {
-        background: rgba(245, 158, 11, 0.1);
-        color: #f59e0b;
-        border: 1px solid rgba(245, 158, 11, 0.2);
-    }
-
-    /* Animations */
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fadeIn {
-        animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    /* Details Toggle Reset */
-    details summary::-webkit-details-marker { display: none; }
+    /* DX INVENTORY SYSTEM — ROBUST RECONSTRUCTION */
+    .inv-container { display: flex; flex-direction: column; gap: 32px; margin-top: 16px; }
     
-    /* Scrollbar for tables */
-    .overflow-x-auto::-webkit-scrollbar { height: 4px; }
-    .overflow-x-auto::-webkit-scrollbar-track { background: transparent; }
-    .overflow-x-auto::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.05); border-radius: 10px; }
-    .overflow-x-auto::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.1); }
+    .sold-to-block { margin-bottom: 40px; animation: fadeIn 0.4s ease-out; }
+    
+    .sold-to-header {
+        display: flex; align-items: center; justify-content: space-between;
+        padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px;
+    }
+
+    .sold-to-badge-wrapper { display: flex; align-items: center; gap: 16px; }
+    
+    .sold-to-icon {
+        width: 44px; height: 44px; background: rgba(56, 139, 253, 0.1); border: 1px solid rgba(56, 139, 253, 0.2);
+        border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #388bfd; font-size: 18px;
+    }
+
+    .sold-to-id { font-family: var(--font-mono); font-size: 22px; font-weight: 800; color: #fff; letter-spacing: -0.01em; }
+
+    .daemon-card {
+        background: #0d1117; border: 1px solid #30363d; border-radius: 12px; overflow: hidden;
+        margin-bottom: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    
+    .daemon-card.siemens { border-left: 4px solid #009999; }
+    .daemon-card.moldex { border-left: 4px solid #ed1c24; }
+
+    /* Header Layout */
+    .daemon-header {
+        display: flex; flex-direction: row; align-items: center; padding: 20px 24px;
+        background: linear-gradient(to right, rgba(255,255,255,0.02), transparent);
+        border-bottom: 1px solid rgba(255,255,255,0.03); gap: 40px;
+    }
+
+    .header-col { display: flex; flex-direction: column; gap: 4px; }
+    .header-col.grow { flex-grow: 1; }
+
+    .tech-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: #8b949e; display: block; }
+    .tech-value { font-family: var(--font-mono); font-size: 16px; font-weight: 700; color: #fff; line-height: 1.2; }
+    .daemon-name { color: #009999; font-size: 20px; }
+
+    .inv-badge { display: inline-flex; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 900; text-transform: uppercase; }
+    .badge-siemens { background: #009999; color: #fff; margin-left: 8px; }
+    .badge-type { background: rgba(56, 139, 253, 0.1); color: #388bfd; border: 1px solid rgba(56, 139, 253, 0.2); }
+
+    /* Table System */
+    .inv-table { width: 100%; border-collapse: collapse; }
+    .inv-table th {
+        background: rgba(0,0,0,0.2); padding: 10px 24px; text-align: left; font-size: 9px; font-weight: 800;
+        text-transform: uppercase; color: #8b949e; border-bottom: 1px solid #30363d;
+    }
+    .inv-table td { padding: 12px 24px; border-bottom: 1px solid rgba(255,255,255,0.02); font-size: 13px; vertical-align: middle; color: rgba(255,255,255,0.8); }
+    .inv-table tr:hover td { background: rgba(255,255,255,0.01); }
+
+    .product-code { font-family: var(--font-mono); font-weight: 700; color: #58a6ff; }
+    .host-id-mono { font-family: var(--font-mono); font-size: 11px; color: rgba(255,255,255,0.25); }
+    
+    .qty-badge {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 28px; height: 22px; background: rgba(255,255,255,0.05);
+        border: 1px solid rgba(255,255,255,0.1); border-radius: 4px;
+        font-size: 11px; font-weight: 800; color: #fff;
+    }
+
+    .btn-action {
+        width: 28px; height: 28px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);
+        background: transparent; color: rgba(255,255,255,0.2); cursor: pointer;
+        display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+    }
+    .btn-action:hover { background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: #ef4444; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    .history-toggle {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 14px 20px; background: #161b22; border: 1px solid #30363d;
+        border-radius: 8px; cursor: pointer; margin-top: 40px;
+    }
+    .history-toggle:hover { border-color: #444; }
 </style>
 @endpush

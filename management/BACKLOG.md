@@ -42,15 +42,16 @@ En planificación — se detallan una por una tras validación de la fase anteri
 
 ## ✅ Completado
 
-### Fase 8.1 (Parte 2) — Siemens NX Suite (Inteligencia & Auditoría)
+### Fase 8.1 — Siemens NX Suite (Inteligencia, Auditoría e Inventario)
 - **Completada:** 2026-05-07
 - **Rama:** feature/siemens-audit-motor
-- **Resumen:** Implementación del motor de auditoría IA con limpieza de FlexLM, integración con n8n y callback asíncrono para persistencia.
+- **Resumen:** Implementación completa del ciclo de vida de licencias Siemens: transformación, auditoría IA, persistencia de inventario y visualización multi-Sold-To.
 - [x] Migración `ai_audit_results` y `client_mappings`.
 - [x] Implementación `LicenseParserService` (limpieza FlexLM).
-- [x] Implementación `AuditService` (integración n8n).
-- [x] Instalación de API Laravel 11 y endpoint de callback.
-- [x] Integración en `NXSuiteController`.
+- [x] Implementación `AuditService` e integración con n8n.
+- [x] Rediseño de UI de Inventario Activo con CSS puro (Bento técnico).
+- [x] Soporte para múltiples **Sold-To** agrupados por cliente.
+- [x] Identificación de hardware (**MAC/Dongle**) en la UI.
 
 ### Fase 8.1 (Parte 1) — Siemens NX Suite (Mecanismo)
 - **Completada:** 2026-05-07
