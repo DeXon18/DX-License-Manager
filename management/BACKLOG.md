@@ -14,7 +14,7 @@ El agente no avanza hasta recibir "aprobado", "adelante" o similar de forma expl
 
 ## 🔴 Bloqueado
 
-_(ninguna actualmente)_
+- [ ] **Fase 8 — Siemens**: BLOQUEADA por problema grave. Oskar investigando. El agente espera resolución.
 
 ---
 
