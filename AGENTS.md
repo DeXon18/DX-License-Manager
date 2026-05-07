@@ -385,7 +385,7 @@ Tu PC (Antigravity via Samba Z:\DX-License-Manager\)
     portal.dxpro.es actualizado automáticamente
 ```
 
-El deploy automático usa SSH al LXC 600 vía **puerto 2222** (router externo → `192.168.50.60:22`).
+El deploy automático usa SSH al LXC 600 vía **puerto 22** (acceso directo interno). NOTA: Puerto 2222 nunca funciona por aquí.
 
 ---
 

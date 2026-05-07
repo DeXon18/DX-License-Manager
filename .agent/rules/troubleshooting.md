@@ -194,6 +194,14 @@ docker exec dx-php-beta php artisan migrate:fresh --seed
 
 ### Deploy falla — "Connection refused" al hacer SSH
 
+**Causa:** Intento de conexión usando el puerto `2222`.
+
+**Fix:** Usar siempre el puerto `22`. El puerto `2222` está configurado en algunos archivos antiguos o plantillas pero no tiene acceso real desde este entorno.
+
+---
+
+### Deploy falla — "Connection refused" al hacer SSH (GitHub Actions)
+
 **Causa:** El secret `SSH_HOST` tiene la IP local (192.168.x.x) en lugar de la IP pública del router.
 
 **Fix:** Actualizar el secret `SSH_HOST` en GitHub con la IP pública. Verificar en [whatismyip.com](https://www.whatismyip.com).
