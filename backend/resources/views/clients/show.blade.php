@@ -17,10 +17,6 @@
     setTab(name) {
         this.tab = name;
         localStorage.setItem('activeTab', name);
-    },
-    openAudit(result) {
-        this.auditDetail = result;
-        $dispatch('open-audit-modal');
     }
 }" class="client-profile">
     <div class="tabs">
@@ -169,7 +165,7 @@
                                 @endif
                             </td>
                             <td class="text-right">
-                                <button class="btn-icon" title="Ver Detalle Auditoría" @click="openAudit(@js($result))">
+                                <button class="btn-icon" title="Ver Detalle Auditoría" @click="auditDetail = @js($result); $dispatch('open-audit-modal')">
                                     <i class="fa-solid fa-eye"></i>
                                 </button>
                             </td>
@@ -347,7 +343,8 @@
             x-show="open"
             @open-audit-modal.window="open = true"
             class="modal-overlay"
-            style="display: none; z-index: 1100;"
+            style="z-index: 1100;"
+            x-cloak
         >
             <div class="modal-content audit-modal" @click.outside="open = false" style="max-width: 900px; background: #0f111a; border-color: #1e2235;">
                 <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
