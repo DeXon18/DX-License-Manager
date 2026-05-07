@@ -26,6 +26,9 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::put('/clientes/{client}/contactos/{contact}', [ContactController::class, 'update'])->name('contacts.update');
     Route::delete('/clientes/{client}/contactos/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
+    Route::delete('/inventory/daemon/{daemon}', [\App\Http\Controllers\InventoryController::class, 'destroyDaemon'])->name('inventory.daemon.destroy');
+    Route::delete('/inventory/product/{product}', [\App\Http\Controllers\InventoryController::class, 'destroyProduct'])->name('inventory.product.destroy');
+
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/import', [ImportController::class, 'index'])->name('import.index');
         Route::post('/import', [ImportController::class, 'store'])->name('import.store');
