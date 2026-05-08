@@ -170,5 +170,5 @@ En planificación — se detallan una por una tras validación de la fase anteri
 
 ## ?? Ideas Futuras / QoL
 
-- [ ] **AI Hardware Assistant**: Sistema de anlisis de archivos composite.txt mediante IA para recomendar el ID ms estable (Ethernet fsico) a personal no tcnico. Evita errores en trmites de licencia.
+- [ ] **AI Hardware Assistant**: Sistema de análisis de archivos `composite.txt` mediante IA para recomendar el ID más estable (Ethernet físico) a personal no técnico. Evita errores en trámites de licencia.
 

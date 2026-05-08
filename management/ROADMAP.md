@@ -292,10 +292,12 @@ DX License Manager
 - [x] Formulario: Sold-To, solicitante, empresa, tipo de cambio con múltiples MACs.
 - [x] Generación de PDF oficial Siemens con fuentes corporativas.
 - [x] Guardado en historial del cliente y almacenamiento seguro.
+- [ ] **AI Hardware Assistant (QoL)**: Análisis de `composite.txt` para recomendación automática de IDs (Ethernet vs Virtual).
 
 #### 8.5 — Recursos & enlaces
 - [ ] Links a documentación oficial Siemens
 - [ ] Recursos internos de referencia
+
 
 ---
 
