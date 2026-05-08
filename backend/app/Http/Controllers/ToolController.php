@@ -12,7 +12,17 @@ class ToolController extends Controller
      */
     public function index()
     {
-        $features = FeatureFlag::orderBy('id', 'asc')->get()->groupBy('vendor');
+        $priority = [
+            'siemens_nx_suite' => 1,
+            'siemens_star_ccm' => 2,
+            'siemens_heeds'    => 3,
+            'siemens_cod'      => 4,
+            'siemens_recursos' => 5,
+        ];
+
+        $features = FeatureFlag::all()
+            ->sortBy(fn($f) => $priority[$f->key] ?? 99)
+            ->groupBy('vendor');
 
         return view('tools.index', [
             'features' => $features
