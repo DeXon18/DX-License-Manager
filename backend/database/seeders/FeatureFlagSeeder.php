@@ -25,9 +25,10 @@ class FeatureFlagSeeder extends Seeder
                 'key' => 'siemens_star_ccm',
                 'label' => 'STAR-CCM+',
                 'vendor' => 'Siemens',
-                'description' => 'Auditoría y procesamiento de licencias STAR-CCM+',
-                'is_active' => false,
+                'description' => 'Motor de transformación cdlmd → saltd con auditoría IA integrada.',
+                'is_active' => true,
             ],
+
             [
                 'key' => 'siemens_heeds',
                 'label' => 'HEEDS',
