@@ -33,9 +33,6 @@ class NormalizationController extends Controller
                 if ($isSuspicion || $isNew) {
                     
                     // Try to extract names if it's a suspicion
-                    $detectedName = 'Desconocido';
-                    $suggestedName = null;
-
                     if ($isSuspicion) {
                         preg_match('/El cliente \'(.*)\' se parece un .* a \'(.*)\'/i', $warning, $matches);
                         $detectedName = $matches[1] ?? 'Error al extraer';
@@ -43,6 +40,11 @@ class NormalizationController extends Controller
                     } elseif ($isNew) {
                         preg_match('/registrado: (.*)/i', $warning, $matches);
                         $detectedName = $matches[1] ?? 'Nuevo Cliente';
+                    }
+
+                    // Skip if already resolved (exists as an alias)
+                    if (ClientAlias::where('name', trim($detectedName))->exists()) {
+                        continue;
                     }
                     
                     $findings[] = [
