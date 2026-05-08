@@ -123,7 +123,7 @@
                                     
                                     <form action="{{ route('admin.normalization.dismiss') }}" method="POST">
                                         @csrf
-                                        <input type="hidden" name="full_message" value="{{ $finding['full_message'] }}">
+                                        <input type="hidden" name="detected_name" value="{{ $finding['detected_name'] }}">
                                         <button type="submit" class="btn-secondary" style="padding: 6px 12px; font-size: 11px; background: var(--raised);">
                                             DESCARTAR
                                         </button>

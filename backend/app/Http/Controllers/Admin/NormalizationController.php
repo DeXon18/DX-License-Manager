@@ -7,6 +7,7 @@ use App\Models\ImportLog;
 use App\Models\Client;
 use App\Models\ClientAlias;
 use App\Models\Contract;
+use App\Models\NormalizationDecision;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -21,6 +22,11 @@ class NormalizationController extends Controller
         $logs = ImportLog::whereNotNull('warnings')
             ->orderBy('created_at', 'desc')
             ->get();
+
+        // Get all ignored names
+        $ignoredNames = NormalizationDecision::where('decision', 'ignore')
+            ->pluck('detected_name')
+            ->toArray();
 
         $findings = [];
 
@@ -42,8 +48,15 @@ class NormalizationController extends Controller
                         $detectedName = $matches[1] ?? 'Nuevo Cliente';
                     }
 
+                    $detectedName = trim($detectedName);
+
                     // Skip if already resolved (exists as an alias)
-                    if (ClientAlias::where('name', trim($detectedName))->exists()) {
+                    if (ClientAlias::where('name', $detectedName)->exists()) {
+                        continue;
+                    }
+
+                    // Skip if explicitly ignored
+                    if (in_array($detectedName, $ignoredNames)) {
                         continue;
                     }
                     
@@ -52,7 +65,7 @@ class NormalizationController extends Controller
                         'filename' => $log->filename,
                         'date' => $log->created_at,
                         'type' => $isSuspicion ? 'suspicion' : 'new',
-                        'detected_name' => trim($detectedName),
+                        'detected_name' => $detectedName,
                         'suggested_name' => $suggestedName ? trim($suggestedName) : null,
                         'full_message' => $warning
                     ];
@@ -102,9 +115,6 @@ class NormalizationController extends Controller
                 $duplicateClient->delete();
             }
 
-            // 6. Clean up the warning from logs (Optional, for now we just show it's done)
-            // In a more robust version, we would remove the warning from the JSON
-
             DB::commit();
             return redirect()->back()->with('success', "Cliente '$detectedName' unificado con éxito bajo '$suggestedName'.");
 
@@ -119,8 +129,15 @@ class NormalizationController extends Controller
      */
     public function dismiss(Request $request)
     {
-        // For now, dismissal is just symbolic as we are reading raw logs.
-        // In the future, we could have a "normalization_ignored" table.
-        return redirect()->back()->with('info', "Aviso descartado temporalmente (Lógica de persistencia en desarrollo).");
+        $request->validate([
+            'detected_name' => 'required|string',
+        ]);
+
+        NormalizationDecision::updateOrCreate(
+            ['detected_name' => $request->detected_name],
+            ['decision' => 'ignore']
+        );
+
+        return redirect()->back()->with('info', "El cliente '{$request->detected_name}' ha sido descartado y no volverá a aparecer en la bandeja.");
     }
 }
