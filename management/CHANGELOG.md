@@ -3,6 +3,15 @@
 
 ---
 
+## [2026-05-08] — Bandeja de Normalización y Cross-Module Integration
+- Implementada la Bandeja de Normalización Central para gestión de identidades.
+- Integrada la lógica de normalización en el flujo de Auditoría de Licencias (AI).
+- Añadida funcionalidad de unificación completa (migración de contratos, licencias, inventario, contactos y certificados).
+- Implementado sistema de descarte persistente para avisos ignorados.
+- Añadida columna `warnings` a la tabla `ai_audit_results`.
+- Nueva tabla `normalization_decisions` para persistencia de descartes.
+- Refactorizado `NormalizationController` para manejar múltiples orígenes (CSV/Auditoría).
+
 ## [2026-05-08] — Motor de Normalización de Clientes (Alias & Fuzzy Match)
 - Implementación del `ClientNormalizationService` para resolver discrepancias de nombres.
 - Soporte para **Fuzzy Matching** (algoritmo Levenshtein) con umbral de similitud del 85%.
