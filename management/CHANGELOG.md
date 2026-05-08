@@ -3,6 +3,15 @@
 
 ---
 
+## [2026-05-08] — Centralización de Configuración IA ✅
+
+### Added
+- **Configuración**: Centralizadas las URLs de n8n Webhook y Callback API en variables de entorno.
+- **Flexibilidad**: Permitido cambio rápido de endpoints para pruebas sin modificar código fuente.
+
+### Changed
+- **Config**: Modificado `backend/config/ai.php` para eliminar hardcoded URLs y forzar el uso de variables de entorno.
+
 ## [2026-05-07] — Optimización de Auditoría IA (v2.2) ⏳ (Pendiente Verificar)
 
 ### Added
