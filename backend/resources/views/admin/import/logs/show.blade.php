@@ -1,3 +1,6 @@
+@extends('layouts.app')
+
+@section('content')
 <div class="page-header mb-10">
     <div class="breadcrumb mb-4">
         <a href="{{ route('admin.import.logs.index') }}" class="hover:text-accent transition-colors">Historial de Logs</a>
