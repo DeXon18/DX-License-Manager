@@ -87,7 +87,6 @@
                     <span class="sidebar-icon">🛠️</span> Hub de Utilidades
                 </a>
                 <a class="sidebar-item" href="#">
-                <a class="sidebar-item" href="#">
                     <span class="sidebar-icon">📂</span> Repositorio
                 </a>
             </div>
