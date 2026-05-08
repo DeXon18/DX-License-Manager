@@ -27,16 +27,16 @@
         <div class="cod-card-body">
             <!-- SECCIÓN: DATOS DE LA EMPRESA -->
             <div class="form-section">
-                <div class="section-header">
+                <div class="section-title">
                     <i class="fa-solid fa-building"></i>
                     <span>Datos de la Empresa</span>
                 </div>
                 
-                <!-- Buscador de Identidad DX (Vínculo Interno) -->
-                <div class="mb-4">
-                    <div class="input-with-icon vinculo">
+                <!-- Vínculo DX (Selector compacto) -->
+                <div class="vinculo-container">
+                    <div class="input-wrap vinculo-select">
                         <i class="fa-solid fa-link"></i>
-                        <select x-model="formData.client_id" @change="updateFromClient()" class="select-vinculo">
+                        <select x-model="formData.client_id" @change="updateFromClient()" class="gui-input select-vinculo">
                             <option value="">Vínculo DX (Asociar con cliente del portal...)</option>
                             @foreach($clients as $client)
                                 <option value="{{ $client->id }}">{{ $client->name }}</option>
@@ -45,20 +45,28 @@
                     </div>
                 </div>
 
-                <div class="space-y-4">
-                    <div class="input-with-icon">
-                        <i class="fa-solid fa-shield-halved"></i>
-                        <input type="text" x-model="formData.Data_SoldTo" placeholder="Número de licencia (Sold To)" required maxlength="10">
+                <div class="fields-container">
+                    <!-- Fila 1: Sold To (Ancho completo) -->
+                    <div class="field-row">
+                        <div class="input-wrap">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <input type="text" x-model="formData.Data_SoldTo" class="gui-input" placeholder="Número de licencia (Sold To)" required maxlength="10">
+                        </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="input-with-icon">
-                            <i class="fa-solid fa-user"></i>
-                            <input type="text" x-model="formData.Data_Solicitante" placeholder="Solicitante" required>
+                    <!-- Fila 2: Solicitante y Empresa (50/50) -->
+                    <div class="columns-2 mt-4">
+                        <div class="field-row">
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-user"></i>
+                                <input type="text" x-model="formData.Data_Solicitante" class="gui-input" placeholder="Solicitante" required>
+                            </div>
                         </div>
-                        <div class="input-with-icon">
-                            <i class="fa-solid fa-globe"></i>
-                            <input type="text" x-model="formData.Data_Empresa" placeholder="Empresa" required>
+                        <div class="field-row">
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-globe"></i>
+                                <input type="text" x-model="formData.Data_Empresa" class="gui-input" placeholder="Empresa" required>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -88,33 +96,41 @@
             </div>
 
             <!-- SECCIÓN: MÁQUINAS (PARALELO) -->
-            <div class="grid grid-cols-2 gap-8">
+            <div class="columns-2" style="gap: 24px; margin-top: 24px;">
                 <!-- Máquina Actual -->
                 <div class="form-section">
-                    <div class="section-header">
+                    <div class="section-title">
                         <i class="fa-solid fa-desktop"></i>
                         <span>Máquina Actual</span>
                     </div>
-                    <div class="space-y-4">
-                        <div class="input-with-icon">
-                            <i class="fa-solid fa-terminal"></i>
-                            <input type="text" x-model="formData.Hostname_Old" placeholder="Hostname" :required="formData.docType !== 'Change_NodeLocked'" :disabled="formData.docType === 'Change_NodeLocked'">
+                    <div class="fields-stack">
+                        <div class="field-row">
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-terminal"></i>
+                                <input type="text" x-model="formData.Hostname_Old" class="gui-input" placeholder="Hostname" :required="formData.docType !== 'Change_NodeLocked'" :disabled="formData.docType === 'Change_NodeLocked'">
+                            </div>
                         </div>
-                        <div class="input-with-icon">
-                            <i class="fa-solid fa-code"></i>
-                            <input type="text" x-model="formData.Composite_Old" placeholder="Composite" :required="formData.docType !== 'Change_NodeLocked'" :disabled="formData.docType === 'Change_NodeLocked'" maxlength="12">
+                        <div class="field-row">
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-code"></i>
+                                <input type="text" x-model="formData.Composite_Old" class="gui-input" placeholder="Composite" :required="formData.docType !== 'Change_NodeLocked'" :disabled="formData.docType === 'Change_NodeLocked'" maxlength="12">
+                            </div>
                         </div>
-                        <div class="input-with-icon">
-                            <i class="fa-solid fa-id-card"></i>
-                            <input type="text" x-model="formData.MAC_Old" placeholder="HostID (MAC)" :required="formData.docType !== 'Change_Composite'" :disabled="formData.docType === 'Change_Composite'" maxlength="12">
+                        <div class="field-row">
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-id-card"></i>
+                                <input type="text" x-model="formData.MAC_Old" class="gui-input" placeholder="HostID (MAC)" :required="formData.docType !== 'Change_Composite'" :disabled="formData.docType === 'Change_Composite'" maxlength="12">
+                            </div>
                         </div>
                         
                         <!-- MACs Adicionales -->
                         <template x-for="(mac, index) in formData.MAC_Old_Extra" :key="index">
-                            <div class="input-with-icon extra">
-                                <i class="fa-solid fa-id-card opacity-50"></i>
-                                <input type="text" x-model="formData.MAC_Old_Extra[index]" placeholder="MAC Extra" maxlength="12">
-                                <button type="button" class="remove-btn" @click="removeMacPair(index)">&times;</button>
+                            <div class="field-row">
+                                <div class="input-wrap">
+                                    <i class="fa-solid fa-id-card opacity-50"></i>
+                                    <input type="text" x-model="formData.MAC_Old_Extra[index]" class="gui-input" placeholder="MAC Extra" maxlength="12">
+                                    <button type="button" class="remove-btn" @click="removeMacPair(index)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--muted); cursor: pointer;">&times;</button>
+                                </div>
                             </div>
                         </template>
                     </div>
@@ -122,29 +138,37 @@
 
                 <!-- Nueva Máquina -->
                 <div class="form-section">
-                    <div class="section-header">
+                    <div class="section-title">
                         <i class="fa-solid fa-tower-broadcast"></i>
                         <span>Nueva Máquina</span>
                     </div>
-                    <div class="space-y-4">
-                        <div class="input-with-icon">
-                            <i class="fa-solid fa-terminal"></i>
-                            <input type="text" x-model="formData.Hostname_New" placeholder="Hostname" :required="formData.docType !== 'Change_NodeLocked'" :disabled="formData.docType === 'Change_NodeLocked'">
+                    <div class="fields-stack">
+                        <div class="field-row">
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-terminal"></i>
+                                <input type="text" x-model="formData.Hostname_New" class="gui-input" placeholder="Hostname" :required="formData.docType !== 'Change_NodeLocked'" :disabled="formData.docType === 'Change_NodeLocked'">
+                            </div>
                         </div>
-                        <div class="input-with-icon">
-                            <i class="fa-solid fa-code"></i>
-                            <input type="text" x-model="formData.Composite_New" placeholder="Composite" :required="formData.docType !== 'Change_NodeLocked'" :disabled="formData.docType === 'Change_NodeLocked'" maxlength="12">
+                        <div class="field-row">
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-code"></i>
+                                <input type="text" x-model="formData.Composite_New" class="gui-input" placeholder="Composite" :required="formData.docType !== 'Change_NodeLocked'" :disabled="formData.docType === 'Change_NodeLocked'" maxlength="12">
+                            </div>
                         </div>
-                        <div class="input-with-icon">
-                            <i class="fa-solid fa-id-card"></i>
-                            <input type="text" x-model="formData.MAC_New" placeholder="HostID (MAC)" :required="formData.docType !== 'Change_Composite'" :disabled="formData.docType === 'Change_Composite'" maxlength="12">
+                        <div class="field-row">
+                            <div class="input-wrap">
+                                <i class="fa-solid fa-id-card"></i>
+                                <input type="text" x-model="formData.MAC_New" class="gui-input" placeholder="HostID (MAC)" :required="formData.docType !== 'Change_Composite'" :disabled="formData.docType === 'Change_Composite'" maxlength="12">
+                            </div>
                         </div>
 
                         <!-- MACs Adicionales -->
                         <template x-for="(mac, index) in formData.MAC_New_Extra" :key="index">
-                            <div class="input-with-icon extra">
-                                <i class="fa-solid fa-id-card opacity-50"></i>
-                                <input type="text" x-model="formData.MAC_New_Extra[index]" placeholder="Nueva MAC Extra" maxlength="12">
+                            <div class="field-row">
+                                <div class="input-wrap">
+                                    <i class="fa-solid fa-id-card opacity-50"></i>
+                                    <input type="text" x-model="formData.MAC_New_Extra[index]" class="gui-input" placeholder="Nueva MAC Extra" maxlength="12">
+                                </div>
                             </div>
                         </template>
                     </div>
@@ -262,39 +286,63 @@
     }
     .section-header i { font-size: 12px; }
 
-    /* Inputs Estilo Premium */
-    .input-with-icon {
-        position: relative;
+    /* Estilos Específicos COD */
+    .cod-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        overflow: hidden;
+    }
+    
+    .cod-card-header {
+        background: rgba(var(--accent-rgb), 0.05);
+        padding: 24px 32px;
+        border-bottom: 1px solid var(--border);
         display: flex;
+        justify-content: space-between;
         align-items: center;
     }
-    .input-with-icon i {
+
+    .form-section {
+        background: rgba(255,255,255,0.01);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+
+    .vinculo-container {
+        margin-bottom: 24px;
+    }
+
+    .select-vinculo {
+        background: rgba(var(--accent-rgb), 0.05) !important;
+        border: 1px dashed var(--accent) !important;
+        color: var(--accent) !important;
+        font-weight: 500;
+    }
+
+    .input-wrap i {
         position: absolute;
-        left: 16px;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
         color: var(--muted);
         font-size: 14px;
         pointer-events: none;
+        z-index: 5;
     }
-    .input-with-icon.vinculo select {
-        padding: 10px 16px 10px 42px;
-        background: rgba(var(--accent-rgb), 0.05);
-        border: 1px dashed rgba(var(--accent-rgb), 0.3);
-        font-size: 13px;
-        color: var(--accent);
+
+    .fields-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
     }
-    .input-with-icon.vinculo i { color: var(--accent); font-size: 13px; }
-    
-    .input-with-icon input, .input-with-icon select {
-        width: 100%;
-        padding: 14px 16px 14px 46px;
-        background: rgba(255,255,255,0.02);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        color: var(--text);
-        font-size: 14px;
-        transition: all 0.2s;
-        appearance: none;
-    }
+
+    .mt-4 { margin-top: 16px; }
+    .opacity-50 { opacity: 0.5; }
+
     .input-with-icon input:focus, .input-with-icon select:focus {
         border-color: var(--accent);
         background: rgba(var(--accent-rgb), 0.02);
