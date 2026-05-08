@@ -286,10 +286,34 @@
                                 <span class="badge badge-success">Firmado</span>
                             @endif
                         </td>
-                        <td class="text-right">
-                            <a href="{{ route('tools.cod.download', ['filePath' => $cod->file_path]) }}" class="btn-icon" title="Descargar PDF">
-                                <i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i>
-                            </a>
+                        <td class="text-right" style="width: 140px; white-space: nowrap;">
+                            <div class="inline-flex items-center gap-1.5 flex-nowrap">
+                                <a href="{{ route('tools.cod.download', ['uuid' => $cod->uuid]) }}" class="btn-action-tool" title="Original">
+                                    <i class="fa-solid fa-file-pdf text-red-500/80"></i>
+                                </a>
+                                
+                                @if($cod->signed_file_path)
+                                    <a href="{{ route('tools.cod.download-signed', ['uuid' => $cod->uuid]) }}" class="btn-action-tool signed" title="Firmado">
+                                        <i class="fa-solid fa-file-signature"></i>
+                                    </a>
+                                @else
+                                    <form action="{{ url('/herramientas/cod/' . $cod->uuid . '/upload-signed') }}" method="POST" enctype="multipart/form-data" style="display: contents;">
+                                        @csrf
+                                        <label class="btn-action-tool upload cursor-pointer" title="Subir Firmado">
+                                            <i class="fa-solid fa-cloud-upload"></i>
+                                            <input type="file" name="signed_file" class="hidden" accept=".pdf" onchange="this.form.submit()">
+                                        </label>
+                                    </form>
+                                @endif
+
+                                <form action="{{ route('tools.cod.destroy', ['uuid' => $cod->uuid]) }}" method="POST" onsubmit="return confirm('¿Eliminar permanente?')" style="display: contents;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn-action-tool delete" title="Eliminar">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     @empty
@@ -541,6 +565,8 @@
             </div>
         </div>
     </template>
+
+    <!-- Modal de subida eliminado en favor de subida directa por simplicidad y robustez -->
 </div>
 @endsection
 
@@ -583,6 +609,41 @@
         background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.2);
     }
 
+    /* Tool Action Buttons (Compact & Premium) */
+    .btn-action-tool {
+        width: 28px;
+        height: 28px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 6px;
+        color: var(--muted);
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        font-size: 11px;
+    }
+    .btn-action-tool:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        transform: translateY(-1px);
+    }
+    .btn-action-tool.signed { color: var(--accent); border-color: rgba(0, 153, 153, 0.2); }
+    .btn-action-tool.signed:hover { background: rgba(0, 153, 153, 0.1); border-color: var(--accent); }
+    
+    .btn-action-tool.upload { color: #388bfd; }
+    .btn-action-tool.upload:hover { background: rgba(56, 139, 253, 0.1); border-color: #388bfd; }
+
+    .btn-action-tool.delete:hover {
+        background: rgba(239, 68, 68, 0.1);
+        border-color: #ef4444;
+        color: #ef4444;
+    }
+    
+    .text-red-500\/80 { color: rgba(239, 68, 68, 0.8); }
+
     /* Legend Styles */
     .card-footer-legend {
         background: var(--bg);
@@ -598,6 +659,26 @@
     }
     .legend-grid { display: flex; flex-wrap: wrap; gap: 12px 24px; }
     .legend-item { display: flex; align-items: center; gap: 8px; }
+
+    /* Upload Zone Styles */
+    .upload-zone {
+        border: 2px dashed var(--border);
+        background: rgba(255, 255, 255, 0.02);
+        border-radius: 12px;
+        padding: 40px 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .upload-zone:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: var(--accent);
+    }
+    .upload-zone i { font-size: 40px; margin-bottom: 16px; color: var(--accent); opacity: 0.5; }
+    .hidden { display: none; }
     .legend-item .badge { font-size: 9px; padding: 1px 6px; }
     .legend-label {
         font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted);
@@ -629,6 +710,12 @@
         padding: 16px 24px; border-top: 1px solid var(--border);
         display: flex; justify-content: end; gap: 12px;
         background: rgba(255, 255, 255, 0.02);
+    }
+
+    .cod-upload-overlay {
+        position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center;
+        z-index: 9999; padding: 20px;
     }
 
     /* Product Chips & Badges */

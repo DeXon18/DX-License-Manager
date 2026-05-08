@@ -100,9 +100,75 @@ class CodController extends Controller
             abort(404, 'Archivo no encontrado en el almacenamiento.');
         }
 
-        // Security check: ensure user can access this file (RBAC)
-        // For now, technician/admin can access, which is handled by auth.jwt middleware
+        return Storage::disk('private')->download(
+            $certificate->file_path,
+            basename($certificate->file_path)
+        );
+    }
 
-        return Storage::disk('private')->download($certificate->file_path);
+    public function uploadSigned(Request $request, $uuid)
+    {
+        \Log::info('COD Upload Attempt', ['uuid' => $uuid, 'has_file' => $request->hasFile('signed_file')]);
+
+        $request->validate([
+            'signed_file' => 'required|file|mimes:pdf,application/pdf|max:20480', // Aumentado a 20MB y validación dual
+        ]);
+
+        $certificate = CodCertificate::where('uuid', $uuid)->firstOrFail();
+        $client = $certificate->client;
+
+        $directory = 'licenses/siemens/' . \Illuminate\Support\Str::slug($client->name) . '/COD';
+        $fileName = 'COD_SIGNED_' . $certificate->type . '_' . now()->format('Ymd_His') . '.pdf';
+        
+        // Uso de putFileAs para mayor seguridad y manejo de streams
+        $filePath = Storage::disk('private')->putFileAs($directory, $request->file('signed_file'), $fileName);
+
+        if (!$filePath) {
+            \Log::error('COD Upload Failed to save file', ['directory' => $directory, 'fileName' => $fileName]);
+            return back()->with('error', 'Error al guardar el archivo en el servidor.');
+        }
+
+        $certificate->update([
+            'signed_file_path' => $filePath,
+            'signed_at' => now(),
+            'status' => 'SIGNED'
+        ]);
+
+        \Log::info('COD Upload Success', ['uuid' => $uuid, 'path' => $filePath]);
+
+        return back()->with('success', 'Certificado firmado subido correctamente.');
+    }
+
+    public function downloadSigned(Request $request)
+    {
+        $uuid = $request->query('uuid');
+        $certificate = CodCertificate::where('uuid', $uuid)->firstOrFail();
+
+        if (!$certificate->signed_file_path || !Storage::disk('private')->exists($certificate->signed_file_path)) {
+            abort(404, 'Archivo firmado no encontrado.');
+        }
+
+        return Storage::disk('private')->download(
+            $certificate->signed_file_path,
+            basename($certificate->signed_file_path)
+        );
+    }
+
+    public function destroy($uuid)
+    {
+        $certificate = CodCertificate::where('uuid', $uuid)->firstOrFail();
+
+        // Delete files from private storage
+        if (Storage::disk('private')->exists($certificate->file_path)) {
+            Storage::disk('private')->delete($certificate->file_path);
+        }
+
+        if ($certificate->signed_file_path && Storage::disk('private')->exists($certificate->signed_file_path)) {
+            Storage::disk('private')->delete($certificate->signed_file_path);
+        }
+
+        $certificate->delete();
+
+        return back()->with('success', 'Certificado eliminado correctamente.');
     }
 }
