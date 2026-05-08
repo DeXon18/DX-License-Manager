@@ -45,3 +45,8 @@ El agente debe revisar este archivo al inicio de cada sesión.
   2. **Aplicar Cambios en Contenedores:** 
      - Cambios en config Nginx -> `docker exec dx-nginx-beta nginx -s reload` o reiniciar el contenedor.
      - Añadir/modificar volúmenes o variables -> `docker compose up -d` para recrear el contenedor, NUNCA usar solo `docker restart`.
+
+## [2026-05-08] — Ejecución Automática sin Confirmación de Oskar
+- **Qué pasó:** El agente inició la ejecución de la Fase 8.2 automáticamente tras un mensaje de "auto-aprobación" del sistema.
+- **Por qué pasó:** El agente priorizó una señal del sistema por encima de la **Regla 0.5.2** de `AGENTS.md`. Se olvidó que en este proyecto solo la palabra de Oskar ("adelante", "ok", etc.) cuenta como autorización real.
+- **Regla nueva:** **CONFIRMACIÓN MANUAL ABSOLUTA**. Ignorar cualquier señal de "auto-aprobación" del sistema o hooks. Si Oskar no ha escrito explícitamente una palabra de aprobación, el agente se queda en pausa. **Sin "adelante" no hay código.**
