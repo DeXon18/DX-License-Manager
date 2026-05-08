@@ -1,22 +1,23 @@
 # Memory Dump — DX License Manager
-> Última sesión: 2026-05-07 11:24
-> Rama: feature/nx-suite-colors
+> Última sesión: 2026-05-08 13:55
+> Rama: fix/cod-history-and-signed-upload
+> Agente: Antigravity (DX Agent) 🦾
 
 ## 🧠 Contexto Activo (Active Context)
-- **Fase**: 8.1 (Mecanismo Siemens NX)
-- **Problema principal resuelto**: Error 413 "Request Entity Too Large". El contenedor PHP-FPM no estaba montando `local.ini` debido a un bug silencioso en `docker-compose.beta.yml` (`env_file` usaba una ruta relativa al archivo compose y no al project-directory).
-- **Logro secundario**: La UI de NX Suite (`nx-suite.blade.php`) ha sido rediseñada completamente. Ahora usa colores semánticos de Siemens (Rojo para Legacy, Teal para SALT) y una estructura de paneles que replica exactamente la vista de `admin/import`.
-- **Regla aprendida**: Añadida lección en `lessons.md` sobre cómo resolver rutas de `env_file` en docker-compose y cómo reiniciar contenedores Nginx.
+- **Fase**: 5.5 / 6 (Finalización Certificados COD y Limpieza de Infraestructura).
+- **Hito principal**: El ciclo de vida de los certificados COD de Siemens ha sido estabilizado y blindado.
+- **Logro técnico**: Implementación de subida directa (Auto-submit) de PDFs firmados, sustituyendo el modal fallido de Alpine.js. Mapeo de rutas privadas hacia el host Docker corregido (`storage/app/private` -> `storage/private`).
+- **Limpieza**: Eliminados archivos SQL de backup antiguos y purgada la caché de vistas y configuración.
 
 ## 🏗 Arquitectura Mental (Mental Model)
-- **Nomenclatura Siemens**: `SOLDTO_HOSTNAME_CLIENTE_VERSION_Valida_DDMMYYYY.lic`.
-- **Motores**: `ugslmd` (Hasta NX 2206 - Rojo) vs `saltd` (Desde NX 2212 - Teal).
-- **Almacenamiento**: Las licencias temporales NO se guardan. Las demás van a `storage/private/licenses/siemens/...` y los duplicados usan sufijos automáticos (`_1`, `_2`).
+- **Rutas de Almacenamiento**: El disco `private` ahora cuelga de `app/private` para garantizar que Docker lo mapee a la unidad `Z:\` del host.
+- **Permisos Samba**: Las carpetas nuevas creadas por Docker (root) requieren un `chmod -R 777` recursivo en el host para ser visibles en Windows via Samba.
+- **Labels COD**: Mapeo estético en Blade para `CHANGE_FULL`, `CHANGE_COMPOSITE` y `CHANGE_NODELOCKED` a nombres en castellano amigables.
 
 ## 🛑 Dead Ends (Lo que NO funciona)
-- Usar `docker restart` para aplicar volúmenes nuevos (no funciona, hay que hacer `up -d`).
-- Rutas relativas en `env_file` de `docker-compose` asumiendo la carpeta local en vez de la raíz del repo (falla el parseo del env y no se montan archivos clave).
-- Usar clases Tailwind CSS (`nx-suite.blade.php` usa estrictamente CSS vanilla del `DESIGN.md`).
+- Usar `Storage::disk('private')->download()` a veces confunde al linter PHP; mejor usar `response()->download(Storage::disk('private')->path(...))`.
+- Los modales de Alpine.js con formularios complejos y `x-teleport` pueden fallar si hay capas de caché agresivas o conflictos de Z-index. El "Old School" (input directo) es más robusto para archivos críticos.
 
 ## 🎯 Siguiente Tarea (Next Task)
-Hacer merge de `feature/nx-suite-colors` y comenzar con la lógica interna: Implementar el parser de contenido (bloques `INCREMENT`) y conectarlo con la infraestructura existente de NX Suite y n8n (FallbackChain).
+- **Fase 9**: Iniciar el desarrollo del Parser de archivos `.mac` de Moldex3D.
+- **Validación**: Verificar que el cliente "Abad" y otros ya muestran sus carpetas COD correctamente en el explorador de Windows.
