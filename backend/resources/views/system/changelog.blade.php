@@ -43,13 +43,17 @@
 
                         <div class="entry-body">
                             @foreach($entry['categories'] as $category => $items)
-                                <div class="category-section">
-                                    <h3 class="category-title category-{{ strtolower($category) }}">
+                                @php $catClass = 'category-' . strtolower($category); @endphp
+                                <div class="category-section {{ $catClass }}">
+                                    <h3 class="category-title">
                                         {{ $category }}
                                     </h3>
                                     <ul class="change-list">
                                         @foreach($items as $item)
                                             <li>
+                                                @if($item['tag'])
+                                                    <span class="item-tag">{{ $item['tag'] }}</span>
+                                                @endif
                                                 @if($item['label'])
                                                     <span class="change-label">{{ $item['label'] }}</span>
                                                 @endif
@@ -107,17 +111,33 @@
     padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 12px;
 }
 
-/* Category Colors */
-.category-added { background: rgba(16, 185, 129, 0.1); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.2); }
-.category-fixed { background: rgba(59, 130, 246, 0.1); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.2); }
-.category-changed { background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
-.category-security { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2); }
-.category-removed { background: rgba(107, 114, 128, 0.1); color: #6b7280; border: 1px solid rgba(107, 114, 128, 0.2); }
-.category-general { background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
+/* Category Colors & Bullets */
+.category-added { --cat-color: #10b981; --cat-bg: rgba(16, 185, 129, 0.1); }
+.category-fixed { --cat-color: #3b82f6; --cat-bg: rgba(59, 130, 246, 0.1); }
+.category-changed { --cat-color: #f59e0b; --cat-bg: rgba(245, 158, 11, 0.1); }
+.category-security { --cat-color: #ef4444; --cat-bg: rgba(239, 68, 68, 0.1); }
+.category-removed { --cat-color: #6b7280; --cat-bg: rgba(107, 114, 128, 0.1); }
+.category-general { --cat-color: var(--muted); --cat-bg: var(--bg); }
 
-.change-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
-.change-list li { font-size: 13.5px; color: var(--secondary); line-height: 1.5; position: relative; padding-left: 14px; }
-.change-list li::before { content: '•'; position: absolute; left: 0; color: var(--muted); }
+.category-title {
+    font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;
+    padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 12px;
+    background: var(--cat-bg); color: var(--cat-color); border: 1px solid rgba(var(--cat-color), 0.2);
+}
+
+.change-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.change-list li { font-size: 13.5px; color: var(--secondary); line-height: 1.5; position: relative; padding-left: 18px; }
+.change-list li::before { 
+    content: ''; position: absolute; left: 0; top: 7px; width: 6px; height: 6px; 
+    border-radius: 50%; background: var(--cat-color); box-shadow: 0 0 5px var(--cat-bg);
+}
+
+.item-tag {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; padding: 1px 6px; border-radius: 4px;
+    background: var(--bg); border: 1px solid var(--border); color: var(--accent);
+    margin-right: 6px; vertical-align: middle;
+}
 .change-label { font-weight: 600; color: var(--primary); margin-right: 4px; }
 .change-desc { color: var(--secondary); }
 
