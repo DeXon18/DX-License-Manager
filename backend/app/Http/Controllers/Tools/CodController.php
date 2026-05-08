@@ -8,6 +8,7 @@ use App\Models\CodCertificate;
 use App\Services\Tools\CodService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -100,15 +101,15 @@ class CodController extends Controller
             abort(404, 'Archivo no encontrado en el almacenamiento.');
         }
 
-        return Storage::disk('private')->download(
-            $certificate->file_path,
+        return response()->download(
+            Storage::disk('private')->path($certificate->file_path),
             basename($certificate->file_path)
         );
     }
 
     public function uploadSigned(Request $request, $uuid)
     {
-        \Log::info('COD Upload Attempt', ['uuid' => $uuid, 'has_file' => $request->hasFile('signed_file')]);
+        Log::info('COD Upload Attempt', ['uuid' => $uuid, 'has_file' => $request->hasFile('signed_file')]);
 
         $request->validate([
             'signed_file' => 'required|file|mimes:pdf,application/pdf|max:20480', // Aumentado a 20MB y validación dual
@@ -117,14 +118,14 @@ class CodController extends Controller
         $certificate = CodCertificate::where('uuid', $uuid)->firstOrFail();
         $client = $certificate->client;
 
-        $directory = 'licenses/siemens/' . \Illuminate\Support\Str::slug($client->name) . '/COD';
+        $directory = 'licenses/siemens/' . Str::slug($client->name) . '/COD';
         $fileName = 'COD_SIGNED_' . $certificate->type . '_' . now()->format('Ymd_His') . '.pdf';
         
         // Uso de putFileAs para mayor seguridad y manejo de streams
         $filePath = Storage::disk('private')->putFileAs($directory, $request->file('signed_file'), $fileName);
 
         if (!$filePath) {
-            \Log::error('COD Upload Failed to save file', ['directory' => $directory, 'fileName' => $fileName]);
+            Log::error('COD Upload Failed to save file', ['directory' => $directory, 'fileName' => $fileName]);
             return back()->with('error', 'Error al guardar el archivo en el servidor.');
         }
 
@@ -134,7 +135,7 @@ class CodController extends Controller
             'status' => 'SIGNED'
         ]);
 
-        \Log::info('COD Upload Success', ['uuid' => $uuid, 'path' => $filePath]);
+        Log::info('COD Upload Success', ['uuid' => $uuid, 'path' => $filePath]);
 
         return back()->with('success', 'Certificado firmado subido correctamente.');
     }
@@ -148,8 +149,8 @@ class CodController extends Controller
             abort(404, 'Archivo firmado no encontrado.');
         }
 
-        return Storage::disk('private')->download(
-            $certificate->signed_file_path,
+        return response()->download(
+            Storage::disk('private')->path($certificate->signed_file_path),
             basename($certificate->signed_file_path)
         );
     }
