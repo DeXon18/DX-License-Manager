@@ -10,6 +10,13 @@
     </div>
 @endif
 
+@if(session('error'))
+    <div class="badge badge-danger" style="width: 100%; padding: 12px; margin-bottom: 24px; text-transform: none; border-radius: 4px; justify-content: flex-start;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 8px;"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        {{ session('error') }}
+    </div>
+@endif
+
 @if($errors->any())
     <div class="badge badge-danger" style="width: 100%; padding: 12px; margin-bottom: 24px; text-transform: none; border-radius: 4px; flex-direction: column; align-items: flex-start; gap: 8px;">
         <div style="display: flex; align-items: center;">
