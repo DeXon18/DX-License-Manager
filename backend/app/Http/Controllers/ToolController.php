@@ -12,7 +12,7 @@ class ToolController extends Controller
      */
     public function index()
     {
-        $features = FeatureFlag::all()->groupBy('vendor');
+        $features = FeatureFlag::orderBy('id', 'asc')->get()->groupBy('vendor');
 
         return view('tools.index', [
             'features' => $features
