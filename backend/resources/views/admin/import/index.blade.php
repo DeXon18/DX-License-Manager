@@ -8,6 +8,11 @@
         <h1 class="page-title">Gestión de Importación</h1>
         <p class="page-sub">Actualización masiva de contratos y sincronización de estados desde repositorio externo.</p>
     </div>
+    <div class="page-header-actions">
+        <a href="{{ route('admin.import.logs.index') }}" class="btn-secondary">
+            <i class="fa-solid fa-clock-rotate-left mr-2"></i> Ver Historial de Logs
+        </a>
+    </div>
 </div>
 
 <div class="grid-main">
@@ -21,9 +26,16 @@
             
             <div style="padding: 24px;">
                 @if(session('success'))
-                    <div class="badge badge-success" style="width: 100%; padding: 12px; margin-bottom: 24px; justify-content: flex-start; text-transform: none; border-radius: 4px;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 8px;"><polyline points="20 6 9 17 4 12"/></svg>
-                        {{ session('success') }}
+                    <div class="badge badge-success" style="width: 100%; padding: 12px; margin-bottom: 24px; justify-content: space-between; text-transform: none; border-radius: 4px;">
+                        <div style="display: flex; align-items: center;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 8px;"><polyline points="20 6 9 17 4 12"/></svg>
+                            {{ session('success') }}
+                        </div>
+                        @if(session('log_id'))
+                            <a href="{{ route('admin.import.logs.show', session('log_id')) }}" class="btn-primary sm" style="padding: 4px 12px; font-size: 11px; margin-left: 16px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);">
+                                VER DETALLES
+                            </a>
+                        @endif
                     </div>
                 @endif
 
