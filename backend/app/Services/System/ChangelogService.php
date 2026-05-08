@@ -24,7 +24,7 @@ class ChangelogService
         $lines = explode("\n", $content);
         
         $entries = [];
-        $currentDate = null;
+        $currentEntry = null;
         $currentCategory = null;
 
         foreach ($lines as $line) {
@@ -36,32 +36,33 @@ class ChangelogService
 
             // Detect Date Headers: ## [2026-05-08] — Title
             if (preg_match('/^##\s*\[(\d{4}-\d{2}-\d{2})\]\s*—\s*(.*)/', $line, $matches)) {
-                $currentDate = $matches[1];
-                $title = $matches[2];
-                
-                $entries[$currentDate] = [
-                    'date' => $currentDate,
-                    'title' => $title,
+                if ($currentEntry) {
+                    $entries[] = $currentEntry;
+                }
+
+                $currentEntry = [
+                    'date' => $matches[1],
+                    'title' => trim($matches[2]),
                     'categories' => []
                 ];
-                $currentCategory = 'General'; // Default category if none specified
+                $currentCategory = 'General';
                 continue;
             }
 
-            if (!$currentDate) continue;
+            if (!$currentEntry) continue;
 
             // Detect Categories: ### Added, ### Fixed, etc.
             if (preg_match('/^###\s*(.*)/', $line, $matches)) {
                 $currentCategory = trim($matches[1]);
-                if (!isset($entries[$currentDate]['categories'][$currentCategory])) {
-                    $entries[$currentDate]['categories'][$currentCategory] = [];
+                if (!isset($currentEntry['categories'][$currentCategory])) {
+                    $currentEntry['categories'][$currentCategory] = [];
                 }
                 continue;
             }
 
             // Detect Signature
             if (preg_match('/^_Firmado por:\s*\*\*(.*)\*\*(.*)_/', $line, $matches)) {
-                $entries[$currentDate]['signature'] = trim($matches[1] . $matches[2]);
+                $currentEntry['signature'] = trim($matches[1] . $matches[2]);
                 continue;
             }
 
@@ -78,19 +79,24 @@ class ChangelogService
 
                 // Parse bold titles in items: **Title**: Description
                 if (preg_match('/^\*\*(.*?)\*\*:\s*(.*)/', $item, $itemMatches)) {
-                    $entries[$currentDate]['categories'][$currentCategory][] = [
+                    $currentEntry['categories'][$currentCategory][] = [
                         'label' => $itemMatches[1],
                         'tag' => $tag,
                         'description' => $itemMatches[2]
                     ];
                 } else {
-                    $entries[$currentDate]['categories'][$currentCategory][] = [
+                    $currentEntry['categories'][$currentCategory][] = [
                         'label' => null,
                         'tag' => $tag,
                         'description' => $item
                     ];
                 }
             }
+        }
+
+        // Add last entry
+        if ($currentEntry) {
+            $entries[] = $currentEntry;
         }
 
         return $entries;
