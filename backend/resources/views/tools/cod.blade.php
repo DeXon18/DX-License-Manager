@@ -575,13 +575,13 @@
     .footer-left, .footer-right {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 20px;
     }
 
     .segmented-wrapper.small, .btn-wrapper-tech {
-        height: 44px;
-        padding: 3px;
-        border-radius: 10px;
+        height: 40px;
+        padding: 2px;
+        border-radius: 9px;
         background: var(--surface);
         border: 1px solid var(--border);
         display: flex;
@@ -592,7 +592,7 @@
         display: flex;
         position: relative;
         z-index: 1;
-        min-width: 280px;
+        min-width: 240px;
         height: 100%;
         width: 100%;
     }
@@ -602,25 +602,25 @@
         height: 100%;
         background: none !important;
         border: none !important;
-        padding: 0 16px;
+        padding: 0 12px;
         color: var(--muted);
-        font-size: 10.5px;
+        font-size: 10px;
         font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.08em;
         cursor: pointer;
         transition: all 0.3s ease;
         z-index: 2;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 10px;
+        gap: 8px;
         white-space: nowrap;
     }
 
     .segmented-small button i, .btn-tech-base i { 
-        font-size: 14px; 
-        width: 18px;
+        font-size: 13px; 
+        width: 16px;
         display: flex;
         justify-content: center;
     }
@@ -635,7 +635,7 @@
         bottom: 0;
         background: rgba(var(--accent-rgb), 0.05);
         border: 1px solid var(--accent);
-        box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.1);
+        box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.1);
         border-radius: 7px;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 1;
@@ -650,19 +650,19 @@
     }
 
     .btn-cod-generate {
-        height: 44px;
+        height: 40px;
         background: var(--accent);
         color: white;
         border: 1px solid var(--accent);
-        padding: 0 28px;
-        border-radius: 10px;
+        padding: 0 24px;
+        border-radius: 9px;
         font-weight: 800;
-        font-size: 10.5px;
+        font-size: 10px;
         text-transform: uppercase;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.08em;
         cursor: pointer;
         transition: all 0.2s;
-        box-shadow: 0 4px 15px rgba(var(--accent-rgb), 0.3);
+        box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.3);
         display: flex;
         flex-direction: row !important;
         align-items: center;
@@ -672,8 +672,8 @@
     }
 
     .btn-cod-generate i {
-        font-size: 14px;
-        width: 18px;
+        font-size: 13px;
+        width: 16px;
         display: flex;
         justify-content: center;
     }
