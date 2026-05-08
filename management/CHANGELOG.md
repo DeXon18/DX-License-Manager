@@ -18,6 +18,12 @@
 
 ### Fixed
 - **Enlaces Históricos**: Corregido error 404 en el historial de cliente mediante migración a sistema de UUIDs.
+- **Alineación de Iconos**: Ajuste de UI mediante `display: contents` para visualización perfecta en horizontal.
+- **Mapeo de Almacenamiento**: Corregida visibilidad en el host (Windows) alineando el disco `private` con los volúmenes de Docker.
+- **Localización**: Mapeo de tipos de certificado a nombres profesionales en castellano.
+
+---
+_Firmado por: **Antigravity (DX Agent)** 🦾_
 - **Optimización Visual**: Iconos de acción compactados en horizontal (26px) para mejorar la densidad de información.
 - **Alineación UI**: Unificación de layouts horizontales para iconos y títulos en todo el módulo.
 - **Optimización PDF**: Compresión de márgenes y fuentes para asegurar una sola página A4.

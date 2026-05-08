@@ -1,28 +1,29 @@
 ---
 project: DX License Manager
 repo: github.com/DeXon18/DX-License-Manager
-status: Phase 8.1 In Progress
-last_sync: 2026-05-07
-current_agent: Antigravity (Caveman Mode)
+status: Phase 8.4 Completed
+last_sync: 2026-05-08
+current_agent: Antigravity (DX Agent) 🦾
 ---
 
 # 🧠 Contexto de Sesión Activa
 
 ## 🎯 Objetivo Actual
 
-- [x] Tarea principal: Fase 7 — Hub de Herramientas (Finalizada)
-- [ ] Subtarea en curso: Fase 8.1 — Motor de Auditoría Siemens (NX Suite)
-- Rama activa: feature/siemens-audit-motor
-- Fase del ROADMAP: Fase 8.1
+- [x] Tarea principal: Fase 8.4 — Generador Siemens COD (Finalizada)
+- [ ] Subtarea en curso: Preparación Fase 9 — Moldex3D Parser
+- Rama activa: fix/cod-history-and-signed-upload
+- Fase del ROADMAP: Fase 8.4 (Completada)
 
 ---
 
 ## 🕒 Log de Acciones (última sesión)
 
-- 2026-05-07 — Inicio sesión. Verificados stacks Docker (UP).
-- 2026-05-07 — Confirmado cache busting en assets beta.
-- 2026-05-06 — Fase 7 completada (Hub dinámico + Feature Flags).
-- 2026-05-06 — Fase 6.3 completada (Gestión de Contactos).
+- 2026-05-08 — Finalización del ciclo de vida COD (Subida, Descarga, Borrado).
+- 2026-05-08 — Refactorización UI de iconos COD a `display: contents` (Horizontal alignment).
+- 2026-05-08 — Corrección de mapeo de disco privado en Laravel para visibilidad en host (Windows).
+- 2026-05-08 — Limpieza de deuda técnica (Linter fixes) en `CodController`.
+- 2026-05-08 — Purga de backups antiguos y optimización de permisos Samba.
 
 ---
 
@@ -30,33 +31,33 @@ current_agent: Antigravity (Caveman Mode)
 
 | Decisión          | Detalle                                                             | Ref                       |
 | :---------------- | :------------------------------------------------------------------ | :------------------------ |
-| Assets Beta       | Cache busting con `?v={{ time() }}` en layout                       | `CHANGELOG.md`            |
-| UI Standard       | **NO Tailwind**. Usar `dx-styles.css` exclusivamente                | `last_brain`              |
-| Rutas             | Siempre en castellano (`/herramientas`, `/clientes`)                | `AGENTS.md`               |
-| Parser .lic       | PHP extrae localmente metadatos. IA solo audita extracto            | `security-check.md §3`    |
+| Private Storage   | Disco `private` mapeado a `storage/app/private` (Host visible)       | `filesystems.php`         |
+| COD Upload        | Formulario auto-submit directo (No modal) para máxima robustez       | `show.blade.php`          |
+| UI History        | `display: contents` en formularios para mantener filas Flex          | `show.blade.php`          |
+| Linter Standard   | Evitar `Storage::download()` directo; usar `response()->download()` | `CodController.php`       |
 | Commits           | Inglés. Comunicación dev: Castellano                                | `AGENTS.md`               |
 
 ---
 
 ## 🚀 Handover — Próximos Pasos
 
-1. Añadir y ejecutar migración `ai_audit_results`.
-2. Implementar `SiemensParser.php` para daemon `ugslmd`.
-3. Crear vista de auditoría NX Suite.
+1. Iniciar **Fase 9**: Desarrollo del parser de archivos `.mac` de Moldex3D.
+2. Implementar motor de extracción de Machine ID para Moldex3D.
+3. Integrar con el flujo de Inventario existente.
 
 ---
 
 ## 🗂️ Archivos en Foco (Working Set)
 
-- Parser: `backend/app/Services/Audit/`
-- Controlador: `backend/app/Http/Controllers/Tools/`
-- Vista: `backend/resources/views/tools/`
+- Controlador: `backend/app/Http/Controllers/Tools/CodController.php`
+- Vista: `backend/resources/views/clients/show.blade.php`
+- Almacenamiento: `storage/app/private/licenses/siemens/`
 
 ---
 
 ## ⚠️ Errores Conocidos / Bloqueos
 
-- Ninguno. Stacks OK.
+- Ninguno. Stacks OK. Visibilidad en Windows OK.
 
 ---
 
@@ -70,4 +71,7 @@ current_agent: Antigravity (Caveman Mode)
 | redis-beta          | ✅ running                       |
 | nginx-prod `:8001`  | ✅ running                       |
 | Cloudflared LXC 600 | ✅ running                       |
-| GitHub Actions      | ✅ configured                    |
+| GitHub Actions      | ✅ configured                    |
+
+---
+_Firmado por: **Antigravity (DX Agent) 🦾**_

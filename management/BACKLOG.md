@@ -46,7 +46,12 @@ En planificación — se detallan una por una tras validación de la fase anteri
 - [x] Modelo `CodCertificate` y servicio `CodService` (bilingüe).
 - [x] Interfaz reactiva con Alpine.js en el Hub de Herramientas.
 - [x] Integración de historial y accesos directos en la ficha de cliente.
-- [x] Almacenamiento seguro en `storage/private/licenses/siemens/{client}/COD/`.
+- [x] Almacenamiento seguro y visible en `Z:\DX-License-Manager\storage\private\licenses\siemens\{client}\COD\`.
+- [x] **Subida Directa**: Refactorización a formulario auto-enviable para máxima robustez.
+- [x] **Permisos Automáticos**: Script de ajuste de permisos para visibilidad inmediata en Samba.
+
+---
+_Firmado por: **Antigravity (DX Agent)** 🦾_
 
 ### Fase 8.3 — HEEDS & UI Polish ✅
 - **Completada:** 2026-05-08
