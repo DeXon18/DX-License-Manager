@@ -262,12 +262,18 @@
 
                 <!-- Generar (Acción Principal) -->
                 <button type="submit" class="btn-cod-generate" :disabled="isGenerating">
-                    <span x-show="!isGenerating" class="flex items-center gap-3">
-                        <i class="fa-solid fa-file-pdf"></i> Generar PDF
-                    </span>
-                    <span x-show="isGenerating" class="flex items-center gap-3">
-                        <i class="fa-solid fa-spinner fa-spin"></i> Generando...
-                    </span>
+                    <template x-if="!isGenerating">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-file-pdf"></i>
+                            <span>Generar PDF</span>
+                        </div>
+                    </template>
+                    <template x-if="isGenerating">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-spinner fa-spin"></i>
+                            <span>Generando...</span>
+                        </div>
+                    </template>
                 </button>
             </div>
         </div>
@@ -648,7 +654,7 @@
         background: var(--accent);
         color: white;
         border: 1px solid var(--accent);
-        padding: 0 32px;
+        padding: 0 28px;
         border-radius: 10px;
         font-weight: 800;
         font-size: 10.5px;
@@ -658,9 +664,11 @@
         transition: all 0.2s;
         box-shadow: 0 4px 15px rgba(var(--accent-rgb), 0.3);
         display: flex;
+        flex-direction: row !important;
         align-items: center;
-        gap: 12px;
-        white-space: nowrap;
+        justify-content: center;
+        gap: 10px;
+        white-space: nowrap !important;
     }
 
     .btn-cod-generate i {
