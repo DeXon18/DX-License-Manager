@@ -3,48 +3,29 @@
 
 ---
 
-## [2026-05-08] — Bandeja de Normalización y Cross-Module Integration
-- Implementada la Bandeja de Normalización Central para gestión de identidades.
-- Integrada la lógica de normalización en el flujo de Auditoría de Licencias (AI).
-- Añadida funcionalidad de unificación completa (migración de contratos, licencias, inventario, contactos y certificados).
-- Implementado sistema de descarte persistente para avisos ignorados.
-- Añadida columna `warnings` a la tabla `ai_audit_results`.
-- Nueva tabla `normalization_decisions` para persistencia de descartes.
-- Refactorizado `NormalizationController` para manejar múltiples orígenes (CSV/Auditoría).
-
-## [2026-05-08] — Motor de Normalización de Clientes (Alias & Fuzzy Match)
-- Implementación del `ClientNormalizationService` para resolver discrepancias de nombres.
-- Soporte para **Fuzzy Matching** (algoritmo Levenshtein) con umbral de similitud del 85%.
-- Creación de la tabla `client_aliases` para mapeo manual y automático de erratas.
-- Integración en `CsvImportService` con sistema de logs de "Sospecha de Duplicado".
-- Documentación técnica completa en `docs/technical/client-normalization-engine.md`.
-
-## [2026-05-08] — Fase 8.2: Implementación STAR-CCM+
- ✅
-- **Backend**: Creado `StarCcmService` para parsing de `cdlmd` y transformación a `saltd` (puerto 29000).
-- **Controlador**: Implementado `StarCcmController` con lógica de almacenamiento jerárquico `licenses/siemens/{cliente}/{MM-YYYY}`.
-- **UI**: Añadida vista `tools/star-ccm.blade.php` con dashboard técnico de auditoría.
-- **Base de Datos**: Nueva migración para activar el feature flag `siemens_star_ccm`.
-- **Nomenclatura**: Estándar estricto `SOLDTO_HOSTNAME_CLIENTE_STARCCM_V{VERSION}_Valida_{FECHA}.lic`.
-
-## [2026-05-08] — Pausa Técnica: Auditoría n8n y UI de Modal ⏸️
-
- 
-### Changed
-- **Estado del Proyecto**: Pausadas las tareas de integración de n8n v2.2 y corrección del bug del modal de auditoría.
-- **Análisis**: Iniciada fase de análisis para el nuevo flujo ramificado de n8n (Siemens SALT/Legacy, Moldex3D).
-- **Prioridad**: Se prioriza la estabilidad de la UI de clientes y la definición de casuísticas de ramificación antes de continuar con la lógica asíncrona.
-
----
-
-## [2026-05-08] — Centralización de Configuración IA ✅
+## [2026-05-08] — Normalización Cross-Module y Fase STAR-CCM+
 
 ### Added
-- **Configuración**: Centralizadas las URLs de n8n Webhook y Callback API en variables de entorno.
-- **Flexibilidad**: Permitido cambio rápido de endpoints para pruebas sin modificar código fuente.
+- **Normalización**: Implementada la Bandeja de Normalización Central para gestión de identidades y duplicados.
+- **Motor**: Nuevo `ClientNormalizationService` con soporte para **Fuzzy Matching** (85%) y gestión de Alias.
+- **Integración**: Sistema de normalización cruzada que captura avisos tanto de CSV como de Auditoría de Licencias (AI).
+- **STAR-CCM+**: Implementado `StarCcmService` para parsing y transformación de licencias `cdlmd` a `saltd`.
+- **UI**: Nuevo dashboard técnico en `tools/star-ccm.blade.php` y bandeja de normalización premium.
+- **Base de Datos**: Tablas `client_aliases`, `normalization_decisions` y columna `warnings` en logs y auditorías.
 
 ### Changed
-- **Config**: Modificado `backend/config/ai.php` para eliminar hardcoded URLs y forzar el uso de variables de entorno.
+- **Arquitectura**: Refactorizado `NormalizationController` para centralizar la lógica de limpieza de datos.
+- **Configuración**: Centralizadas las URLs de Webhooks y Callbacks de IA en variables de entorno (eliminando hardcoded URLs).
+- **Fase STAR-CCM+**: Nomenclatura estricta de archivos `.lic` y almacenamiento jerárquico por cliente/fecha.
+
+### Fixed
+- **Unificación**: Lógica de migración total que mueve contratos, licencias, inventario y contactos al unificar clientes.
+- **Regex**: Corregidos los patrones de extracción de nombres en los logs de importación.
+
+### Status
+- **Pausa Técnica**: Se detienen temporalmente las tareas de n8n v2.2 y fix del modal para priorizar la estabilidad de la UI de clientes y el motor de normalización. ⏸️
+
+---
 
 ## [2026-05-07] — Optimización de Auditoría IA (v2.2) ⏳ (Pendiente Verificar)
 
