@@ -25,6 +25,7 @@
                     <li><a href="{{ route('clients.index') }}"><i class="fa-solid fa-users"></i> Clientes</a></li>
                     <li><a href="{{ route('tools.index') }}"><i class="fa-solid fa-toolbox"></i> Herramientas</a></li>
                     <li><a href="#"><i class="fa-solid fa-shield-halved"></i> Auditoría IA</a></li>
+                    <li><a href="{{ route('system.changelog') }}"><i class="fa-solid fa-clock-rotate-left"></i> Historial de Cambios</a></li>
                 </ul>
             </div>
 
