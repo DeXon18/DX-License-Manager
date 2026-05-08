@@ -126,9 +126,24 @@ class NormalizationController extends Controller
                 ['client_id' => $realClient->id]
             );
 
-            // 4. Migrate contracts if duplicate exists
+            // 4. Migrate everything if duplicate exists
             if ($duplicateClient && $duplicateClient->id !== $realClient->id) {
+                // Migrate Contracts
                 Contract::where('client_id', $duplicateClient->id)
+                    ->update(['client_id' => $realClient->id]);
+
+                // Migrate Licenses & Inventory
+                AiAuditResult::where('client_id', $duplicateClient->id)
+                    ->update(['client_id' => $realClient->id]);
+                
+                \App\Models\LicenseInventoryDaemon::where('client_id', $duplicateClient->id)
+                    ->update(['client_id' => $realClient->id]);
+
+                // Migrate Contacts & Certificates
+                \App\Models\Contact::where('client_id', $duplicateClient->id)
+                    ->update(['client_id' => $realClient->id]);
+                
+                \App\Models\Certificate::where('client_id', $duplicateClient->id)
                     ->update(['client_id' => $realClient->id]);
                 
                 // 5. Delete duplicate client
