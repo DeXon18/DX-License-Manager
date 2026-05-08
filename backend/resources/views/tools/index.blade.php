@@ -21,7 +21,8 @@
         @foreach($features['Siemens']->whereIn('key', ['siemens_nx_suite', 'siemens_star_ccm', 'siemens_heeds']) as $tool)
             <a class="tool-card {{ !$tool->is_active ? 'tool-disabled' : '' }}" 
                style="--card-accent: {{ $tool->key == 'siemens_nx_suite' ? '#c2570a' : ($tool->key == 'siemens_star_ccm' ? '#0369a1' : '#7e22ce') }}"
-               href="{{ $tool->is_active ? ($tool->key == 'siemens_nx_suite' ? route('tools.nx-suite.index') : '#') : 'javascript:void(0)' }}">
+               href="{{ $tool->is_active ? ($tool->key == 'siemens_nx_suite' ? route('tools.nx-suite.index') : ($tool->key == 'siemens_star_ccm' ? route('tools.star-ccm.index') : '#')) : 'javascript:void(0)' }}">
+
                 <div class="tool-card-header">
                     <div class="tool-card-header-left">
                         <div class="tool-icon-fallback" style="background: {{ $tool->key == 'siemens_nx_suite' ? 'rgba(194,87,10,0.08)' : ($tool->key == 'siemens_star_ccm' ? 'rgba(3,105,161,0.08)' : 'rgba(126,34,206,0.08)') }}; color: {{ $tool->key == 'siemens_nx_suite' ? '#c2570a' : ($tool->key == 'siemens_star_ccm' ? '#0369a1' : '#7e22ce') }}">

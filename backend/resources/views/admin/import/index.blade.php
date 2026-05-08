@@ -21,9 +21,16 @@
             
             <div style="padding: 24px;">
                 @if(session('success'))
-                    <div class="badge badge-success" style="width: 100%; padding: 12px; margin-bottom: 24px; justify-content: flex-start; text-transform: none; border-radius: 4px;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 8px;"><polyline points="20 6 9 17 4 12"/></svg>
-                        {{ session('success') }}
+                    <div class="badge badge-success" style="width: 100%; padding: 12px; margin-bottom: 24px; justify-content: space-between; text-transform: none; border-radius: 4px;">
+                        <div style="display: flex; align-items: center;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 8px;"><polyline points="20 6 9 17 4 12"/></svg>
+                            {{ session('success') }}
+                        </div>
+                        @if(session('log_id'))
+                            <a href="{{ route('admin.import.logs.show', session('log_id')) }}" class="btn-primary sm" style="padding: 4px 12px; font-size: 11px; margin-left: 16px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);">
+                                VER DETALLES
+                            </a>
+                        @endif
                     </div>
                 @endif
 
@@ -105,6 +112,20 @@
             <div style="font-size: 12px; color: var(--secondary); line-height: 1.6;">
                 La carga es **destructiva** para estados obsoletos. Contratos activos ausentes en este archivo serán marcados automáticamente como <span style="color: var(--danger); font-weight: 600;">BAJA</span>.
             </div>
+        </div>
+
+        <div style="margin-top: 12px;">
+            <a href="{{ route('admin.import.logs.index') }}" class="btn-secondary" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 10px; padding: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                Ver Historial de Logs
+            </a>
+        </div>
+
+        <div style="margin-top: 12px;">
+            <a href="{{ route('admin.normalization.index') }}" class="btn-primary" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 10px; padding: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; background: var(--accent-muted); color: var(--accent); border: 1px solid var(--accent-border);">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                Bandeja de Normalización
+            </a>
         </div>
 
         <div style="margin-top: 16px; padding: 16px; border: 1px solid var(--border-subtle); border-radius: 4px; background: var(--card-bg);">

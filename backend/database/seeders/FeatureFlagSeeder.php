@@ -14,6 +14,7 @@ class FeatureFlagSeeder extends Seeder
     {
         $flags = [
             // SIEMENS TOOLS (identities.json keys)
+            // No alterar descripciones de herramientas activas
             [
                 'key' => 'siemens_nx_suite',
                 'label' => 'NX Suite',
@@ -26,8 +27,9 @@ class FeatureFlagSeeder extends Seeder
                 'label' => 'STAR-CCM+',
                 'vendor' => 'Siemens',
                 'description' => 'Auditoría y procesamiento de licencias STAR-CCM+',
-                'is_active' => false,
+                'is_active' => true,
             ],
+
             [
                 'key' => 'siemens_heeds',
                 'label' => 'HEEDS',

@@ -11,10 +11,17 @@ use Illuminate\Support\Str;
 class NXSuiteController extends Controller
 {
     protected $nxService;
+    protected $parserService;
+    protected $auditService;
 
-    public function __construct(NXSuiteService $nxService)
-    {
+    public function __construct(
+        NXSuiteService $nxService,
+        \App\Services\Audit\LicenseParserService $parserService,
+        \App\Services\AI\AuditService $auditService
+    ) {
         $this->nxService = $nxService;
+        $this->parserService = $parserService;
+        $this->auditService = $auditService;
     }
 
     /**
@@ -41,8 +48,21 @@ class NXSuiteController extends Controller
 
         // Extraer metadatos para nomenclatura y almacenamiento
         $metadata = $this->nxService->extractMetadata($content);
+
+        // --- INICIO AUDITORÍA IA ---
+        // 1. Limpiar contenido para la IA (ahorro de tokens)
+        $cleanContent = $this->parserService->clean($content);
+        $detectedHostIds = $this->parserService->detectHostIds($content);
+
+        // 2. Solicitar auditoría asíncrona
+        $audit = $this->auditService->requestAudit(
+            auth()->id() ?? 1, // Fallback a ID 1 si no hay auth (para tests)
+            $cleanContent,
+            $detectedHostIds
+        );
+        // --- FIN AUDITORÍA IA ---
         
-        // Transformar contenido
+        // Transformar contenido para el usuario
         $isTemporal7Days = ($metadata['type'] === 'Temporal');
         $transformedContent = $this->nxService->transform($content, $motor, $isTemporal7Days);
 
@@ -68,9 +88,15 @@ class NXSuiteController extends Controller
             
             Storage::disk('local')->put("{$storagePath}/{$finalFilename}", $transformedContent);
             
-            // El archivo para descargar sigue siendo el original o el final? 
-            // El usuario pidió que el guardado tenga el sufijo. Para la descarga mantendremos el final por consistencia.
             $filename = $finalFilename;
+        }
+
+        // Si es una petición AJAX, podemos devolver el UUID de la auditoría
+        if ($request->ajax()) {
+            return response()->json([
+                'uuid' => $audit->uuid,
+                'status' => 'processing'
+            ]);
         }
 
         // Devolver para descarga inmediata

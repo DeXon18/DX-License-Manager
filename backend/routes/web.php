@@ -21,13 +21,28 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::get('/herramientas', [ToolController::class, 'index'])->name('tools.index');
     Route::get('/herramientas/nx-suite', [NXSuiteController::class, 'index'])->name('tools.nx-suite.index');
     Route::post('/herramientas/nx-suite', [NXSuiteController::class, 'process'])->name('tools.nx-suite.process');
+
+    Route::get('/herramientas/star-ccm', [\App\Http\Controllers\Tools\StarCcmController::class, 'index'])->name('tools.star-ccm.index');
+    Route::post('/herramientas/star-ccm', [\App\Http\Controllers\Tools\StarCcmController::class, 'process'])->name('tools.star-ccm.process');
+
     
     Route::post('/clientes/{client}/contactos', [ContactController::class, 'store'])->name('contacts.store');
     Route::put('/clientes/{client}/contactos/{contact}', [ContactController::class, 'update'])->name('contacts.update');
     Route::delete('/clientes/{client}/contactos/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
+    Route::delete('/inventory/daemon/{daemon}', [\App\Http\Controllers\InventoryController::class, 'destroyDaemon'])->name('inventory.daemon.destroy');
+    Route::delete('/inventory/product/{product}', [\App\Http\Controllers\InventoryController::class, 'destroyProduct'])->name('inventory.product.destroy');
+
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/import', [ImportController::class, 'index'])->name('import.index');
         Route::post('/import', [ImportController::class, 'store'])->name('import.store');
+        
+        Route::get('/import/logs', [\App\Http\Controllers\Admin\ImportLogController::class, 'index'])->name('import.logs.index');
+        Route::get('/import/logs/{log}', [\App\Http\Controllers\Admin\ImportLogController::class, 'show'])->name('import.logs.show');
+        Route::delete('/import/logs/{log}', [\App\Http\Controllers\Admin\ImportLogController::class, 'destroy'])->name('import.logs.destroy');
+
+        Route::get('/normalization', [\App\Http\Controllers\Admin\NormalizationController::class, 'index'])->name('normalization.index');
+        Route::post('/normalization/unify', [\App\Http\Controllers\Admin\NormalizationController::class, 'unify'])->name('normalization.unify');
+        Route::post('/normalization/dismiss', [\App\Http\Controllers\Admin\NormalizationController::class, 'dismiss'])->name('normalization.dismiss');
     });
 });

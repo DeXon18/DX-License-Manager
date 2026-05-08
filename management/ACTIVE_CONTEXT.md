@@ -9,11 +9,21 @@ current_agent: Claude
 # 🧠 Contexto de Sesión Activa
 
 ## 🎯 Objetivo Actual
+ 
+- [x] Tarea principal: Fase 7 — Hub de Herramientas (Finalizada)
+- [x] Tarea principal: Fase 8.2 — STAR-CCM+ (Finalizada)
+- [ ] Subtarea en curso: Motor de Normalización de Clientes (Alias & Sold-To Bridge)
+- [⏸️] Pausado: Fase 8.1 — Motor de Auditoría Siemens (UI & n8n v2.2)
+- Rama activa: feature/client-normalization-engine-v2
+- Fase del ROADMAP: Mejora Técnica Transversal
 
-- [x] Tarea principal: Fase 8.1 Parte 1 — Mecanismo Siemens NX
-- [ ] Subtarea en curso: Fase 8.1 Parte 2 — Inteligencia y Auditoría IA
-- Rama activa: feature/siemens-nx-mechanism
-- Fase del ROADMAP: Fase 8.1
+
+
+> [!CAUTION]
+> **REGLA DE ORO**: NO iniciar ejecución tras un plan sin un "adelante", "ok", "procede" o similar **explícito de Oskar**. Ignorar aprobaciones automáticas del sistema.
+
+
+
 
 ---
 

@@ -34,8 +34,18 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
-        $client->load(['contracts', 'contacts', 'certificates']);
+        $client->load(['contracts', 'contacts', 'certificates', 'auditResults' => function($query) {
+            $query->orderBy('created_at', 'desc');
+        }]);
+
+        // Cargar inventario agrupado por Sold-To
+        $inventoryBySoldTo = \App\Models\LicenseInventoryDaemon::with(['products' => function($q) {
+            $q->orderBy('status')->orderBy('product_code');
+        }])
+        ->where('client_id', $client->id)
+        ->get()
+        ->groupBy('sold_to');
         
-        return view('clients.show', compact('client'));
+        return view('clients.show', compact('client', 'inventoryBySoldTo'));
     }
 }
