@@ -277,7 +277,15 @@
                         <td>{{ $cod->created_at->format('d/m/Y H:i') }}</td>
                         <td class="font-mono text-xs">{{ $cod->sold_to }}</td>
                         <td>
-                            <span class="badge badge-muted">{{ $cod->type }}</span>
+                            @php
+                                $typeLabels = [
+                                    'CHANGE_FULL' => 'Cambio Completo',
+                                    'CHANGE_COMPOSITE' => 'Cambio de Composite',
+                                    'CHANGE_NODELOCKED' => 'Cambio Node Locked'
+                                ];
+                                $label = $typeLabels[$cod->type] ?? $cod->type;
+                            @endphp
+                            <span class="badge badge-muted">{{ $label }}</span>
                         </td>
                         <td>
                             @if($cod->status === 'PENDING')
