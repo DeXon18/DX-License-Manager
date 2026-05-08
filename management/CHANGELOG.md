@@ -3,9 +3,12 @@
 
 ---
 
-## [2026-05-08] — Normalización Cross-Module y Fase STAR-CCM+
+## [2026-05-08] — Fase 8.3: Motor HEEDS y Normalización Cross-Module ✅
 
 ### Added
+- **HEEDS**: Implementado motor completo de auditoría y transformación para licencias HEEDS (`rctech` -> `saltd`).
+- **Parser**: Nuevo `HeedsService` con extracción avanzada de metadatos desde el bloque de cabecera de Siemens (Sold-To, Cliente, Versión).
+- **UI**: Vista dedicada `tools/heeds.blade.php` con bento técnico y soporte para auditoría IA.
 - **Normalización**: Implementada la Bandeja de Normalización Central para gestión de identidades y duplicados.
 - **Motor**: Nuevo `ClientNormalizationService` con soporte para **Fuzzy Matching** (85%) y gestión de Alias.
 - **Integración**: Sistema de normalización cruzada que captura avisos tanto de CSV como de Auditoría de Licencias (AI).
