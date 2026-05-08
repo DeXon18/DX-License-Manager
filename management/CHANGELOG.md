@@ -3,9 +3,85 @@
 
 ---
 
+## [2026-05-08] — Motor de Normalización de Clientes (Alias & Fuzzy Match)
+- Implementación del `ClientNormalizationService` para resolver discrepancias de nombres.
+- Soporte para **Fuzzy Matching** (algoritmo Levenshtein) con umbral de similitud del 85%.
+- Creación de la tabla `client_aliases` para mapeo manual y automático de erratas.
+- Integración en `CsvImportService` con sistema de logs de "Sospecha de Duplicado".
+- Documentación técnica completa en `docs/technical/client-normalization-engine.md`.
+
+## [2026-05-08] — Fase 8.2: Implementación STAR-CCM+
+ ✅
+- **Backend**: Creado `StarCcmService` para parsing de `cdlmd` y transformación a `saltd` (puerto 29000).
+- **Controlador**: Implementado `StarCcmController` con lógica de almacenamiento jerárquico `licenses/siemens/{cliente}/{MM-YYYY}`.
+- **UI**: Añadida vista `tools/star-ccm.blade.php` con dashboard técnico de auditoría.
+- **Base de Datos**: Nueva migración para activar el feature flag `siemens_star_ccm`.
+- **Nomenclatura**: Estándar estricto `SOLDTO_HOSTNAME_CLIENTE_STARCCM_V{VERSION}_Valida_{FECHA}.lic`.
+
+## [2026-05-08] — Pausa Técnica: Auditoría n8n y UI de Modal ⏸️
+
+ 
+### Changed
+- **Estado del Proyecto**: Pausadas las tareas de integración de n8n v2.2 y corrección del bug del modal de auditoría.
+- **Análisis**: Iniciada fase de análisis para el nuevo flujo ramificado de n8n (Siemens SALT/Legacy, Moldex3D).
+- **Prioridad**: Se prioriza la estabilidad de la UI de clientes y la definición de casuísticas de ramificación antes de continuar con la lógica asíncrona.
+
+---
+
+## [2026-05-08] — Centralización de Configuración IA ✅
+
+### Added
+- **Configuración**: Centralizadas las URLs de n8n Webhook y Callback API en variables de entorno.
+- **Flexibilidad**: Permitido cambio rápido de endpoints para pruebas sin modificar código fuente.
+
+### Changed
+- **Config**: Modificado `backend/config/ai.php` para eliminar hardcoded URLs y forzar el uso de variables de entorno.
+
+## [2026-05-07] — Optimización de Auditoría IA (v2.2) ⏳ (Pendiente Verificar)
+
+### Added
+- **n8n Workflow v2.2**: Implementado nuevo prompt de IA con soporte explícito para:
+  - **Hardware Keys (Dongles)**: Detección de `UG_HWKEY_ID` e IDs numéricos cortos.
+  - **Modo Standalone**: Gestión de licencias sin servidor central.
+  - **IDs Numéricos**: Soporte para Host IDs no hexadecimales (ej: 24141).
+- **Backend Sincronización**: Actualizado `InventorySyncService` para reconocer automáticamente IDs numéricos cortos como licencias tipo `dongle`.
+
+### Fixed
+- **Precisión de Inventario**: Mejorada la detección de tipo de licencia basada en el formato del Host ID del producto.
+
+## [2026-05-07] — Refinamiento del Inventario Activo (Fase 8.1 Finalizada) ✅
+
+### Added
+- **UI de Inventario Robusta**: Rediseño completo de la interfaz de inventario utilizando CSS puro de alta densidad técnica.
+  - Layout horizontal optimizado para lectura rápida de daemons y productos.
+  - Soporte nativo para visualización de múltiples **Sold-To** bajo un mismo cliente (Ecosistema Siemens).
+  - Identificación visual clara de licencias **Node-Locked** (MAC) y **Hardware Keys** (Dongles).
+- **Consistencia Visual**: Restauración de estilos globales (menú de pestañas, leyenda de estados, modales de auditoría) para asegurar la integridad de toda la vista de cliente.
+- **Tipografía Corporativa**: Integración de Google Fonts (Inter e IBM Plex Mono) para mejorar la legibilidad de datos técnicos.
+
+### Fixed
+- **Layout Bento**: Eliminadas dependencias de Tailwind que causaban fallos de renderizado en monitores panorámicos.
+- **Estabilidad CSS**: Aislados los estilos de inventario en bloques robustos, evitando colisiones con el diseño global del portal.
+
+## [2026-05-07] — Motor de Auditoría Siemens (Fase 8.1 Parte 2) ✅
+
+### Added
+- **Base de Datos**: Implementadas tablas `ai_audit_results` y `client_mappings`.
+- **Servicios de Backend**:
+  - `LicenseParserService`: Parser de limpieza para archivos FlexLM (unificación de líneas y filtrado de firmas).
+  - `AuditService`: Orquestador de comunicación con n8n y lógica de auto-vinculación de clientes.
+- **Integración IA**: 
+  - Conexión operativa con el webhook de n8n para procesamiento asíncrono.
+  - Implementado `AuditCallbackController` para recepción de resultados estructurados.
+  - Integración en el flujo de subida de `NXSuiteController`.
+- **UI de Auditoría (Beta)**:
+  - Nueva pestaña "Licencias" en el perfil de cliente con historial de auditorías.
+  - Visualización de productos detectados mediante chips dinámicos.
+  - **Pendiente**: Refinar la apertura del modal de detalle (investigar fallo Alpine.js tras teleport).
+
 ## [2026-05-07] — Mecanismo Siemens NX (Fase 8.1 Parte 1) ✅
 
-### Añadido
+### Added
 - **Nomenclatura Estricta**: Nueva lógica de generación de nombres para Siemens NX.
   - Formato: `SOLDTO_HOSTNAME_CLIENTE_VERSION_Valida_DDMMYYYY.lic`.
   - Normalización: Hostname y Cliente siempre en **MAYÚSCULAS** y sin caracteres especiales (puntos/espacios).
@@ -13,21 +89,37 @@
 - **Gestión de Duplicados**: Implementado sufijo numérico automático (`_1`, `_2`) para evitar sobrescrituras.
 - **UI de NX Suite**: Rediseño visual semántico, utilizando tarjetas diferenciadas con colores de vendor (Rojo Legacy / Teal SALT) y estructura de paneles laterales al estilo `admin/import`.
 
-### Fix
+### Fixed
 - **Error 413 (Payload Too Large)**: Resuelto. Se corrigió la ruta de `env_file` en `docker-compose.beta.yml` a `./infra/.env.beta` lo que permitió montar correctamente el archivo `local.ini` (100MB) en PHP-FPM.
 - **Permisos de Almacenamiento**: Corregido bloqueo de I/O en la carpeta `storage` y `bootstrap/cache` mediante ajuste de permisos 777.
 
 ## [2026-05-07] — Gestión de Memoria y Reglas de Control
+
+### Added
 - **Skills**: Integrada la habilidad `claude-mem` para persistencia semántica entre sesiones.
 - **Git/GitHub**: Implementada regla innegociable de Puntos de Control (Tags) tras cada fase terminada.
 - **Cleanup**: Realizada limpieza masiva de ramas locales y remotas ya integradas.
 
+## [2026-05-07] — Rediseño de Inventario y Gestión Multi-Vendor
+
+### Added
+- [PLAN] Iniciado rediseño completo de la gestión de licencias hacia un modelo de "Inventario Activo".
+- Definición de nuevas tablas `license_inventory_daemons` y `license_inventory_products` para soportar multi-Sold-To y Node-Locked (MACs).
+- Soporte para licencias de tipo Dongle USB (HW-KEY).
+
+### Fixed
+- Estandarización de etiquetas (### Added, ### Fixed, ### Changed) en el historial de sesiones.
+
 ## [2026-05-06] — Sincronización y Lecciones (Fase 8.1)
+
+### Changed
 - **Sincronización**: Restaurada la rama `dev` tras un fallo arquitectónico en el inicio de la Fase 8.1.
 - **Lección Aprendida (UI)**: Uso estricto de `dx-styles.css` sin introducir Tailwind CSS no autorizado.
 - **Lección Aprendida (Rutas)**: Respetar la convención de rutas en castellano (`/herramientas`) y no sobreescribir lógica validada en fases anteriores.
 
 ## [2026-05-06] — Fase 7: Hub de Herramientas ✅
+
+### Added
 - **UI/UX**: Implementado Hub de utilidades dinámico agrupado por Vendor (Siemens / Moldex3D).
 - **Backend**: Creado `ToolController` y modelo `FeatureFlag` para gestión de accesos.
 - **Identidad**: Sincronización total de llaves, etiquetas y daemons con `identities.json`.
@@ -37,21 +129,29 @@
 ---
 
 ## [2026-05-06] — Fase 6.3: Gestión de Contactos ✅
-- Implementación de CRUD de contactos vinculados a clientes.
-- Sistema de pestañas en perfil de cliente con persistencia vía `localStorage`.
-- Interfaz de contactos compacta con botones de acción horizontales y modales Alpine.js.
-- Creación de `DemoContactSeeder` para pruebas rápidas.
-- Corrección de acceso SSH y limpieza de `known_hosts` para despliegue.
+
+### Added
+- **CRUD**: Implementación de CRUD de contactos vinculados a clientes.
+- **Navegación**: Sistema de pestañas en perfil de cliente con persistencia vía `localStorage`.
+- **UI**: Interfaz de contactos compacta con botones de acción horizontales y modales Alpine.js.
+- **Testing**: Creación de `DemoContactSeeder` para pruebas rápidas.
+- **Deploy**: Corrección de acceso SSH y limpieza de `known_hosts` para despliegue.
 
 ## [2026-05-06] — Refinamiento UI Clientes
-- [x] Leyenda de estados integrada en la Card de contratos (Fase 6.1).
-- [x] Estilo alineado con `DESIGN.md` (jerarquía técnica y card-footer).
-- [x] Refinamiento estético de la leyenda de estados en el ContraHeader.
+
+### Changed
+- **Leyenda de Estados**: Integrada en la Card de contratos (Fase 6.1).
+- **Estilo**: Alineado con `DESIGN.md` (jerarquía técnica y card-footer).
+- **Mejora**: Refinamiento estético de la leyenda de estados en el ContraHeader.
 
 ## [2026-05-06] — Fase 6.1: Perfeccionamiento de Gestión de Clientes ✅
+
+### Added
 - **UX**: Implementado atajo global `Ctrl + Espacio` para búsqueda inteligente y persistencia de foco.
 - **UI**: Rediseño del listado de clientes con espaciado optimizado y buscador inteligente (Contratos, Clientes, Estados).
 - **Contratos**: Mapeo granular de estados basado en `identities.json` con iconos FontAwesome y leyenda técnica integrada.
+
+### Fixed
 - **Robustez**: Implementada limpieza de datos (`trim`) en estados de contrato para evitar fallos de mapeo en importación y visualización.
 - **Mejora Leyenda**: Refinado el diseño de la leyenda de estados de los ContraHeader para mayor integración estética.
 

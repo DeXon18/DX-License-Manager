@@ -12,14 +12,17 @@ El agente no avanza hasta recibir "aprobado", "adelante" o similar de forma expl
 
 ---
 
-## 🔴 Bloqueado
-
-- [ ] **Fase 8 — Siemens**: BLOQUEADA por problema grave. Oskar investigando. El agente espera resolución.
+## 🟢 En Progreso
+ 
+- [ ] **Fase 8.2**: Auditoría STAR-CCM+ (En planificación de ramificaciones).
 
 ---
 
-- [x] Fase 6.1: Perfeccionamiento de Gestión de Clientes.
-- [x] **Mejora Leyenda**: Refinar el diseño de la leyenda de estados de los ContraHeader para mayor integración estética.
+## ⏸️ Pausado / En Espera
+
+- [ ] **Fix Bug Modal Auditoría**: El botón de ojo no abre el modal en Beta.
+- [ ] **Integración n8n v2.2+**: Evolución del flujo lineal a ramificado por Vendor/Tipo Licencia.
+
 
 ---
 
@@ -46,6 +49,18 @@ En planificación — se detallan una por una tras validación de la fase anteri
 ---
 
 ## ✅ Completado
+
+### Fase 8.1 — Siemens NX Suite (Inteligencia, Auditoría e Inventario)
+- **Completada:** 2026-05-07
+- **Rama:** feature/siemens-audit-motor
+- **Resumen:** Implementación completa del ciclo de vida de licencias Siemens: transformación, auditoría IA, persistencia de inventario y visualización multi-Sold-To.
+- [x] Migración `ai_audit_results` y `client_mappings`.
+- [x] Implementación `LicenseParserService` (limpieza FlexLM).
+- [x] Implementación `AuditService` e integración con n8n.
+- [x] Rediseño de UI de Inventario Activo con CSS puro (Bento técnico).
+- [x] Soporte para múltiples **Sold-To** agrupados por cliente.
+- [x] Identificación de hardware (**MAC/Dongle**) en la UI.
+- [x] Optimización de Prompt IA v2.2 (Soporte Dongle e IDs Numéricos) ⏳ (Pte. Verificar).
 
 ### Fase 8.1 (Parte 1) — Siemens NX Suite (Mecanismo)
 - **Completada:** 2026-05-07

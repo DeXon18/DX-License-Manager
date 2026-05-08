@@ -37,11 +37,15 @@ class ImportController extends Controller
             $result = $this->importService->import($file->getRealPath(), $file->getClientOriginalName());
 
             $message = "Importación completada: {$result['processed']} registros procesados.";
-            if (count($result['errors']) > 0) {
-                $message .= " Con " . count($result['errors']) . " avisos.";
+            if (count($result['errors']) > 0 || count($result['warnings']) > 0) {
+                $count = count($result['errors']) + count($result['warnings']);
+                $message .= " Se han detectado {$count} avisos de integridad/normalización.";
             }
 
-            return redirect()->back()->with('success', $message);
+            return redirect()->back()->with([
+                'success' => $message,
+                'log_id' => $result['log_id']
+            ]);
 
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error crítico en la importación: ' . $e->getMessage());

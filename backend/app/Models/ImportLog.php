@@ -11,10 +11,12 @@ class ImportLog extends Model
         'status',
         'total_rows',
         'processed_rows',
-        'errors'
+        'errors',
+        'warnings'
     ];
 
     protected $casts = [
         'errors' => 'array',
+        'warnings' => 'array',
     ];
 }

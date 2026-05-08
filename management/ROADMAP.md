@@ -255,16 +255,21 @@ DX License Manager
 **Prerequisito:** ✅ Fase 7 validada por Oskar
 **Validación requerida antes de Fase 9:** Todas las subherramientas Siemens funcionando en beta.
 
-#### 8.1 — NX Suite ✅ (Parte 1)
+#### 8.1 — NX Suite ✅
 - [x] Mecanismo de transformación Siemens NX (Standard, Dongle, Unificada)
 - [x] Normalización estricta de nomenclatura (MAYÚSCULAS)
 - [x] Almacenamiento jerárquico y gestión de duplicados
-- [ ] 🔴 BLOQUEO: Aumento de límites de subida (Error 413 persiste en archivos > 1MB)
-- [ ] Parte 2: Parser de contenido y Auditoría IA (Próxima Sesión)
+- [x] Parser de contenido (INCREMENT), Auditoría IA y Resultados Estructurados
+- [x] Rediseño de UI de Inventario Activo (Alta Densidad Técnica)
+- [x] Soporte para múltiples Sold-To por cliente
+- [x] Optimización de Auditoría IA (v2.2): Soporte Dongle e IDs Numéricos
+- [/] **Validación:** ⏳ IA v2.2 pendiente de verificar por Oskar.
 
-#### 8.2 — STAR-CCM+
-- [ ] Parser PHP local de archivos `.lic` cdlmd
-- [ ] Auditoría IA via n8n FallbackChain
+#### 8.2 — STAR-CCM+ ✅
+- [x] Parser PHP local de archivos `.lic` cdlmd
+- [x] Transformación automática a SALT (29000/29001) e identificador STARCCM
+- [x] Almacenamiento jerárquico por Mes-Año (MM-YYYY)
+- [ ] Auditoría IA via n8n FallbackChain - pendiente
 
 #### 8.3 — HEEDS
 - [ ] Parser PHP local de archivos `.lic` RCTECH
@@ -391,6 +396,17 @@ DX License Manager
 
 ---
 
+### 📋 Fase 17 — Consolidación y Limpieza UI
+
+**Estado:** Planificado (Fase Final de Bloque 8.1)
+
+- [ ] Auditoría de estilos redundantes en vistas Blade
+- [ ] Migración de componentes CSS de `show.blade.php` a `dx-styles.css`
+- [ ] Optimización de selectores y reducción de especificidad innecesaria
+- [ ] Verificación de consistencia visual en Mobile/Responsive tras la consolidación
+
+---
+
 ## Stack Tecnológico
 
 | Capa           | Tecnología                     |
@@ -410,3 +426,5 @@ DX License Manager
 | Automatización | n8n                            |
 | Auditoría IA   | Gemini → DeepSeek → OpenRouter |
 | Notificaciones | Telegram                       |
+---
+
