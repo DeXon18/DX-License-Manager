@@ -43,7 +43,10 @@
 
                         <div class="entry-body">
                             @foreach($entry['categories'] as $category => $items)
-                                @php $catClass = 'category-' . strtolower($category); @endphp
+                                @php 
+                                    // Sanitize category name for CSS class (e.g., "Refined (UI/UX)" -> "refined")
+                                    $catClass = 'category-' . strtolower(explode(' ', trim($category))[0]); 
+                                @endphp
                                 <div class="category-section {{ $catClass }}">
                                     <h3 class="category-title">
                                         {{ $category }}
@@ -117,6 +120,7 @@
 .category-changed { --cat-color: #f59e0b; --cat-bg: rgba(245, 158, 11, 0.1); }
 .category-security { --cat-color: #ef4444; --cat-bg: rgba(239, 68, 68, 0.1); }
 .category-removed { --cat-color: #6b7280; --cat-bg: rgba(107, 114, 128, 0.1); }
+.category-refined, .category-improved { --cat-color: #8b5cf6; --cat-bg: rgba(139, 92, 246, 0.1); }
 .category-general { --cat-color: var(--muted); --cat-bg: var(--bg); }
 
 .category-title {
