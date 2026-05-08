@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'DX License Manager') }} - @yield('title', 'Portal')</title>
+    <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}">
 
     <!-- Theme Initialization -->
     <script>
