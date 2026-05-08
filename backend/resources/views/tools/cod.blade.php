@@ -218,20 +218,41 @@
 
         <!-- FOOTER: CONTROLES Y ACCIONES -->
         <div class="cod-card-footer">
-            <div class="flex items-center gap-4">
+            <div class="footer-left">
                 <!-- Idioma -->
-                <div class="segmented-small">
-                    <button type="button" :class="formData.Language === 'Spanish' ? 'active' : ''" @click="formData.Language = 'Spanish'">Castellano</button>
-                    <button type="button" :class="formData.Language === 'English' ? 'active' : ''" @click="formData.Language = 'English'">Inglés</button>
+                <div class="segmented-wrapper small">
+                    <div class="segmented-small relative">
+                        <div class="active-indicator-small" 
+                             :style="{
+                                 width: 'calc(50% - 4px)',
+                                 left: formData.Language === 'Spanish' ? '2px' : 'calc(50% + 2px)'
+                             }">
+                        </div>
+                        <button type="button" :class="formData.Language === 'Spanish' ? 'active' : ''" @click="formData.Language = 'Spanish'">Castellano</button>
+                        <button type="button" :class="formData.Language === 'English' ? 'active' : ''" @click="formData.Language = 'English'">Inglés</button>
+                    </div>
                 </div>
+
                 <!-- S.O. -->
-                <div class="segmented-small">
-                    <button type="button" :class="formData.os === 'WINDOWS' ? 'active' : ''" @click="formData.os = 'WINDOWS'"><i class="fa-brands fa-windows"></i> Windows</button>
-                    <button type="button" :class="formData.os === 'LINUX' ? 'active' : ''" @click="formData.os = 'LINUX'"><i class="fa-brands fa-linux"></i> Linux</button>
+                <div class="segmented-wrapper small">
+                    <div class="segmented-small relative">
+                        <div class="active-indicator-small" 
+                             :style="{
+                                 width: 'calc(50% - 4px)',
+                                 left: formData.os === 'WINDOWS' ? '2px' : 'calc(50% + 2px)'
+                             }">
+                        </div>
+                        <button type="button" :class="formData.os === 'WINDOWS' ? 'active' : ''" @click="formData.os = 'WINDOWS'">
+                            <i class="fa-brands fa-windows"></i> Windows
+                        </button>
+                        <button type="button" :class="formData.os === 'LINUX' ? 'active' : ''" @click="formData.os = 'LINUX'">
+                            <i class="fa-brands fa-linux"></i> Linux
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div class="flex gap-3">
+            <div class="footer-right">
                 <button type="button" class="btn-cod-clear" @click="resetForm()">
                     <i class="fa-solid fa-eraser"></i> Limpiar
                 </button>
@@ -505,9 +526,10 @@
         cursor: not-allowed;
     }
     .input-with-icon.extra input {
-        background: rgba(0,0,0,0.1);
+        background: rgba(0,0,0,0.05);
         border-style: dashed;
     }
+
     .remove-btn {
         position: absolute;
         right: 12px;
@@ -523,59 +545,134 @@
         justify-content: center;
     }
 
-    /* Segmented Controls Large */
-    .segmented-large {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        background: rgba(0,0,0,0.2);
-        padding: 6px;
-        border-radius: 14px;
-        gap: 6px;
-    }
-    .segmented-large button {
-        padding: 12px;
-        border: none;
-        background: transparent;
-        border-radius: 10px;
-        color: var(--muted);
-        font-size: 13px;
-        font-weight: 600;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        transition: all 0.2s;
-        cursor: pointer;
-    }
-    .segmented-large button i { font-size: 14px; opacity: 0.5; }
-    .segmented-large button.active {
-        background: var(--card-bg);
-        color: var(--text);
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-    .segmented-large button.active i { color: var(--accent); opacity: 1; }
-
-    /* Bottom Controls */
+    /* Footer & Actions */
     .cod-card-footer {
-        padding: 24px 40px 40px;
+        padding: 32px 40px;
+        background: var(--accent-muted);
         border-top: 1px solid var(--border);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: rgba(0,0,0,0.05);
+        gap: 24px;
     }
+
+    .footer-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+    .footer-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .segmented-wrapper.small {
+        padding: 3px;
+        border-radius: 10px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+    }
+
     .segmented-small {
         display: flex;
-        background: rgba(0,0,0,0.2);
-        padding: 4px;
-        border-radius: 10px;
+        position: relative;
+        z-index: 1;
+        min-width: 180px;
     }
+
     .segmented-small button {
-        padding: 8px 16px;
-        border: none;
-        background: transparent;
-        border-radius: 7px;
+        flex: 1;
+        background: none !important;
+        border: none !important;
+        padding: 6px 12px;
         color: var(--muted);
+        font-size: 10px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .segmented-small button i { font-size: 12px; }
+
+    .segmented-small button.active {
+        color: var(--accent);
+    }
+
+    .active-indicator-small {
+        position: absolute;
+        top: 2px;
+        bottom: 2px;
+        left: 2px;
+        right: 2px;
+        background: rgba(var(--accent-rgb), 0.05);
+        border: 1px solid var(--accent);
+        box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.1);
+        border-radius: 6px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1;
+    }
+
+    .btn-cod-generate {
+        background: var(--accent);
+        color: white;
+        border: none;
+        padding: 12px 28px;
+        border-radius: 12px;
+        font-weight: 700;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 4px 15px rgba(var(--accent-rgb), 0.3);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .btn-cod-generate:hover:not(:disabled) {
+        background: var(--accent-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(var(--accent-rgb), 0.4);
+    }
+
+    .btn-cod-generate:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .btn-cod-clear {
+        background: transparent;
+        color: var(--muted);
+        border: 1px solid var(--border);
+        padding: 11px 20px;
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .btn-cod-clear:hover {
+        background: var(--raised);
+        color: var(--danger);
+        border-color: var(--danger-border);
+    }
+
+    /* Botón Añadir MAC */
+    .btn-add-mac {
+        padding: 8px 16px;
+        background: var(--surface);
+        border: 1px dashed var(--accent);
+        color: var(--accent);
+        border-radius: 8px;
         font-size: 12px;
         font-weight: 700;
         cursor: pointer;
@@ -584,58 +681,11 @@
         align-items: center;
         gap: 8px;
     }
-    .segmented-small button.active {
-        background: var(--accent);
-        color: white;
-    }
 
-    /* Botones Acción */
-    .btn-cod-clear {
-        padding: 10px 24px;
-        background: rgba(255,255,255,0.05);
-        border: 1px solid var(--border);
-        color: var(--muted);
-        border-radius: 10px;
-        font-size: 14px;
-        font-weight: 700;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        transition: all 0.2s;
+    .btn-add-mac:hover {
+        background: var(--accent-muted);
+        border-style: solid;
     }
-    .btn-cod-clear:hover { background: rgba(255,255,255,0.1); color: var(--text); }
-
-    .btn-cod-generate {
-        padding: 10px 32px;
-        background: var(--accent);
-        border: none;
-        color: white;
-        border-radius: 10px;
-        font-size: 14px;
-        font-weight: 800;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        box-shadow: 0 4px 14px rgba(var(--accent-rgb), 0.3);
-        transition: all 0.2s;
-    }
-    .btn-cod-generate:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(var(--accent-rgb), 0.4); }
-    .btn-cod-generate:disabled { opacity: 0.5; transform: none; cursor: not-allowed; }
-
-    .btn-add-mac {
-        padding: 6px 16px;
-        background: transparent;
-        border: 1px dashed var(--accent);
-        color: var(--accent);
-        border-radius: 8px;
-        font-size: 11px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-    .btn-add-mac:hover { background: rgba(var(--accent-rgb), 0.05); }
 
     /* Preview Modal */
     .preview-overlay {
@@ -644,8 +694,9 @@
         z-index: 2000; padding: 40px;
     }
     .preview-modal {
-        background: var(--card-bg); width: 100%; max-width: 900px;
+        background: var(--surface); width: 100%; max-width: 900px;
         height: 100%; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column;
+        border: 1px solid var(--border);
     }
     .preview-header { padding: 20px 32px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
     .preview-header h3 { font-size: 18px; font-weight: 800; }
