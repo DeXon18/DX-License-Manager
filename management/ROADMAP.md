@@ -278,9 +278,11 @@ DX License Manager
 - [x] Almacenamiento jerárquico por Mes-Año (MM-YYYY)
 - [ ] Auditoría IA via n8n FallbackChain - pendiente
 
-#### 8.3 — HEEDS
-- [ ] Parser PHP local de archivos `.lic` RCTECH
-- [ ] Auditoría IA via n8n FallbackChain
+#### 8.3 — HEEDS ✅
+- [x] Parser PHP local de archivos `.lic` RCTECH (Extracción avanzada de cabecera)
+- [x] Transformación automática a SALT (29000/29001) e identificador HEEDS
+- [x] Almacenamiento jerárquico por Cliente/Mes-Año
+- [x] Auditoría IA via n8n FallbackChain
 
 #### 8.4 — COD
 - [ ] Formulario: Sold-To, solicitante, empresa, tipo de cambio

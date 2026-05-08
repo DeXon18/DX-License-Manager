@@ -49,6 +49,14 @@ En planificación — se detallan una por una tras validación de la fase anteri
 ---
 
 ## ✅ Completado
+
+### Fase 8.3 — HEEDS ✅
+- **Completada:** 2026-05-08
+- **Rama:** feature/heeds-audit-motor
+- **Resumen:** Implementación del motor de auditoría y transformación para HEEDS. Parser optimizado para lectura de cabeceras de Siemens y transformación rctech -> saltd.
+- [x] Implementación de `HeedsService` con extracción avanzada de metadatos.
+- [x] Controlador y Vista dedicada con integración de Auditoría IA.
+- [x] Registro de rutas y estandarización de nomenclatura de archivos.
  
 ### Fase 6.5 — Normalización e Identidades (Cross-Module)
 - **Completada:** 2026-05-08

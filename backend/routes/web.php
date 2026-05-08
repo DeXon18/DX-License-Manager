@@ -25,6 +25,9 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::get('/herramientas/star-ccm', [\App\Http\Controllers\Tools\StarCcmController::class, 'index'])->name('tools.star-ccm.index');
     Route::post('/herramientas/star-ccm', [\App\Http\Controllers\Tools\StarCcmController::class, 'process'])->name('tools.star-ccm.process');
 
+    Route::get('/herramientas/heeds', [\App\Http\Controllers\Tools\HeedsController::class, 'index'])->name('tools.heeds.index');
+    Route::post('/herramientas/heeds', [\App\Http\Controllers\Tools\HeedsController::class, 'process'])->name('tools.heeds.process');
+
     
     Route::post('/clientes/{client}/contactos', [ContactController::class, 'store'])->name('contacts.store');
     Route::put('/clientes/{client}/contactos/{contact}', [ContactController::class, 'update'])->name('contacts.update');
