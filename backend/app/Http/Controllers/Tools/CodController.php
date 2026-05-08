@@ -71,7 +71,7 @@ class CodController extends Controller
 
         Storage::disk('private')->put($filePath, $pdf->output());
 
-        CodCertificate::create([
+        $certificate = CodCertificate::create([
             'client_id' => $client->id,
             'sold_to' => $request->Data_SoldTo,
             'type' => strtoupper($request->docType),
@@ -86,21 +86,23 @@ class CodController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Certificado generado y guardado correctamente.',
-            'download_url' => route('tools.cod.download', ['filePath' => $filePath])
+            'download_url' => route('tools.cod.download', ['uuid' => $certificate->uuid])
         ]);
     }
 
     public function download(Request $request)
     {
-        $filePath = $request->query('filePath');
+        $uuid = $request->query('uuid');
         
-        if (!Storage::disk('private')->exists($filePath)) {
-            abort(404);
+        $certificate = CodCertificate::where('uuid', $uuid)->firstOrFail();
+        
+        if (!Storage::disk('private')->exists($certificate->file_path)) {
+            abort(404, 'Archivo no encontrado en el almacenamiento.');
         }
 
         // Security check: ensure user can access this file (RBAC)
-        // For now, only tech/admin as per AGENTS.md
+        // For now, technician/admin can access, which is handled by auth.jwt middleware
 
-        return Storage::disk('private')->download($filePath);
+        return Storage::disk('private')->download($certificate->file_path);
     }
 }

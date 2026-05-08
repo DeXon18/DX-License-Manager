@@ -5,6 +5,21 @@
 
 ---
 
+## [2026-05-08] — Generador Siemens COD (Completo)
+
+### Added
+- **Generador de Certificados de Cese (COD)**: Motor de generación de PDF de alta fidelidad bilingüe.
+- **Vista Previa Interactiva**: Modal con visor de PDF integrado y limpieza de barras de herramientas.
+- **Seguridad ID-Abstraction**: Flujo de descarga blindado mediante UUIDs para certificados.
+- **Validación Estricta**: Sanitización de inputs (Hostnames sin tildes, MACs sin guiones, Solicitantes sin números).
+- **Asistente de Hardware**: (Idea registrada en Backlog) para futuras versiones.
+
+### Fixed
+- **Alineación UI**: Unificación de layouts horizontales para iconos y títulos en todo el módulo.
+- **Optimización PDF**: Compresión de márgenes y fuentes para asegurar una sola página A4.
+- **Bug Fix**: Corregido error de variable indefinida en la persistencia del certificado.
+- **Infraestructura**: Creación de directorio de fuentes y reseteo de logs.
+
 ## [2026-05-08] — Fase 8.4: Generación de Certificados de Cese (COD) ✅
 
 ### Added

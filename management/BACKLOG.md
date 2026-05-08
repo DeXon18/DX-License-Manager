@@ -165,3 +165,10 @@ En planificación — se detallan una por una tras validación de la fase anteri
 - [x] Verificar carga de HTML estático en `beta.dxpro.es` y `portal.dxpro.es`.
 - [x] Push a `dev` → deploy automático a beta verificado.
 - [x] Inicialización del proyecto y repositorio Git.
+
+---
+
+## ?? Ideas Futuras / QoL
+
+- [ ] **AI Hardware Assistant**: Sistema de anlisis de archivos composite.txt mediante IA para recomendar el ID ms estable (Ethernet fsico) a personal no tcnico. Evita errores en trmites de licencia.
+
