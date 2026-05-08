@@ -43,5 +43,10 @@ class Client extends Model
     {
         return $this->hasMany(CodCertificate::class);
     }
+
+    public function inventoryDaemons(): HasMany
+    {
+        return $this->hasMany(LicenseInventoryDaemon::class);
+    }
 }
 

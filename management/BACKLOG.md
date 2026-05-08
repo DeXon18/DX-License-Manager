@@ -27,19 +27,26 @@ El agente no avanza hasta recibir "aprobado", "adelante" o similar de forma expl
 
 ---
 
-## 🟠 Pendiente — Fases 4 a 16
-
 En planificación — se detallan una por una tras validación de la fase anterior.
-
+ 
 | Fase | Nombre                   | Prerequisito        |
 | :--- | :----------------------- | :------------------ |
-| 8.4  | COD (Certificado Cese)   | ✅ Fase 8.3 validada  |
 | 9    | Moldex3D (9.1→9.2)       | ✅ Fase 8.4 validada  |
 | 10   | Dashboard del Sistema    | ✅ Fase 9 validada  |
-
+ 
 ---
-
+ 
 ## ✅ Completado
+ 
+### Fase 8.4 — Siemens COD (Certificado Cese) ✅
+- **Completada:** 2026-05-08
+- **Rama:** feature/cod-generation
+- **Resumen:** Implementación completa del generador de certificados de cese oficial de Siemens. Incluye soporte bilingüe, alta fidelidad visual con fuentes Calibri, y sistema de almacenamiento seguro en disco privado.
+- [x] Instalación y configuración de Dompdf con fuentes corporativas.
+- [x] Modelo `CodCertificate` y servicio `CodService` (bilingüe).
+- [x] Interfaz reactiva con Alpine.js en el Hub de Herramientas.
+- [x] Integración de historial y accesos directos en la ficha de cliente.
+- [x] Almacenamiento seguro en `storage/private/licenses/siemens/{client}/COD/`.
 
 ### Fase 8.3 — HEEDS & UI Polish ✅
 - **Completada:** 2026-05-08

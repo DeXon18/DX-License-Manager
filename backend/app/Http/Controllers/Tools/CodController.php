@@ -22,7 +22,7 @@ class CodController extends Controller
 
     public function index(Request $request)
     {
-        $clients = Client::orderBy('name')->get();
+        $clients = Client::with('inventoryDaemons')->orderBy('name')->get();
         $selectedClient = null;
 
         if ($request->has('client_id')) {

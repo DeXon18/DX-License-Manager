@@ -3,6 +3,20 @@
 
 ---
 
+---
+
+## [2026-05-08] — Fase 8.4: Generación de Certificados de Cese (COD) ✅
+
+### Added
+- **COD Generator**: Implementado generador bilingüe (ES/EN) de certificados COD oficial de Siemens.
+- **Dompdf**: Instalación y configuración de `barryvdh/laravel-dompdf` para generación de documentos de alta fidelidad.
+- **Fuentes Corporativas**: Integración de fuentes Calibri TTF para cumplimiento de estándares visuales de Siemens.
+- **Seguridad**: Nuevo disco de almacenamiento `private` para CODs, garantizando que los archivos no sean accesibles públicamente.
+- **UI/UX**: 
+  - Nueva herramienta "Generador COD" en el Hub con soporte para múltiples MACs y previsualización dinámica.
+  - Integración del historial de certificados en la ficha de cliente (`Certificados` tab).
+- **Base de Datos**: Nueva tabla `cod_certificates` para trazabilidad completa y gestión de estados (Pendiente/Firmado).
+
 ## [2026-05-08] — Fase 8.3: Motor HEEDS y Normalización Cross-Module ✅
 
 ### Added

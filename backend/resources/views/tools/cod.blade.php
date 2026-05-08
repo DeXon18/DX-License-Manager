@@ -31,19 +31,6 @@
                     <i class="fa-solid fa-building"></i>
                     <span>Datos de la Empresa</span>
                 </div>
-                
-                <!-- Vínculo DX (Selector compacto) -->
-                <div class="vinculo-container">
-                    <div class="input-wrap vinculo-select">
-                        <i class="fa-solid fa-link"></i>
-                        <select x-model="formData.client_id" @change="updateFromClient()" class="gui-input select-vinculo">
-                            <option value="">Vínculo DX (Asociar con cliente del portal...)</option>
-                            @foreach($clients as $client)
-                                <option value="{{ $client->id }}">{{ $client->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
 
                 <div class="fields-container">
                     <!-- Fila 1: Sold To (Ancho completo) -->
@@ -62,10 +49,30 @@
                                 <input type="text" x-model="formData.Data_Solicitante" class="gui-input" placeholder="Solicitante" required>
                             </div>
                         </div>
-                        <div class="field-row">
+                        <div class="field-row" x-data="{ showSuggestions: false }" @click.away="showSuggestions = false">
                             <div class="input-wrap">
                                 <i class="fa-solid fa-globe"></i>
-                                <input type="text" x-model="formData.Data_Empresa" class="gui-input" placeholder="Empresa" required>
+                                <input type="text" 
+                                       x-model="formData.Data_Empresa" 
+                                       @input="showSuggestions = true; formData.client_id = null"
+                                       @focus="showSuggestions = true"
+                                       class="gui-input" 
+                                       placeholder="Empresa" 
+                                       required 
+                                       autocomplete="off">
+                                
+                                <!-- Sugerencias de Empresa -->
+                                <div x-show="showSuggestions && filteredClients().length > 0" 
+                                     class="suggestions-dropdown"
+                                     x-transition:enter="fade-in"
+                                     style="display: none;">
+                                    <template x-for="client in filteredClients()" :key="client.id">
+                                        <div class="suggestion-item" @click="selectClient(client); showSuggestions = false">
+                                            <div class="suggestion-name" x-text="client.name"></div>
+                                            <div class="suggestion-meta" x-text="client.inventory_daemons.length > 0 ? 'Vínculo DX Detectado' : 'Cliente Registrado'"></div>
+                                        </div>
+                                    </template>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -286,6 +293,10 @@
     }
     .section-header i { font-size: 12px; }
 
+    :root {
+        --accent-rgb: 56, 139, 253;
+    }
+
     /* Estilos Específicos COD */
     .cod-card {
         background: var(--surface);
@@ -342,6 +353,43 @@
 
     .mt-4 { margin-top: 16px; }
     .opacity-50 { opacity: 0.5; }
+
+    /* Estilos Autocompletado */
+    .suggestions-dropdown {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--surface);
+        border: 1px solid var(--accent);
+        border-radius: 12px;
+        margin-top: 8px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        z-index: 1000;
+        overflow: hidden;
+    }
+    .suggestion-item {
+        padding: 12px 16px;
+        cursor: pointer;
+        transition: all 0.2s;
+        border-bottom: 1px solid var(--border);
+    }
+    .suggestion-item:last-child { border-bottom: none; }
+    .suggestion-item:hover {
+        background: rgba(var(--accent-rgb), 0.1);
+    }
+    .suggestion-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--primary);
+    }
+    .suggestion-meta {
+        font-size: 11px;
+        color: var(--accent);
+        margin-top: 2px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
 
     .input-with-icon input:focus, .input-with-icon select:focus {
         border-color: var(--accent);
@@ -514,17 +562,18 @@
 <script>
 function codGenerator() {
     return {
+        clients: @json($clients),
         isGenerating: false,
         showPreview: false,
         previewUrl: '',
         formData: {
             client_id: '{{ $selectedClient ? $selectedClient->id : "" }}',
-            Data_SoldTo: '',
-            Data_Solicitante: '',
-            Data_Empresa: '{{ $selectedClient ? $selectedClient->name : "" }}',
             docType: 'Change_Full',
             Language: 'Spanish',
             os: 'WINDOWS',
+            Data_SoldTo: '',
+            Data_Solicitante: '',
+            Data_Empresa: '{{ $selectedClient ? $selectedClient->name : "" }}',
             Hostname_Old: '',
             Composite_Old: '',
             MAC_Old: '',
@@ -533,6 +582,24 @@ function codGenerator() {
             MAC_New: '',
             MAC_Old_Extra: [],
             MAC_New_Extra: []
+        },
+
+        filteredClients() {
+            if (!this.formData.Data_Empresa) return [];
+            const search = this.formData.Data_Empresa.toLowerCase();
+            return this.clients.filter(c => c.name.toLowerCase().includes(search)).slice(0, 5);
+        },
+
+        selectClient(client) {
+            this.formData.client_id = client.id;
+            this.formData.Data_Empresa = client.name;
+            
+            if (client.inventory_daemons && client.inventory_daemons.length > 0) {
+                const main = client.inventory_daemons[0];
+                this.formData.Data_SoldTo = main.sold_to || '';
+                this.formData.Hostname_Old = main.hostname || '';
+                this.formData.Composite_Old = main.composite || '';
+            }
         },
 
         addMacPair() {
@@ -547,13 +614,13 @@ function codGenerator() {
 
         resetForm() {
             this.formData = {
-                client_id: '{{ $selectedClient ? $selectedClient->id : "" }}',
-                Data_SoldTo: '',
-                Data_Solicitante: '',
-                Data_Empresa: '{{ $selectedClient ? $selectedClient->name : "" }}',
+                client_id: '',
                 docType: 'Change_Full',
                 Language: 'Spanish',
                 os: 'WINDOWS',
+                Data_SoldTo: '',
+                Data_Solicitante: '',
+                Data_Empresa: '',
                 Hostname_Old: '',
                 Composite_Old: '',
                 MAC_Old: '',
@@ -563,14 +630,6 @@ function codGenerator() {
                 MAC_Old_Extra: [],
                 MAC_New_Extra: []
             };
-        },
-
-        updateFromClient() {
-            const select = document.querySelector('.select-vinculo');
-            const name = select.options[select.selectedIndex].text;
-            if (this.formData.client_id) {
-                this.formData.Data_Empresa = name;
-            }
         },
 
         async generate(mode) {
