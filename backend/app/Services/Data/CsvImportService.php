@@ -155,6 +155,7 @@ class CsvImportService
         }
 
         return [
+            'log_id' => $log->id,
             'total' => $rowCount,
             'processed' => count($processedIds),
             'errors' => $errors,
