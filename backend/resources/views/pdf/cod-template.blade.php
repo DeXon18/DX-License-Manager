@@ -31,44 +31,46 @@
 
         body {
             font-family: 'Calibri', sans-serif;
-            font-size: 12px;
+            font-size: 11px;
             padding: 0 40px;
             color: #000;
         }
 
         .header-logo {
             text-align: right;
-            margin-top: 20px;
-            margin-bottom: 20px;
+            margin-top: 0;
+            margin-bottom: 5px;
         }
 
         .header-logo img {
-            width: 280px;
+            width: 200px;
         }
 
         .siemens-address {
             font-weight: bold;
-            line-height: 1.2;
-            margin-bottom: 30px;
+            line-height: 1.0;
+            margin-bottom: 8px;
+            font-size: 11px;
         }
 
         h1 {
             text-align: center;
-            font-size: 17px;
+            font-size: 14px;
             text-transform: uppercase;
-            margin: 40px 0 20px 0;
+            margin: 12px 0 6px 0;
         }
 
         p {
-            font-size: 16px;
-            line-height: 1.4;
+            font-size: 13px;
+            line-height: 1.1;
             text-align: justify;
-            margin-bottom: 15px;
+            margin-bottom: 6px;
         }
 
         .data-row {
-            font-size: 16px;
-            margin-bottom: 5px;
+            font-size: 13px;
+            margin-bottom: 0;
+            line-height: 1.0;
         }
 
         .data-label {
@@ -76,14 +78,14 @@
         }
 
         .signature-section {
-            margin-top: 50px;
-            font-size: 16px;
+            margin-top: 15px;
+            font-size: 13px;
         }
 
         .signature-line {
-            margin-top: 40px;
+            margin-top: 25px;
             border-top: 1px solid #000;
-            width: 300px;
+            width: 250px;
         }
 
         /* Case sensitivity for Linux */

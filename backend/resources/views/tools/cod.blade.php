@@ -10,12 +10,12 @@
 </div>
 
 <div x-data="codGenerator()" class="cod-container">
-    <form id="codForm" @submit.prevent="generate('store')" class="cod-card shadow-premium">
+    <div id="codForm" class="cod-card shadow-premium">
         @csrf
         
         <!-- Header del Formulario -->
         <div class="cod-card-header">
-            <div class="flex items-center gap-3">
+            <div class="header-title-block">
                 <div class="header-icon">
                     <i class="fa-solid fa-file-signature"></i>
                 </div>
@@ -46,7 +46,12 @@
                         <div class="field-row">
                             <div class="input-wrap">
                                 <i class="fa-solid fa-user"></i>
-                                <input type="text" x-model="formData.Data_Solicitante" class="gui-input" placeholder="Solicitante" required>
+                                <input type="text" 
+                                       x-model="formData.Data_Solicitante" 
+                                       @input="formData.Data_Solicitante = formData.Data_Solicitante.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '')"
+                                       class="gui-input" 
+                                       placeholder="Solicitante" 
+                                       required>
                             </div>
                         </div>
                         <div class="field-row" x-data="{ showSuggestions: false }" @click.away="showSuggestions = false">
@@ -140,19 +145,39 @@
                         <div class="field-row">
                             <div class="input-wrap">
                                 <i class="fa-solid fa-terminal"></i>
-                                <input type="text" x-model="formData.Hostname_Old" class="gui-input" placeholder="Hostname" :required="formData.docType !== 'Change_NodeLocked'" :disabled="formData.docType === 'Change_NodeLocked'">
+                                <input type="text" 
+                                       x-model="formData.Hostname_Old" 
+                                       @input="formData.Hostname_Old = formData.Hostname_Old.replace(/[^a-zA-Z0-9-]/g, '')"
+                                       class="gui-input" 
+                                       placeholder="Hostname" 
+                                       :required="formData.docType !== 'Change_NodeLocked'" 
+                                       :disabled="formData.docType === 'Change_NodeLocked'">
                             </div>
                         </div>
                         <div class="field-row">
                             <div class="input-wrap">
                                 <i class="fa-solid fa-code"></i>
-                                <input type="text" x-model="formData.Composite_Old" class="gui-input" placeholder="Composite" :required="formData.docType !== 'Change_NodeLocked'" :disabled="formData.docType === 'Change_NodeLocked'" maxlength="12">
+                                <input type="text" 
+                                       x-model="formData.Composite_Old" 
+                                       @input="formData.Composite_Old = formData.Composite_Old.replace(/[^a-zA-Z0-9]/g, '')"
+                                       class="gui-input" 
+                                       placeholder="Composite" 
+                                       :required="formData.docType !== 'Change_NodeLocked'" 
+                                       :disabled="formData.docType === 'Change_NodeLocked'" 
+                                       maxlength="12">
                             </div>
                         </div>
                         <div class="field-row">
                             <div class="input-wrap">
                                 <i class="fa-solid fa-id-card"></i>
-                                <input type="text" x-model="formData.MAC_Old" class="gui-input" placeholder="HostID (MAC)" :required="formData.docType !== 'Change_Composite'" :disabled="formData.docType === 'Change_Composite'" maxlength="12">
+                                <input type="text" 
+                                       x-model="formData.MAC_Old" 
+                                       @input="formData.MAC_Old = formData.MAC_Old.replace(/[^a-zA-Z0-9]/g, '')"
+                                       class="gui-input" 
+                                       placeholder="HostID (MAC sin guiones)" 
+                                       :required="formData.docType !== 'Change_Composite'" 
+                                       :disabled="formData.docType === 'Change_Composite'" 
+                                       maxlength="12">
                             </div>
                         </div>
                         
@@ -161,7 +186,12 @@
                             <div class="field-row">
                                 <div class="input-wrap">
                                     <i class="fa-solid fa-id-card opacity-50"></i>
-                                    <input type="text" x-model="formData.MAC_Old_Extra[index]" class="gui-input" placeholder="MAC Extra" maxlength="12">
+                                    <input type="text" 
+                                           x-model="formData.MAC_Old_Extra[index]" 
+                                           @input="formData.MAC_Old_Extra[index] = formData.MAC_Old_Extra[index].replace(/[^a-zA-Z0-9]/g, '')"
+                                           class="gui-input" 
+                                           placeholder="MAC Extra (sin guiones)" 
+                                           maxlength="12">
                                     <button type="button" class="remove-btn" @click="removeMacPair(index)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--muted); cursor: pointer;">&times;</button>
                                 </div>
                             </div>
@@ -179,19 +209,39 @@
                         <div class="field-row">
                             <div class="input-wrap">
                                 <i class="fa-solid fa-terminal"></i>
-                                <input type="text" x-model="formData.Hostname_New" class="gui-input" placeholder="Hostname" :required="formData.docType !== 'Change_NodeLocked'" :disabled="formData.docType === 'Change_NodeLocked'">
+                                <input type="text" 
+                                       x-model="formData.Hostname_New" 
+                                       @input="formData.Hostname_New = formData.Hostname_New.replace(/[^a-zA-Z0-9-]/g, '')"
+                                       class="gui-input" 
+                                       placeholder="Hostname" 
+                                       :required="formData.docType !== 'Change_NodeLocked'" 
+                                       :disabled="formData.docType === 'Change_NodeLocked'">
                             </div>
                         </div>
                         <div class="field-row">
                             <div class="input-wrap">
                                 <i class="fa-solid fa-code"></i>
-                                <input type="text" x-model="formData.Composite_New" class="gui-input" placeholder="Composite" :required="formData.docType !== 'Change_NodeLocked'" :disabled="formData.docType === 'Change_NodeLocked'" maxlength="12">
+                                <input type="text" 
+                                       x-model="formData.Composite_New" 
+                                       @input="formData.Composite_New = formData.Composite_New.replace(/[^a-zA-Z0-9]/g, '')"
+                                       class="gui-input" 
+                                       placeholder="Composite" 
+                                       :required="formData.docType !== 'Change_NodeLocked'" 
+                                       :disabled="formData.docType === 'Change_NodeLocked'" 
+                                       maxlength="12">
                             </div>
                         </div>
                         <div class="field-row">
                             <div class="input-wrap">
                                 <i class="fa-solid fa-id-card"></i>
-                                <input type="text" x-model="formData.MAC_New" class="gui-input" placeholder="HostID (MAC)" :required="formData.docType !== 'Change_Composite'" :disabled="formData.docType === 'Change_Composite'" maxlength="12">
+                                <input type="text" 
+                                       x-model="formData.MAC_New" 
+                                       @input="formData.MAC_New = formData.MAC_New.replace(/[^a-zA-Z0-9]/g, '')"
+                                       class="gui-input" 
+                                       placeholder="HostID (MAC sin guiones)" 
+                                       :required="formData.docType !== 'Change_Composite'" 
+                                       :disabled="formData.docType === 'Change_Composite'" 
+                                       maxlength="12">
                             </div>
                         </div>
 
@@ -200,7 +250,12 @@
                             <div class="field-row">
                                 <div class="input-wrap">
                                     <i class="fa-solid fa-id-card opacity-50"></i>
-                                    <input type="text" x-model="formData.MAC_New_Extra[index]" class="gui-input" placeholder="Nueva MAC Extra" maxlength="12">
+                                    <input type="text" 
+                                           x-model="formData.MAC_New_Extra[index]" 
+                                           @input="formData.MAC_New_Extra[index] = formData.MAC_New_Extra[index].replace(/[^a-zA-Z0-9]/g, '')"
+                                           class="gui-input" 
+                                           placeholder="Nueva MAC Extra (sin guiones)" 
+                                           maxlength="12">
                                 </div>
                             </div>
                         </template>
@@ -260,38 +315,63 @@
                     </button>
                 </div>
 
-                <!-- Generar (Acción Principal) -->
-                <button type="submit" class="btn-cod-generate" :disabled="isGenerating">
+                <!-- Generar (Abre Preview) -->
+                <button type="button" class="btn-cod-generate" @click="openPreview()" :disabled="isGenerating">
                     <template x-if="!isGenerating">
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-file-pdf"></i>
-                            <span>Generar PDF</span>
-                        </div>
+                        <i class="fa-solid fa-eye"></i>
+                    </template>
+                    <template x-if="!isGenerating">
+                        <span>Vista Previa</span>
                     </template>
                     <template x-if="isGenerating">
-                        <div class="flex items-center gap-2">
-                            <i class="fa-solid fa-spinner fa-spin"></i>
-                            <span>Generando...</span>
-                        </div>
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+                    </template>
+                    <template x-if="isGenerating">
+                        <span>Procesando...</span>
                     </template>
                 </button>
             </div>
         </div>
-    </form>
+    </div>
 
-    <!-- Overlay de Carga / Previsualización -->
-    <div class="preview-overlay" x-show="showPreview" x-cloak>
-        <div class="preview-modal shadow-premium">
+    <!-- Overlay de Previsualización Limpia (Look Imagen 2) -->
+    <div class="preview-overlay" x-show="showPreview" x-transition x-cloak>
+        <div class="preview-modal shadow-premium" @click.away="showPreview = false">
             <div class="preview-header">
-                <h3>Previsualización del Certificado</h3>
-                <button type="button" @click="showPreview = false">&times;</button>
+                <div class="preview-title-container">
+                    <i class="fa-solid fa-file-pdf text-accent"></i>
+                    <span class="preview-title">Vista Previa</span>
+                </div>
+                <button type="button" class="btn-close-minimal" @click="showPreview = false">
+                    <i class="fa-solid fa-xmark"></i>
+                    <span>Cerrar</span>
+                </button>
             </div>
             <div class="preview-body">
-                <iframe :src="previewUrl" frameborder="0"></iframe>
+                <div x-show="isPreviewLoading" class="preview-loader">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i>
+                    <span>Cargando documento...</span>
+                </div>
+                <iframe x-show="!isPreviewLoading" :src="previewUrl" frameborder="0"></iframe>
             </div>
             <div class="preview-footer">
-                <button type="button" class="btn-secondary" @click="showPreview = false">Cerrar</button>
-                <button type="button" class="btn-primary" @click="generate('store')">Confirmar y Guardar</button>
+                <button type="button" class="btn-tech-base" @click="showPreview = false">
+                    <i class="fa-solid fa-arrow-left"></i> <span>Volver a Editar</span>
+                </button>
+                <button type="button" class="btn-cod-generate" @click="generate('store')" :disabled="isSaving">
+                    <template x-if="!isSaving">
+                        <i class="fa-solid fa-file-signature"></i>
+                    </template>
+                    <template x-if="!isSaving">
+                        <span>Confirmar y Descargar</span>
+                    </template>
+                    <template x-if="isSaving">
+                        <i class="fa-solid fa-spinner fa-spin"></i>
+                    </template>
+                    <template x-if="isSaving">
+                        <span>Guardando...</span>
+                    </template>
+                </button>
             </div>
         </div>
     </div>
@@ -314,21 +394,29 @@
         padding: 32px 40px 16px;
     }
     .header-icon {
-        width: 40px;
-        height: 40px;
+        width: 56px;
+        height: 56px;
         background: rgba(var(--accent-rgb), 0.1);
-        border-radius: 10px;
+        border-radius: 14px;
         display: flex;
         align-items: center;
         justify-content: center;
+        font-size: 24px;
         color: var(--accent);
-        font-size: 18px;
+        flex-shrink: 0;
+    }
+    .header-title-block {
+        display: flex;
+        flex-direction: row !important;
+        align-items: center;
+        gap: 16px;
     }
     .header-title {
         font-size: 24px;
         font-weight: 800;
         letter-spacing: -0.02em;
         color: var(--text);
+        margin: 0;
     }
     .header-line {
         height: 1px;
@@ -710,23 +798,66 @@
         border-style: solid;
     }
 
-    /* Preview Modal */
+    /* Preview Modal - Dark & Clean (Ajuste Final) */
     .preview-overlay {
-        position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+        position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85);
         backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center;
-        z-index: 2000; padding: 40px;
+        z-index: 2000; padding: 20px;
     }
     .preview-modal {
-        background: var(--surface); width: 100%; max-width: 900px;
-        height: 100%; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column;
-        border: 1px solid var(--border);
+        background: var(--surface); width: 100%; max-width: 1200px;
+        height: 92vh; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column;
+        box-shadow: 0 25px 70px rgba(0,0,0,0.5); border: 1px solid var(--border);
     }
-    .preview-header { padding: 20px 32px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-    .preview-header h3 { font-size: 18px; font-weight: 800; }
-    .preview-header button { background: none; border: none; color: var(--muted); font-size: 24px; cursor: pointer; }
-    .preview-body { flex: 1; background: #525659; }
-    .preview-body iframe { width: 100%; height: 100%; }
-    .preview-footer { padding: 20px 32px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 16px; }
+    .preview-header { 
+        padding: 16px 28px; 
+        background: var(--surface);
+        border-bottom: 1px solid var(--border); 
+        display: flex; 
+        flex-direction: row !important;
+        justify-content: space-between; 
+        align-items: center; 
+    }
+    .preview-title-container {
+        display: flex;
+        flex-direction: row !important;
+        align-items: center;
+        gap: 12px;
+    }
+    .preview-title { font-size: 15px; font-weight: 700; color: var(--text); }
+    
+    .btn-close-minimal {
+        display: flex; align-items: center; gap: 8px; padding: 8px 16px;
+        background: var(--raised); color: var(--muted); border: 1px solid var(--border); border-radius: 8px;
+        font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: all 0.2s;
+    }
+    .btn-close-minimal:hover { background: var(--danger-muted); color: var(--danger); border-color: var(--danger-muted); }
+
+    .preview-body { flex: 1; background: #262626; position: relative; }
+    .preview-body iframe { width: 100%; height: 100%; border: none; }
+    
+    .preview-loader {
+        position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        gap: 16px; color: var(--text); background: #262626;
+    }
+    .preview-loader i { font-size: 32px; color: var(--accent); }
+
+    .preview-footer { 
+        padding: 20px 32px; 
+        background: var(--surface);
+        border-top: 1px solid var(--border); 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+    }
+
+    .btn-secondary-tech {
+        height: 40px; padding: 0 20px; border-radius: 9px; border: 1px solid var(--border);
+        background: var(--surface); color: var(--muted); font-size: 10px; font-weight: 800;
+        text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s;
+        display: flex; align-items: center; gap: 8px;
+    }
+    .btn-secondary-tech:hover { border-color: var(--accent); color: var(--accent); }
 
     [x-cloak] { display: none !important; }
 
@@ -746,8 +877,19 @@ function codGenerator() {
     return {
         clients: @json($clients),
         isGenerating: false,
+        isSaving: false,
+        isPreviewLoading: false,
         showPreview: false,
         previewUrl: '',
+        init() {
+            this.$watch('formData.docType', value => {
+                if (value !== 'Change_NodeLocked') {
+                    this.formData.MAC_Old_Extra = [];
+                    this.formData.MAC_New_Extra = [];
+                }
+            });
+        },
+
         formData: {
             client_id: '{{ $selectedClient ? $selectedClient->id : "" }}',
             docType: 'Change_Full',
@@ -814,36 +956,68 @@ function codGenerator() {
             };
         },
 
-        async generate(mode) {
-            this.isGenerating = true;
-            try {
-                const route = mode === 'preview' ? '{{ route("tools.cod.preview") }}' : '{{ route("tools.cod.store") }}';
-                const response = await fetch(route, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify(this.formData)
-                });
-                
-                if (mode === 'preview') {
-                    const blob = await response.blob();
-                    this.previewUrl = URL.createObjectURL(blob);
-                    this.showPreview = true;
-                } else {
-                    const result = await response.json();
-                    if (result.success) {
-                        window.location.href = result.download_url;
-                    } else {
-                        alert('Error: ' + result.message);
-                    }
-                }
-            } catch (e) {
-                alert('Error en el sistema de generación.');
-            } finally {
-                this.isGenerating = false;
+        openPreview() {
+            if (!this.formData.Data_SoldTo || !this.formData.Data_Solicitante || !this.formData.Data_Empresa) {
+                alert('Por favor, rellene los campos obligatorios antes de previsualizar.');
+                return;
             }
+            
+            this.isGenerating = true;
+            this.showPreview = true;
+            this.isPreviewLoading = true;
+
+            fetch('{{ route("tools.cod.preview") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify(this.formData)
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                if (this.previewUrl) URL.revokeObjectURL(this.previewUrl);
+                // Añadimos parámetros para ocultar toolbar y navpanes (thumbnails)
+                const url = URL.createObjectURL(blob);
+                this.previewUrl = url + '#toolbar=0&navpanes=0&scrollbar=1';
+                this.isPreviewLoading = false;
+                this.isGenerating = false;
+            })
+            .catch(error => {
+                console.error('Error rendering preview:', error);
+                this.showPreview = false;
+                this.isGenerating = false;
+                alert('Error al generar la vista previa. Revise los datos.');
+            });
+        },
+
+        generate(action) {
+            this.isSaving = true;
+
+            fetch('{{ route("tools.cod.store") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify(this.formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    this.showPreview = false;
+                    window.location.href = data.download_url;
+                } else {
+                    alert(data.message || 'Error en el sistema de generación.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error crítico en la comunicación con el servidor.');
+            })
+            .finally(() => {
+                this.isSaving = false;
+            });
         }
     }
 }
