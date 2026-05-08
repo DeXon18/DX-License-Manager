@@ -32,30 +32,34 @@
                     <span>Datos de la Empresa</span>
                 </div>
                 
-                <div class="grid grid-cols-2 gap-4 mb-4">
-                    <div class="input-with-icon">
-                        <i class="fa-solid fa-address-card"></i>
-                        <select x-model="formData.client_id" @change="updateFromClient()" required>
-                            <option value="">Cliente en Portal...</option>
+                <!-- Buscador de Identidad DX (Vínculo Interno) -->
+                <div class="mb-4">
+                    <div class="input-with-icon vinculo">
+                        <i class="fa-solid fa-link"></i>
+                        <select x-model="formData.client_id" @change="updateFromClient()" class="select-vinculo">
+                            <option value="">Vínculo DX (Asociar con cliente del portal...)</option>
                             @foreach($clients as $client)
                                 <option value="{{ $client->id }}">{{ $client->name }}</option>
                             @endforeach
                         </select>
                     </div>
+                </div>
+
+                <div class="space-y-4">
                     <div class="input-with-icon">
                         <i class="fa-solid fa-shield-halved"></i>
                         <input type="text" x-model="formData.Data_SoldTo" placeholder="Número de licencia (Sold To)" required maxlength="10">
                     </div>
-                </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="input-with-icon">
-                        <i class="fa-solid fa-user"></i>
-                        <input type="text" x-model="formData.Data_Solicitante" placeholder="Solicitante" required>
-                    </div>
-                    <div class="input-with-icon">
-                        <i class="fa-solid fa-globe"></i>
-                        <input type="text" x-model="formData.Data_Empresa" placeholder="Empresa (Nombre en PDF)" required>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" x-model="formData.Data_Solicitante" placeholder="Solicitante" required>
+                        </div>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-globe"></i>
+                            <input type="text" x-model="formData.Data_Empresa" placeholder="Empresa" required>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -271,6 +275,15 @@
         font-size: 14px;
         pointer-events: none;
     }
+    .input-with-icon.vinculo select {
+        padding: 10px 16px 10px 42px;
+        background: rgba(var(--accent-rgb), 0.05);
+        border: 1px dashed rgba(var(--accent-rgb), 0.3);
+        font-size: 13px;
+        color: var(--accent);
+    }
+    .input-with-icon.vinculo i { color: var(--accent); font-size: 13px; }
+    
     .input-with-icon input, .input-with-icon select {
         width: 100%;
         padding: 14px 16px 14px 46px;
@@ -505,7 +518,7 @@ function codGenerator() {
         },
 
         updateFromClient() {
-            const select = document.querySelector('select');
+            const select = document.querySelector('.select-vinculo');
             const name = select.options[select.selectedIndex].text;
             if (this.formData.client_id) {
                 this.formData.Data_Empresa = name;
