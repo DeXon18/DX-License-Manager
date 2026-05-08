@@ -624,7 +624,7 @@
         background: var(--accent);
         color: white;
         border: 1px solid var(--accent);
-        padding: 12px 32px;
+        padding: 12px 28px;
         border-radius: 12px;
         font-weight: 800;
         font-size: 11px;
@@ -635,7 +635,9 @@
         box-shadow: 0 4px 15px rgba(var(--accent-rgb), 0.3);
         display: flex;
         align-items: center;
-        gap: 12px;
+        justify-content: center;
+        gap: 10px;
+        white-space: nowrap;
     }
 
     .btn-cod-generate:hover:not(:disabled) {
@@ -661,6 +663,11 @@
         letter-spacing: 0.1em;
         cursor: pointer;
         transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        white-space: nowrap;
     }
 
     .btn-cod-clear:hover {
