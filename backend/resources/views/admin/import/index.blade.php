@@ -8,11 +8,6 @@
         <h1 class="page-title">Gestión de Importación</h1>
         <p class="page-sub">Actualización masiva de contratos y sincronización de estados desde repositorio externo.</p>
     </div>
-    <div class="page-header-actions">
-        <a href="{{ route('admin.import.logs.index') }}" class="btn-secondary">
-            <i class="fa-solid fa-clock-rotate-left mr-2"></i> Ver Historial de Logs
-        </a>
-    </div>
 </div>
 
 <div class="grid-main">
@@ -117,6 +112,13 @@
             <div style="font-size: 12px; color: var(--secondary); line-height: 1.6;">
                 La carga es **destructiva** para estados obsoletos. Contratos activos ausentes en este archivo serán marcados automáticamente como <span style="color: var(--danger); font-weight: 600;">BAJA</span>.
             </div>
+        </div>
+
+        <div style="margin-top: 12px;">
+            <a href="{{ route('admin.import.logs.index') }}" class="btn-secondary" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 10px; padding: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                Ver Historial de Logs
+            </a>
         </div>
 
         <div style="margin-top: 16px; padding: 16px; border: 1px solid var(--border-subtle); border-radius: 4px; background: var(--card-bg);">
