@@ -3,7 +3,15 @@
 
 ---
 
+## [2026-05-08] — Fase 8.2: Implementación STAR-CCM+ ✅
+- **Backend**: Creado `StarCcmService` para parsing de `cdlmd` y transformación a `saltd` (puerto 29000).
+- **Controlador**: Implementado `StarCcmController` con lógica de almacenamiento jerárquico `licenses/siemens/{cliente}/{MM-YYYY}`.
+- **UI**: Añadida vista `tools/star-ccm.blade.php` con dashboard técnico de auditoría.
+- **Base de Datos**: Nueva migración para activar el feature flag `siemens_star_ccm`.
+- **Nomenclatura**: Estándar estricto `SOLDTO_HOSTNAME_CLIENTE_STARCCM_V{VERSION}_Valida_{FECHA}.lic`.
+
 ## [2026-05-08] — Pausa Técnica: Auditoría n8n y UI de Modal ⏸️
+
  
 ### Changed
 - **Estado del Proyecto**: Pausadas las tareas de integración de n8n v2.2 y corrección del bug del modal de auditoría.

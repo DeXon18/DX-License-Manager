@@ -265,8 +265,10 @@ DX License Manager
 - [x] Optimización de Auditoría IA (v2.2): Soporte Dongle e IDs Numéricos
 - [/] **Validación:** ⏳ IA v2.2 pendiente de verificar por Oskar.
 
-#### 8.2 — STAR-CCM+
-- [ ] Parser PHP local de archivos `.lic` cdlmd
+#### 8.2 — STAR-CCM+ ✅
+- [x] Parser PHP local de archivos `.lic` cdlmd
+- [x] Transformación automática a SALT (29000/29001) e identificador STARCCM
+- [x] Almacenamiento jerárquico por Mes-Año (MM-YYYY)
 - [ ] Auditoría IA via n8n FallbackChain
 
 #### 8.3 — HEEDS
