@@ -80,6 +80,10 @@
 
 <style>
 .changelog-container { max-width: 900px; margin: 0 auto; padding-bottom: 60px; }
+.page-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 40px; }
+.header-content { flex: 1; }
+.header-actions { flex-shrink: 0; padding-top: 5px; }
+
 .version-badge-lg {
     background: var(--surface); border: 1px solid var(--border);
     padding: 6px 14px; border-radius: 20px; font-family: 'IBM Plex Mono', monospace;
