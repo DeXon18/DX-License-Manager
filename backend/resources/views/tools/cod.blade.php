@@ -81,24 +81,50 @@
 
             <!-- SECCIÓN: TIPO DE SOLICITUD -->
             <div class="form-section">
-                <div class="section-header">
+                <div class="section-title">
                     <i class="fa-solid fa-diagram-project"></i>
                     <span>Tipo de Solicitud</span>
                 </div>
                 
-                <div class="segmented-large">
-                    <button type="button" :class="formData.docType === 'Change_Full' ? 'active' : ''" @click="formData.docType = 'Change_Full'">
-                        <i class="fa-solid fa-right-left"></i>
-                        <span>Cambio Completo</span>
-                    </button>
-                    <button type="button" :class="formData.docType === 'Change_Composite' ? 'active' : ''" @click="formData.docType = 'Change_Composite'">
-                        <i class="fa-solid fa-fingerprint"></i>
-                        <span>Cambio de Composite</span>
-                    </button>
-                    <button type="button" :class="formData.docType === 'Change_NodeLocked' ? 'active' : ''" @click="formData.docType = 'Change_NodeLocked'">
-                        <i class="fa-solid fa-network-wired"></i>
-                        <span>Cambio NodeLocked</span>
-                    </button>
+                <div class="segmented-wrapper">
+                    <div class="segmented-large relative">
+                        <!-- Indicador deslizante -->
+                        <div class="active-indicator" 
+                             :style="{
+                                 width: '33.33%',
+                                 left: formData.docType === 'Change_Full' ? '0%' : (formData.docType === 'Change_Composite' ? '33.33%' : '66.66%')
+                             }">
+                        </div>
+
+                        <button type="button" :class="formData.docType === 'Change_Full' ? 'active' : ''" @click="formData.docType = 'Change_Full'">
+                            <i class="fa-solid fa-right-left"></i>
+                            <span>Cambio Completo</span>
+                        </button>
+                        <button type="button" :class="formData.docType === 'Change_Composite' ? 'active' : ''" @click="formData.docType = 'Change_Composite'">
+                            <i class="fa-solid fa-fingerprint"></i>
+                            <span>Cambio de Composite</span>
+                        </button>
+                        <button type="button" :class="formData.docType === 'Change_NodeLocked' ? 'active' : ''" @click="formData.docType = 'Change_NodeLocked'">
+                            <i class="fa-solid fa-network-wired"></i>
+                            <span>Cambio NodeLocked</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Descripción del tipo seleccionado -->
+                <div class="type-description-box">
+                    <div x-show="formData.docType === 'Change_Full'" x-transition:enter="fade-in">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>Cambio total del servidor: implica nuevo <strong>Hostname</strong> y nuevo identificador <strong>Composite</strong>.</span>
+                    </div>
+                    <div x-show="formData.docType === 'Change_Composite'" x-transition:enter="fade-in">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>El Hostname se mantiene igual, pero el identificador <strong>Composite</strong> del hardware ha cambiado.</span>
+                    </div>
+                    <div x-show="formData.docType === 'Change_NodeLocked'" x-transition:enter="fade-in">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>Licencias bloqueadas a máquina (<strong>MAC</strong>) que no dependen de un servidor central.</span>
+                    </div>
                 </div>
             </div>
 
@@ -389,6 +415,79 @@
         margin-top: 2px;
         text-transform: uppercase;
         letter-spacing: 0.05em;
+    }
+
+    /* Segmented Control Premium con Animación */
+    .segmented-wrapper {
+        background: rgba(0,0,0,0.2);
+        padding: 4px;
+        border-radius: 14px;
+        border: 1px solid var(--border);
+        margin-top: 12px;
+    }
+
+    .segmented-large {
+        display: flex;
+        position: relative;
+        z-index: 1;
+    }
+
+    .segmented-large button {
+        flex: 1;
+        background: none !important;
+        border: none !important;
+        padding: 12px;
+        color: var(--muted);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: color 0.3s;
+        z-index: 2;
+    }
+
+    .segmented-large button i {
+        font-size: 16px;
+        margin-bottom: 2px;
+    }
+
+    .segmented-large button.active {
+        color: var(--primary);
+    }
+
+    .active-indicator {
+        position: absolute;
+        height: 100%;
+        background: rgba(var(--accent-rgb), 0.1);
+        border: 1px solid var(--accent);
+        border-radius: 10px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        z-index: 1;
+    }
+
+    /* Caja de Descripción */
+    .type-description-box {
+        margin-top: 20px;
+        padding: 16px 20px;
+        background: rgba(var(--accent-rgb), 0.03);
+        border-left: 3px solid var(--accent);
+        border-radius: 0 8px 8px 0;
+        font-size: 13px;
+        color: var(--text-dim);
+        line-height: 1.5;
+    }
+
+    .type-description-box i {
+        margin-right: 8px;
+        color: var(--accent);
+    }
+
+    .type-description-box strong {
+        color: var(--accent);
+        font-weight: 700;
     }
 
     .input-with-icon input:focus, .input-with-icon select:focus {
