@@ -29,8 +29,14 @@ class Client extends Model
         return $this->hasMany(ClientMapping::class);
     }
 
+    public function aliases(): HasMany
+    {
+        return $this->hasMany(ClientAlias::class);
+    }
+
     public function auditResults(): HasMany
     {
         return $this->hasMany(AiAuditResult::class);
     }
 }
+

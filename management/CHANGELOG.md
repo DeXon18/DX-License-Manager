@@ -3,7 +3,15 @@
 
 ---
 
-## [2026-05-08] — Fase 8.2: Implementación STAR-CCM+ ✅
+## [2026-05-08] — Motor de Normalización de Clientes (Alias & Fuzzy Match)
+- Implementación del `ClientNormalizationService` para resolver discrepancias de nombres.
+- Soporte para **Fuzzy Matching** (algoritmo Levenshtein) con umbral de similitud del 85%.
+- Creación de la tabla `client_aliases` para mapeo manual y automático de erratas.
+- Integración en `CsvImportService` con sistema de logs de "Sospecha de Duplicado".
+- Documentación técnica completa en `docs/technical/client-normalization-engine.md`.
+
+## [2026-05-08] — Fase 8.2: Implementación STAR-CCM+
+ ✅
 - **Backend**: Creado `StarCcmService` para parsing de `cdlmd` y transformación a `saltd` (puerto 29000).
 - **Controlador**: Implementado `StarCcmController` con lógica de almacenamiento jerárquico `licenses/siemens/{cliente}/{MM-YYYY}`.
 - **UI**: Añadida vista `tools/star-ccm.blade.php` con dashboard técnico de auditoría.

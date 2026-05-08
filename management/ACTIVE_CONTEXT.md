@@ -11,10 +11,12 @@ current_agent: Claude
 ## 🎯 Objetivo Actual
  
 - [x] Tarea principal: Fase 7 — Hub de Herramientas (Finalizada)
-- [/] Subtarea en curso: Fase 8.2 — Implementación STAR-CCM+
+- [x] Tarea principal: Fase 8.2 — STAR-CCM+ (Finalizada)
+- [ ] Subtarea en curso: Motor de Normalización de Clientes (Alias & Sold-To Bridge)
 - [⏸️] Pausado: Fase 8.1 — Motor de Auditoría Siemens (UI & n8n v2.2)
-- Rama activa: feature/star-ccm-parser
-- Fase del ROADMAP: Fase 8.2 (Ejecución)
+- Rama activa: feature/client-normalization-engine-v2
+- Fase del ROADMAP: Mejora Técnica Transversal
+
 
 
 > [!CAUTION]

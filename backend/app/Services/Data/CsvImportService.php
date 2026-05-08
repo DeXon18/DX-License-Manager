@@ -12,6 +12,13 @@ use Illuminate\Support\Str;
 
 class CsvImportService
 {
+    protected $normalizationService;
+
+    public function __construct(ClientNormalizationService $normalizationService)
+    {
+        $this->normalizationService = $normalizationService;
+    }
+
     /**
      * Import contracts from a CSV file.
      * 
@@ -31,6 +38,7 @@ class CsvImportService
         $processedIds = [];
         $rowCount = 0;
         $errors = [];
+        $warnings = [];
 
         try {
             DB::beginTransaction();
@@ -66,9 +74,21 @@ class CsvImportService
                 }
                 
                 try {
-                    // 1. Normalize Client Name (Title Case)
-                    $clientName = Str::title(trim($row[2] ?? 'Desconocido'));
-                    $client = Client::firstOrCreate(['name' => $clientName]);
+                    // 1. Normalize Client Name using the Intelligence Engine
+                    $rawName = trim($row[2] ?? 'Desconocido');
+                    $normalization = $this->normalizationService->findOrCreate($rawName);
+                    
+                    $clientId = $normalization['id'];
+
+                    // Handle Sospechas (Suspicion)
+                    if ($normalization['status'] === 'suspicion') {
+                        $warnings[] = "Fila $rowCount: El cliente '{$rawName}' se parece un {$normalization['similarity']}% a '{$normalization['suggested_name']}'. Se ha creado un nuevo cliente por precaución, revisar posibles duplicados.";
+                        // For now, we create it to not block the process, but we mark it as suspicion in the log
+                        $newClient = Client::create(['name' => Str::title($rawName)]);
+                        $clientId = $newClient->id;
+                    } elseif ($normalization['status'] === 'new') {
+                        $warnings[] = "Fila $rowCount: Se ha creado el nuevo cliente '{$normalization['name']}' automáticamente.";
+                    }
 
                     // 2. Find/Create Vendor
                     $vendorName = trim($row[3] ?? '');
@@ -88,7 +108,7 @@ class CsvImportService
                     $contract = Contract::updateOrCreate(
                         ['contract_number' => trim($row[0])],
                         [
-                            'client_id' => $client->id,
+                            'client_id' => $clientId,
                             'vendor_id' => $vendor->id,
                             'cost_center' => $row[1] ?? null,
                             'type_product' => $row[4] ?? null,
@@ -120,6 +140,7 @@ class CsvImportService
                 'total_rows' => $rowCount,
                 'processed_rows' => count($processedIds),
                 'errors' => $errors,
+                'warnings' => $warnings,
             ]);
 
         } catch (\Exception $e) {
@@ -136,7 +157,9 @@ class CsvImportService
         return [
             'total' => $rowCount,
             'processed' => count($processedIds),
-            'errors' => $errors
+            'errors' => $errors,
+            'warnings' => $warnings
         ];
     }
 }
+
