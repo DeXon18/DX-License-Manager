@@ -98,15 +98,7 @@
         </main>
     </div>
 
-    <footer>
-        <div class="footer-inner">
-            <span>&copy; {{ date('Y') }} DX License Manager — Soporte AYS</span>
-            <div class="footer-status">
-                <div class="dot-live"></div>
-                Sistema Online · v2.0.0-beta.2
-            </div>
-        </div>
-    </footer>
+    @include('layouts.partials.footer')
 
     @stack('scripts')
     <script>
