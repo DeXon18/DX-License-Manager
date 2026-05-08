@@ -121,6 +121,13 @@
             </a>
         </div>
 
+        <div style="margin-top: 12px;">
+            <a href="{{ route('admin.normalization.index') }}" class="btn-primary" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 10px; padding: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; background: var(--accent-muted); color: var(--accent); border: 1px solid var(--accent-border);">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                Bandeja de Normalización
+            </a>
+        </div>
+
         <div style="margin-top: 16px; padding: 16px; border: 1px solid var(--border-subtle); border-radius: 4px; background: var(--card-bg);">
             <div style="font-size: 11px; color: var(--muted); line-height: 1.5;">
                 <strong>Requisitos Técnicos:</strong><br>
