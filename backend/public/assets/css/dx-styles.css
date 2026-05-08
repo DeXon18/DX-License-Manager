@@ -298,17 +298,17 @@ main { flex: 1; width: 100%; }
 
 /* 12. CARDS */
 .card {
-  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  background:var(--surface); border:1px solid var(--border); border-radius:4px;
   overflow:hidden; transition:background 0.2s,border-color 0.2s;
 }
 /* Admin: card con acento superior */
 .card[style*="--accent"] { border-radius:12px; box-shadow:0 1px 3px rgba(0,0,0,0.05); position:relative; }
 .card[style*="--accent"]::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:var(--accent); opacity:0.8; }
 .card-header {
-  padding:14px 20px; border-bottom:1px solid var(--border);
+  padding:16px 24px; border-bottom:1px solid var(--border);
   display:flex; align-items:center; justify-content:space-between;
 }
-.card > .card-header { padding:16px 20px; background:rgba(255,255,255,0.02); }
+.card > .card-header { padding:16px 24px; background:rgba(255,255,255,0.02); }
 .card-title { font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--secondary); }
 .card-action { font-size:12px; color:var(--accent); cursor:pointer; text-decoration:none; }
 
@@ -531,7 +531,7 @@ footer {
   text-transform:uppercase; letter-spacing:0.06em; font-family:'IBM Plex Mono',monospace;
 }
 .tool-sub  { font-size:13px; color:var(--muted); margin-top:4px; }
-.grid-main { display:grid; grid-template-columns:1fr 320px; gap:16px; }
+.grid-main { display:grid; grid-template-columns:1fr 300px; gap:24px; margin-top: 24px; }
 .dropzone {
   border:2px dashed var(--border); border-radius:12px; padding:48px 24px; text-align:center;
   cursor:pointer; background:var(--bg); transition:all 0.2s; margin-bottom:16px;
