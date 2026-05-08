@@ -53,7 +53,7 @@
                             @endif
                         </td>
                         <td class="font-bold">{{ $contract->type_product }}</td>
-                        <td class="font-bold">{{ $contract->end_date->format('d/m/Y') }}</td>
+                        <td class="font-bold">{{ $contract->end_date ? $contract->end_date->format('d/m/Y') : '—' }}</td>
                         <td>
                             @php
                                 $status = trim($contract->status ?: 'vacio');
