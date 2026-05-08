@@ -270,19 +270,21 @@ DX License Manager
 - [x] Rediseño de UI de Inventario Activo (Alta Densidad Técnica)
 - [x] Soporte para múltiples Sold-To por cliente
 - [x] Optimización de Auditoría IA (v2.2): Soporte Dongle e IDs Numéricos
-- [/] **Validación:** ⏳ IA v2.2 pendiente de verificar por Oskar.
+- [x] **Validación UI:** ✅ Verificado por Oskar el 2026-05-08 (Unificación total).
 
 #### 8.2 — STAR-CCM+ ✅
 - [x] Parser PHP local de archivos `.lic` cdlmd
 - [x] Transformación automática a SALT (29000/29001) e identificador STARCCM
 - [x] Almacenamiento jerárquico por Mes-Año (MM-YYYY)
-- [ ] Auditoría IA via n8n FallbackChain - pendiente
+- [x] Auditoría IA via n8n FallbackChain
+- [x] **Validación:** ✅ Motor y UI unificada OK.
 
 #### 8.3 — HEEDS ✅
 - [x] Parser PHP local de archivos `.lic` RCTECH (Extracción avanzada de cabecera)
 - [x] Transformación automática a SALT (29000/29001) e identificador HEEDS
 - [x] Almacenamiento jerárquico por Cliente/Mes-Año
 - [x] Auditoría IA via n8n FallbackChain
+- [x] **Validación:** ✅ Motor y UI unificada OK.
 
 #### 8.4 — COD
 - [ ] Formulario: Sold-To, solicitante, empresa, tipo de cambio
