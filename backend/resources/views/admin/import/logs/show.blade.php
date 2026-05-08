@@ -20,45 +20,53 @@
     </div>
 </div>
 
-<div class="grid grid-cols-4 gap-6 mb-8">
-    <div class="card p-5 text-center">
-        <div class="tech-label mb-2">Total Filas</div>
-        <div class="text-3xl font-bold">{{ $log->total_rows }}</div>
+<div class="metric-grid mb-8">
+    <div class="metric-card">
+        <div class="metric-label">TOTAL FILAS</div>
+        <div class="metric-value">{{ $log->total_rows }}</div>
     </div>
-    <div class="card p-5 text-center">
-        <div class="tech-label mb-2">Procesadas OK</div>
-        <div class="text-3xl font-bold text-accent">{{ $log->processed_rows }}</div>
+    <div class="metric-card">
+        <div class="metric-label">PROCESADAS OK</div>
+        <div class="metric-value text-accent">{{ $log->processed_rows }}</div>
     </div>
-    <div class="card p-5 text-center">
-        <div class="tech-label mb-2 text-danger">Errores</div>
-        <div class="text-3xl font-bold {{ count($log->errors ?? []) > 0 ? 'text-danger' : 'muted' }}">
+    <div class="metric-card">
+        <div class="metric-label text-danger">ERRORES CRÍTICOS</div>
+        <div class="metric-value {{ count($log->errors ?? []) > 0 ? 'text-danger' : 'muted' }}">
             {{ count($log->errors ?? []) }}
         </div>
     </div>
-    <div class="card p-5 text-center">
-        <div class="tech-label mb-2 text-warn">Avisos</div>
-        <div class="text-3xl font-bold {{ count($log->warnings ?? []) > 0 ? 'text-warn' : 'muted' }}">
+    <div class="metric-card">
+        <div class="metric-label text-warn">AVISOS NORMALIZACIÓN</div>
+        <div class="metric-value {{ count($log->warnings ?? []) > 0 ? 'text-warn' : 'muted' }}">
             {{ count($log->warnings ?? []) }}
         </div>
     </div>
 </div>
 
-<div class="grid grid-cols-1 gap-8">
+<div class="detail-container">
     <!-- Errores Críticos -->
     @if(count($log->errors ?? []) > 0)
-    <div class="card">
-        <div class="card-header px-5 py-4 flex items-center gap-3">
-            <i class="fa-solid fa-circle-xmark text-danger"></i>
-            <h3 class="text-sm font-bold uppercase tracking-wider">Errores Críticos (No procesados)</h3>
+    <div class="card mb-8">
+        <div class="card-header border-b border-white/5 bg-white/[0.02] px-5 py-4 flex items-center gap-3">
+            <div class="p-2 rounded-md bg-danger/10 text-danger text-xs">
+                <i class="fa-solid fa-circle-xmark"></i>
+            </div>
+            <h3 class="text-xs font-bold uppercase tracking-wider">Errores Críticos (No procesados)</h3>
         </div>
-        <div class="p-0">
+        <div class="p-0 overflow-hidden">
             <table class="table text-sm">
                 <tbody>
                     @foreach($log->errors as $error)
-                    <tr>
-                        <td class="text-danger">
-                            <i class="fa-solid fa-triangle-exclamation mr-2 opacity-50"></i>
-                            {{ $error }}
+                    <tr class="hover:bg-white/[0.01]">
+                        <td class="px-5 py-3 border-b border-white/5 last:border-0">
+                            <div class="flex items-center gap-4">
+                                <span class="font-mono text-[10px] text-muted opacity-50 whitespace-nowrap">
+                                    [ENTRY_FAIL]
+                                </span>
+                                <span class="text-danger/90 font-mono text-[13px]">
+                                    {{ $error }}
+                                </span>
+                            </div>
                         </td>
                     </tr>
                     @endforeach
@@ -71,52 +79,54 @@
     <!-- Avisos de Normalización (Sospechas) -->
     @if(count($log->warnings ?? []) > 0)
     <div class="card">
-        <div class="card-header px-5 py-4 flex items-center gap-3 border-b border-white/5">
-            <i class="fa-solid fa-wand-magic-sparkles text-warn"></i>
-            <h3 class="text-sm font-bold uppercase tracking-wider">Avisos de Normalización e Inteligencia</h3>
+        <div class="card-header border-b border-white/5 bg-white/[0.02] px-5 py-4 flex items-center gap-3">
+            <div class="p-2 rounded-md bg-warn/10 text-warn text-xs">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+            <h3 class="text-xs font-bold uppercase tracking-wider">Avisos de Inteligencia y Normalización</h3>
         </div>
         <div class="p-0">
             <table class="table text-sm">
                 <thead>
-                    <tr>
-                        <th class="px-5 py-3">Mensaje del Sistema</th>
-                        <th class="text-right px-5 py-3">Acciones Sugeridas</th>
+                    <tr class="bg-white/[0.01]">
+                        <th class="px-5 py-2 text-[10px] font-bold text-muted uppercase tracking-wider text-left border-b border-white/5">Mensaje del Sistema</th>
+                        <th class="px-5 py-2 text-[10px] font-bold text-muted uppercase tracking-wider text-right border-b border-white/5">Acción</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($log->warnings as $warning)
-                    <tr>
-                        <td class="px-5 py-4">
+                    <tr class="hover:bg-white/[0.01] group">
+                        <td class="px-5 py-4 border-b border-white/5 last:border-0">
                             @if(str_contains($warning, 'sospecha') || str_contains($warning, 'parece'))
-                                <div class="flex items-start gap-3">
-                                    <span class="mt-1 flex-shrink-0 w-2 h-2 rounded-full bg-warn shadow-[0_0_8px_rgba(245,158,11,0.5)]"></span>
+                                <div class="flex items-start gap-4">
+                                    <div class="mt-1 w-1.5 h-1.5 rounded-full bg-warn"></div>
                                     <div>
-                                        <span class="text-warn font-bold block mb-1">Sospecha de Duplicado Detectada</span>
-                                        <span class="text-sm opacity-80">{{ $warning }}</span>
+                                        <div class="text-[11px] font-bold text-warn uppercase tracking-tight mb-1">Sospecha de Duplicado</div>
+                                        <div class="text-[13px] opacity-70 font-mono leading-relaxed">{{ $warning }}</div>
                                     </div>
                                 </div>
                             @else
-                                <div class="flex items-start gap-3">
-                                    <span class="mt-1 flex-shrink-0 w-2 h-2 rounded-full bg-accent"></span>
+                                <div class="flex items-start gap-4">
+                                    <div class="mt-1 w-1.5 h-1.5 rounded-full bg-accent"></div>
                                     <div>
-                                        <span class="text-accent font-bold block mb-1">Nuevo Cliente Registrado</span>
-                                        <span class="text-sm opacity-80">{{ $warning }}</span>
+                                        <div class="text-[11px] font-bold text-accent uppercase tracking-tight mb-1">Nuevo Registro</div>
+                                        <div class="text-[13px] opacity-70 font-mono leading-relaxed">{{ $warning }}</div>
                                     </div>
                                 </div>
                             @endif
                         </td>
-                        <td class="text-right px-5 py-4">
+                        <td class="px-5 py-4 text-right border-b border-white/5 last:border-0 align-top">
                             @if(str_contains($warning, 'sospecha') || str_contains($warning, 'parece'))
                                 <div class="flex justify-end gap-2">
-                                    <button class="btn-primary sm" onclick="alert('Funcionalidad de unificación en desarrollo (Paso 3 del plan)')">
-                                        <i class="fa-solid fa-link mr-1"></i> Unificar
+                                    <button class="btn-action-sm btn-accent-sm" onclick="alert('Resolución automática en desarrollo')">
+                                        UNIFICAR
                                     </button>
-                                    <button class="btn-secondary sm">
-                                        <i class="fa-solid fa-check mr-1"></i> Ignorar
+                                    <button class="btn-action-sm btn-secondary-sm">
+                                        IGNORAR
                                     </button>
                                 </div>
                             @else
-                                <span class="badge badge-muted">Automático</span>
+                                <span class="text-[10px] font-bold text-muted opacity-30 uppercase">Auto-OK</span>
                             @endif
                         </td>
                     </tr>
@@ -131,15 +141,63 @@
 
 @push('styles')
 <style>
-    .text-warn { color: #f59e0b; }
-    .bg-warn { background-color: #f59e0b; }
-    .badge-warn { background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
+    .metric-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+    }
+    .metric-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        padding: 16px 20px;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .metric-label {
+        font-size: 0.65rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+    }
+    .metric-value {
+        font-size: 1.602rem;
+        font-weight: 700;
+        font-family: var(--font-mono);
+        letter-spacing: -0.03em;
+        color: var(--primary);
+    }
     
-    .tech-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.5; }
+    .text-warn { color: var(--warning); }
+    .bg-warn { background-color: var(--warning); }
     
-    .card-header { background: rgba(255, 255, 255, 0.02); }
-    
-    .btn-primary.sm { padding: 4px 12px; font-size: 11px; }
-    .btn-secondary.sm { padding: 4px 12px; font-size: 11px; }
+    .btn-action-sm {
+        font-size: 10px;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 4px;
+        letter-spacing: 0.02em;
+        transition: all 0.2s;
+    }
+    .btn-accent-sm {
+        background: var(--accent-muted);
+        color: var(--accent);
+        border: 1px solid var(--accent-border);
+    }
+    .btn-accent-sm:hover {
+        background: var(--accent);
+        color: white;
+    }
+    .btn-secondary-sm {
+        background: var(--raised);
+        color: var(--muted);
+        border: 1px solid var(--border);
+    }
+    .btn-secondary-sm:hover {
+        background: var(--border);
+        color: var(--primary);
+    }
 </style>
 @endpush
