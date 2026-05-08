@@ -253,12 +253,21 @@
             </div>
 
             <div class="footer-right">
-                <button type="button" class="btn-cod-clear" @click="resetForm()">
-                    <i class="fa-solid fa-eraser"></i> Limpiar
-                </button>
+                <!-- Limpiar (Estilo Selector) -->
+                <div class="btn-wrapper-tech">
+                    <button type="button" class="btn-tech-base btn-cod-clear" @click="resetForm()">
+                        <i class="fa-solid fa-eraser"></i> Limpiar
+                    </button>
+                </div>
+
+                <!-- Generar (Acción Principal) -->
                 <button type="submit" class="btn-cod-generate" :disabled="isGenerating">
-                    <span x-show="!isGenerating"><i class="fa-solid fa-file-pdf"></i> Generar PDF</span>
-                    <span x-show="isGenerating"><i class="fa-solid fa-spinner fa-spin"></i> Generando...</span>
+                    <span x-show="!isGenerating" class="flex items-center gap-3">
+                        <i class="fa-solid fa-file-pdf"></i> Generar PDF
+                    </span>
+                    <span x-show="isGenerating" class="flex items-center gap-3">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Generando...
+                    </span>
                 </button>
             </div>
         </div>
@@ -546,6 +555,7 @@
     }
 
     /* Footer & Actions */
+    /* Footer & Actions Refined */
     .cod-card-footer {
         padding: 32px 40px;
         background: var(--accent-muted);
@@ -553,26 +563,23 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        gap: 24px;
+        gap: 20px;
     }
 
-    .footer-left {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-    }
-
-    .footer-right {
+    .footer-left, .footer-right {
         display: flex;
         align-items: center;
         gap: 12px;
     }
 
-    .segmented-wrapper.small {
+    .segmented-wrapper.small, .btn-wrapper-tech {
+        height: 44px;
         padding: 3px;
         border-radius: 10px;
         background: var(--surface);
         border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
     }
 
     .segmented-small {
@@ -580,19 +587,21 @@
         position: relative;
         z-index: 1;
         min-width: 280px;
+        height: 100%;
         width: 100%;
     }
 
-    .segmented-small button {
+    .segmented-small button, .btn-tech-base {
         flex: 1;
+        height: 100%;
         background: none !important;
         border: none !important;
-        padding: 10px 16px;
+        padding: 0 16px;
         color: var(--muted);
         font-size: 10.5px;
         font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 0.07em;
+        letter-spacing: 0.1em;
         cursor: pointer;
         transition: all 0.3s ease;
         z-index: 2;
@@ -600,9 +609,15 @@
         align-items: center;
         justify-content: center;
         gap: 10px;
+        white-space: nowrap;
     }
 
-    .segmented-small button i { font-size: 14px; }
+    .segmented-small button i, .btn-tech-base i { 
+        font-size: 14px; 
+        width: 18px;
+        display: flex;
+        justify-content: center;
+    }
 
     .segmented-small button.active {
         color: var(--accent);
@@ -610,34 +625,49 @@
 
     .active-indicator-small {
         position: absolute;
-        top: 3px;
-        bottom: 3px;
+        top: 0;
+        bottom: 0;
         background: rgba(var(--accent-rgb), 0.05);
         border: 1px solid var(--accent);
         box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.1);
-        border-radius: 8px;
+        border-radius: 7px;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 1;
     }
 
+    /* Botones de Acción Estilo Tech */
+    .btn-cod-clear {
+        color: var(--muted);
+    }
+    .btn-cod-clear:hover {
+        color: var(--danger);
+    }
+
     .btn-cod-generate {
+        height: 44px;
         background: var(--accent);
         color: white;
         border: 1px solid var(--accent);
-        padding: 12px 28px;
-        border-radius: 12px;
+        padding: 0 32px;
+        border-radius: 10px;
         font-weight: 800;
-        font-size: 11px;
+        font-size: 10.5px;
         text-transform: uppercase;
-        letter-spacing: 0.12em;
+        letter-spacing: 0.1em;
         cursor: pointer;
         transition: all 0.2s;
         box-shadow: 0 4px 15px rgba(var(--accent-rgb), 0.3);
         display: flex;
         align-items: center;
-        justify-content: center;
-        gap: 10px;
+        gap: 12px;
         white-space: nowrap;
+    }
+
+    .btn-cod-generate i {
+        font-size: 14px;
+        width: 18px;
+        display: flex;
+        justify-content: center;
     }
 
     .btn-cod-generate:hover:not(:disabled) {
@@ -649,31 +679,6 @@
     .btn-cod-generate:disabled {
         opacity: 0.6;
         cursor: not-allowed;
-    }
-
-    .btn-cod-clear {
-        background: transparent;
-        color: var(--muted);
-        border: 1px solid var(--border);
-        padding: 12px 24px;
-        border-radius: 12px;
-        font-weight: 800;
-        font-size: 11px;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        cursor: pointer;
-        transition: all 0.2s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        white-space: nowrap;
-    }
-
-    .btn-cod-clear:hover {
-        background: var(--raised);
-        color: var(--danger);
-        border-color: var(--danger-border);
     }
 
     /* Botón Añadir MAC */
