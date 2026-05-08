@@ -269,7 +269,7 @@ DX License Manager
 - [x] Parser PHP local de archivos `.lic` cdlmd
 - [x] Transformación automática a SALT (29000/29001) e identificador STARCCM
 - [x] Almacenamiento jerárquico por Mes-Año (MM-YYYY)
-- [ ] Auditoría IA via n8n FallbackChain
+- [ ] Auditoría IA via n8n FallbackChain - pendiente
 
 #### 8.3 — HEEDS
 - [ ] Parser PHP local de archivos `.lic` RCTECH
