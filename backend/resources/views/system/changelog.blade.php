@@ -84,6 +84,7 @@
     background: var(--surface); border: 1px solid var(--border);
     padding: 6px 14px; border-radius: 20px; font-family: 'IBM Plex Mono', monospace;
     font-size: 13px; font-weight: 600; color: var(--accent); display: flex; align-items: center; gap: 8px;
+    width: fit-content;
 }
 .dot-pulse { width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 0 rgba(16, 185, 129, 0.4); animation: pulse 2s infinite; }
 @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
