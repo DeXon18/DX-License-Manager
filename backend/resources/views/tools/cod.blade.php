@@ -580,6 +580,7 @@
         position: relative;
         z-index: 1;
         min-width: 180px;
+        width: 100%;
     }
 
     .segmented-small button {
@@ -611,8 +612,6 @@
         position: absolute;
         top: 2px;
         bottom: 2px;
-        left: 2px;
-        right: 2px;
         background: rgba(var(--accent-rgb), 0.05);
         border: 1px solid var(--accent);
         box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.1);
