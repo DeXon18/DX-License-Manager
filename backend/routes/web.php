@@ -40,5 +40,9 @@ Route::middleware(['auth.jwt'])->group(function () {
         Route::get('/import/logs', [\App\Http\Controllers\Admin\ImportLogController::class, 'index'])->name('import.logs.index');
         Route::get('/import/logs/{log}', [\App\Http\Controllers\Admin\ImportLogController::class, 'show'])->name('import.logs.show');
         Route::delete('/import/logs/{log}', [\App\Http\Controllers\Admin\ImportLogController::class, 'destroy'])->name('import.logs.destroy');
+
+        Route::get('/normalization', [\App\Http\Controllers\Admin\NormalizationController::class, 'index'])->name('normalization.index');
+        Route::post('/normalization/unify', [\App\Http\Controllers\Admin\NormalizationController::class, 'unify'])->name('normalization.unify');
+        Route::post('/normalization/dismiss', [\App\Http\Controllers\Admin\NormalizationController::class, 'dismiss'])->name('normalization.dismiss');
     });
 });
