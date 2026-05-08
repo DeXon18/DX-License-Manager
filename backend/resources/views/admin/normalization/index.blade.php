@@ -10,34 +10,38 @@
         <span style="opacity: 0.5;">Bandeja de Normalización</span>
     </div>
     <h1 class="welcome">Bandeja de <span>Normalización</span></h1>
-    <p class="welcome-sub">Gestión de identidades y duplicados detectados por el motor IA</p>
+    <p class="welcome-sub">Gestión de identidades y duplicados detectados por el motor de sincronización</p>
 </div>
 
 <div class="stats-row">
     <div class="stat-card">
         <span class="stat-label">Sospechas Pendientes</span>
-        <span class="stat-value {{ count($findings) > 0 ? 'warn' : '' }}">{{ count($findings) }}</span>
-        <span class="stat-meta">Requieren revisión manual</span>
+        <span class="stat-value {{ collect($findings)->where('type', 'suspicion')->count() > 0 ? 'warn' : '' }}">
+            {{ collect($findings)->where('type', 'suspicion')->count() }}
+        </span>
+        <span class="stat-meta">Requieren unificación manual</span>
     </div>
     <div class="stat-card">
-        <span class="stat-label">Alias Registrados</span>
-        <span class="stat-value" style="color: var(--accent);">{{ \App\Models\ClientAlias::count() }}</span>
-        <span class="stat-meta">Mapeos activos en el motor</span>
+        <span class="stat-label">Nuevas Identidades</span>
+        <span class="stat-value" style="color: var(--accent);">
+            {{ collect($findings)->where('type', 'new')->count() }}
+        </span>
+        <span class="stat-meta">Registrados automáticamente</span>
     </div>
 </div>
 
 <div class="card" style="margin-top: 24px;">
     <div class="card-header">
-        <span class="card-title">Detecciones Recientes</span>
+        <span class="card-title">Análisis de Identidades</span>
     </div>
     
     @if(count($findings) > 0)
         <table>
             <thead>
                 <tr>
-                    <th>Nombre Detectado (Origen)</th>
-                    <th>Sugerencia de Identidad</th>
-                    <th>Origen / Fecha</th>
+                    <th style="width: 30%;">Hallazgo</th>
+                    <th style="width: 40%;">Propuesta del Motor</th>
+                    <th>Origen</th>
                     <th style="text-align: right;">Acciones</th>
                 </tr>
             </thead>
@@ -46,42 +50,54 @@
                     <tr>
                         <td>
                             <div style="font-weight: 700; color: var(--primary);">{{ $finding['detected_name'] }}</div>
-                            <div style="font-size: 10px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; margin-top: 2px;">
-                                [NEW_ENTRY_DETECTED]
-                            </div>
+                            @if($finding['type'] === 'suspicion')
+                                <span class="badge badge-warn" style="font-size: 8px; padding: 2px 4px; margin-top: 4px;">SOSPECHA DUPLICADO</span>
+                            @else
+                                <span class="badge badge-success" style="font-size: 8px; padding: 2px 4px; margin-top: 4px;">NUEVA IDENTIDAD</span>
+                            @endif
                         </td>
                         <td>
-                            <div style="display: flex; items-center; gap: 8px;">
-                                <span class="badge badge-ai" style="font-size: 9px; padding: 2px 6px;">FUZZY MATCH</span>
-                                <span style="font-weight: 600; color: var(--accent);">{{ $finding['suggested_name'] }}</span>
-                            </div>
-                            <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">
-                                La IA sugiere que es el mismo cliente.
-                            </div>
+                            @if($finding['type'] === 'suspicion')
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <i class="fa-solid fa-arrow-right-long opacity-30"></i>
+                                    <span style="font-weight: 700; color: var(--accent); font-size: 14px;">{{ $finding['suggested_name'] }}</span>
+                                </div>
+                                <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">
+                                    El motor sugiere unificar bajo este cliente existente.
+                                </div>
+                            @else
+                                <div style="font-size: 11px; color: var(--muted);">
+                                    Cliente desconocido hasta ahora. Se ha creado una ficha nueva.
+                                </div>
+                            @endif
                         </td>
                         <td>
                             <div class="date-main">{{ $finding['filename'] }}</div>
                             <div class="date-sub">{{ $finding['date']->format('d/m/Y H:i') }}</div>
                         </td>
                         <td style="text-align: right;">
-                            <div style="display: flex; justify-content: flex-end; gap: 8px;">
-                                <form action="{{ route('admin.normalization.unify') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="detected_name" value="{{ $finding['detected_name'] }}">
-                                    <input type="hidden" name="suggested_name" value="{{ $finding['suggested_name'] }}">
-                                    <button type="submit" class="btn-primary" style="padding: 6px 12px; font-size: 11px;">
-                                        UNIFICAR
-                                    </button>
-                                </form>
-                                
-                                <form action="{{ route('admin.normalization.dismiss') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="raw_warning" value="{{ $finding['raw_warning'] }}">
-                                    <button type="submit" class="btn-secondary" style="padding: 6px 12px; font-size: 11px; background: var(--raised);">
-                                        DESCARTAR
-                                    </button>
-                                </form>
-                            </div>
+                            @if($finding['type'] === 'suspicion')
+                                <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                                    <form action="{{ route('admin.normalization.unify') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="detected_name" value="{{ $finding['detected_name'] }}">
+                                        <input type="hidden" name="suggested_name" value="{{ $finding['suggested_name'] }}">
+                                        <button type="submit" class="btn-primary" style="padding: 6px 12px; font-size: 11px;">
+                                            UNIFICAR
+                                        </button>
+                                    </form>
+                                    
+                                    <form action="{{ route('admin.normalization.dismiss') }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="full_message" value="{{ $finding['full_message'] }}">
+                                        <button type="submit" class="btn-secondary" style="padding: 6px 12px; font-size: 11px; background: var(--raised);">
+                                            DESCARTAR
+                                        </button>
+                                    </form>
+                                </div>
+                            @else
+                                <span class="muted" style="font-size: 10px; font-weight: 700; text-transform: uppercase; opacity: 0.5;">Automatizado</span>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
