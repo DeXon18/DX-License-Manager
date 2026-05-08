@@ -3,206 +3,437 @@
 @section('title', 'Generador de COD - DX Portal')
 
 @section('content')
-<div class="container-fluid" x-data="codGenerator()">
-    <div class="row mb-4">
-        <div class="col-12">
-            <h1 class="h3 mb-0 text-gray-800">Generador de Certificado de Cese (COD)</h1>
-            <p class="text-muted">Generación de documentos oficiales Siemens para cambios de licencia.</p>
-        </div>
-    </div>
+<div class="page-header">
+    <div class="breadcrumb">Portal › Herramientas › Siemens › Generador COD</div>
+    <h1 class="page-title">Solicitud de Cambio de Licencia</h1>
+    <p class="page-sub">Generación de Certificado de Cese (COD) oficial de Siemens Digital Industries Software</p>
+</div>
 
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="card shadow-sm border-0">
-                <div class="card-header bg-white py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">
-                        <i class="fas fa-file-signature me-2"></i>Nueva Solicitud
-                    </h6>
+<div x-data="codGenerator()" class="cod-container">
+    <form id="codForm" @submit.prevent="generate('store')" class="cod-card shadow-premium">
+        @csrf
+        
+        <!-- Header del Formulario -->
+        <div class="cod-card-header">
+            <div class="flex items-center gap-3">
+                <div class="header-icon">
+                    <i class="fa-solid fa-file-signature"></i>
                 </div>
-                <div class="card-body">
-                    <form id="codForm" @submit.prevent="generate('store')">
-                        @csrf
-                        
-                        <!-- Datos de la Empresa -->
-                        <div class="section-title">
-                            <i class="fas fa-building me-2"></i>Datos de la Empresa
-                        </div>
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
-                                <label class="field-label">Cliente en Portal</label>
-                                <select name="client_id" class="gui-input ps-2" x-model="formData.client_id" @change="updateFromClient()" required>
-                                    <option value="">Seleccionar cliente...</option>
-                                    @foreach($clients as $client)
-                                        <option value="{{ $client->id }}">{{ $client->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="field-label">Sold-To / Licencia</label>
-                                <input type="text" name="Data_SoldTo" class="gui-input ps-2" x-model="formData.Data_SoldTo" placeholder="Ej: 10303508" required maxlength="10">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="field-label">Solicitante</label>
-                                <input type="text" name="Data_Solicitante" class="gui-input ps-2" x-model="formData.Data_Solicitante" placeholder="Nombre completo" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="field-label">Empresa (Tal cual en PDF)</label>
-                                <input type="text" name="Data_Empresa" class="gui-input ps-2" x-model="formData.Data_Empresa" placeholder="Razón social" required>
-                            </div>
-                        </div>
-
-                        <!-- Tipo de Solicitud e Idioma -->
-                        <div class="row g-3 mb-4">
-                            <div class="col-md-6">
-                                <label class="field-label">Tipo de Cambio</label>
-                                <div class="segmented">
-                                    <button type="button" class="seg-btn" :class="formData.docType === 'Change_Full' ? 'active' : ''" @click="formData.docType = 'Change_Full'">
-                                        <span>Completo</span>
-                                    </button>
-                                    <button type="button" class="seg-btn" :class="formData.docType === 'Change_Composite' ? 'active' : ''" @click="formData.docType = 'Change_Composite'">
-                                        <span>Composite</span>
-                                    </button>
-                                    <button type="button" class="seg-btn" :class="formData.docType === 'Change_NodeLocked' ? 'active' : ''" @click="formData.docType = 'Change_NodeLocked'">
-                                        <span>NodeLocked</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="field-label">Idioma PDF</label>
-                                <div class="segmented">
-                                    <button type="button" class="seg-btn" :class="formData.Language === 'Spanish' ? 'active' : ''" @click="formData.Language = 'Spanish'">
-                                        <span>ES</span>
-                                    </button>
-                                    <button type="button" class="seg-btn" :class="formData.Language === 'English' ? 'active' : ''" @click="formData.Language = 'English'">
-                                        <span>EN</span>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <label class="field-label">S.O. Servidor</label>
-                                <div class="segmented">
-                                    <button type="button" class="seg-btn" :class="formData.os === 'WINDOWS' ? 'active' : ''" @click="formData.os = 'WINDOWS'">
-                                        <i class="fab fa-windows me-1"></i>Win
-                                    </button>
-                                    <button type="button" class="seg-btn" :class="formData.os === 'LINUX' ? 'active' : ''" @click="formData.os = 'LINUX'">
-                                        <i class="fab fa-linux me-1"></i>Lin
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Detalles de Máquinas -->
-                        <div class="row g-4 mb-4">
-                            <!-- Máquina Actual -->
-                            <div class="col-md-6">
-                                <div class="section-title">
-                                    <i class="fas fa-server me-2"></i>Máquina Actual
-                                </div>
-                                <div class="mb-3">
-                                    <label class="field-label">Hostname</label>
-                                    <input type="text" name="Hostname_Old" class="gui-input ps-2" x-model="formData.Hostname_Old" :required="formData.docType !== 'Change_NodeLocked'" :disabled="formData.docType === 'Change_NodeLocked'">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="field-label">Composite ID</label>
-                                    <input type="text" name="Composite_Old" class="gui-input ps-2" x-model="formData.Composite_Old" :required="formData.docType !== 'Change_NodeLocked'" :disabled="formData.docType === 'Change_NodeLocked'" maxlength="12">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="field-label">HostID (MAC)</label>
-                                    <input type="text" name="MAC_Old" class="gui-input ps-2" x-model="formData.MAC_Old" :required="formData.docType !== 'Change_Composite'" :disabled="formData.docType === 'Change_Composite'" maxlength="12">
-                                </div>
-
-                                <!-- MACs Adicionales Actuales -->
-                                <template x-for="(mac, index) in formData.MAC_Old_Extra" :key="index">
-                                    <div class="input-group mb-2">
-                                        <input type="text" :name="'MAC_Old_Extra['+index+']'" class="gui-input ps-2" x-model="formData.MAC_Old_Extra[index]" placeholder="MAC Adicional" maxlength="12">
-                                        <button type="button" class="btn btn-outline-danger btn-sm" @click="removeMacPair(index)"><i class="fas fa-times"></i></button>
-                                    </div>
-                                </template>
-                            </div>
-
-                            <!-- Nueva Máquina -->
-                            <div class="col-md-6">
-                                <div class="section-title">
-                                    <i class="fas fa-satellite-dish me-2"></i>Nueva Máquina
-                                </div>
-                                <div class="mb-3">
-                                    <label class="field-label">Hostname</label>
-                                    <input type="text" name="Hostname_New" class="gui-input ps-2" x-model="formData.Hostname_New" :required="formData.docType !== 'Change_NodeLocked'" :disabled="formData.docType === 'Change_NodeLocked'">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="field-label">Composite ID</label>
-                                    <input type="text" name="Composite_New" class="gui-input ps-2" x-model="formData.Composite_New" :required="formData.docType !== 'Change_NodeLocked'" :disabled="formData.docType === 'Change_NodeLocked'" maxlength="12">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="field-label">HostID (MAC)</label>
-                                    <input type="text" name="MAC_New" class="gui-input ps-2" x-model="formData.MAC_New" :required="formData.docType !== 'Change_Composite'" :disabled="formData.docType === 'Change_Composite'" maxlength="12">
-                                </div>
-
-                                <!-- MACs Adicionales Nuevas -->
-                                <template x-for="(mac, index) in formData.MAC_New_Extra" :key="index">
-                                    <div class="mb-2">
-                                        <input type="text" :name="'MAC_New_Extra['+index+']'" class="gui-input ps-2" x-model="formData.MAC_New_Extra[index]" placeholder="Nueva MAC Adicional" maxlength="12">
-                                    </div>
-                                </template>
-                            </div>
-                        </div>
-
-                        <div class="mb-4" x-show="formData.docType === 'Change_NodeLocked'">
-                            <button type="button" class="btn btn-sm btn-outline-primary" @click="addMacPair()">
-                                <i class="fas fa-plus me-2"></i>Añadir par de MACs
-                            </button>
-                        </div>
-
-                        <div class="d-flex justify-content-between border-top pt-4">
-                            <button type="button" class="btn btn-secondary" @click="resetForm()">
-                                <i class="fas fa-eraser me-2"></i>Limpiar
-                            </button>
-                            <div class="d-flex gap-2">
-                                <button type="button" class="btn btn-primary" @click="generate('preview')">
-                                    <i class="fas fa-eye me-2"></i>Previsualizar
-                                </button>
-                                <button type="submit" class="btn btn-primary" :disabled="isGenerating" style="background: var(--siemens);">
-                                    <span x-show="!isGenerating"><i class="fas fa-file-pdf me-2"></i>Generar y Guardar</span>
-                                    <span x-show="isGenerating"><i class="fas fa-spinner fa-spin me-2"></i>Procesando...</span>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                <h2 class="header-title">Certificado de Cese</h2>
             </div>
+            <div class="header-line"></div>
         </div>
 
-        <div class="col-lg-4">
-            <div class="card shadow-sm border-0 mb-4">
-                <div class="card-header bg-white py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">Instrucciones</h6>
+        <div class="cod-card-body">
+            <!-- SECCIÓN: DATOS DE LA EMPRESA -->
+            <div class="form-section">
+                <div class="section-header">
+                    <i class="fa-solid fa-building"></i>
+                    <span>Datos de la Empresa</span>
                 </div>
-                <div class="card-body small text-muted">
-                    <p>Este generador replica el <strong>Certificado de Cese oficial de Siemens</strong>.</p>
-                    <ul class="ps-3">
-                        <li><strong>Cambio Completo:</strong> Transfiere licencia fija completa (Composite + MAC).</li>
-                        <li><strong>Cambio Composite:</strong> Solo afecta a la licencia flotante.</li>
-                        <li><strong>NodeLocked:</strong> Solo cambia la MAC del equipo.</li>
-                    </ul>
-                    <div class="alert alert-info py-2 border-0">
-                        <i class="fas fa-info-circle me-2"></i>El documento se guardará automáticamente en el repositorio del cliente.
+                
+                <div class="grid grid-cols-1 gap-4 mb-4">
+                    <div class="input-with-icon">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <input type="text" x-model="formData.Data_SoldTo" placeholder="Número de licencia (Sold To)" required maxlength="10">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="input-with-icon">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" x-model="formData.Data_Solicitante" placeholder="Solicitante" required>
+                    </div>
+                    <div class="input-with-icon">
+                        <i class="fa-solid fa-globe"></i>
+                        <input type="text" x-model="formData.Data_Empresa" placeholder="Empresa" required>
                     </div>
                 </div>
             </div>
 
-            <!-- Previsualización Inline -->
-            <div class="card shadow-sm border-0 sticky-top" style="top: 2rem;" x-show="showPreview">
-                <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-                    <h6 class="m-0 font-weight-bold text-primary">Vista Previa</h6>
-                    <button class="btn btn-sm btn-link text-muted" @click="showPreview = false"><i class="fas fa-times"></i></button>
+            <!-- SECCIÓN: TIPO DE SOLICITUD -->
+            <div class="form-section">
+                <div class="section-header">
+                    <i class="fa-solid fa-diagram-project"></i>
+                    <span>Tipo de Solicitud</span>
                 </div>
-                <div class="card-body p-0" style="height: 500px;">
-                    <iframe :src="previewUrl" width="100%" height="100%" frameborder="0"></iframe>
+                
+                <div class="segmented-large">
+                    <button type="button" :class="formData.docType === 'Change_Full' ? 'active' : ''" @click="formData.docType = 'Change_Full'">
+                        <i class="fa-solid fa-right-left"></i>
+                        <span>Cambio Completo</span>
+                    </button>
+                    <button type="button" :class="formData.docType === 'Change_Composite' ? 'active' : ''" @click="formData.docType = 'Change_Composite'">
+                        <i class="fa-solid fa-fingerprint"></i>
+                        <span>Cambio de Composite</span>
+                    </button>
+                    <button type="button" :class="formData.docType === 'Change_NodeLocked' ? 'active' : ''" @click="formData.docType = 'Change_NodeLocked'">
+                        <i class="fa-solid fa-network-wired"></i>
+                        <span>Cambio NodeLocked</span>
+                    </button>
                 </div>
+            </div>
+
+            <!-- SECCIÓN: MÁQUINAS (PARALELO) -->
+            <div class="grid grid-cols-2 gap-8">
+                <!-- Máquina Actual -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="fa-solid fa-desktop"></i>
+                        <span>Máquina Actual</span>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-terminal"></i>
+                            <input type="text" x-model="formData.Hostname_Old" placeholder="Hostname" :required="formData.docType !== 'Change_NodeLocked'" :disabled="formData.docType === 'Change_NodeLocked'">
+                        </div>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-code"></i>
+                            <input type="text" x-model="formData.Composite_Old" placeholder="Composite" :required="formData.docType !== 'Change_NodeLocked'" :disabled="formData.docType === 'Change_NodeLocked'" maxlength="12">
+                        </div>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-id-card"></i>
+                            <input type="text" x-model="formData.MAC_Old" placeholder="HostID (MAC)" :required="formData.docType !== 'Change_Composite'" :disabled="formData.docType === 'Change_Composite'" maxlength="12">
+                        </div>
+                        
+                        <!-- MACs Adicionales -->
+                        <template x-for="(mac, index) in formData.MAC_Old_Extra" :key="index">
+                            <div class="input-with-icon extra">
+                                <i class="fa-solid fa-id-card opacity-50"></i>
+                                <input type="text" x-model="formData.MAC_Old_Extra[index]" placeholder="MAC Extra" maxlength="12">
+                                <button type="button" class="remove-btn" @click="removeMacPair(index)">&times;</button>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Nueva Máquina -->
+                <div class="form-section">
+                    <div class="section-header">
+                        <i class="fa-solid fa-tower-broadcast"></i>
+                        <span>Nueva Máquina</span>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-terminal"></i>
+                            <input type="text" x-model="formData.Hostname_New" placeholder="Hostname" :required="formData.docType !== 'Change_NodeLocked'" :disabled="formData.docType === 'Change_NodeLocked'">
+                        </div>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-code"></i>
+                            <input type="text" x-model="formData.Composite_New" placeholder="Composite" :required="formData.docType !== 'Change_NodeLocked'" :disabled="formData.docType === 'Change_NodeLocked'" maxlength="12">
+                        </div>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-id-card"></i>
+                            <input type="text" x-model="formData.MAC_New" placeholder="HostID (MAC)" :required="formData.docType !== 'Change_Composite'" :disabled="formData.docType === 'Change_Composite'" maxlength="12">
+                        </div>
+
+                        <!-- MACs Adicionales -->
+                        <template x-for="(mac, index) in formData.MAC_New_Extra" :key="index">
+                            <div class="input-with-icon extra">
+                                <i class="fa-solid fa-id-card opacity-50"></i>
+                                <input type="text" x-model="formData.MAC_New_Extra[index]" placeholder="Nueva MAC Extra" maxlength="12">
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón Añadir MACs (Solo NodeLocked) -->
+            <div class="flex justify-center mt-2" x-show="formData.docType === 'Change_NodeLocked'">
+                <button type="button" class="btn-add-mac" @click="addMacPair()">
+                    <i class="fa-solid fa-plus"></i> Añadir par de MACs
+                </button>
+            </div>
+        </div>
+
+        <!-- FOOTER: CONTROLES Y ACCIONES -->
+        <div class="cod-card-footer">
+            <div class="flex items-center gap-4">
+                <!-- Idioma -->
+                <div class="segmented-small">
+                    <button type="button" :class="formData.Language === 'Spanish' ? 'active' : ''" @click="formData.Language = 'Spanish'">Castellano</button>
+                    <button type="button" :class="formData.Language === 'English' ? 'active' : ''" @click="formData.Language = 'English'">Inglés</button>
+                </div>
+                <!-- S.O. -->
+                <div class="segmented-small">
+                    <button type="button" :class="formData.os === 'WINDOWS' ? 'active' : ''" @click="formData.os = 'WINDOWS'"><i class="fa-brands fa-windows"></i> Windows</button>
+                    <button type="button" :class="formData.os === 'LINUX' ? 'active' : ''" @click="formData.os = 'LINUX'"><i class="fa-brands fa-linux"></i> Linux</button>
+                </div>
+            </div>
+
+            <div class="flex gap-3">
+                <button type="button" class="btn-cod-clear" @click="resetForm()">
+                    <i class="fa-solid fa-eraser"></i> Limpiar
+                </button>
+                <button type="submit" class="btn-cod-generate" :disabled="isGenerating">
+                    <span x-show="!isGenerating"><i class="fa-solid fa-file-pdf"></i> Generar PDF</span>
+                    <span x-show="isGenerating"><i class="fa-solid fa-spinner fa-spin"></i> Generando...</span>
+                </button>
+            </div>
+        </div>
+    </form>
+
+    <!-- Overlay de Carga / Previsualización -->
+    <div class="preview-overlay" x-show="showPreview" x-cloak>
+        <div class="preview-modal shadow-premium">
+            <div class="preview-header">
+                <h3>Previsualización del Certificado</h3>
+                <button type="button" @click="showPreview = false">&times;</button>
+            </div>
+            <div class="preview-body">
+                <iframe :src="previewUrl" frameborder="0"></iframe>
+            </div>
+            <div class="preview-footer">
+                <button type="button" class="btn-secondary" @click="showPreview = false">Cerrar</button>
+                <button type="button" class="btn-primary" @click="generate('store')">Confirmar y Guardar</button>
             </div>
         </div>
     </div>
 </div>
+
+@push('styles')
+<style>
+    .cod-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding-bottom: 60px;
+    }
+    .cod-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+    }
+    .cod-card-header {
+        padding: 32px 40px 16px;
+    }
+    .header-icon {
+        width: 40px;
+        height: 40px;
+        background: rgba(var(--accent-rgb), 0.1);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent);
+        font-size: 18px;
+    }
+    .header-title {
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+        color: var(--text);
+    }
+    .header-line {
+        height: 1px;
+        background: linear-gradient(to right, var(--accent), transparent);
+        margin-top: 16px;
+        opacity: 0.3;
+    }
+    .cod-card-body {
+        padding: 24px 40px;
+    }
+    .form-section {
+        margin-bottom: 32px;
+    }
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 20px;
+    }
+    .section-header i { font-size: 12px; }
+
+    /* Inputs Estilo Premium */
+    .input-with-icon {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    .input-with-icon i {
+        position: absolute;
+        left: 16px;
+        color: var(--muted);
+        font-size: 14px;
+        pointer-events: none;
+    }
+    .input-with-icon input {
+        width: 100%;
+        padding: 14px 16px 14px 46px;
+        background: rgba(255,255,255,0.02);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--text);
+        font-size: 14px;
+        transition: all 0.2s;
+    }
+    .input-with-icon input:focus {
+        border-color: var(--accent);
+        background: rgba(var(--accent-rgb), 0.02);
+        box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.1);
+    }
+    .input-with-icon input:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+    .input-with-icon.extra input {
+        background: rgba(0,0,0,0.1);
+        border-style: dashed;
+    }
+    .remove-btn {
+        position: absolute;
+        right: 12px;
+        width: 24px;
+        height: 24px;
+        border: none;
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Segmented Controls Large */
+    .segmented-large {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        background: rgba(0,0,0,0.2);
+        padding: 6px;
+        border-radius: 14px;
+        gap: 6px;
+    }
+    .segmented-large button {
+        padding: 12px;
+        border: none;
+        background: transparent;
+        border-radius: 10px;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+    .segmented-large button i { font-size: 14px; opacity: 0.5; }
+    .segmented-large button.active {
+        background: var(--card-bg);
+        color: var(--text);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .segmented-large button.active i { color: var(--accent); opacity: 1; }
+
+    /* Bottom Controls */
+    .cod-card-footer {
+        padding: 24px 40px 40px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: rgba(0,0,0,0.05);
+    }
+    .segmented-small {
+        display: flex;
+        background: rgba(0,0,0,0.2);
+        padding: 4px;
+        border-radius: 10px;
+    }
+    .segmented-small button {
+        padding: 8px 16px;
+        border: none;
+        background: transparent;
+        border-radius: 7px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .segmented-small button.active {
+        background: var(--accent);
+        color: white;
+    }
+
+    /* Botones Acción */
+    .btn-cod-clear {
+        padding: 10px 24px;
+        background: rgba(255,255,255,0.05);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.2s;
+    }
+    .btn-cod-clear:hover { background: rgba(255,255,255,0.1); color: var(--text); }
+
+    .btn-cod-generate {
+        padding: 10px 32px;
+        background: var(--accent);
+        border: none;
+        color: white;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 800;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        box-shadow: 0 4px 14px rgba(var(--accent-rgb), 0.3);
+        transition: all 0.2s;
+    }
+    .btn-cod-generate:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(var(--accent-rgb), 0.4); }
+    .btn-cod-generate:disabled { opacity: 0.5; transform: none; cursor: not-allowed; }
+
+    .btn-add-mac {
+        padding: 6px 16px;
+        background: transparent;
+        border: 1px dashed var(--accent);
+        color: var(--accent);
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .btn-add-mac:hover { background: rgba(var(--accent-rgb), 0.05); }
+
+    /* Preview Modal */
+    .preview-overlay {
+        position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+        backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center;
+        z-index: 2000; padding: 40px;
+    }
+    .preview-modal {
+        background: var(--card-bg); width: 100%; max-width: 900px;
+        height: 100%; border-radius: 20px; overflow: hidden; display: flex; flex-direction: column;
+    }
+    .preview-header { padding: 20px 32px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .preview-header h3 { font-size: 18px; font-weight: 800; }
+    .preview-header button { background: none; border: none; color: var(--muted); font-size: 24px; cursor: pointer; }
+    .preview-body { flex: 1; background: #525659; }
+    .preview-body iframe { width: 100%; height: 100%; }
+    .preview-footer { padding: 20px 32px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 16px; }
+
+    [x-cloak] { display: none !important; }
+</style>
+@endpush
 
 @push('scripts')
 <script>
@@ -229,20 +460,6 @@ function codGenerator() {
             MAC_New_Extra: []
         },
 
-        init() {
-            if (this.formData.client_id) {
-                // Pre-fill logic if needed
-            }
-        },
-
-        updateFromClient() {
-            const clientSelect = document.querySelector('select[name="client_id"]');
-            const clientName = clientSelect.options[clientSelect.selectedIndex].text;
-            if (this.formData.client_id) {
-                this.formData.Data_Empresa = clientName;
-            }
-        },
-
         addMacPair() {
             this.formData.MAC_Old_Extra.push('');
             this.formData.MAC_New_Extra.push('');
@@ -255,10 +472,10 @@ function codGenerator() {
 
         resetForm() {
             this.formData = {
-                client_id: '',
+                client_id: '{{ $selectedClient ? $selectedClient->id : "" }}',
                 Data_SoldTo: '',
                 Data_Solicitante: '',
-                Data_Empresa: '',
+                Data_Empresa: '{{ $selectedClient ? $selectedClient->name : "" }}',
                 docType: 'Change_Full',
                 Language: 'Spanish',
                 os: 'WINDOWS',
@@ -271,13 +488,13 @@ function codGenerator() {
                 MAC_Old_Extra: [],
                 MAC_New_Extra: []
             };
-            this.showPreview = false;
         },
 
         async generate(mode) {
-            if (mode === 'preview') {
-                this.isGenerating = true;
-                const response = await fetch('{{ route("tools.cod.preview") }}', {
+            this.isGenerating = true;
+            try {
+                const route = mode === 'preview' ? '{{ route("tools.cod.preview") }}' : '{{ route("tools.cod.store") }}';
+                const response = await fetch(route, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -286,33 +503,21 @@ function codGenerator() {
                     body: JSON.stringify(this.formData)
                 });
                 
-                const blob = await response.blob();
-                this.previewUrl = URL.createObjectURL(blob);
-                this.showPreview = true;
-                this.isGenerating = false;
-            } else {
-                this.isGenerating = true;
-                try {
-                    const response = await fetch('{{ route("tools.cod.store") }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify(this.formData)
-                    });
-                    
+                if (mode === 'preview') {
+                    const blob = await response.blob();
+                    this.previewUrl = URL.createObjectURL(blob);
+                    this.showPreview = true;
+                } else {
                     const result = await response.json();
-                    
                     if (result.success) {
-                        alert(result.message);
                         window.location.href = result.download_url;
                     } else {
                         alert('Error: ' + result.message);
                     }
-                } catch (e) {
-                    alert('Error en la comunicación con el servidor.');
                 }
+            } catch (e) {
+                alert('Error en el sistema de generación.');
+            } finally {
                 this.isGenerating = false;
             }
         }
