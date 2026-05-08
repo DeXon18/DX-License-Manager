@@ -22,13 +22,14 @@
 - **Mapeo de Almacenamiento**: Corregida visibilidad en el host (Windows) alineando el disco `private` con los volúmenes de Docker.
 - **Localización**: Mapeo de tipos de certificado a nombres profesionales en castellano.
 
----
-_Firmado por: **Antigravity (DX Agent)** 🦾_
 - **Optimización Visual**: Iconos de acción compactados en horizontal (26px) para mejorar la densidad de información.
 - **Alineación UI**: Unificación de layouts horizontales para iconos y títulos en todo el módulo.
 - **Optimización PDF**: Compresión de márgenes y fuentes para asegurar una sola página A4.
 - **Bug Fix**: Corregido error de variable indefinida en la persistencia del certificado.
 - **Infraestructura**: Creación de directorio de fuentes y reseteo de logs.
+
+---
+_Firmado por: **Antigravity (DX Agent)** 🦾_
 
 ## [2026-05-08] — Fase 8.4: Generación de Certificados de Cese (COD) ✅
 
