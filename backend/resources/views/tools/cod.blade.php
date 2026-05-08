@@ -328,12 +328,12 @@
         background: var(--surface);
         border: 1px solid var(--border);
         border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         overflow: hidden;
     }
     
     .cod-card-header {
-        background: rgba(var(--accent-rgb), 0.05);
+        background: var(--accent-muted);
         padding: 24px 32px;
         border-bottom: 1px solid var(--border);
         display: flex;
@@ -342,7 +342,7 @@
     }
 
     .form-section {
-        background: rgba(255,255,255,0.01);
+        background: var(--surface);
         border: 1px solid var(--border);
         border-radius: 12px;
         padding: 24px;
@@ -354,7 +354,7 @@
     }
 
     .select-vinculo {
-        background: rgba(var(--accent-rgb), 0.05) !important;
+        background: var(--accent-muted) !important;
         border: 1px dashed var(--accent) !important;
         color: var(--accent) !important;
         font-weight: 500;
@@ -390,7 +390,7 @@
         border: 1px solid var(--accent);
         border-radius: 12px;
         margin-top: 8px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
         z-index: 1000;
         overflow: hidden;
     }
@@ -419,7 +419,7 @@
 
     /* Segmented Control Premium con Animación */
     .segmented-wrapper {
-        background: rgba(0,0,0,0.2);
+        background: var(--raised);
         padding: 4px;
         border-radius: 14px;
         border: 1px solid var(--border);
@@ -456,14 +456,14 @@
     }
 
     .segmented-large button.active {
-        color: var(--primary);
+        color: var(--accent);
     }
 
     .active-indicator {
         position: absolute;
         height: 100%;
-        background: rgba(var(--accent-rgb), 0.1);
-        border: 1px solid var(--accent);
+        background: var(--accent-muted);
+        border: 1px solid var(--accent-border);
         border-radius: 10px;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 1;
@@ -473,11 +473,11 @@
     .type-description-box {
         margin-top: 20px;
         padding: 16px 20px;
-        background: rgba(var(--accent-rgb), 0.03);
+        background: var(--accent-muted);
         border-left: 3px solid var(--accent);
         border-radius: 0 8px 8px 0;
         font-size: 13px;
-        color: var(--text-dim);
+        color: var(--secondary);
         line-height: 1.5;
     }
 
@@ -655,6 +655,14 @@
     .preview-footer { padding: 20px 32px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 16px; }
 
     [x-cloak] { display: none !important; }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in {
+        animation: fadeIn 0.3s ease forwards;
+    }
 </style>
 @endpush
 
