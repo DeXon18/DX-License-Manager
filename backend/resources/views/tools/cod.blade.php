@@ -32,7 +32,16 @@
                     <span>Datos de la Empresa</span>
                 </div>
                 
-                <div class="grid grid-cols-1 gap-4 mb-4">
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div class="input-with-icon">
+                        <i class="fa-solid fa-address-card"></i>
+                        <select x-model="formData.client_id" @change="updateFromClient()" required>
+                            <option value="">Cliente en Portal...</option>
+                            @foreach($clients as $client)
+                                <option value="{{ $client->id }}">{{ $client->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="input-with-icon">
                         <i class="fa-solid fa-shield-halved"></i>
                         <input type="text" x-model="formData.Data_SoldTo" placeholder="Número de licencia (Sold To)" required maxlength="10">
@@ -46,7 +55,7 @@
                     </div>
                     <div class="input-with-icon">
                         <i class="fa-solid fa-globe"></i>
-                        <input type="text" x-model="formData.Data_Empresa" placeholder="Empresa" required>
+                        <input type="text" x-model="formData.Data_Empresa" placeholder="Empresa (Nombre en PDF)" required>
                     </div>
                 </div>
             </div>
@@ -262,7 +271,7 @@
         font-size: 14px;
         pointer-events: none;
     }
-    .input-with-icon input {
+    .input-with-icon input, .input-with-icon select {
         width: 100%;
         padding: 14px 16px 14px 46px;
         background: rgba(255,255,255,0.02);
@@ -271,11 +280,16 @@
         color: var(--text);
         font-size: 14px;
         transition: all 0.2s;
+        appearance: none;
     }
-    .input-with-icon input:focus {
+    .input-with-icon input:focus, .input-with-icon select:focus {
         border-color: var(--accent);
         background: rgba(var(--accent-rgb), 0.02);
         box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.1);
+    }
+    .input-with-icon select option {
+        background: var(--card-bg);
+        color: var(--text);
     }
     .input-with-icon input:disabled {
         opacity: 0.3;
@@ -488,6 +502,14 @@ function codGenerator() {
                 MAC_Old_Extra: [],
                 MAC_New_Extra: []
             };
+        },
+
+        updateFromClient() {
+            const select = document.querySelector('select');
+            const name = select.options[select.selectedIndex].text;
+            if (this.formData.client_id) {
+                this.formData.Data_Empresa = name;
+            }
         },
 
         async generate(mode) {
