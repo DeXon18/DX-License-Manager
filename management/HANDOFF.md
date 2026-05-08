@@ -23,14 +23,16 @@
 ---
 
 ## ⚠️ Pendientes y Bloqueos
-- **Bug UI (Modal)**: El botón del "ojo" en la tabla de licencias no abre el modal en Beta. 
-  - *Hipótesis:* Posible conflicto de Alpine.js con el teleport o el estado `open` local. Se han probado varios fixes (eliminar display:none, usar @js), pero sigue fallando.
-  - *Acción:* Revisar logs de consola en la próxima sesión.
-- **Merge**: Pendiente merge de `feature/client-audit-ui` a `dev` una vez se arregle el ojo.
+- **Bug UI (Modal) [PAUSADO]**: El botón del "ojo" en la tabla de licencias no abre el modal en Beta. 
+  - *Estado:* Pausado por decisión técnica. Se retomará cuando se estabilice el flujo de n8n.
+- **Auditoría n8n [PAUSADO]**: El flujo actual de n8n (v2.2) se queda en espera.
+  - *Motivo:* El flujo pasará de ser lineal a tener ramificaciones complejas según el vendor y el tipo de licencia (Siemens SALT vs Legacy, Moldex, etc.). Se requiere un análisis más profundo de las casuísticas antes de continuar con la lógica de ramificación.
+- **Merge**: Pendiente merge de `feature/client-audit-ui` a `dev` (pospuesto).
 
 ---
 
 ## 🚀 Próximos Pasos
-1. Arreglar el disparador del modal de detalle de auditoría.
-2. Implementar la exportación del reporte de auditoría a PDF (Fase 8.4 avanzada).
-3. Iniciar Fase 8.2 (STAR-CCM+).
+1. Documentar casuísticas de ramificación n8n (análisis técnico).
+2. Estabilizar la UI base de clientes antes de re-introducir la lógica de auditoría compleja.
+3. Iniciar Fase 8.2 (STAR-CCM+) una vez se defina el nuevo esquema de ramificación.
+

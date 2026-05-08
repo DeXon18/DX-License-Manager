@@ -13,8 +13,16 @@ El agente no avanza hasta recibir "aprobado", "adelante" o similar de forma expl
 ---
 
 ## 🟢 En Progreso
+ 
+- [ ] **Fase 8.2**: Auditoría STAR-CCM+ (En planificación de ramificaciones).
 
-- [ ] **Fase 8.2**: Auditoría STAR-CCM+.
+---
+
+## ⏸️ Pausado / En Espera
+
+- [ ] **Fix Bug Modal Auditoría**: El botón de ojo no abre el modal en Beta.
+- [ ] **Integración n8n v2.2+**: Evolución del flujo lineal a ramificado por Vendor/Tipo Licencia.
+
 
 ---
 

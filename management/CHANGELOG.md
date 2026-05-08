@@ -3,7 +3,17 @@
 
 ---
 
+## [2026-05-08] — Pausa Técnica: Auditoría n8n y UI de Modal ⏸️
+ 
+### Changed
+- **Estado del Proyecto**: Pausadas las tareas de integración de n8n v2.2 y corrección del bug del modal de auditoría.
+- **Análisis**: Iniciada fase de análisis para el nuevo flujo ramificado de n8n (Siemens SALT/Legacy, Moldex3D).
+- **Prioridad**: Se prioriza la estabilidad de la UI de clientes y la definición de casuísticas de ramificación antes de continuar con la lógica asíncrona.
+
+---
+
 ## [2026-05-08] — Centralización de Configuración IA ✅
+
 
 ### Added
 - **Configuración**: Centralizadas las URLs de n8n Webhook y Callback API en variables de entorno.
