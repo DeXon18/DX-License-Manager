@@ -27,7 +27,11 @@
             @foreach($entries as $entry)
                 <div class="timeline-entry">
                     <div class="timeline-sidebar">
-                        <div class="entry-date">{{ \Carbon\Carbon::parse($entry['date'])->format('d M, Y') }}</div>
+                        <div class="entry-date">
+                            <span class="date-day">{{ \Carbon\Carbon::parse($entry['date'])->format('d') }}</span>
+                            <span class="date-month">{{ \Carbon\Carbon::parse($entry['date'])->translatedFormat('M') }}</span>
+                            <span class="date-year">{{ \Carbon\Carbon::parse($entry['date'])->format('Y') }}</span>
+                        </div>
                         <div class="entry-dot"></div>
                     </div>
                     <div class="entry-content-card">
@@ -91,11 +95,15 @@
     background: var(--border); opacity: 0.5;
 }
 .timeline-entry { display: flex; gap: 40px; margin-bottom: 40px; position: relative; }
-.timeline-sidebar { width: 140px; text-align: right; padding-top: 15px; flex-shrink: 0; position: relative; }
-.entry-date { font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; }
+.timeline-sidebar { width: 140px; text-align: right; padding-top: 10px; flex-shrink: 0; position: relative; }
+.entry-date { display: flex; flex-direction: column; line-height: 1; gap: 2px; }
+.date-day { font-size: 24px; font-weight: 800; color: var(--primary); font-family: 'IBM Plex Mono', monospace; }
+.date-month { font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; }
+.date-year { font-size: 11px; font-weight: 600; color: var(--muted); font-family: 'IBM Plex Mono', monospace; }
 .entry-dot {
     position: absolute; right: -25px; top: 18px; width: 12px; height: 12px;
     background: var(--bg); border: 2px solid var(--accent); border-radius: 50%; z-index: 2;
+    box-shadow: 0 0 0 4px var(--bg);
 }
 
 .entry-content-card {
