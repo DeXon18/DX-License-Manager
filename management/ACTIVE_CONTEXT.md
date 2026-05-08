@@ -12,10 +12,10 @@ current_agent: Claude
  
 - [x] Tarea principal: Fase 7 — Hub de Herramientas (Finalizada)
 - [x] Tarea principal: Fase 8.2 — STAR-CCM+ (Finalizada)
-- [ ] Subtarea en curso: Motor de Normalización de Clientes (Alias & Sold-To Bridge)
+- [x] Tarea principal: Fase 6.5 — Normalización Cross-Module (Bandeja y Motor)
 - [⏸️] Pausado: Fase 8.1 — Motor de Auditoría Siemens (UI & n8n v2.2)
-- Rama activa: feature/client-normalization-engine-v2
-- Fase del ROADMAP: Mejora Técnica Transversal
+- Rama activa: dev
+- Fase del ROADMAP: Fase 6 — Gestión de Clientes
 
 
 
@@ -29,10 +29,10 @@ current_agent: Claude
 
 ## 🕒 Log de Acciones (última sesión)
 
-- 2026-05-07 — Implementación de lógica de nomenclatura estricta para NX.
-- 2026-05-07 — Configuración de límites de subida (100MB) en Nginx y PHP.
-- 2026-05-07 — Corrección de permisos de almacenamiento y rutas de Docker Compose.
-- 2026-05-07 — Normalización de hostname y cliente a MAYÚSCULAS.
+- 2026-05-08 — Implementación de Bandeja de Normalización Cross-Module.
+- 2026-05-08 — Desarrollo del motor Fuzzy Match para identidades de clientes.
+- 2026-05-08 — Integración de avisos de normalización en Auditoría IA.
+- 2026-05-08 — Merge de hito a dev y limpieza de ramas locales/remotas.
 
 ---
 
@@ -40,19 +40,20 @@ current_agent: Claude
 
 | Decisión          | Detalle                                                             | Ref                       |
 | :---------------- | :------------------------------------------------------------------ | :------------------------ |
+| Normalización     | Fuzzy Match al **85%** de similitud con Levenshtein                 | `NormalizationController` |
+| Unificación       | Migración TOTAL de datos (Contratos, Licencias, Contactos)          | `NormalizationController` |
 | Límites Upload    | **100MB** — configurado en Nginx y PHP (local.ini)                  | `infra/php/local.ini`     |
 | Nomenclatura      | `SOLDTO_HOSTNAME_CLIENTE_VERSION_Valida_DDMMYYYY.lic`               | `NXSuiteService.php`      |
 | Almacenamiento    | Jerárquico: `licenses/siemens/{cliente}/{fecha}/`                   | `NXSuiteController.php`   |
 | Permisos          | **777** en `storage/private` para evitar bloqueos de I/O            | `troubleshooting.md`      |
-| Commits           | En inglés siempre — la comunicación al desarrollador en castellano  | AGENTS.md                 |
 
 ---
 
 ## 🚀 Handover — Próximos Pasos
 
-1. Validar con el usuario que la subida de archivos > 1MB es fluida.
-2. Iniciar la Fase 8.1 Parte 2: Implementar el parser de bloques `INCREMENT`.
-3. Integrar la Auditoría IA (FallbackChain) para el análisis de productos.
+1. Iniciar **Fase 6.2 (Detalles de Clientes)**: Vista detallada con historial completo.
+2. Retomar **Fase 8.1 (Auditoría Siemens)**: Fix del bug del modal y evolución de n8n v2.2.
+3. Consolidar el listado de contratos con los nuevos Alias creados.
 
 ---
 

@@ -49,6 +49,16 @@ En planificación — se detallan una por una tras validación de la fase anteri
 ---
 
 ## ✅ Completado
+ 
+### Fase 6.5 — Normalización e Identidades (Cross-Module)
+- **Completada:** 2026-05-08
+- **Rama:** feature/normalization-cross-module
+- **Resumen:** Implementación del motor de normalización inteligente y la bandeja administrativa. El sistema ahora limpia identidades de clientes tanto en el CSV como en las Licencias (AI) de forma automática.
+- [x] Implementación de `ClientNormalizationService` (Fuzzy Match 85%).
+- [x] Bandeja de Normalización Centralizada (`NormalizationController`).
+- [x] Unificación total: Migración automática de contratos, licencias, inventario y contactos.
+- [x] Persistencia de descartes en `normalization_decisions`.
+- [x] Integración de avisos en `AiAuditResult`.
 
 ### Fase 8.1 — Siemens NX Suite (Inteligencia, Auditoría e Inventario)
 - **Completada:** 2026-05-07
