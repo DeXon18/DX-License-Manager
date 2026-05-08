@@ -28,6 +28,11 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::get('/herramientas/heeds', [\App\Http\Controllers\Tools\HeedsController::class, 'index'])->name('tools.heeds.index');
     Route::post('/herramientas/heeds', [\App\Http\Controllers\Tools\HeedsController::class, 'process'])->name('tools.heeds.process');
 
+    Route::get('/herramientas/cod', [\App\Http\Controllers\Tools\CodController::class, 'index'])->name('tools.cod.index');
+    Route::post('/herramientas/cod/preview', [\App\Http\Controllers\Tools\CodController::class, 'preview'])->name('tools.cod.preview');
+    Route::post('/herramientas/cod/store', [\App\Http\Controllers\Tools\CodController::class, 'store'])->name('tools.cod.store');
+    Route::get('/herramientas/cod/download', [\App\Http\Controllers\Tools\CodController::class, 'download'])->name('tools.cod.download');
+
     
     Route::post('/clientes/{client}/contactos', [ContactController::class, 'store'])->name('contacts.store');
     Route::put('/clientes/{client}/contactos/{contact}', [ContactController::class, 'update'])->name('contacts.update');

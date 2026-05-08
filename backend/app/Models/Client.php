@@ -38,5 +38,10 @@ class Client extends Model
     {
         return $this->hasMany(AiAuditResult::class);
     }
+
+    public function codCertificates(): HasMany
+    {
+        return $this->hasMany(CodCertificate::class);
+    }
 }
 

@@ -252,21 +252,55 @@
         </div>
     </div>
 
-    <!-- Certificados Tab (Pendiente Fase 8.4) -->
+    <!-- Certificados Tab (Fase 8.4) -->
     <div x-show="tab === 'certificates'" class="tab-content" style="display: none;">
-        <div class="card text-center py-20 border-dashed opacity-80" style="border: 2px dashed var(--border); background: transparent;">
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full mb-6" style="background: rgba(var(--accent-rgb, 0, 122, 255), 0.1); margin: 0 auto 24px;">
-                <i class="fa-solid fa-file-contract text-accent" style="font-size: 24px; color: var(--accent);"></i>
+        <div class="card p-0">
+            <div class="card-header flex justify-between items-center px-5 py-4">
+                <h3 class="text-sm font-bold uppercase tracking-wider">Certificados de Cese (COD)</h3>
+                <a href="{{ route('tools.cod.index', ['client_id' => $client->id]) }}" class="btn-primary sm">
+                    <i class="fa-solid fa-plus mr-2"></i> Nuevo COD
+                </a>
             </div>
-            <h3 class="text-xl font-bold tracking-tight">Certificados de Cese (COD)</h3>
-            <p class="muted mt-3 max-w-md mx-auto" style="margin-left: auto; margin-right: auto;">
-                El historial de certificados firmados y la generación de nuevos documentos 
-                se activará con el módulo de gestión documental de la <strong>Fase 8.4</strong>.
-            </p>
-            <div class="flex justify-center gap-3 mt-8" style="display: flex; justify-content: center; gap: 12px; margin-top: 32px;">
-                <span class="badge badge-accent">En Planificación</span>
-                <span class="badge badge-muted">Fase 8.4 — Siemens COD</span>
-            </div>
+            <table class="table text-sm">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Sold-To</th>
+                        <th>Tipo</th>
+                        <th>Estado</th>
+                        <th class="text-right">Documento</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($client->codCertificates as $cod)
+                    <tr>
+                        <td>{{ $cod->created_at->format('d/m/Y H:i') }}</td>
+                        <td class="font-mono text-xs">{{ $cod->sold_to }}</td>
+                        <td>
+                            <span class="badge badge-muted">{{ $cod->type }}</span>
+                        </td>
+                        <td>
+                            @if($cod->status === 'PENDING')
+                                <span class="badge badge-warn">Pte. Firma</span>
+                            @else
+                                <span class="badge badge-success">Firmado</span>
+                            @endif
+                        </td>
+                        <td class="text-right">
+                            <a href="{{ route('tools.cod.download', ['filePath' => $cod->file_path]) }}" class="btn-icon" title="Descargar PDF">
+                                <i class="fa-solid fa-file-pdf" style="color: #ef4444;"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="text-center py-12 muted">
+                            No se han generado certificados COD para este cliente.
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
 
