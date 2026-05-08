@@ -36,6 +36,8 @@ class ClientController extends Controller
     {
         $client->load(['contracts', 'contacts', 'certificates', 'auditResults' => function($query) {
             $query->orderBy('created_at', 'desc');
+        }, 'codCertificates' => function($query) {
+            $query->orderBy('created_at', 'desc');
         }]);
 
         // Cargar inventario agrupado por Sold-To
