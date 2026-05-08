@@ -87,7 +87,7 @@ class NormalizationController extends Controller
 
             // 3. Create Alias
             ClientAlias::updateOrCreate(
-                ['alias_name' => $detectedName],
+                ['name' => $detectedName],
                 ['client_id' => $realClient->id]
             );
 
