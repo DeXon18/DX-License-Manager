@@ -14,7 +14,6 @@
 
 ## [2026-05-08] — Centralización de Configuración IA ✅
 
-
 ### Added
 - **Configuración**: Centralizadas las URLs de n8n Webhook y Callback API en variables de entorno.
 - **Flexibilidad**: Permitido cambio rápido de endpoints para pruebas sin modificar código fuente.

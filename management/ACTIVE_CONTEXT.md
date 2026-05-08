@@ -11,10 +11,11 @@ current_agent: Claude
 ## 🎯 Objetivo Actual
  
 - [x] Tarea principal: Fase 7 — Hub de Herramientas (Finalizada)
-- [ ] Subtarea en curso: Fase 8.2 — Implementación STAR-CCM+ (Esperando "Adelante")
+- [/] Subtarea en curso: Fase 8.2 — Implementación STAR-CCM+
 - [⏸️] Pausado: Fase 8.1 — Motor de Auditoría Siemens (UI & n8n v2.2)
-- Rama activa: feature/client-audit-ui
-- Fase del ROADMAP: Fase 8.2 (Planificación)
+- Rama activa: feature/star-ccm-parser
+- Fase del ROADMAP: Fase 8.2 (Ejecución)
+
 
 > [!CAUTION]
 > **REGLA DE ORO**: NO iniciar ejecución tras un plan sin un "adelante", "ok", "procede" o similar **explícito de Oskar**. Ignorar aprobaciones automáticas del sistema.

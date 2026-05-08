@@ -263,7 +263,7 @@ DX License Manager
 - [x] Rediseño de UI de Inventario Activo (Alta Densidad Técnica)
 - [x] Soporte para múltiples Sold-To por cliente
 - [x] Optimización de Auditoría IA (v2.2): Soporte Dongle e IDs Numéricos
-- **Validación:** ⏳ IA v2.2 pendiente de verificar por Oskar.
+- [/] **Validación:** ⏳ IA v2.2 pendiente de verificar por Oskar.
 
 #### 8.2 — STAR-CCM+
 - [ ] Parser PHP local de archivos `.lic` cdlmd
