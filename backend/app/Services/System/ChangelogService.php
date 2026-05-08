@@ -69,15 +69,24 @@ class ChangelogService
             if (preg_match('/^-\s*(.*)/', $line, $matches)) {
                 $item = $matches[1];
                 
+                $tag = null;
+                // Detect [TAG] at the start of the description
+                if (preg_match('/^\[(.*?)\]\s*(.*)/', $item, $tagMatches)) {
+                    $tag = $tagMatches[1];
+                    $item = $tagMatches[2];
+                }
+
                 // Parse bold titles in items: **Title**: Description
                 if (preg_match('/^\*\*(.*?)\*\*:\s*(.*)/', $item, $itemMatches)) {
                     $entries[$currentDate]['categories'][$currentCategory][] = [
                         'label' => $itemMatches[1],
+                        'tag' => $tag,
                         'description' => $itemMatches[2]
                     ];
                 } else {
                     $entries[$currentDate]['categories'][$currentCategory][] = [
                         'label' => null,
+                        'tag' => $tag,
                         'description' => $item
                     ];
                 }
