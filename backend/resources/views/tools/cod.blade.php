@@ -579,7 +579,7 @@
         display: flex;
         position: relative;
         z-index: 1;
-        min-width: 220px;
+        min-width: 280px;
         width: 100%;
     }
 
@@ -589,10 +589,10 @@
         border: none !important;
         padding: 10px 16px;
         color: var(--muted);
-        font-size: 11px;
+        font-size: 10.5px;
         font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 0.1em;
+        letter-spacing: 0.07em;
         cursor: pointer;
         transition: all 0.3s ease;
         z-index: 2;
