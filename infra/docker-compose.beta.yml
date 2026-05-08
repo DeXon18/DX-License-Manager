@@ -24,6 +24,7 @@ services:
       - ./infra/.env.beta:/var/www/html/.env
       - ./infra/php/local.ini:/usr/local/etc/php/conf.d/local.ini
       - ./storage:/var/www/html/storage/app
+      - ./management:/var/www/management:ro
     depends_on:
       mariadb-beta:
         condition: service_healthy

@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SystemController;
 use App\Http\Controllers\ToolController;
 use App\Http\Controllers\Tools\NXSuiteController;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,8 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/clientes', [ClientController::class, 'index'])->name('clients.index');
     Route::get('/clientes/{client}', [ClientController::class, 'show'])->name('clients.show');
+    
+    Route::get('/changelog', [SystemController::class, 'changelog'])->name('system.changelog');
     
     Route::get('/herramientas', [ToolController::class, 'index'])->name('tools.index');
     Route::get('/herramientas/nx-suite', [NXSuiteController::class, 'index'])->name('tools.nx-suite.index');

@@ -24,6 +24,7 @@ services:
       - ./infra/.env.prod:/var/www/html/.env
       - ./infra/php/local.ini:/usr/local/etc/php/conf.d/local.ini
       - ./storage:/var/www/html/storage/app
+      - ./management:/var/www/management:ro
     depends_on:
       mariadb-prod:
         condition: service_healthy
