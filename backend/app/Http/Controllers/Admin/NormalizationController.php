@@ -26,21 +26,33 @@ class NormalizationController extends Controller
 
         foreach ($logs as $log) {
             foreach ($log->warnings as $warning) {
-                // Filter only warnings that sound like "suspicion of duplicate"
-                if (str_contains(strtolower($warning), 'sospecha') || str_contains(strtolower($warning), 'parece')) {
+                // Detect suspicions or new entries
+                $isSuspicion = str_contains(strtolower($warning), 'sospecha') || str_contains(strtolower($warning), 'parece');
+                $isNew = str_contains(strtolower($warning), 'nuevo cliente');
+
+                if ($isSuspicion || $isNew) {
                     
-                    // Try to extract names (Pattern: "sospecha de duplicado: [NAME] parece ser similar a [SUGGESTION]")
-                    // This is a bit brittle, but works with our current motor output
-                    preg_match('/sospecha de duplicado: (.*) parece ser similar a (.*)/i', $warning, $matches);
+                    // Try to extract names if it's a suspicion
+                    $detectedName = 'Desconocido';
+                    $suggestedName = null;
+
+                    if ($isSuspicion) {
+                        preg_match('/sospecha de duplicado: (.*) parece ser similar a (.*)/i', $warning, $matches);
+                        $detectedName = $matches[1] ?? 'Error al extraer';
+                        $suggestedName = $matches[2] ?? null;
+                    } elseif ($isNew) {
+                        preg_match('/registrado: (.*)/i', $warning, $matches);
+                        $detectedName = $matches[1] ?? 'Nuevo Cliente';
+                    }
                     
                     $findings[] = [
                         'log_id' => $log->id,
                         'filename' => $log->filename,
                         'date' => $log->created_at,
-                        'full_message' => $warning,
-                        'detected_name' => $matches[1] ?? 'Desconocido',
-                        'suggested_name' => $matches[2] ?? 'Desconocido',
-                        'raw_warning' => $warning
+                        'type' => $isSuspicion ? 'suspicion' : 'new',
+                        'detected_name' => trim($detectedName),
+                        'suggested_name' => $suggestedName ? trim($suggestedName) : null,
+                        'full_message' => $warning
                     ];
                 }
             }
