@@ -14,11 +14,13 @@ class AiAuditResult extends Model
         'customer_name',
         'vendor',
         'results',
+        'warnings',
         'status',
     ];
 
     protected $casts = [
         'results' => 'array',
+        'warnings' => 'array',
     ];
 
     public function user()

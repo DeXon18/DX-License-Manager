@@ -13,9 +13,9 @@ class ClientNormalizationService
      *
      * @param string $name
      * @param float $threshold Similarity threshold (0 to 1)
-     * @return array [id, status, suggestion]
+     * @return array [id, status, name, suggested_name, similarity, warning]
      */
-    public function findOrCreate(string $name, float $threshold = 0.85): array
+    public function resolve(string $name, float $threshold = 0.85): array
     {
         $name = trim($name);
         $titleName = Str::title($name);
@@ -45,22 +45,34 @@ class ClientNormalizationService
             }
         }
 
-        // If similarity is very high, we consider it a suspicion
+        // If similarity is high, we consider it a suspicion
         if ($highestSimilarity >= $threshold) {
+            $warning = "El cliente '{$titleName}' se parece un " . round($highestSimilarity * 100, 2) . "% a '{$bestMatch->name}'. Se ha creado un nuevo cliente por precaución, revisar posibles duplicados.";
+            
+            // Create the new client anyway for immediate use, but flag it
+            $newClient = Client::create(['name' => $titleName]);
+
             return [
-                'id' => null, 
+                'id' => $newClient->id, 
                 'status' => 'suspicion', 
+                'name' => $newClient->name,
                 'suggested_id' => $bestMatch->id,
                 'suggested_name' => $bestMatch->name,
                 'similarity' => round($highestSimilarity * 100, 2),
-                'original_name' => $titleName
+                'warning' => $warning
             ];
         }
 
         // 4. Totally New (No similarity or very low)
-        // For now, we create it automatically but mark it as new
         $newClient = Client::create(['name' => $titleName]);
-        return ['id' => $newClient->id, 'status' => 'new', 'name' => $newClient->name];
+        $warning = "Nuevo cliente registrado: {$titleName}";
+        
+        return [
+            'id' => $newClient->id, 
+            'status' => 'new', 
+            'name' => $newClient->name,
+            'warning' => $warning
+        ];
     }
 
     /**
