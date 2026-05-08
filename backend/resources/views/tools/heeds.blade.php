@@ -11,11 +11,11 @@
     </div>
     <div style="display: flex; align-items: center; gap: 12px; margin-top: 8px;">
         <div class="tool-icon-fallback" style="background: var(--vendor-siemens-dark-muted, rgba(0,153,153,0.1)); color: var(--vendor-siemens, #009999); width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="22" y1="12" x2="18" y2="12"/><line x1="6" y1="12" x2="2" y2="12"/><line x1="12" y1="6" x2="12" y2="2"/><line x1="12" y1="22" x2="12" y2="18"/></svg>
         </div>
         <div>
-            <h1 class="page-title" style="margin: 0;">HEEDS <span class="vendor-label siemens" style="font-size: 10px; padding: 2px 6px; margin-left: 8px;">Siemens Digital Industries</span></h1>
-            <p class="page-sub" style="margin: 0;">Software de exploración y optimización de diseño multidisciplinar</p>
+            <h1 class="page-title" style="margin: 0; font-family: var(--font-sans); letter-spacing: -0.02em;">HEEDS Suite <span class="vendor-label siemens" style="font-size: 10px; padding: 2px 6px; margin-left: 8px;">Siemens Digital Industries</span></h1>
+            <p class="page-sub" style="margin: 0; opacity: 0.8;">Motor de exploración y optimización de diseño multidisciplinar</p>
         </div>
     </div>
 </div>
@@ -52,7 +52,7 @@
                                 <div class="dropzone-text" style="font-size: 14px; font-weight: 500; color: var(--vendor-siemens, #009999);" x-text="'Seleccionado: ' + fileName"></div>
                             </template>
                             
-                            <div class="dropzone-subtext" style="font-size: 11px; opacity: 0.6; color: var(--secondary);">Daemon detectado: rctech</div>
+                            <div class="dropzone-subtext" style="font-size: 11px; opacity: 0.6; color: var(--secondary); font-family: var(--font-mono);">[ DAEMON: rctech ]</div>
                         </div>
                         <input type="file" name="license_file" x-ref="fileInput" id="file-input" style="display: none;" @change="if($event.target.files.length > 0) fileName = $event.target.files[0].name;">
                     </div>
@@ -124,13 +124,44 @@
         </div>
 
         <div style="margin-top: 16px; padding: 16px; border: 1px solid var(--border-subtle); border-radius: 4px; background: var(--card-bg);">
-            <div style="font-size: 11px; color: var(--muted); line-height: 1.5;">
-                <strong>Transformación SALT (HEEDS):</strong><br>
-                - <strong>SERVER PORT:</strong> 29000<br>
-                - <strong>VENDOR PORT:</strong> 29001<br>
-                - <strong>Daemon:</strong> saltd (desde rctech)
+            <div style="font-size: 11px; color: var(--muted); line-height: 1.5; font-family: var(--font-mono);">
+                <strong style="font-family: var(--font-sans); color: var(--primary);">TRANSFORMACIÓN SALT (HEEDS)</strong><br>
+                <span style="opacity: 0.8;">> SERVER PORT:</span> <span style="color: var(--vendor-siemens);">29000</span><br>
+                <span style="opacity: 0.8;">> VENDOR PORT:</span> <span style="color: var(--vendor-siemens);">29001</span><br>
+                <span style="opacity: 0.8;">> DAEMON:</span> <span style="color: var(--vendor-siemens);">saltd</span> <span style="opacity: 0.5;">(ex rctech)</span>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Bloque 3: Historial Reciente -->
+<div class="card" style="margin-top: 24px;">
+    <div class="card-header" style="justify-content: space-between;">
+        <span class="card-title">Auditorías Recientes HEEDS</span>
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 8px; height: 8px; background: var(--success); border-radius: 50%; animate: pulse 2s infinite;"></div>
+            <span style="font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase;">Motor de Auditoría Live</span>
+        </div>
+    </div>
+    <div style="padding: 0;">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th style="padding-left: 24px;">SOLD-TO</th>
+                    <th>CLIENTE</th>
+                    <th>VERSIÓN</th>
+                    <th>ESTADO IA</th>
+                    <th style="text-align: right; padding-right: 24px;">FECHA</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="opacity: 0.5;">
+                    <td colspan="5" style="text-align: center; padding: 40px; font-size: 12px; color: var(--muted);">
+                        No hay procesamientos recientes en esta sesión. Las licencias contractuales aparecerán en el inventario del cliente.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 @endsection
