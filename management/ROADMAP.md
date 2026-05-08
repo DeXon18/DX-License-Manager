@@ -286,10 +286,12 @@ DX License Manager
 - [x] Auditoría IA via n8n FallbackChain
 - [x] **Validación:** ✅ Motor y UI unificada OK.
 
-#### 8.4 — COD
-- [ ] Formulario: Sold-To, solicitante, empresa, tipo de cambio
-- [ ] Generación de PDF oficial Siemens
-- [ ] Guardado en historial del cliente
+#### 8.4 — COD ✅
+**Estado:** COMPLETADA
+**Validación:** ✅ Verificado por Oskar el 2026-05-08. Generador bilingüe con fidelidad Calibri.
+- [x] Formulario: Sold-To, solicitante, empresa, tipo de cambio con múltiples MACs.
+- [x] Generación de PDF oficial Siemens con fuentes corporativas.
+- [x] Guardado en historial del cliente y almacenamiento seguro.
 
 #### 8.5 — Recursos & enlaces
 - [ ] Links a documentación oficial Siemens
