@@ -16,6 +16,12 @@
 - **UI**: Nuevo dashboard técnico en `tools/star-ccm.blade.php` y bandeja de normalización premium.
 - **Base de Datos**: Tablas `client_aliases`, `normalization_decisions` y columna `warnings` en logs y auditorías.
 
+### Refined (UI/UX - Phase 8.3 Final)
+- **Engine Selector**: Integrado selector rápido de motores (NX Suite, STAR-CCM+, HEEDS) en la barra lateral de todas las herramientas.
+- **Unificación Estética**: Centralizado el diseño de tarjetas (radius 4px) y cuadrículas (gap 24px, sidebar 300px) en `dx-styles.css`, eliminando más de 200 líneas de estilos locales redundantes.
+- **Layout Stability**: Implementado `overflow-y: scroll` global para prevenir saltos de píxeles al cambiar entre páginas con y sin scroll.
+- **Sidebar Fix**: Corregido error de anidamiento de etiquetas `<a>` en el layout principal que causaba desplazamientos en el bloque de contenido.
+
 ### Changed
 - **Arquitectura**: Refactorizado `NormalizationController` para centralizar la lógica de limpieza de datos.
 - **Configuración**: Centralizadas las URLs de Webhooks y Callbacks de IA en variables de entorno (eliminando hardcoded URLs).

@@ -14,7 +14,8 @@ El agente no avanza hasta recibir "aprobado", "adelante" o similar de forma expl
 
 ## 🟢 En Progreso
  
-- [ ] **Fase 8.2**: Auditoría STAR-CCM+ (En planificación de ramificaciones).
+- [x] **Fase 8.2**: Auditoría STAR-CCM+ (Completada).
+- [x] **Unificación UI/UX**: Pulido estético final de motores Siemens (NX, STAR, HEEDS).
 
 ---
 
@@ -32,31 +33,29 @@ En planificación — se detallan una por una tras validación de la fase anteri
 
 | Fase | Nombre                   | Prerequisito        |
 | :--- | :----------------------- | :------------------ |
-| 4    | Importación CSV          | ✅ Fase 3 validada  |
-| 5    | Inicio                   | ✅ Fase 4 validada  |
-| 6    | Clientes (6.1→6.4)       | ✅ Fase 5 validada  |
-| 7    | Hub de Herramientas      | ✅ Fase 6 validada  |
-| 8    | Siemens (8.1→8.5)        | ✅ Fase 7 validada  |
-| 9    | Moldex3D (9.1→9.2)       | ✅ Fase 8 validada  |
+| 8.4  | COD (Certificado Cese)   | ✅ Fase 8.3 validada  |
+| 9    | Moldex3D (9.1→9.2)       | ✅ Fase 8.4 validada  |
 | 10   | Dashboard del Sistema    | ✅ Fase 9 validada  |
-| 11   | Usuarios y Acceso        | ✅ Fase 10 validada |
-| 12   | Repositorio de Licencias | ✅ Fase 11 validada |
-| 13   | Alertas y Notificaciones | ✅ Fase 12 validada |
-| 14   | Backups                  | ✅ Fase 13 validada |
-| 15   | Integraciones IA         | ✅ Fase 14 validada |
-| 16   | Logs y Auditoría         | ✅ Fase 15 validada |
 
 ---
 
 ## ✅ Completado
 
-### Fase 8.3 — HEEDS ✅
+### Fase 8.3 — HEEDS & UI Polish ✅
 - **Completada:** 2026-05-08
-- **Rama:** feature/heeds-audit-motor
-- **Resumen:** Implementación del motor de auditoría y transformación para HEEDS. Parser optimizado para lectura de cabeceras de Siemens y transformación rctech -> saltd.
-- [x] Implementación de `HeedsService` con extracción avanzada de metadatos.
-- [x] Controlador y Vista dedicada con integración de Auditoría IA.
-- [x] Registro de rutas y estandarización de nomenclatura de archivos.
+- **Rama:** feature/heeds-ui-polish
+- **Resumen:** Implementación del motor de auditoría HEEDS y unificación estética de todas las herramientas Siemens. Se eliminó la redundancia de estilos y se estabilizó el layout frente a cambios de scroll.
+- [x] Implementación de `HeedsService` y vista `tools/heeds.blade.php`.
+- [x] Unificación de `dx-styles.css` (300px sidebar, 24px gap, 4px radius).
+- [x] Implementación de `overflow-y: scroll` para estabilidad de píxeles.
+- [x] Integración de Engine Selector lateral en todas las herramientas.
+ 
+### Fase 8.2 — STAR-CCM+ ✅
+- **Completada:** 2026-05-08
+- **Rama:** feature/heeds-ui-polish (integrada)
+- **Resumen:** Implementación del motor de auditoría STAR-CCM+ y dashboard técnico.
+- [x] Implementación de `StarCcmService` (cdlmd -> saltd).
+- [x] Vista `tools/star-ccm.blade.php` con integración de Auditoría IA.
  
 ### Fase 6.5 — Normalización e Identidades (Cross-Module)
 - **Completada:** 2026-05-08
