@@ -32,6 +32,9 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::post('/herramientas/cod/preview', [\App\Http\Controllers\Tools\CodController::class, 'preview'])->name('tools.cod.preview');
     Route::post('/herramientas/cod/store', [\App\Http\Controllers\Tools\CodController::class, 'store'])->name('tools.cod.store');
     Route::get('/herramientas/cod/download', [\App\Http\Controllers\Tools\CodController::class, 'download'])->name('tools.cod.download');
+    Route::delete('/herramientas/cod/{uuid}', [\App\Http\Controllers\Tools\CodController::class, 'destroy'])->name('tools.cod.destroy');
+    Route::post('/herramientas/cod/{uuid}/upload-signed', [\App\Http\Controllers\Tools\CodController::class, 'uploadSigned'])->name('tools.cod.upload-signed');
+    Route::get('/herramientas/cod/download-signed', [\App\Http\Controllers\Tools\CodController::class, 'downloadSigned'])->name('tools.cod.download-signed');
 
     
     Route::post('/clientes/{client}/contactos', [ContactController::class, 'store'])->name('contacts.store');

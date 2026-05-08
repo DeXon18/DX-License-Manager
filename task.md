@@ -41,6 +41,11 @@ El agente NO marca `[x]` una tarea hasta que todos sus checks están completados
 - [x] 2. Configuración de límites Nginx/PHP (100MB)
 - [x] 3. Normalización de Hostname y Cliente a MAYÚSCULAS
 - [x] 4. Registro en CHANGELOG y ROADMAP
+- [x] 5. Fix de enlaces históricos COD (UUID)
+- [x] 6. Implementación de subida de COD Firmado
+- [x] 7. Implementación de borrado de certificados (BD + Archivos)
+- [x] 8. Optimización visual de iconos (Horizontal Compacto)
+- [x] 9. Ejecución de migración via SSH al LXC 600
 
 ---
 

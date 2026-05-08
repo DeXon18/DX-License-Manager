@@ -20,12 +20,15 @@ class CodCertificate extends Model
         'language',
         'status',
         'file_path',
+        'signed_file_path',
+        'signed_at',
         'form_data',
         'created_by',
     ];
 
     protected $casts = [
         'form_data' => 'array',
+        'signed_at' => 'datetime',
     ];
 
     protected static function boot()

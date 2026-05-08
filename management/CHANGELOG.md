@@ -9,12 +9,16 @@
 
 ### Added
 - **Generador de Certificados de Cese (COD)**: Motor de generación de PDF de alta fidelidad bilingüe.
+- **Gestión de Firmas**: Implementada subida y descarga segura de CODs firmados por el cliente.
+- **Borrado Inteligente**: Nueva opción de borrado completo (Registro BD + Archivos físicos Original/Firmado).
 - **Vista Previa Interactiva**: Modal con visor de PDF integrado y limpieza de barras de herramientas.
 - **Seguridad ID-Abstraction**: Flujo de descarga blindado mediante UUIDs para certificados.
 - **Validación Estricta**: Sanitización de inputs (Hostnames sin tildes, MACs sin guiones, Solicitantes sin números).
 - **Asistente de Hardware**: (Idea registrada en Backlog) para futuras versiones.
 
 ### Fixed
+- **Enlaces Históricos**: Corregido error 404 en el historial de cliente mediante migración a sistema de UUIDs.
+- **Optimización Visual**: Iconos de acción compactados en horizontal (26px) para mejorar la densidad de información.
 - **Alineación UI**: Unificación de layouts horizontales para iconos y títulos en todo el módulo.
 - **Optimización PDF**: Compresión de márgenes y fuentes para asegurar una sola página A4.
 - **Bug Fix**: Corregido error de variable indefinida en la persistencia del certificado.
