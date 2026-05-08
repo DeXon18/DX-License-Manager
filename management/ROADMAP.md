@@ -229,6 +229,13 @@ DX License Manager
 - [ ] Subida y almacenamiento de CODs firmados recibidos
 - [ ] Historial por cliente
 
+#### 6.5 — Normalización e Identidades ✅ COMPLETADA
+- [x] Motor de similitud (Fuzzy Match 85%) y sistema de Alias.
+- [x] Bandeja de Normalización Centralizada (Admin).
+- [x] Integración cruzada: Captura automática de typos en CSV y Licencias (AI).
+- [x] Lógica de unificación total (migración de contratos, licencias, contactos).
+- [x] Sistema de descarte persistente de sospechas.
+
 ---
 
 ## ▸ BLOQUE 4 — Herramientas
