@@ -24,10 +24,10 @@
         </div>
     @else
         <div class="timeline">
-            @foreach($entries as $date => $entry)
+            @foreach($entries as $entry)
                 <div class="timeline-entry">
                     <div class="timeline-sidebar">
-                        <div class="entry-date">{{ \Carbon\Carbon::parse($date)->format('d M, Y') }}</div>
+                        <div class="entry-date">{{ \Carbon\Carbon::parse($entry['date'])->format('d M, Y') }}</div>
                         <div class="entry-dot"></div>
                     </div>
                     <div class="entry-content-card">
