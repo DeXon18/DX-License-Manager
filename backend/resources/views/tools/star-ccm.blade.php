@@ -30,20 +30,6 @@
             </div>
             
             <div style="padding: 24px;">
-                <div style="margin-bottom: 20px;">
-                    <div style="background: var(--bg); border: 1px solid var(--border-subtle); border-radius: 6px; padding: 16px; display: flex; align-items: flex-start; gap: 12px;">
-                        <div style="color: var(--vendor-siemens, #009999); margin-top: 2px;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                        </div>
-                        <div>
-                            <div style="font-size: 13px; font-weight: 600; color: var(--primary);">Migración Automática a saltd</div>
-                            <div style="font-size: 11px; color: var(--secondary); margin-top: 2px; line-height: 1.4;">
-                                El sistema transformará automáticamente el daemon legado <code>cdlmd</code> al nuevo estándar <strong>SALT</strong> (<code>saltd</code>) con el puerto <strong>29000</strong>.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <form action="{{ route('tools.star-ccm.process') }}" method="POST" enctype="multipart/form-data" id="star-form">
                     @csrf
                     
@@ -91,9 +77,9 @@
                     <div style="display: flex; flex-direction: column; gap: 12px;">
                         <div style="font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; margin-bottom: 4px;">Auditoría IA</div>
                         @foreach([
-                            ['A1', 'Local Localhost', 'Detección de licencias node-locked'],
-                            ['A2', 'Compliance', 'Verificación de caducidad y asientos'],
-                            ['A3', 'Solo Log', 'Privacidad total de archivos físicos']
+                            ['A1', 'Compliance', 'Verificación de caducidad y asientos'],
+                            ['A2', 'Solo Log', 'Privacidad total de archivos físicos'],
+                            ['A3', 'Trazabilidad', 'Vinculación con histórico de cliente']
                         ] as $item)
                         <div style="display: flex; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
                             <code style="min-width: 40px; font-family: var(--font-mono); font-size: 10px; color: var(--vendor-siemens, #009999);">{{ $item[0] }}</code>
@@ -133,11 +119,10 @@
                 <span style="font-size: 12px; font-weight: 700; text-transform: uppercase;">Aviso de Almacenamiento</span>
             </div>
             <div style="font-size: 12px; color: var(--secondary); line-height: 1.6;">
-                Las licencias contractuales se almacenarán en: <br>
-                <code>licenses/siemens/{cliente}/MM-YYYY/</code><br><br>
-                Las temporales se ofrecen solo para descarga.
+                Las licencias <strong>Temporales</strong> solo se transforman para descarga inmediata. <span style="color: var(--danger); font-weight: 600;">NO</span> se guardarán en el servidor ni afectarán el inventario.
             </div>
         </div>
+
 
         <div style="margin-top: 16px; padding: 16px; border: 1px solid var(--border-subtle); border-radius: 4px; background: var(--card-bg);">
             <div style="font-size: 11px; color: var(--muted); line-height: 1.5;">
