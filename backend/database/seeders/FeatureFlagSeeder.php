@@ -35,7 +35,7 @@ class FeatureFlagSeeder extends Seeder
                 'label' => 'HEEDS',
                 'vendor' => 'Siemens',
                 'description' => 'Auditoría y procesamiento de licencias HEEDS',
-                'is_active' => false,
+                'is_active' => true,
             ],
             [
                 'key' => 'siemens_cod',
