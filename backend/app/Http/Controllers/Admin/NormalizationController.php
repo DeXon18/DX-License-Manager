@@ -7,6 +7,7 @@ use App\Models\ImportLog;
 use App\Models\Client;
 use App\Models\ClientAlias;
 use App\Models\Contract;
+use App\Models\AiAuditResult;
 use App\Models\NormalizationDecision;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,66 +15,85 @@ use Illuminate\Support\Facades\DB;
 class NormalizationController extends Controller
 {
     /**
-     * List all pending normalization warnings from import logs.
+     * List all pending normalization warnings from import logs and audits.
      */
     public function index()
     {
-        // Get logs with warnings
-        $logs = ImportLog::whereNotNull('warnings')
+        // 1. Get CSV Import warnings
+        $csvLogs = ImportLog::whereNotNull('warnings')
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Get all ignored names
+        // 2. Get AI Audit warnings (Licensing)
+        $auditLogs = AiAuditResult::whereNotNull('warnings')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // 3. Get all ignored names
         $ignoredNames = NormalizationDecision::where('decision', 'ignore')
             ->pluck('detected_name')
             ->toArray();
 
         $findings = [];
 
-        foreach ($logs as $log) {
-            foreach ($log->warnings as $warning) {
-                // Detect suspicions or new entries
-                $isSuspicion = str_contains(strtolower($warning), 'sospecha') || str_contains(strtolower($warning), 'parece');
-                $isNew = str_contains(strtolower($warning), 'nuevo cliente');
-
-                if ($isSuspicion || $isNew) {
-                    
-                    // Try to extract names if it's a suspicion
-                    if ($isSuspicion) {
-                        preg_match('/El cliente \'(.*)\' se parece un .* a \'(.*)\'/i', $warning, $matches);
-                        $detectedName = $matches[1] ?? 'Error al extraer';
-                        $suggestedName = $matches[2] ?? null;
-                    } elseif ($isNew) {
-                        preg_match('/registrado: (.*)/i', $warning, $matches);
-                        $detectedName = $matches[1] ?? 'Nuevo Cliente';
-                    }
-
-                    $detectedName = trim($detectedName);
-
-                    // Skip if already resolved (exists as an alias)
-                    if (ClientAlias::where('name', $detectedName)->exists()) {
-                        continue;
-                    }
-
-                    // Skip if explicitly ignored
-                    if (in_array($detectedName, $ignoredNames)) {
-                        continue;
-                    }
-                    
-                    $findings[] = [
-                        'log_id' => $log->id,
-                        'filename' => $log->filename,
-                        'date' => $log->created_at,
-                        'type' => $isSuspicion ? 'suspicion' : 'new',
-                        'detected_name' => $detectedName,
-                        'suggested_name' => $suggestedName ? trim($suggestedName) : null,
-                        'full_message' => $warning
-                    ];
-                }
-            }
+        // Process CSV Warnings
+        foreach ($csvLogs as $log) {
+            $findings = array_merge($findings, $this->parseWarnings($log->warnings, $log->filename, $log->created_at, 'CSV', $ignoredNames));
         }
 
+        // Process Audit Warnings
+        foreach ($auditLogs as $audit) {
+            $filename = ($audit->results['filename'] ?? 'Licencia') . " ({$audit->sold_to})";
+            $findings = array_merge($findings, $this->parseWarnings($audit->warnings, $filename, $audit->created_at, 'Auditoría', $ignoredNames));
+        }
+
+        // Sort by date desc
+        usort($findings, function($a, $b) {
+            return $b['date'] <=> $a['date'];
+        });
+
         return view('admin.normalization.index', compact('findings'));
+    }
+
+    /**
+     * Helper to parse warnings and filter out resolved/ignored.
+     */
+    private function parseWarnings($warnings, $sourceName, $date, $sourceType, $ignoredNames)
+    {
+        $parsed = [];
+        foreach ($warnings as $warning) {
+            $isSuspicion = str_contains(strtolower($warning), 'sospecha') || str_contains(strtolower($warning), 'parece');
+            $isNew = str_contains(strtolower($warning), 'nuevo cliente');
+
+            if ($isSuspicion || $isNew) {
+                if ($isSuspicion) {
+                    preg_match('/El cliente \'(.*)\' se parece un .* a \'(.*)\'/i', $warning, $matches);
+                    $detectedName = $matches[1] ?? 'Error al extraer';
+                    $suggestedName = $matches[2] ?? null;
+                } elseif ($isNew) {
+                    preg_match('/registrado: (.*)/i', $warning, $matches);
+                    $detectedName = $matches[1] ?? 'Nuevo Cliente';
+                    $suggestedName = null;
+                }
+
+                $detectedName = trim($detectedName);
+
+                if (ClientAlias::where('name', $detectedName)->exists() || in_array($detectedName, $ignoredNames)) {
+                    continue;
+                }
+
+                $parsed[] = [
+                    'filename' => $sourceName,
+                    'source_type' => $sourceType,
+                    'date' => $date,
+                    'type' => $isSuspicion ? 'suspicion' : 'new',
+                    'detected_name' => $detectedName,
+                    'suggested_name' => $suggestedName ? trim($suggestedName) : null,
+                    'full_message' => $warning
+                ];
+            }
+        }
+        return $parsed;
     }
 
     /**

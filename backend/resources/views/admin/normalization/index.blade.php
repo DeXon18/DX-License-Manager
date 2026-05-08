@@ -106,7 +106,14 @@
                             @endif
                         </td>
                         <td>
-                            <div class="date-main">{{ $finding['filename'] }}</div>
+                            <div style="display: flex; align-items: center; gap: 6px; margin-bottom: 4px;">
+                                @if($finding['source_type'] === 'Auditoría')
+                                    <span class="badge badge-ai" style="font-size: 7px; padding: 1px 4px; background: var(--raised); color: var(--accent); border: 1px solid var(--accent-transparent);">LICENCIA</span>
+                                @else
+                                    <span class="badge" style="font-size: 7px; padding: 1px 4px; background: var(--raised); color: var(--primary); border: 1px solid rgba(255,255,255,0.1);">CSV</span>
+                                @endif
+                                <div class="date-main" style="margin-bottom: 0;">{{ $finding['filename'] }}</div>
+                            </div>
                             <div class="date-sub">{{ $finding['date']->format('d/m/Y H:i') }}</div>
                         </td>
                         <td style="text-align: right;">

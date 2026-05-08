@@ -68,18 +68,22 @@ class AuditService
             if ($mapping) {
                 $clientId = $mapping->client_id;
             } 
-            // 2. Si no hay mapeo, buscar por nombre (Fuzzy match simple o exacto)
+            // 2. Si no hay mapeo, buscar por nombre con normalización inteligente
             elseif ($customerName) {
-                $client = \App\Models\Client::where('name', 'LIKE', '%' . $customerName . '%')->first();
-                if ($client) {
-                    $clientId = $client->id;
-                    // Auto-crear mapeo para el futuro
-                    ClientMapping::create([
-                        'client_id' => $clientId,
-                        'sold_to' => $soldTo,
-                        'vendor' => $audit->vendor,
-                    ]);
+                $norm = app(\App\Services\Data\ClientNormalizationService::class)->resolve($customerName);
+                $clientId = $norm['id'];
+                
+                // Si hay aviso de normalización, guardarlo
+                if (isset($norm['warning'])) {
+                    $audit->warnings = [$norm['warning']];
                 }
+
+                // Auto-crear mapeo para el futuro
+                ClientMapping::create([
+                    'client_id' => $clientId,
+                    'sold_to' => $soldTo,
+                    'vendor' => $audit->vendor,
+                ]);
             }
         }
 
