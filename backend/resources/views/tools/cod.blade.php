@@ -224,8 +224,8 @@
                     <div class="segmented-small relative">
                         <div class="active-indicator-small" 
                              :style="{
-                                 width: 'calc(50% - 4px)',
-                                 left: formData.Language === 'Spanish' ? '2px' : 'calc(50% + 2px)'
+                                 width: 'calc(50% - 6px)',
+                                 left: formData.Language === 'Spanish' ? '3px' : 'calc(50% + 3px)'
                              }">
                         </div>
                         <button type="button" :class="formData.Language === 'Spanish' ? 'active' : ''" @click="formData.Language = 'Spanish'">Castellano</button>
@@ -238,8 +238,8 @@
                     <div class="segmented-small relative">
                         <div class="active-indicator-small" 
                              :style="{
-                                 width: 'calc(50% - 4px)',
-                                 left: formData.os === 'WINDOWS' ? '2px' : 'calc(50% + 2px)'
+                                 width: 'calc(50% - 6px)',
+                                 left: formData.os === 'WINDOWS' ? '3px' : 'calc(50% + 3px)'
                              }">
                         </div>
                         <button type="button" :class="formData.os === 'WINDOWS' ? 'active' : ''" @click="formData.os = 'WINDOWS'">
@@ -579,7 +579,7 @@
         display: flex;
         position: relative;
         z-index: 1;
-        min-width: 180px;
+        min-width: 220px;
         width: 100%;
     }
 
@@ -587,22 +587,22 @@
         flex: 1;
         background: none !important;
         border: none !important;
-        padding: 6px 12px;
+        padding: 10px 16px;
         color: var(--muted);
-        font-size: 10px;
+        font-size: 11px;
         font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 0.08em;
+        letter-spacing: 0.1em;
         cursor: pointer;
         transition: all 0.3s ease;
         z-index: 2;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
+        gap: 10px;
     }
 
-    .segmented-small button i { font-size: 12px; }
+    .segmented-small button i { font-size: 14px; }
 
     .segmented-small button.active {
         color: var(--accent);
@@ -610,12 +610,12 @@
 
     .active-indicator-small {
         position: absolute;
-        top: 2px;
-        bottom: 2px;
+        top: 3px;
+        bottom: 3px;
         background: rgba(var(--accent-rgb), 0.05);
         border: 1px solid var(--accent);
-        box-shadow: 0 0 10px rgba(var(--accent-rgb), 0.1);
-        border-radius: 6px;
+        box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.1);
+        border-radius: 8px;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 1;
     }
@@ -623,17 +623,19 @@
     .btn-cod-generate {
         background: var(--accent);
         color: white;
-        border: none;
-        padding: 12px 28px;
+        border: 1px solid var(--accent);
+        padding: 12px 32px;
         border-radius: 12px;
-        font-weight: 700;
-        font-size: 14px;
+        font-weight: 800;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
         cursor: pointer;
         transition: all 0.2s;
         box-shadow: 0 4px 15px rgba(var(--accent-rgb), 0.3);
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
     }
 
     .btn-cod-generate:hover:not(:disabled) {
@@ -651,10 +653,12 @@
         background: transparent;
         color: var(--muted);
         border: 1px solid var(--border);
-        padding: 11px 20px;
+        padding: 12px 24px;
         border-radius: 12px;
-        font-weight: 600;
-        font-size: 13px;
+        font-weight: 800;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
         cursor: pointer;
         transition: all 0.2s;
     }
