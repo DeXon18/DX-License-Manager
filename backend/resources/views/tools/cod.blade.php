@@ -436,12 +436,13 @@
         flex: 1;
         background: none !important;
         border: none !important;
-        padding: 12px;
+        padding: 10px 12px;
         color: var(--muted);
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
-        gap: 6px;
+        justify-content: center;
+        gap: 10px;
         font-size: 13px;
         font-weight: 600;
         cursor: pointer;
@@ -450,8 +451,8 @@
     }
 
     .segmented-large button i {
-        font-size: 16px;
-        margin-bottom: 2px;
+        font-size: 14px;
+        margin-bottom: 0;
     }
 
     .segmented-large button.active {
