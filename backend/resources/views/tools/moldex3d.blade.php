@@ -14,7 +14,7 @@
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="m4.93 4.93 14.14 14.14"/><path d="M2 12h20"/><path d="m19.07 4.93-14.14 14.14"/></svg>
         </div>
         <div>
-            <h1 class="page-title" style="margin: 0;">Moldex3D Auditor <span class="vendor-label" style="font-size: 10px; padding: 2px 6px; margin-left: 8px; background: rgba(245, 158, 11, 0.1); color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 4px; font-weight: 700; text-transform: uppercase;">CORE PLASTIC</span></h1>
+            <h1 class="page-title" style="margin: 0;">Moldex3D <span class="vendor-label" style="font-size: 10px; padding: 2px 6px; margin-left: 8px; background: rgba(245, 158, 11, 0.1); color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 4px; font-weight: 700; text-transform: uppercase;">CORE PLASTIC</span></h1>
             <p class="page-sub" style="margin: 0;">Análisis determinista de archivos .mac y normalización de inventario</p>
         </div>
     </div>
@@ -93,10 +93,11 @@
                             <span style="color: #f3f4f6; font-size: 13px; font-weight: 600; font-family: var(--font-mono); text-align: right; max-width: 400px; word-break: break-all;" x-text="result.filename"></span>
                         </div>
 
-                        <!-- ID Cliente -->
+
+                        <!-- Customer ID -->
                         <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
-                            <span style="color: #9ca3af; font-size: 13px;">ID de Cliente</span>
-                            <span style="color: #f3f4f6; font-size: 13px; font-weight: 700; font-family: var(--font-mono);" x-text="result.metadata.customer_id"></span>
+                            <span style="color: #9ca3af; font-size: 13px;">Customer ID</span>
+                            <span style="color: #f3f4f6; font-size: 13px; font-weight: 700; font-family: var(--font-mono);" x-text="result.metadata.customer_id || 'N/A'"></span>
                         </div>
 
                         <!-- Nombre Cliente -->
