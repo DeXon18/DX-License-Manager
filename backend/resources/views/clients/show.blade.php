@@ -133,13 +133,13 @@
                     </div>
 
                     @foreach($daemons as $daemon)
-                        <div class="daemon-card {{ str_contains(strtolower($daemon->daemon), 'moldex') ? 'moldex' : 'siemens' }}">
+                        <div class="daemon-card {{ $daemon->vendor }}">
                             <div class="daemon-header">
                                 <div class="header-col">
-                                    <span class="tech-label">Daemon</span>
+                                    <span class="tech-label">{{ $daemon->vendor === 'moldex' ? 'Plataforma' : 'Daemon' }}</span>
                                     <div style="display: flex; align-items: center;">
-                                        <span class="tech-value daemon-name">{{ $daemon->daemon }}</span>
-                                        <span class="inv-badge badge-siemens">Siemens</span>
+                                        <span class="tech-value daemon-name">{{ $daemon->vendor === 'moldex' ? 'Moldex3D' : $daemon->daemon }}</span>
+                                        <span class="inv-badge badge-{{ $daemon->vendor }}">{{ ucfirst($daemon->vendor) }}</span>
                                     </div>
                                 </div>
 
@@ -149,6 +149,12 @@
                                         <div style="display: flex; align-items: center; gap: 8px;">
                                             <i class="fa-solid fa-key" style="font-size: 12px; opacity: 0.3;"></i>
                                             <span class="tech-value">{{ $daemon->hardware_id }}</span>
+                                        </div>
+                                    @elseif($daemon->vendor === 'moldex')
+                                        <span class="tech-label">Machine ID</span>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <i class="fa-solid fa-microchip" style="font-size: 12px; opacity: 0.3;"></i>
+                                            <span class="tech-value uppercase">{{ $daemon->hardware_id }}</span>
                                         </div>
                                     @else
                                         <span class="tech-label">Server Hostname</span>
@@ -738,6 +744,7 @@
     .expiry-badge.upcoming { background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
     
     .badge-siemens { background: #009999; color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+    .badge-moldex { background: #ed1c24; color: #fff; border: 1px solid rgba(255,255,255,0.2); }
     .badge-info { background: rgba(var(--accent-rgb), 0.1); color: var(--accent); border: 1px solid rgba(var(--accent-rgb), 0.2); }
     .badge-warn { background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
 
