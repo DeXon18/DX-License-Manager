@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Services\Data\CsvImportService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ImportController extends Controller
 {
@@ -29,7 +30,7 @@ class ImportController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'csv_file' => 'required|file',
+            'csv_file' => 'required|file|max:51200|mimes:csv,txt|mimetypes:text/csv,text/plain,application/csv',
         ]);
 
         try {
@@ -48,7 +49,8 @@ class ImportController extends Controller
             ]);
 
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error crítico en la importación: ' . $e->getMessage());
+            Log::error('CSV Import failed', ['error' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            return redirect()->back()->with('error', 'Error en la importación. Contacte con el administrador.');
         }
     }
 }
