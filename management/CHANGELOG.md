@@ -11,7 +11,8 @@
 - **Identidad de Marca**: Migración de colores estáticos de Moldex3D a la variable `--moldex` para consistencia cross-module.
 
 ### Fixed
-- **Contraste de UI**: Corregida la visibilidad de textos secundarios y fondos de tarjetas en modo claro que anteriormente usaban valores optimizados solo para modo oscuro.
+- **Contraste de UI**: Corregida la visibilidad de textos secundarios y fondos de tarjetas en modo claro.
+- **Visibilidad Crítica**: Reparadas las etiquetas de "Expiración" y "Versión" (v2026) que eran invisibles en modo claro por estar hardcodeadas en blanco o colores de bajo contraste.
 - **Spinner & Dropzone**: Adaptación visual de los estados de carga y arrastre de archivos al sistema de diseño global.
 
 ---
