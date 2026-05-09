@@ -155,11 +155,9 @@
                                             <span class="tech-value">{{ $daemon->hardware_id }}</span>
                                         </div>
                                     @elseif($daemon->vendor === 'moldex')
-                                        <span class="tech-label">Machine ID</span>
-                                        <div style="display: flex; align-items: center; gap: 8px;">
-                                            <i class="fa-solid fa-microchip" style="font-size: 12px; opacity: 0.3;"></i>
-                                            <span class="tech-value uppercase">{{ $daemon->hardware_id }}</span>
-                                        </div>
+                                        <span class="tech-label">Servidor / Hostname</span>
+                                        <span class="tech-value uppercase">{{ $daemon->hostname ?? 'N/A' }}</span>
+                                        <span class="tech-label" style="font-size: 8px; opacity: 0.4; margin-top: 2px;">Machine ID: {{ $daemon->hardware_id }}</span>
                                     @else
                                         <span class="tech-label">Server Hostname</span>
                                         <span class="tech-value uppercase">{{ $daemon->hostname ?? 'N/A' }}</span>
