@@ -14,6 +14,7 @@
 - **Contraste de UI**: Corregida la visibilidad de textos secundarios y fondos de tarjetas en modo claro.
 - **Visibilidad Crítica**: Reparadas las etiquetas de "Expiración" y "Versión" (v2026) que eran invisibles en modo claro por estar hardcodeadas en blanco o colores de bajo contraste.
 - **Spinner & Dropzone**: Adaptación visual de los estados de carga y arrastre de archivos al sistema de diseño global.
+- **Layout de Cliente**: Corregida etiqueta `<template>` sin cerrar en `clients/show.blade.php` que bloqueaba el renderizado del footer global.
 
 ---
 
