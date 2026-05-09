@@ -56,5 +56,11 @@ El agente debe revisar este archivo al inicio de cada sesión.
   2. **Permisos Samba**: Tras crear carpetas críticas o mover archivos masivamente en el servidor, ejecutar `chown -R 82:82` y `chmod -R 777` en el host para asegurar visibilidad en la unidad `Z:\`.
   3. **Robustez UI**: Ante fallos persistentes de renderizado de modales (JS/Caché), el enfoque "Direct Link/Form" es siempre superior para procesos críticos de subida de archivos.
 
+### 2026-05-08 — Infraestructura y UI Dinámica
+65. **Montaje de Gestión**: Para que el backend lea archivos de gestión (CHANGELOG/BACKLOG), montarlos como volúmenes `:ro` (read-only) en el `docker-compose`.
+66. **Parseo de Changelog**: Al parsear Markdown para la web, usar arrays secuenciales. Usar la fecha como clave sobrescribe entradas si hay varias en el mismo día.
+67. **Sanitización de Clases CSS**: Al generar clases dinámicas desde texto (ej: categorías), sanitizar eliminando espacios y caracteres especiales para evitar selectores inválidos.
+68. **Localización Dompdf**: Para documentos legales en castellano, asegurar que los nombres de los meses se traduzcan correctamente usando `translatedFormat()` de Carbon.
+
 ---
-Firmado por: **Antigravity (DX Agent)** 🦾
+_Firmado por: **Antigravity (DX Agent)** 🦾_
