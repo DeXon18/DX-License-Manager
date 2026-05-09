@@ -7,6 +7,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SystemController;
 use App\Http\Controllers\ToolController;
+use App\Http\Controllers\Tools\MoldexController;
 use App\Http\Controllers\Tools\NXSuiteController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +31,9 @@ Route::middleware(['auth.jwt'])->group(function () {
 
     Route::get('/herramientas/heeds', [\App\Http\Controllers\Tools\HeedsController::class, 'index'])->name('tools.heeds.index');
     Route::post('/herramientas/heeds', [\App\Http\Controllers\Tools\HeedsController::class, 'process'])->name('tools.heeds.process');
+
+    Route::get('/herramientas/moldex3d', [MoldexController::class, 'index'])->name('tools.moldex3d.index');
+    Route::post('/herramientas/moldex3d', [MoldexController::class, 'process'])->name('tools.moldex3d.process');
 
     Route::get('/herramientas/cod', [\App\Http\Controllers\Tools\CodController::class, 'index'])->name('tools.cod.index');
     Route::post('/herramientas/cod/preview', [\App\Http\Controllers\Tools\CodController::class, 'preview'])->name('tools.cod.preview');
