@@ -50,7 +50,7 @@ El agente NO marca `[x]` una tarea hasta que todos sus checks están completados
 - [x] 11. Mejora de visibilidad de Versión en inventario (Badge técnico v2025)
 - [x] 12. Integración de ramas Moldex3D (tool + persistence) y corrección de acceso 404
 - [x] 13. Persistencia de versión en el flujo de sincronización de Moldex3D
-- [x] 14. Refinamiento de badges, prefijos de versión y etiquetas de cuenta (Sold-To vs Customer ID) en vistas Blade
+- [x] 14. Refinamiento de badges, prefijos de versión, etiquetas de cuenta y unificación de Hostname/Machine ID en vistas Blade
 
 ---
 
