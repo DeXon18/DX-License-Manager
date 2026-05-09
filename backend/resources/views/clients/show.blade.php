@@ -125,7 +125,7 @@
                         <div class="sold-to-badge-wrapper">
                             <div class="sold-to-icon"><i class="fa-solid fa-id-card"></i></div>
                             <div>
-                                <span class="tech-label">Sold-To Account</span>
+                                <span class="tech-label">{{ $daemons->first()->vendor === 'moldex' ? 'Customer ID' : 'Sold-To Account' }}</span>
                                 <div class="sold-to-id">{{ $soldTo }}</div>
                             </div>
                         </div>
