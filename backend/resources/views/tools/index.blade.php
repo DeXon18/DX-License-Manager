@@ -108,8 +108,8 @@
     <div class="tools-grid three-col">
         @foreach($features['Moldex3D'] as $tool)
             <a class="tool-card {{ !$tool->is_active ? 'tool-disabled' : '' }}" 
-               style="--card-accent: #ED1C24"
-               href="{{ $tool->is_active ? ($tool->key == 'moldex3d_auditor' ? route('tools.moldex3d.index') : '#') : 'javascript:void(0)' }}">
+               style="--card-accent: var(--moldex)"
+               href="{{ $tool->is_active ? route('tools.moldex3d.index') : 'javascript:void(0)' }}">
                 <div class="tool-card-header">
                     <div class="tool-card-header-left">
                         <div class="tool-icon-fallback" style="background: rgba(237,28,36,0.08); color: #ED1C24">
@@ -166,7 +166,7 @@
         grid-template-columns: repeat(3, 1fr) !important;
     }
     .moldex-logo, .moldex .accent, .tool-name .accent { font-weight: 800; }
-    .moldex-logo, .vendor-label.moldex, .tool-name { color: #ed1c24 !important; }
+    .moldex-logo, .vendor-label.moldex, .tool-name { color: var(--moldex) !important; }
     .accent { color: #f58220 !important; }
 </style>
 @endpush
