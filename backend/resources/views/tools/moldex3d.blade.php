@@ -72,67 +72,84 @@
             </div>
         </div>
 
-        <!-- Bento Grid Results (Hidden by default) -->
+        <!-- Resultados del Análisis (Rediseño Estilo Lista) -->
         <div x-show="result" x-transition style="margin-top: 12px;">
-            <div style="font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                <span style="width: 8px; height: 8px; border-radius: 50%; background: #10B981;"></span>
-                Resultado de Auditoría Local
-            </div>
-            
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: auto auto; gap: 12px;">
-                <!-- Card Cliente -->
-                <div class="card" style="grid-column: span 2; padding: 20px;">
-                    <div style="font-size: 10px; font-weight: 700; color: var(--muted); uppercase; tracking: 0.05em; margin-bottom: 8px;">ENTIDAD / CLIENTE</div>
-                    <div style="font-size: 20px; font-weight: 700; color: var(--primary); margin-bottom: 4px;" x-text="result.metadata.customer_name"></div>
-                    <div style="display: flex; gap: 16px; margin-top: 12px;">
-                        <div>
-                            <div style="font-size: 10px; color: var(--muted);">ID CLIENTE</div>
-                            <div style="font-size: 13px; font-weight: 600; font-family: var(--font-mono);" x-text="result.metadata.customer_id"></div>
-                        </div>
-                        <div>
-                            <div style="font-size: 10px; color: var(--muted);">PAÍS</div>
-                            <div style="font-size: 13px; font-weight: 600;" x-text="result.metadata.country || 'N/A'"></div>
-                        </div>
+            <div class="card" style="background: #111827; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; overflow: hidden; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);">
+                <!-- Header con Icono Check -->
+                <div style="padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: center; gap: 10px;">
+                    <div style="background: #10B981; color: white; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                     </div>
+                    <span style="font-size: 14px; font-weight: 700; color: #f3f4f6; letter-spacing: 0.3px;">Resultados del Análisis</span>
                 </div>
 
-                <!-- Card Machine ID -->
-                <div class="card" style="padding: 20px; border-left: 4px solid #F59E0B;">
-                    <div style="font-size: 10px; font-weight: 700; color: var(--muted); uppercase; tracking: 0.05em; margin-bottom: 8px;">MACHINE ID</div>
-                    <div style="font-size: 18px; font-weight: 700; color: var(--primary); font-family: var(--font-mono); word-break: break-all;" x-text="result.metadata.machine_id"></div>
-                    <div style="margin-top: 12px; display: flex; align-items: center; gap: 6px;">
-                        <span class="badge" style="background: rgba(16, 185, 129, 0.1); color: #10B981; border: none; font-size: 9px;">VÁLIDO</span>
-                    </div>
-                </div>
+                <div style="padding: 12px 24px;">
+                    <!-- Tabla de Propiedades -->
+                    <div class="property-list" style="display: flex; flex-direction: column;">
+                        
+                        <!-- Archivo -->
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+                            <span style="color: #9ca3af; font-size: 13px; min-width: 150px;">Archivo analizado</span>
+                            <span style="color: #f3f4f6; font-size: 13px; font-weight: 600; font-family: var(--font-mono); text-align: right; max-width: 400px; word-break: break-all;" x-text="result.filename"></span>
+                        </div>
 
-                <!-- Card Productos -->
-                <div class="card" style="grid-column: span 3; padding: 0;">
-                    <div class="card-header" style="border-bottom: 1px solid var(--border-subtle); padding: 12px 20px;">
-                        <span style="font-size: 11px; font-weight: 700; color: var(--muted); uppercase;">MÓDULOS ACTIVOS (INCREMENTS)</span>
-                    </div>
-                    <div style="max-height: 200px; overflow-y: auto; padding: 12px 20px;">
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr style="border-bottom: 1px solid var(--border-subtle);">
-                                    <th style="text-align: left; padding: 8px 0; font-size: 10px; color: var(--muted);">CÓDIGO</th>
-                                    <th style="text-align: left; padding: 8px 0; font-size: 10px; color: var(--muted);">PRODUCTO</th>
-                                    <th style="text-align: center; padding: 8px 0; font-size: 10px; color: var(--muted);">CADUCIDAD</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <!-- ID Cliente -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+                            <span style="color: #9ca3af; font-size: 13px;">ID de Cliente</span>
+                            <span style="color: #f3f4f6; font-size: 13px; font-weight: 700; font-family: var(--font-mono);" x-text="result.metadata.customer_id"></span>
+                        </div>
+
+                        <!-- Nombre Cliente -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+                            <span style="color: #9ca3af; font-size: 13px;">Nombre de Cliente</span>
+                            <span style="color: #f3f4f6; font-size: 13px; font-weight: 700; text-align: right;" x-text="result.metadata.customer_name"></span>
+                        </div>
+
+                        <!-- Hostname -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+                            <span style="color: #9ca3af; font-size: 13px;">Servidor / Hostname</span>
+                            <span style="color: #f3f4f6; font-size: 13px; font-weight: 700; font-family: var(--font-mono);" x-text="result.metadata.hostname || 'N/A'"></span>
+                        </div>
+
+                        <!-- Machine ID -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+                            <span style="color: #9ca3af; font-size: 13px;">Machine ID (MAC)</span>
+                            <span style="color: #f3f4f6; font-size: 13px; font-weight: 700; font-family: var(--font-mono); text-align: right;" x-text="result.metadata.machine_id"></span>
+                        </div>
+
+                        <!-- Modo Licencia -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+                            <span style="color: #9ca3af; font-size: 13px;">Modo de Licencia</span>
+                            <span style="color: #f3f4f6; font-size: 13px; font-weight: 700;" x-text="result.metadata.license_mode"></span>
+                        </div>
+
+                        <!-- Fecha Expiración -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+                            <span style="color: #9ca3af; font-size: 13px;">Fecha de Expiración</span>
+                            <span style="color: #F59E0B; font-size: 13px; font-weight: 700; font-family: var(--font-mono);" x-text="formatDate(result.metadata.expiration)"></span>
+                        </div>
+
+                        <!-- Módulos Detectados -->
+                        <div style="margin-top: 24px; margin-bottom: 12px;">
+                            <div style="color: #9ca3af; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px;">Módulos y Licencias Detectadas</div>
+                            
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
                                 <template x-for="prod in result.metadata.products" :key="prod.code">
-                                    <tr style="border-bottom: 1px solid var(--border-subtle);">
-                                        <td style="padding: 10px 0; font-size: 12px; font-weight: 600; font-family: var(--font-mono); color: #F59E0B;" x-text="prod.code"></td>
-                                        <td style="padding: 10px 0; font-size: 12px; color: var(--primary);" x-text="prod.name"></td>
-                                        <td style="padding: 10px 0; text-align: center;">
-                                            <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 600;" 
-                                                  :style="isExpired(prod.expiration) ? 'color: var(--danger);' : 'color: var(--success);'"
-                                                  x-text="formatDate(prod.expiration)"></span>
-                                        </td>
-                                    </tr>
+                                    <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
+                                        <div style="display: flex; align-items: center; gap: 12px;">
+                                            <div style="width: 18px; height: 18px; border-radius: 4px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); display: flex; align-items: center; justify-content: center; color: #ef4444;">
+                                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="4"><polyline points="20 6 9 17 4 12"/></svg>
+                                            </div>
+                                            <div style="display: flex; flex-direction: column;">
+                                                <span style="color: #f3f4f6; font-size: 13px; font-weight: 600;" x-text="prod.name"></span>
+                                                <span x-show="prod.code !== prod.name" style="color: #6b7280; font-size: 10px; font-family: var(--font-mono);" x-text="prod.code"></span>
+                                            </div>
+                                        </div>
+                                        <div style="background: rgba(239, 68, 68, 0.15); color: #ef4444; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 12px;" x-text="prod.quantity"></div>
+                                    </div>
                                 </template>
-                            </tbody>
-                        </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -278,8 +295,8 @@ function moldexAuditor() {
         formatDate(dateStr) {
             if (!dateStr) return 'N/A';
             if (dateStr === 'permanent') return 'PERMANENTE';
-            // YYYYMMDD to YYYY-MM-DD
-            return dateStr.substring(0, 4) + '-' + dateStr.substring(4, 6) + '-' + dateStr.substring(6, 8);
+            // YYYYMMDD to DD/MM/YYYY
+            return dateStr.substring(6, 8) + '/' + dateStr.substring(4, 6) + '/' + dateStr.substring(0, 4);
         },
 
         isExpired(dateStr) {
