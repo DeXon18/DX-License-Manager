@@ -58,7 +58,7 @@ class FeatureFlagSeeder extends Seeder
                 'label' => 'Moldex3D',
                 'vendor' => 'Moldex3D',
                 'description' => 'Auditoría y procesamiento de archivos .mac',
-                'is_active' => false,
+                'is_active' => true,
             ],
             [
                 'key' => 'moldex3d_recursos',

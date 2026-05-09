@@ -18,6 +18,7 @@
   - Dinamismo de colores de vendor en tarjetas de inventario.
 
 ### Fixed
+- **Rutas**: Restaurado el acceso a la herramienta de Moldex3D (`/herramientas/moldex3d`) mediante la integración de las ramas de desarrollo pendientes. Corregido error 404.
 - **Robustez**: Eliminada la dependencia de `str_contains` en las vistas, delegando la lógica de identificación al modelo.
 
 ---
