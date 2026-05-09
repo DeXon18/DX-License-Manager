@@ -3,6 +3,21 @@
 
 ---
 
+## [2026-05-09] — Diferenciación de Vendors en UI (Siemens vs Moldex3D)
+
+### Added
+- **Modelo de Datos**: Implementado accessor `vendor` en `LicenseInventoryDaemon` para identificación estructural de proveedores.
+- **UI Adaptativa**: 
+  - Rediseño de labels en inventario: "Daemon" para Siemens y "Plataforma" para Moldex3D.
+  - Personalización de valores: Visualización de "Moldex3D" en lugar de nombres técnicos de procesos internos.
+  - Resaltado de hardware: Label específico "Machine ID" para licencias de Moldex3D.
+- **Sistema de Estilos**: 
+  - Nueva clase CSS `.badge-moldex` integrada en el sistema de diseño.
+  - Dinamismo de colores de vendor en tarjetas de inventario y badges.
+
+### Fixed
+- **Robustez**: Eliminada la dependencia de `str_contains` en las vistas, delegando la lógica de identificación al modelo.
+
 ---
 
 ## [2026-05-08] — Generador Siemens COD (Completo)
