@@ -46,6 +46,7 @@ El agente NO marca `[x]` una tarea hasta que todos sus checks están completados
 - [x] 7. Implementación de borrado de certificados (BD + Archivos)
 - [x] 8. Optimización visual de iconos (Horizontal Compacto)
 - [x] 9. Ejecución de migración via SSH al LXC 600
+- [x] 10. Diferenciación de Vendors y Refinamiento UI Moldex3D (Logo + Badge removal)
 
 ---
 

@@ -138,8 +138,12 @@
                                 <div class="header-col">
                                     <span class="tech-label">{{ $daemon->vendor === 'moldex' ? 'Plataforma' : 'Daemon' }}</span>
                                     <div style="display: flex; align-items: center;">
-                                        <span class="tech-value daemon-name">{{ $daemon->vendor === 'moldex' ? 'Moldex3D' : $daemon->daemon }}</span>
-                                        <span class="inv-badge badge-{{ $daemon->vendor }}">{{ ucfirst($daemon->vendor) }}</span>
+                                        @if($daemon->vendor === 'moldex')
+                                            <span class="tech-value daemon-name moldex-logo">Moldex<span class="accent">3D</span></span>
+                                        @else
+                                            <span class="tech-value daemon-name">{{ $daemon->daemon }}</span>
+                                            <span class="inv-badge badge-{{ $daemon->vendor }}">{{ ucfirst($daemon->vendor) }}</span>
+                                        @endif
                                     </div>
                                 </div>
 
@@ -816,6 +820,9 @@
     .tech-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: #8b949e; display: block; }
     .tech-value { font-family: var(--font-mono); font-size: 16px; font-weight: 700; color: #fff; line-height: 1.2; }
     .daemon-name { color: #009999; font-size: 20px; }
+    
+    .moldex-logo { color: #ed1c24 !important; font-weight: 800; }
+    .moldex-logo .accent { color: #f58220 !important; }
 
     .inv-badge { display: inline-flex; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 900; text-transform: uppercase; }
     .badge-siemens { background: #009999; color: #fff; margin-left: 8px; }
