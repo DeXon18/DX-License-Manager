@@ -44,14 +44,14 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::get('/herramientas/cod/download-signed', [\App\Http\Controllers\Tools\CodController::class, 'downloadSigned'])->name('tools.cod.download-signed');
 
     
-    Route::post('/clientes/{client}/contactos', [ContactController::class, 'store'])->name('contacts.store');
-    Route::put('/clientes/{client}/contactos/{contact}', [ContactController::class, 'update'])->name('contacts.update');
-    Route::delete('/clientes/{client}/contactos/{contact}', [ContactController::class, 'destroy'])->name('contacts.destroy');
+    Route::post('/clientes/{client}/contactos', [ContactController::class, 'store'])->middleware('permission:technician')->name('contacts.store');
+    Route::put('/clientes/{client}/contactos/{contact}', [ContactController::class, 'update'])->middleware('permission:technician')->name('contacts.update');
+    Route::delete('/clientes/{client}/contactos/{contact}', [ContactController::class, 'destroy'])->middleware('permission:technician')->name('contacts.destroy');
 
-    Route::delete('/inventory/daemon/{daemon}', [\App\Http\Controllers\InventoryController::class, 'destroyDaemon'])->name('inventory.daemon.destroy');
-    Route::delete('/inventory/product/{product}', [\App\Http\Controllers\InventoryController::class, 'destroyProduct'])->name('inventory.product.destroy');
+    Route::delete('/inventory/daemon/{daemon}', [\App\Http\Controllers\InventoryController::class, 'destroyDaemon'])->middleware('permission:technician')->name('inventory.daemon.destroy');
+    Route::delete('/inventory/product/{product}', [\App\Http\Controllers\InventoryController::class, 'destroyProduct'])->middleware('permission:technician')->name('inventory.product.destroy');
 
-    Route::prefix('admin')->name('admin.')->group(function () {
+    Route::prefix('admin')->name('admin.')->middleware('permission:admin')->group(function () {
         Route::get('/import', [ImportController::class, 'index'])->name('import.index');
         Route::post('/import', [ImportController::class, 'store'])->name('import.store');
         
