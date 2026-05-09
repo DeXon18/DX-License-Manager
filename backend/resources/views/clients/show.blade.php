@@ -170,7 +170,7 @@
                                     <div style="display: flex; align-items: center; gap: 6px;">
                                         <span class="inv-badge badge-type">{{ $daemon->type }}</span>
                                         @if($daemon->version)
-                                            <span class="inv-badge" style="background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1);">v{{ $daemon->version }}</span>
+                                            <span class="inv-badge" style="background: var(--bg); color: var(--primary); border: 1px solid var(--border);">v{{ $daemon->version }}</span>
                                         @endif
                                     </div>
                                 </div>
@@ -204,7 +204,7 @@
                                             <td>
                                                 @php
                                                     $isExpired = $product->expiration_date?->isPast();
-                                                    $color = $isExpired ? '#ef4444' : (!$product->expiration_date ? '#009999' : 'rgba(255,255,255,0.4)');
+                                                    $color = $isExpired ? 'var(--danger)' : (!$product->expiration_date ? 'var(--siemens)' : 'var(--muted)');
                                                 @endphp
                                                 <span style="font-family: var(--font-mono); font-weight: 700; color: {{ $color }};">
                                                     {{ $product->expiration_date ? $product->expiration_date->format('d/m/Y') : 'PERMANENTE' }}
@@ -747,38 +747,38 @@
     .expiry-badge { background: rgba(255,255,255,0.03); padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--text); }
     .expiry-badge.upcoming { background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
     
-    .badge-siemens { background: #009999; color: #fff; border: 1px solid rgba(255,255,255,0.2); }
-    .badge-moldex { background: #ed1c24; color: #fff; border: 1px solid rgba(255,255,255,0.2); }
-    .badge-info { background: rgba(var(--accent-rgb), 0.1); color: var(--accent); border: 1px solid rgba(var(--accent-rgb), 0.2); }
-    .badge-warn { background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
+    .badge-siemens { background: var(--siemens); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
+    .badge-moldex { background: var(--moldex); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
+    .badge-info { background: var(--accent-muted); color: var(--accent); border: 1px solid var(--accent-border); }
+    .badge-warn { background: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning-border); }
 
     /* Audit Detail Modal Styles */
-    .audit-modal { box-shadow: 0 0 50px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.05); }
+    .audit-modal { box-shadow: 0 0 50px rgba(0,0,0,0.3), 0 0 0 1px var(--border); }
     .audit-icon-box {
-        width: 48px; height: 48px; background: linear-gradient(135deg, var(--accent), #1a73e8);
+        width: 48px; height: 48px; background: linear-gradient(135deg, var(--accent), var(--primary));
         border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;
     }
     .audit-header-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
     .audit-info-card {
-        background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05);
+        background: var(--bg); border: 1px solid var(--border);
         padding: 16px 20px; border-radius: 12px; display: flex; flex-direction: column; gap: 6px;
     }
     .audit-info-card .label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
-    .audit-info-card .value { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
+    .audit-info-card .value { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; color: var(--primary); }
     .audit-info-card .value.daemon { color: var(--accent); font-family: var(--font-mono); font-size: 16px; }
-    .audit-info-card .value.hostname { color: #fff; font-family: var(--font-mono); }
+    .audit-info-card .value.hostname { color: var(--primary); font-family: var(--font-mono); }
     
     .unified-box { background: rgba(245, 158, 11, 0.03); border: 1px dashed rgba(245, 158, 11, 0.2); padding: 12px 20px; border-radius: 10px; }
     .unified-box .label { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #f59e0b; margin-right: 8px; }
     
     .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); display: flex; align-items: center; gap: 10px; }
-    .section-title::after { content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.05); }
+    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
     .audit-table { width: 100%; border-collapse: separate; border-spacing: 0 4px; }
     .audit-table th { text-align: left; padding: 12px 16px; font-size: 10px; text-transform: uppercase; color: var(--muted); font-weight: 700; }
-    .audit-table td { padding: 14px 16px; background: rgba(255,255,255,0.01); border-top: 1px solid rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.03); }
-    .audit-table td:first-child { border-left: 1px solid rgba(255,255,255,0.03); border-radius: 8px 0 0 8px; }
-    .audit-table td:last-child { border-right: 1px solid rgba(255,255,255,0.03); border-radius: 0 8px 8px 0; }
+    .audit-table td { padding: 14px 16px; background: var(--bg); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
+    .audit-table td:first-child { border-left: 1px solid var(--border-subtle); border-radius: 8px 0 0 8px; }
+    .audit-table td:last-child { border-right: 1px solid var(--border-subtle); border-radius: 0 8px 8px 0; }
 
     /* DX INVENTORY SYSTEM — ROBUST RECONSTRUCTION */
     .inv-container { display: flex; flex-direction: column; gap: 32px; margin-top: 16px; }
@@ -787,7 +787,7 @@
     
     .sold-to-header {
         display: flex; align-items: center; justify-content: space-between;
-        padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 20px;
+        padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 20px;
     }
 
     .sold-to-badge-wrapper { display: flex; align-items: center; gap: 16px; }
@@ -810,8 +810,8 @@
     /* Header Layout */
     .daemon-header {
         display: flex; flex-direction: row; align-items: center; padding: 20px 24px;
-        background: linear-gradient(to right, rgba(255,255,255,0.02), transparent);
-        border-bottom: 1px solid rgba(255,255,255,0.03); gap: 40px;
+        background: linear-gradient(to right, var(--bg), transparent);
+        border-bottom: 1px solid var(--border-subtle); gap: 40px;
     }
 
     .header-col { display: flex; flex-direction: column; gap: 4px; }
@@ -848,11 +848,11 @@
     }
 
     .btn-action {
-        width: 28px; height: 28px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);
-        background: transparent; color: rgba(255,255,255,0.2); cursor: pointer;
+        width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border);
+        background: transparent; color: var(--muted); cursor: pointer;
         display: flex; align-items: center; justify-content: center; transition: all 0.2s;
     }
-    .btn-action:hover { background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: #ef4444; }
+    .btn-action:hover { background: var(--danger-bg); color: var(--danger); border-color: var(--danger-border); }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
