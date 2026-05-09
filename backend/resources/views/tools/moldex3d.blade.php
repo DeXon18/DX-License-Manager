@@ -137,20 +137,17 @@
                 </div>
             </div>
 
-            <!-- Acciones Finales -->
             <div style="margin-top: 16px; background: var(--success-bg); border: 1px solid var(--success-border); padding: 16px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
                 <div style="display: flex; align-items: center; gap: 12px;">
                     <div style="background: var(--success); color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                     </div>
                     <div>
-                        <div style="font-size: 13px; font-weight: 600; color: var(--success);">Archivo procesado y almacenado correctamente</div>
-                        <div style="font-size: 11px; color: var(--success); opacity: 0.8;" x-text="'Nomenclatura: ' + result.filename"></div>
+                        <div style="font-size: 13px; font-weight: 600; color: var(--success);">Archivo procesado y almacenado correctamente en el servidor</div>
                     </div>
                 </div>
                 <div style="display: flex; gap: 8px;">
                     <button @click="reset" class="btn-secondary" style="font-size: 11px; padding: 6px 12px;">NUEVA AUDITORÍA</button>
-                    <a :href="'/download?path=' + result.path" class="btn-primary" style="background: var(--success); border-color: var(--success); font-size: 11px; padding: 6px 12px;">DESCARGAR COPIA</a>
                 </div>
             </div>
         </div>

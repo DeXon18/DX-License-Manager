@@ -43,7 +43,10 @@ class MoldexParserService
                 }
                 // License Mode / Type
                 elseif (preg_match('/License (?:Mode|Type)\s*:\s*(.+)/i', $line, $matches)) {
-                    $data['license_mode'] = trim($matches[1]);
+                    $mode = trim($matches[1]);
+                    if (stripos($mode, 'Floating') !== false) $mode = 'Floating';
+                    elseif (stripos($mode, 'Node-Locked') !== false || stripos($mode, 'Node Locked') !== false) $mode = 'Node-Locked';
+                    $data['license_mode'] = $mode;
                 }
                 // Machine ID / MAC / Hostname
                 elseif (preg_match('/(?:Machine ID|MAC)\s*:\s*(.+)/i', $line, $matches)) {
