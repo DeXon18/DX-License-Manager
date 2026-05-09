@@ -14,8 +14,8 @@ El agente no avanza hasta recibir "aprobado", "adelante" o similar de forma expl
 
 ## 🟢 En Progreso
  
-- [x] **Fase 8.2**: Auditoría STAR-CCM+ (Completada).
-- [x] **Unificación UI/UX**: Pulido estético final de motores Siemens (NX, STAR, HEEDS).
+- [x] **Fase 9**: Auditoría y Persistencia Moldex3D (Completada).
+- [ ] **Fase 10**: Dashboard del Sistema (Siguiente).
 
 ---
 
@@ -37,6 +37,18 @@ En planificación — se detallan una por una tras validación de la fase anteri
 ---
  
 ## ✅ Completado
+ 
+ ### Fase 9 — Moldex3D (Auditoría y Persistencia) ✅
+ - **Completada:** 2026-05-09
+ - **Rama:** feature/moldex3d-persistence
+ - **Resumen:** Implementación del motor de auditoría y persistencia para licencias Moldex3D. El sistema ahora procesa archivos `.mac`, extrae Machine IDs y sincroniza automáticamente el inventario de productos vinculándolos a clientes reales mediante lógica de similitud.
+ - [x] Parser local determinista para archivos `.mac`.
+ - [x] Implementación de `MoldexSyncService` para persistencia en inventario.
+ - [x] Sistema de vinculación inteligente de clientes (Fuzzy Match).
+ - [x] UI/UX Premium con vista "Property List" y feedback de sincronización en tiempo real.
+ - [x] Gestión de seguridad: almacenamiento privado y proceso local 100% determinista.
+ 
+ ---
  
 ### Fase 8.4 — Siemens COD (Certificado Cese) ✅
 - **Completada:** 2026-05-08
