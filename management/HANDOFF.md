@@ -1,38 +1,34 @@
 # HANDOFF — DX License Manager
 
-**Sesión:** 2026-05-07 (Tarde)
-**Estado:** Fase 8.1 Parte 2 COMPLETADA (Backend) | UI en curso (Beta)
-**Rama Activa:** `feature/client-audit-ui` (basada en `feature/siemens-audit-motor`)
+**Sesión:** 2026-05-09 (Tarde)
+**Estado:** Fase 9 COMPLETADA | Persistencia Moldex3D OK
+**Rama Activa:** `feature/moldex3d-persistence`
 
 ---
 
 ## 🎯 Logros de la Sesión
-1. **Motor de Auditoría IA**: Implementado el flujo completo desde la subida del archivo hasta el callback asíncrono.
-2. **Persistencia**: Creadas tablas para guardar resultados de IA y mapeos persistentes de `Sold-To`.
-3. **Optimización**: El `LicenseParserService` limpia las firmas FlexLM para ahorrar tokens.
-4. **UI**: Integración inicial de auditorías en el perfil del cliente con chips de productos.
+1. **Auditoría Moldex3D**: Implementado parser local 100% determinista para archivos `.mac`.
+2. **Persistencia de Inventario**: Creado `MoldexSyncService` para vinculación automática con clientes y productos.
+3. **UI/UX**: Nueva interfaz de resultados con vista técnica de alta densidad y feedback de sincronización.
+4. **Nomenclatura**: Estandarización de archivos `.mac` siguiendo el patrón `AÑO_ID_CLIENTE__TIPO_FECHA.mac`.
 
 ---
 
 ## 🛠️ Estado Técnico
-- **Base de Datos**: Tablas `ai_audit_results` y `client_mappings` migradas y con datos de prueba (Metalogenia 1624562 OK).
-- **API**: Endpoint `/api/audit/callback` verificado (recibe JSON estructurado).
-- **Seguridad**: Archivos `.lic` originales nunca se guardan (Principio Solo Log).
-- **Deploy**: Rama `feature/client-audit-ui` desplegada en Beta.
+- **Base de Datos**: Sincronización verificada en `license_inventory_daemons` (tipo `moldex3d`) y `license_inventory_products`.
+- **Lógica**: Vinculación de clientes mediante Fuzzy Match (85% similitud) con soporte para sufijos corporativos.
+- **Seguridad**: Proceso local sin dependencias externas; archivos almacenados en `storage/private/licenses/moldex3d/`.
+- **Deploy**: Rama `feature/moldex3d-persistence` lista para merge.
 
 ---
 
 ## ⚠️ Pendientes y Bloqueos
-- **Bug UI (Modal) [PAUSADO]**: El botón del "ojo" en la tabla de licencias no abre el modal en Beta. 
-  - *Estado:* Pausado por decisión técnica. Se retomará cuando se estabilice el flujo de n8n.
-- **Auditoría n8n [PAUSADO]**: El flujo actual de n8n (v2.2) se queda en espera.
-  - *Motivo:* El flujo pasará de ser lineal a tener ramificaciones complejas según el vendor y el tipo de licencia (Siemens SALT vs Legacy, Moldex, etc.). Se requiere un análisis más profundo de las casuísticas antes de continuar con la lógica de ramificación.
-- **Merge**: Pendiente merge de `feature/client-audit-ui` a `dev` (pospuesto).
+- **Fase 10 (Dashboard)**: Siguiente paso en el ROADMAP. Requiere visualización de métricas de sistema y estado de servicios.
+- **Merge**: Pendiente fusionar `feature/moldex3d-persistence` (y su padre `feature/moldex3d-tool`) a `dev`.
 
 ---
 
 ## 🚀 Próximos Pasos
-1. Documentar casuísticas de ramificación n8n (análisis técnico).
-2. Estabilizar la UI base de clientes antes de re-introducir la lógica de auditoría compleja.
-3. Iniciar Fase 8.2 (STAR-CCM+) una vez se defina el nuevo esquema de ramificación.
-
+1. Realizar el merge de las ramas de Moldex3D a `dev`.
+2. Iniciar Fase 10: Desarrollo del Dashboard del Sistema.
+3. Verificar visualmente la aparición de licencias Moldex3D en los perfiles de cliente unificados.
