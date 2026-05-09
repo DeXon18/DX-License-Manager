@@ -74,7 +74,20 @@ class MoldexParserService
                 }
             }
 
-            // 2. Líneas INCREMENT (Formato estándar FlexLM usado por Moldex)
+            // 2. Líneas SERVER (Host id / Hostname)
+            if (str_starts_with($line, 'SERVER')) {
+                $parts = preg_split('/\s+/', $line);
+                if (count($parts) >= 2) {
+                    $data['hostname'] = $parts[1];
+                    // Si el tercer parámetro tiene un '=', es el Machine ID (ej: COMPOSITE=...)
+                    if (count($parts) >= 3 && str_contains($parts[2], '=')) {
+                        $idParts = explode('=', $parts[2]);
+                        $data['machine_id'] = end($idParts);
+                    }
+                }
+            }
+
+            // 3. Líneas INCREMENT (Formato estándar FlexLM usado por Moldex)
             // INCREMENT M3D_ADV moldex3d 2027.0 20270114 1 ...
             if (str_starts_with($line, 'INCREMENT')) {
                 $parts = preg_split('/\s+/', $line);
