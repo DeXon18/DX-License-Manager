@@ -167,11 +167,11 @@
                                     @endif
                                 </div>
 
-                                <div class="header-col" style="min-width: 100px;">
+                                <div class="header-col" style="min-width: 120px;">
                                     <span class="tech-label">Configuración</span>
-                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                    <div style="display: flex; align-items: center; gap: 6px;">
                                         <span class="inv-badge badge-type">{{ $daemon->type }}</span>
-                                        <span style="font-family: var(--font-mono); font-size: 10px; opacity: 0.4;">v{{ $daemon->version }}</span>
+                                        <span class="inv-badge" style="background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1);">v{{ $daemon->version }}</span>
                                     </div>
                                 </div>
 
