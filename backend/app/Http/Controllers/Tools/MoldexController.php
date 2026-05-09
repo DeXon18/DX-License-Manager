@@ -40,8 +40,14 @@ class MoldexController extends Controller
     public function process(Request $request)
     {
         $request->validate([
-            'license_file' => 'required|file',
+            'license_file' => 'required|file|max:10240|mimetypes:text/plain,application/octet-stream',
         ]);
+
+        // Extra: validate extension explicitly (defense in depth)
+        $extension = strtolower($request->file('license_file')->getClientOriginalExtension());
+        if (!in_array($extension, ['mac', 'txt'])) {
+            return back()->withErrors(['license_file' => 'Solo se permiten archivos con extensión .mac o .txt.']);
+        }
 
         $file    = $request->file('license_file');
         $content = file_get_contents($file->getRealPath());
