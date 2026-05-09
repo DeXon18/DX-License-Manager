@@ -40,10 +40,17 @@ class StarCcmController extends Controller
     public function process(Request $request)
     {
         $request->validate([
-            'license_file' => 'required|file',
+            'license_file' => 'required|file|max:10240|mimetypes:text/plain,application/octet-stream',
         ]);
 
         $file    = $request->file('license_file');
+
+        // Validación extra de extensión
+        $extension = strtolower($file->getClientOriginalExtension());
+        if (!in_array($extension, ['lic', 'txt'])) {
+            return back()->withErrors(['license_file' => 'Solo se permiten archivos .lic o .txt.']);
+        }
+
         $content = file_get_contents($file->getRealPath());
 
         // 1. Extraer metadatos
@@ -54,7 +61,7 @@ class StarCcmController extends Controller
         $detectedHostIds = $this->parserService->detectHostIds($content);
 
         $audit = $this->auditService->requestAudit(
-            auth()->id() ?? 1,
+            auth()->id(),
             $cleanContent,
             $detectedHostIds,
             'siemens' // Vendor Siemens para STAR-CCM+
