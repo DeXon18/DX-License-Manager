@@ -6,7 +6,7 @@ namespace App\Services\Audit;
  * MoldexParserService
  * 
  * Parser determinista para archivos .mac de Moldex3D.
- * Extrae metadatos de cabecera y listado de productos desde comentarios.
+ * Extrae metadatos de cabecera y listado de productos.
  */
 class MoldexParserService
 {
@@ -31,54 +31,123 @@ class MoldexParserService
             $line = trim($line);
             if (empty($line)) continue;
 
-            // 1. Metadatos en comentarios de cabecera
-            if (str_starts_with($line, ';')) {
-                // Customer ID
-                if (preg_match('/Customer ID\s*:\s*([0-9]+)/i', $line, $matches)) {
+            // 1. Metadatos en comentarios (pueden empezar por ; o #)
+            if (preg_match('/^[;#]/', $line)) {
+                // Customer ID / Project ID
+                if (preg_match('/(?:Customer|Project) ID\s*:\s*([0-9]+)/i', $line, $matches)) {
                     $data['customer_id'] = $matches[1];
                 }
                 // Customer Name
                 elseif (preg_match('/Customer\s*:\s*(.+)/i', $line, $matches)) {
                     $data['customer_name'] = $this->cleanCustomerName($matches[1]);
                 }
-                // License Mode
-                elseif (preg_match('/License Mode\s*:\s*(.+)/i', $line, $matches)) {
+                // License Mode / Type
+                elseif (preg_match('/License (?:Mode|Type)\s*:\s*(.+)/i', $line, $matches)) {
                     $data['license_mode'] = trim($matches[1]);
                 }
-                // Machine ID & Hostname
-                elseif (preg_match('/Machine ID\s*:\s*([^\(]+)\(([^\)]+)\)/i', $line, $matches)) {
-                    $data['hostname'] = trim($matches[1]);
-                    $details = $matches[2];
-                    if (str_contains($details, '//')) {
-                        $parts = explode('//', $details);
-                        $data['machine_id'] = trim(end($parts));
+                // Machine ID / MAC / Hostname
+                elseif (preg_match('/(?:Machine ID|MAC)\s*:\s*(.+)/i', $line, $matches)) {
+                    $rawMachine = trim($matches[1]);
+                    // Formato hostname(id) o solo id
+                    if (preg_match('/^([^\s(]+)\s*\((.+)\)$/', $rawMachine, $subMatches)) {
+                        $data['hostname'] = trim($subMatches[1]);
+                        $details = $subMatches[2];
+                        if (str_contains($details, '//')) {
+                            $parts = explode('//', $details);
+                            $data['machine_id'] = trim(end($parts));
+                        } else {
+                            $data['machine_id'] = trim($details);
+                        }
                     } else {
-                        $data['machine_id'] = trim($details);
+                        $data['machine_id'] = $rawMachine;
+                    }
+                }
+                // Fecha de expiración (generalmente en comentarios de producto o periodo)
+                if (preg_match('/(\d{4}\/\d{2}\/\d{2})/', $line, $matches)) {
+                    $date = str_replace('/', '', $matches[1]);
+                    if (!$data['expiration'] || $date > $data['expiration']) {
+                        $data['expiration'] = $date;
+                    }
+                }
+            }
+
+            // 2. Líneas INCREMENT (Formato estándar FlexLM usado por Moldex)
+            // INCREMENT M3D_ADV moldex3d 2027.0 20270114 1 ...
+            if (str_starts_with($line, 'INCREMENT')) {
+                $parts = preg_split('/\s+/', $line);
+                if (count($parts) >= 6) {
+                    $code = $parts[1];
+                    $expiry = $parts[4];
+                    $qty = (int)$parts[5];
+
+                    $data['products'][] = [
+                        'code' => $code,
+                        'name' => $this->getFriendlyName($code),
+                        'expiration' => $expiry,
+                        'quantity' => $qty
+                    ];
+
+                    if (!$data['expiration'] || ($expiry !== 'permanent' && $expiry > $data['expiration'])) {
+                        if ($expiry !== 'permanent') {
+                            $data['expiration'] = $expiry;
+                        }
+                    }
+                }
+            }
+
+            // 3. Fallback: Comentarios de producto antiguos (;PRODUCTO-MODO-FECHA-CANTIDAD)
+            if (preg_match('/^[;#](.+)-(?:Floating|Node-Locked).+-(\d{4}\/\d{2}\/\d{2})-(\d+)/i', $line, $matches)) {
+                $code = trim($matches[1]);
+                $expiry = str_replace('/', '', $matches[2]);
+                $qty = (int)$matches[3];
+
+                // Evitar duplicados si ya se capturó por INCREMENT
+                $exists = false;
+                foreach ($data['products'] as $p) {
+                    if ($p['code'] === $code) {
+                        $exists = true;
+                        break;
                     }
                 }
 
-                // 2. Productos y Expiración (en comentarios de línea de producto)
-                // Formato esperado: ;PRODUCTO-MODO-YYYY/MM/DD-CANTIDAD
-                if (preg_match('/;(.+)-(?:Floating|Node-Locked).+-(\d{4}\/\d{2}\/\d{2})-(\d+)/i', $line, $matches)) {
-                    $productName = trim($matches[1]);
-                    $expiry = $matches[2];
-                    $quantity = (int)$matches[3];
-
+                if (!$exists) {
                     $data['products'][] = [
-                        'name' => $productName,
+                        'code' => $code,
+                        'name' => $this->getFriendlyName($code),
                         'expiration' => $expiry,
-                        'quantity' => $quantity
+                        'quantity' => $qty
                     ];
-
-                    // Actualizar fecha de expiración global (la más lejana)
-                    if (!$data['expiration'] || $expiry > $data['expiration']) {
-                        $data['expiration'] = $expiry;
-                    }
                 }
             }
         }
 
         return $data;
+    }
+
+    /**
+     * Devuelve el nombre amigable del módulo.
+     */
+    public function getFriendlyName(string $code): string
+    {
+        $mapping = [
+            'M3D_ADV'           => 'Moldex3D Advanced',
+            'M3D_FEA'           => 'FEA Interface',
+            'STUDIO'            => 'Moldex3D Studio',
+            'FLOW'              => 'Flow Analysis',
+            'PACK'              => 'Packing Analysis',
+            'COOL'              => 'Cooling Analysis',
+            'WARP'              => 'Warpage Analysis',
+            'FIBER'             => 'Fiber Orientation',
+            'REACTIVE'          => 'Reactive Injection',
+            'ENCAP'             => 'IC Packaging',
+            'MUCELL'            => 'MuCell Injection',
+            'OPT'               => 'Expert/Optimization',
+            '3DFE'              => '3D Solid Mesh',
+            'MDE_SOLVER'        => 'Solver Engine',
+        ];
+
+        $cleanCode = strtoupper(trim($code));
+        return $mapping[$cleanCode] ?? $code;
     }
 
     /**
