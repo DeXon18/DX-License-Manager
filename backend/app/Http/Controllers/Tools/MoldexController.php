@@ -78,9 +78,7 @@ class MoldexController extends Controller
             ]);
         }
 
-        // Devolver para descarga inmediata
-        return response($content)
-            ->header('Content-Type', 'text/plain')
-            ->header('Content-Disposition', "attachment; filename=\"{$finalFilename}\"");
+        // Devolver éxito (la descarga no es necesaria según feedback)
+        return back()->with('success', 'Archivo procesado y almacenado correctamente.');
     }
 }
