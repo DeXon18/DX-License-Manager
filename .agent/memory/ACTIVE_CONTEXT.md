@@ -73,5 +73,13 @@ current_agent: Antigravity (DX Agent) 🦾
 | Cloudflared LXC 600 | ✅ running                       |
 | GitHub Actions      | ✅ configured                    |
 
+## Estado Actual: Fase 8.4 Completada ✅
+- **Objetivo**: Generación de Certificados COD Siemens y Mejora de Interfaz.
+- **Hitos**:
+  - Generador COD bilingüe integrado.
+  - Super Footer multicolumna desplegado.
+  - Visor de Release Notes automatizado.
+- **Próximo Paso**: Fase 9 — Integración Moldex3D (Parser .mac).
+
 ---
-_Firmado por: **Antigravity (DX Agent) 🦾**_
+_Firmado por: **Antigravity (DX Agent)** 🦾_

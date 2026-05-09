@@ -1,23 +1,21 @@
-# Memory Dump — DX License Manager
-> Última sesión: 2026-05-08 13:55
-> Rama: fix/cod-history-and-signed-upload
-> Agente: Antigravity (DX Agent) 🦾
+# Antigravity (DX Agent) 🦾 — Brain Dump
 
-## 🧠 Contexto Activo (Active Context)
-- **Fase**: 5.5 / 6 (Finalización Certificados COD y Limpieza de Infraestructura).
-- **Hito principal**: El ciclo de vida de los certificados COD de Siemens ha sido estabilizado y blindado.
-- **Logro técnico**: Implementación de subida directa (Auto-submit) de PDFs firmados, sustituyendo el modal fallido de Alpine.js. Mapeo de rutas privadas hacia el host Docker corregido (`storage/app/private` -> `storage/private`).
-- **Limpieza**: Eliminados archivos SQL de backup antiguos y purgada la caché de vistas y configuración.
+## Session: 2026-05-08
 
-## 🏗 Arquitectura Mental (Mental Model)
-- **Rutas de Almacenamiento**: El disco `private` ahora cuelga de `app/private` para garantizar que Docker lo mapee a la unidad `Z:\` del host.
-- **Permisos Samba**: Las carpetas nuevas creadas por Docker (root) requieren un `chmod -R 777` recursivo en el host para ser visibles en Windows via Samba.
-- **Labels COD**: Mapeo estético en Blade para `CHANGE_FULL`, `CHANGE_COMPOSITE` y `CHANGE_NODELOCKED` a nombres en castellano amigables.
+### Status: Phase 8.4 Completed & UI Overhaul
+- **Siemens COD**: Full cycle implemented (Generation -> Sign -> Store -> Delete). High-fidelity PDF with Dompdf and Calibri fonts.
+- **UI/UX**: Implemented professional multi-column footer with system metadata. Created a dynamic Changelog viewer that parses `management/CHANGELOG.md`.
+- **Infrastructure**: Updated Docker volumes to mount `management/` for real-time changelog access.
+- **Git**: Feature branch merged into `dev`. Local branch clean.
 
-## 🛑 Dead Ends (Lo que NO funciona)
-- Usar `Storage::disk('private')->download()` a veces confunde al linter PHP; mejor usar `response()->download(Storage::disk('private')->path(...))`.
-- Los modales de Alpine.js con formularios complejos y `x-teleport` pueden fallar si hay capas de caché agresivas o conflictos de Z-index. El "Old School" (input directo) es más robusto para archivos críticos.
+### Technical Notes
+- **Dompdf Localization**: Use `translatedFormat()` for dates to ensure Spanish month names in PDF.
+- **Docker Volumes**: Mounting `management/` as `:ro` allows PHP to read the project's changelog without security risks.
+- **Changelog Parsing**: Use sequential arrays instead of associative by date to prevent overwriting same-day entries.
+- **Samba Permissions**: Git operations (push/repack) may fail from Windows/Samba due to lock/permission issues on the server. Commit locally and verify on Beta.
 
-## 🎯 Siguiente Tarea (Next Task)
-- **Fase 9**: Iniciar el desarrollo del Parser de archivos `.mac` de Moldex3D.
-- **Validación**: Verificar que el cliente "Abad" y otros ya muestran sus carpetas COD correctamente en el explorador de Windows.
+### Next Steps
+- **Phase 9**: Moldex3D MAC parser development.
+- **Phase 10**: User Management & RBAC expansion.
+
+_Firmado por: **Antigravity (DX Agent)** 🦾_
