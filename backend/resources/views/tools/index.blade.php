@@ -101,7 +101,7 @@
 @if(isset($features['Moldex3D']))
 <div class="vendor-section">
     <div class="vendor-header">
-        <span class="vendor-label moldex">Moldex3D</span>
+        <span class="vendor-label moldex">Moldex<span class="accent">3D</span></span>
         <span class="vendor-desc">Simulación Predictiva para el Diseño y Fabricación de Plásticos</span>
         <div class="vendor-line"></div>
     </div>
@@ -119,11 +119,14 @@
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
                             @endif
                         </div>
-                        <div class="tool-name">{{ $tool->label }}</div>
+                        <div class="tool-name">
+                            @if($tool->vendor == 'Moldex3D' && $tool->key == 'moldex3d_auditor')
+                                Moldex<span class="accent">3D</span> <span style="font-weight: 400; opacity: 0.6; margin-left: 4px;">Auditor</span>
+                            @else
+                                {{ $tool->label }}
+                            @endif
+                        </div>
                     </div>
-                    @if($tool->key == 'moldex3d_auditor')
-                        <span class="tool-badge badge-doc">CORE</span>
-                    @endif
                     @if(!$tool->is_active)
                         <span class="tool-badge badge-neutral">Próximamente</span>
                     @endif
@@ -162,5 +165,8 @@
     .three-col {
         grid-template-columns: repeat(3, 1fr) !important;
     }
+    .moldex-logo, .moldex .accent, .tool-name .accent { font-weight: 800; }
+    .moldex-logo, .vendor-label.moldex, .tool-name { color: #ed1c24 !important; }
+    .accent { color: #f58220 !important; }
 </style>
 @endpush
