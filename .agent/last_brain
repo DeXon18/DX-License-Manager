@@ -1,21 +1,23 @@
 # Antigravity (DX Agent) 🦾 — Brain Dump
 
-## Session: 2026-05-08
+## Session: 2026-05-09
 
-### Status: Phase 8.4 Completed & UI Overhaul
-- **Siemens COD**: Full cycle implemented (Generation -> Sign -> Store -> Delete). High-fidelity PDF with Dompdf and Calibri fonts.
-- **UI/UX**: Implemented professional multi-column footer with system metadata. Created a dynamic Changelog viewer that parses `management/CHANGELOG.md`.
-- **Infrastructure**: Updated Docker volumes to mount `management/` for real-time changelog access.
-- **Git**: Feature branch merged into `dev`. Local branch clean.
+### Status: Phase 9 Completed — Moldex3D Persistence
+- **Parser Moldex3D**: Parser determinista (regex) para archivos `.mac` implementado. Extrae Machine ID, Sold-To y módulos de producto.
+- **MoldexSyncService**: Motor de sincronización que vincula licencias con el Inventario Activo. Implementa Fuzzy Matching (85%) para nombres de clientes.
+- **UI/UX**: Nueva vista técnica de resultados (Property List) con indicadores visuales de estado de sincronización.
+- **Nomenclatura**: Estandarización de archivos `.mac` (`AÑO_ID_CLIENTE__TIPO_FECHA.mac`) operativa.
+- **Seguridad**: Almacenamiento privado estructurado y proceso local 100% determinista sin envío de datos sensibles a IA externa.
 
 ### Technical Notes
-- **Dompdf Localization**: Use `translatedFormat()` for dates to ensure Spanish month names in PDF.
-- **Docker Volumes**: Mounting `management/` as `:ro` allows PHP to read the project's changelog without security risks.
-- **Changelog Parsing**: Use sequential arrays instead of associative by date to prevent overwriting same-day entries.
-- **Samba Permissions**: Git operations (push/repack) may fail from Windows/Samba due to lock/permission issues on the server. Commit locally and verify on Beta.
+- **Fuzzy Matching**: Se utiliza la lógica de similitud de base de datos para vincular clientes, ignorando sufijos comunes (S.L., S.A.) para mejorar la precisión.
+- **Inventory Upsert**: El sistema utiliza `updateOrCreate` para evitar duplicados en `license_inventory_daemons` y `license_inventory_products`.
+- **UI Indicators**: Los badges de estado (COMPLETADA/PENDIENTE) en el bento grid proporcionan feedback inmediato sobre el éxito de la sincronización.
+- **Git Operations**: Se realizó el commit de cierre de fase. Recordar que las operaciones de Git desde Windows pueden requerir confirmación en el servidor ante fallos de permisos/locks.
 
 ### Next Steps
-- **Phase 9**: Moldex3D MAC parser development.
-- **Phase 10**: User Management & RBAC expansion.
+- **Phase 10**: Desarrollo del Dashboard del Sistema (Métricas de Infraestructura y Servicios).
+- **Merge**: Fusión de la rama `feature/moldex3d-persistence` a `dev`.
+- **Integración**: Verificar la visibilidad de productos Moldex3D en los perfiles unificados de cliente.
 
 _Firmado por: **Antigravity (DX Agent)** 🦾_
