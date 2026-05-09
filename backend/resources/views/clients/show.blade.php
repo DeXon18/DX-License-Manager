@@ -473,6 +473,8 @@
                 </form>
             </div>
         </div>
+    </template>
+
     <!-- Audit Detail Modal -->
     <template x-teleport="body">
         <div x-data="{ open: false }"
