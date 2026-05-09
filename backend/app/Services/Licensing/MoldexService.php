@@ -5,6 +5,12 @@ namespace App\Services\Licensing;
 use App\Services\Audit\MoldexParserService;
 use Illuminate\Support\Str;
 
+/**
+ * MoldexService
+ * 
+ * Gestiona la lógica de negocio para licencias Moldex3D:
+ * Nomenclatura, rutas de almacenamiento y organización de metadatos.
+ */
 class MoldexService
 {
     protected $parser;
@@ -15,71 +21,68 @@ class MoldexService
     }
 
     /**
-     * Extrae metadatos para nomenclatura y almacenamiento.
+     * Extrae metadatos para la nomenclatura del archivo.
+     * Formato: AÑO_ID_[PAIS]CLIENTE__TIPO_FECHA
      */
     public function extractMetadata(string $content): array
     {
-        $data = $this->parser->parse($content);
+        $parsed = $this->parser->parse($content);
         
-        // Extraer versión (año) desde los productos si es posible, 
-        // o usar el año actual como fallback.
-        $version = date('Y');
-        foreach ($data['products'] as $product) {
-            if (preg_match('/-(\d{4})$/', $product['name'], $matches)) {
-                $version = $matches[1];
-                break;
-            }
+        // Extraer país del nombre crudo si existe (ej: [ESP]Nombre)
+        $country = 'INT';
+        if (preg_match('/^\[([A-Z]{2,3})\]/i', $content, $matches)) {
+            $country = strtoupper($matches[1]);
+        }
+
+        // Determinar año (usualmente el actual o el de inicio de contrato)
+        $year = date('Y');
+        if (preg_match('/Period\s*:\s*(\d{4})/i', $content, $matches)) {
+            $year = $matches[1];
         }
 
         return [
-            'year'          => $version,
-            'customer_id'   => $data['customer_id'] ?? '000000',
-            'customer_name' => $data['customer_name'] ?? 'UNKNOWN',
-            'client_raw'    => $this->getRawCustomerName($content), // Necesario para mantener el [ESP] en el nombre de archivo
-            'mode'          => $this->simplifyMode($data['license_mode']),
-            'expiration'    => $data['expiration'] ? str_replace('/', '', $data['expiration']) : date('Ymd'),
+            'year'          => $year,
+            'customer_id'   => $parsed['customer_id'] ?? '000000',
+            'customer_name' => $parsed['customer_name'] ?? 'UNKNOWN',
+            'client_raw'    => $this->getRawClientName($content),
+            'mode'          => $parsed['license_mode'] ?? 'Unknown',
+            'expiration'    => $parsed['expiration'] ?? date('Ymd'),
+            'country'       => $country
         ];
     }
 
     /**
-     * Genera el nombre del archivo según el estándar:
-     * AÑO_ID_[PAIS]CLIENTE__TIPO_FECHA.mac
+     * Genera el nombre de archivo estandarizado.
      */
     public function generateFilename(array $metadata): string
     {
-        $year   = $metadata['year'];
-        $id     = $metadata['customer_id'];
-        $client = $metadata['client_raw'];
+        $client = $metadata['client_raw'] ?? $metadata['customer_name'];
         $mode   = $metadata['mode'];
         $date   = $metadata['expiration'];
+        $id     = $metadata['customer_id'];
+        $year   = $metadata['year'];
 
-        // Limpiar client de caracteres no válidos para archivos pero mantener [ESP]
-        $client = str_replace(['/', '\\', ':', '*', '?', '"', '<', '>', '|'], '-', $client);
-
+        // AÑO_ID_CLIENTE__TIPO_FECHA.mac
         return "{$year}_{$id}_{$client}__{$mode}_{$date}.mac";
     }
 
     /**
-     * Simplifica el modo de licencia para el nombre del archivo.
+     * Obtiene el nombre del cliente con el prefijo de país si está presente.
      */
-    private function simplifyMode(?string $mode): string
-    {
-        if (!$mode) return 'Unknown';
-        
-        if (stripos($mode, 'Floating') !== false) return 'Floating';
-        if (stripos($mode, 'Node-Locked') !== false) return 'NodeLocked';
-        
-        return Str::studly($mode);
-    }
-
-    /**
-     * Extrae el nombre del cliente tal cual viene (con prefijo de país) para el nombre del archivo.
-     */
-    private function getRawCustomerName(string $content): string
+    private function getRawClientName(string $content): string
     {
         if (preg_match('/Customer\s*:\s*(.+)/i', $content, $matches)) {
             return trim($matches[1]);
         }
         return 'UNKNOWN';
+    }
+
+    /**
+     * Obtiene la ruta de almacenamiento privada.
+     */
+    public function getStoragePath(string $clientName, string $year): string
+    {
+        $slug = Str::slug($clientName);
+        return "licenses/moldex3d/{$slug}/{$year}";
     }
 }
