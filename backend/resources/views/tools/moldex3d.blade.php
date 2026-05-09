@@ -123,6 +123,12 @@
                             <span style="color: #f3f4f6; font-size: 13px; font-weight: 700;" x-text="result.metadata.license_mode"></span>
                         </div>
 
+                        <!-- Versión -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+                            <span style="color: #9ca3af; font-size: 13px;">Versión</span>
+                            <span style="background: rgba(245, 158, 11, 0.1); color: #F59E0B; border: 1px solid rgba(245, 158, 11, 0.2); font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 4px; letter-spacing: 0.5px;" x-text="'v' + result.metadata.version"></span>
+                        </div>
+
                         <!-- Fecha Expiración -->
                         <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
                             <span style="color: #9ca3af; font-size: 13px;">Fecha de Expiración</span>

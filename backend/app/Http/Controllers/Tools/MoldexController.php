@@ -73,6 +73,7 @@ class MoldexController extends Controller
         Storage::disk('local')->put("private/{$storagePath}/{$finalFilename}", $content);
 
         // 4. Sincronizar con Inventario Activo
+        $parsedData['version'] = $metadata['year'];
         $syncResult = $this->syncService->sync($parsedData);
 
         // 5. Si es AJAX, devolver JSON con la data para la UI (Bento Grid)
