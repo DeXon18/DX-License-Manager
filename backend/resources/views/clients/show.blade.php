@@ -171,7 +171,9 @@
                                     <span class="tech-label">Configuración</span>
                                     <div style="display: flex; align-items: center; gap: 6px;">
                                         <span class="inv-badge badge-type">{{ $daemon->type }}</span>
-                                        <span class="inv-badge" style="background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1);">v{{ $daemon->version }}</span>
+                                        @if($daemon->version)
+                                            <span class="inv-badge" style="background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1);">v{{ $daemon->version }}</span>
+                                        @endif
                                     </div>
                                 </div>
 

@@ -53,6 +53,7 @@ class MoldexSyncService
                     'hostname'    => $parsedData['hostname'] ?? null,
                     'hardware_id' => $parsedData['machine_id'] ?? null,
                     'type'        => strtolower($parsedData['license_mode'] ?? 'floating'),
+                    'version'     => $parsedData['version'] ?? null,
                 ]
             );
 
