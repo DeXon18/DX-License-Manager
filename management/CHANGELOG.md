@@ -3,6 +3,19 @@
 
 ---
 
+## [2026-05-09] — Paridad de Temas y Refinamiento de UX Final
+
+### Added
+- **Paridad de Temas (Light/Dark)**: Refactorización total de `moldex3d.blade.php` y `clients/show.blade.php` para eliminar colores HEX hardcodeados, asegurando que todos los componentes visuales (Property List, Bento Grid, Inventory Cards, History Toggle) se adapten automáticamente al tema del sistema mediante variables CSS (`--primary`, `--muted`, `--surface`, etc.).
+- **Robustez en Herramientas**: Simplificación de la lógica de enlaces en el Hub de Herramientas para garantizar el acceso correcto a la auditoría de Moldex3D.
+- **Identidad de Marca**: Migración de colores estáticos de Moldex3D a la variable `--moldex` para consistencia cross-module.
+
+### Fixed
+- **Contraste de UI**: Corregida la visibilidad de textos secundarios y fondos de tarjetas en modo claro que anteriormente usaban valores optimizados solo para modo oscuro.
+- **Spinner & Dropzone**: Adaptación visual de los estados de carga y arrastre de archivos al sistema de diseño global.
+
+---
+
 ## [2026-05-09] — Diferenciación de Vendors en UI (Siemens vs Moldex3D)
 
 ### Added
