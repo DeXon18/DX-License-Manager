@@ -108,13 +108,13 @@
     <div class="tools-grid three-col">
         @foreach($features['Moldex3D'] as $tool)
             <a class="tool-card {{ !$tool->is_active ? 'tool-disabled' : '' }}" 
-               style="--card-accent: #b91c1c"
-               href="{{ $tool->is_active ? '#' : 'javascript:void(0)' }}">
+               style="--card-accent: #ED1C24"
+               href="{{ $tool->is_active ? ($tool->key == 'moldex3d_auditor' ? route('tools.moldex3d.index') : '#') : 'javascript:void(0)' }}">
                 <div class="tool-card-header">
                     <div class="tool-card-header-left">
-                        <div class="tool-icon-fallback" style="background: rgba(185,28,28,0.08); color: #b91c1c">
+                        <div class="tool-icon-fallback" style="background: rgba(237,28,36,0.08); color: #ED1C24">
                             @if($tool->key == 'moldex3d_auditor')
-                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="m4.93 4.93 14.14 14.14"/><path d="M2 12h20"/><path d="m19.07 4.93-14.14 14.14"/></svg>
                             @else
                                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
                             @endif
@@ -122,7 +122,7 @@
                         <div class="tool-name">{{ $tool->label }}</div>
                     </div>
                     @if($tool->key == 'moldex3d_auditor')
-                        <span class="tool-badge badge-ai">AI</span>
+                        <span class="tool-badge badge-doc">CORE</span>
                     @endif
                     @if(!$tool->is_active)
                         <span class="tool-badge badge-neutral">Próximamente</span>
@@ -132,7 +132,7 @@
                     <div class="tool-desc">{{ $tool->description }}</div>
                 </div>
                 <div class="tool-footer">
-                    <span class="tool-meta-item">{{ $tool->key == 'moldex3d_auditor' ? 'Compatible con .mac · IA integrada' : 'Portales · Documentación · Descargas' }}</span>
+                    <span class="tool-meta-item">{{ $tool->key == 'moldex3d_auditor' ? 'Compatible con .mac · Parser local' : 'Portales · Documentación · Descargas' }}</span>
                     <span class="tool-cta">{{ $tool->is_active ? 'Abrir →' : 'Bloqueado' }}</span>
                 </div>
             </a>
