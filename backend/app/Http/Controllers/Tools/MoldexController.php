@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Tools;
 
 use App\Http\Controllers\Controller;
 use App\Services\Licensing\MoldexService;
+use App\Services\Licensing\MoldexSyncService;
 use App\Services\Audit\MoldexParserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -13,13 +14,16 @@ class MoldexController extends Controller
 {
     protected $moldexService;
     protected $parserService;
+    protected $syncService;
 
     public function __construct(
         MoldexService $moldexService,
-        MoldexParserService $parserService
+        MoldexParserService $parserService,
+        MoldexSyncService $syncService
     ) {
         $this->moldexService = $moldexService;
         $this->parserService = $parserService;
+        $this->syncService = $syncService;
     }
 
     /**
@@ -68,13 +72,17 @@ class MoldexController extends Controller
         // Guardar en disco privado
         Storage::disk('local')->put("private/{$storagePath}/{$finalFilename}", $content);
 
-        // 4. Si es AJAX, devolver JSON con la data para la UI (Bento Grid)
+        // 4. Sincronizar con Inventario Activo
+        $syncResult = $this->syncService->sync($parsedData);
+
+        // 5. Si es AJAX, devolver JSON con la data para la UI (Bento Grid)
         if ($request->ajax()) {
             return response()->json([
-                'success'  => true,
-                'metadata' => $parsedData,
-                'filename' => $finalFilename,
-                'path'     => $fullPath
+                'success'   => true,
+                'metadata'  => $parsedData,
+                'filename'  => $finalFilename,
+                'path'      => $fullPath,
+                'inventory' => $syncResult
             ]);
         }
 

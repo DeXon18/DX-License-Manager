@@ -129,6 +129,22 @@
                             <span style="color: #F59E0B; font-size: 13px; font-weight: 700; font-family: var(--font-mono);" x-text="formatDate(result.metadata.expiration)"></span>
                         </div>
 
+                        <!-- Estado Sincronización -->
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.03);">
+                            <span style="color: #9ca3af; font-size: 13px;">Sincronización de Inventario</span>
+                            <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                                <div x-show="result.inventory && result.inventory.synced" style="display: flex; align-items: center; gap: 6px; color: #10B981; font-size: 12px; font-weight: 700;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                                    COMPLETADA
+                                </div>
+                                <div x-show="result.inventory && !result.inventory.synced" style="color: #EF4444; font-size: 12px; font-weight: 700;">
+                                    PENDIENTE
+                                </div>
+                                <span x-show="result.inventory && result.inventory.client_name" style="font-size: 10px; color: #6b7280; margin-top: 2px;" x-text="result.inventory.client_name"></span>
+                                <span x-show="result.inventory && result.inventory.error" style="font-size: 10px; color: #EF4444; margin-top: 2px;" x-text="result.inventory.error"></span>
+                            </div>
+                        </div>
+
                         <!-- Módulos Detectados -->
                         <div style="margin-top: 24px; margin-bottom: 12px;">
                             <div style="color: #9ca3af; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px;">Módulos y Licencias Detectadas</div>
@@ -160,7 +176,7 @@
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                     </div>
                     <div>
-                        <div style="font-size: 13px; font-weight: 600; color: var(--success);">Archivo procesado y almacenado correctamente en el servidor</div>
+                        <div style="font-size: 13px; font-weight: 600; color: var(--success);" x-text="result.inventory && result.inventory.synced ? 'Licencia auditada y sincronizada con el inventario del cliente' : 'Archivo procesado y almacenado correctamente en el servidor'"></div>
                     </div>
                 </div>
                 <div style="display: flex; gap: 8px;">
