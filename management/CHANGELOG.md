@@ -9,11 +9,12 @@
 - **Modelo de Datos**: Implementado accessor `vendor` en `LicenseInventoryDaemon` para identificación estructural de proveedores.
 - **UI Adaptativa**: 
   - Rediseño de labels en inventario: "Daemon" para Siemens y "Plataforma" para Moldex3D.
-  - Personalización de valores: Visualización de "Moldex3D" en lugar de nombres técnicos de procesos internos.
+  - **Logo Moldex3D**: Implementación de logo estilizado con colores de marca (Rojo/Naranja) para mayor identidad visual.
+  - **Limpieza de UI**: Eliminación de badges redundantes para Moldex3D, favoreciendo una interfaz más limpia.
   - Resaltado de hardware: Label específico "Machine ID" para licencias de Moldex3D.
 - **Sistema de Estilos**: 
-  - Nueva clase CSS `.badge-moldex` integrada en el sistema de diseño.
-  - Dinamismo de colores de vendor en tarjetas de inventario y badges.
+  - Nuevas clases CSS `.moldex-logo` y `.accent` para representación tipográfica de marca.
+  - Dinamismo de colores de vendor en tarjetas de inventario.
 
 ### Fixed
 - **Robustez**: Eliminada la dependencia de `str_contains` en las vistas, delegando la lógica de identificación al modelo.
