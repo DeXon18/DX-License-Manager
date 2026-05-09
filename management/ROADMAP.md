@@ -301,19 +301,21 @@ DX License Manager
 
 ---
 
-### 📋 Fase 9 — Moldex3D
-
-**Estado:** En planificación
-**Prerequisito:** ✅ Fase 8 validada por Oskar
-**Validación requerida antes de Fase 10:** Herramienta Moldex3D funcionando en beta.
-
-#### 9.1 — Moldex3D
-- [ ] Parser PHP local de archivos `.mac`
-- [ ] Extracción de Machine ID
-- [ ] Auditoría IA via n8n FallbackChain
-
-#### 9.2 — Recursos & enlaces
-- [ ] Links a documentación oficial Moldex3D
+### ✅ Fase 9 — Moldex3D
+ 
+ **Estado:** COMPLETADA
+ **Prerequisito:** ✅ Fase 8 validada por Oskar
+ **Validación:** ✅ Verificado por Oskar el 2026-05-09. Parser local y persistencia en inventario operativos.
+ 
+ #### 9.1 — Moldex3D ✅
+ - [x] Parser PHP local de archivos `.mac` (Regex determinista)
+ - [x] Extracción de Machine ID y metadatos de cliente
+ - [x] Auditoría de productos, cantidades y fechas de expiración
+ - [x] Persistencia automática en Inventario Activo (`MoldexSyncService`)
+ - [x] Vinculación inteligente de clientes (Fuzzy Match)
+ 
+ #### 9.2 — Recursos & enlaces
+ - [ ] Links a documentación oficial Moldex3D
 
 ---
 

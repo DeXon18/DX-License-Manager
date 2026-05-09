@@ -22,6 +22,24 @@
 
 ---
 
+## [2026-05-09] — Fase 9: Auditoría Moldex3D y Persistencia ✅
+
+### Added
+- **Parser Moldex3D**: Implementado parser determinista (regex) para archivos `.mac`.
+- **Persistencia en Inventario**: Nuevo `MoldexSyncService` que vincula automáticamente las licencias con clientes existentes en la base de datos.
+- **Registro de Productos**: Sincronización de módulos, cantidades y fechas de expiración en `license_inventory_products`.
+- **UI/UX Premium**: 
+  - Vista "Property List" estilo dark/técnico para resultados de auditoría.
+  - Dropzone rediseñado con alineación óptica corregida.
+  - Indicadores visuales de estado de sincronización en tiempo real.
+- **Nomenclatura**: Estandarización de archivos basada en `AÑO_ID_CLIENTE__TIPO_FECHA.mac`.
+- **Seguridad**: Almacenamiento privado estructurado y proceso local 100% determinista.
+
+### Fixed
+- **Alineación Dropzone**: Corregida desviación de iconos mediante `inline-flex` y contenedor de bloque.
+
+---
+
 ## [2026-05-08] — Generador Siemens COD (Completo)
 
 ### Added
