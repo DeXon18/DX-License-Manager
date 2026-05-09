@@ -40,4 +40,16 @@ class LicenseInventoryDaemon extends Model
     {
         return $this->hasMany(LicenseInventoryProduct::class, 'daemon_id');
     }
+
+    /**
+     * Identifica el vendor basado en el nombre del daemon.
+     */
+    public function getVendorAttribute(): string
+    {
+        $daemon = strtolower($this->daemon);
+        if (str_contains($daemon, 'moldex')) {
+            return 'moldex';
+        }
+        return 'siemens';
+    }
 }
