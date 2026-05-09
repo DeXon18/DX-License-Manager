@@ -11,6 +11,7 @@
   - Rediseño de labels en inventario: "Daemon" para Siemens y "Plataforma" para Moldex3D.
   - **Logo Moldex3D**: Implementación de logo estilizado con colores de marca (Rojo/Naranja) para mayor identidad visual.
   - **Limpieza de UI**: Eliminación de badges redundantes para Moldex3D, favoreciendo una interfaz más limpia.
+  - **Versión Prominente**: Mejora de la visibilidad de la versión (v2025) mediante un nuevo badge técnico de alta visibilidad.
   - Resaltado de hardware: Label específico "Machine ID" para licencias de Moldex3D.
 - **Sistema de Estilos**: 
   - Nuevas clases CSS `.moldex-logo` y `.accent` para representación tipográfica de marca.
