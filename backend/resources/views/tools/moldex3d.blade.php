@@ -127,13 +127,13 @@
                         <!-- Versión -->
                         <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-subtle);">
                             <span style="color: var(--muted); font-size: 13px;">Versión</span>
-                            <span style="background: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning-border); font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 4px; letter-spacing: 0.5px;" x-text="'v' + result.metadata.version"></span>
+                            <span style="background: var(--bg); color: var(--primary); border: 1px solid var(--border); font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 4px; letter-spacing: 0.5px;" x-text="'v' + result.metadata.version"></span>
                         </div>
 
                         <!-- Fecha Expiración -->
                         <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-subtle);">
                             <span style="color: var(--muted); font-size: 13px;">Fecha de Expiración</span>
-                            <span style="color: var(--warning); font-size: 13px; font-weight: 700; font-family: var(--font-mono);" x-text="formatDate(result.metadata.expiration)"></span>
+                            <span :style="isExpired(result.metadata.expiration) ? 'color: var(--danger)' : 'color: var(--primary)'" style="font-size: 13px; font-weight: 700; font-family: var(--font-mono);" x-text="formatDate(result.metadata.expiration)"></span>
                         </div>
 
                         <!-- Estado Sincronización -->
