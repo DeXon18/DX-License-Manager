@@ -121,7 +121,7 @@
                         </div>
                         <div class="tool-name">
                             @if($tool->vendor == 'Moldex3D' && $tool->key == 'moldex3d_auditor')
-                                Moldex<span class="accent">3D</span> <span style="font-weight: 400; opacity: 0.6; margin-left: 4px;">Auditor</span>
+                                Moldex<span class="accent">3D</span>
                             @else
                                 {{ $tool->label }}
                             @endif
