@@ -38,11 +38,18 @@ class NXSuiteController extends Controller
     public function process(Request $request)
     {
         $request->validate([
-            'license_file' => 'required|file',
+            'license_file' => 'required|file|max:10240|mimetypes:text/plain,application/octet-stream',
             'motor'        => 'required|in:legacy,salt',
         ]);
 
         $file    = $request->file('license_file');
+        
+        // Validación extra de extensión
+        $extension = strtolower($file->getClientOriginalExtension());
+        if (!in_array($extension, ['lic', 'txt'])) {
+            return back()->withErrors(['license_file' => 'Solo se permiten archivos .lic o .txt.']);
+        }
+
         $content = file_get_contents($file->getRealPath());
         $motor   = $request->input('motor');
 
@@ -56,7 +63,7 @@ class NXSuiteController extends Controller
 
         // 2. Solicitar auditoría asíncrona
         $audit = $this->auditService->requestAudit(
-            auth()->id() ?? 1, // Fallback a ID 1 si no hay auth (para tests)
+            auth()->id(), 
             $cleanContent,
             $detectedHostIds
         );
