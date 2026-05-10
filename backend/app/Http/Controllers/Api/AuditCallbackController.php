@@ -17,7 +17,20 @@ class AuditCallbackController extends Controller
 
     public function __invoke(Request $request)
     {
-        // n8n envía el JSON resultado
+        // 1. Verificar firma HMAC (si el secreto está configurado)
+        $secret = config('ai.n8n_webhook_secret');
+        if ($secret) {
+            $signature = $request->header('X-N8N-Signature');
+            $payload = $request->getContent();
+            $computed = hash_hmac('sha256', $payload, $secret);
+
+            if (!$signature || !hash_equals($computed, $signature)) {
+                \Illuminate\Support\Facades\Log::warning("Intento de callback n8n con firma inválida desde: " . $request->ip());
+                return response()->json(['error' => 'Invalid signature'], 401);
+            }
+        }
+
+        // 2. n8n envía el JSON resultado
         $data = $request->all();
 
         $success = $this->auditService->handleCallback($data);
