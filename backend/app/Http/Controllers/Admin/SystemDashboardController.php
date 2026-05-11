@@ -62,7 +62,9 @@ class SystemDashboardController extends Controller
     private function getLoadAverage()
     {
         $load = sys_getloadavg();
-        return $load ? implode(' / ', $load) : 'N/A';
+        if (!$load) return 'N/A';
+        
+        return collect($load)->map(fn($v) => number_format($v, 2))->implode(' / ');
     }
 
     private function getMemoryMetrics()
@@ -102,9 +104,20 @@ class SystemDashboardController extends Controller
     {
         try {
             DB::connection()->getPdo();
-            return ['status' => 'online', 'message' => 'MariaDB Operational'];
+            
+            // Database Size
+            $dbName = config('database.connections.mysql.database');
+            $size = DB::select("SELECT SUM(data_length + index_length) / 1024 / 1024 AS size_mb FROM information_schema.TABLES WHERE table_schema = ?", [$dbName]);
+            $sizeMb = round($size[0]->size_mb ?? 0, 2);
+            $tables = DB::select("SELECT COUNT(*) as count FROM information_schema.TABLES WHERE table_schema = ?", [$dbName]);
+
+            return [
+                'status' => 'online', 
+                'message' => 'MariaDB Operational',
+                'details' => "Size: {$sizeMb} MB · Tables: " . ($tables[0]->count ?? 0)
+            ];
         } catch (\Exception $e) {
-            return ['status' => 'offline', 'message' => 'Connection Failed'];
+            return ['status' => 'offline', 'message' => 'Connection Failed', 'details' => $e->getMessage()];
         }
     }
 
@@ -112,9 +125,16 @@ class SystemDashboardController extends Controller
     {
         try {
             Redis::ping();
-            return ['status' => 'online', 'message' => 'Redis Cache Active'];
+            $info = Redis::info();
+            $mem = $info['used_memory_human'] ?? 'N/A';
+            
+            return [
+                'status' => 'online', 
+                'message' => 'Redis Cache Active',
+                'details' => "Memory: {$mem} · Keys: " . ($info['db0']['keys'] ?? 0)
+            ];
         } catch (\Exception $e) {
-            return ['status' => 'offline', 'message' => 'Service Down'];
+            return ['status' => 'offline', 'message' => 'Service Down', 'details' => 'Not reachable'];
         }
     }
 

@@ -59,10 +59,9 @@
             </div>
         </div>
 
-        {{-- Infrastructure --}}
         <div class="stat-card">
             <div class="stat-label">Global Load Avg</div>
-            <div class="stat-value font-mono" style="font-size: 22px;">
+            <div class="stat-value font-mono">
                 {{ $metrics['os']['load'] }}
             </div>
             <div class="stat-meta font-mono muted">
@@ -105,12 +104,15 @@
             <div style="padding: 20px;">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                     @foreach($metrics['services'] as $name => $info)
-                        <div style="padding: 12px; border-radius: 6px; background: var(--bg); border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
-                            <div>
-                                <div style="font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase;">{{ $name }}</div>
+                        <div style="padding: 12px; border-radius: 6px; background: var(--bg); border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: relative; overflow: hidden;">
+                            <div style="flex: 1;">
+                                <div style="font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em;">{{ $name }}</div>
                                 <div style="font-size: 13px; font-weight: 600; color: var(--primary);">{{ strtoupper($info['message']) }}</div>
+                                @if(isset($info['details']))
+                                    <div style="font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--muted); margin-top: 4px;">{{ $info['details'] }}</div>
+                                @endif
                             </div>
-                            <div class="dot {{ $info['status'] === 'online' ? 'online' : ($info['status'] === 'degraded' ? 'warn' : 'danger') }}"></div>
+                            <div class="dot {{ $info['status'] === 'online' ? 'online' : ($info['status'] === 'degraded' ? 'warn' : 'danger') }}" style="flex-shrink: 0; margin-left: 12px;"></div>
                         </div>
                     @endforeach
                 </div>
