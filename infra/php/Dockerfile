@@ -43,4 +43,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # PHP ini para producción
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
+# Configurar directorio seguro para Git (evita errores de ownership en volúmenes)
+RUN git config --global --add safe.directory /var/www/html
+
 WORKDIR /var/www/html

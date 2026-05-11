@@ -4,16 +4,6 @@
 
 @section('content')
 <div class="page-header">
-    <div class="page-header-info">
-        <h1 class="page-title flex items-center gap-3">
-            Telemetría Global
-            <span class="dot-live" title="Live System"></span>
-            @if($metrics['os']['maintenance'])
-                <span style="font-size: 0.6rem; background: var(--danger); color: white; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 800; animation: pulse 2s infinite;">Mantenimiento</span>
-            @endif
-        </h1>
-        <p class="page-sub">Monitorización de Infraestructura, Servicios y Seguridad en tiempo real.</p>
-    </div>
     <div style="text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); opacity: 0.8; padding-bottom: 5px;">
         <div style="display: flex; align-items: center; gap: 15px; justify-content: flex-end;">
             <div style="display: flex; align-items: center; gap: 6px;">
