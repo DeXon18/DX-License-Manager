@@ -3,6 +3,18 @@
 
 ---
 
+## [2026-05-11] — Estabilización de NOC Pro e Infraestructura ✅
+
+### Added
+- **Git Localization**: Localización completa de fechas relativas al castellano ("hace X segundos") mediante integración de Carbon y timestamps de Git.
+- **Representative UI Colors**: Implementación de código de colores semánticos en el Dashboard (Azul para Caché, Ámbar para Backups, Naranja para Alertas, Verde para Despliegues OK).
+- **UX Quick Actions**: Alineación ergonómica a la izquierda y micro-interacciones de desplazamiento lateral en el panel de acciones administrativas.
+
+### Fixed
+- **Git Multi-User Permissions**: Configuración de `safe.directory` a nivel de sistema (`--system`) en el contenedor para permitir que el servidor web (`www-data`) extraiga metadatos del repositorio.
+- **App Localization Loop**: Sincronización de `APP_LOCALE=es` en configuración global y entornos Docker para garantizar consistencia en todas las respuestas del sistema.
+- **NOC Alignment**: Corregida alineación del NOC para lectura natural (de derecha a izquierda) y normalización visual de fuentes mono-espaciadas.
+
 ## [2026-05-11] — Modularización Administrativa (Phase 10.4) ✅
 
 ### Added
