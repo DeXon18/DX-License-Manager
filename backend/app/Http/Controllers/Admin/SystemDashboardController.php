@@ -53,20 +53,20 @@ class SystemDashboardController extends Controller
             'security' => [
                 'active_sessions' => $this->getActiveSessionsCount(),
                 'blacklist_count' => Redis::scard('jwt_blacklist') ?? 0,
-                'failed_logins_24h' => Schema::hasTable('audit_log') 
-                    ? DB::table('audit_log')->where('action', 'login_failed')->where('created_at', '>', now()->subDay())->count() 
+                'failed_logins_24h' => Schema::hasTable('audit_logs') 
+                    ? DB::table('audit_logs')->where('action', 'login_failed')->where('created_at', '>', now()->subDay())->count() 
                     : 0,
             ],
-            'recent_logs' => Schema::hasTable('audit_log')
-                ? DB::table('audit_log')
-                    ->leftJoin('users', 'audit_log.user_id', '=', 'users.id')
-                    ->select('audit_log.*', 'users.name as user_name')
-                    ->orderBy('audit_log.created_at', 'desc')
+            'recent_logs' => Schema::hasTable('audit_logs')
+                ? DB::table('audit_logs')
+                    ->leftJoin('users', 'audit_logs.user_id', '=', 'users.id')
+                    ->select('audit_logs.*', 'users.name as user_name')
+                    ->orderBy('audit_logs.created_at', 'desc')
                     ->limit(10)
                     ->get()
                 : [],
-            'errors_24h' => Schema::hasTable('audit_log') 
-                ? DB::table('audit_log')->where('level', 'error')->where('created_at', '>', now()->subDay())->count() 
+            'errors_24h' => Schema::hasTable('audit_logs') 
+                ? DB::table('audit_logs')->where('level', 'error')->where('created_at', '>', now()->subDay())->count() 
                 : 0,
         ];
 

@@ -84,7 +84,7 @@ class SystemActionController extends Controller
     {
         try {
             $token = config('services.telegram-bot-api.token');
-            $chatId = config('services.telegram-bot-api.chat_id') ?? '677271032'; // Fallback a Oskar si no hay chat_id pro
+            $chatId = config('services.telegram-bot-api.chat_id') ?? '2795962'; // Fallback a Oskar si no hay chat_id pro
 
             $response = Http::post("https://api.telegram.org/bot{$token}/sendMessage", [
                 'chat_id' => $chatId,
@@ -105,7 +105,7 @@ class SystemActionController extends Controller
 
     private function logAction($action, $description)
     {
-        DB::table('audit_log')->insert([
+        DB::table('audit_logs')->insert([
             'user_id' => auth()->id(),
             'action' => $action,
             'description' => $description,
