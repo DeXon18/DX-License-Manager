@@ -4,28 +4,9 @@
 
 @section('header')
     <div class="page-header">
-        <nav class="breadcrumb" aria-label="Breadcrumb">
-            <a href="{{ route('dashboard') }}">Portal</a>
-            <span>/</span>
-            <a href="{{ route('admin.system.index') }}">Admin</a>
-            <span>/</span>
-            <span class="font-bold">Auditoría y Logs</span>
-        </nav>
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%;">
-            <div>
-                <h1 class="page-title">Centro de Observabilidad</h1>
-                <p class="page-sub">Trazabilidad completa de acciones, errores y auditorías de IA.</p>
-            </div>
-            <div style="display: flex; gap: 12px;">
-                <div class="stat-mini">
-                    <span class="label">Eventos (24h)</span>
-                    <span class="value">{{ $stats['total_24h'] }}</span>
-                </div>
-                <div class="stat-mini">
-                    <span class="label">Alertas/Errores</span>
-                    <span class="value" style="color: var(--danger);">{{ $stats['errors_24h'] }}</span>
-                </div>
-            </div>
+        <div class="page-header-info">
+            <h1 class="page-title">Auditoría y Logs</h1>
+            <p class="page-sub">Trazabilidad total con filtros avanzados por usuario, acción, nivel e IP.</p>
         </div>
     </div>
 @endsection
@@ -53,17 +34,27 @@
                     <label style="display: block; font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 6px;">Tipo de Acción</label>
                     <input type="text" name="action" value="{{ request('action') }}" placeholder="Ej: db_backup" class="form-control" style="width: 100%;">
                 </div>
-                <button type="submit" class="btn btn-primary">Filtrar</button>
-                <a href="{{ route('admin.audit.index') }}" class="btn" style="border: 1px solid var(--border);">Limpiar</a>
+                <button type="submit" class="btn btn-primary" style="height: 38px;">Filtrar</button>
+                <a href="{{ route('admin.audit.index') }}" class="btn-clear">Limpiar</a>
             </form>
         </div>
     </div>
 
     <div class="card">
         <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-            <span class="card-title">Timeline de Actividad</span>
-            <div style="display: flex; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <span class="card-title">Timeline de Actividad</span>
                 <span class="badge" style="background: rgba(67, 97, 238, 0.1); color: var(--accent);">{{ $stats['critical_actions'] }} Acciones Críticas</span>
+            </div>
+            <div style="display: flex; gap: 20px;">
+                <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                    <span style="font-size: 9px; color: var(--muted); text-transform: uppercase; font-weight: 700;">Eventos (24h)</span>
+                    <span style="font-size: 14px; font-weight: 700; color: var(--primary);">{{ $stats['total_24h'] }}</span>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                    <span style="font-size: 9px; color: var(--muted); text-transform: uppercase; font-weight: 700;">Alertas</span>
+                    <span style="font-size: 14px; font-weight: 700; color: var(--danger);">{{ $stats['errors_24h'] }}</span>
+                </div>
             </div>
         </div>
         <div style="padding: 0; overflow: hidden;">
@@ -143,6 +134,25 @@
         font-weight: 700;
         color: var(--primary);
         font-family: 'Outfit', sans-serif;
+    }
+    .btn-clear {
+        height: 38px;
+        display: flex;
+        align-items: center;
+        padding: 0 16px;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+    .btn-clear:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: var(--primary);
+        border-color: var(--border-subtle);
     }
     .form-control {
         background: rgba(255,255,255,0.03);

@@ -4,24 +4,16 @@
 
 @section('header')
     <div class="page-header">
-        <nav class="breadcrumb" aria-label="Breadcrumb">
-            <a href="{{ route('dashboard') }}">Portal</a>
-            <span>/</span>
-            <span class="muted">Admin</span>
-            <span>/</span>
-            <span class="font-bold">System Dashboard</span>
-        </nav>
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%;">
-            <div style="flex: 1;">
-                <h1 class="page-title flex items-center gap-3">
-                    System Control Center
-                    <span class="dot-live" title="Live System"></span>
-                    @if($metrics['os']['maintenance'])
-                        <span style="font-size: 0.6rem; background: var(--danger); color: white; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 800; animation: pulse 2s infinite;">Mantenimiento</span>
-                    @endif
-                </h1>
-                <p class="page-sub">NOC: Monitorización de Infraestructura, Servicios y Seguridad en tiempo real.</p>
-            </div>
+        <div class="page-header-info">
+            <h1 class="page-title flex items-center gap-3">
+                Telemetría Global
+                <span class="dot-live" title="Live System"></span>
+                @if($metrics['os']['maintenance'])
+                    <span style="font-size: 0.6rem; background: var(--danger); color: white; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 800; animation: pulse 2s infinite;">Mantenimiento</span>
+                @endif
+            </h1>
+            <p class="page-sub">Monitorización de Infraestructura, Servicios y Seguridad en tiempo real.</p>
+        </div>
             <div style="text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); opacity: 0.8; padding-bottom: 5px;">
                 <div style="display: flex; align-items: center; gap: 15px; justify-content: flex-end;">
                     <div style="display: flex; align-items: center; gap: 6px;">
@@ -224,7 +216,7 @@
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                     </div>
                     <div class="module-info">
-                        <span class="module-title">Database Vault</span>
+                        <span class="module-title">Gestión de Backups</span>
                         <p class="module-desc">Historial completo, descargas y gestión de espacio en disco para copias de seguridad.</p>
                     </div>
                 </a>
@@ -233,7 +225,7 @@
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                     </div>
                     <div class="module-info">
-                        <span class="module-title">Centro de Auditoría</span>
+                        <span class="module-title">Auditoría y Logs</span>
                         <p class="module-desc">Trazabilidad total con filtros avanzados por usuario, acción, nivel e IP.</p>
                     </div>
                 </a>

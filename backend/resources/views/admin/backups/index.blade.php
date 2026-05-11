@@ -4,28 +4,9 @@
 
 @section('header')
     <div class="page-header">
-        <nav class="breadcrumb" aria-label="Breadcrumb">
-            <a href="{{ route('dashboard') }}">Portal</a>
-            <span>/</span>
-            <a href="{{ route('admin.system.index') }}">Admin</a>
-            <span>/</span>
-            <span class="font-bold">Copias de Seguridad</span>
-        </nav>
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; width: 100%;">
-            <div>
-                <h1 class="page-title">Database Vault</h1>
-                <p class="page-sub">Gestión histórica y manual de copias de seguridad de MariaDB.</p>
-            </div>
-            <div style="display: flex; gap: 12px;">
-                <div class="stat-mini">
-                    <span class="label">Espacio Ocupado</span>
-                    <span class="value">{{ $totalSize }}</span>
-                </div>
-                <button onclick="executeBackup()" class="btn btn-primary" id="btn-backup">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                    Generar Copia Ahora
-                </button>
-            </div>
+        <div class="page-header-info">
+            <h1 class="page-title">Gestión de Backups</h1>
+            <p class="page-sub">Historial completo, descargas y gestión de espacio en disco para copias de seguridad.</p>
         </div>
     </div>
 @endsection
@@ -34,8 +15,20 @@
 <div class="dashboard-container" x-data="backupManager()">
     <div class="card">
         <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-            <span class="card-title">Historial de Copias</span>
-            <span style="font-size: 0.6rem; color: var(--muted); border: 1px solid var(--border-subtle); padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em;">Retención: 30 Días</span>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <span class="card-title">Historial de Copias</span>
+                <span style="font-size: 0.6rem; color: var(--muted); border: 1px solid var(--border-subtle); padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em;">Retención: 30 Días</span>
+            </div>
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <div style="display: flex; flex-direction: column; align-items: flex-end; padding-right: 15px; border-right: 1px solid var(--border-subtle);">
+                    <span style="font-size: 9px; color: var(--muted); text-transform: uppercase; font-weight: 700;">Espacio Ocupado</span>
+                    <span style="font-size: 14px; font-weight: 700; color: var(--primary);">{{ $totalSize }}</span>
+                </div>
+                <button onclick="executeBackup()" class="btn btn-primary" id="btn-backup" style="height: 32px; font-size: 11px; padding: 0 12px;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                    Generar Copia
+                </button>
+            </div>
         </div>
         <div style="padding: 0; overflow: hidden;">
             <table style="width: 100%; border-collapse: collapse;">
