@@ -39,13 +39,13 @@
 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div class="form-group">
-                        <label for="password">CONTRASEÑA</label>
-                        <input type="password" name="password" id="password" class="font-mono" required>
+                        <label for="password">CONTRASEÑA (OPCIONAL)</label>
+                        <input type="password" name="password" id="password" class="font-mono" placeholder="Vacío = Aleatoria">
                         @error('password') <p class="date-sub" style="margin-top: 4px;">{{ $message }}</p> @enderror
                     </div>
                     <div class="form-group">
                         <label for="password_confirmation">CONFIRMAR</label>
-                        <input type="password" name="password_confirmation" id="password_confirmation" class="font-mono" required>
+                        <input type="password" name="password_confirmation" id="password_confirmation" class="font-mono">
                     </div>
                 </div>
 

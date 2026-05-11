@@ -11,6 +11,8 @@ use Illuminate\Validation\Rule;
 
 use App\Notifications\NewUserCredentials;
 
+use Illuminate\Support\Str;
+
 class UserController extends Controller
 {
     public function index(Request $request)
@@ -47,21 +49,25 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'nullable|string|min:8|confirmed',
             'role_id' => 'required|exists:roles,id',
             'is_active' => 'boolean',
         ]);
 
+        $password = $request->filled('password') 
+            ? $request->password 
+            : Str::random(12);
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($password),
             'role_id' => $request->role_id,
             'is_active' => $request->has('is_active'),
         ]);
 
         // Enviar notificación con credenciales
-        $user->notify(new NewUserCredentials($request->password));
+        $user->notify(new NewUserCredentials($password));
 
         return redirect()->route('admin.users.index')->with('success', 'Usuario creado correctamente y notificación enviada.');
     }
