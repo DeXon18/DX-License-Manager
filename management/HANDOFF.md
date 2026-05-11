@@ -1,20 +1,15 @@
-He completado la evolución del Dashboard del Sistema a la versión **NOC Pro**.
+He completado la implementación del **Mantenimiento Selectivo (Admin Friendly)**.
 
-### Cambios Principales:
-1.  **Telemetría de Bajo Nivel**: Implementada lectura directa de `eth0` para tráfico de red (RX/TX) y monitorización profunda de MariaDB (conexiones activas y consultas lentas).
-2.  **Panel de Acciones Rápidas (NOC Control)**: Panel interactivo con Alpine.js que permite ejecutar tareas críticas:
-    *   Limpiar caché y vistas.
-    *   Reiniciar workers de colas.
-    *   Generar backups manuales de MariaDB.
-    *   Conmutar el Modo Mantenimiento.
-    *   Probar alertas de Telegram.
-3.  **Audit Live Feed**: Nueva sección que muestra los últimos 10 eventos de auditoría administrativa en tiempo real.
-4.  **Integración Git**: Detección automática del hash de commit y fecha del último despliegue en la cabecera.
-5.  **Seguridad**: Todas las acciones administrativas quedan registradas en la base de datos vinculadas al usuario.
+### Mejoras Implementadas:
+1.  **Middleware de Filtrado**: Nuevo middleware `SelectiveMaintenance` que intercepta las peticiones y permite el acceso solo a administradores cuando el mantenimiento está activo.
+2.  **Bypass para Administradores**: Ahora puedes pulsar el botón de mantenimiento y seguir navegando por todo el portal (incluyendo administración y herramientas) sin ser expulsado.
+3.  **Aviso Visual Persistente**: Se ha añadido un banner superior de color ámbar que te recuerda que el mantenimiento está activo y que los usuarios estándar no pueden entrar.
+4.  **Página 503 Premium**: Los usuarios no administradores verán una página de mantenimiento profesional con el logo del proyecto y un diseño minimalista.
+5.  **Control Centralizado**: El botón del Dashboard ahora gestiona este nuevo modo selectivo, asegurando que nunca te vuelvas a quedar fuera del sistema.
 
 ### Verificación:
-- Las métricas se actualizan correctamente al recargar.
-- Las acciones muestran confirmación antes de ejecutarse.
-- El modo mantenimiento visualiza un indicador pulsante en la cabecera.
+- **Admin**: Puede navegar libremente y ve el banner superior.
+- **Público/Usuario**: Recibe un error 503 con la nueva vista personalizada.
+- **Login**: Sigue siendo accesible para que los administradores puedan iniciar sesión incluso en mantenimiento.
 
 Los cambios han sido commiteados y subidos a la rama `feature/system-noc-pro`.
