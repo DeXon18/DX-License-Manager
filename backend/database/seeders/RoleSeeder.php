@@ -42,17 +42,41 @@ class RoleSeeder extends Seeder
             Role::firstOrCreate(['slug' => $roleData['slug']], $roleData);
         }
 
-        // 2. Crear Usuario Admin Inicial (Oskar)
-        $adminRole = Role::where('slug', 'admin')->first();
-
-        User::firstOrCreate(
-            ['email' => 'dexon18@gmail.com'],
+        // 2. Crear Usuarios de Prueba (uno de cada rol)
+        $users = [
             [
-                'name' => 'Oskar',
-                'password' => Hash::make('password'), // El usuario deberá cambiarla
-                'role_id' => $adminRole->id,
-                'is_active' => true,
-            ]
-        );
+                'name' => 'Oskar Admin',
+                'email' => 'dexon18@gmail.com',
+                'role' => 'admin'
+            ],
+            [
+                'name' => 'Técnico Especialista',
+                'email' => 'tecnico@dxpro.es',
+                'role' => 'technician'
+            ],
+            [
+                'name' => 'Staff Administrativo',
+                'email' => 'staff@dxpro.es',
+                'role' => 'staff'
+            ],
+            [
+                'name' => 'Usuario Lector',
+                'email' => 'viewer@dxpro.es',
+                'role' => 'viewer'
+            ],
+        ];
+
+        foreach ($users as $userData) {
+            $role = Role::where('slug', $userData['role'])->first();
+            User::firstOrCreate(
+                ['email' => $userData['email']],
+                [
+                    'name' => $userData['name'],
+                    'password' => Hash::make('password123'),
+                    'role_id' => $role->id,
+                    'is_active' => true,
+                ]
+            );
+        }
     }
 }

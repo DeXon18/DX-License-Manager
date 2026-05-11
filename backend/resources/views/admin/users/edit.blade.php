@@ -3,117 +3,103 @@
 @section('title', 'Editar Usuario — DX License Manager')
 
 @section('content')
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center mb-4">
-                <a href="{{ route('admin.users.index') }}" class="btn btn-sm btn-outline-secondary me-3">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
-                <h1 class="h3 mb-0 text-white">Editar Usuario</h1>
-            </div>
-
-            <div class="card bg-dark border-secondary">
-                <div class="card-body p-4">
-                    <form action="{{ route('admin.users.update', $user) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-
-                        <div class="mb-3">
-                            <label for="name" class="form-label text-secondary small text-uppercase fw-bold">Nombre Completo</label>
-                            <input type="text" name="name" id="name" class="form-control bg-transparent border-secondary text-white @error('name') is-invalid @enderror" 
-                                   value="{{ old('name', $user->name) }}" required>
-                            @error('name')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="email" class="form-label text-secondary small text-uppercase fw-bold">Email Institucional</label>
-                            <input type="email" name="email" id="email" class="form-control bg-transparent border-secondary text-white font-mono @error('email') is-invalid @enderror" 
-                                   value="{{ old('email', $user->email) }}" required>
-                            @error('email')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="p-3 bg-secondary bg-opacity-10 rounded mb-3 border border-secondary">
-                            <p class="text-secondary small mb-2 text-uppercase fw-bold"><i class="fas fa-key me-2"></i>Cambiar Contraseña</p>
-                            <p class="text-muted extra-small mb-3 font-mono">Deja estos campos en blanco si no deseas cambiar la contraseña actual.</p>
-                            
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label for="password" class="form-label text-secondary small">Nueva Contraseña</label>
-                                    <input type="password" name="password" id="password" class="form-control form-control-sm bg-transparent border-secondary text-white font-mono @error('password') is-invalid @enderror">
-                                    @error('password')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="password_confirmation" class="form-label text-secondary small">Confirmar</label>
-                                    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control form-control-sm bg-transparent border-secondary text-white font-mono">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="role_id" class="form-label text-secondary small text-uppercase fw-bold">Rol en el Sistema</label>
-                            <select name="role_id" id="role_id" class="form-select bg-transparent border-secondary text-white @error('role_id') is-invalid @enderror" required>
-                                @foreach($roles as $role)
-                                    <option value="{{ $role->id }}" {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>
-                                        {{ $role->name }} — {{ $role->description }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('role_id')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-4" x-data="{ active: {{ $user->is_active ? 'true' : 'false' }} }">
-                            <div class="d-flex align-items-center justify-content-between p-3 bg-secondary bg-opacity-5 rounded border border-secondary border-opacity-25">
-                                <div>
-                                    <div class="text-white small fw-bold">Usuario Activo</div>
-                                    <div class="text-secondary extra-small">Permite el inicio de sesión del usuario</div>
-                                </div>
-                                @if($user->id !== auth()->id())
-                                    <input type="hidden" name="is_active" :value="active ? 1 : 0">
-                                    <button type="button" 
-                                            class="switch" 
-                                            :class="active ? 'on' : 'off'"
-                                            @click="active = !active">
-                                    </button>
-                                @else
-                                    <input type="hidden" name="is_active" value="1">
-                                    <span class="badge badge-success">SIEMPRE ACTIVO</span>
-                                @endif
-                            </div>
-                            @if($user->id === auth()->id())
-                                <div class="text-muted extra-small mt-2 px-1">
-                                    <i class="fas fa-shield-alt me-1"></i> No puedes desactivar tu propia cuenta administrativa por seguridad.
-                                </div>
-                            @endif
-                        </div>
-
-                        <div class="d-grid pt-2">
-                            <button type="submit" class="btn btn-primary py-2">
-                                <i class="fas fa-save me-2"></i> Actualizar Usuario
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+<div class="page-header">
+    <div style="display: flex; align-items: center; gap: 16px;">
+        <a href="{{ route('admin.users.index') }}" class="btn-secondary" style="padding: 8px 12px;">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <div>
+            <h1 class="page-title">Editar Usuario</h1>
+            <p class="page-sub">Modifica los permisos y datos de {{ $user->name }}.</p>
         </div>
     </div>
 </div>
 
-<style>
-    .form-control:focus, .form-select:focus {
-        background-color: rgba(255,255,255,0.02);
-        border-color: var(--accent);
-        box-shadow: 0 0 0 0.25rem rgba(var(--accent-rgb), 0.15);
-        color: white;
-    }
-    .extra-small { font-size: 0.7rem; }
-</style>
+<div style="max-width: 600px;">
+    <div class="card" style="--accent: var(--accent);">
+        <div class="card-header">
+            <span class="card-title">Perfil de Usuario</span>
+        </div>
+        
+        <div style="padding: 32px;">
+            <form action="{{ route('admin.users.update', $user) }}" method="POST">
+                @csrf
+                @method('PUT')
+
+                <div class="form-group">
+                    <label for="name">NOMBRE COMPLETO</label>
+                    <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required>
+                    @error('name') <p class="date-sub" style="margin-top: 4px;">{{ $message }}</p> @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="email">EMAIL INSTITUCIONAL</label>
+                    <input type="email" name="email" id="email" class="font-mono" value="{{ old('email', $user->email) }}" required>
+                    @error('email') <p class="date-sub" style="margin-top: 4px;">{{ $message }}</p> @enderror
+                </div>
+
+                <div style="padding: 20px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 24px;">
+                    <div style="font-weight: 600; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px;">
+                        <i class="fas fa-key me-2"></i>Seguridad (Opcional)
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="password" style="font-size: 11px;">NUEVA CONTRASEÑA</label>
+                            <input type="password" name="password" id="password" class="font-mono" style="padding: 8px 12px;">
+                            @error('password') <p class="date-sub" style="margin-top: 4px;">{{ $message }}</p> @enderror
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label for="password_confirmation" style="font-size: 11px;">CONFIRMAR</label>
+                            <input type="password" name="password_confirmation" id="password_confirmation" class="font-mono" style="padding: 8px 12px;">
+                        </div>
+                    </div>
+                    <p style="font-size: 10px; color: var(--muted); margin-top: 12px;">Deja en blanco para mantener la contraseña actual.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="role_id">ROL EN EL SISTEMA</label>
+                    <select name="role_id" id="role_id" style="width: 100%; padding: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--primary); font-family: var(--font-sans);" required>
+                        @foreach($roles as $role)
+                            <option value="{{ $role->id }}" {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>
+                                {{ $role->name }} — {{ $role->description }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('role_id') <p class="date-sub" style="margin-top: 4px;">{{ $message }}</p> @enderror
+                </div>
+
+                <div class="form-group" x-data="{ active: {{ $user->is_active ? 'true' : 'false' }} }">
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;">
+                        <div>
+                            <div style="font-weight: 600; font-size: 13px; color: var(--primary);">Usuario Activo</div>
+                            <div style="font-size: 11px; color: var(--muted);">Define si el usuario puede entrar al portal</div>
+                        </div>
+                        @if($user->id !== auth()->id())
+                            <input type="hidden" name="is_active" :value="active ? 1 : 0">
+                            <button type="button" 
+                                    class="switch" 
+                                    :class="active ? 'on' : 'off'"
+                                    @click="active = !active">
+                            </button>
+                        @else
+                            <input type="hidden" name="is_active" value="1">
+                            <span class="badge badge-success">SIEMPRE ACTIVO</span>
+                        @endif
+                    </div>
+                    @if($user->id === auth()->id())
+                        <div style="font-size: 11px; color: var(--muted); margin-top: 8px; font-style: italic;">
+                            <i class="fas fa-shield-alt me-1"></i> Por seguridad no puedes desactivar tu propia cuenta.
+                        </div>
+                    @endif
+                </div>
+
+                <div style="margin-top: 32px;">
+                    <button type="submit" class="btn-primary" style="width: 100%; padding: 14px;">
+                        <i class="fas fa-sync-alt me-2"></i> Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection

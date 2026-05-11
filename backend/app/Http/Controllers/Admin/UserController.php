@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
+use App\Notifications\NewUserCredentials;
+
 class UserController extends Controller
 {
     public function index(Request $request)
@@ -50,7 +52,7 @@ class UserController extends Controller
             'is_active' => 'boolean',
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -58,7 +60,10 @@ class UserController extends Controller
             'is_active' => $request->has('is_active'),
         ]);
 
-        return redirect()->route('admin.users.index')->with('success', 'Usuario creado correctamente.');
+        // Enviar notificación con credenciales
+        $user->notify(new NewUserCredentials($request->password));
+
+        return redirect()->route('admin.users.index')->with('success', 'Usuario creado correctamente y notificación enviada.');
     }
 
     public function edit(User $user)
@@ -114,5 +119,17 @@ class UserController extends Controller
             'is_active' => $user->is_active,
             'message' => 'Estado actualizado correctamente.'
         ]);
+    }
+
+    public function destroy(User $user)
+    {
+        // No permitir eliminarse a sí mismo
+        if ($user->id === auth()->id()) {
+            return redirect()->route('admin.users.index')->with('error', 'No puedes eliminar tu propia cuenta.');
+        }
+
+        $user->delete();
+
+        return redirect()->route('admin.users.index')->with('success', 'Usuario eliminado correctamente.');
     }
 }
