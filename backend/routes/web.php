@@ -11,6 +11,7 @@ use App\Http\Controllers\Tools\MoldexController;
 use App\Http\Controllers\Tools\NXSuiteController;
 use App\Http\Controllers\Admin\SystemDashboardController;
 use App\Http\Controllers\Admin\SystemActionController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -79,6 +80,10 @@ Route::middleware(['auth.jwt'])->group(function () {
 
         // Nuevos módulos modularizados
         Route::get('/backups', [\App\Http\Controllers\Admin\BackupController::class, 'index'])->name('backups.index');
+        // Gestión de Usuarios
+        Route::resource('/users', UserController::class)->names('users');
+        Route::post('/users/{user}/toggle', [UserController::class, 'toggleStatus'])->name('users.toggle');
+
         Route::get('/audit', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('audit.index');
     });
 });

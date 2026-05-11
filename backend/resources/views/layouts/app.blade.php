@@ -112,6 +112,9 @@
                 <a class="sidebar-item {{ request()->routeIs('admin.audit.*') ? 'active' : '' }}" href="{{ route('admin.audit.index') }}">
                     <span class="sidebar-icon">📋</span> Auditoría y Logs
                 </a>
+                <a class="sidebar-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">
+                    <span class="sidebar-icon">🔑</span> Usuarios y Acceso
+                </a>
                 <a class="sidebar-item {{ request()->routeIs('admin.import.*') || request()->routeIs('admin.normalization.*') ? 'active' : '' }}" href="{{ route('admin.import.index') }}">
                     <span class="sidebar-icon">📥</span> Importación & Datos
                 </a>
