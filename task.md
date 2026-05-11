@@ -5,8 +5,6 @@
 > El agente actualiza este archivo en tiempo real conforme avanza.
 > Si hay un problema o bug, el agente debe solucionarlo antes de continuar.
 > Todas las tareas y subtareas completadas deben ser movidas a la sección "Tareas Completadas Esta Sesión".
-- [x] Paso 2: Rediseñar la interfaz visual en `dashboard.blade.php` (Dense UI)
-- [x] Paso 3: Implementar gráficas de tendencia con Chart.js
 
 ---
 
@@ -43,14 +41,20 @@ El agente NO marca `[x]` una tarea hasta que todos sus checks están completados
 ---
 
 ## Tareas Completadas Esta Sesión
-
+ 
 - [x] 0. Estabilización de Tests de Integración del Dashboard
   - [x] Regla aplicada: `troubleshooting.md` (Error SQL Unknown column 'role')
   - [x] Check pre-ejecución: Forzar conexión SQLite en `SystemDashboardTest`.
   - [x] Evidencia: Ejecución en verde (`PASS`) de `SystemDashboardTest` en el servidor.
   - [x] Rama: fix/test-stabilization
-- [x] Paso 4: Actualizar `SystemDashboardTest.php` para validar nuevos elementos
-- [x] Paso 5: Verificación final y commit
+- [x] 1. Implementación de System Dashboard (Operator Control Center)
+  - [x] Regla aplicada: `DESIGN.md` (Bento Grid, IBM Plex Mono, Outfit)
+  - [x] Evidencia: Dashboard NOC funcional con métricas precisas de contenedor (cgroups).
+  - [x] Refinamiento: Centrado de valores, fuente premium `Outfit` e iconos "Ghost".
+  - [x] Rama: feature/system-dashboard
+- [x] 2. Estabilización de Métricas de Contenedor
+  - [x] Fix: Lectura de `/sys/fs/cgroup/memory.max` para reportar RAM real del LXC.
+  - [x] Fix: Formateo de CPU Load separado por intervalos.
 
 ---
 

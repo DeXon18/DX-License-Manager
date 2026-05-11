@@ -3,17 +3,24 @@
 
 ---
 
-## [2026-05-11] — Seguridad y Estabilización
+## [2026-05-11] — Dashboard del Sistema (Fase 10) ✅
 
-### Añadido
+### Added
+- **Operator Control Center**: Implementado nuevo Dashboard de alta densidad con métricas técnicas y de seguridad (NOC style).
+- **Refinamiento Visual NOC**: Integración de fuente `Outfit` para valores master, centrado de KPIs y estilo "Ghost Icons" rotados para look premium.
+- **Métricas de Infraestructura**: Monitorización de `Load Avg` (1m, 5m, 15m), RAM (vía `cgroups` para LXC) y almacenamiento.
+- **Matriz de Servicios**: Monitorización de DB, Redis, n8n y proveedores de IA (Gemini, DeepSeek, OpenRouter).
+- **Seguridad**: Monitorización de sesiones activas, `JWT Blacklist` y errores críticos (24h).
+- **Visualización de Datos**: Integración de Chart.js para gráficas de tendencia (Auditorías 7 días) y distribución de Daemons.
+- **KPIs de Negocio**: Visualización en tiempo real de contratos, licencias activas, caducidades próximas y estado de auditorías IA.
+- **Factories de Datos**: Creadas factories para `Client`, `Contract` y `AiAuditResult` para soporte de tests de integración.
+
+### Fixed
+- **Métricas de RAM en LXC**: Corregida detección de límites de memoria usando `cgroup v1/v2` para reportar el límite del contenedor en lugar de la RAM del nodo Proxmox.
+- **CPU Load Formatting**: Estructurada la salida de `sys_getloadavg` para evitar solapamientos visuales y permitir acceso directo a intervalos.
 - **Protocolo de Seguridad:** Implementada la sección 0.9 en `AGENTS.md` obligando a realizar backups antes de cambios estructurales o tests en el servidor.
-- **Script de Backup:** Refactorización de `scripts/backup-db.sh` con soporte para `MYSQL_PWD` y extracción automática de credenciales.
-
-### Corregido
-- **Tests:** Estabilizado `SystemDashboardTest` con aislamiento total en SQLite y corrección de cookie `jwt_token`.
-- **UI Admin:** Corregida la visibilidad del menú de administración en el layout principal.
-- **Base de Datos:** Restauración de 603 contratos tras borrado accidental y sincronización manual de columnas de normalización.
-- **Importador:** Corregido bug de llamada a método indefinido `findOrCreate` en `CsvImportService`.
+- **Base de Datos:** Corregido error 500 en Dashboard debido a nombre de columna incorrecto (`daemon` vs `vendor_daemon`) en la tabla de inventario.
+- **Robustez Infra**: Corregido comando `uptime` para compatibilidad con BusyBox/Alpine en el contenedor PHP y timeouts de API de Telegram (5s).
 
 ## [2026-05-09] — Paridad de Temas y Refinamiento de UX Final
 

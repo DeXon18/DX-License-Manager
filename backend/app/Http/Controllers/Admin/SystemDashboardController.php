@@ -67,15 +67,47 @@ class SystemDashboardController extends Controller
     private function getLoadAverage()
     {
         $load = sys_getloadavg();
-        if (!$load) return 'N/A';
+        if (!$load) return ['1m' => '0.00', '5m' => '0.00', '15m' => '0.00'];
         
-        return collect($load)->map(fn($v) => number_format($v, 2))->implode(' / ');
+        return [
+            '1m' => number_format($load[0], 2),
+            '5m' => number_format($load[1], 2),
+            '15m' => number_format($load[2], 2),
+        ];
     }
 
     private function getMemoryMetrics()
     {
-        $free = shell_exec('free -m');
-        if (!$free) return ['total' => 0, 'used' => 0, 'percent' => 0];
+        // Try cgroup v2 (modern Proxmox)
+        $memUsageFile = '/sys/fs/cgroup/memory.current';
+        $memLimitFile = '/sys/fs/cgroup/memory.max';
+
+        // Fallback to cgroup v1
+        if (!file_exists($memUsageFile)) {
+            $memUsageFile = '/sys/fs/cgroup/memory/memory.usage_in_bytes';
+            $memLimitFile = '/sys/fs/cgroup/memory/memory.limit_in_bytes';
+        }
+
+        if (file_exists($memUsageFile) && file_exists($memLimitFile)) {
+            $usedBytes = (int)trim(file_get_contents($memUsageFile));
+            $limitRaw = trim(file_get_contents($memLimitFile));
+            
+            // If limit is "max" or a very large number, fallback to free
+            if ($limitRaw !== 'max' && (int)$limitRaw < 1000000000000) {
+                $totalBytes = (int)$limitRaw;
+                $percent = $totalBytes > 0 ? round(($usedBytes / $totalBytes) * 100, 1) : 0;
+
+                return [
+                    'total' => round($totalBytes / (1024 ** 3), 1) . ' GB',
+                    'used' => round($usedBytes / (1024 ** 3), 1) . ' GB',
+                    'percent' => $percent
+                ];
+            }
+        }
+
+        // Final fallback: free command
+        $free = shell_exec('free -b');
+        if (!$free) return ['total' => '0 GB', 'used' => '0 GB', 'percent' => 0];
 
         $lines = explode("\n", trim($free));
         $mem = preg_split('/\s+/', $lines[1]);
@@ -85,8 +117,8 @@ class SystemDashboardController extends Controller
         $percent = $total > 0 ? round(($used / $total) * 100, 1) : 0;
 
         return [
-            'total' => round($total / 1024, 1) . ' GB',
-            'used' => round($used / 1024, 1) . ' GB',
+            'total' => round($total / (1024 ** 3), 1) . ' GB',
+            'used' => round($used / (1024 ** 3), 1) . ' GB',
             'percent' => $percent
         ];
     }
