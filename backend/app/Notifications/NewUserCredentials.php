@@ -37,15 +37,15 @@ class NewUserCredentials extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->subject('Bienvenido al Portal DX License Manager')
-                    ->greeting('Hola ' . $notifiable->name . '!')
-                    ->line('Se ha creado tu cuenta de acceso al portal corporativo DX License Manager.')
-                    ->line('A continuación encontrarás tus credenciales de acceso iniciales:')
-                    ->line('**Email:** ' . $notifiable->email)
-                    ->line('**Contraseña:** ' . $this->password)
-                    ->action('Acceder al Portal', url('/login'))
-                    ->line('Por seguridad, te recomendamos cambiar tu contraseña una vez hayas iniciado sesión desde la sección de "Mi Perfil".')
-                    ->line('Gracias por formar parte del equipo.');
+                    ->subject('🔐 Tus credenciales de acceso — DX License Manager')
+                    ->greeting('¡Hola, ' . $notifiable->name . '!')
+                    ->line('Bienvenido al portal corporativo. Tu cuenta ha sido habilitada correctamente para gestionar el inventario de licencias.')
+                    ->line('Estas son tus credenciales de acceso provisionales:')
+                    ->line('— **Usuario:** ' . $notifiable->email)
+                    ->line('— **Contraseña:** ' . $this->password)
+                    ->action('Iniciar Sesión Ahora', url('/login'))
+                    ->line('Por motivos de seguridad, es obligatorio cambiar esta contraseña tras tu primer acceso desde el panel de "Mi Perfil".')
+                    ->salutation('Saludos, el equipo de Soporte AYS');
     }
 
     /**
