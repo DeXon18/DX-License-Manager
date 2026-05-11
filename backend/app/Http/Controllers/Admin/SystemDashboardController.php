@@ -36,18 +36,17 @@ class SystemDashboardController extends Controller
                 'n8n' => $this->checkN8n(),
                 'telegram' => $this->checkTelegram(),
             ],
-            'business' => [
-                'total_contracts' => Contract::count(),
-                'expiring_soon' => Contract::where('end_date', '>', now())
-                    ->where('end_date', '<=', now()->addDays(30))
-                    ->count(),
-                'total_clients' => Client::count(),
-                'total_audits' => AiAuditResult::count(),
-                'pending_audits' => AiAuditResult::where('status', 'processing')->count(),
-                'failed_audits' => AiAuditResult::where('status', 'failed')->count(),
+            'api_providers' => [
+                'gemini' => $this->checkGemini(),
+                'deepseek' => $this->checkDeepseek(),
+                'openrouter' => $this->checkOpenRouter(),
             ],
-            'trends' => $this->getAuditTrendData(),
-            'distribution' => $this->getDaemonDistribution(),
+            'security' => [
+                'active_sessions' => DB::table('sessions')->count(),
+                'blacklist_count' => Redis::scard('jwt_blacklist') ?? 0,
+                'failed_logins_24h' => DB::table('audit_log')->where('action', 'login_failed')->where('created_at', '>', now()->subDay())->count(),
+            ],
+            'errors_24h' => DB::table('audit_log')->where('level', 'error')->where('created_at', '>', now()->subDay())->count(),
         ];
 
         return view('admin.system.dashboard', compact('metrics'));
@@ -171,43 +170,24 @@ class SystemDashboardController extends Controller
         }
     }
 
-    private function getAuditTrendData()
+    private function checkGemini()
     {
-        $days = collect();
-        for ($i = 6; $i >= 0; $i--) {
-            $date = now()->subDays($i)->format('Y-m-d');
-            $days->put($date, [
-                'label' => now()->subDays($i)->format('d M'),
-                'count' => 0
-            ]);
-        }
-
-        $audits = AiAuditResult::where('created_at', '>=', now()->subDays(7))
-            ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as aggregate'))
-            ->groupBy('date')
-            ->get();
-
-        foreach ($audits as $audit) {
-            if ($days->has($audit->date)) {
-                $days->get($audit->date)['count'] = $audit->aggregate;
-            }
-        }
-
-        return [
-            'labels' => $days->pluck('label')->toArray(),
-            'data' => $days->pluck('count')->toArray(),
-        ];
+        $key = config('ai.gemini_key');
+        if (!$key) return ['status' => 'degraded', 'message' => 'Key Missing'];
+        return ['status' => 'online', 'message' => 'API Active'];
     }
 
-    private function getDaemonDistribution()
+    private function checkDeepseek()
     {
-        $distribution = \App\Models\LicenseInventoryDaemon::select('daemon', \DB::raw('count(*) as total'))
-            ->groupBy('daemon')
-            ->get();
+        $key = config('ai.deepseek_key');
+        if (!$key) return ['status' => 'degraded', 'message' => 'Key Missing'];
+        return ['status' => 'online', 'message' => 'API Active'];
+    }
 
-        return [
-            'labels' => $distribution->pluck('daemon'),
-            'values' => $distribution->pluck('total'),
-        ];
+    private function checkOpenRouter()
+    {
+        $key = config('ai.openrouter_key');
+        if (!$key) return ['status' => 'degraded', 'message' => 'Key Missing'];
+        return ['status' => 'online', 'message' => 'API Active'];
     }
 }
