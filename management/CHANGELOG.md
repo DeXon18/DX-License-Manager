@@ -3,6 +3,19 @@
 
 ---
 
+## [2026-05-11] — Gestión de Usuarios y RBAC (Fase 11 y 11.1) ✅
+
+### Added
+- **User Management CRUD**: Sistema completo de administración de usuarios con filtrado por roles y búsqueda.
+- **RBAC Engine**: Implementación de roles dinámicos (admin, technician, staff, viewer) con middleware de permisos granular.
+- **My Profile Section**: Nueva sección de autogestión para que los usuarios actualicen sus datos y cambien su contraseña.
+- **Automated Notifications**: Sistema de bienvenida por email con envío automático de credenciales iniciales.
+- **Native Design Migration**: Migración total a `dx-styles.css` eliminando dependencias externas (Bootstrap) en las vistas administrativas.
+
+### Fixed
+- **Database Cleanup**: Eliminación de registros de prueba (faker) y normalización de usuarios base del sistema.
+- **Security Hardening**: Bloqueo de auto-desactivación y auto-eliminación para sesiones administrativas activas.
+
 ## [2026-05-11] — Estabilización de NOC Pro e Infraestructura ✅
 
 ### Added

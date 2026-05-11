@@ -86,10 +86,10 @@
         </div>
     </div>
     
-    <div class="no-ai-banner" style="margin-top: 24px;">
-        <i class="fas fa-info-circle no-ai-icon"></i>
+    <div class="no-ai-banner" style="margin-top: 24px; border-left-color: var(--success);">
+        <i class="fas fa-paper-plane" style="color: var(--success); margin-right: 12px; font-size: 14px;"></i>
         <div>
-            Se enviará una notificación de acceso al usuario una vez creada la cuenta (próximamente).
+            El sistema enviará automáticamente un email de bienvenida con las credenciales de acceso al finalizar el alta.
         </div>
     </div>
 </div>
