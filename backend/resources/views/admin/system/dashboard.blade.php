@@ -115,29 +115,45 @@
             </div>
             <div style="padding: 24px;">
                 <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px;">
-                    {{-- Core Services --}}
-                    @foreach($metrics['services'] as $name => $info)
-                        <div style="padding: 16px; border-radius: 8px; background: var(--bg); border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start; transition: border-color 0.2s;">
-                            <div style="flex: 1;">
-                                <div style="font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">{{ $name }}</div>
-                                <div style="font-size: 14px; font-weight: 600; color: var(--primary); margin-bottom: 6px;">{{ strtoupper($info['message']) }}</div>
-                                @if(isset($info['details']))
-                                    <div style="font-size: 11px; font-family: 'IBM Plex Mono', monospace; color: var(--muted); background: rgba(0,0,0,0.2); padding: 2px 6px; border-radius: 4px; display: inline-block;">{{ $info['details'] }}</div>
-                                @endif
+                    {{-- Categorized Services --}}
+                    @foreach($metrics['services'] as $category => $items)
+                        <div style="grid-column: 1 / -1; margin-top: {{ $loop->first ? '0' : '16px' }}; margin-bottom: 8px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; white-space: nowrap;">{{ $category }}</span>
+                                <div style="height: 1px; background: var(--border-subtle); flex: 1; opacity: 0.5;"></div>
                             </div>
-                            <div class="dot {{ $info['status'] === 'online' ? 'online' : 'danger' }}" style="margin-top: 4px;"></div>
                         </div>
-                    @endforeach
-
-                    {{-- AI Providers --}}
-                    @foreach($metrics['api_providers'] as $name => $info)
-                        <div style="padding: 16px; border-radius: 8px; background: var(--bg); border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-start;">
-                            <div style="flex: 1;">
-                                <div style="font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Provider: {{ $name }}</div>
-                                <div style="font-size: 14px; font-weight: 600; color: var(--primary);">{{ strtoupper($info['message']) }}</div>
+                        @foreach($items as $id => $info)
+                            <div style="padding: 16px; border-radius: 12px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); display: flex; align-items: flex-start; gap: 14px; position: relative; overflow: hidden; transition: all 0.3s ease;">
+                                <div style="padding: 10px; border-radius: 10px; background: {{ $info['status'] === 'online' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)' }}; color: {{ $info['status'] === 'online' ? 'var(--success)' : 'var(--danger)' }};">
+                                    @if($info['icon'] === 'database')
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>
+                                    @elseif($info['icon'] === 'bolt')
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                                    @elseif($info['icon'] === 'cpu')
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></svg>
+                                    @elseif($info['icon'] === 'bell')
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+                                    @elseif($info['icon'] === 'sparkles')
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4M19 17v4M3 5h4M17 19h4"/></svg>
+                                    @elseif($info['icon'] === 'brain')
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 2.5 2.5 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.98Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 2.5 2.5 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.98Z"/></svg>
+                                    @elseif($info['icon'] === 'globe')
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                                    @endif
+                                </div>
+                                <div style="flex: 1;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                        <span style="font-size: 11px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.05em;">{{ $info['label'] }}</span>
+                                        <span class="dot {{ $info['status'] === 'online' ? 'online' : 'danger' }}"></span>
+                                    </div>
+                                    <div style="font-size: 13px; font-weight: 500; color: var(--primary);">{{ $info['message'] }}</div>
+                                    @if(isset($info['details']))
+                                        <div style="font-size: 10px; font-family: 'IBM Plex Mono', monospace; color: var(--muted); margin-top: 4px; opacity: 0.8;">{{ $info['details'] }}</div>
+                                    @endif
+                                </div>
                             </div>
-                            <div class="dot {{ $info['status'] === 'online' ? 'online' : 'danger' }}" style="margin-top: 4px;"></div>
-                        </div>
+                        @endforeach
                     @endforeach
                 </div>
             </div>
@@ -147,21 +163,25 @@
         <div style="display: flex; flex-direction: column; gap: 24px;">
             <div class="card">
                 <div class="card-header">
-                    <span class="card-title">Security & Traffic</span>
+                    <span class="card-title">Seguridad y Tráfico</span>
                 </div>
                 <div style="padding: 24px;">
                     <div style="display: flex; flex-direction: column; gap: 16px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
-                            <span style="color: var(--muted); font-size: 13px;">Critical Errors (24h)</span>
+                            <span style="color: var(--muted); font-size: 13px;">Errores Críticos (24h)</span>
                             <span class="font-mono" style="color: {{ $metrics['errors_24h'] > 0 ? 'var(--danger)' : 'var(--success)' }}; font-weight: 700; font-size: 18px;">{{ $metrics['errors_24h'] }}</span>
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
-                            <span style="color: var(--muted); font-size: 13px;">Failed Logins (24h)</span>
+                            <span style="color: var(--muted); font-size: 13px;">Logins Fallidos (24h)</span>
                             <span class="font-mono" style="color: {{ $metrics['security']['failed_logins_24h'] > 0 ? 'var(--warning)' : 'var(--primary)' }}; font-weight: 700; font-size: 18px;">{{ $metrics['security']['failed_logins_24h'] }}</span>
                         </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
+                            <span style="color: var(--muted); font-size: 13px;">Sesiones Activas</span>
+                            <span class="font-mono" style="color: var(--primary); font-weight: 700; font-size: 18px;">{{ $metrics['security']['active_sessions'] }}</span>
+                        </div>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span style="color: var(--muted); font-size: 13px;">Runtime Environment</span>
-                            <span class="font-mono" style="font-size: 12px; color: var(--primary);">PHP {{ $metrics['os']['php_version'] }}</span>
+                            <span style="color: var(--muted); font-size: 13px;">Entorno PHP</span>
+                            <span class="font-mono" style="font-size: 12px; color: var(--primary);">v{{ $metrics['os']['php_version'] }}</span>
                         </div>
                     </div>
                 </div>
@@ -171,10 +191,10 @@
                 <div style="padding: 20px;">
                     <div style="font-size: 11px; font-weight: 700; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
                         <span class="dot-live" style="width: 8px; height: 8px;"></span>
-                        Audit Engine Pulse
+                        Pulso del Motor de Auditoría
                     </div>
                     <div style="font-size: 12px; color: var(--muted); line-height: 1.6;">
-                        System heartbeat operational. All workers listening on Redis <code style="color: var(--primary); background: rgba(0,0,0,0.3); padding: 2px 4px; border-radius: 3px;">queues:default</code>.
+                        Latido del sistema operativo. Workers escuchando en colas Redis <code style="color: var(--primary); background: rgba(0,0,0,0.3); padding: 2px 4px; border-radius: 3px;">queues:default</code>.
                     </div>
                 </div>
             </div>

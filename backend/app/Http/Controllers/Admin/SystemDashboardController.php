@@ -33,15 +33,19 @@ class SystemDashboardController extends Controller
                 'disk' => $this->getDiskMetrics(),
             ],
             'services' => [
-                'database' => $this->checkDatabase(),
-                'redis' => $this->checkRedis(),
-                'n8n' => $this->checkN8n(),
-                'telegram' => $this->checkTelegram(),
-            ],
-            'api_providers' => [
-                'gemini' => $this->checkGemini(),
-                'deepseek' => $this->checkDeepseek(),
-                'openrouter' => $this->checkOpenRouter(),
+                'Infrastructure' => [
+                    'database' => $this->checkDatabase(),
+                    'redis' => $this->checkRedis(),
+                ],
+                'Processors' => [
+                    'n8n' => $this->checkN8n(),
+                    'telegram' => $this->checkTelegram(),
+                ],
+                'AI Intelligence' => [
+                    'gemini' => $this->checkGemini(),
+                    'deepseek' => $this->checkDeepseek(),
+                    'openrouter' => $this->checkOpenRouter(),
+                ],
             ],
             'security' => [
                 'active_sessions' => Schema::hasTable('sessions') ? DB::table('sessions')->count() : 0,
@@ -141,8 +145,6 @@ class SystemDashboardController extends Controller
     {
         try {
             DB::connection()->getPdo();
-            
-            // Database Size
             $dbName = config('database.connections.mysql.database');
             $size = DB::select("SELECT SUM(data_length + index_length) / 1024 / 1024 AS size_mb FROM information_schema.TABLES WHERE table_schema = ?", [$dbName]);
             $sizeMb = round($size[0]->size_mb ?? 0, 2);
@@ -150,11 +152,13 @@ class SystemDashboardController extends Controller
 
             return [
                 'status' => 'online', 
-                'message' => 'MariaDB Operational',
-                'details' => "Size: {$sizeMb} MB · Tables: " . ($tables[0]->count ?? 0)
+                'icon' => 'database',
+                'label' => 'MariaDB',
+                'message' => 'Operacional',
+                'details' => "{$sizeMb}MB · {$tables[0]->count} Tablas"
             ];
         } catch (\Exception $e) {
-            return ['status' => 'offline', 'message' => 'Connection Failed', 'details' => $e->getMessage()];
+            return ['status' => 'offline', 'icon' => 'database', 'label' => 'MariaDB', 'message' => 'Error de Conexión', 'details' => 'Ver Logs'];
         }
     }
 
@@ -167,65 +171,77 @@ class SystemDashboardController extends Controller
             
             return [
                 'status' => 'online', 
-                'message' => 'Redis Cache Active',
-                'details' => "Memory: {$mem} · Keys: " . ($info['db0']['keys'] ?? 0)
+                'icon' => 'bolt',
+                'label' => 'Redis',
+                'message' => 'Caché Activa',
+                'details' => "Mem: {$mem} · Keys: " . ($info['db0']['keys'] ?? 0)
             ];
         } catch (\Exception $e) {
-            return ['status' => 'offline', 'message' => 'Service Down', 'details' => 'Not reachable'];
+            return ['status' => 'offline', 'icon' => 'bolt', 'label' => 'Redis', 'message' => 'Servicio Caído', 'details' => 'No alcanzable'];
         }
     }
 
     private function checkN8n()
     {
         $url = config('ai.n8n_webhook_url');
-        if (!$url) return ['status' => 'degraded', 'message' => 'URL Not Configured'];
+        if (!$url) return ['status' => 'degraded', 'icon' => 'cpu', 'label' => 'Motor n8n', 'message' => 'Sin Configurar'];
 
         try {
-            // Just a check to the base URL or health endpoint if exists
             $baseUrl = parse_url($url, PHP_URL_SCHEME) . '://' . parse_url($url, PHP_URL_HOST);
             $response = Http::timeout(2)->get($baseUrl . '/healthz');
             
             return $response->successful() 
-                ? ['status' => 'online', 'message' => 'n8n Engine Ready']
-                : ['status' => 'degraded', 'message' => 'n8n Unresponsive'];
+                ? ['status' => 'online', 'icon' => 'cpu', 'label' => 'Motor n8n', 'message' => 'Listo', 'details' => 'Salud OK']
+                : ['status' => 'degraded', 'icon' => 'cpu', 'label' => 'Motor n8n', 'message' => 'Sin Respuesta'];
         } catch (\Exception $e) {
-            return ['status' => 'offline', 'message' => 'n8n Unreachable'];
+            return ['status' => 'offline', 'icon' => 'cpu', 'label' => 'Motor n8n', 'message' => 'No alcanzable'];
         }
     }
 
     private function checkTelegram()
     {
         $token = config('services.telegram-bot-api.token');
-        if (!$token) return ['status' => 'degraded', 'message' => 'Token Missing'];
+        if (!$token) return ['status' => 'degraded', 'icon' => 'bell', 'label' => 'Telegram', 'message' => 'Token Ausente'];
 
         try {
             $response = Http::timeout(5)->get("https://api.telegram.org/bot{$token}/getMe");
             return $response->successful() 
-                ? ['status' => 'online', 'message' => 'Bot API Connected']
-                : ['status' => 'degraded', 'message' => 'Auth Error', 'details' => 'Check Token'];
+                ? ['status' => 'online', 'icon' => 'bell', 'label' => 'Telegram', 'message' => 'Conectado', 'details' => '@' . ($response->json()['result']['username'] ?? 'bot')]
+                : ['status' => 'degraded', 'icon' => 'bell', 'label' => 'Telegram', 'message' => 'Error de Auth'];
         } catch (\Exception $e) {
-            return ['status' => 'offline', 'message' => 'API Timeout', 'details' => Str::limit($e->getMessage(), 40)];
+            return ['status' => 'offline', 'icon' => 'bell', 'label' => 'Telegram', 'message' => 'Timeout'];
         }
     }
 
     private function checkGemini()
     {
         $key = config('ai.gemini_key');
-        if (!$key) return ['status' => 'degraded', 'message' => 'Key Missing'];
-        return ['status' => 'online', 'message' => 'API Active'];
+        if (!$key) return ['status' => 'degraded', 'icon' => 'sparkles', 'label' => 'Gemini 1.5', 'message' => 'Clave Ausente'];
+        
+        $count = AiAuditResult::where('created_at', '>=', now()->startOfDay())
+            ->where('status', 'completed')
+            ->count();
+
+        return [
+            'status' => 'online', 
+            'icon' => 'sparkles', 
+            'label' => 'Gemini 1.5', 
+            'message' => 'Conexión Activa',
+            'details' => "Uso hoy: {$count} auditorías"
+        ];
     }
 
     private function checkDeepseek()
     {
         $key = config('ai.deepseek_key');
-        if (!$key) return ['status' => 'degraded', 'message' => 'Key Missing'];
-        return ['status' => 'online', 'message' => 'API Active'];
+        if (!$key) return ['status' => 'degraded', 'icon' => 'brain', 'label' => 'DeepSeek', 'message' => 'Clave Ausente'];
+        return ['status' => 'online', 'icon' => 'brain', 'label' => 'DeepSeek', 'message' => 'Conexión Activa', 'details' => 'Respaldo Nivel 1'];
     }
 
     private function checkOpenRouter()
     {
         $key = config('ai.openrouter_key');
-        if (!$key) return ['status' => 'degraded', 'message' => 'Key Missing'];
-        return ['status' => 'online', 'message' => 'API Active'];
+        if (!$key) return ['status' => 'degraded', 'icon' => 'globe', 'label' => 'OpenRouter', 'message' => 'Clave Ausente'];
+        return ['status' => 'online', 'icon' => 'globe', 'label' => 'OpenRouter', 'message' => 'Conexión Activa', 'details' => 'Respaldo Nivel 2'];
     }
 }
