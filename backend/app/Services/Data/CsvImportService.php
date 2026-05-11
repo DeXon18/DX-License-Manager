@@ -76,18 +76,13 @@ class CsvImportService
                 try {
                     // 1. Normalize Client Name using the Intelligence Engine
                     $rawName = trim($row[2] ?? 'Desconocido');
-                    $normalization = $this->normalizationService->findOrCreate($rawName);
+                    $normalization = $this->normalizationService->resolve($rawName);
                     
                     $clientId = $normalization['id'];
 
-                    // Handle Sospechas (Suspicion)
-                    if ($normalization['status'] === 'suspicion') {
-                        $warnings[] = "Fila $rowCount: El cliente '{$rawName}' se parece un {$normalization['similarity']}% a '{$normalization['suggested_name']}'. Se ha creado un nuevo cliente por precaución, revisar posibles duplicados.";
-                        // For now, we create it to not block the process, but we mark it as suspicion in the log
-                        $newClient = Client::create(['name' => Str::title($rawName)]);
-                        $clientId = $newClient->id;
-                    } elseif ($normalization['status'] === 'new') {
-                        $warnings[] = "Fila $rowCount: Se ha creado el nuevo cliente '{$normalization['name']}' automáticamente.";
+                    // Capturar advertencias (sospechas o nuevos clientes) para el log
+                    if (isset($normalization['warning'])) {
+                        $warnings[] = "Fila $rowCount: " . $normalization['warning'];
                     }
 
                     // 2. Find/Create Vendor

@@ -51,7 +51,7 @@
                 <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Inicio</a>
                 <a class="nav-link {{ request()->routeIs('clients.*') ? 'active' : '' }}" href="{{ route('clients.index') }}">Clientes</a>
                 <a class="nav-link {{ request()->routeIs('tools.*') ? 'active' : '' }}" href="{{ route('tools.index') }}">Herramientas</a>
-                <a class="nav-link" href="#">Administración</a>
+                <a class="nav-link {{ request()->is('admin/*') ? 'active' : '' }}" href="{{ route('admin.system.index') }}">Administración</a>
             </nav>
             <div class="nav-right">
                 <div class="theme-toggle" @click="toggleTheme()">
@@ -91,6 +91,18 @@
                     <span class="sidebar-icon">📂</span> Repositorio
                 </a>
             </div>
+
+            @if(Auth::user() && Auth::user()->hasRole('admin'))
+            <div class="sidebar-section">
+                <div class="sidebar-heading">Gestión Admin</div>
+                <a class="sidebar-item {{ request()->routeIs('admin.system.*') ? 'active' : '' }}" href="{{ route('admin.system.index') }}">
+                    <span class="sidebar-icon">⚙️</span> Estado del Sistema
+                </a>
+                <a class="sidebar-item {{ request()->routeIs('admin.import.*') || request()->routeIs('admin.normalization.*') ? 'active' : '' }}" href="{{ route('admin.import.index') }}">
+                    <span class="sidebar-icon">📥</span> Importación & Datos
+                </a>
+            </div>
+            @endif
         </aside>
 
         <main class="content">

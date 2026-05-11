@@ -9,6 +9,7 @@ use App\Http\Controllers\SystemController;
 use App\Http\Controllers\ToolController;
 use App\Http\Controllers\Tools\MoldexController;
 use App\Http\Controllers\Tools\NXSuiteController;
+use App\Http\Controllers\Admin\SystemDashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -62,5 +63,7 @@ Route::middleware(['auth.jwt'])->group(function () {
         Route::get('/normalization', [\App\Http\Controllers\Admin\NormalizationController::class, 'index'])->name('normalization.index');
         Route::post('/normalization/unify', [\App\Http\Controllers\Admin\NormalizationController::class, 'unify'])->name('normalization.unify');
         Route::post('/normalization/dismiss', [\App\Http\Controllers\Admin\NormalizationController::class, 'dismiss'])->name('normalization.dismiss');
+
+        Route::get('/system', [SystemDashboardController::class, 'index'])->name('system.index');
     });
 });

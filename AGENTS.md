@@ -203,6 +203,24 @@ Consecuencia: [qué se perderá]
 
 ---
 
+## 0.9 Protocolo de Seguridad de Datos — REGLA DE ORO
+
+**PROHIBIDO realizar cambios estructurales o ejecutar tests en el servidor sin backup previo.**
+
+1. **Backup Preventivo Obligatorio**: Antes de cada `migrate`, `db:seed`, o ejecución de tests de integración, el agente DEBE ejecutar:
+   ```bash
+   # En el servidor (LXC 600)
+   ./scripts/backup-db.sh beta
+   ```
+2. **Aislamiento Total de Tests**: Los tests en el servidor NUNCA deben tocar MariaDB. Es obligatorio forzar SQLite en memoria en el comando `docker exec`:
+   ```bash
+   docker exec -e DB_CONNECTION=sqlite -e DB_DATABASE=:memory: dx-php-beta php artisan test
+   ```
+3. **Verificación Post-Backup**: El agente debe confirmar que el archivo de backup se ha creado en `storage/backups/db/` antes de proceder.
+4. **Prohibición de `migrate:fresh`**: Como se indica en la Fase 4, el uso de `migrate:fresh` en Beta está terminantemente prohibido. Solo migraciones incrementales.
+
+---
+
 ## 1. Identidad del Proyecto
 
 **DX License Manager** es un portal empresarial interno para gestión avanzada de licencias de software con auditoría por IA.
