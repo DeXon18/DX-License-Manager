@@ -1,34 +1,29 @@
-# HANDOFF — DX License Manager
+# 🤝 Handoff — DX License Manager
 
-**Sesión:** 2026-05-09 (Tarde)
-**Estado:** Fase 9 COMPLETADA | Persistencia Moldex3D OK
-**Rama Activa:** `feature/moldex3d-persistence`
+## 🎯 Estado de la Sesión
+Finalizado el refinamiento visual y técnico del **System Control Center (NOC Dashboard)**. El sistema ahora proporciona telemetría precisa de infraestructura adaptada al entorno Proxmox LXC.
+
+## 🛠️ Cambios Realizados
+- **Monitorización Proxmox-Aware**: Implementada detección de límites de memoria vía `cgroups` (LXC) eliminando el reporte erróneo de la memoria del nodo host.
+- **NOC UI Refinement**:
+  - Integrada la fuente **Outfit** para métricas críticas.
+  - Estilo **Ghost Icons** rotados (-15deg) en la esquina superior derecha de las cards.
+  - KPI Master centrados y formateados (`USED / TOTAL`).
+  - CPU Load desglosado en intervalos de 1m, 5m y 15m.
+- **Seguridad**: Visibilidad de sesiones activas y contador de blacklist en tiempo real.
+
+## 📍 Punto de Interrupción
+- **Dashboard**: El frontend y backend del dashboard están al 100% de la visión operativa solicitada.
+- **Seguridad**: Próximo paso es el "Blindaje de Rutas Admin (RBAC)" y auditoría de seguridad de Fase 2.
+
+## 🚀 Comandos Útiles
+```bash
+# Ver métricas en crudo del contenedor
+cat /sys/fs/cgroup/memory.max 2>/dev/null || cat /sys/fs/cgroup/memory/memory.limit_in_bytes
+
+# Forzar refresco de estilos
+php artisan view:clear
+```
 
 ---
-
-## 🎯 Logros de la Sesión
-1. **Auditoría Moldex3D**: Implementado parser local 100% determinista para archivos `.mac`.
-2. **Persistencia de Inventario**: Creado `MoldexSyncService` para vinculación automática con clientes y productos.
-3. **UI/UX**: Nueva interfaz de resultados con vista técnica de alta densidad y feedback de sincronización.
-4. **Nomenclatura**: Estandarización de archivos `.mac` siguiendo el patrón `AÑO_ID_CLIENTE__TIPO_FECHA.mac`.
-
----
-
-## 🛠️ Estado Técnico
-- **Base de Datos**: Sincronización verificada en `license_inventory_daemons` (tipo `moldex3d`) y `license_inventory_products`.
-- **Lógica**: Vinculación de clientes mediante Fuzzy Match (85% similitud) con soporte para sufijos corporativos.
-- **Seguridad**: Proceso local sin dependencias externas; archivos almacenados en `storage/private/licenses/moldex3d/`.
-- **Deploy**: Rama `feature/moldex3d-persistence` lista para merge.
-
----
-
-## ⚠️ Pendientes y Bloqueos
-- **Fase 10 (Dashboard)**: Siguiente paso en el ROADMAP. Requiere visualización de métricas de sistema y estado de servicios.
-- **Merge**: Pendiente fusionar `feature/moldex3d-persistence` (y su padre `feature/moldex3d-tool`) a `dev`.
-
----
-
-## 🚀 Próximos Pasos
-1. Realizar el merge de las ramas de Moldex3D a `dev`.
-2. Iniciar Fase 10: Desarrollo del Dashboard del Sistema.
-3. Verificar visualmente la aparición de licencias Moldex3D en los perfiles de cliente unificados.
+*Sesión finalizada con el dashboard operativo y validado visualmente.*
