@@ -30,7 +30,7 @@
 
                         <div class="mb-3">
                             <label for="email" class="form-label text-secondary small text-uppercase fw-bold">Email Institucional</label>
-                            <input type="email" name="email" id="email" class="form-control bg-transparent border-secondary text-white @error('email') is-invalid @enderror" 
+                            <input type="email" name="email" id="email" class="form-control bg-transparent border-secondary text-white font-mono @error('email') is-invalid @enderror" 
                                    value="{{ old('email', $user->email) }}" required>
                             @error('email')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -39,19 +39,19 @@
 
                         <div class="p-3 bg-secondary bg-opacity-10 rounded mb-3 border border-secondary">
                             <p class="text-secondary small mb-2 text-uppercase fw-bold"><i class="fas fa-key me-2"></i>Cambiar Contraseña</p>
-                            <p class="text-muted extra-small mb-3">Deja estos campos en blanco si no deseas cambiar la contraseña actual.</p>
+                            <p class="text-muted extra-small mb-3 font-mono">Deja estos campos en blanco si no deseas cambiar la contraseña actual.</p>
                             
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label for="password" class="form-label text-secondary small">Nueva Contraseña</label>
-                                    <input type="password" name="password" id="password" class="form-control form-control-sm bg-transparent border-secondary text-white @error('password') is-invalid @enderror">
+                                    <input type="password" name="password" id="password" class="form-control form-control-sm bg-transparent border-secondary text-white font-mono @error('password') is-invalid @enderror">
                                     @error('password')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                                 <div class="col-md-6">
                                     <label for="password_confirmation" class="form-label text-secondary small">Confirmar</label>
-                                    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control form-control-sm bg-transparent border-secondary text-white">
+                                    <input type="password" name="password_confirmation" id="password_confirmation" class="form-control form-control-sm bg-transparent border-secondary text-white font-mono">
                                 </div>
                             </div>
                         </div>
@@ -70,16 +70,29 @@
                             @enderror
                         </div>
 
-                        <div class="mb-4">
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox" name="is_active" id="is_active" value="1" 
-                                       {{ old('is_active', $user->is_active) ? 'checked' : '' }}
-                                       {{ $user->id === auth()->id() ? 'disabled' : '' }}>
-                                <label class="form-check-label text-secondary" for="is_active">Usuario Activo</label>
-                                @if($user->id === auth()->id())
-                                    <div class="text-muted extra-small mt-1">No puedes desactivar tu propia cuenta administrativa.</div>
+                        <div class="mb-4" x-data="{ active: {{ $user->is_active ? 'true' : 'false' }} }">
+                            <div class="d-flex align-items-center justify-content-between p-3 bg-secondary bg-opacity-5 rounded border border-secondary border-opacity-25">
+                                <div>
+                                    <div class="text-white small fw-bold">Usuario Activo</div>
+                                    <div class="text-secondary extra-small">Permite el inicio de sesión del usuario</div>
+                                </div>
+                                @if($user->id !== auth()->id())
+                                    <input type="hidden" name="is_active" :value="active ? 1 : 0">
+                                    <button type="button" 
+                                            class="switch" 
+                                            :class="active ? 'on' : 'off'"
+                                            @click="active = !active">
+                                    </button>
+                                @else
+                                    <input type="hidden" name="is_active" value="1">
+                                    <span class="badge badge-success">SIEMPRE ACTIVO</span>
                                 @endif
                             </div>
+                            @if($user->id === auth()->id())
+                                <div class="text-muted extra-small mt-2 px-1">
+                                    <i class="fas fa-shield-alt me-1"></i> No puedes desactivar tu propia cuenta administrativa por seguridad.
+                                </div>
+                            @endif
                         </div>
 
                         <div class="d-grid pt-2">

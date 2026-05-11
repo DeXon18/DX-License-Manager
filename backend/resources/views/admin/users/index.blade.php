@@ -68,42 +68,41 @@
                         <tr>
                             <td class="ps-4 py-3">
                                 <div class="d-flex align-items-center">
-                                    <div class="avatar-sm me-3 bg-secondary rounded-circle d-flex align-items-center justify-content-center text-white">
+                                    <div class="avatar me-3">
                                         {{ strtoupper(substr($user->name, 0, 1)) }}
                                     </div>
                                     <div>
                                         <div class="fw-bold text-white">{{ $user->name }}</div>
-                                        <div class="text-secondary small">{{ $user->email }}</div>
+                                        <div class="text-secondary small font-mono">{{ $user->email }}</div>
                                     </div>
                                 </div>
                             </td>
                             <td>
-                                <span class="badge rounded-pill 
-                                    @if($user->isAdmin()) bg-danger-subtle text-danger border border-danger 
-                                    @elseif($user->isTechnician()) bg-primary-subtle text-primary border border-primary
-                                    @elseif($user->isStaff()) bg-info-subtle text-info border border-info
-                                    @else bg-secondary-subtle text-secondary border border-secondary @endif"
-                                    style="font-size: 0.75rem; letter-spacing: 0.025em;">
+                                <span class="badge 
+                                    @if($user->isAdmin()) badge-danger 
+                                    @elseif($user->isTechnician()) badge-primary
+                                    @elseif($user->isStaff()) badge-info
+                                    @else badge-muted @endif">
                                     {{ $user->role->name ?? 'Sin Rol' }}
                                 </span>
                             </td>
                             <td x-data="{ active: {{ $user->is_active ? 'true' : 'false' }} }">
-                                <div class="form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" :checked="active" 
-                                           @change="toggleStatus({{ $user->id }}, $el)"
-                                           {{ $user->id === auth()->id() ? 'disabled' : '' }}>
-                                    <span class="ms-1 small" :class="active ? 'text-success' : 'text-danger'" 
-                                          x-text="active ? 'Activo' : 'Inactivo'"></span>
-                                </div>
+                                <button type="button" 
+                                        class="switch" 
+                                        :class="active ? 'on' : 'off'"
+                                        @click="toggleStatus({{ $user->id }}, $el)"
+                                        {{ $user->id === auth()->id() ? 'disabled' : '' }}>
+                                </button>
+                                <span class="ms-2 small text-secondary" x-text="active ? 'Activo' : 'Inactivo'"></span>
                             </td>
                             <td class="text-secondary small">
                                 @php
                                     $lastActive = \Illuminate\Support\Facades\Redis::get("user:active:{$user->id}");
                                 @endphp
                                 @if($lastActive)
-                                    <span class="text-success">En línea</span>
+                                    <span class="text-success font-mono">ONLINE</span>
                                 @else
-                                    <span class="text-muted">Desconectado</span>
+                                    <span class="text-muted font-mono">OFFLINE</span>
                                 @endif
                             </td>
                             <td class="text-end pe-4">
@@ -145,7 +144,7 @@
 
 <script>
 function toggleStatus(userId, element) {
-    const active = element.checked;
+    const isActive = element.classList.contains('on');
     
     fetch(`/admin/users/${userId}/toggle`, {
         method: 'POST',
@@ -159,26 +158,27 @@ function toggleStatus(userId, element) {
     .then(data => {
         if (data.error) {
             alert(data.error);
-            element.checked = !active;
         } else {
-            // Toast notification or feedback
-            console.log('Status updated:', data.is_active);
+            // Update switch state
+            if (data.is_active) {
+                element.classList.remove('off');
+                element.classList.add('on');
+                element.nextElementSibling.innerText = 'Activo';
+            } else {
+                element.classList.remove('on');
+                element.classList.add('off');
+                element.nextElementSibling.innerText = 'Inactivo';
+            }
         }
     })
     .catch(error => {
         console.error('Error:', error);
-        element.checked = !active;
         alert('Error al actualizar el estado.');
     });
 }
 </script>
 
 <style>
-    .avatar-sm { width: 32px; height: 32px; font-size: 0.875rem; }
-    .bg-danger-subtle { background-color: rgba(220, 53, 69, 0.1) !important; }
-    .bg-primary-subtle { background-color: rgba(13, 110, 253, 0.1) !important; }
-    .bg-info-subtle { background-color: rgba(13, 202, 240, 0.1) !important; }
-    .bg-secondary-subtle { background-color: rgba(108, 117, 125, 0.1) !important; }
     .form-check-input:checked { background-color: var(--success); border-color: var(--success); }
 </style>
 @endsection
