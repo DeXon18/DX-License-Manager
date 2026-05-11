@@ -41,7 +41,7 @@ En planificación — se detallan una por una tras validación de la fase anteri
  ### Fase 10.4 — Modularización Administrativa (Backups & Logs) ✅
  - **Completada:** 2026-05-11
  - **Rama:** feature/system-modules-backups-audit
- - **Resumen:** Desacoplamiento total de la gestión de backups y logs del dashboard principal. Creación de módulos independientes con lógica dedicada y UI unificada siguiendo el estándar de diseño del portal.
+ - **Resumen:** Desacoplamiento total de la gestión de backups y logs del dashboard principal. Creación de módulos independientes con lógica dedicada, infraestructura de backups estabilizada (mariadb-client) y UI unificada siguiendo el estándar de diseño del portal.
  - [x] Migración a `BackupController` y `AuditLogController`.
  - [x] Implementación de Database Vault con gestión de archivos (Download/Delete).
  - [x] Centro de Auditoría con filtrado avanzado y estadísticas internas.
