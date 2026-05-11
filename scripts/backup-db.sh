@@ -40,3 +40,6 @@ fi
 # Limpiar backups de más de 30 días
 find "${BACKUP_DIR}" -name "*.sql" -o -name "*.gpg" -mtime +30 -delete
 echo "🧹 Limpieza de backups antiguos completada"
+
+# Asegurar permisos para gestión web
+chmod 777 "${BACKUP_DIR}"/*
