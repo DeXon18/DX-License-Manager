@@ -44,7 +44,7 @@ class SystemActionController extends Controller
         try {
             // Ejecutar script de backup
             // Nota: El script debe tener permisos de ejecución
-            $process = Process::run('/var/www/html/scripts/backup-db.sh beta');
+            $process = Process::run('bash /var/www/html/scripts/backup-db.sh beta');
             
             if ($process->successful()) {
                 $this->logAction('db_backup', 'Manual database backup created');
@@ -110,7 +110,7 @@ class SystemActionController extends Controller
                 abort(403, 'Acceso denegado.');
             }
 
-            $path = storage_path("backups/db/{$filename}");
+            $path = storage_path("app/backups/db/{$filename}");
 
             if (!file_exists($path)) {
                 abort(404, 'Archivo no encontrado.');
@@ -130,7 +130,7 @@ class SystemActionController extends Controller
                 return response()->json(['success' => false, 'message' => 'Acceso denegado.'], 403);
             }
 
-            $path = storage_path("backups/db/{$filename}");
+            $path = storage_path("app/backups/db/{$filename}");
 
             if (file_exists($path)) {
                 unlink($path);

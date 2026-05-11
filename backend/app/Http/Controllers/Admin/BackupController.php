@@ -24,13 +24,13 @@ class BackupController extends Controller
         return view('admin.backups.index', [
             'backups' => $backups,
             'totalSize' => $totalSize,
-            'backupDir' => storage_path('backups/db')
+            'backupDir' => storage_path('app/backups/db')
         ]);
     }
 
     private function getBackups()
     {
-        $backupDir = storage_path('backups/db');
+        $backupDir = storage_path('app/backups/db');
         if (!file_exists($backupDir)) {
             return [];
         }
@@ -60,7 +60,7 @@ class BackupController extends Controller
 
     private function rawBytes($filename)
     {
-        $path = storage_path("backups/db/{$filename}");
+        $path = storage_path("app/backups/db/{$filename}");
         return file_exists($path) ? filesize($path) : 0;
     }
 
