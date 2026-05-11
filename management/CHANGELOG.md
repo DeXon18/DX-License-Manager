@@ -1,6 +1,12 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-11] — Restauración Infraestructura y SMTP
+- Restauradas credenciales de MariaDB Beta (`dxportal_beta`).
+- Configurado Mailtrap en modo **Producción** con autenticación via API Token.
+- Resuelto problema de sincronización de archivos `.env` en contenedores Docker.
+- Verificado envío de emails reales desde el backend.
+
 ---
 
 ## [2026-05-11] — Gestión de Usuarios y RBAC (Fase 11 y 11.1) ✅
@@ -78,6 +84,17 @@
 - **Protocolo de Seguridad:** Implementada la sección 0.9 en `AGENTS.md` obligando a realizar backups antes de cambios estructurales o tests en el servidor.
 - **Base de Datos:** Corregido error 500 en Dashboard debido a nombre de columna incorrecto (`daemon` vs `vendor_daemon`) en la tabla de inventario.
 - **Robustez Infra**: Corregido comando `uptime` para compatibilidad con BusyBox/Alpine en el contenedor PHP y timeouts de API de Telegram (5s).
+
+---
+
+## [2026-05-10] — Phase 10: Gestión de Usuarios (Auth)
+
+### Added
+- **CRUD Contactos**: Sistema de gestión de destinatarios vinculados a clientes con modales Alpine.js.
+- **Persistencia**: Sistema de pestañas en perfil de cliente que mantiene el estado tras recargar.
+- **Demo Data**: `DemoContactSeeder` para poblar el sistema con datos de prueba.
+
+---
 
 ## [2026-05-09] — Paridad de Temas y Refinamiento de UX Final
 
@@ -293,8 +310,6 @@ _Firmado por: **Antigravity (DX Agent)** 🦾_
 ### Changed
 - **Sincronización**: Llaves y etiquetas técnicas actualizadas para coincidir estrictamente con el archivo de identidades.
 - **Copy**: Actualización de frases descriptivas para Siemens y Moldex3D según estándares técnicos.
-
----
 
 ## [2026-05-06] — Fase 6.3: Gestión de Contactos ✅
 
