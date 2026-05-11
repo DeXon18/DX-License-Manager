@@ -27,11 +27,14 @@ class SystemDashboardController extends Controller
                 'php_version' => PHP_VERSION,
                 'uptime' => $this->getUptime(),
                 'load' => $this->getLoadAverage(),
+                'maintenance' => app()->isDownForMaintenance(),
             ],
             'hardware' => [
                 'memory' => $this->getMemoryMetrics(),
                 'disk' => $this->getDiskMetrics(),
+                'network' => $this->getNetworkMetrics(),
             ],
+            'git' => $this->getGitMetrics(),
             'services' => [
                 'Infrastructure' => [
                     'database' => $this->checkDatabase(),
@@ -54,6 +57,14 @@ class SystemDashboardController extends Controller
                     ? DB::table('audit_log')->where('action', 'login_failed')->where('created_at', '>', now()->subDay())->count() 
                     : 0,
             ],
+            'recent_logs' => Schema::hasTable('audit_log')
+                ? DB::table('audit_log')
+                    ->leftJoin('users', 'audit_log.user_id', '=', 'users.id')
+                    ->select('audit_log.*', 'users.name as user_name')
+                    ->orderBy('audit_log.created_at', 'desc')
+                    ->limit(10)
+                    ->get()
+                : [],
             'errors_24h' => Schema::hasTable('audit_log') 
                 ? DB::table('audit_log')->where('level', 'error')->where('created_at', '>', now()->subDay())->count() 
                 : 0,
@@ -145,17 +156,27 @@ class SystemDashboardController extends Controller
     {
         try {
             DB::connection()->getPdo();
+            
             $dbName = config('database.connections.mysql.database');
-            $size = DB::select("SELECT SUM(data_length + index_length) / 1024 / 1024 AS size_mb FROM information_schema.TABLES WHERE table_schema = ?", [$dbName]);
-            $sizeMb = round($size[0]->size_mb ?? 0, 2);
-            $tables = DB::select("SELECT COUNT(*) as count FROM information_schema.TABLES WHERE table_schema = ?", [$dbName]);
+            $size = DB::select("SELECT SUM(data_length + index_length) / 1024 / 1024 AS size FROM information_schema.TABLES WHERE table_schema = ?", [$dbName]);
+            $sizeMb = number_format($size[0]->size ?? 0, 2);
+            
+            $tables = DB::select("SELECT count(*) as count FROM information_schema.tables WHERE table_schema = ?", [$dbName]);
+            
+            // Threads and Slow Queries
+            $status = DB::select("SHOW STATUS WHERE Variable_name IN ('Threads_connected', 'Slow_queries')");
+            $statusMap = collect($status)->pluck('Value', 'Variable_name');
 
             return [
                 'status' => 'online', 
                 'icon' => 'database',
                 'label' => 'MariaDB',
                 'message' => 'Operacional',
-                'details' => "{$sizeMb}MB · {$tables[0]->count} Tablas"
+                'details' => "{$sizeMb}MB · {$tables[0]->count} Tablas",
+                'extra' => [
+                    'threads' => $statusMap->get('Threads_connected', 0),
+                    'slow_queries' => $statusMap->get('Slow_queries', 0),
+                ]
             ];
         } catch (\Exception $e) {
             return ['status' => 'offline', 'icon' => 'database', 'label' => 'MariaDB', 'message' => 'Error de Conexión', 'details' => 'Ver Logs'];
@@ -256,5 +277,50 @@ class SystemDashboardController extends Controller
         } catch (\Exception $e) {
             return 0;
         }
+    }
+
+    private function getNetworkMetrics()
+    {
+        $rxFile = '/sys/class/net/eth0/statistics/rx_bytes';
+        $txFile = '/sys/class/net/eth0/statistics/tx_bytes';
+
+        if (file_exists($rxFile) && file_exists($txFile)) {
+            $rx = (int)trim(file_get_contents($rxFile));
+            $tx = (int)trim(file_get_contents($txFile));
+            
+            return [
+                'rx' => $this->formatBytes($rx),
+                'tx' => $this->formatBytes($tx),
+            ];
+        }
+
+        return ['rx' => 'N/A', 'tx' => 'N/A'];
+    }
+
+    private function getGitMetrics()
+    {
+        try {
+            // Path seguro del repo para git
+            $path = base_path();
+            $hash = trim(shell_exec("git -C {$path} rev-parse --short HEAD") ?? 'N/A');
+            $date = trim(shell_exec("git -C {$path} log -1 --format=%cd --date=relative") ?? 'N/A');
+            
+            return [
+                'hash' => $hash,
+                'date' => $date,
+            ];
+        } catch (\Exception $e) {
+            return ['hash' => 'N/A', 'date' => 'N/A'];
+        }
+    }
+    private function formatBytes($bytes, $precision = 2)
+    {
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+        $bytes = max($bytes, 0);
+        $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+        $pow = min($pow, count($units) - 1);
+        $bytes /= pow(1024, $pow);
+
+        return round($bytes, $precision) . ' ' . $units[$pow];
     }
 }

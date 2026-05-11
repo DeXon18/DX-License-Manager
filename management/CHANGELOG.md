@@ -3,9 +3,18 @@
 
 ---
 
-## [2026-05-11] — Dashboard del Sistema (Fase 10) ✅
+## [2026-05-11] — Dashboard del Sistema (NOC Pro) ✅
 
 ### Added
+- **NOC Pro Control Center**: Evolución del dashboard a centro de operaciones profesional.
+- **Quick Actions Panel**: Implementado panel interactivo con Alpine.js para acciones administrativas (Limpiar caché, Backups, Mantenimiento, Reinicio de Workers).
+- **Telemetría de Red**: Visualización en tiempo real de tráfico ETH0 (RX/TX bytes) directo desde kernel.
+- **Métricas DB Profundas**: Monitorización de hilos conectados y consultas lentas (slow queries) en MariaDB.
+- **Git Intelligence**: Integración de Hash de commit y fecha relativa del último despliegue en la cabecera.
+- **System Live Feed**: Registro visual de los últimos 10 eventos de auditoría administrativa.
+- **Maintenance Pulse**: Indicador visual dinámico en cabecera cuando el modo mantenimiento está activo.
+- **Seguridad**: Registro automático de toda acción administrativa en `audit_log` con trazabilidad de usuario.
+- **Helper formatBytes**: Añadida utilidad para formateo dinámico de unidades de datos.
 - **Operator Control Center**: Implementado nuevo Dashboard de alta densidad con métricas técnicas y de seguridad (NOC style).
 - **Refinamiento Visual NOC**: Integración de fuente `Outfit` para valores master, centrado de KPIs y estilo "Ghost Icons" rotados para look premium.
 - **Métricas de Infraestructura**: Monitorización de `Load Avg` (1m, 5m, 15m), RAM (vía `cgroups` para LXC) y almacenamiento.
@@ -16,6 +25,7 @@
 - **Factories de Datos**: Creadas factories para `Client`, `Contract` y `AiAuditResult` para soporte de tests de integración.
 - **Services Matrix Categorizada**: Organización de servicios en grupos lógicos (Infraestructura, Procesadores, Inteligencia AI).
 - **Iconografía y Localización**: Añadidos iconos SVG personalizados y etiquetas en castellano natural para mayor claridad operativa.
+- **Seguimiento en Tiempo Real**: Implementado sistema de presencia basado en Redis para contar usuarios activos (JWT) con ventana de 15 minutos.
 - **Métricas de Actividad AI**: Implementado contador de auditorías diarias para Gemini como proxy de consumo.
 
 ### Fixed

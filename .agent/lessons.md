@@ -62,5 +62,17 @@ El agente debe revisar este archivo al inicio de cada sesión.
 67. **Sanitización de Clases CSS**: Al generar clases dinámicas desde texto (ej: categorías), sanitizar eliminando espacios y caracteres especiales para evitar selectores inválidos.
 68. **Localización Dompdf**: Para documentos legales en castellano, asegurar que los nombres de los meses se traduzcan correctamente usando `translatedFormat()` de Carbon.
 
+## [2026-05-11] — Desastre en Base de Datos Beta y Sincronización de Esquema
+- **Qué pasó:** Borrado accidental de la base de datos MariaDB Beta durante la ejecución de tests de integración y errores de "Columna no encontrada" tras la restauración.
+- **Por qué pasó:** 
+  1. **Aislamiento de Tests**: El uso de `RefreshDatabase` en el entorno Beta sin forzar SQLite explícitamente en el comando provocó la limpieza de la base de datos real.
+  2. **Inconsistencia de Backup**: El backup restaurado (`backup_pre_normalization.sql`) no contenía las últimas columnas añadidas (`warnings`, `detected_name`, etc.), causando errores 500 en las vistas de administración.
+  3. **Script de Backup Roto**: El script de backup original fallaba con caracteres especiales (`!`) en las contraseñas al no usar comillas o `MYSQL_PWD`.
+- **Reglas nuevas:**
+  1. **Backup Preventivo Obligatorio**: NUNCA ejecutar cambios estructurales o tests en el servidor sin realizar un backup previo verificado.
+  2. **Aislamiento Total de Tests**: Los tests en el servidor DEBEN forzar SQLite en memoria (`-e DB_CONNECTION=sqlite -e DB_DATABASE=:memory:`) para evitar tocar MariaDB.
+  3. **Robustez de Scripts**: Usar siempre `MYSQL_PWD` en scripts de shell para pasar contraseñas de base de datos de forma segura.
+  4. **Verificación post-restauración**: Tras restaurar un backup, es imperativo revisar el `DESCRIBE` de las tablas críticas frente a los modelos de Laravel para detectar columnas faltantes.
+
 ---
 _Firmado por: **Antigravity (DX Agent)** 🦾_
