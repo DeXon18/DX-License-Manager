@@ -14,6 +14,7 @@
 
 ### Fixed
 - **Backup Execution Environment**: Instalado `mariadb-client` en el contenedor PHP y actualizado el script para usar `mariadb-dump` con `--ssl=0`, solucionando errores de conexión y comandos faltantes.
+- **Git Metrics in Dashboard**: Corregido error `N/A` mediante el montaje del directorio `.git` y la configuración de `safe.directory` en el contenedor, permitiendo la visualización del hash y fecha de despliegue.
 - **Permission Denied in Backups**: Actualizado script `backup-db.sh` para forzar permisos 777 en archivos nuevos, permitiendo su borrado desde la interfaz web.
 - **Path Synchronization**: Corregidas las rutas de almacenamiento de backups para sincronizar el volumen de Docker con el `storage_path()` de Laravel.
 - **Styling Consistency**: Corregido estilo de botones "Limpiar" y alineación de botones de acción en tablas.
