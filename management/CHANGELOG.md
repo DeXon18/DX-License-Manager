@@ -14,6 +14,9 @@
 - **System Live Feed**: Registro visual de los últimos 10 eventos de auditoría administrativa.
 - **Maintenance Pulse**: Indicador visual dinámico en cabecera cuando el modo mantenimiento está activo.
 - **Seguridad**: Registro automático de toda acción administrativa en `audit_log` con trazabilidad de usuario.
+- **Selective Maintenance Mode (Admin Friendly)**: Implementado sistema de mantenimiento que permite a los administradores seguir operando mientras el público visualiza una página 503 personalizada.
+- **Top Warning Banner**: Aviso persistente en el layout para administradores cuando el mantenimiento está activo.
+- **Custom 503 Page**: Nueva vista de mantenimiento con diseño premium alineado con la identidad del proyecto.
 - **Helper formatBytes**: Añadida utilidad para formateo dinámico de unidades de datos.
 - **Operator Control Center**: Implementado nuevo Dashboard de alta densidad con métricas técnicas y de seguridad (NOC style).
 - **Refinamiento Visual NOC**: Integración de fuente `Outfit` para valores master, centrado de KPIs y estilo "Ghost Icons" rotados para look premium.

@@ -332,6 +332,7 @@ DX License Manager
 - [x] Métricas: PHP, nginx, MariaDB, Redis, almacenamiento (Hardware Grid)
 - [x] **Telemetría Avanzada**: Tráfico ETH0 (RX/TX), hilos DB y slow queries.
 - [x] **Quick Actions**: Control de caché, reinicio de workers, backups y modo mantenimiento.
+- [x] **Mantenimiento Selectivo**: Implementado bypass para administradores con aviso visual persistente.
 - [x] **Git Integration**: Hash de commit y fecha de despliegue en tiempo real.
 - [x] **System Live Feed**: Últimos 10 registros de auditoría administrativa.
 - [x] Estado de servicios IA con badges en tiempo real (Telegram check)

@@ -60,19 +60,20 @@ class SystemActionController extends Controller
     public function toggleMaintenance(Request $request)
     {
         try {
-            $isDown = app()->isDownForMaintenance();
+            $maintenanceFile = storage_path('framework/maintenance_selective');
+            $isDown = file_exists($maintenanceFile);
             
             if ($isDown) {
-                Artisan::call('up');
-                $this->logAction('maintenance_off', 'System brought back online');
+                unlink($maintenanceFile);
+                $this->logAction('maintenance_off', 'Selective maintenance mode deactivated');
                 return response()->json(['success' => true, 'message' => 'Sistema ONLINE.']);
             } else {
-                Artisan::call('down', [
-                    '--secret' => config('app.maintenance_secret', 'dx-dev-access'),
-                    '--refresh' => 15
-                ]);
-                $this->logAction('maintenance_on', 'System put into maintenance mode');
-                return response()->json(['success' => true, 'message' => 'Sistema en MANTENIMIENTO.']);
+                file_put_contents($maintenanceFile, json_encode([
+                    'time' => time(),
+                    'user_id' => auth()->id()
+                ]));
+                $this->logAction('maintenance_on', 'Selective maintenance mode activated');
+                return response()->json(['success' => true, 'message' => 'Sistema en MANTENIMIENTO (Solo Admin).']);
             }
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()], 500);
