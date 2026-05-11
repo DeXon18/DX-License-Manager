@@ -19,22 +19,22 @@ class RoleSeeder extends Seeder
             [
                 'name' => 'Administrador',
                 'slug' => 'admin',
-                'description' => 'Acceso total al sistema e infraestructura.'
+                'description' => 'Control total — gestión, configuración, herramientas, feature flags'
             ],
             [
                 'name' => 'Técnico',
                 'slug' => 'technician',
-                'description' => 'Gestión de licencias, auditorías y clientes.'
+                'description' => 'Acceso operativo completo — clientes, contratos, licencias y herramientas técnicas'
             ],
             [
                 'name' => 'Staff',
                 'slug' => 'staff',
-                'description' => 'Gestión de clientes, contratos, contactos y documentación.'
+                'description' => 'Gestión administrativa y técnica operativa — acceso a herramientas según configuración'
             ],
             [
-                'name' => 'Visor',
+                'name' => 'Invitado',
                 'slug' => 'viewer',
-                'description' => 'Solo lectura de reportes y estado de licencias.'
+                'description' => 'Solo lectura o acceso únicamente a herramientas asignadas explícitamente'
             ],
         ];
 
