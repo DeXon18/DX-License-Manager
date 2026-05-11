@@ -48,7 +48,7 @@ class SystemDashboardController extends Controller
                 ],
             ],
             'security' => [
-                'active_sessions' => Schema::hasTable('sessions') ? DB::table('sessions')->count() : 0,
+                'active_sessions' => $this->getActiveSessionsCount(),
                 'blacklist_count' => Redis::scard('jwt_blacklist') ?? 0,
                 'failed_logins_24h' => Schema::hasTable('audit_log') 
                     ? DB::table('audit_log')->where('action', 'login_failed')->where('created_at', '>', now()->subDay())->count() 
@@ -243,5 +243,27 @@ class SystemDashboardController extends Controller
         $key = config('ai.openrouter_key');
         if (!$key) return ['status' => 'degraded', 'icon' => 'globe', 'label' => 'OpenRouter', 'message' => 'Clave Ausente'];
         return ['status' => 'online', 'icon' => 'globe', 'label' => 'OpenRouter', 'message' => 'Conexión Activa', 'details' => 'Respaldo Nivel 2'];
+    }
+
+    private function getActiveSessionsCount()
+    {
+        $driver = config('session.driver');
+
+        if ($driver === 'database') {
+            return Schema::hasTable('sessions') ? DB::table('sessions')->count() : 0;
+        }
+
+        if ($driver === 'redis') {
+            try {
+                // El prefijo suele ser laravel_cache:session: (o el nombre de la app)
+                // Usamos keys() para contar, aunque SCAN es mejor en producciones gigantes
+                $keys = Redis::keys('*session:*');
+                return count($keys);
+            } catch (\Exception $e) {
+                return 0;
+            }
+        }
+
+        return 0;
     }
 }

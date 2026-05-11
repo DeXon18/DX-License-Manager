@@ -49,6 +49,12 @@ El agente NO marca `[x]` una tarea hasta que todos sus checks están completados
   - [x] Rama: fix/test-stabilization
 - [x] 1. Implementación de System Dashboard (Operator Control Center)
   - [x] Regla aplicada: `DESIGN.md` (Bento Grid, IBM Plex Mono, Outfit)
+  - [x] Refinar UI del Dashboard (NOC Style)
+    - [x] Corregir detección de memoria en LXC (cgroups)
+    - [x] Implementar visualización de iconos y fuente Outfit
+    - [x] Categorizar Services Matrix (Infra, Proc, AI)
+    - [x] Localizar etiquetas a castellano natural
+    - [x] Corregir conteo de sesiones activas (Redis driver)
   - [x] Evidencia: Dashboard NOC funcional con métricas precisas de contenedor (cgroups).
   - [x] Refinamiento: Centrado de valores, fuente premium `Outfit` e iconos "Ghost".
   - [x] Rama: feature/system-dashboard

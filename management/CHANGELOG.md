@@ -14,6 +14,9 @@
 - **Visualización de Datos**: Integración de Chart.js para gráficas de tendencia (Auditorías 7 días) y distribución de Daemons.
 - **KPIs de Negocio**: Visualización en tiempo real de contratos, licencias activas, caducidades próximas y estado de auditorías IA.
 - **Factories de Datos**: Creadas factories para `Client`, `Contract` y `AiAuditResult` para soporte de tests de integración.
+- **Services Matrix Categorizada**: Organización de servicios en grupos lógicos (Infraestructura, Procesadores, Inteligencia AI).
+- **Iconografía y Localización**: Añadidos iconos SVG personalizados y etiquetas en castellano natural para mayor claridad operativa.
+- **Métricas de Actividad AI**: Implementado contador de auditorías diarias para Gemini como proxy de consumo.
 
 ### Fixed
 - **Métricas de RAM en LXC**: Corregida detección de límites de memoria usando `cgroup v1/v2` para reportar el límite del contenedor en lugar de la RAM del nodo Proxmox.
