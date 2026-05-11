@@ -3,164 +3,145 @@
 @section('title', 'System Control Center')
 
 @section('header')
-    <div class="flex items-center justify-between mb-8">
-        <div>
-            <nav class="flex mb-2 text-xs font-mono text-muted uppercase tracking-wider" aria-label="Breadcrumb">
-                <ol class="flex items-center space-x-2">
-                    <li><a href="{{ route('dashboard') }}" class="hover:text-accent">Portal</a></li>
-                    <li><span class="px-1">/</span></li>
-                    <li class="text-secondary">Admin</li>
-                    <li><span class="px-1">/</span></li>
-                    <li class="text-primary font-bold">System Dashboard</li>
-                </ol>
-            </nav>
-            <h1 class="text-2xl font-bold tracking-tight text-primary flex items-center gap-3">
-                <div class="p-2 rounded-lg bg-accent-muted text-accent">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                    </svg>
-                </div>
-                System Control Center
-                <span class="flex h-2 w-2 rounded-full bg-success animate-pulse" title="Live System"></span>
-            </h1>
-        </div>
-        <div class="flex gap-2">
-            <button onclick="window.location.reload()" class="px-4 py-2 bg-raised border border-border text-secondary hover:text-primary rounded-md text-xs font-bold uppercase tracking-widest transition-all">
-                Refresh Data
-            </button>
-        </div>
+    <div class="page-header">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="{{ route('dashboard') }}">Portal</a>
+            <span>/</span>
+            <span class="muted">Admin</span>
+            <span>/</span>
+            <span class="font-bold">System Dashboard</span>
+        </nav>
+        <h1 class="page-title flex items-center gap-3">
+            System Control Center
+            <span class="dot-live" title="Live System"></span>
+        </h1>
+        <p class="page-sub">Panel de monitorización técnica y KPIs de negocio en tiempo real.</p>
     </div>
 @endsection
 
 @section('content')
-<div class="space-y-6">
+<div class="dashboard-container">
     {{-- KPI Row --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="stats-row">
         {{-- Health Score --}}
-        <div class="bg-surface border border-border rounded-lg p-5 shadow-sm">
-            <div class="text-[0.65rem] font-bold uppercase tracking-[0.1em] text-muted mb-1">System Health Score</div>
-            <div class="flex items-end justify-between">
-                <div class="text-[1.8rem] font-bold text-primary font-mono tracking-tighter tabular-nums">98.2<span class="text-lg text-muted">%</span></div>
-                <div class="text-success text-xs font-bold font-mono mb-1">STABLE</div>
-            </div>
-            <div class="mt-3 h-1 w-full bg-raised rounded-full overflow-hidden">
-                <div class="h-full bg-success" style="width: 98.2%"></div>
+        <div class="stat-card">
+            <div class="stat-label">System Health Score</div>
+            <div class="stat-value accent">98.2<span style="font-size: 14px; opacity: 0.5">%</span></div>
+            <div class="stat-meta success">OPERATIONAL</div>
+            <div class="storage-track mt-4" style="margin-top: 12px;">
+                <div class="storage-fill" style="width: 98.2%"></div>
             </div>
         </div>
 
         {{-- Total Licenses --}}
-        <div class="bg-surface border border-border rounded-lg p-5 shadow-sm">
-            <div class="text-[0.65rem] font-bold uppercase tracking-[0.1em] text-muted mb-1">Managed Licenses</div>
-            <div class="text-[1.8rem] font-bold text-primary font-mono tracking-tighter tabular-nums">
+        <div class="stat-card">
+            <div class="stat-label">Managed Licenses</div>
+            <div class="stat-value font-mono">
                 {{ $metrics['business']['total_contracts'] }}
             </div>
-            <div class="flex items-center gap-2 mt-1">
-                <span class="text-[0.7rem] text-secondary font-mono tracking-tight">{{ $metrics['business']['total_clients'] }} Clients</span>
-                <span class="text-[0.7rem] text-warning font-bold font-mono">/ {{ $metrics['business']['expiring_soon'] }} Expiring</span>
+            <div class="stat-meta font-mono">
+                {{ $metrics['business']['total_clients'] }} Clients · <span class="badge badge-warn">{{ $metrics['business']['expiring_soon'] }} Expiring</span>
             </div>
         </div>
 
         {{-- AI Audits --}}
-        <div class="bg-surface border border-border rounded-lg p-5 shadow-sm">
-            <div class="text-[0.65rem] font-bold uppercase tracking-[0.1em] text-muted mb-1">AI Audit Intelligence</div>
-            <div class="text-[1.8rem] font-bold text-primary font-mono tracking-tighter tabular-nums">
+        <div class="stat-card">
+            <div class="stat-label">AI Audit Intelligence</div>
+            <div class="stat-value font-mono">
                 {{ $metrics['business']['total_audits'] }}
             </div>
-            <div class="flex items-center gap-2 mt-1">
+            <div class="stat-meta">
                 @if($metrics['business']['pending_audits'] > 0)
-                    <span class="flex h-1.5 w-1.5 rounded-full bg-warning animate-pulse"></span>
-                    <span class="text-[0.7rem] text-warning font-bold font-mono">{{ $metrics['business']['pending_audits'] }} Processing</span>
+                    <span class="badge badge-info">{{ $metrics['business']['pending_audits'] }} Processing</span>
                 @else
-                    <span class="text-[0.7rem] text-success font-bold font-mono">All Sincronized</span>
-                @endif
-                @if($metrics['business']['failed_audits'] > 0)
-                    <span class="text-[0.7rem] text-danger font-bold font-mono">· {{ $metrics['business']['failed_audits'] }} Failed</span>
+                    <span class="badge badge-success">Synchronized</span>
                 @endif
             </div>
         </div>
 
         {{-- Infrastructure --}}
-        <div class="bg-surface border border-border rounded-lg p-5 shadow-sm">
-            <div class="text-[0.65rem] font-bold uppercase tracking-[0.1em] text-muted mb-1">Global Load Avg</div>
-            <div class="text-[1.8rem] font-bold text-primary font-mono tracking-tighter tabular-nums">
+        <div class="stat-card">
+            <div class="stat-label">Global Load Avg</div>
+            <div class="stat-value font-mono" style="font-size: 22px;">
                 {{ $metrics['os']['load'] }}
             </div>
-            <div class="text-[0.7rem] text-secondary font-mono mt-1">
+            <div class="stat-meta font-mono muted">
                 PHP {{ $metrics['os']['php_version'] }} · {{ $metrics['os']['name'] }}
             </div>
         </div>
     </div>
 
     {{-- Charts Row --}}
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div class="grid-main" style="display: grid; grid-template-columns: 1fr 340px; gap: 24px; margin-top: 24px;">
         {{-- Trend Chart --}}
-        <div class="lg:col-span-2 bg-surface border border-border rounded-lg p-5 shadow-sm">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-sm font-bold uppercase tracking-wider text-secondary">Audit Activity Trend</h3>
-                <span class="text-[0.65rem] font-mono text-muted">LAST 7 DAYS</span>
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Audit Activity Trend</span>
+                <span class="badge badge-muted font-mono" style="font-size: 9px;">LAST 7 DAYS</span>
             </div>
-            <div class="h-[280px]">
+            <div style="padding: 24px; height: 300px;">
                 <canvas id="trendChart"></canvas>
             </div>
         </div>
 
         {{-- Distribution Chart --}}
-        <div class="bg-surface border border-border rounded-lg p-5 shadow-sm">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="text-sm font-bold uppercase tracking-wider text-secondary">Vendor Daemons</h3>
-                <span class="text-[0.65rem] font-mono text-muted">INVENTORY</span>
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Vendor Daemons</span>
             </div>
-            <div class="h-[280px]">
+            <div style="padding: 24px; height: 300px;">
                 <canvas id="distributionChart"></canvas>
             </div>
         </div>
     </div>
 
     {{-- Hardware & Services Grid --}}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid-main" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px;">
         {{-- Services Status --}}
-        <div class="bg-surface border border-border rounded-lg p-5 shadow-sm">
-            <h3 class="text-sm font-bold uppercase tracking-wider text-secondary mb-4">Runtime Services</h3>
-            <div class="grid grid-cols-2 gap-3">
-                @foreach($metrics['services'] as $name => $info)
-                    <div class="p-3 rounded-md bg-raised border border-border flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-2 h-2 rounded-full {{ $info['status'] === 'online' ? 'bg-success' : ($info['status'] === 'degraded' ? 'bg-warning' : 'bg-danger') }}"></div>
-                            <span class="text-xs font-bold uppercase tracking-tight text-primary">{{ $name }}</span>
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Runtime Services</span>
+            </div>
+            <div style="padding: 20px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                    @foreach($metrics['services'] as $name => $info)
+                        <div style="padding: 12px; border-radius: 6px; background: var(--bg); border: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div style="font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase;">{{ $name }}</div>
+                                <div style="font-size: 13px; font-weight: 600; color: var(--primary);">{{ strtoupper($info['message']) }}</div>
+                            </div>
+                            <div class="dot {{ $info['status'] === 'online' ? 'online' : ($info['status'] === 'degraded' ? 'warn' : 'danger') }}"></div>
                         </div>
-                        <span class="text-[0.65rem] font-mono {{ $info['status'] === 'online' ? 'text-success' : ($info['status'] === 'degraded' ? 'text-warning' : 'text-danger') }}">
-                            {{ strtoupper($info['message']) }}
-                        </span>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
         </div>
 
         {{-- Resource Monitoring --}}
-        <div class="bg-surface border border-border rounded-lg p-5 shadow-sm">
-            <h3 class="text-sm font-bold uppercase tracking-wider text-secondary mb-4">Resource Utilization</h3>
-            <div class="space-y-4">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Resource Utilization</span>
+            </div>
+            <div style="padding: 20px;">
                 {{-- Memory --}}
-                <div>
-                    <div class="flex justify-between items-center mb-1">
-                        <label class="text-[0.65rem] font-bold uppercase tracking-widest text-muted">System Memory</label>
-                        <span class="text-[0.7rem] font-mono text-secondary">{{ $metrics['hardware']['memory']['used'] }} / {{ $metrics['hardware']['memory']['total'] }}</span>
+                <div class="mb-4">
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 6px;">
+                        <span class="muted font-bold uppercase tracking-widest">System Memory</span>
+                        <span class="font-mono">{{ $metrics['hardware']['memory']['used'] }} / {{ $metrics['hardware']['memory']['total'] }}</span>
                     </div>
-                    <div class="h-2 w-full bg-raised rounded-full overflow-hidden">
-                        <div class="h-full {{ $metrics['hardware']['memory']['percent'] > 85 ? 'bg-danger' : ($metrics['hardware']['memory']['percent'] > 70 ? 'bg-warning' : 'bg-accent') }}" 
-                             style="width: {{ $metrics['hardware']['memory']['percent'] }}%"></div>
+                    <div class="storage-track">
+                        <div class="storage-fill" style="width: {{ $metrics['hardware']['memory']['percent'] }}%; background: {{ $metrics['hardware']['memory']['percent'] > 80 ? 'var(--danger)' : 'var(--accent)' }}"></div>
                     </div>
                 </div>
 
                 {{-- Disk --}}
-                <div>
-                    <div class="flex justify-between items-center mb-1">
-                        <label class="text-[0.65rem] font-bold uppercase tracking-widest text-muted">Storage Partition</label>
-                        <span class="text-[0.7rem] font-mono text-secondary">{{ $metrics['hardware']['memory']['used'] }} / {{ $metrics['hardware']['disk']['total'] }}</span>
+                <div class="mt-6">
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 6px;">
+                        <span class="muted font-bold uppercase tracking-widest">Storage Partition</span>
+                        <span class="font-mono">{{ $metrics['hardware']['disk']['used'] }} / {{ $metrics['hardware']['disk']['total'] }}</span>
                     </div>
-                    <div class="h-2 w-full bg-raised rounded-full overflow-hidden">
-                        <div class="h-full {{ $metrics['hardware']['disk']['percent'] > 90 ? 'bg-danger' : ($metrics['hardware']['disk']['percent'] > 75 ? 'bg-warning' : 'bg-accent') }}" 
-                             style="width: {{ $metrics['hardware']['disk']['percent'] }}%"></div>
+                    <div class="storage-track">
+                        <div class="storage-fill" style="width: {{ $metrics['hardware']['disk']['percent'] }}%; background: {{ $metrics['hardware']['disk']['percent'] > 90 ? 'var(--danger)' : 'var(--success)' }}"></div>
                     </div>
                 </div>
             </div>
@@ -171,15 +152,18 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Colors from DESIGN.md
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        const gridColor = isDark ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)';
+        const textColor = isDark ? '#8B949E' : '#6B7280';
+
+        // Colors
         const colors = {
             accent: '#388BFD',
             success: '#3FB950',
             warning: '#D29922',
             danger: '#E05252',
-            siemens: '#009999',
-            moldex: '#ED1C24',
-            muted: '#8B949E'
+            siemens: '#2AA198',
+            moldex: '#E05252'
         };
 
         // Trend Chart
@@ -206,12 +190,12 @@
                 scales: {
                     y: { 
                         beginAtZero: true, 
-                        grid: { color: 'rgba(139, 148, 158, 0.1)' },
-                        ticks: { font: { family: 'IBM Plex Mono', size: 10 }, color: colors.muted }
+                        grid: { color: gridColor },
+                        ticks: { font: { family: 'IBM Plex Mono', size: 10 }, color: textColor }
                     },
                     x: { 
                         grid: { display: false },
-                        ticks: { font: { family: 'IBM Plex Mono', size: 10 }, color: colors.muted }
+                        ticks: { font: { family: 'IBM Plex Mono', size: 10 }, color: textColor }
                     }
                 }
             }
@@ -228,8 +212,7 @@
                         colors.siemens,
                         colors.moldex,
                         colors.accent,
-                        colors.warning,
-                        colors.muted
+                        colors.warning
                     ],
                     borderRadius: 4
                 }]
@@ -242,16 +225,28 @@
                 scales: {
                     x: { 
                         beginAtZero: true,
-                        grid: { color: 'rgba(139, 148, 158, 0.1)' },
-                        ticks: { font: { family: 'IBM Plex Mono', size: 10 }, color: colors.muted }
+                        grid: { color: gridColor },
+                        ticks: { font: { family: 'IBM Plex Mono', size: 10 }, color: textColor }
                     },
                     y: { 
                         grid: { display: false },
-                        ticks: { font: { family: 'IBM Plex Mono', size: 10 }, color: colors.muted }
+                        ticks: { font: { family: 'IBM Plex Mono', size: 10 }, color: textColor }
                     }
                 }
             }
         });
     });
 </script>
+
+<style>
+    .dashboard-container { animation: fadeIn 0.4s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    /* Fallback styles if grid-main is not behaving */
+    .dashboard-container .card { margin-bottom: 0; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot.online { background: var(--success); box-shadow: 0 0 8px var(--success); }
+    .dot.warn { background: var(--warning); box-shadow: 0 0 8px var(--warning); }
+    .dot.danger { background: var(--danger); box-shadow: 0 0 8px var(--danger); }
+</style>
 @endsection
