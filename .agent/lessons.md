@@ -74,5 +74,14 @@ El agente debe revisar este archivo al inicio de cada sesión.
   3. **Robustez de Scripts**: Usar siempre `MYSQL_PWD` en scripts de shell para pasar contraseñas de base de datos de forma segura.
   4. **Verificación post-restauración**: Tras restaurar un backup, es imperativo revisar el `DESCRIBE` de las tablas críticas frente a los modelos de Laravel para detectar columnas faltantes.
 
+## [2026-05-11] — Métricas de Git Invisibles (N/A) y Permisos en Docker
+- **Qué pasó:** El Dashboard mostraba `N/A` en el Hash y Fecha de despliegue, a pesar de tener la carpeta `.git` montada.
+- **Por qué pasó:** 
+  1. **Configuración Global vs System**: Se configuró `safe.directory` como `--global` en el Dockerfile, lo que solo afectaba al usuario `root`. El servidor web (PHP-FPM) corre como `www-data`, por lo que Git bloqueaba el acceso por "dubious ownership".
+  2. **Localización**: La fecha de Git se extraía directamente en inglés, rompiendo la estética del portal en castellano.
+- **Reglas nuevas:**
+  1. **Git en Docker**: Al usar Git dentro de un contenedor con volúmenes montados, configurar siempre `git config --system --add safe.directory /path/to/repo` para que afecte a todos los usuarios (especialmente a `www-data`).
+  2. **Métricas de Git**: Extraer siempre el *timestamp* (`%ct`) y formatearlo con `Carbon` en Laravel para garantizar una localización correcta y dinámica (`diffForHumans`).
+
 ---
 _Firmado por: **Antigravity (DX Agent)** 🦾_

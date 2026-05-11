@@ -1,23 +1,23 @@
 # Antigravity (DX Agent) 🦾 — Brain Dump
 
-## Session: 2026-05-09
+## Session: 2026-05-11
 
-### Status: Phase 9 Completed — Moldex3D Persistence
-- **Parser Moldex3D**: Parser determinista (regex) para archivos `.mac` implementado. Extrae Machine ID, Sold-To y módulos de producto.
-- **MoldexSyncService**: Motor de sincronización que vincula licencias con el Inventario Activo. Implementa Fuzzy Matching (85%) para nombres de clientes.
-- **UI/UX**: Nueva vista técnica de resultados (Property List) con indicadores visuales de estado de sincronización.
-- **Nomenclatura**: Estandarización de archivos `.mac` (`AÑO_ID_CLIENTE__TIPO_FECHA.mac`) operativa.
-- **Seguridad**: Almacenamiento privado estructurado y proceso local 100% determinista sin envío de datos sensibles a IA externa.
+### Status: Phase 10 & 10.4 Completed — NOC Pro & Modularization
+- **Dashboard NOC Pro**: Implementada telemetría de alta densidad. Monitorización de hardware (CPU/RAM/Disco), red (ETH0 RX/TX), base de datos (hilos/slow queries) y servicios IA.
+- **Modularización**: Secciones de Backups y Auditoría (Logs) separadas en módulos independientes con UI unificada y consistente.
+- **Infraestructura de Backups**: Estabilizado el motor de backups usando `mariadb-client` en el contenedor y script `backup-db.sh` optimizado (SSL disabled, bash forzado).
+- **Git Intelligence**: Extracción de metadatos (Hash/Fecha) operativa mediante configuración `--system` de `safe.directory`. Localización completa a castellano con Carbon.
+- **Quick Actions**: Panel interactivo con Alpine.js para gestión rápida del servidor (Caché, Workers, DB, Mantenimiento).
 
 ### Technical Notes
-- **Fuzzy Matching**: Se utiliza la lógica de similitud de base de datos para vincular clientes, ignorando sufijos comunes (S.L., S.A.) para mejorar la precisión.
-- **Inventory Upsert**: El sistema utiliza `updateOrCreate` para evitar duplicados en `license_inventory_daemons` y `license_inventory_products`.
-- **UI Indicators**: Los badges de estado (COMPLETADA/PENDIENTE) en el bento grid proporcionan feedback inmediato sobre el éxito de la sincronización.
-- **Git Operations**: Se realizó el commit de cierre de fase. Recordar que las operaciones de Git desde Windows pueden requerir confirmación en el servidor ante fallos de permisos/locks.
+- **Git Permissions**: Crucial usar `git config --system` en Docker para que `www-data` pueda ejecutar comandos de git sobre volúmenes montados.
+- **Carbon Localization**: Para fechas de Git, usar `Carbon::createFromTimestamp($ts)->diffForHumans()` tras configurar el locale global a `es`.
+- **Docker Paths**: Recordar que con `--project-directory .`, todas las rutas de volúmenes en el compose deben ser relativas a la raíz.
+- **Backup Permissions**: Los archivos generados por `mysqldump` dentro del contenedor pueden requerir ajuste de permisos para ser gestionados vía web (IDs seguros).
 
 ### Next Steps
-- **Phase 10**: Desarrollo del Dashboard del Sistema (Métricas de Infraestructura y Servicios).
-- **Merge**: Fusión de la rama `feature/moldex3d-persistence` a `dev`.
-- **Integración**: Verificar la visibilidad de productos Moldex3D en los perfiles unificados de cliente.
+- **Phase 11**: Gestión de Usuarios y Roles (RBAC granular).
+- **Security Audit**: Revisar middleware de autenticación ante el nuevo sistema de usuarios.
+- **Integración**: Vincular los logs de auditoría con el nuevo módulo de usuarios para trazabilidad nominal.
 
 _Firmado por: **Antigravity (DX Agent)** 🦾_
