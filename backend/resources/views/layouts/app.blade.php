@@ -104,7 +104,7 @@
             <div class="sidebar-section">
                 <div class="sidebar-heading">Administración</div>
                 <a class="sidebar-item {{ request()->routeIs('admin.system.index') ? 'active' : '' }}" href="{{ route('admin.system.index') }}">
-                    <span class="sidebar-icon">⚙️</span> NOC Pro (Nacional)
+                    <span class="sidebar-icon">⚙️</span> Telemetría Global
                 </a>
                 <a class="sidebar-item {{ request()->routeIs('admin.backups.*') ? 'active' : '' }}" href="{{ route('admin.backups.index') }}">
                     <span class="sidebar-icon">💾</span> Copias de Seguridad
