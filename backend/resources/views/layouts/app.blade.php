@@ -102,9 +102,15 @@
 
             @if(Auth::user() && Auth::user()->hasRole('admin'))
             <div class="sidebar-section">
-                <div class="sidebar-heading">Gestión Admin</div>
-                <a class="sidebar-item {{ request()->routeIs('admin.system.*') ? 'active' : '' }}" href="{{ route('admin.system.index') }}">
-                    <span class="sidebar-icon">⚙️</span> Estado del Sistema
+                <div class="sidebar-heading">Administración</div>
+                <a class="sidebar-item {{ request()->routeIs('admin.system.index') ? 'active' : '' }}" href="{{ route('admin.system.index') }}">
+                    <span class="sidebar-icon">⚙️</span> NOC Pro (Nacional)
+                </a>
+                <a class="sidebar-item {{ request()->routeIs('admin.backups.*') ? 'active' : '' }}" href="{{ route('admin.backups.index') }}">
+                    <span class="sidebar-icon">💾</span> Copias de Seguridad
+                </a>
+                <a class="sidebar-item {{ request()->routeIs('admin.audit.*') ? 'active' : '' }}" href="{{ route('admin.audit.index') }}">
+                    <span class="sidebar-icon">📋</span> Auditoría y Logs
                 </a>
                 <a class="sidebar-item {{ request()->routeIs('admin.import.*') || request()->routeIs('admin.normalization.*') ? 'active' : '' }}" href="{{ route('admin.import.index') }}">
                     <span class="sidebar-icon">📥</span> Importación & Datos
