@@ -10,6 +10,7 @@ use App\Http\Controllers\ToolController;
 use App\Http\Controllers\Tools\MoldexController;
 use App\Http\Controllers\Tools\NXSuiteController;
 use App\Http\Controllers\Admin\SystemDashboardController;
+use App\Http\Controllers\Admin\SystemActionController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -65,5 +66,13 @@ Route::middleware(['auth.jwt'])->group(function () {
         Route::post('/normalization/dismiss', [\App\Http\Controllers\Admin\NormalizationController::class, 'dismiss'])->name('normalization.dismiss');
 
         Route::get('/system', [SystemDashboardController::class, 'index'])->name('system.index');
+        
+        Route::prefix('system/actions')->name('system.')->group(function () {
+            Route::post('/clear-cache', [SystemActionController::class, 'clearCache'])->name('clear-cache');
+            Route::post('/restart-queues', [SystemActionController::class, 'restartQueues'])->name('restart-queues');
+            Route::post('/backup-db', [SystemActionController::class, 'backupDatabase'])->name('backup-db');
+            Route::post('/toggle-maintenance', [SystemActionController::class, 'toggleMaintenance'])->name('toggle-maintenance');
+            Route::post('/test-telegram', [SystemActionController::class, 'testTelegram'])->name('test-telegram');
+        });
     });
 });

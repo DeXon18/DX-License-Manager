@@ -54,13 +54,22 @@ El agente NO marca `[x]` una tarea hasta que todos sus checks están completados
     - [x] Implementar visualización de iconos y fuente Outfit
     - [x] Categorizar Services Matrix (Infra, Proc, AI)
     - [x] Localizar etiquetas a castellano natural
-    - [x] Corregir conteo de sesiones activas (Redis driver)
+    - [x] Corregir conteo de usuarios online (Redis Presence)
   - [x] Evidencia: Dashboard NOC funcional con métricas precisas de contenedor (cgroups).
   - [x] Refinamiento: Centrado de valores, fuente premium `Outfit` e iconos "Ghost".
   - [x] Rama: feature/system-dashboard
 - [x] 2. Estabilización de Métricas de Contenedor
   - [x] Fix: Lectura de `/sys/fs/cgroup/memory.max` para reportar RAM real del LXC.
   - [x] Fix: Formateo de CPU Load separado por intervalos.
+
+- [x] 3. Evolución a NOC Pro Dashboard
+  - [x] Regla aplicada: `AGENTS.md` (Integridad de Datos, Una cosa a la vez)
+  - [x] Telemetría avanzada: Tráfico ETH0 y métricas profundas MariaDB.
+  - [x] Quick Actions: Implementación de SystemActionController y panel Alpine.js.
+  - [x] Git Integration: Detección automática de hash y fecha de despliegue.
+  - [x] Live Feed: Historial de auditoría administrativa en tiempo real.
+  - [x] Evidencia: Dashboard con controles funcionales y telemetría de kernel activa.
+  - [x] Rama: feature/system-noc-pro
 
 ---
 
