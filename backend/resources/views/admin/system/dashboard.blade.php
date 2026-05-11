@@ -226,25 +226,26 @@
                     <span class="card-title">Acciones Rápidas</span>
                 </div>
                 <div style="padding: 20px; display: flex; flex-direction: column; gap: 10px;">
-                    <button @click="execute('{{ route('admin.system.clear-cache') }}', 'Limpiar caché')" class="btn-noc" :disabled="loading">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
-                        Limpiar Caché
+                    <button @click="execute('{{ route('admin.system.clear-cache') }}', 'Limpiar caché')" class="btn-noc" :disabled="loading" style="justify-content: flex-start; color: var(--accent); border-color: rgba(67, 97, 238, 0.15);">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 5px;"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+                        <span style="margin-left: 5px;">Limpiar Caché</span>
                     </button>
-                    <button @click="execute('{{ route('admin.system.restart-queues') }}', 'Reiniciar workers')" class="btn-noc" :disabled="loading">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-                        Reiniciar Workers
+                    <button @click="execute('{{ route('admin.system.restart-queues') }}', 'Reiniciar workers')" class="btn-noc" :disabled="loading" style="justify-content: flex-start; color: #818cf8; border-color: rgba(129, 140, 248, 0.15);">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 5px;"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                        <span style="margin-left: 5px;">Reiniciar Workers</span>
                     </button>
-                    <button @click="execute('{{ route('admin.system.backup-db') }}', 'Generar backup')" class="btn-noc" :disabled="loading">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                        Backup MariaDB
+                    <button @click="execute('{{ route('admin.system.backup-db') }}', 'Generar backup')" class="btn-noc" :disabled="loading" style="justify-content: flex-start; color: var(--warning); border-color: rgba(245, 158, 11, 0.15);">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 5px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                        <span style="margin-left: 5px;">Backup MariaDB</span>
                     </button>
-                    <button @click="execute('{{ route('admin.system.toggle-maintenance') }}', 'Modo mantenimiento')" class="btn-noc" :disabled="loading" :class="metrics['os']['maintenance'] ? 'btn-success' : 'btn-danger'">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                        <span>{{ $metrics['os']['maintenance'] ? 'Desactivar Manto.' : 'Modo Mantenimiento' }}</span>
+                    <div style="height: 1px; background: var(--border-subtle); margin: 5px 0; opacity: 0.5;"></div>
+                    <button @click="execute('{{ route('admin.system.toggle-maintenance') }}', 'Modo mantenimiento')" class="btn-noc" :disabled="loading" :class="metrics['os']['maintenance'] ? 'btn-success' : 'btn-danger'" style="justify-content: flex-start;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 5px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        <span style="margin-left: 5px;">{{ $metrics['os']['maintenance'] ? 'Desactivar Manto.' : 'Modo Mantenimiento' }}</span>
                     </button>
-                    <button @click="execute('{{ route('admin.system.test-telegram') }}', 'Test Telegram')" class="btn-noc" :disabled="loading">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
-                        Probar Alertas
+                    <button @click="execute('{{ route('admin.system.test-telegram') }}', 'Test Telegram')" class="btn-noc" :disabled="loading" style="justify-content: flex-start; color: #fb923c; border-color: rgba(251, 146, 60, 0.15);">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 5px;"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                        <span style="margin-left: 5px;">Probar Alertas</span>
                     </button>
                 </div>
             </div>
@@ -300,9 +301,9 @@
         transition: all 0.2s;
     }
     .btn-noc:hover:not(:disabled) {
-        background: rgba(255,255,255,0.08);
-        border-color: var(--accent);
-        transform: translateY(-1px);
+        background: rgba(255,255,255,0.06);
+        border-color: currentColor;
+        transform: translateX(4px);
     }
     .btn-noc:disabled {
         opacity: 0.5;
