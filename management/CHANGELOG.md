@@ -3,6 +3,19 @@
 
 ---
 
+## [2026-05-11] — Modularización Administrativa (Phase 10.4) ✅
+
+### Added
+- **Database Vault Module**: Migración de la gestión de backups a un controlador y vista independientes (`BackupController`).
+- **Centro de Auditoría**: Nuevo módulo dedicado para logs de sistema con filtros avanzados (IP, Usuario, Acción, Nivel).
+- **Header Standardization**: Unificación visual de las cabeceras de administración siguiendo el estilo del módulo de Importación.
+- **Backup Download/Delete**: Implementada lógica de borrado y descarga de copias de seguridad mediante IDs de archivo seguros.
+- **Relocation of Stats**: Las estadísticas técnicas se han movido a las cabeceras de las tarjetas internas para limpiar el encabezado principal.
+
+### Fixed
+- **Permission Denied in Backups**: Actualizado script `backup-db.sh` para forzar permisos 777 en archivos nuevos, permitiendo su borrado desde la interfaz web.
+- **Styling Consistency**: Corregido estilo de botones "Limpiar" y alineación de botones de acción en tablas.
+
 ## [2026-05-11] — Dashboard del Sistema (NOC Pro) ✅
 
 ### Added
