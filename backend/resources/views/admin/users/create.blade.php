@@ -3,106 +3,94 @@
 @section('title', 'Nuevo Usuario — DX License Manager')
 
 @section('content')
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="d-flex align-items-center mb-4">
-                <a href="{{ route('admin.users.index') }}" class="btn btn-sm btn-outline-secondary me-3">
-                    <i class="fas fa-arrow-left"></i>
-                </a>
-                <h1 class="h3 mb-0 text-white">Nuevo Usuario</h1>
-            </div>
-
-            <div class="card bg-dark border-secondary">
-                <div class="card-body p-4">
-                    <form action="{{ route('admin.users.store') }}" method="POST">
-                        @csrf
-
-                        <div class="mb-3">
-                            <label for="name" class="form-label text-secondary small text-uppercase fw-bold">Nombre Completo</label>
-                            <input type="text" name="name" id="name" class="form-control bg-transparent border-secondary text-white @error('name') is-invalid @enderror" 
-                                   value="{{ old('name') }}" required autofocus>
-                            @error('name')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="email" class="form-label text-secondary small text-uppercase fw-bold">Email Institucional</label>
-                            <input type="email" name="email" id="email" class="form-control bg-transparent border-secondary text-white font-mono @error('email') is-invalid @enderror" 
-                                   value="{{ old('email') }}" required>
-                            @error('email')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="password" class="form-label text-secondary small text-uppercase fw-bold">Contraseña</label>
-                                <input type="password" name="password" id="password" class="form-control bg-transparent border-secondary text-white font-mono @error('password') is-invalid @enderror" required>
-                                @error('password')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="col-md-6">
-                                <label for="password_confirmation" class="form-label text-secondary small text-uppercase fw-bold">Confirmar</label>
-                                <input type="password" name="password_confirmation" id="password_confirmation" class="form-control bg-transparent border-secondary text-white font-mono" required>
-                            </div>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="role_id" class="form-label text-secondary small text-uppercase fw-bold">Rol en el Sistema</label>
-                            <select name="role_id" id="role_id" class="form-select bg-transparent border-secondary text-white @error('role_id') is-invalid @enderror" required>
-                                <option value="" disabled selected>Selecciona un rol...</option>
-                                @foreach($roles as $role)
-                                    <option value="{{ $role->id }}" {{ old('role_id') == $role->id ? 'selected' : '' }}>
-                                        {{ $role->name }} — {{ $role->description }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('role_id')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
-                        </div>
-
-                        <div class="mb-4" x-data="{ active: true }">
-                            <div class="d-flex align-items-center justify-content-between p-3 bg-secondary bg-opacity-5 rounded border border-secondary border-opacity-25">
-                                <div>
-                                    <div class="text-white small fw-bold">Usuario Activo</div>
-                                    <div class="text-secondary extra-small">Permite el inicio de sesión inmediato</div>
-                                </div>
-                                <input type="hidden" name="is_active" :value="active ? 1 : 0">
-                                <button type="button" 
-                                        class="switch" 
-                                        :class="active ? 'on' : 'off'"
-                                        @click="active = !active">
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="d-grid pt-2">
-                            <button type="submit" class="btn btn-primary py-2">
-                                <i class="fas fa-save me-2"></i> Crear Usuario
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            
-            <div class="mt-4 p-3 bg-secondary bg-opacity-10 border border-secondary rounded text-secondary small">
-                <i class="fas fa-info-circle me-2"></i>
-                Se enviará una notificación de acceso al usuario una vez creada la cuenta (próximamente).
-            </div>
+<div class="page-header">
+    <div style="display: flex; align-items: center; gap: 16px;">
+        <a href="{{ route('admin.users.index') }}" class="btn-secondary" style="padding: 8px 12px;">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <div>
+            <h1 class="page-title">Nuevo Usuario</h1>
+            <p class="page-sub">Crea una nueva cuenta de acceso al portal.</p>
         </div>
     </div>
 </div>
 
-<style>
-    .form-control:focus, .form-select:focus {
-        background-color: rgba(255,255,255,0.02);
-        border-color: var(--accent);
-        box-shadow: 0 0 0 0.25rem rgba(var(--accent-rgb), 0.15);
-        color: white;
-    }
-</style>
+<div style="max-width: 600px;">
+    <div class="card" style="--accent: var(--accent);">
+        <div class="card-header">
+            <span class="card-title">Configuración de Perfil</span>
+        </div>
+        
+        <div style="padding: 32px;">
+            <form action="{{ route('admin.users.store') }}" method="POST">
+                @csrf
+
+                <div class="form-group">
+                    <label for="name">NOMBRE COMPLETO</label>
+                    <input type="text" name="name" id="name" value="{{ old('name') }}" placeholder="Ej: Juan Pérez" required autofocus>
+                    @error('name') <p class="date-sub" style="margin-top: 4px;">{{ $message }}</p> @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="email">EMAIL INSTITUCIONAL</label>
+                    <input type="email" name="email" id="email" class="font-mono" value="{{ old('email') }}" placeholder="usuario@dxpro.es" required>
+                    @error('email') <p class="date-sub" style="margin-top: 4px;">{{ $message }}</p> @enderror
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label for="password">CONTRASEÑA</label>
+                        <input type="password" name="password" id="password" class="font-mono" required>
+                        @error('password') <p class="date-sub" style="margin-top: 4px;">{{ $message }}</p> @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="password_confirmation">CONFIRMAR</label>
+                        <input type="password" name="password_confirmation" id="password_confirmation" class="font-mono" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="role_id">ROL EN EL SISTEMA</label>
+                    <select name="role_id" id="role_id" class="gui-select" style="width: 100%; padding: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--primary); font-family: var(--font-sans);" required>
+                        <option value="" disabled selected>Selecciona un rol...</option>
+                        @foreach($roles as $role)
+                            <option value="{{ $role->id }}" {{ old('role_id') == $role->id ? 'selected' : '' }}>
+                                {{ $role->name }} — {{ $role->description }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('role_id') <p class="date-sub" style="margin-top: 4px;">{{ $message }}</p> @enderror
+                </div>
+
+                <div class="form-group" x-data="{ active: true }">
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px;">
+                        <div>
+                            <div style="font-weight: 600; font-size: 13px; color: var(--primary);">Usuario Activo</div>
+                            <div style="font-size: 11px; color: var(--muted);">Permite el inicio de sesión inmediato</div>
+                        </div>
+                        <input type="hidden" name="is_active" :value="active ? 1 : 0">
+                        <button type="button" 
+                                class="switch" 
+                                :class="active ? 'on' : 'off'"
+                                @click="active = !active">
+                        </button>
+                    </div>
+                </div>
+
+                <div style="margin-top: 32px;">
+                    <button type="submit" class="btn-primary" style="width: 100%; padding: 14px;">
+                        <i class="fas fa-save me-2"></i> Crear Usuario
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <div class="no-ai-banner" style="margin-top: 24px;">
+        <i class="fas fa-info-circle no-ai-icon"></i>
+        <div>
+            Se enviará una notificación de acceso al usuario una vez creada la cuenta (próximamente).
+        </div>
+    </div>
+</div>
 @endsection

@@ -12,6 +12,7 @@ use App\Http\Controllers\Tools\NXSuiteController;
 use App\Http\Controllers\Admin\SystemDashboardController;
 use App\Http\Controllers\Admin\SystemActionController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -22,6 +23,10 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/clientes', [ClientController::class, 'index'])->name('clients.index');
     Route::get('/clientes/{client}', [ClientController::class, 'show'])->name('clients.show');
+    
+    // Perfil de Usuario
+    Route::get('/perfil', [ProfileController::class, 'index'])->name('profile.index');
+    Route::post('/perfil', [ProfileController::class, 'update'])->name('profile.update');
     
     Route::get('/changelog', [SystemController::class, 'changelog'])->name('system.changelog');
     

@@ -67,16 +67,27 @@
                     <div class="toggle-track"><div class="toggle-knob" :style="darkMode ? 'left: 20px' : 'left: 2px'"></div></div>
                     <span class="toggle-icon">🌙</span>
                 </div>
-                <div class="user-btn">
+                <a href="{{ route('profile.index') }}" class="user-btn" style="text-decoration: none;">
                     <div class="avatar">{{ substr(Auth::user()->name ?? 'U', 0, 1) }}</div>
                     <span class="user-name">{{ Auth::user()->name ?? 'Usuario Demo' }}</span>
-                </div>
+                </a>
             </div>
         </div>
     </header>
 
     <div class="layout">
         <aside class="sidebar" x-show="sidebarOpen" x-transition>
+            <div class="sidebar-section">
+                <div class="sidebar-heading">Mi Cuenta</div>
+                <a class="sidebar-item {{ request()->routeIs('profile.*') ? 'active' : '' }}" href="{{ route('profile.index') }}">
+                    <span class="sidebar-icon">👤</span> Mi Perfil
+                </a>
+                <form action="{{ route('logout') }}" method="POST" style="display: none;" id="logout-form">@csrf</form>
+                <a class="sidebar-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <span class="sidebar-icon">🚪</span> Cerrar Sesión
+                </a>
+            </div>
+
             <div class="sidebar-section">
                 <div class="sidebar-heading">Navegación</div>
                 <a class="sidebar-item {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">
