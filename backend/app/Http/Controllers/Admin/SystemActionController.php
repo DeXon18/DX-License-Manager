@@ -103,6 +103,47 @@ class SystemActionController extends Controller
         }
     }
 
+    public function downloadBackup($filename)
+    {
+        try {
+            if (str_contains($filename, '..') || str_contains($filename, '/')) {
+                abort(403, 'Acceso denegado.');
+            }
+
+            $path = storage_path("backups/db/{$filename}");
+
+            if (!file_exists($path)) {
+                abort(404, 'Archivo no encontrado.');
+            }
+
+            $this->logAction('db_download', "Backup downloaded: {$filename}");
+            return response()->download($path);
+        } catch (\Exception $e) {
+            abort(500, $e->getMessage());
+        }
+    }
+
+    public function deleteBackup($filename)
+    {
+        try {
+            if (str_contains($filename, '..') || str_contains($filename, '/')) {
+                return response()->json(['success' => false, 'message' => 'Acceso denegado.'], 403);
+            }
+
+            $path = storage_path("backups/db/{$filename}");
+
+            if (file_exists($path)) {
+                unlink($path);
+                $this->logAction('db_delete', "Backup deleted: {$filename}");
+                return response()->json(['success' => true, 'message' => 'Copia de seguridad eliminada.']);
+            }
+
+            return response()->json(['success' => false, 'message' => 'Archivo no encontrado.'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()], 500);
+        }
+    }
+
     private function logAction($action, $description)
     {
         DB::table('audit_logs')->insert([
