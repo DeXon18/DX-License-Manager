@@ -296,7 +296,9 @@ class SystemDashboardController extends Controller
             // Path seguro del repo para git
             $path = base_path();
             $hash = trim(shell_exec("git -C {$path} rev-parse --short HEAD") ?? 'N/A');
-            $date = trim(shell_exec("git -C {$path} log -1 --format=%cd --date=relative") ?? 'N/A');
+            $timestamp = trim(shell_exec("git -C {$path} log -1 --format=%ct") ?? null);
+            
+            $date = $timestamp ? Carbon::createFromTimestamp($timestamp)->diffForHumans() : 'N/A';
             
             return [
                 'hash' => $hash,
