@@ -181,16 +181,13 @@ class SystemDashboardController extends Controller
 
     private function getDaemonDistribution()
     {
-        // Distribución simple basada en AiAuditResult (metadatos extraídos)
-        // O basándonos en la tabla de inventario si está poblada
-        $data = \App\Models\LicenseInventoryDaemon::select('vendor_daemon', DB::raw('count(*) as total'))
-            ->groupBy('vendor_daemon')
-            ->pluck('total', 'vendor_daemon')
-            ->toArray();
+        $distribution = \App\Models\LicenseInventoryDaemon::select('daemon', \DB::raw('count(*) as total'))
+            ->groupBy('daemon')
+            ->get();
 
         return [
-            'labels' => array_keys($data),
-            'values' => array_values($data),
+            'labels' => $distribution->pluck('daemon'),
+            'values' => $distribution->pluck('total'),
         ];
     }
 }
