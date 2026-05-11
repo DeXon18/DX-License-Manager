@@ -360,15 +360,15 @@ DX License Manager
 
 ---
 
-### 📋 Fase 11 — Usuarios y Acceso
+### 📋 Fase 11 — Usuarios y Acceso 🔜 EN CURSO
 
-**Estado:** En planificación
+**Estado:** EN CURSO
 **Prerequisito:** ✅ Fase 10 validada por Oskar
 **Validación requerida antes de Fase 12:** CRUD completo de usuarios verificado con todos los roles.
 
-- [ ] Listado de usuarios con filtro por rol
-- [ ] Crear / Editar usuario con asignación de rol
-- [ ] Activar / Desactivar usuario
+- [x] Listado de usuarios con filtro por rol
+- [/] Crear / Editar usuario con asignación de rol (Generación de contraseñas OK)
+- [ ] Activar / Desactivar usuario (Toggle AJAX)
 - [ ] Gestión de roles y permisos
 
 ---
@@ -385,9 +385,9 @@ DX License Manager
 
 ---
 
-### 📋 Fase 13 — Alertas y Notificaciones
+### 📋 Fase 13 — Alertas y Notificaciones 🔜 EN CURSO
 
-**Estado:** En planificación
+**Estado:** EN CURSO (Infraestructura SMTP OK)
 **Prerequisito:** ✅ Fase 12 validada por Oskar
 **Validación requerida antes de Fase 14:** Alerta de caducidad enviada correctamente a destinatario de prueba.
 

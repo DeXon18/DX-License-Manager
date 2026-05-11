@@ -1,8 +1,8 @@
 ---
 project: DX License Manager
 repo: github.com/DeXon18/DX-License-Manager
-status: Phase 9 Completed
-last_sync: 2026-05-09
+status: Phase 10.4 Completed | Phases 11 & 13 In Progress
+last_sync: 2026-05-11
 current_agent: Antigravity (DX Agent) 🦾
 ---
 
@@ -10,21 +10,22 @@ current_agent: Antigravity (DX Agent) 🦾
 
 ## 🎯 Objetivo Actual
 
-- [x] Tarea principal: Fase 9 — Auditoría y Persistencia Moldex3D (Finalizada)
-- [ ] Subtarea en curso: Preparación Fase 10 — Dashboard del Sistema
-- Rama activa: feature/moldex3d-persistence
-- Fase del ROADMAP: Fase 9 (Completada)
+- [x] Tarea principal: Restauración de Infraestructura y SMTP Producción (Finalizada)
+- [ ] Subtarea en curso: Fase 11 — Gestión de Usuarios y RBAC
+- [ ] Subtarea en curso: Fase 13 — Notificaciones Automáticas (Configuración SMTP)
+- Rama activa: `dev` / `feature/user-management`
+- Fase del ROADMAP: Fase 10.4 (Completada), Fase 11 & 13 (Iniciadas)
 
 ---
 
-## 🕒 Log de Acciones (última sesión)
+## 🕒 Log de Acciones (2026-05-11)
 
-- 2026-05-09 — Implementación de `MoldexParserService` (Regex local para archivos .mac).
-- 2026-05-09 — Desarrollo de `MoldexSyncService` para persistencia en inventario con Fuzzy Match.
-- 2026-05-09 — Integración de sincronización en `MoldexController`.
-- 2026-05-09 — Rediseño de UI en `moldex3d.blade.php` con vista Property List y badges de estado.
-- 2026-05-09 — Estandarización de nomenclatura de archivos de licencia Moldex3D.
-- 2026-05-09 — Sincronización de documentación de gestión (CHANGELOG, ROADMAP, BACKLOG).
+- 2026-05-11 — Restauración de credenciales MariaDB Beta (`Venganz@69!MyslBetaTester`).
+- 2026-05-11 — Configuración de Mailtrap en modo Producción con nuevo API Token.
+- 2026-05-11 — Solución a problemas de sincronización `.env` en Docker mediante reinicio de contenedores.
+- 2026-05-11 — Implementación de generación de contraseñas aleatorias en `UserController`.
+- 2026-05-11 — Creación de notificaciones profesionales `NewUserCredentials`.
+- 2026-05-11 — Sincronización total de archivos de gestión (`CHANGELOG`, `ROADMAP`, `BACKLOG`).
 
 ---
 
@@ -32,35 +33,34 @@ current_agent: Antigravity (DX Agent) 🦾
 
 | Decisión          | Detalle                                                             | Ref                       |
 | :---------------- | :------------------------------------------------------------------ | :------------------------ |
-| Local Parsing     | Procesamiento 100% determinista local (Sin IA externa) para Moldex   | `MoldexParserService.php` |
-| Inventory Sync    | Registro automático en `daemons` y `products` tras auditoría        | `MoldexSyncService.php`   |
-| Fuzzy Matching    | Búsqueda de clientes con 85% de similitud para vinculación          | `MoldexSyncService.php`   |
-| UI Density        | Uso de vista "Property List" para datos técnicos detallados         | `moldex3d.blade.php`      |
-| Private Storage   | Archivos .mac guardados en `storage/private/licenses/moldex3d/`      | `MoldexController.php`    |
+| SMTP Production   | Uso de `send.smtp.mailtrap.io` con puerto 587 y TLS                 | `.env.beta`               |
+| Random Passwords  | Generación automática de 12 caracteres si se deja vacío             | `UserController.php`      |
+| Docker Env Mount  | Reiniciar contenedores tras cambios en `.env` montados por volumen  | `docker-compose.beta.yml` |
+| UI Validation     | Localización completa de mensajes de error al castellano            | `lang/es/validation.php`  |
 
 ---
 
 ## 🚀 Handover — Próximos Pasos
 
-1. Iniciar **Fase 10**: Desarrollo del Dashboard del Sistema.
-2. Implementar visualización de métricas de PHP, Nginx, MariaDB y Redis.
-3. Mostrar estado de salud de servicios IA y conexión Telegram en tiempo real.
-4. Integrar visualmente las licencias Moldex3D en el perfil global de cliente.
+1. Finalizar el CRUD de usuarios con asignación de roles.
+2. Probar el flujo completo de "Alta de Usuario" y recepción de email real.
+3. Iniciar Fase 12 (Repositorio de Licencias Semanal).
+4. Refinar el perfil de usuario (My Profile) para autogestión de contraseñas.
 
 ---
 
 ## 🗂️ Archivos en Foco (Working Set)
 
-- Controlador: `backend/app/Http/Controllers/Tools/MoldexController.php`
-- Servicio: `backend/app/Services/Licensing/MoldexSyncService.php`
-- Parser: `backend/app/Services/Audit/MoldexParserService.php`
-- Vista: `backend/resources/views/tools/moldex3d.blade.php`
+- Controlador: `backend/app/Http/Controllers/Admin/UserController.php`
+- Notificación: `backend/app/Notifications/NewUserCredentials.php`
+- Vista: `backend/resources/views/admin/users/create.blade.php`
+- Config: `infra/.env.beta` | `backend/config/mail.php`
 
 ---
 
 ## ⚠️ Errores Conocidos / Bloqueos
 
-- Ninguno. Motores de auditoría y persistencia validados.
+- Ninguno. SMTP y DB Beta estabilizados.
 
 ---
 
@@ -72,17 +72,15 @@ current_agent: Antigravity (DX Agent) 🦾
 | php-fpm-beta        | ✅ running                       |
 | mariadb-beta        | ✅ running                       |
 | redis-beta          | ✅ running                       |
-| nginx-prod `:8001`  | ✅ running                       |
+| Mailtrap Prod       | ✅ connected                     |
 | Cloudflared LXC 600 | ✅ running                       |
-| GitHub Actions      | ✅ configured                    |
 
-## Estado Actual: Fase 9 Completada ✅
-- **Objetivo**: Auditoría y Persistencia de Inventario para Moldex3D.
+## Estado Actual: Infraestructura Estabilizada ✅
 - **Hitos**:
-  - Parser local para archivos .mac funcional.
-  - Sincronización automática con el Inventario Activo.
-  - UI técnica de alta densidad con feedback visual de éxito.
-- **Próximo Paso**: Fase 10 — Dashboard del Sistema.
+  - Base de datos Beta operativa.
+  - SMTP Producción verificado y enviando.
+  - Gestión de usuarios iniciada con seguridad por defecto.
+- **Próximo Paso**: Fase 11 — Usuarios y Roles.
 
 ---
-_Firmado por: **Antigravity (DX Agent)** 🦾_
+_Firmado por: **Antigravity (DX Agent)** 🦾_

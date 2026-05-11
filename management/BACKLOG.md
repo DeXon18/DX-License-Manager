@@ -15,7 +15,8 @@ El agente no avanza hasta recibir "aprobado", "adelante" o similar de forma expl
 ## 🟢 En Progreso
  
 - [x] **Fase 10**: Dashboard del Sistema y Modularización (Completada 2026-05-11).
-- [ ] **Fase 11**: Usuarios y Acceso (Siguiente).
+- [ ] **Fase 11**: Usuarios y Acceso (En curso).
+- [ ] **Fase 13**: Configuración SMTP Producción (En curso).
 
 ---
 
