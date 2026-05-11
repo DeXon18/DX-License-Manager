@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Http;
+use App\Models\Contract;
+use App\Models\AiAuditResult;
+use App\Models\Client;
 use Carbon\Carbon;
 
 class SystemDashboardController extends Controller
@@ -32,7 +35,19 @@ class SystemDashboardController extends Controller
                 'redis' => $this->checkRedis(),
                 'n8n' => $this->checkN8n(),
                 'telegram' => $this->checkTelegram(),
-            ]
+            ],
+            'business' => [
+                'total_contracts' => Contract::count(),
+                'expiring_soon' => Contract::where('end_date', '>', now())
+                    ->where('end_date', '<=', now()->addDays(30))
+                    ->count(),
+                'total_clients' => Client::count(),
+                'total_audits' => AiAuditResult::count(),
+                'pending_audits' => AiAuditResult::where('status', 'processing')->count(),
+                'failed_audits' => AiAuditResult::where('status', 'failed')->count(),
+            ],
+            'trends' => $this->getAuditTrendData(),
+            'distribution' => $this->getDaemonDistribution(),
         ];
 
         return view('admin.system.dashboard', compact('metrics'));
@@ -40,8 +55,8 @@ class SystemDashboardController extends Controller
 
     private function getUptime()
     {
-        $uptime = shell_exec('uptime -p');
-        return trim(str_replace('up ', '', $uptime ?? 'N/A'));
+        $uptime = shell_exec('uptime');
+        return trim($uptime ?? 'N/A');
     }
 
     private function getLoadAverage()
@@ -134,5 +149,48 @@ class SystemDashboardController extends Controller
         } catch (\Exception $e) {
             return ['status' => 'offline', 'message' => 'API Timeout'];
         }
+    }
+
+    private function getAuditTrendData()
+    {
+        $days = collect();
+        for ($i = 6; $i >= 0; $i--) {
+            $date = now()->subDays($i)->format('Y-m-d');
+            $days->put($date, [
+                'label' => now()->subDays($i)->format('d M'),
+                'count' => 0
+            ]);
+        }
+
+        $audits = AiAuditResult::where('created_at', '>=', now()->subDays(7))
+            ->select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as aggregate'))
+            ->groupBy('date')
+            ->get();
+
+        foreach ($audits as $audit) {
+            if ($days->has($audit->date)) {
+                $days->get($audit->date)['count'] = $audit->aggregate;
+            }
+        }
+
+        return [
+            'labels' => $days->pluck('label')->toArray(),
+            'data' => $days->pluck('count')->toArray(),
+        ];
+    }
+
+    private function getDaemonDistribution()
+    {
+        // Distribución simple basada en AiAuditResult (metadatos extraídos)
+        // O basándonos en la tabla de inventario si está poblada
+        $data = \App\Models\LicenseInventoryDaemon::select('vendor_daemon', DB::raw('count(*) as total'))
+            ->groupBy('vendor_daemon')
+            ->pluck('total', 'vendor_daemon')
+            ->toArray();
+
+        return [
+            'labels' => array_keys($data),
+            'values' => array_values($data),
+        ];
     }
 }

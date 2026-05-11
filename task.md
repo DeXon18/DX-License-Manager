@@ -5,7 +5,8 @@
 > El agente actualiza este archivo en tiempo real conforme avanza.
 > Si hay un problema o bug, el agente debe solucionarlo antes de continuar.
 > Todas las tareas y subtareas completadas deben ser movidas a la sección "Tareas Completadas Esta Sesión".
-> Nunca modificar las tareas de la siguiente fase si no se ha completado la fase actual.
+- [x] Paso 2: Rediseñar la interfaz visual en `dashboard.blade.php` (Dense UI)
+- [x] Paso 3: Implementar gráficas de tendencia con Chart.js
 
 ---
 
@@ -48,6 +49,8 @@ El agente NO marca `[x]` una tarea hasta que todos sus checks están completados
   - [x] Check pre-ejecución: Forzar conexión SQLite en `SystemDashboardTest`.
   - [x] Evidencia: Ejecución en verde (`PASS`) de `SystemDashboardTest` en el servidor.
   - [x] Rama: fix/test-stabilization
+- [x] Paso 4: Actualizar `SystemDashboardTest.php` para validar nuevos elementos
+- [x] Paso 5: Verificación final y commit
 
 ---
 
