@@ -76,5 +76,9 @@ Route::middleware(['auth.jwt'])->group(function () {
             Route::get('/download-backup/{filename}', [SystemActionController::class, 'downloadBackup'])->name('download-backup');
             Route::delete('/delete-backup/{filename}', [SystemActionController::class, 'deleteBackup'])->name('delete-backup');
         });
+
+        // Nuevos módulos modularizados
+        Route::get('/backups', [\App\Http\Controllers\Admin\BackupController::class, 'index'])->name('backups.index');
+        Route::get('/audit', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('audit.index');
     });
 });

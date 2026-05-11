@@ -57,18 +57,9 @@ class SystemDashboardController extends Controller
                     ? DB::table('audit_logs')->where('action', 'login_failed')->where('created_at', '>', now()->subDay())->count() 
                     : 0,
             ],
-            'recent_logs' => Schema::hasTable('audit_logs')
-                ? DB::table('audit_logs')
-                    ->leftJoin('users', 'audit_logs.user_id', '=', 'users.id')
-                    ->select('audit_logs.*', 'users.name as user_name')
-                    ->orderBy('audit_logs.created_at', 'desc')
-                    ->limit(10)
-                    ->get()
-                : [],
             'errors_24h' => Schema::hasTable('audit_logs') 
                 ? DB::table('audit_logs')->where('level', 'error')->where('created_at', '>', now()->subDay())->count() 
                 : 0,
-            'backups' => $this->getBackups(),
         ];
 
         return view('admin.system.dashboard', compact('metrics'));
@@ -298,35 +289,6 @@ class SystemDashboardController extends Controller
         return ['rx' => 'N/A', 'tx' => 'N/A'];
     }
 
-    private function getBackups()
-    {
-        $backupDir = storage_path('backups/db');
-        if (!file_exists($backupDir)) {
-            return [];
-        }
-
-        $files = scandir($backupDir);
-        $backups = [];
-
-        foreach ($files as $file) {
-            if ($file === '.' || $file === '..' || $file === '.gitignore') continue;
-
-            $path = $backupDir . '/' . $file;
-            $backups[] = [
-                'name' => $file,
-                'size' => $this->formatBytes(filesize($path)),
-                'date' => date('Y-m-d H:i:s', filemtime($path)),
-                'env' => str_starts_with($file, 'prod') ? 'PROD' : 'BETA',
-            ];
-        }
-
-        // Ordenar por fecha descendente
-        usort($backups, function($a, $b) {
-            return strcmp($b['date'], $a['date']);
-        });
-
-        return array_slice($backups, 0, 5); // Mostrar solo los 5 últimos
-    }
 
     private function getGitMetrics()
     {

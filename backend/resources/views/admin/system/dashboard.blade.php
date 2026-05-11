@@ -217,97 +217,26 @@
                 </div>
             </div>
 
-            {{-- Live Audit Feed --}}
-            <div class="card" style="margin-top: 24px;">
-                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-                    <span class="card-title">System Live Feed</span>
-                    <span style="font-size: 0.6rem; color: var(--muted); border: 1px solid var(--border-subtle); padding: 1px 6px; border-radius: 4px; text-transform: uppercase;">Audit Log</span>
-                </div>
-                <div style="padding: 0; overflow: hidden;">
-                    <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
-                        <thead style="background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border);">
-                            <tr>
-                                <th style="padding: 10px 16px; text-align: left; color: var(--muted); font-weight: 600; text-transform: uppercase; width: 140px;">Fecha</th>
-                                <th style="padding: 10px 16px; text-align: left; color: var(--muted); font-weight: 600; text-transform: uppercase; width: 120px;">Usuario</th>
-                                <th style="padding: 10px 16px; text-align: left; color: var(--muted); font-weight: 600; text-transform: uppercase; width: 150px;">Acción</th>
-                                <th style="padding: 10px 16px; text-align: left; color: var(--muted); font-weight: 600; text-transform: uppercase;">Descripción</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($metrics['recent_logs'] as $log)
-                                <tr style="border-bottom: 1px solid var(--border-subtle);">
-                                    <td style="padding: 10px 16px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 10px;">{{ \Carbon\Carbon::parse($log->created_at)->format('d/m H:i:s') }}</td>
-                                    <td style="padding: 10px 16px;">
-                                        <div style="display: flex; align-items: center; gap: 6px;">
-                                            <div style="width: 5px; height: 5px; border-radius: 50%; background: var(--accent);"></div>
-                                            <span style="color: var(--primary); font-weight: 600;">{{ $log->user_name ?? 'Sistema' }}</span>
-                                        </div>
-                                    </td>
-                                    <td style="padding: 10px 16px;">
-                                        <span style="padding: 2px 6px; border-radius: 4px; background: rgba(67, 97, 238, 0.1); color: var(--accent); font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em;">{{ $log->action }}</span>
-                                    </td>
-                                    <td style="padding: 10px 16px; color: var(--primary); opacity: 0.9;">{{ Str::limit($log->description, 60) }}</td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="4" style="padding: 24px; text-align: center; color: var(--muted);">Sin actividad reciente.</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            {{-- Database Vault (Backups) --}}
-            <div class="card" style="margin-top: 24px;">
-                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>
-                        <span class="card-title">Database Vault</span>
+            {{-- Dedicated Modules Navigation --}}
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 24px;">
+                <a href="{{ route('admin.backups.index') }}" class="module-card">
+                    <div class="module-icon" style="background: rgba(67, 97, 238, 0.1); color: var(--accent);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="font-size: 0.6rem; color: var(--muted); border: 1px solid var(--border-subtle); padding: 1px 6px; border-radius: 4px; text-transform: uppercase;">Retention: 30 Days</span>
+                    <div class="module-info">
+                        <span class="module-title">Database Vault</span>
+                        <p class="module-desc">Historial completo, descargas y gestión de espacio en disco para copias de seguridad.</p>
                     </div>
-                </div>
-                <div style="padding: 0; overflow: hidden;">
-                    <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
-                        <thead style="background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border);">
-                            <tr>
-                                <th style="padding: 10px 16px; text-align: left; color: var(--muted); font-weight: 600; text-transform: uppercase; width: 140px;">Fecha</th>
-                                <th style="padding: 10px 16px; text-align: left; color: var(--muted); font-weight: 600; text-transform: uppercase; width: 60px;">Env</th>
-                                <th style="padding: 10px 16px; text-align: left; color: var(--muted); font-weight: 600; text-transform: uppercase; width: 80px;">Tamaño</th>
-                                <th style="padding: 10px 16px; text-align: left; color: var(--muted); font-weight: 600; text-transform: uppercase;">Nombre del Archivo</th>
-                                <th style="padding: 10px 16px; text-align: right; color: var(--muted); font-weight: 600; text-transform: uppercase; width: 100px;">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($metrics['backups'] as $backup)
-                                <tr style="border-bottom: 1px solid var(--border-subtle);">
-                                    <td style="padding: 10px 16px; color: var(--muted); font-family: 'IBM Plex Mono', monospace; font-size: 10px;">{{ \Carbon\Carbon::parse($backup['date'])->format('d/m H:i:s') }}</td>
-                                    <td style="padding: 10px 16px;">
-                                        <span style="padding: 2px 4px; border-radius: 3px; background: {{ $backup['env'] === 'PROD' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(67, 97, 238, 0.1)' }}; color: {{ $backup['env'] === 'PROD' ? 'var(--success)' : 'var(--accent)' }}; font-size: 8px; font-weight: 800;">{{ $backup['env'] }}</span>
-                                    </td>
-                                    <td style="padding: 10px 16px; font-family: 'IBM Plex Mono', monospace; color: var(--primary);">{{ $backup['size'] }}</td>
-                                    <td style="padding: 10px 16px; color: var(--muted); font-size: 10px;">{{ $backup['name'] }}</td>
-                                    <td style="padding: 10px 16px; text-align: right;">
-                                        <div style="display: flex; gap: 8px; justify-content: flex-end;">
-                                            <a href="{{ route('admin.system.download-backup', ['filename' => $backup['name']]) }}" class="btn-icon" title="Descargar">
-                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                                            </a>
-                                            <button @click="deleteBackup('{{ $backup['name'] }}')" class="btn-icon danger" title="Eliminar">
-                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <td colspan="5" style="padding: 24px; text-align: center; color: var(--muted);">No se han encontrado copias de seguridad.</td>
-                                </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
+                </a>
+                <a href="{{ route('admin.audit.index') }}" class="module-card">
+                    <div class="module-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                    </div>
+                    <div class="module-info">
+                        <span class="module-title">Centro de Auditoría</span>
+                        <p class="module-desc">Trazabilidad total con filtros avanzados por usuario, acción, nivel e IP.</p>
+                    </div>
+                </a>
             </div>
         </div>
 
@@ -447,6 +376,47 @@
         background: rgba(239, 68, 68, 0.1);
         color: var(--danger);
         border-color: var(--danger);
+    }
+
+    /* Module Cards */
+    .module-card {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 20px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    .module-card:hover {
+        transform: translateY(-4px);
+        border-color: var(--accent);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        background: rgba(255,255,255,0.02);
+    }
+    .module-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+    }
+    .module-title {
+        display: block;
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 4px;
+        font-family: 'Outfit', sans-serif;
+    }
+    .module-desc {
+        margin: 0;
+        font-size: 11px;
+        color: var(--muted);
+        line-height: 1.4;
     }
 </style>
 
