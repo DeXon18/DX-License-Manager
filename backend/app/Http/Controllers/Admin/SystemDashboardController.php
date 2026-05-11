@@ -247,21 +247,13 @@ class SystemDashboardController extends Controller
 
     private function getActiveSessionsCount()
     {
-        $driver = config('session.driver');
-
-        if ($driver === 'database') {
-            return Schema::hasTable('sessions') ? DB::table('sessions')->count() : 0;
-        }
-
-        if ($driver === 'redis') {
-            try {
-                // El prefijo suele ser laravel_cache:session: (o el nombre de la app)
-                // Usamos keys() para contar, aunque SCAN es mejor en producciones gigantes
-                $keys = Redis::keys('*session:*');
-                return count($keys);
-            } catch (\Exception $e) {
-                return 0;
-            }
+        // Al usar JWT, no hay sesiones tradicionales en Redis/DB.
+        // Usamos el Audit Log como proxy de actividad en los últimos 15 minutos.
+        if (Schema::hasTable('audit_log')) {
+            return DB::table('audit_log')
+                ->where('created_at', '>', now()->subMinutes(15))
+                ->distinct('ip_address')
+                ->count();
         }
 
         return 0;

@@ -176,7 +176,7 @@
                             <span class="font-mono" style="color: {{ $metrics['security']['failed_logins_24h'] > 0 ? 'var(--warning)' : 'var(--primary)' }}; font-weight: 700; font-size: 18px;">{{ $metrics['security']['failed_logins_24h'] }}</span>
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 12px; border-bottom: 1px solid var(--border);">
-                            <span style="color: var(--muted); font-size: 13px;">Sesiones Activas</span>
+                            <span style="color: var(--muted); font-size: 13px;">Usuarios Online (15m)</span>
                             <span class="font-mono" style="color: var(--primary); font-weight: 700; font-size: 18px;">{{ $metrics['security']['active_sessions'] }}</span>
                         </div>
                         <div style="display: flex; justify-content: space-between; align-items: center;">
