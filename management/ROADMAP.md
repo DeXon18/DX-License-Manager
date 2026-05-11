@@ -334,6 +334,9 @@ DX License Manager
 - [x] **Quick Actions**: Control de caché, reinicio de workers, backups y modo mantenimiento.
 - [x] **Mantenimiento Selectivo**: Implementado bypass para administradores con aviso visual persistente.
 - [x] **Git Integration**: Hash de commit y fecha de despliegue en tiempo real.
+- [x] **Localización Git**: Traducción dinámica de fechas relativas al castellano ("hace X segundos").
+- [x] **System-wide Safe Directory**: Configuración de permisos Git en Docker para acceso multi-usuario (`www-data`).
+- [x] **UI Semántica**: Código de colores representativos en métricas y botones de acción.
 - [x] **System Live Feed**: Últimos 10 registros de auditoría administrativa.
 - [x] Estado de servicios IA con badges en tiempo real (Telegram check)
 - [x] Visualización de tendencias (7 días) y distribución de Daemons (Chart.js)
@@ -349,9 +352,11 @@ DX License Manager
 
 - [x] Despliegue de secciones independientes (Backups, Logs)
 - [x] Implementación de Backup Vault avanzado (Download/Delete/Size)
+- [x] **Infraestructura Robusta**: Instalación de `mariadb-client` y script de backup seguro (SSL 0, bash).
 - [x] Centro de Auditoría con filtros avanzados (Actividad, Errores, IA)
 - [x] Limpieza y enlace desde el Dashboard principal
 - [x] **Header Standardization**: Cabeceras de administración unificadas con estilo "Importación".
+- [x] **UX Quick Actions**: Alineación a la izquierda y micro-interacciones de desplazamiento lateral.
 
 ---
 
