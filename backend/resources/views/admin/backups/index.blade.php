@@ -2,16 +2,13 @@
 
 @section('title', 'Gestión de Backups')
 
-@section('header')
-    <div class="page-header">
-        <div class="page-header-info">
-            <h1 class="page-title">Gestión de Backups</h1>
-            <p class="page-sub">Historial completo, descargas y gestión de espacio en disco para copias de seguridad.</p>
-        </div>
-    </div>
-@endsection
-
 @section('content')
+<div class="page-header">
+    <div class="page-header-info">
+        <h1 class="page-title">Gestión de Backups</h1>
+        <p class="page-sub">Historial completo, descargas y gestión de espacio en disco para copias de seguridad.</p>
+    </div>
+</div>
 <div class="dashboard-container" x-data="backupManager()">
     <div class="card">
         <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
