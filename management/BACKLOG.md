@@ -14,8 +14,8 @@ El agente no avanza hasta recibir "aprobado", "adelante" o similar de forma expl
 
 ## 🟢 En Progreso
  
-- [x] **Fase 9**: Auditoría y Persistencia Moldex3D (Completada).
-- [ ] **Fase 10**: Dashboard del Sistema (Siguiente).
+- [x] **Fase 10**: Dashboard del Sistema y Modularización (Completada).
+- [ ] **Fase 11**: Usuarios y Acceso (Siguiente).
 
 ---
 
@@ -37,6 +37,27 @@ En planificación — se detallan una por una tras validación de la fase anteri
 ---
  
 ## ✅ Completado
+ 
+ ### Fase 10.4 — Modularización Administrativa (Backups & Logs) ✅
+ - **Completada:** 2026-05-11
+ - **Rama:** feature/system-modules-backups-audit
+ - **Resumen:** Desacoplamiento total de la gestión de backups y logs del dashboard principal. Creación de módulos independientes con lógica dedicada y UI unificada siguiendo el estándar de diseño del portal.
+ - [x] Migración a `BackupController` y `AuditLogController`.
+ - [x] Implementación de Database Vault con gestión de archivos (Download/Delete).
+ - [x] Centro de Auditoría con filtrado avanzado y estadísticas internas.
+ - [x] Unificación estética de cabeceras (Estilo Importación).
+ - [x] Fix de permisos en script de backup para gestión web.
+ 
+ ### Fase 10 — Dashboard del Sistema (NOC Pro) ✅
+ - **Completada:** 2026-05-11
+ - **Rama:** feature/system-dashboard-noc
+ - **Resumen:** Evolución a Dashboard de alta densidad "NOC Pro" con telemetría profunda, acciones rápidas y trazabilidad total.
+ - [x] Métricas: PHP, nginx, MariaDB, Redis, almacenamiento (Hardware Grid)
+ - [x] Telemetría Avanzada: Tráfico ETH0 (RX/TX), hilos DB y slow queries.
+ - [x] Quick Actions: Control de caché, reinicio de workers, backups y modo mantenimiento.
+ - [x] Mantenimiento Selectivo: Implementado bypass para administradores con aviso visual persistente.
+ - [x] Git Integration: Hash de commit y fecha de despliegue en tiempo real.
+ - [x] System Live Feed: Últimos 10 registros de auditoría administrativa.
  
  ### Fase 9 — Moldex3D (Auditoría y Persistencia) ✅
  - **Completada:** 2026-05-09
