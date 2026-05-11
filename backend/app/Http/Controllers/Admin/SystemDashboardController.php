@@ -247,15 +247,14 @@ class SystemDashboardController extends Controller
 
     private function getActiveSessionsCount()
     {
-        // Al usar JWT, no hay sesiones tradicionales en Redis/DB.
-        // Usamos el Audit Log como proxy de actividad en los últimos 15 minutos.
-        if (Schema::hasTable('audit_log')) {
-            return DB::table('audit_log')
-                ->where('created_at', '>', now()->subMinutes(15))
-                ->distinct('ip_address')
-                ->count();
+        // Al usar JWT, no hay sesiones tradicionales. 
+        // El middleware JwtAuth registra la presencia en Redis (user:active:ID) con 15min TTL.
+        try {
+            // Contamos las llaves en la conexión default de Redis
+            $keys = Redis::keys('user:active:*');
+            return count($keys);
+        } catch (\Exception $e) {
+            return 0;
         }
-
-        return 0;
     }
 }

@@ -44,6 +44,9 @@ class JwtAuth
         // Authenticate user for the current request
         Auth::login($user);
 
+        // Track active user in Redis (15 min TTL)
+        \Illuminate\Support\Facades\Redis::set("user:active:{$user->id}", now()->toIso8601String(), 'EX', 900);
+
         return $next($request);
     }
 }
