@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Contract;
 use App\Models\AiAuditResult;
 use App\Models\Client;
+use Illuminate\Support\Facades\Schema;
 use Carbon\Carbon;
 
 class SystemDashboardController extends Controller
@@ -42,11 +43,15 @@ class SystemDashboardController extends Controller
                 'openrouter' => $this->checkOpenRouter(),
             ],
             'security' => [
-                'active_sessions' => DB::table('sessions')->count(),
+                'active_sessions' => Schema::hasTable('sessions') ? DB::table('sessions')->count() : 0,
                 'blacklist_count' => Redis::scard('jwt_blacklist') ?? 0,
-                'failed_logins_24h' => DB::table('audit_log')->where('action', 'login_failed')->where('created_at', '>', now()->subDay())->count(),
+                'failed_logins_24h' => Schema::hasTable('audit_log') 
+                    ? DB::table('audit_log')->where('action', 'login_failed')->where('created_at', '>', now()->subDay())->count() 
+                    : 0,
             ],
-            'errors_24h' => DB::table('audit_log')->where('level', 'error')->where('created_at', '>', now()->subDay())->count(),
+            'errors_24h' => Schema::hasTable('audit_log') 
+                ? DB::table('audit_log')->where('level', 'error')->where('created_at', '>', now()->subDay())->count() 
+                : 0,
         ];
 
         return view('admin.system.dashboard', compact('metrics'));
