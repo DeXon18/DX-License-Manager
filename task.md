@@ -4,7 +4,7 @@
 > Cada tarea tiene checks de verificación obligatorios — no se puede marcar como completa sin haberlos superado todos.
 > El agente actualiza este archivo en tiempo real conforme avanza.
 > Si hay un problema o bug, el agente debe solucionarlo antes de continuar.
-> todas las tareas y subtareas completadas deben ser movidas a la sección "Tareas Completadas Esta Sesión"
+> Todas las tareas y subtareas completadas deben ser movidas a la sección "Tareas Completadas Esta Sesión".
 > Nunca modificar las tareas de la siguiente fase si no se ha completado la fase actual.
 
 ---
@@ -26,38 +26,33 @@ El agente NO marca `[x]` una tarea hasta que todos sus checks están completados
 ---
 
 ## Tareas de la Sesión Actual
-- [ ] 1. Fase 7 — Hub de Herramientas (Planificación)
-  - [ ] Regla aplicada: AGENTS.md §0.4 (Descomposición)
-  - [ ] Check pre-ejecución: Revisar prototipo `03-herramientas.html`.
-  - [ ] Evidencia: `implementation_plan.md` presentado y aprobado.
-  - [ ] Rama: feature/tools-hub
+
+- [ ] 1. Corrección de Seguridad Fase 2 (MIME & Fallbacks)
+  - [ ] Regla aplicada: `security-check.md` §4 & §3
+  - [ ] Check pre-ejecución: Revisar reporte `260509_auditoria-seguridad-fase2.md`.
+  - [ ] Evidencia: Tests de subida de archivos rechazando extensiones no válidas.
+  - [ ] Rama: fix/security-audit-fase2
+
+- [ ] 2. Blindaje de Rutas Admin (RBAC)
+  - [ ] Regla aplicada: `security-check.md` §6
+  - [ ] Check pre-ejecución: Revisar `web.php` y middleware `CheckPermission`.
+  - [ ] Evidencia: Test de acceso denegado (403) para rol `viewer` en `/admin/*`.
+  - [ ] Rama: fix/rbac-hardening
 
 ---
 
 ## Tareas Completadas Esta Sesión
 
-- [x] 0. Verificación de infraestructura y permisos de almacenamiento
-- [x] 1. Implementación de lógica de nomenclatura Siemens NX
-- [x] 2. Configuración de límites Nginx/PHP (100MB)
-- [x] 3. Normalización de Hostname y Cliente a MAYÚSCULAS
-- [x] 4. Registro en CHANGELOG y ROADMAP
-- [x] 5. Fix de enlaces históricos COD (UUID)
-- [x] 6. Implementación de subida de COD Firmado
-- [x] 7. Implementación de borrado de certificados (BD + Archivos)
-- [x] 8. Optimización visual de iconos (Horizontal Compacto)
-- [x] 9. Ejecución de migración via SSH al LXC 600
-- [x] 10. Diferenciación de Vendors y Refinamiento UI Moldex3D (Logo + Badge removal)
-- [x] 11. Mejora de visibilidad de Versión en inventario (Badge técnico v2025)
-- [x] 12. Integración de ramas Moldex3D (tool + persistence) y corrección de acceso 404
-- [x] 13. Persistencia de versión en el flujo de sincronización de Moldex3D
-- [x] 14. Refinamiento de badges, prefijos de versión, etiquetas de cuenta y unificación de Hostname/Machine ID en vistas Blade
-- [x] 15. Paridad total de temas (Claro/Oscuro) en Moldex3D e Inventario de Clientes (Eliminación de HEX hardcodeados)
+- [x] 0. Estabilización de Tests de Integración del Dashboard
+  - [x] Regla aplicada: `troubleshooting.md` (Error SQL Unknown column 'role')
+  - [x] Check pre-ejecución: Forzar conexión SQLite en `SystemDashboardTest`.
+  - [x] Evidencia: Ejecución en verde (`PASS`) de `SystemDashboardTest` en el servidor.
+  - [x] Rama: fix/test-stabilization
 
 ---
 
 ## Notas de Sesión
 
-- **Mecanismo Siemens**: La Parte 1 está cerrada. El sistema ya transforma y guarda archivos correctamente.
-- **Límites de Subida**: Nginx y PHP ahora aceptan hasta 100MB, resolviendo el error 413.
-- **Hostname**: Se ha implementado la regla de mayúsculas estrictas para los nombres de archivo.
-- **Filesystem**: Se corrigieron los permisos de la carpeta `private` que causaban bloqueos de I/O.
+- **Dashboard**: Los tests ahora pasan correctamente usando SQLite en memoria. Se corrigió el nombre de la cookie a `jwt_token` y el texto de validación a "Salud del Sistema".
+- **Unknown Column 'role'**: Se confirmó que el error era un desajuste de esquema en los tests; el modelo usa `role_id` correctamente.
+- **Seguridad**: Próximo paso es aplicar las remediaciones del reporte de auditoría del 09/05.

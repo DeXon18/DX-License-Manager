@@ -3,6 +3,18 @@
 
 ---
 
+## [2026-05-11] — Seguridad y Estabilización
+
+### Añadido
+- **Protocolo de Seguridad:** Implementada la sección 0.9 en `AGENTS.md` obligando a realizar backups antes de cambios estructurales o tests en el servidor.
+- **Script de Backup:** Refactorización de `scripts/backup-db.sh` con soporte para `MYSQL_PWD` y extracción automática de credenciales.
+
+### Corregido
+- **Tests:** Estabilizado `SystemDashboardTest` con aislamiento total en SQLite y corrección de cookie `jwt_token`.
+- **UI Admin:** Corregida la visibilidad del menú de administración en el layout principal.
+- **Base de Datos:** Restauración de 603 contratos tras borrado accidental y sincronización manual de columnas de normalización.
+- **Importador:** Corregido bug de llamada a método indefinido `findOrCreate` en `CsvImportService`.
+
 ## [2026-05-09] — Paridad de Temas y Refinamiento de UX Final
 
 ### Added
