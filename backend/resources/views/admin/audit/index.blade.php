@@ -2,16 +2,14 @@
 
 @section('title', 'Auditoría y Logs')
 
-@section('header')
-    <div class="page-header">
-        <div class="page-header-info">
-            <h1 class="page-title">Auditoría y Logs</h1>
-            <p class="page-sub">Trazabilidad total con filtros avanzados por usuario, acción, nivel e IP.</p>
-        </div>
-    </div>
-@endsection
-
 @section('content')
+<div class="page-header">
+    <div class="page-header-info">
+        <h1 class="page-title">Auditoría y Logs</h1>
+        <p class="page-sub">Trazabilidad total con filtros avanzados por usuario, acción, nivel e IP.</p>
+    </div>
+</div>
+
 <div class="dashboard-container">
     {{-- Filtros --}}
     <div class="card" style="margin-bottom: 24px;">
