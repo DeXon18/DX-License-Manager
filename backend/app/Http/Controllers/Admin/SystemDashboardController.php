@@ -27,7 +27,7 @@ class SystemDashboardController extends Controller
                 'php_version' => PHP_VERSION,
                 'uptime' => $this->getUptime(),
                 'load' => $this->getLoadAverage(),
-                'maintenance' => app()->isDownForMaintenance(),
+                'maintenance' => file_exists(storage_path('framework/maintenance_selective')),
             ],
             'hardware' => [
                 'memory' => $this->getMemoryMetrics(),

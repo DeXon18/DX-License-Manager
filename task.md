@@ -71,6 +71,14 @@ El agente NO marca `[x]` una tarea hasta que todos sus checks están completados
   - [x] Evidencia: Dashboard con controles funcionales y telemetría de kernel activa.
   - [x] Rama: feature/system-noc-pro
 
+- [x] 4. Mantenimiento Selectivo (Admin Friendly)
+  - [x] Regla aplicada: `security-check.md` §6 (RBAC)
+  - [x] Middleware: Crear `SelectiveMaintenance` para filtrar tráfico por rol.
+  - [x] UI: Banner de aviso superior para admins.
+  - [x] UI: Vista 503 profesional para usuarios estándar.
+  - [x] Evidencia: Admin puede navegar en mantenimiento; usuario estándar ve 503.
+  - [x] Rama: feature/system-noc-pro
+
 ---
 
 ## Notas de Sesión

@@ -1,29 +1,20 @@
-# 🤝 Handoff — DX License Manager
+He completado la evolución del Dashboard del Sistema a la versión **NOC Pro**.
 
-## 🎯 Estado de la Sesión
-Finalizado el refinamiento visual y técnico del **System Control Center (NOC Dashboard)**. El sistema ahora proporciona telemetría precisa de infraestructura adaptada al entorno Proxmox LXC.
+### Cambios Principales:
+1.  **Telemetría de Bajo Nivel**: Implementada lectura directa de `eth0` para tráfico de red (RX/TX) y monitorización profunda de MariaDB (conexiones activas y consultas lentas).
+2.  **Panel de Acciones Rápidas (NOC Control)**: Panel interactivo con Alpine.js que permite ejecutar tareas críticas:
+    *   Limpiar caché y vistas.
+    *   Reiniciar workers de colas.
+    *   Generar backups manuales de MariaDB.
+    *   Conmutar el Modo Mantenimiento.
+    *   Probar alertas de Telegram.
+3.  **Audit Live Feed**: Nueva sección que muestra los últimos 10 eventos de auditoría administrativa en tiempo real.
+4.  **Integración Git**: Detección automática del hash de commit y fecha del último despliegue en la cabecera.
+5.  **Seguridad**: Todas las acciones administrativas quedan registradas en la base de datos vinculadas al usuario.
 
-## 🛠️ Cambios Realizados
-- **Monitorización Proxmox-Aware**: Implementada detección de límites de memoria vía `cgroups` (LXC) eliminando el reporte erróneo de la memoria del nodo host.
-- **NOC UI Refinement**:
-  - Integrada la fuente **Outfit** para métricas críticas.
-  - Estilo **Ghost Icons** rotados (-15deg) en la esquina superior derecha de las cards.
-  - KPI Master centrados y formateados (`USED / TOTAL`).
-  - CPU Load desglosado en intervalos de 1m, 5m y 15m.
-- **Seguridad**: Visibilidad de sesiones activas y contador de blacklist en tiempo real.
+### Verificación:
+- Las métricas se actualizan correctamente al recargar.
+- Las acciones muestran confirmación antes de ejecutarse.
+- El modo mantenimiento visualiza un indicador pulsante en la cabecera.
 
-## 📍 Punto de Interrupción
-- **Dashboard**: El frontend y backend del dashboard están al 100% de la visión operativa solicitada.
-- **Seguridad**: Próximo paso es el "Blindaje de Rutas Admin (RBAC)" y auditoría de seguridad de Fase 2.
-
-## 🚀 Comandos Útiles
-```bash
-# Ver métricas en crudo del contenedor
-cat /sys/fs/cgroup/memory.max 2>/dev/null || cat /sys/fs/cgroup/memory/memory.limit_in_bytes
-
-# Forzar refresco de estilos
-php artisan view:clear
-```
-
----
-*Sesión finalizada con el dashboard operativo y validado visualmente.*
+Los cambios han sido commiteados y subidos a la rama `feature/system-noc-pro`.
