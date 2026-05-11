@@ -1,6 +1,6 @@
 #!/bin/bash
 # =====================================================================
-# BACKUP DB SCRIPT — mysqldump + gpg — cron diario
+# BACKUP DB SCRIPT — mariadb-dump — cron diario
 # Uso: ./scripts/backup-db.sh [beta|prod]
 # =====================================================================
 
@@ -16,12 +16,11 @@ mkdir -p $BACKUP_DIR
 echo "--- Iniciando backup de base de datos ($APP_ENV) ---"
 echo "Destino: $BACKUP_DIR/$FILENAME"
 
-# Ejecutar mysqldump
-# Usamos las variables de entorno inyectadas por Docker
+# Ejecutar mariadb-dump (con --ssl=0 para evitar error 2026 en conexiones internas Docker)
 if [ "$APP_ENV" == "prod" ]; then
-    mysqldump -h mariadb-prod -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE > $BACKUP_DIR/$FILENAME
+    mariadb-dump --ssl=0 -h mariadb-prod -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE > $BACKUP_DIR/$FILENAME
 else
-    mysqldump -h mariadb-beta -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE > $BACKUP_DIR/$FILENAME
+    mariadb-dump --ssl=0 -h mariadb-beta -u $MYSQL_USER -p$MYSQL_PASSWORD $MYSQL_DATABASE > $BACKUP_DIR/$FILENAME
 fi
 
 # Verificar éxito
