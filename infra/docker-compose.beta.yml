@@ -26,7 +26,7 @@ services:
       - ./storage:/var/www/html/storage/app
       - ./management:/var/www/management:ro
       - ./scripts:/var/www/html/scripts:ro
-      - ../.git:/var/www/html/.git:ro
+      - ./.git:/var/www/html/.git:ro
     depends_on:
       mariadb-beta:
         condition: service_healthy
