@@ -11,6 +11,7 @@ use App\Models\Contract;
 use App\Models\AiAuditResult;
 use App\Models\Client;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 use Carbon\Carbon;
 
 class SystemDashboardController extends Controller
@@ -166,12 +167,12 @@ class SystemDashboardController extends Controller
         if (!$token) return ['status' => 'degraded', 'message' => 'Token Missing'];
 
         try {
-            $response = Http::timeout(2)->get("https://api.telegram.org/bot{$token}/getMe");
+            $response = Http::timeout(5)->get("https://api.telegram.org/bot{$token}/getMe");
             return $response->successful() 
                 ? ['status' => 'online', 'message' => 'Bot API Connected']
-                : ['status' => 'degraded', 'message' => 'Auth Error'];
+                : ['status' => 'degraded', 'message' => 'Auth Error', 'details' => 'Check Token'];
         } catch (\Exception $e) {
-            return ['status' => 'offline', 'message' => 'API Timeout'];
+            return ['status' => 'offline', 'message' => 'API Timeout', 'details' => Str::limit($e->getMessage(), 40)];
         }
     }
 
