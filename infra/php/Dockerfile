@@ -15,7 +15,8 @@ RUN apk add --no-cache \
     libzip-dev \
     freetype \
     libjpeg-turbo \
-    libpng
+    libpng \
+    mariadb-client
 
 # Instalar extensiones PHP
 RUN docker-php-ext-configure gd \
