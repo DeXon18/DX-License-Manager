@@ -49,7 +49,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'nullable|string|min:8|confirmed',
+            'password' => $request->filled('password') ? 'required|string|min:8|confirmed' : 'nullable',
             'role_id' => 'required|exists:roles,id',
             'is_active' => 'boolean',
         ]);
@@ -67,9 +67,20 @@ class UserController extends Controller
         ]);
 
         // Enviar notificación con credenciales
-        $user->notify(new NewUserCredentials($password));
+        $mailSent = true;
+        try {
+            $user->notify(new NewUserCredentials($password));
+        } catch (\Exception $e) {
+            $mailSent = false;
+            \Log::error("Fallo al enviar correo de bienvenida: " . $e->getMessage());
+        }
 
-        return redirect()->route('admin.users.index')->with('success', 'Usuario creado correctamente y notificación enviada.');
+        $message = 'Usuario creado correctamente.';
+        if (!$mailSent) {
+            $message .= ' (Atención: No se pudo enviar el email de bienvenida. Revisa la configuración SMTP).';
+        }
+
+        return redirect()->route('admin.users.index')->with($mailSent ? 'success' : 'warning', $message);
     }
 
     public function edit(User $user)
