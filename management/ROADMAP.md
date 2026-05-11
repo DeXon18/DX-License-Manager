@@ -341,6 +341,19 @@ DX License Manager
 
 ---
 
+### 📋 Fase 10.4 — Modularización de Sistema (Backups & Audit)
+
+**Estado:** EN CURSO
+**Prerequisito:** ✅ Fase 10 (NOC Pro) estable
+**Validación:** Secciones independientes de Backups y Auditoría verificadas.
+
+- [/] Despliegue de secciones independientes (Backups, Logs)
+- [ ] Implementación de Backup Vault avanzado (Download/Delete/Size)
+- [ ] Centro de Auditoría con filtros avanzados (Actividad, Errores, IA)
+- [ ] Limpieza y enlace desde el Dashboard principal
+
+---
+
 ### 📋 Fase 11 — Usuarios y Acceso
 
 **Estado:** En planificación
