@@ -38,6 +38,15 @@ En planificación — se detallan una por una tras validación de la fase anteri
  
 ## ✅ Completado
 
+### Herramientas IA — Asistente de Composite (COD)
+- **Completada:** 2026-05-12
+- **Rama:** feature/cod-composite-parser
+- **Resumen:** Integración de motor Gemini 3.1 Flash-Lite para el análisis inteligente de logs de hardware. Incluye zona de carga Drag & Drop, identificación automática de adaptadores físicos y volcado de datos al generador de COD.
+- [x] Integración de `CompositeParserService` con Gemini 3.1.
+- [x] UI Premium: Drag & Drop con estética "blue dashed".
+- [x] Dashboard: Iconos de marca y colores para servicios IA.
+- [x] Fix: Centrado de iconos y dimensiones unificadas.
+
 ### Fase 14 — Gestión de Backups
 - **Completada:** 2026-05-12
 - **Rama:** feature/backup-management-system

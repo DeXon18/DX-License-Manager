@@ -149,7 +149,24 @@
                             </div>
                             @foreach($items as $id => $info)
                                 <div style="padding: 12px; border-radius: 10px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); display: flex; align-items: flex-start; gap: 12px; position: relative; overflow: hidden; transition: all 0.3s ease;">
-                                    <div style="padding: 8px; border-radius: 8px; background: {{ $info['status'] === 'online' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)' }}; color: {{ $info['status'] === 'online' ? 'var(--success)' : 'var(--danger)' }};">
+                                    @php
+                                        $iconBg = $info['status'] === 'online' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)';
+                                        $iconColor = $info['status'] === 'online' ? 'var(--success)' : 'var(--danger)';
+                                        
+                                        if ($info['status'] === 'online') {
+                                            if ($info['icon'] === 'gemini') {
+                                                $iconBg = 'linear-gradient(135deg, #4e8cff, #9171ff)';
+                                                $iconColor = 'white';
+                                            } elseif ($info['icon'] === 'deepseek') {
+                                                $iconBg = 'linear-gradient(135deg, #007aff, #00c6ff)';
+                                                $iconColor = 'white';
+                                            } elseif ($info['icon'] === 'openrouter') {
+                                                $iconBg = 'linear-gradient(135deg, #ff4f00, #ff9000)';
+                                                $iconColor = 'white';
+                                            }
+                                        }
+                                    @endphp
+                                    <div style="width: 34px; height: 34px; flex-shrink: 0; border-radius: 10px; background: {{ $iconBg }}; color: {{ $iconColor }}; display: flex; align-items: center; justify-content: center; box-shadow: {{ in_array($info['icon'], ['gemini', 'deepseek', 'openrouter']) && $info['status'] === 'online' ? '0 4px 12px rgba(0,0,0,0.2)' : 'none' }};">
                                         @if($info['icon'] === 'database')
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>
                                         @elseif($info['icon'] === 'bolt')
@@ -158,22 +175,30 @@
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2M15 20v2M2 15h2M2 9h2M20 15h2M20 9h2M9 2v2M9 20v2"/></svg>
                                         @elseif($info['icon'] === 'bell')
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
-                                        @elseif($info['icon'] === 'sparkles')
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4M19 17v4M3 5h4M17 19h4"/></svg>
-                                        @elseif($info['icon'] === 'brain')
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 2.5 2.5 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.98Z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 2.5 2.5 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.98Z"/></svg>
-                                        @elseif($info['icon'] === 'globe')
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                                        @elseif($info['icon'] === 'gemini')
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M12 2C12 2 12.6 7.4 14.5 9.5C16.6 11.4 22 12 22 12C22 12 16.6 12.6 14.5 14.5C12.6 16.6 12 22 12 22C12 22 11.4 16.6 9.5 14.5C7.4 12.6 2 12 2 12C2 12 7.4 11.4 9.5 9.5C11.4 7.4 12 2 12 2Z" fill="currentColor"/>
+                                            </svg>
+                                        @elseif($info['icon'] === 'deepseek')
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                                <path d="M12 4.5V19.5M4.5 12H19.5M8 8L16 16M16 8L8 16" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        @elseif($info['icon'] === 'openrouter')
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                                <circle cx="12" cy="12" r="9"/>
+                                                <path d="M3.6 9h16.8M3.6 15h16.8"/>
+                                                <path d="M11.5 3a17 17 0 0 0 0 18M12.5 3a17 17 0 0 1 0 18"/>
+                                            </svg>
                                         @endif
                                     </div>
                                     <div style="flex: 1;">
                                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
-                                            <span style="font-size: 10px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.05em;">{{ $info['label'] }}</span>
+                                            <span style="font-size: 10px; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.9;">{{ $info['label'] }}</span>
                                             <span class="dot {{ $info['status'] === 'online' ? 'online' : 'danger' }}"></span>
                                         </div>
-                                        <div style="font-size: 12px; font-weight: 500; color: var(--primary);">{{ $info['message'] }}</div>
+                                        <div style="font-size: 12px; font-weight: 600; color: var(--primary); opacity: 0.9;">{{ $info['message'] }}</div>
                                         @if(isset($info['details']))
-                                            <div style="font-size: 9px; font-family: 'IBM Plex Mono', monospace; color: var(--muted); margin-top: 3px; opacity: 0.8;">{{ $info['details'] }}</div>
+                                            <div style="font-size: 9px; font-family: 'IBM Plex Mono', monospace; color: var(--muted); margin-top: 3px; opacity: 0.7;">{{ $info['details'] }}</div>
                                         @endif
                                         @if(isset($info['extra']))
                                             <div style="display: flex; gap: 8px; margin-top: 6px; border-top: 1px solid var(--border-subtle); padding-top: 4px;">

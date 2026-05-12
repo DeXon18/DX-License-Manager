@@ -274,7 +274,9 @@
             <div style="margin-top: 40px; padding-top: 30px; border-top: 1px dashed var(--border); display: flex; justify-content: center;">
                 <button type="button" class="btn-ai-assist shadow-premium" @click="openAiModal()">
                     <div class="ai-icon-pulse">
-                        <i class="fa-solid fa-microchip-ai"></i>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C12 2 12.6 7.4 14.5 9.5C16.6 11.4 22 12 22 12C22 12 16.6 12.6 14.5 14.5C12.6 16.6 12 22 12 22C12 22 11.4 16.6 9.5 14.5C7.4 12.6 2 12 2 12C2 12 7.4 11.4 9.5 9.5C11.4 7.4 12 2 12 2Z" fill="currentColor"/>
+                        </svg>
                     </div>
                     <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px;">
                         <span style="font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;">Asistente de Identificadores</span>
@@ -352,7 +354,11 @@
         <div class="ai-modal shadow-premium" @click.away="showAiModal = false">
             <div class="preview-header" style="background: var(--accent-muted); border-bottom: 1px solid var(--accent-border);">
                 <div class="preview-title-container">
-                    <i class="fa-solid fa-microchip-ai text-accent"></i>
+                    <div style="width: 24px; height: 24px; color: var(--accent); display: flex; align-items: center; justify-content: center;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C12 2 12.6 7.4 14.5 9.5C16.6 11.4 22 12 22 12C22 12 16.6 12.6 14.5 14.5C12.6 16.6 12 22 12 22C12 22 11.4 16.6 9.5 14.5C7.4 12.6 2 12 2 12C2 12 7.4 11.4 9.5 9.5C11.4 7.4 12 2 12 2Z" fill="currentColor"/>
+                        </svg>
+                    </div>
                     <span class="preview-title">Asistente Inteligente de Composite</span>
                 </div>
                 <button type="button" class="btn-close-minimal" @click="showAiModal = false">
@@ -479,7 +485,11 @@
                 <div x-show="aiResult" x-transition>
                     <div class="ai-result-box">
                         <div class="ai-result-header">
-                            <i class="fa-solid fa-robot"></i>
+                            <div style="width: 24px; height: 24px; color: var(--accent); display: flex; align-items: center; justify-content: center;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2C12 2 12.6 7.4 14.5 9.5C16.6 11.4 22 12 22 12C22 12 16.6 12.6 14.5 14.5C12.6 16.6 12 22 12 22C12 22 11.4 16.6 9.5 14.5C7.4 12.6 2 12 2 12C2 12 7.4 11.4 9.5 9.5C11.4 7.4 12 2 12 2Z" fill="currentColor"/>
+                                </svg>
+                            </div>
                             <span>Hardware Recomendado</span>
                         </div>
                         <div class="ai-result-grid">
@@ -1007,45 +1017,62 @@
         display: flex;
         align-items: center;
         gap: 16px;
-        padding: 12px 24px;
+        padding: 14px 28px;
         background: var(--surface);
-        border: 1px solid var(--accent);
-        border-radius: 12px;
+        border: 1px solid rgba(var(--accent-rgb), 0.2);
+        border-radius: 14px;
         cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         color: var(--text);
         text-align: left;
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-ai-assist::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(78, 140, 255, 0.05), rgba(145, 113, 255, 0.05));
+        opacity: 0;
+        transition: opacity 0.4s;
     }
     .btn-ai-assist:hover {
-        background: var(--accent-muted);
-        transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(var(--accent-rgb), 0.2);
+        border-color: rgba(145, 113, 255, 0.5);
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(78, 140, 255, 0.15);
+    }
+    .btn-ai-assist:hover::before {
+        opacity: 1;
     }
     .ai-icon-pulse {
-        width: 36px;
-        height: 36px;
-        background: var(--accent);
+        width: 42px;
+        height: 42px;
+        background: linear-gradient(135deg, #4e8cff, #9171ff);
         color: white;
-        border-radius: 10px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 18px;
         position: relative;
+        box-shadow: 0 4px 15px rgba(78, 140, 255, 0.3);
     }
     .ai-icon-pulse::after {
         content: '';
         position: absolute;
-        inset: -4px;
-        border: 2px solid var(--accent);
-        border-radius: 12px;
-        opacity: 0.3;
+        inset: -5px;
+        border: 2px solid #9171ff;
+        border-radius: 16px;
+        opacity: 0;
+        transition: all 0.4s;
+    }
+    .btn-ai-assist:hover .ai-icon-pulse::after {
+        opacity: 0.4;
         animation: pulse-ai 2s infinite;
     }
     @keyframes pulse-ai {
-        0% { transform: scale(1); opacity: 0.3; }
-        50% { transform: scale(1.1); opacity: 0.1; }
-        100% { transform: scale(1); opacity: 0.3; }
+        0% { transform: scale(1); opacity: 0.4; }
+        50% { transform: scale(1.15); opacity: 0; }
+        100% { transform: scale(1); opacity: 0.4; }
     }
 
     .ai-upload-zone {
@@ -1262,17 +1289,6 @@
         font-weight: 800;
         color: var(--primary);
         margin-bottom: 24px;
-    }
-    .ai-result-header i {
-        width: 32px;
-        height: 32px;
-        background: var(--accent);
-        color: white;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 14px;
     }
     .ai-result-grid {
         display: grid;

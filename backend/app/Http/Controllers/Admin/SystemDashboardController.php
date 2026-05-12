@@ -229,7 +229,7 @@ class SystemDashboardController extends Controller
     private function checkGemini()
     {
         $key = config('ai.gemini_key');
-        if (!$key) return ['status' => 'degraded', 'icon' => 'sparkles', 'label' => 'Gemini 1.5', 'message' => 'Clave Ausente'];
+        if (!$key) return ['status' => 'degraded', 'icon' => 'gemini', 'label' => 'Gemini 3.1 Flash', 'message' => 'Clave Ausente'];
         
         $count = AiAuditResult::where('created_at', '>=', now()->startOfDay())
             ->where('status', 'completed')
@@ -237,8 +237,8 @@ class SystemDashboardController extends Controller
 
         return [
             'status' => 'online', 
-            'icon' => 'sparkles', 
-            'label' => 'Gemini 1.5', 
+            'icon' => 'gemini', 
+            'label' => 'Gemini 3.1 Flash', 
             'message' => 'Conexión Activa',
             'details' => "Uso hoy: {$count} auditorías"
         ];
@@ -247,15 +247,15 @@ class SystemDashboardController extends Controller
     private function checkDeepseek()
     {
         $key = config('ai.deepseek_key');
-        if (!$key) return ['status' => 'degraded', 'icon' => 'brain', 'label' => 'DeepSeek', 'message' => 'Clave Ausente'];
-        return ['status' => 'online', 'icon' => 'brain', 'label' => 'DeepSeek', 'message' => 'Conexión Activa', 'details' => 'Respaldo Nivel 1'];
+        if (!$key) return ['status' => 'degraded', 'icon' => 'deepseek', 'label' => 'DeepSeek', 'message' => 'Clave Ausente'];
+        return ['status' => 'online', 'icon' => 'deepseek', 'label' => 'DeepSeek', 'message' => 'Conexión Activa', 'details' => 'Respaldo Nivel 1'];
     }
 
     private function checkOpenRouter()
     {
         $key = config('ai.openrouter_key');
-        if (!$key) return ['status' => 'degraded', 'icon' => 'globe', 'label' => 'OpenRouter', 'message' => 'Clave Ausente'];
-        return ['status' => 'online', 'icon' => 'globe', 'label' => 'OpenRouter', 'message' => 'Conexión Activa', 'details' => 'Respaldo Nivel 2'];
+        if (!$key) return ['status' => 'degraded', 'icon' => 'openrouter', 'label' => 'OpenRouter', 'message' => 'Clave Ausente'];
+        return ['status' => 'online', 'icon' => 'openrouter', 'label' => 'OpenRouter', 'message' => 'Conexión Activa', 'details' => 'Respaldo Nivel 2'];
     }
 
     private function getActiveSessionsCount()
