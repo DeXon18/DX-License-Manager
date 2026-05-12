@@ -11,8 +11,8 @@
 - **Correcciones**: Solucionado error 404 en la API de Gemini mediante la actualización al modelo **`gemini-3.1-flash-lite`** y versión `v1beta`.
 - **UI/UX**: Rediseño integral de la zona de carga con estética premium, bordes punteados estilizados (**blue dashed**) y animaciones de pulso.
 - **Iconografía Gemini**: Implementación del icono oficial **Sparkle** de Gemini en toda la plataforma (Herramientas y Dashboard).
-- **Dashboard del Sistema**: Actualización de la matriz de servicios con iconos premium y colores de marca para **Gemini (Flash 3.1)**, **DeepSeek** y **OpenRouter**.
-- **Visuales**: Unificación de dimensiones de iconos (34x34) y centrado perfecto en el panel de administración.
+- **Dashboard del Sistema**: Actualización integral de la matriz de servicios con iconos premium y colores de marca para **Gemini (Flash 3.1)**, **DeepSeek**, **OpenRouter**, **n8n**, **Telegram**, **MariaDB** y **Redis**.
+- **Estética NOC Pro**: Unificación de dimensiones (34x34), centrado absoluto y sombras elevadas para una interfaz de monitorización de alta gama.
 
 ## [2026-05-12] — Restauración Configuración n8n (Fix) ✅
 ### Fixed
