@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use Illuminate\Support\Facades\Storage;
+
 class LicenseArchive extends Model
 {
     use HasFactory;
@@ -15,7 +17,8 @@ class LicenseArchive extends Model
         'year',
         'files_count',
         'clients_summary',
-        'storage_path'
+        'storage_path',
+        'origin'
     ];
 
     protected $casts = [
@@ -27,6 +30,6 @@ class LicenseArchive extends Model
      */
     public function getFullPathAttribute(): string
     {
-        return storage_path('app/private/' . $this->storage_path);
+        return Storage::disk('local')->path($this->storage_path);
     }
 }
