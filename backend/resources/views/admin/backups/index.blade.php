@@ -52,16 +52,16 @@
                             </td>
                             <td style="padding: 14px 20px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--primary);">{{ $backup['size'] }}</td>
                             <td style="padding: 14px 20px; color: var(--muted); font-size: 11px;">{{ $backup['name'] }}</td>
-                             <td style="padding: 14px 20px; text-align: right;">
-                                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                            <td style="padding: 14px 20px; text-align: right;">
+                                <div style="display: flex; gap: 8px; justify-content: flex-end;">
                                     <button @click="confirmRestore('{{ $backup['name'] }}')" class="btn-action warning" title="Restaurar base de datos">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
                                     </button>
-                                    <a href="{{ route('admin.backups.download', ['filename' => $backup['name']]) }}" class="btn-action" title="Descargar copia">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                                    <a href="{{ route('admin.backups.download', ['filename' => $backup['name']]) }}" class="btn-action download" title="Descargar copia">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                                     </a>
                                     <button @click="deleteBackup('{{ $backup['name'] }}')" class="btn-action danger" title="Eliminar copia">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M10 11v6M14 11v6"/></svg>
                                     </button>
                                 </div>
                             </td>
@@ -142,11 +142,46 @@
 </div>
 
 <style>
+    .btn-action {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        background: rgba(255,255,255,0.03);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+        text-decoration: none;
+        padding: 0;
+        outline: none;
+    }
+    .btn-action:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--primary);
+        border-color: var(--border-subtle);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
     .btn-action.warning:hover {
         background: rgba(245, 158, 11, 0.1);
         color: var(--warning);
         border-color: var(--warning);
         box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+    }
+    .btn-action.danger:hover {
+        background: rgba(239, 68, 68, 0.1);
+        color: var(--danger);
+        border-color: var(--danger);
+        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+    }
+    .btn-action.download:hover {
+        background: rgba(67, 97, 238, 0.1);
+        color: var(--accent);
+        border-color: var(--accent);
+        box-shadow: 0 4px 12px rgba(67, 97, 238, 0.15);
     }
     .btn-danger {
         background: var(--danger);
