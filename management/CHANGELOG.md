@@ -8,6 +8,8 @@
 - **UI Premium**: Modal interactivo con soporte para **Drag & Drop** de archivos `.txt` y pegado de texto.
 - **Auto-rellenado**: Función de volcado automático de Hostname, Composite y MAC detectados directamente al formulario.
 - **Seguridad**: Procesamiento asíncrono y protección de API Key en entorno Beta.
+- **Correcciones**: Solucionado error 404 en la API de Gemini mediante la actualización al modelo `gemini-2.0-flash` y versión `v1`.
+- **UI/UX**: Rediseño integral de la zona de carga con estética premium, bordes punteados estilizados y animaciones de pulso.
 
 ## [2026-05-12] — Restauración Configuración n8n (Fix) ✅
 ### Fixed
