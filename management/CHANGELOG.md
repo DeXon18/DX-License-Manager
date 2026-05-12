@@ -2,6 +2,9 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
 ## [2026-05-12] — Centro de Logs Unificado
+
+### Added
+
 - **Logs de Sistema**: Integración de visor de `laravel.log` directamente en el panel Admin (últimas 200 líneas).
 - **Logs de Email**: Implementación de trazabilidad de correos salientes mediante listeners de eventos.
 - **UI Auditoría**: Rediseño del módulo de auditoría con sistema de pestañas para Actividad, Sistema y Email.
