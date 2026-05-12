@@ -177,7 +177,7 @@
             </table>
         </div>
         <div style="padding: 15px 20px; border-top: 1px solid var(--border); background: rgba(255,255,255,0.01);">
-            {{ $logs->links() }}
+            {{ $logs->links('pagination::simple-bootstrap-4') }}
         </div>
 
         @elseif($tab == 'system')
@@ -234,7 +234,7 @@
             </table>
         </div>
         <div style="padding: 15px 20px; border-top: 1px solid var(--border); background: rgba(255,255,255,0.01);">
-            {{ $logs->links() }}
+            {{ $logs->links('pagination::simple-bootstrap-4') }}
         </div>
         @endif
     </div>
