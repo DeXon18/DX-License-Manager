@@ -88,6 +88,16 @@
                     @csrf
                     <button type="submit" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); font-size: 8px; padding: 2px 8px; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-weight: 700;">Resetear</button>
                 </form>
+                @elseif($tab == 'system')
+                <form action="{{ route('admin.audit.clear.system') }}" method="POST" onsubmit="return confirm('¿Seguro que deseas vaciar el fichero de log?')">
+                    @csrf
+                    <button type="submit" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); font-size: 8px; padding: 2px 8px; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-weight: 700;">Resetear</button>
+                </form>
+                @elseif($tab == 'email')
+                <form action="{{ route('admin.audit.clear.email') }}" method="POST" onsubmit="return confirm('¿Seguro que deseas vaciar el historial de emails?')">
+                    @csrf
+                    <button type="submit" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); font-size: 8px; padding: 2px 8px; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-weight: 700;">Resetear</button>
+                </form>
                 @endif
             </div>
             <div style="display: flex; gap: 20px;">
@@ -168,10 +178,6 @@
         <div style="padding: 12px 20px; border-top: 1px solid var(--border); background: rgba(255,255,255,0.01); display: flex; justify-content: space-between; align-items: center;">
             <span style="font-size: 10px; color: var(--muted);">Mostrando las últimas 200 líneas de <code>storage/logs/laravel.log</code></span>
             <div style="display: flex; gap: 10px;">
-                <form action="{{ route('admin.audit.clear.system') }}" method="POST" onsubmit="return confirm('¿Seguro que deseas vaciar el fichero de log?')">
-                    @csrf
-                    <button type="submit" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); font-size: 10px; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-weight: 600;">Resetear Fichero</button>
-                </form>
                 <a href="{{ route('admin.audit.index', ['tab' => 'system']) }}" class="btn btn-primary" style="font-size: 10px; padding: 4px 10px;">Refrescar</a>
             </div>
         </div>
@@ -218,12 +224,8 @@
                 </tbody>
             </table>
         </div>
-        <div style="padding: 15px 20px; border-top: 1px solid var(--border); background: rgba(255,255,255,0.01); display: flex; justify-content: space-between; align-items: center;">
-            <div>{{ $logs->links() }}</div>
-            <form action="{{ route('admin.audit.clear.email') }}" method="POST" onsubmit="return confirm('¿Seguro que deseas vaciar el historial de emails?')">
-                @csrf
-                <button type="submit" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); font-size: 10px; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-weight: 600;">Resetear Historial</button>
-            </form>
+        <div style="padding: 15px 20px; border-top: 1px solid var(--border); background: rgba(255,255,255,0.01);">
+            {{ $logs->links() }}
         </div>
         @endif
     </div>
