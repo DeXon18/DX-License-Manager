@@ -42,14 +42,14 @@ class FeatureFlagSeeder extends Seeder
                 'label' => 'COD',
                 'vendor' => 'Siemens',
                 'description' => 'Generación de certificados de cese en PDF',
-                'is_active' => false,
+                'is_active' => true,
             ],
             [
                 'key' => 'siemens_recursos',
                 'label' => 'Recursos & enlaces Siemens',
                 'vendor' => 'Siemens',
                 'description' => 'Documentación oficial y recursos internos Siemens PLM',
-                'is_active' => false,
+                'is_active' => true,
             ],
 
             // MOLDEX3D
@@ -65,7 +65,7 @@ class FeatureFlagSeeder extends Seeder
                 'label' => 'Recursos & enlaces Moldex3D',
                 'vendor' => 'Moldex3D',
                 'description' => 'Documentación oficial y recursos internos Moldex3D',
-                'is_active' => false,
+                'is_active' => true,
             ],
         ];
 
