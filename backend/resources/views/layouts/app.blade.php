@@ -106,7 +106,7 @@
                 <a class="sidebar-item {{ request()->routeIs('tools.*') ? 'active' : '' }}" href="{{ route('tools.index') }}">
                     <span class="sidebar-icon">🛠️</span> Hub de Utilidades
                 </a>
-                <a class="sidebar-item" href="#">
+                <a class="sidebar-item {{ request()->routeIs('admin.repository.index') ? 'active' : '' }}" href="{{ route('admin.repository.index') }}">
                     <span class="sidebar-icon">📂</span> Repositorio
                 </a>
             </div>

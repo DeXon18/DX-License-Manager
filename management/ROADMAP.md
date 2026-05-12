@@ -368,15 +368,17 @@ DX License Manager
 
 ---
 
-### 📋 Fase 12 — Repositorio de Licencias
-
-**Estado:** En planificación
+### ✅ Fase 12 — Repositorio de Licencias
+ 
+**Estado:** COMPLETADA
 **Prerequisito:** ✅ Fase 11 validada por Oskar
-**Validación requerida antes de Fase 13:** Archivo semanal generado y descargable correctamente.
-
-- [ ] Agrupación automática de archivos procesados por semana
-- [ ] Descarga como ZIP
-- [ ] Historial: qué se archivó, cuándo, quién
+**Validación:** ✅ Verificado por Oskar el 2026-05-12. Generación de ZIP, normalización de carpetas y envío de reporte semanal operativos.
+ 
+- [x] Agrupación automática de archivos procesados por semana (Previous ISO Week)
+- [x] Normalización de carpetas (MAYÚSCULAS, sin puntos/comas)
+- [x] Generación de ZIP estructurado
+- [x] Envío automático por correo a soporte (Lunes 07:00 AM)
+- [x] Historial administrativo y descarga manual
 
 ---
 

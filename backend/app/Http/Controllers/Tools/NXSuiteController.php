@@ -14,6 +14,7 @@ class NXSuiteController extends Controller
     protected $nxService;
     protected $parserService;
     protected $auditService;
+    protected $normalizationService;
 
     public function __construct(
         NXSuiteService $nxService,
@@ -23,6 +24,7 @@ class NXSuiteController extends Controller
         $this->nxService = $nxService;
         $this->parserService = $parserService;
         $this->auditService = $auditService;
+        $this->normalizationService = $normalizationService;
     }
 
     public function index()
@@ -92,11 +94,11 @@ class NXSuiteController extends Controller
 
         // Lógica de Almacenamiento (Solo si NO es temporal)
         if ($metadata['type'] !== 'Temporal') {
-            $clientSlug = Str::slug($metadata['client']);
+            $clientFolder = $this->normalizationService->normalizeName($metadata['client']);
             $dateFolder = date('m-Y');
             
             // Nueva ruta solicitada: licenses/siemens/{cliente}/{fecha}/
-            $storagePath = "licenses/siemens/{$clientSlug}/{$dateFolder}";
+            $storagePath = "licenses/siemens/{$clientFolder}/{$dateFolder}";
             $fullPath = "{$storagePath}/{$filename}";
 
             // Manejo de duplicados (_1, _2, etc.)

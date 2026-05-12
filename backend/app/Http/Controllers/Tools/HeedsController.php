@@ -15,15 +15,18 @@ class HeedsController extends Controller
     protected $heedsService;
     protected $parserService;
     protected $auditService;
+    protected $normalizationService;
 
     public function __construct(
         HeedsService $heedsService,
         LicenseParserService $parserService,
-        AuditService $auditService
+        AuditService $auditService,
+        \App\Services\System\StorageNormalizationService $normalizationService
     ) {
         $this->heedsService = $heedsService;
         $this->parserService = $parserService;
         $this->auditService = $auditService;
+        $this->normalizationService = $normalizationService;
     }
 
     /**
@@ -75,10 +78,10 @@ class HeedsController extends Controller
 
         // 5. Almacenamiento Jerárquico (si no es temporal)
         if ($metadata['type'] !== 'Temporal') {
-            $clientSlug = Str::slug($metadata['client']);
+            $clientFolder = $this->normalizationService->normalizeName($metadata['client']);
             $dateFolder = date('m-Y'); // Formato Mes-Año (05-2026)
             
-            $storagePath = "licenses/siemens/{$clientSlug}/{$dateFolder}";
+            $storagePath = "licenses/siemens/{$clientFolder}/{$dateFolder}";
             
             // Manejo de duplicados
             $counter = 1;
