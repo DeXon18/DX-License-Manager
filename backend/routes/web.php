@@ -102,6 +102,11 @@ Route::middleware(['auth.jwt'])->group(function () {
 
         Route::get('/audit', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('audit.index');
 
+        // Gestión del Repositorio de Licencias
+        Route::get('/repository', [\App\Http\Controllers\Admin\LicenseRepositoryController::class, 'index'])->name('repository.index');
+        Route::post('/repository/generate', [\App\Http\Controllers\Admin\LicenseRepositoryController::class, 'generate'])->name('repository.generate');
+        Route::get('/repository/{archive}/download', [\App\Http\Controllers\Admin\LicenseRepositoryController::class, 'download'])->name('repository.download');
+
         // Gestión de Recursos y Enlaces
         Route::middleware('permission:staff')->group(function () {
             Route::post('/resources', [\App\Http\Controllers\Admin\ResourceController::class, 'store'])->name('resources.store');

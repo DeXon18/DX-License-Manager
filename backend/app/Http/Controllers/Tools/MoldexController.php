@@ -16,15 +16,18 @@ class MoldexController extends Controller
     protected $moldexService;
     protected $parserService;
     protected $syncService;
+    protected $normalizationService;
 
     public function __construct(
         MoldexService $moldexService,
         MoldexParserService $parserService,
-        MoldexSyncService $syncService
+        MoldexSyncService $syncService,
+        \App\Services\System\StorageNormalizationService $normalizationService
     ) {
         $this->moldexService = $moldexService;
         $this->parserService = $parserService;
         $this->syncService = $syncService;
+        $this->normalizationService = $normalizationService;
     }
 
     /**
@@ -77,23 +80,23 @@ class MoldexController extends Controller
         $filename = $this->moldexService->generateFilename($metadata);
 
         // 3. Almacenamiento Estructurado
-        $clientSlug = Str::slug($parsedData['customer_name'] ?? 'unknown');
+        $clientFolder = $this->normalizationService->normalizeName($parsedData['customer_name'] ?? 'UNKNOWN');
         $year       = $metadata['year'];
         
-        $storagePath = "licenses/moldex3d/{$clientSlug}/{$year}";
+        $storagePath = "licenses/moldex3d/{$clientFolder}/{$year}";
         $fullPath    = "{$storagePath}/{$filename}";
 
         // Manejo de duplicados
         $counter = 1;
         $finalFilename = $filename;
         $nameOnly = pathinfo($filename, PATHINFO_FILENAME);
-        while (Storage::disk('local')->exists("private/{$storagePath}/{$finalFilename}")) {
+        while (Storage::disk('local')->exists("{$storagePath}/{$finalFilename}")) {
             $finalFilename = "{$nameOnly}_{$counter}.mac";
             $counter++;
         }
         
-        // Guardar en disco privado
-        Storage::disk('local')->put("private/{$storagePath}/{$finalFilename}", $content);
+        // Guardar en disco privado (local disk is already storage/app/private)
+        Storage::disk('local')->put("{$storagePath}/{$finalFilename}", $content);
 
         // 4. Sincronizar con Inventario Activo
         $parsedData['version'] = $metadata['year'];

@@ -21,6 +21,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => \App\Http\Middleware\CheckPermission::class,
         ]);
     })
+    ->withSchedule(function (\Illuminate\Console\Scheduling\Schedule $schedule) {
+        $schedule->command('licenses:archive-weekly')->mondays()->at('07:00');
+    })
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();

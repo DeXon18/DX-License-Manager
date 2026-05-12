@@ -1,7 +1,20 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
-## [2026-05-12] — Asistente IA para Composite (COD) y Mejoras Dashboard ✅
+
+## [2026-05-12] — Fase 12: Repositorio de Licencias y Normalización ✅
+
+### Added
+- **Normalización de Almacenamiento**: Implementado `StorageNormalizationService` para estandarizar carpetas de clientes a **MAYÚSCULAS CON ESPACIOS**, eliminando puntos y comas (ej. `S.L.` -> `SL`).
+- **Migración Automática**: Nuevo comando Artisan `system:migrate-storage-names` para renombrar retroactivamente todas las carpetas existentes en el servidor.
+- **Repositorio Semanal**: Implementado motor de archivado en `LicenseRepositoryService` que agrupa licencias en archivos ZIP estructurados.
+- **ZIP Personalizado**: Nomenclatura estándar `REPOSITORIO_SEMANAL_S[XX]_[YYYY].zip`.
+- **Automatización**: Programación del sistema (Scheduler) para generar y enviar el repositorio los **lunes a las 07:00 AM**.
+- **Notificaciones ATS**: Mailable `WeeklyLicenseReport` con resumen de Clientes/Sold-Tos y adjunto ZIP enviado a `Soporte@ats-global.com`.
+- **Panel Administrativo**: Nueva interfaz en `/admin/repository` para visualización del historial, descarga de archivos y generación manual de repositorios.
+- **Refactoring**: Actualizados los controladores de herramientas (NX, Star-CCM, Heeds, Moldex) para integrarse con la nueva lógica de normalización.
+- **Fix (Moldex)**: Corregida ruta de almacenamiento en MoldexController que causaba una duplicidad de carpeta `private/`.
+
 ### Added
 - **Inteligencia Artificial**: Integración de Gemini (Google AI) para el análisis de adaptadores de red en el generador de COD.
 - **Asistente de Composite**: Nuevo servicio `CompositeParserService` que identifica el hardware óptimo (Ethernet físico > Wi-Fi) descartando adaptadores virtuales y VPNs.
