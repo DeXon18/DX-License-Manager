@@ -1,4 +1,4 @@
-<div class="card" style="margin-top: 24px;" x-data="resourceManager('{{ $vendor }}')">
+<div id="resources" class="card" style="margin-top: 24px;" x-data="resourceManager('{{ $vendor }}')">
     <div class="card-header" style="justify-content: space-between;">
         <span class="card-title">Recursos y Enlaces de Referencia</span>
         @if(auth()->user()->role->slug !== 'viewer')
