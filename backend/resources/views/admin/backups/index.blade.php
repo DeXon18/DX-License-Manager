@@ -93,9 +93,9 @@
                 </div>
                 <div style="width: 280px; display: flex; flex-direction: column; gap: 10px;">
                     <div style="font-size: 11px; color: var(--muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Próxima ejecución</div>
-                    <div style="font-size: 18px; font-weight: 700; color: var(--primary);">Mañana, 03:00</div>
+                    <div style="font-size: 18px; font-weight: 700; color: var(--primary);" x-text="timeRemaining">Calculando...</div>
                     <div style="height: 4px; background: var(--border-subtle); border-radius: 2px; margin-top: 4px; overflow: hidden;">
-                        <div style="width: 65%; height: 100%; background: var(--accent);"></div>
+                        <div :style="{ width: progressPercent + '%' }" style="height: 100%; background: var(--accent); transition: width 1s ease-in-out;"></div>
                     </div>
                 </div>
             </div>
@@ -209,6 +209,37 @@
             selectedFile: '',
             confirmText: '',
             restoring: false,
+            timeRemaining: '',
+            progressPercent: 0,
+
+            init() {
+                this.updateCountdown();
+                setInterval(() => this.updateCountdown(), 60000);
+            },
+
+            updateCountdown() {
+                const now = new Date();
+                const next = new Date();
+                next.setHours(3, 0, 0, 0);
+                
+                if (now >= next) {
+                    next.setDate(next.getDate() + 1);
+                }
+
+                const diff = next - now;
+                const hours = Math.floor(diff / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                
+                this.timeRemaining = `en ${hours}h ${minutes}m`;
+                
+                // Progreso: 03:00 a 03:00 son 24h. 
+                // Calculamos cuánto ha pasado desde las 03:00 anteriores.
+                const last = new Date(next);
+                last.setDate(last.getDate() - 1);
+                const total = next - last;
+                const elapsed = now - last;
+                this.progressPercent = Math.min(Math.max(Math.round((elapsed / total) * 100), 0), 100);
+            },
 
             confirmRestore(filename) {
                 this.selectedFile = filename;
