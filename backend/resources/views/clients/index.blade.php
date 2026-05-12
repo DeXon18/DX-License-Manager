@@ -62,7 +62,7 @@
     </table>
 </div>
 
-<div class="pagination mt-6">
-    {{ $clients->appends(request()->query())->links('vendor.pagination.dx') }}
+<div class="pagination-container">
+    {{ $clients->appends(request()->query())->links('vendor.pagination.dx-simple') }}
 </div>
 @endsection
