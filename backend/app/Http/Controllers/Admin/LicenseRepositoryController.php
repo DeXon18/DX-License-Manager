@@ -29,13 +29,17 @@ class LicenseRepositoryController extends Controller
     /**
      * Genera manualmente un repositorio para la semana pasada.
      */
-    public function generate()
+    public function generate(Request $request)
     {
         try {
-            $archive = $this->repositoryService->generateWeeklyArchive();
+            $sendEmail = $request->has('send');
+            $archive = $this->repositoryService->generateWeeklyArchive('manual', $sendEmail);
 
             if ($archive) {
-                return back()->with('success', "Repositorio semanal generado con éxito: {$archive->filename}");
+                $msg = "Repositorio semanal generado con éxito (Manual)";
+                if ($sendEmail) $msg .= " y enviado a soporte.";
+                
+                return back()->with('success', $msg);
             }
 
             return back()->with('info', 'No se encontraron licencias nuevas para archivar en el periodo solicitado.');
@@ -57,5 +61,21 @@ class LicenseRepositoryController extends Controller
             $archive->storage_path,
             $archive->filename
         );
+    }
+
+    /**
+     * Elimina un registro del repositorio y su archivo físico.
+     */
+    public function destroy(LicenseArchive $archive)
+    {
+        // Eliminar archivo físico
+        if (Storage::disk('local')->exists($archive->storage_path)) {
+            Storage::disk('local')->delete($archive->storage_path);
+        }
+
+        // Eliminar registro en BD
+        $archive->delete();
+
+        return back()->with('success', 'Entrada del repositorio eliminada correctamente.');
     }
 }
