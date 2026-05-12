@@ -106,6 +106,7 @@ Route::middleware(['auth.jwt'])->group(function () {
         Route::get('/repository', [\App\Http\Controllers\Admin\LicenseRepositoryController::class, 'index'])->name('repository.index');
         Route::post('/repository/generate', [\App\Http\Controllers\Admin\LicenseRepositoryController::class, 'generate'])->name('repository.generate');
         Route::get('/repository/{archive}/download', [\App\Http\Controllers\Admin\LicenseRepositoryController::class, 'download'])->name('repository.download');
+        Route::delete('/repository/{archive}', [\App\Http\Controllers\Admin\LicenseRepositoryController::class, 'destroy'])->name('repository.destroy');
 
         // Gestión de Recursos y Enlaces
         Route::middleware('permission:staff')->group(function () {

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use ZipArchive;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WeeklyLicenseReport;
 
@@ -106,7 +107,7 @@ class LicenseRepositoryService
         }
 
         // Registrar en BD
-        return LicenseArchive::updateOrCreate(
+        $archive = LicenseArchive::updateOrCreate(
             ['filename' => $filename],
             [
                 'week_number' => $weekNumber,
@@ -120,10 +121,13 @@ class LicenseRepositoryService
 
         // Envío opcional por correo
         if ($sendEmail && $archive) {
+            Log::info("Iniciando envío de reporte semanal a Soporte@ats-global.com (Archivo: {$archive->filename})");
             Mail::to('Soporte@ats-global.com')->send(new WeeklyLicenseReport($archive));
+            Log::info("Envío de reporte semanal completado.");
         }
 
         return $archive;
+    }
 
     /**
      * Obtiene el historial de archivos.

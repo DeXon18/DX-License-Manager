@@ -53,14 +53,13 @@ class LicenseRepositoryController extends Controller
      */
     public function download(LicenseArchive $archive)
     {
-        if (!Storage::disk('local')->exists($archive->storage_path)) {
+        $path = Storage::disk('local')->path($archive->storage_path);
+
+        if (!file_exists($path)) {
             return abort(404, 'Archivo no encontrado en el almacenamiento.');
         }
 
-        return Storage::disk('local')->download(
-            $archive->storage_path,
-            $archive->filename
-        );
+        return response()->download($path, $archive->filename);
     }
 
     /**

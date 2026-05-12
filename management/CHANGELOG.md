@@ -12,8 +12,10 @@
 - **Automatización**: Programación del sistema (Scheduler) para generar y enviar el repositorio los **lunes a las 07:00 AM**.
 - **Notificaciones ATS**: Mailable `WeeklyLicenseReport` con resumen de Clientes/Sold-Tos y adjunto ZIP enviado a `Soporte@ats-global.com`.
 - **Panel Administrativo**: Nueva interfaz en `/admin/repository` para visualización del historial, descarga de archivos y generación manual de repositorios.
-- **Refactoring**: Actualizados los controladores de herramientas (NX, Star-CCM, Heeds, Moldex) para integrarse con la nueva lógica de normalización.
-- **Fix (Moldex)**: Corregida ruta de almacenamiento en MoldexController que causaba una duplicidad de carpeta `private/`.
+- **Generación Pro**: Añadida opción de "Generar y Enviar" manual y trazabilidad de origen (`auto` vs `manual`) con iconos en la tabla.
+- **Refactoring**: Actualizados los controladores de herramientas (NX, Star-CCM, Heeds, Moldex) para integrarse con la nueva lógica de normalización y corregida la inyección de dependencias en `NXSuiteController`.
+- **Estabilidad**: Corregida lógica de creación de ZIPs con rutas absolutas y permisos forzados en el servidor.
+- **UX**: Eliminación de textos redundantes en el panel administrativo para un diseño más limpio.
 
 ### Added
 - **Inteligencia Artificial**: Integración de Gemini (Google AI) para el análisis de adaptadores de red en el generador de COD.

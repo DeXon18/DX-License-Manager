@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Tools;
 use App\Http\Controllers\Controller;
 use App\Models\ResourceLink;
 use App\Services\Licensing\NXSuiteService;
+use App\Services\System\StorageNormalizationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -19,7 +20,8 @@ class NXSuiteController extends Controller
     public function __construct(
         NXSuiteService $nxService,
         \App\Services\Audit\LicenseParserService $parserService,
-        \App\Services\AI\AuditService $auditService
+        \App\Services\AI\AuditService $auditService,
+        StorageNormalizationService $normalizationService
     ) {
         $this->nxService = $nxService;
         $this->parserService = $parserService;
@@ -104,8 +106,11 @@ class NXSuiteController extends Controller
             // Manejo de duplicados (_1, _2, etc.)
             $counter = 1;
             $finalFilename = $filename;
+            $nameOnly = str_replace(['.lic', '.txt'], '', $filename);
+            $extension = str_contains($filename, '.txt') ? '.txt' : '.lic';
+
             while (Storage::disk('local')->exists("{$storagePath}/{$finalFilename}")) {
-                $finalFilename = $filename . "_" . $counter;
+                $finalFilename = "{$nameOnly}_{$counter}{$extension}";
                 $counter++;
             }
             
