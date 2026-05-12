@@ -1,15 +1,18 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
-## [2026-05-12] — Asistente IA para Composite (COD) ✅
+## [2026-05-12] — Asistente IA para Composite (COD) y Mejoras Dashboard ✅
 ### Added
 - **Inteligencia Artificial**: Integración de Gemini (Google AI) para el análisis de adaptadores de red en el generador de COD.
 - **Asistente de Composite**: Nuevo servicio `CompositeParserService` que identifica el hardware óptimo (Ethernet físico > Wi-Fi) descartando adaptadores virtuales y VPNs.
 - **UI Premium**: Modal interactivo con soporte para **Drag & Drop** de archivos `.txt` y pegado de texto.
 - **Auto-rellenado**: Función de volcado automático de Hostname, Composite y MAC detectados directamente al formulario.
 - **Seguridad**: Procesamiento asíncrono y protección de API Key en entorno Beta.
-- **Correcciones**: Solucionado error 404 en la API de Gemini mediante la actualización al modelo `gemini-3.1-flash-lite` y versión `v1beta`.
-- **UI/UX**: Rediseño integral de la zona de carga con estética premium, bordes punteados estilizados (blue dashed) y animaciones de pulso.
+- **Correcciones**: Solucionado error 404 en la API de Gemini mediante la actualización al modelo **`gemini-3.1-flash-lite`** y versión `v1beta`.
+- **UI/UX**: Rediseño integral de la zona de carga con estética premium, bordes punteados estilizados (**blue dashed**) y animaciones de pulso.
+- **Iconografía Gemini**: Implementación del icono oficial **Sparkle** de Gemini en toda la plataforma (Herramientas y Dashboard).
+- **Dashboard del Sistema**: Actualización de la matriz de servicios con iconos premium y colores de marca para **Gemini (Flash 3.1)**, **DeepSeek** y **OpenRouter**.
+- **Visuales**: Unificación de dimensiones de iconos (34x34) y centrado perfecto en el panel de administración.
 
 ## [2026-05-12] — Restauración Configuración n8n (Fix) ✅
 ### Fixed
