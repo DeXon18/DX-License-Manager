@@ -288,9 +288,10 @@ DX License Manager
 - [x] Guardado en historial del cliente y almacenamiento seguro.
 - [x] **AI Hardware Assistant (QoL)**: Análisis de `composite.txt` con Gemini (Subida de archivo, Drag & Drop y pegado) ✅
 
-#### 8.5 — Recursos & enlaces
-- [ ] Links a documentación oficial Siemens
-- [ ] Recursos internos de referencia
+#### 8.5 — Recursos & enlaces ✅
+- [x] Links a documentación oficial Siemens
+- [x] Recursos internos de referencia
+- [x] Gestión dinámica Staff/Admin via UI
 
 
 ---
@@ -308,8 +309,9 @@ DX License Manager
  - [x] Persistencia automática en Inventario Activo (`MoldexSyncService`)
  - [x] Vinculación inteligente de clientes (Fuzzy Match)
  
- #### 9.2 — Recursos & enlaces
- - [ ] Links a documentación oficial Moldex3D
+ #### 9.2 — Recursos & enlaces ✅
+ - [x] Links a documentación oficial Moldex3D
+ - [x] Gestión dinámica Staff/Admin via UI
 
 ---
 
