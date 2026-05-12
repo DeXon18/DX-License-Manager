@@ -367,9 +367,9 @@ DX License Manager
 **Validación requerida antes de Fase 12:** CRUD completo de usuarios verificado con todos los roles.
 
 - [x] Listado de usuarios con filtro por rol
-- [/] Crear / Editar usuario con asignación de rol (Generación de contraseñas OK)
-- [ ] Activar / Desactivar usuario (Toggle AJAX)
-- [ ] Gestión de roles y permisos
+- [x] Crear / Editar usuario con asignación de rol (Generación de contraseñas OK)
+- [x] Activar / Desactivar usuario (Toggle AJAX)
+- [x] Gestión de roles y permisos (Asignación funcional)
 
 ---
 

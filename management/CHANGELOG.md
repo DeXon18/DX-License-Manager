@@ -1,6 +1,15 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-12] — Gestión de Usuarios y Acceso (Fase 11) ✅
+
+### Added
+- **User Toggle AJAX**: Implementada acción inmediata para activar/desactivar usuarios desde el listado sin recarga de página.
+- **RBAC Assignments**: Sistema de asignación de roles verificado y funcional en creación/edición.
+- **Delete Protection**: Blindaje contra auto-eliminación y auto-desactivación del administrador en sesión.
+
+---
+
 ## [2026-05-11] — Restauración Infraestructura y SMTP ✅
 
 ### Fixed

@@ -15,7 +15,6 @@ El agente no avanza hasta recibir "aprobado", "adelante" o similar de forma expl
 ## 🟢 En Progreso
  
 - [x] **Fase 10**: Dashboard del Sistema y Modularización (Completada 2026-05-11).
-- [ ] **Fase 11**: Usuarios y Acceso (En curso).
 - [ ] **Fase 13**: Configuración SMTP Producción (En curso).
 
 ---
@@ -38,6 +37,15 @@ En planificación — se detallan una por una tras validación de la fase anteri
 ---
  
 ## ✅ Completado
+
+### Fase 11 — Usuarios y Acceso
+- **Completada:** 2026-05-12
+- **Rama:** feature/rbac-user-management
+- **Resumen:** Implementación completa del sistema de gestión de usuarios con RBAC granular. Incluye CRUD administrativo, toggle de estado vía AJAX, sistema de invitaciones con generación de contraseñas aleatorias y notificaciones profesionales.
+- [x] CRUD de usuarios y asignación de roles.
+- [x] Toggle de estado Activo/Inactivo con persistencia inmediata.
+- [x] Sistema de seguridad: bloqueo de auto-acciones para el admin activo.
+- [x] Notificaciones de bienvenida con credenciales.
 
 ### Fase 10 — Dashboard del Sistema (NOC Pro)
 
