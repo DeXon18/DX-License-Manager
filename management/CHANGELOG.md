@@ -1,6 +1,14 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-12] — Restauración Configuración n8n (Fix) ✅
+### Fixed
+- **Configuración**: Restauradas variables críticas de n8n en `infra/.env.beta` que fueron eliminadas accidentalmente.
+- **Conectividad**: Verificada salud del motor n8n desde el servidor Beta (Online).
+- **Callback**: Restaurada `AUDIT_CALLBACK_URL` para permitir el retorno de datos desde la IA.
+
+---
+
 ## [2026-05-12] — Gestión de Backups (Fase 14) ✅
 
 ### Added
