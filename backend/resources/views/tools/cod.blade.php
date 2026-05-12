@@ -432,7 +432,7 @@
                         <input type="file" x-ref="fileInput" class="hidden" @change="handleFileUpload($event)" accept=".txt">
                         
                         <template x-if="!fileName">
-                            <div class="flex flex-col items-center gap-4">
+                            <div class="flex flex-col items-center justify-center gap-6 w-full">
                                 <div class="upload-icon-wrapper">
                                     <i class="fa-solid fa-file-circle-plus"></i>
                                 </div>
@@ -1085,6 +1085,7 @@
     .upload-icon-wrapper {
         width: 80px;
         height: 80px;
+        margin: 0 auto;
         background: var(--surface);
         border: 2px solid var(--border);
         border-radius: 24px;
@@ -1117,13 +1118,16 @@
         background: var(--accent);
         color: white;
         border-color: var(--accent);
-        transform: translateY(-5px) rotate(5deg);
+        transform: translateY(-5px);
         box-shadow: 0 15px 35px rgba(var(--accent-rgb), 0.3);
     }
     .upload-text-content {
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        align-items: center;
+        gap: 8px;
+        text-align: center;
+        width: 100%;
         z-index: 1;
     }
     .upload-main-text {
