@@ -34,7 +34,7 @@
                     onmouseout="this.style.border='1px solid var(--border)'"
                 >
                     @for ($i = 1; $i <= $paginator->lastPage(); $i++)
-                        <option value="{{ $paginator->url($i) }}" {{ $i == $paginator->currentPage() ? 'selected' : '' }}>
+                        <option value="{{ $paginator->url($i) }}" {{ $i == $paginator->currentPage() ? 'selected' : '' }} style="background: #111; color: #fff;">
                             Página {{ $i }} de {{ $paginator->lastPage() }}
                         </option>
                     @endfor
