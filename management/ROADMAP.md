@@ -37,59 +37,59 @@ Si el desarrollador no ha dicho explícitamente "aprobado", "adelante", "siguien
 
 ```
 DX License Manager
-├── 1. CSS + assets
-├── 2. Layouts Blade
-├── 3. Login
-├── 4. Inicio
-├── 5. Clientes
-│   ├── Licencias
-│   ├── ContraHeaders / Contratos      — contratos activos, estados y caducidades
-│   ├── Contactos de envío             — datos del destinatario como referencia
-│   └── Certificados de cese firmados  — historial de CODs firmados recibidos
-├── 6. Herramientas
+├── 1. CSS + assets ✅
+├── 2. Layouts Blade ✅
+├── 3. Login ✅
+├── 4. Inicio ✅
+├── 5. Clientes ✅
+│   ├── Licencias ✅ (Inventario unificado)
+│   ├── ContraHeaders / Contratos ✅ (Importación CSV)
+│   ├── Contactos de envío ✅ (Gestión por cliente)
+│   └── Certificados de cese firmados ✅ (Gestión de CODs)
+├── 6. Herramientas ✅
 ├── 7. Páginas de herramientas & recursos
 │   ├── SIEMENS | Automatización industrial y digitalización
-│   │   ├── NX Suite                   — ugslmd: NX, Designcenter, Teamcenter, Simcenter 3D & Amesim
-│   │   ├── STAR-CCM+                  — cdlmd: STAR-CCM+
-│   │   ├── HEEDS                      — RCTECH: HEEDS
-│   │   ├── COD                        — generación de certificados de cese, PDF descargable
-│   │   └── Recursos & enlaces
+│   │   ├── NX Suite ✅ (ugslmd, saltd)
+│   │   ├── STAR-CCM+ ✅ (cdlmd)
+│   │   ├── HEEDS ✅ (RCTECH)
+│   │   ├── COD ✅ (Generador + Asistente IA)
+│   │   └── Recursos & enlaces 📋
 │   └── Moldex3D | Software de simulación de moldeo por inyección de plástico
-│       ├── Moldex3D                   — archivos .mac: auditoría y procesamiento
-│       └── Recursos & enlaces
-└── 8. Sistema y configuración
-    ├── Dashboard del sistema
-    ├── Usuarios y acceso
-    │   ├── Listado de usuarios
-    │   ├── Crear / Editar usuario
-    │   └── Roles y permisos
-    ├── Datos e importación
-    │   ├── Importar CSV
-    │   ├── Historial de importaciones
-    │   └── Errores de importación
-    ├── Repositorio de licencias
-    │   ├── Archivo semanal             — procesados de la semana, descargable como ZIP
-    │   └── Historial de archivos       — qué se archivó, cuándo y quién lo descargó
-    ├── Alertas y notificaciones
-    │   ├── Alertas de caducidad
-    │   │   ├── Configuración de umbrales
-    │   │   ├── Destinatarios
-    │   │   └── Historial de envíos
-    │   └── Configuración SMTP
-    ├── Backups
-    │   ├── Backup manual
-    │   ├── Historial de backups
-    │   └── Configuración de backup automático
-    ├── Integraciones IA
-    │   ├── Gemini
-    │   ├── Deepseek
-    │   ├── OpenRouter
-    │   ├── Telegram Bot
-    │   └── Estado de conexión
-    └── Logs y auditoría
-        ├── Logs de actividad
-        ├── Logs de errores
-        └── Logs de auditoría IA
+│       ├── Moldex3D ✅ (Parser .mac + Sincronización)
+│       └── Recursos & enlaces 📋
+└── 8. Sistema y configuración ✅
+    ├── Dashboard del sistema ✅ (NOC Pro + Brand Icons)
+    ├── Usuarios y acceso ✅
+    │   ├── Listado de usuarios ✅
+    │   ├── Crear / Editar usuario ✅
+    │   └── Roles y permisos ✅
+    ├── Datos e importación ✅
+    │   ├── Importar CSV ✅
+    │   ├── Historial de importaciones ✅
+    │   └── Errores de importación ✅
+    ├── Repositorio de licencias ✅
+    │   ├── Archivo semanal ✅
+    │   └── Historial de archivos ✅
+    ├── Alertas y notificaciones 🔜
+    │   ├── Alertas de caducidad 📋
+    │   │   ├── Configuración de umbrales 📋
+    │   │   ├── Destinatarios 📋
+    │   │   └── Historial de envíos 📋
+    │   └── Configuración SMTP ✅ (Producción activa)
+    ├── Backups ✅
+    │   ├── Backup manual ✅
+    │   ├── Historial de backups ✅
+    │   └── Configuración de backup automático ✅
+    ├── Integraciones IA ✅
+    │   ├── Gemini ✅ (Flash 3.1)
+    │   ├── Deepseek ✅
+    │   ├── OpenRouter ✅
+    │   ├── Telegram Bot ✅
+    │   └── Estado de conexión ✅
+    └── Logs y auditoría ✅
+        ├── Logs de actividad ✅
+        ├── Logs de errores ✅
+        └── Logs de auditoría IA ✅
 ```
 
 ---
@@ -200,9 +200,9 @@ DX License Manager
 
 ---
 
-### 📋 Fase 6 — Clientes 🔜 EN CURSO
+### 📋 Fase 6 — Clientes ✅ COMPLETADA
 
-**Estado:** EN CURSO
+**Estado:** COMPLETADA
 **Prerequisito:** ✅ Fase 5 validada por Oskar
 **Validación requerida antes de Fase 7:** Perfil de cliente completo con todas las subsecciones funcionando.
 
@@ -211,23 +211,20 @@ DX License Manager
 - [x] Badges de estado y caducidad por colores (Afinado con Oskar)
 - [x] Vista global de caducidades (Dashboard + Perfil)
 
-#### 6.2 — Licencias ⏸️ PAUSADA
-> [!NOTE]
-> Esta sección se desarrollará en paralelo con la **Fase 8**, ya que requiere el motor de auditoría y los parsers de licencias.
-- [ ] Migraciones: `license_files`, `license_products`
-- [ ] Subida de archivos `.lic` y `.mac`
-- [ ] Asociación automática a cliente por nombre
+#### 6.2 — Licencias ✅ COMPLETADA
+- [x] Migraciones: `license_inventory_daemons`, `license_inventory_products`
+- [x] Subida y auditoría de archivos `.lic` (Siemens) y `.mac` (Moldex3D)
+- [x] Asociación automática a cliente por motor de similitud (Fuzzy Match)
 
 #### 6.3 — Contactos de envío ✅ COMPLETADA
 - [x] CRUD de contactos por cliente (Listado compacto + Modales)
 - [x] Persistencia de pestaña en localStorage
 - [x] Seeder de datos DEMO para pruebas
 
-#### 6.4 — Certificados de cese firmados ⏸️ PAUSADA
-> [!NOTE]
-> Esta sección depende de la **Fase 8.4 (COD)**, donde se implementará la generación y guardado de los documentos oficiales.
-- [ ] Subida y almacenamiento de CODs firmados recibidos
-- [ ] Historial por cliente
+#### 6.4 — Certificados de cese firmados ✅ COMPLETADA
+- [x] Subida y almacenamiento seguro de CODs firmados recibidos
+- [x] Historial por cliente con visualización de estados
+- [x] Ruta de descarga protegida para archivos firmados
 
 #### 6.5 — Normalización e Identidades ✅ COMPLETADA
 - [x] Motor de similitud (Fuzzy Match 85%) y sistema de Alias.
@@ -254,13 +251,10 @@ DX License Manager
 
 ---
 
-### 📋 Fase 8 — Siemens
+### ✅ Fase 8 — Siemens ✅ COMPLETADA
 
-**Estado:** 🔜 EN CURSO
-**Motivo:** Parte 1 (Mecanismo y Límites) completada con éxito.
-**Acción:** Preparado para iniciar Parte 2 (Inteligencia).
-**Prerequisito:** ✅ Fase 7 validada por Oskar
-**Validación requerida antes de Fase 9:** Todas las subherramientas Siemens funcionando en beta.
+**Estado:** COMPLETADA
+**Validación:** ✅ Verificado por Oskar el 2026-05-12. Ecosistema Siemens completo.
 
 #### 8.1 — NX Suite (`siemens_nx_suite`) ✅
 - [x] Mecanismo de transformación Siemens NX (Standard, Dongle, Unificada)
@@ -360,11 +354,10 @@ DX License Manager
 
 ---
 
-### 📋 Fase 11 — Usuarios y Acceso 🔜 EN CURSO
+### ✅ Fase 11 — Usuarios y Acceso ✅ COMPLETADA
 
-**Estado:** EN CURSO
-**Prerequisito:** ✅ Fase 10 validada por Oskar
-**Validación requerida antes de Fase 12:** CRUD completo de usuarios verificado con todos los roles.
+**Estado:** COMPLETADA
+**Validación:** ✅ Verificado por Oskar el 2026-05-12. CRUD y roles 100% operativos.
 
 - [x] Listado de usuarios con filtro por rol
 - [x] Crear / Editar usuario con asignación de rol (Generación de contraseñas OK)
