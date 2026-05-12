@@ -86,17 +86,17 @@
                 @if($tab == 'activity')
                 <form action="{{ route('admin.audit.clear.activity') }}" method="POST" onsubmit="return confirm('¿Seguro que deseas vaciar el historial de actividad?')">
                     @csrf
-                    <button type="submit" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); font-size: 8px; padding: 2px 8px; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-weight: 700;">Resetear</button>
+                    <button type="submit" class="btn-reset">Resetear</button>
                 </form>
                 @elseif($tab == 'system')
                 <form action="{{ route('admin.audit.clear.system') }}" method="POST" onsubmit="return confirm('¿Seguro que deseas vaciar el fichero de log?')">
                     @csrf
-                    <button type="submit" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); font-size: 8px; padding: 2px 8px; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-weight: 700;">Resetear</button>
+                    <button type="submit" class="btn-reset">Resetear</button>
                 </form>
                 @elseif($tab == 'email')
                 <form action="{{ route('admin.audit.clear.email') }}" method="POST" onsubmit="return confirm('¿Seguro que deseas vaciar el historial de emails?')">
                     @csrf
-                    <button type="submit" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); font-size: 8px; padding: 2px 8px; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-weight: 700;">Resetear</button>
+                    <button type="submit" class="btn-reset">Resetear</button>
                 </form>
                 @endif
             </div>
@@ -295,6 +295,26 @@
         background: var(--accent);
         color: white;
         border-color: var(--accent);
+    }
+    .btn-reset {
+        background: rgba(239, 68, 68, 0.05);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        color: #ef4444;
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: 'Inter', sans-serif;
+        letter-spacing: 0.02em;
+    }
+    .btn-reset:hover {
+        background: #ef4444;
+        color: white;
+        border-color: #ef4444;
+        box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
     }
 </style>
 @endsection
