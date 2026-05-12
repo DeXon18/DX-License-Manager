@@ -60,9 +60,8 @@
             @endforelse
         </tbody>
     </table>
-</div>
-
-<div class="pagination-container">
-    {{ $clients->appends(request()->query())->links('vendor.pagination.dx-jump') }}
+    <div style="padding: 15px 20px; border-top: 1px solid var(--border); background: rgba(255,255,255,0.01);">
+        {{ $clients->appends(request()->query())->links('vendor.pagination.dx-jump') }}
+    </div>
 </div>
 @endsection
