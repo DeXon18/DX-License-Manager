@@ -417,14 +417,49 @@
             </div>
             <div class="ai-modal-body">
                 <div x-show="!aiResult" x-transition>
-                    <p class="ai-hint">Pega el listado de adaptadores o <strong>sube el archivo .txt</strong> para que Gemini identifique el hardware óptimo.</p>
+                    <p class="ai-hint">
+                        <i class="fa-solid fa-wand-magic-sparkles mr-2 text-accent"></i>
+                        Pega el listado de adaptadores o arrastra el archivo <strong>composite.txt</strong> para un análisis automático.
+                    </p>
                     
-                    <div class="ai-upload-zone mb-4" @click="$refs.fileInput.click()" @dragover.prevent="$el.classList.add('active')" @dragleave.prevent="$el.classList.remove('active')" @drop.prevent="handleDrop($event)">
+                    <div class="ai-upload-zone mb-4" 
+                         @click="$refs.fileInput.click()" 
+                         @dragover.prevent="isDragging = true" 
+                         @dragleave.prevent="isDragging = false" 
+                         @drop.prevent="isDragging = false; handleDrop($event)"
+                         :class="{ 'active': isDragging, 'has-file': fileName }">
+                        
                         <input type="file" x-ref="fileInput" class="hidden" @change="handleFileUpload($event)" accept=".txt">
-                        <i class="fa-solid fa-cloud-arrow-up text-accent" style="font-size: 24px;"></i>
-                        <div style="margin-top: 8px;">
-                            <span style="font-size: 12px; font-weight: 700; color: var(--primary);">Haz clic o arrastra el archivo composite.txt</span>
-                            <p style="font-size: 10px; color: var(--muted); margin: 4px 0 0;">Solo archivos de texto (.txt)</p>
+                        
+                        <template x-if="!fileName">
+                            <div class="flex flex-col items-center gap-4">
+                                <div class="upload-icon-wrapper">
+                                    <i class="fa-solid fa-file-circle-plus"></i>
+                                </div>
+                                <div class="upload-text-content">
+                                    <span class="upload-main-text text-lg">Haz clic o arrastra el archivo composite.txt</span>
+                                    <span class="upload-sub-text">Sube el log de adaptadores para análisis instantáneo</span>
+                                </div>
+                            </div>
+                        </template>
+
+                        <template x-if="fileName">
+                            <div class="flex flex-col items-center gap-3 fade-in w-full">
+                                <div class="upload-icon-wrapper success">
+                                    <i class="fa-solid fa-file-circle-check"></i>
+                                </div>
+                                <div class="flex flex-col items-center gap-1">
+                                    <span class="font-bold text-primary" x-text="fileName"></span>
+                                    <span class="text-xs text-muted">Archivo listo para procesar</span>
+                                </div>
+                                <button type="button" @click.stop="clearFile()" class="mt-2 text-xs text-danger hover:underline">
+                                    <i class="fa-solid fa-trash-can mr-1"></i> Quitar archivo
+                                </button>
+                            </div>
+                        </template>
+
+                        <div class="upload-progress-bar" x-show="isAiProcessing">
+                            <div class="upload-progress-inner"></div>
                         </div>
                     </div>
 
@@ -443,26 +478,26 @@
                 <div x-show="aiResult" x-transition>
                     <div class="ai-result-box">
                         <div class="ai-result-header">
-                            <i class="fa-solid fa-check-circle text-success"></i>
-                            <span>Hardware Detectado</span>
+                            <i class="fa-solid fa-robot"></i>
+                            <span>Hardware Recomendado</span>
                         </div>
                         <div class="ai-result-grid">
                             <div class="ai-result-item">
                                 <label>Hostname</label>
-                                <span x-text="aiResult.hostname || 'No detectado'"></span>
+                                <span x-text="aiResult.hostname || 'N/A'"></span>
                             </div>
                             <div class="ai-result-item">
                                 <label>Composite</label>
-                                <span class="font-mono" x-text="aiResult.composite"></span>
+                                <span class="font-mono" x-text="aiResult.composite || 'N/A'"></span>
                             </div>
                             <div class="ai-result-item">
-                                <label>MAC</label>
-                                <span class="font-mono" x-text="aiResult.mac"></span>
+                                <label>MAC Address</label>
+                                <span class="font-mono" x-text="aiResult.mac || 'N/A'"></span>
                             </div>
                         </div>
                         <div class="ai-result-footer">
                             <div style="font-size: 11px; font-weight: 600; color: var(--accent); margin-bottom: 4px;">Adaptador: <span x-text="aiResult.adapter" style="color: var(--text);"></span></div>
-                            <p style="font-size: 11px; color: var(--muted); margin: 0; line-height: 1.4;">
+                            <p class="ai-reason" style="font-size: 11px; color: var(--muted); margin: 0; line-height: 1.4;">
                                 <i class="fa-solid fa-info-circle me-1"></i> <span x-text="aiResult.reason"></span>
                             </p>
                         </div>
@@ -1013,26 +1048,136 @@
     }
 
     .ai-upload-zone {
-        border: 2px dashed var(--border);
-        border-radius: 12px;
-        padding: 24px;
+        border: 2px dashed var(--accent);
+        border-radius: 20px;
+        padding: 48px 32px;
         text-align: center;
         cursor: pointer;
-        transition: all 0.2s;
-        background: rgba(var(--accent-rgb), 0.02);
-        margin-bottom: 20px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background: rgba(var(--accent-rgb), 0.05);
+        margin-bottom: 24px;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 8px;
+        gap: 16px;
+        position: relative;
+        overflow: hidden;
+    }
+    .ai-upload-zone::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), transparent);
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    .ai-upload-zone:hover::before, .ai-upload-zone.active::before {
+        opacity: 1;
     }
     .ai-upload-zone:hover, .ai-upload-zone.active {
         border-color: var(--accent);
-        background: rgba(var(--accent-rgb), 0.05);
+        transform: translateY(-2px);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.15);
     }
-    .ai-upload-zone i { transition: transform 0.2s; }
-    .ai-upload-zone:hover i { transform: translateY(-4px); }
+    .upload-icon-wrapper {
+        width: 80px;
+        height: 80px;
+        background: var(--surface);
+        border: 2px solid var(--border);
+        border-radius: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        color: var(--accent);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        z-index: 1;
+        position: relative;
+    }
+    .upload-icon-wrapper::after {
+        content: '';
+        position: absolute;
+        inset: -10px;
+        background: var(--accent);
+        opacity: 0.1;
+        border-radius: 30px;
+        z-index: -1;
+        animation: icon-pulse 3s infinite;
+    }
+    @keyframes icon-pulse {
+        0% { transform: scale(1); opacity: 0.1; }
+        50% { transform: scale(1.15); opacity: 0.05; }
+        100% { transform: scale(1); opacity: 0.1; }
+    }
+    .ai-upload-zone:hover .upload-icon-wrapper {
+        background: var(--accent);
+        color: white;
+        border-color: var(--accent);
+        transform: translateY(-5px) rotate(5deg);
+        box-shadow: 0 15px 35px rgba(var(--accent-rgb), 0.3);
+    }
+    .upload-text-content {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        z-index: 1;
+    }
+    .upload-main-text {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--primary);
+        letter-spacing: -0.01em;
+    }
+    .upload-sub-text {
+        font-size: 11px;
+        color: var(--muted);
+    }
+    .upload-file-info {
+        margin-top: 8px;
+        padding: 6px 14px;
+        background: var(--accent-muted);
+        border: 1px solid var(--accent-border);
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--accent);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        z-index: 1;
+    }
+
+    .upload-icon-wrapper.success {
+        background: rgba(var(--success-rgb), 0.1);
+        color: var(--success);
+        border-color: rgba(var(--success-rgb), 0.2);
+    }
+    .ai-upload-zone.active {
+        border-color: var(--accent);
+        background: rgba(var(--accent-rgb), 0.08);
+        transform: scale(1.01);
+    }
+    .upload-progress-bar {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: rgba(var(--accent-rgb), 0.1);
+    }
+    .upload-progress-inner {
+        height: 100%;
+        background: var(--accent);
+        width: 30%;
+        animation: progress-slide 2s infinite linear;
+    }
+    @keyframes progress-slide {
+        0% { transform: translateX(-100%); width: 30%; }
+        50% { width: 60%; }
+        100% { transform: translateX(400%); width: 30%; }
+    }
 
     .ai-modal {
         background: var(--surface);
@@ -1046,7 +1191,16 @@
         border: 1px solid var(--border);
     }
     .ai-modal-body { padding: 24px 32px 32px; }
-    .ai-hint { font-size: 13px; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
+    .ai-hint { 
+        font-size: 14px; 
+        color: var(--muted); 
+        margin-bottom: 24px; 
+        line-height: 1.6; 
+        padding: 12px 16px;
+        background: rgba(var(--accent-rgb), 0.05);
+        border-left: 3px solid var(--accent);
+        border-radius: 4px 12px 12px 4px;
+    }
     .ai-textarea {
         width: 100%;
         height: 200px;
@@ -1065,30 +1219,67 @@
     .ai-result-box {
         background: rgba(var(--accent-rgb), 0.03);
         border: 1px solid var(--accent-border);
-        border-radius: 12px;
-        padding: 20px;
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: inset 0 0 40px rgba(var(--accent-rgb), 0.05);
     }
     .ai-result-header {
         display: flex;
         align-items: center;
-        gap: 10px;
-        font-size: 14px;
-        font-weight: 700;
+        gap: 12px;
+        font-size: 15px;
+        font-weight: 800;
         color: var(--primary);
-        margin-bottom: 20px;
+        margin-bottom: 24px;
+    }
+    .ai-result-header i {
+        width: 32px;
+        height: 32px;
+        background: var(--accent);
+        color: white;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
     }
     .ai-result-grid {
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        gap: 16px;
-        margin-bottom: 20px;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-bottom: 24px;
     }
-    .ai-result-item { display: flex; flex-direction: column; gap: 4px; }
-    .ai-result-item label { font-size: 9px; font-weight: 800; text-transform: uppercase; color: var(--muted); letter-spacing: 0.05em; }
-    .ai-result-item span { font-size: 13px; color: var(--primary); font-weight: 600; }
+    .ai-result-item { 
+        display: flex; 
+        flex-direction: column; 
+        gap: 6px;
+        padding: 12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+    }
+    .ai-result-item label { 
+        font-size: 10px; 
+        font-weight: 800; 
+        text-transform: uppercase; 
+        color: var(--muted); 
+        letter-spacing: 0.08em; 
+    }
+    .ai-result-item span { 
+        font-size: 14px; 
+        color: var(--primary); 
+        font-weight: 700;
+        font-family: var(--font-mono);
+    }
     .ai-result-footer {
-        padding-top: 16px;
+        padding-top: 20px;
         border-top: 1px dashed var(--accent-border);
+    }
+    .ai-reason {
+        font-size: 13px;
+        color: var(--muted);
+        line-height: 1.6;
+        font-style: italic;
     }
 
     @keyframes fadeIn {
@@ -1117,6 +1308,8 @@ function codGenerator() {
         isAiProcessing: false,
         aiInput: '',
         aiResult: null,
+        isDragging: false,
+        fileName: '',
 
         init() {
             this.$watch('formData.docType', value => {
@@ -1312,6 +1505,12 @@ function codGenerator() {
             // Aquí podríamos disparar un evento o similar
         },
 
+        clearFile() {
+            this.fileName = '';
+            this.aiInput = '';
+            if (this.$refs.fileInput) this.$refs.fileInput.value = '';
+        },
+
         handleFileUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1331,6 +1530,7 @@ function codGenerator() {
                 return;
             }
 
+            this.fileName = file.name;
             const reader = new FileReader();
             reader.onload = (e) => {
                 this.aiInput = e.target.result;
