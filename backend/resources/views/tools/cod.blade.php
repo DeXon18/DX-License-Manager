@@ -269,6 +269,19 @@
                     <i class="fa-solid fa-plus"></i> Añadir par de MACs
                 </button>
             </div>
+
+            <!-- ASISTENTE IA (Añadido) -->
+            <div style="margin-top: 40px; padding-top: 30px; border-top: 1px dashed var(--border); display: flex; justify-content: center;">
+                <button type="button" class="btn-ai-assist shadow-premium" @click="openAiModal()">
+                    <div class="ai-icon-pulse">
+                        <i class="fa-solid fa-microchip-ai"></i>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px;">
+                        <span style="font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;">Asistente de Identificadores</span>
+                        <span style="font-size: 10px; opacity: 0.7;">Analizar output de hardware con Gemini AI</span>
+                    </div>
+                </button>
+            </div>
         </div>
 
         <!-- FOOTER: CONTROLES Y ACCIONES -->
@@ -334,7 +347,20 @@
         </div>
     </div>
 
-    <!-- Overlay de Previsualización Limpia (Look Imagen 2) -->
+    <!-- Modal de Asistente IA -->
+    <div class="preview-overlay" x-show="showAiModal" x-transition x-cloak>
+        <div class="ai-modal shadow-premium" @click.away="showAiModal = false">
+            <div class="preview-header" style="background: var(--accent-muted); border-bottom: 1px solid var(--accent-border);">
+                <div class="preview-title-container">
+                    <i class="fa-solid fa-microchip-ai text-accent"></i>
+                    <span class="preview-title">Asistente Inteligente de Composite</span>
+                </div>
+                <button type="button" class="btn-close-minimal" @click="showAiModal = false">
+                    <i class="fa-solid fa-xmark"></i>
+                    <span>Cerrar</span>
+                </button>
+            </div>
+    <!-- Overlay de Previsualización Limpia -->
     <div class="preview-overlay" x-show="showPreview" x-transition x-cloak>
         <div class="preview-modal shadow-premium" @click.away="showPreview = false">
             <div class="preview-header">
@@ -372,6 +398,77 @@
                         <span>Guardando...</span>
                     </template>
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Asistente IA -->
+    <div class="preview-overlay" x-show="showAiModal" x-transition x-cloak>
+        <div class="ai-modal shadow-premium" @click.away="showAiModal = false">
+            <div class="preview-header" style="background: var(--accent-muted); border-bottom: 1px solid var(--accent-border);">
+                <div class="preview-title-container">
+                    <i class="fa-solid fa-microchip-ai text-accent"></i>
+                    <span class="preview-title">Asistente Inteligente de Composite</span>
+                </div>
+                <button type="button" class="btn-close-minimal" @click="showAiModal = false">
+                    <i class="fa-solid fa-xmark"></i>
+                    <span>Cerrar</span>
+                </button>
+            </div>
+            <div class="ai-modal-body">
+                <div x-show="!aiResult" x-transition>
+                    <p class="ai-hint">Pega aquí el listado de adaptadores (output de get_composite o lmutil) para que Gemini identifique el hardware óptimo.</p>
+                    <textarea x-model="aiInput" 
+                              class="ai-textarea font-mono" 
+                              placeholder="Ejemplo:
+The Siemens PLM Software licensing CIDs...
+COMPOSITE=5D1980276724 - Intel(R) Ethernet..."></textarea>
+                    
+                    <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
+                        <button type="button" class="btn-cod-generate" @click="processAi()" :disabled="isAiProcessing || !aiInput">
+                            <span x-show="!isAiProcessing">Analizar con Gemini</span>
+                            <span x-show="isAiProcessing"><i class="fa-solid fa-spinner fa-spin me-2"></i> Procesando...</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div x-show="aiResult" x-transition>
+                    <div class="ai-result-box">
+                        <div class="ai-result-header">
+                            <i class="fa-solid fa-check-circle text-success"></i>
+                            <span>Hardware Detectado</span>
+                        </div>
+                        <div class="ai-result-grid">
+                            <div class="ai-result-item">
+                                <label>Hostname</label>
+                                <span x-text="aiResult.hostname || 'No detectado'"></span>
+                            </div>
+                            <div class="ai-result-item">
+                                <label>Composite</label>
+                                <span class="font-mono" x-text="aiResult.composite"></span>
+                            </div>
+                            <div class="ai-result-item">
+                                <label>MAC</label>
+                                <span class="font-mono" x-text="aiResult.mac"></span>
+                            </div>
+                        </div>
+                        <div class="ai-result-footer">
+                            <div style="font-size: 11px; font-weight: 600; color: var(--accent); margin-bottom: 4px;">Adaptador: <span x-text="aiResult.adapter" style="color: var(--text);"></span></div>
+                            <p style="font-size: 11px; color: var(--muted); margin: 0; line-height: 1.4;">
+                                <i class="fa-solid fa-info-circle me-1"></i> <span x-text="aiResult.reason"></span>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; margin-top: 24px; gap: 12px;">
+                        <button type="button" class="btn-secondary-tech" @click="aiResult = null">
+                            <i class="fa-solid fa-arrow-left"></i> <span>Volver a Analizar</span>
+                        </button>
+                        <button type="button" class="btn-cod-generate" @click="applyAiResult()">
+                            <i class="fa-solid fa-bolt"></i> <span>Aplicar a Nueva Máquina</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -861,6 +958,109 @@
 
     [x-cloak] { display: none !important; }
 
+    /* AI Assistant Styles */
+    .btn-ai-assist {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 12px 24px;
+        background: var(--surface);
+        border: 1px solid var(--accent);
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        color: var(--text);
+        text-align: left;
+    }
+    .btn-ai-assist:hover {
+        background: var(--accent-muted);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(var(--accent-rgb), 0.2);
+    }
+    .ai-icon-pulse {
+        width: 36px;
+        height: 36px;
+        background: var(--accent);
+        color: white;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        position: relative;
+    }
+    .ai-icon-pulse::after {
+        content: '';
+        position: absolute;
+        inset: -4px;
+        border: 2px solid var(--accent);
+        border-radius: 12px;
+        opacity: 0.3;
+        animation: pulse-ai 2s infinite;
+    }
+    @keyframes pulse-ai {
+        0% { transform: scale(1); opacity: 0.3; }
+        50% { transform: scale(1.1); opacity: 0.1; }
+        100% { transform: scale(1); opacity: 0.3; }
+    }
+
+    .ai-modal {
+        background: var(--surface);
+        width: 100%;
+        max-width: 600px;
+        border-radius: 16px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 25px 70px rgba(0,0,0,0.5);
+        border: 1px solid var(--border);
+    }
+    .ai-modal-body { padding: 24px 32px 32px; }
+    .ai-hint { font-size: 13px; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
+    .ai-textarea {
+        width: 100%;
+        height: 200px;
+        background: rgba(0,0,0,0.2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 16px;
+        color: var(--primary);
+        font-size: 12px;
+        line-height: 1.6;
+        resize: none;
+        outline: none;
+    }
+    .ai-textarea:focus { border-color: var(--accent); }
+
+    .ai-result-box {
+        background: rgba(var(--accent-rgb), 0.03);
+        border: 1px solid var(--accent-border);
+        border-radius: 12px;
+        padding: 20px;
+    }
+    .ai-result-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 20px;
+    }
+    .ai-result-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 20px;
+    }
+    .ai-result-item { display: flex; flex-direction: column; gap: 4px; }
+    .ai-result-item label { font-size: 9px; font-weight: 800; text-transform: uppercase; color: var(--muted); letter-spacing: 0.05em; }
+    .ai-result-item span { font-size: 13px; color: var(--primary); font-weight: 600; }
+    .ai-result-footer {
+        padding-top: 16px;
+        border-top: 1px dashed var(--accent-border);
+    }
+
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(5px); }
         to { opacity: 1; transform: translateY(0); }
@@ -881,6 +1081,13 @@ function codGenerator() {
         isPreviewLoading: false,
         showPreview: false,
         previewUrl: '',
+
+        // AI Assistant State
+        showAiModal: false,
+        isAiProcessing: false,
+        aiInput: '',
+        aiResult: null,
+
         init() {
             this.$watch('formData.docType', value => {
                 if (value !== 'Change_NodeLocked') {
@@ -1018,6 +1225,61 @@ function codGenerator() {
             .finally(() => {
                 this.isSaving = false;
             });
+        },
+
+        // AI Assistant Methods
+        openAiModal() {
+            this.showAiModal = true;
+            this.aiInput = '';
+            this.aiResult = null;
+        },
+
+        processAi() {
+            if (!this.aiInput) return;
+            this.isAiProcessing = true;
+
+            fetch('{{ route("tools.cod.parse-composite") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ text: this.aiInput })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    this.aiResult = data.data;
+                } else {
+                    alert(data.message || 'Error al procesar con Gemini.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error crítico en la comunicación con el servidor.');
+            })
+            .finally(() => {
+                this.isAiProcessing = false;
+            });
+        },
+
+        applyAiResult() {
+            if (!this.aiResult) return;
+
+            if (this.aiResult.hostname) {
+                this.formData.Hostname_New = this.aiResult.hostname;
+            }
+            if (this.aiResult.composite) {
+                this.formData.Composite_New = this.aiResult.composite;
+            }
+            if (this.aiResult.mac) {
+                this.formData.MAC_New = this.aiResult.mac;
+            }
+
+            this.showAiModal = false;
+            
+            // Efecto visual de resaltado en los campos destino (opcional)
+            // Aquí podríamos disparar un evento o similar
         }
     }
 }

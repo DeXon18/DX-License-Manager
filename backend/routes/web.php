@@ -45,6 +45,7 @@ Route::middleware(['auth.jwt'])->group(function () {
 
     Route::get('/herramientas/cod', [\App\Http\Controllers\Tools\CodController::class, 'index'])->name('tools.cod.index');
     Route::post('/herramientas/cod/preview', [\App\Http\Controllers\Tools\CodController::class, 'preview'])->name('tools.cod.preview');
+    Route::post('/herramientas/cod/parse-composite', [\App\Http\Controllers\Tools\CodController::class, 'parseComposite'])->name('tools.cod.parse-composite');
     Route::post('/herramientas/cod/store', [\App\Http\Controllers\Tools\CodController::class, 'store'])->name('tools.cod.store');
     Route::get('/herramientas/cod/download', [\App\Http\Controllers\Tools\CodController::class, 'download'])->name('tools.cod.download');
     Route::delete('/herramientas/cod/{uuid}', [\App\Http\Controllers\Tools\CodController::class, 'destroy'])->name('tools.cod.destroy');
