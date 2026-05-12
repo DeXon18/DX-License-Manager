@@ -452,8 +452,9 @@
                                     <span class="font-bold text-primary" x-text="fileName"></span>
                                     <span class="text-xs text-muted">Archivo listo para procesar</span>
                                 </div>
-                                <button type="button" @click.stop="clearFile()" class="mt-2 text-xs text-danger hover:underline">
-                                    <i class="fa-solid fa-trash-can mr-1"></i> Quitar archivo
+                                <button type="button" @click.stop="clearFile()" class="btn-clear-file">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                    <span>Quitar archivo</span>
                                 </button>
                             </div>
                         </template>
@@ -1060,9 +1061,10 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 16px;
+        gap: 20px;
         position: relative;
         overflow: hidden;
+        min-height: 240px;
     }
     .ai-upload-zone::before {
         content: '';
@@ -1149,10 +1151,19 @@
         z-index: 1;
     }
 
+    .ai-upload-zone input[type="file"] {
+        display: none !important;
+    }
     .upload-icon-wrapper.success {
         background: rgba(var(--success-rgb), 0.1);
         color: var(--success);
-        border-color: rgba(var(--success-rgb), 0.2);
+        border-color: var(--success);
+        box-shadow: 0 0 20px rgba(var(--success-rgb), 0.2);
+    }
+    .ai-upload-zone.has-file {
+        border-style: solid;
+        background: rgba(var(--success-rgb), 0.02);
+        border-color: rgba(var(--success-rgb), 0.3);
     }
     .ai-upload-zone.active {
         border-color: var(--accent);
@@ -1173,10 +1184,26 @@
         width: 30%;
         animation: progress-slide 2s infinite linear;
     }
-    @keyframes progress-slide {
-        0% { transform: translateX(-100%); width: 30%; }
-        50% { width: 60%; }
-        100% { transform: translateX(400%); width: 30%; }
+    .btn-clear-file {
+        margin-top: 12px;
+        background: rgba(var(--danger-rgb), 0.1);
+        color: var(--danger);
+        border: 1px solid rgba(var(--danger-rgb), 0.2);
+        padding: 6px 14px;
+        border-radius: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    .btn-clear-file:hover {
+        background: var(--danger);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(var(--danger-rgb), 0.3);
     }
 
     .ai-modal {
