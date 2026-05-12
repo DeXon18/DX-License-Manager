@@ -11,7 +11,7 @@
 
 <!-- SIEMENS -->
 @if(isset($features['Siemens']))
-<div class="vendor-section">
+<div class="vendor-section vendor-siemens-group">
     <div class="vendor-header">
         <span class="vendor-label siemens">Siemens PLM</span>
         <span class="vendor-desc">Ecosistema de Digital Industries Software y Gestión PLM</span>
@@ -99,7 +99,7 @@
 
 <!-- MOLDEX3D -->
 @if(isset($features['Moldex3D']))
-<div class="vendor-section">
+<div class="vendor-section vendor-moldex-group">
     <div class="vendor-header">
         <span class="vendor-label moldex">Moldex<span class="accent">3D</span></span>
         <span class="vendor-desc">Simulación Predictiva para el Diseño y Fabricación de Plásticos</span>
@@ -165,8 +165,9 @@
     .three-col {
         grid-template-columns: repeat(3, 1fr) !important;
     }
-    .moldex-logo, .moldex .accent, .tool-name .accent { font-weight: 800; }
-    .moldex-logo, .vendor-label.moldex, .tool-name { color: var(--moldex) !important; }
+    .moldex-logo, .moldex .accent, .vendor-moldex-group .tool-name .accent { font-weight: 800; }
+    .moldex-logo, .vendor-label.moldex, .vendor-moldex-group .tool-name { color: var(--moldex) !important; }
+    .vendor-siemens-group .tool-name { color: var(--vendor-siemens, #009999) !important; }
     .accent { color: #f58220 !important; }
 </style>
 @endpush
