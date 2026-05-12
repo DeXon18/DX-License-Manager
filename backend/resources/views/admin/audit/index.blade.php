@@ -153,18 +153,28 @@
         border-color: var(--border-subtle);
     }
     .form-control {
-        background: rgba(255,255,255,0.03);
+        background: #12141a;
         border: 1px solid var(--border);
         color: var(--primary);
         padding: 8px 12px;
         border-radius: 6px;
         font-size: 13px;
         transition: all 0.2s;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%234b5563'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 16px;
+        padding-right: 35px;
+    }
+    .form-control option {
+        background: #12141a;
+        color: var(--primary);
     }
     .form-control:focus {
         outline: none;
         border-color: var(--accent);
-        background: rgba(255,255,255,0.05);
+        background: #161922;
     }
     .pagination {
         display: flex;
