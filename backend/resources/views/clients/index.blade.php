@@ -63,6 +63,6 @@
 </div>
 
 <div class="pagination-container">
-    {{ $clients->appends(request()->query())->links('vendor.pagination.dx-modern') }}
+    {{ $clients->appends(request()->query())->links('vendor.pagination.dx-jump') }}
 </div>
 @endsection
