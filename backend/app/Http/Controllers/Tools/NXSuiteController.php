@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Tools;
 
 use App\Http\Controllers\Controller;
+use App\Models\ResourceLink;
 use App\Services\Licensing\NXSuiteService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -29,7 +30,12 @@ class NXSuiteController extends Controller
      */
     public function index()
     {
-        return view('tools.nx-suite');
+        $resources = ResourceLink::forVendor('siemens')
+            ->orderBy('order')
+            ->get()
+            ->groupBy('category');
+
+        return view('tools.nx-suite', compact('resources'));
     }
 
     /**

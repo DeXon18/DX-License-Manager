@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Tools;
 
 use App\Http\Controllers\Controller;
+use App\Models\ResourceLink;
 use App\Services\Licensing\MoldexService;
 use App\Services\Licensing\MoldexSyncService;
 use App\Services\Audit\MoldexParserService;
@@ -31,7 +32,12 @@ class MoldexController extends Controller
      */
     public function index()
     {
-        return view('tools.moldex3d');
+        $resources = ResourceLink::forVendor('moldex3d')
+            ->orderBy('order')
+            ->get()
+            ->groupBy('category');
+
+        return view('tools.moldex3d', compact('resources'));
     }
 
     /**

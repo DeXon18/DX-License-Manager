@@ -98,5 +98,12 @@ Route::middleware(['auth.jwt'])->group(function () {
         Route::post('/users/{user}/toggle', [UserController::class, 'toggleStatus'])->name('users.toggle');
 
         Route::get('/audit', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('audit.index');
+
+        // Gestión de Recursos y Enlaces
+        Route::middleware('permission:staff')->group(function () {
+            Route::post('/resources', [\App\Http\Controllers\Admin\ResourceController::class, 'store'])->name('resources.store');
+            Route::put('/resources/{resource}', [\App\Http\Controllers\Admin\ResourceController::class, 'update'])->name('resources.update');
+            Route::delete('/resources/{resource}', [\App\Http\Controllers\Admin\ResourceController::class, 'destroy'])->name('resources.destroy');
+        });
     });
 });
