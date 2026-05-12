@@ -7,8 +7,11 @@
 
 - **Logs de Sistema**: Integración de visor de `laravel.log` directamente en el panel Admin (últimas 200 líneas).
 - **Logs de Email**: Implementación de trazabilidad de correos salientes mediante listeners de eventos.
-- **UI Auditoría**: Rediseño del módulo de auditoría con sistema de pestañas para Actividad, Sistema y Email.
-- **Trazabilidad**: Registro automático de destinatario, asunto y estado de cada correo enviado.
+- **UI Auditoría Pro**: Rediseño total con sistema de pestañas persistentes y **NOC Micro-Cards** (indicadores con iconos para eventos, emails y alertas).
+- **Gestión de Logs**: Funcionalidad de **Reset** por sección (Actividad, Sistema, Email) con registro de evento de seguridad para trazabilidad administrativa.
+- **Paginación Avanzada**: Nueva vista `dx-jump` con botones direccionales y **selector de página (Dropdown)** para navegación rápida en listas largas (clientes, logs).
+- **Dark Mode UI**: Solucionado error de visibilidad en selectores de modo oscuro y unificación de botones de acción en cabeceras.
+- **Fix Email Logger**: Re-activación del listener de emails tras reversión accidental y verificación de trazabilidad.
 
 ## [2026-05-12] — Fase 12: Repositorio de Licencias y Normalización ✅
 
