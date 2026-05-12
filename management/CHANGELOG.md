@@ -1,6 +1,14 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-12] — Asistente IA para Composite (COD) ✅
+### Added
+- **Inteligencia Artificial**: Integración de Gemini (Google AI) para el análisis de adaptadores de red en el generador de COD.
+- **Asistente de Composite**: Nuevo servicio `CompositeParserService` que identifica el hardware óptimo (Ethernet físico > Wi-Fi) descartando adaptadores virtuales y VPNs.
+- **UI Premium**: Modal interactivo con soporte para **Drag & Drop** de archivos `.txt` y pegado de texto.
+- **Auto-rellenado**: Función de volcado automático de Hostname, Composite y MAC detectados directamente al formulario.
+- **Seguridad**: Procesamiento asíncrono y protección de API Key en entorno Beta.
+
 ## [2026-05-12] — Restauración Configuración n8n (Fix) ✅
 ### Fixed
 - **Configuración**: Restauradas variables críticas de n8n en `infra/.env.beta` que fueron eliminadas accidentalmente.
