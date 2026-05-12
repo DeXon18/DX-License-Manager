@@ -83,8 +83,15 @@ Route::middleware(['auth.jwt'])->group(function () {
             Route::delete('/delete-backup/{filename}', [SystemActionController::class, 'deleteBackup'])->name('delete-backup');
         });
 
-        // Nuevos módulos modularizados
-        Route::get('/backups', [\App\Http\Controllers\Admin\BackupController::class, 'index'])->name('backups.index');
+        // Gestión de Backups
+        Route::prefix('backups')->name('backups.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\BackupController::class, 'index'])->name('index');
+            Route::post('/run', [\App\Http\Controllers\Admin\BackupController::class, 'backup'])->name('run');
+            Route::get('/download/{filename}', [\App\Http\Controllers\Admin\BackupController::class, 'download'])->name('download');
+            Route::delete('/{filename}', [\App\Http\Controllers\Admin\BackupController::class, 'destroy'])->name('destroy');
+            Route::post('/{filename}/restore', [\App\Http\Controllers\Admin\BackupController::class, 'restore'])->name('restore');
+        });
+
         // Gestión de Usuarios
         Route::resource('/users', UserController::class)->names('users');
         Route::post('/users/{user}/toggle', [UserController::class, 'toggleStatus'])->name('users.toggle');

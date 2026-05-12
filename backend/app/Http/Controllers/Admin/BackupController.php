@@ -28,6 +28,114 @@ class BackupController extends Controller
         ]);
     }
 
+    public function backup()
+    {
+        try {
+            // Ejecutar script de backup
+            $process = \Illuminate\Support\Facades\Process::run('bash /var/www/html/scripts/backup-db.sh beta');
+            
+            if ($process->successful()) {
+                $this->logAction('db_backup', 'Manual database backup created via Backups module');
+                return response()->json(['success' => true, 'message' => 'Copia de seguridad generada correctamente.']);
+            }
+
+            return response()->json(['success' => false, 'message' => 'Error en el script: ' . $process->errorOutput()], 500);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function download($filename)
+    {
+        if (str_contains($filename, '..') || str_contains($filename, '/')) {
+            abort(403, 'Acceso denegado.');
+        }
+
+        $path = storage_path("app/backups/db/{$filename}");
+
+        if (!file_exists($path)) {
+            abort(404, 'Archivo no encontrado.');
+        }
+
+        $this->logAction('db_download', "Backup downloaded: {$filename}");
+        return response()->download($path);
+    }
+
+    public function destroy($filename)
+    {
+        if (str_contains($filename, '..') || str_contains($filename, '/')) {
+            return response()->json(['success' => false, 'message' => 'Acceso denegado.'], 403);
+        }
+
+        $path = storage_path("app/backups/db/{$filename}");
+
+        if (file_exists($path)) {
+            unlink($path);
+            $this->logAction('db_delete', "Backup deleted: {$filename}");
+            return response()->json(['success' => true, 'message' => 'Copia de seguridad eliminada con éxito.']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Archivo no encontrado.'], 404);
+    }
+
+    public function restore($filename)
+    {
+        try {
+            if (str_contains($filename, '..') || str_contains($filename, '/')) {
+                return response()->json(['success' => false, 'message' => 'Acceso denegado.'], 403);
+            }
+
+            $path = storage_path("app/backups/db/{$filename}");
+
+            if (!file_exists($path)) {
+                return response()->json(['success' => false, 'message' => 'Archivo no encontrado.'], 404);
+            }
+
+            // Comando de restauración
+            // IMPORTANTE: Se asumen variables de entorno del contenedor
+            $cmd = sprintf(
+                'mariadb -h %s -u %s -p%s %s < %s',
+                config('database.connections.mysql.host'),
+                config('database.connections.mysql.username'),
+                config('database.connections.mysql.password'),
+                config('database.connections.mysql.database'),
+                $path
+            );
+
+            // Ejecutar via shell_exec o Process
+            // Nota: mariadb-client debe estar instalado en el contenedor (ya lo está por Phase 10.4)
+            $output = [];
+            $resultCode = null;
+            exec($cmd . ' 2>&1', $output, $resultCode);
+
+            if ($resultCode === 0) {
+                $this->logAction('db_restore', "Database restored from backup: {$filename}");
+                return response()->json(['success' => true, 'message' => 'Base de datos restaurada con éxito.']);
+            }
+
+            return response()->json([
+                'success' => false, 
+                'message' => 'Error en la restauración: ' . implode("\n", $output)
+            ], 500);
+
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()], 500);
+        }
+    }
+
+    private function logAction($action, $description)
+    {
+        DB::table('audit_logs')->insert([
+            'user_id' => auth()->id(),
+            'action' => $action,
+            'description' => $description,
+            'level' => 'critical', // Restauraciones y backups son acciones críticas
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+            'created_at' => now()
+        ]);
+    }
+
     private function getBackups()
     {
         $backupDir = storage_path('app/backups/db');

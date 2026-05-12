@@ -52,9 +52,12 @@
                             </td>
                             <td style="padding: 14px 20px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--primary);">{{ $backup['size'] }}</td>
                             <td style="padding: 14px 20px; color: var(--muted); font-size: 11px;">{{ $backup['name'] }}</td>
-                            <td style="padding: 14px 20px; text-align: right;">
+                             <td style="padding: 14px 20px; text-align: right;">
                                 <div style="display: flex; gap: 10px; justify-content: flex-end;">
-                                    <a href="{{ route('admin.system.download-backup', ['filename' => $backup['name']]) }}" class="btn-action" title="Descargar copia">
+                                    <button @click="confirmRestore('{{ $backup['name'] }}')" class="btn-action warning" title="Restaurar base de datos">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                                    </button>
+                                    <a href="{{ route('admin.backups.download', ['filename' => $backup['name']]) }}" class="btn-action" title="Descargar copia">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                                     </a>
                                     <button @click="deleteBackup('{{ $backup['name'] }}')" class="btn-action danger" title="Eliminar copia">
@@ -98,66 +101,117 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal de Restauración -->
+    <template x-if="showRestoreModal">
+        <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px;">
+            <div class="card" style="max-width: 450px; width: 100%; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);">
+                <div class="card-header" style="background: rgba(239, 68, 68, 0.05); border-bottom: 1px solid rgba(239, 68, 68, 0.1);">
+                    <span class="card-title" style="color: var(--danger);"><i class="fas fa-exclamation-triangle me-2"></i> Restaurar Base de Datos</span>
+                </div>
+                <div style="padding: 24px;">
+                    <p style="color: var(--primary); font-size: 14px; margin-bottom: 16px;">
+                        Estás a punto de restaurar la base de datos usando el archivo:
+                        <br><b class="font-mono" style="color: var(--accent); display: block; margin-top: 8px;" x-text="selectedFile"></b>
+                    </p>
+                    <div style="background: rgba(239, 68, 68, 0.05); border-left: 3px solid var(--danger); padding: 12px; border-radius: 4px; margin-bottom: 24px;">
+                        <p style="color: var(--danger); font-size: 11px; font-weight: 600; margin: 0;">
+                            ⚠️ ATENCIÓN: Esta acción sobrescribirá TODOS los datos actuales de forma permanente. No se puede deshacer.
+                        </p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label style="font-size: 10px; color: var(--muted); margin-bottom: 8px;">ESCRIBE "RESTAURAR" PARA CONFIRMAR</label>
+                        <input type="text" x-model="confirmText" class="font-mono" placeholder="RESTAURAR" style="width: 100%; text-align: center; letter-spacing: 0.1em;">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px;">
+                        <button @click="showRestoreModal = false" class="btn-secondary" style="padding: 10px;">Cancelar</button>
+                        <button @click="executeRestore" 
+                                class="btn-danger" 
+                                :disabled="confirmText !== 'RESTAURAR' || restoring"
+                                style="padding: 10px;">
+                            <span x-show="!restoring">Iniciar Restauración</span>
+                            <span x-show="restoring"><i class="fas fa-spinner fa-spin"></i> Procesando...</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
 </div>
 
 <style>
-    .stat-mini {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        justify-content: center;
-        padding: 0 15px;
-        border-right: 1px solid var(--border-subtle);
+    .btn-action.warning:hover {
+        background: rgba(245, 158, 11, 0.1);
+        color: var(--warning);
+        border-color: var(--warning);
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
     }
-    .stat-mini .label {
-        font-size: 9px;
-        color: var(--muted);
-        text-transform: uppercase;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-    }
-    .stat-mini .value {
-        font-size: 16px;
-        font-weight: 700;
-        color: var(--primary);
-        font-family: 'Outfit', sans-serif;
-    }
-    .btn-action {
-        width: 32px;
-        height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .btn-danger {
+        background: var(--danger);
+        color: white;
+        border: none;
         border-radius: 8px;
-        background: rgba(255,255,255,0.03);
-        border: 1px solid var(--border);
-        color: var(--muted);
-        transition: all 0.2s;
+        font-weight: 600;
         cursor: pointer;
-        text-decoration: none;
+        transition: all 0.2s;
     }
-    .btn-action:hover {
-        background: rgba(67, 97, 238, 0.1);
-        color: var(--accent);
-        border-color: var(--accent);
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(67, 97, 238, 0.15);
+    .btn-danger:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
     }
-    .btn-action.danger:hover {
-        background: rgba(239, 68, 68, 0.1);
-        color: var(--danger);
-        border-color: var(--danger);
-        box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+    .btn-danger:not(:disabled):hover {
+        filter: brightness(1.1);
+        transform: translateY(-1px);
     }
 </style>
 
 <script>
     function backupManager() {
         return {
+            showRestoreModal: false,
+            selectedFile: '',
+            confirmText: '',
+            restoring: false,
+
+            confirmRestore(filename) {
+                this.selectedFile = filename;
+                this.confirmText = '';
+                this.showRestoreModal = true;
+            },
+
+            executeRestore() {
+                if (this.confirmText !== 'RESTAURAR') return;
+                this.restoring = true;
+
+                fetch(`{{ url('admin/backups') }}/${this.selectedFile}/restore`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Base de datos restaurada con éxito. El sistema se recargará.');
+                        window.location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                        this.restoring = false;
+                    }
+                })
+                .catch(error => {
+                    alert('Error crítico durante la restauración');
+                    this.restoring = false;
+                });
+            },
+
             deleteBackup(filename) {
                 if (!confirm(`¿Estás seguro de que deseas ELIMINAR permanentemente la copia: ${filename}?`)) return;
                 
-                fetch(`{{ url('admin/system/actions/delete-backup') }}/${filename}`, {
+                fetch(`{{ url('admin/backups') }}/${filename}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -184,7 +238,7 @@
         btn.disabled = true;
         btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Procesando...';
         
-        fetch('{{ route('admin.system.backup-db') }}', {
+        fetch('{{ route('admin.backups.run') }}', {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -199,13 +253,13 @@
             } else {
                 alert('Error: ' + data.message);
                 btn.disabled = false;
-                btn.innerHTML = 'Generar Copia Ahora';
+                btn.innerHTML = 'Generar Copia';
             }
         })
         .catch(error => {
             alert('Error crítico de red');
             btn.disabled = false;
-            btn.innerHTML = 'Generar Copia Ahora';
+            btn.innerHTML = 'Generar Copia';
         });
     }
 </script>

@@ -234,7 +234,7 @@
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 5px;"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
                         <span style="margin-left: 5px;">Reiniciar Workers</span>
                     </button>
-                    <button @click="execute('{{ route('admin.system.backup-db') }}', 'Generar backup')" class="btn-noc" :disabled="loading" style="justify-content: flex-start; color: var(--warning); border-color: rgba(245, 158, 11, 0.15);">
+                    <button @click="execute('{{ route('admin.backups.run') }}', 'Generar backup')" class="btn-noc" :disabled="loading" style="justify-content: flex-start; color: var(--warning); border-color: rgba(245, 158, 11, 0.15);">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 5px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                         <span style="margin-left: 5px;">Backup MariaDB</span>
                     </button>
@@ -443,33 +443,6 @@
                 })
                 .catch(error => {
                     alert('Error crítico de red o servidor');
-                    console.error(error);
-                })
-                .finally(() => {
-                    this.loading = false;
-                });
-            },
-            deleteBackup(filename) {
-                if (!confirm(`¿Estás seguro de que deseas ELIMINAR permanentemente la copia: ${filename}?`)) return;
-                
-                this.loading = true;
-                fetch(`{{ url('admin/system/actions/delete-backup') }}/${filename}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.reload();
-                    } else {
-                        alert('Error: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    alert('Error al eliminar backup');
                     console.error(error);
                 })
                 .finally(() => {
