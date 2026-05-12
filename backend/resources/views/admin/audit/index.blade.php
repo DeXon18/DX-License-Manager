@@ -100,18 +100,27 @@
                 </form>
                 @endif
             </div>
-            <div style="display: flex; gap: 20px;">
-                <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                    <span style="font-size: 9px; color: var(--muted); text-transform: uppercase; font-weight: 700;">Eventos (24h)</span>
-                    <span style="font-size: 14px; font-weight: 700; color: var(--primary);">{{ $stats['total_24h'] }}</span>
+            <div style="display: flex; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02); padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border);">
+                    <i class="fa-solid fa-bolt" style="color: var(--primary); font-size: 14px; opacity: 0.7;"></i>
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-size: 8px; color: var(--muted); text-transform: uppercase; font-weight: 800; line-height: 1; letter-spacing: 0.05em;">Eventos</span>
+                        <span style="font-size: 13px; font-weight: 800; color: var(--primary);">{{ $stats['total_24h'] }}</span>
+                    </div>
                 </div>
-                <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                    <span style="font-size: 9px; color: var(--muted); text-transform: uppercase; font-weight: 700;">Emails (24h)</span>
-                    <span style="font-size: 14px; font-weight: 700; color: var(--accent);">{{ $stats['emails_24h'] }}</span>
+                <div style="display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.02); padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border);">
+                    <i class="fa-solid fa-paper-plane" style="color: var(--accent); font-size: 14px; opacity: 0.7;"></i>
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-size: 8px; color: var(--muted); text-transform: uppercase; font-weight: 800; line-height: 1; letter-spacing: 0.05em;">Emails</span>
+                        <span style="font-size: 13px; font-weight: 800; color: var(--accent);">{{ $stats['emails_24h'] }}</span>
+                    </div>
                 </div>
-                <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                    <span style="font-size: 9px; color: var(--muted); text-transform: uppercase; font-weight: 700;">Alertas</span>
-                    <span style="font-size: 14px; font-weight: 700; color: var(--danger);">{{ $stats['errors_24h'] }}</span>
+                <div style="display: flex; align-items: center; gap: 10px; background: rgba(239, 68, 68, 0.05); padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(239, 68, 68, 0.1);">
+                    <i class="fa-solid fa-triangle-exclamation" style="color: var(--danger); font-size: 14px; opacity: 0.7;"></i>
+                    <div style="display: flex; flex-direction: column;">
+                        <span style="font-size: 8px; color: var(--muted); text-transform: uppercase; font-weight: 800; line-height: 1; letter-spacing: 0.05em;">Alertas</span>
+                        <span style="font-size: 13px; font-weight: 800; color: var(--danger);">{{ $stats['errors_24h'] }}</span>
+                    </div>
                 </div>
             </div>
         </div>
