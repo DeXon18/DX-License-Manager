@@ -101,6 +101,9 @@ Route::middleware(['auth.jwt'])->group(function () {
         Route::post('/users/{user}/toggle', [UserController::class, 'toggleStatus'])->name('users.toggle');
 
         Route::get('/audit', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('audit.index');
+        Route::post('/audit/clear/activity', [\App\Http\Controllers\Admin\AuditLogController::class, 'clearActivity'])->name('audit.clear.activity');
+        Route::post('/audit/clear/system', [\App\Http\Controllers\Admin\AuditLogController::class, 'clearSystem'])->name('audit.clear.system');
+        Route::post('/audit/clear/email', [\App\Http\Controllers\Admin\AuditLogController::class, 'clearEmail'])->name('audit.clear.email');
 
         // Gestión del Repositorio de Licencias
         Route::get('/repository', [\App\Http\Controllers\Admin\LicenseRepositoryController::class, 'index'])->name('repository.index');

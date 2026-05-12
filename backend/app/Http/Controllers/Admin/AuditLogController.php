@@ -90,4 +90,42 @@ class AuditLogController extends Controller
             return "Error al leer el archivo: " . $e->getMessage();
         }
     }
+
+    public function clearActivity()
+    {
+        DB::table('audit_logs')->truncate();
+        $this->logAction('audit_reset', 'Se ha vaciado el historial de actividad (audit_logs).');
+        return back()->with('success', 'Historial de actividad reseteado.');
+    }
+
+    public function clearEmail()
+    {
+        DB::table('email_logs')->truncate();
+        $this->logAction('email_reset', 'Se ha vaciado el historial de correos (email_logs).');
+        return back()->with('tab', 'email')->with('success', 'Historial de emails reseteado.');
+    }
+
+    public function clearSystem()
+    {
+        $path = storage_path('logs/laravel.log');
+        if (file_exists($path)) {
+            file_put_contents($path, '');
+            $this->logAction('system_log_reset', 'Se ha vaciado el fichero de logs de sistema (laravel.log).');
+            return back()->with('tab', 'system')->with('success', 'Fichero laravel.log reseteado.');
+        }
+        return back()->with('tab', 'system')->with('error', 'No se encontró el fichero de log.');
+    }
+
+    private function logAction($action, $description)
+    {
+        DB::table('audit_logs')->insert([
+            'user_id' => auth()->id(),
+            'action' => $action,
+            'description' => $description,
+            'level' => 'warning',
+            'ip_address' => request()->ip(),
+            'user_agent' => request()->userAgent(),
+            'created_at' => now()
+        ]);
+    }
 }
