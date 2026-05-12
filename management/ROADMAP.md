@@ -398,16 +398,13 @@ DX License Manager
 
 ---
 
-### 📋 Fase 14 — Backups
+### ✅ Fase 14 — Gestión de Backups ✅ COMPLETADA
 
-**Estado:** En planificación
-**Prerequisito:** ✅ Fase 13 validada por Oskar
-**Validación requerida antes de Fase 15:** Backup manual generado y restauración verificada.
-
-- [ ] Backup manual de BD
-- [ ] Configuración de backup automático (cron)
-- [ ] Historial de backups
-- [ ] Verificación de restauración
+- [x] Historial de backups en disco -> OK
+- [x] Generación manual y automatizada (Cron) -> OK
+- [x] Descarga y borrado de archivos -> OK
+- [x] Sistema de restauración con seguridad crítica -> OK
+- [x] UI con cuenta atrás dinámica y estados -> OK
 
 ---
 

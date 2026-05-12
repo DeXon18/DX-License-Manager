@@ -1,6 +1,17 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-12] — Gestión de Backups (Fase 14) ✅
+
+### Added
+- **Modularización**: Traslado de lógica de backups de `SystemActionController` a `BackupController`.
+- **Restauración**: Implementación de sistema de restauración de DB mediante SQL pipe con validación de rutas.
+- **Seguridad UI**: Modal de doble confirmación con keyword "RESTAURAR" para acciones destructivas.
+- **Automatización**: Configuración de Cron Job diario (03:00 AM) en servidor LXC 600.
+- **Git Cleanup**: Merge de funcionalidades previas y borrado de 12 ramas obsoletas.
+
+---
+
 ## [2026-05-12] — Gestión de Usuarios y Acceso (Fase 11) ✅
 
 ### Added

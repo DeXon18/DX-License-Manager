@@ -38,6 +38,14 @@ En planificación — se detallan una por una tras validación de la fase anteri
  
 ## ✅ Completado
 
+### Fase 14 — Gestión de Backups
+- **Completada:** 2026-05-12
+- **Rama:** feature/backup-management-system
+- **Resumen:** Centralización de la gestión de backups, automatización de rotación y limpieza de archivos de sistema, y panel de control para el administrador.
+- [x] Implementación de `BackupRotationService`.
+- [x] Panel de control de backups (Download/Delete/Sync).
+- [x] Notificaciones de éxito/fallo vía webhook.
+
 ### Fase 11 — Usuarios y Acceso
 - **Completada:** 2026-05-12
 - **Rama:** feature/rbac-user-management
