@@ -6,15 +6,41 @@
 <div class="page-header">
     <div class="page-header-info">
         <h1 class="page-title">Auditoría y Logs</h1>
-        <p class="page-sub">Trazabilidad total con filtros avanzados por usuario, acción, nivel e IP.</p>
+        <p class="page-sub">Monitorización total del sistema: actividad, errores y comunicaciones.</p>
     </div>
 </div>
 
+{{-- Tabs de Navegación --}}
+<div style="display: flex; gap: 10px; margin-bottom: 24px;">
+    <a href="{{ route('admin.audit.index', ['tab' => 'activity']) }}" 
+       style="padding: 10px 20px; border-radius: 8px; font-weight: 700; text-transform: uppercase; font-size: 11px; text-decoration: none; transition: all 0.2s; 
+              background: {{ $tab == 'activity' ? 'var(--accent)' : 'rgba(255,255,255,0.03)' }}; 
+              color: {{ $tab == 'activity' ? '#fff' : 'var(--muted)' }}; 
+              border: 1px solid {{ $tab == 'activity' ? 'var(--accent)' : 'var(--border)' }};">
+        <i class="fa-solid fa-list-check" style="margin-right: 8px;"></i>Actividad
+    </a>
+    <a href="{{ route('admin.audit.index', ['tab' => 'system']) }}" 
+       style="padding: 10px 20px; border-radius: 8px; font-weight: 700; text-transform: uppercase; font-size: 11px; text-decoration: none; transition: all 0.2s; 
+              background: {{ $tab == 'system' ? 'var(--accent)' : 'rgba(255,255,255,0.03)' }}; 
+              color: {{ $tab == 'system' ? '#fff' : 'var(--muted)' }}; 
+              border: 1px solid {{ $tab == 'system' ? 'var(--accent)' : 'var(--border)' }};">
+        <i class="fa-solid fa-terminal" style="margin-right: 8px;"></i>Logs Sistema
+    </a>
+    <a href="{{ route('admin.audit.index', ['tab' => 'email']) }}" 
+       style="padding: 10px 20px; border-radius: 8px; font-weight: 700; text-transform: uppercase; font-size: 11px; text-decoration: none; transition: all 0.2s; 
+              background: {{ $tab == 'email' ? 'var(--accent)' : 'rgba(255,255,255,0.03)' }}; 
+              color: {{ $tab == 'email' ? '#fff' : 'var(--muted)' }}; 
+              border: 1px solid {{ $tab == 'email' ? 'var(--accent)' : 'var(--border)' }};">
+        <i class="fa-solid fa-envelope" style="margin-right: 8px;"></i>Logs Email
+    </a>
+</div>
+
 <div class="dashboard-container">
-    {{-- Filtros --}}
+    @if($tab == 'activity')
     <div class="card" style="margin-bottom: 24px;">
         <div style="padding: 20px;">
             <form action="{{ route('admin.audit.index') }}" method="GET" style="display: flex; gap: 15px; align-items: flex-end;">
+                <input type="hidden" name="tab" value="activity">
                 <div style="flex: 1;">
                     <label style="display: block; font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; margin-bottom: 6px;">Búsqueda rápida</label>
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Usuario, descripción..." class="form-control" style="width: 100%;">
@@ -33,16 +59,18 @@
                     <input type="text" name="action" value="{{ request('action') }}" placeholder="Ej: db_backup" class="form-control" style="width: 100%;">
                 </div>
                 <button type="submit" class="btn btn-primary" style="height: 38px;">Filtrar</button>
-                <a href="{{ route('admin.audit.index') }}" class="btn-clear">Limpiar</a>
+                <a href="{{ route('admin.audit.index', ['tab' => 'activity']) }}" class="btn-clear">Limpiar</a>
             </form>
         </div>
     </div>
+    @endif
 
     <div class="card">
         <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
             <div style="display: flex; align-items: center; gap: 15px;">
-                <span class="card-title">Timeline de Actividad</span>
-                <span class="badge" style="background: rgba(67, 97, 238, 0.1); color: var(--accent);">{{ $stats['critical_actions'] }} Acciones Críticas</span>
+                <span class="card-title">
+                    @if($tab == 'activity') Timeline de Actividad @elseif($tab == 'system') Lector de Fichero (laravel.log) @else Historial de Emails Enviados @endif
+                </span>
             </div>
             <div style="display: flex; gap: 20px;">
                 <div style="display: flex; flex-direction: column; align-items: flex-end;">
@@ -50,11 +78,17 @@
                     <span style="font-size: 14px; font-weight: 700; color: var(--primary);">{{ $stats['total_24h'] }}</span>
                 </div>
                 <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                    <span style="font-size: 9px; color: var(--muted); text-transform: uppercase; font-weight: 700;">Emails (24h)</span>
+                    <span style="font-size: 14px; font-weight: 700; color: var(--accent);">{{ $stats['emails_24h'] }}</span>
+                </div>
+                <div style="display: flex; flex-direction: column; align-items: flex-end;">
                     <span style="font-size: 9px; color: var(--muted); text-transform: uppercase; font-weight: 700;">Alertas</span>
                     <span style="font-size: 14px; font-weight: 700; color: var(--danger);">{{ $stats['errors_24h'] }}</span>
                 </div>
             </div>
         </div>
+
+        @if($tab == 'activity')
         <div style="padding: 0; overflow: hidden;">
             <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
                 <thead style="background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border);">
@@ -99,7 +133,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" style="padding: 40px; text-align: center; color: var(--muted);">No hay registros que coincidan con los filtros.</td>
+                            <td colspan="5" style="padding: 40px; text-align: center; color: var(--muted);">No hay registros de actividad.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -108,31 +142,66 @@
         <div style="padding: 15px 20px; border-top: 1px solid var(--border); background: rgba(255,255,255,0.01);">
             {{ $logs->links() }}
         </div>
+
+        @elseif($tab == 'system')
+        <div style="padding: 20px; background: #000; overflow-x: auto;">
+            <pre style="margin: 0; font-family: 'IBM Plex Mono'; font-size: 11px; color: #a9b7c6; line-height: 1.5; white-space: pre-wrap;">{{ $logs }}</pre>
+        </div>
+        <div style="padding: 12px 20px; border-top: 1px solid var(--border); background: rgba(255,255,255,0.01); display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 10px; color: var(--muted);">Mostrando las últimas 200 líneas de <code>storage/logs/laravel.log</code></span>
+            <a href="{{ route('admin.audit.index', ['tab' => 'system']) }}" class="btn btn-primary" style="font-size: 10px; padding: 4px 10px;">Refrescar</a>
+        </div>
+
+        @elseif($tab == 'email')
+        <div style="padding: 0; overflow: hidden;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+                <thead style="background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border);">
+                    <tr>
+                        <th style="padding: 12px 20px; text-align: left; color: var(--muted); font-weight: 700; text-transform: uppercase; width: 150px;">Enviado el</th>
+                        <th style="padding: 12px 20px; text-align: left; color: var(--muted); font-weight: 700; text-transform: uppercase; width: 250px;">Destinatario</th>
+                        <th style="padding: 12px 20px; text-align: left; color: var(--muted); font-weight: 700; text-transform: uppercase;">Asunto</th>
+                        <th style="padding: 12px 20px; text-align: left; color: var(--muted); font-weight: 700; text-transform: uppercase; width: 100px;">Estado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($logs as $log)
+                        <tr style="border-bottom: 1px solid var(--border-subtle); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.01)'" onmouseout="this.style.background='transparent'">
+                            <td style="padding: 14px 20px; font-family: 'IBM Plex Mono'; font-size: 11px; color: var(--muted);">
+                                {{ \Carbon\Carbon::parse($log->created_at)->format('d/m/Y H:i:s') }}
+                            </td>
+                            <td style="padding: 14px 20px; font-weight: 600; color: var(--primary);">
+                                {{ $log->recipient }}
+                            </td>
+                            <td style="padding: 14px 20px; color: var(--primary);">
+                                {{ $log->subject }}
+                                @if($log->mailable_class)
+                                    <div style="font-size: 10px; color: var(--muted); margin-top: 4px;">{{ $log->mailable_class }}</div>
+                                @endif
+                            </td>
+                            <td style="padding: 14px 20px;">
+                                <span class="badge" style="
+                                    background: {{ $log->status === 'sent' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)' }};
+                                    color: {{ $log->status === 'sent' ? 'var(--success)' : 'var(--danger)' }};
+                                    font-size: 9px; width: fit-content; border: none;
+                                ">{{ strtoupper($log->status) }}</span>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" style="padding: 40px; text-align: center; color: var(--muted);">No hay registros de correos enviados.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+        <div style="padding: 15px 20px; border-top: 1px solid var(--border); background: rgba(255,255,255,0.01);">
+            {{ $logs->links() }}
+        </div>
+        @endif
     </div>
 </div>
 
 <style>
-    .stat-mini {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        justify-content: center;
-        padding: 0 15px;
-        border-right: 1px solid var(--border-subtle);
-    }
-    .stat-mini .label {
-        font-size: 9px;
-        color: var(--muted);
-        text-transform: uppercase;
-        font-weight: 700;
-        letter-spacing: 0.05em;
-    }
-    .stat-mini .value {
-        font-size: 16px;
-        font-weight: 700;
-        color: var(--primary);
-        font-family: 'Outfit', sans-serif;
-    }
     .btn-clear {
         height: 38px;
         display: flex;
