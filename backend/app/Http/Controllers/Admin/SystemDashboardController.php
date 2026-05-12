@@ -197,32 +197,32 @@ class SystemDashboardController extends Controller
     private function checkN8n()
     {
         $url = config('ai.n8n_webhook_url');
-        if (!$url) return ['status' => 'degraded', 'icon' => 'cpu', 'label' => 'Motor n8n', 'message' => 'Sin Configurar'];
+        if (!$url) return ['status' => 'degraded', 'icon' => 'n8n', 'label' => 'Motor n8n', 'message' => 'Sin Configurar'];
 
         try {
             $baseUrl = parse_url($url, PHP_URL_SCHEME) . '://' . parse_url($url, PHP_URL_HOST);
             $response = Http::timeout(2)->get($baseUrl . '/healthz');
             
             return $response->successful() 
-                ? ['status' => 'online', 'icon' => 'cpu', 'label' => 'Motor n8n', 'message' => 'Listo', 'details' => 'Salud OK']
-                : ['status' => 'degraded', 'icon' => 'cpu', 'label' => 'Motor n8n', 'message' => 'Sin Respuesta'];
+                ? ['status' => 'online', 'icon' => 'n8n', 'label' => 'Motor n8n', 'message' => 'Listo', 'details' => 'Salud OK']
+                : ['status' => 'degraded', 'icon' => 'n8n', 'label' => 'Motor n8n', 'message' => 'Sin Respuesta'];
         } catch (\Exception $e) {
-            return ['status' => 'offline', 'icon' => 'cpu', 'label' => 'Motor n8n', 'message' => 'No alcanzable'];
+            return ['status' => 'offline', 'icon' => 'n8n', 'label' => 'Motor n8n', 'message' => 'No alcanzable'];
         }
     }
 
     private function checkTelegram()
     {
         $token = config('services.telegram-bot-api.token');
-        if (!$token) return ['status' => 'degraded', 'icon' => 'bell', 'label' => 'Telegram', 'message' => 'Token Ausente'];
+        if (!$token) return ['status' => 'degraded', 'icon' => 'telegram', 'label' => 'Telegram', 'message' => 'Token Ausente'];
 
         try {
             $response = Http::timeout(5)->get("https://api.telegram.org/bot{$token}/getMe");
             return $response->successful() 
-                ? ['status' => 'online', 'icon' => 'bell', 'label' => 'Telegram', 'message' => 'Conectado', 'details' => '@' . ($response->json()['result']['username'] ?? 'bot')]
-                : ['status' => 'degraded', 'icon' => 'bell', 'label' => 'Telegram', 'message' => 'Error de Auth'];
+                ? ['status' => 'online', 'icon' => 'telegram', 'label' => 'Telegram', 'message' => 'Conectado', 'details' => '@' . ($response->json()['result']['username'] ?? 'bot')]
+                : ['status' => 'degraded', 'icon' => 'telegram', 'label' => 'Telegram', 'message' => 'Error de Auth'];
         } catch (\Exception $e) {
-            return ['status' => 'offline', 'icon' => 'bell', 'label' => 'Telegram', 'message' => 'Timeout'];
+            return ['status' => 'offline', 'icon' => 'telegram', 'label' => 'Telegram', 'message' => 'Timeout'];
         }
     }
 

@@ -163,10 +163,22 @@
                                             } elseif ($info['icon'] === 'openrouter') {
                                                 $iconBg = 'linear-gradient(135deg, #ff4f00, #ff9000)';
                                                 $iconColor = 'white';
+                                            } elseif ($info['icon'] === 'n8n') {
+                                                $iconBg = 'linear-gradient(135deg, #ff6d5b, #ff4d4d)';
+                                                $iconColor = 'white';
+                                            } elseif ($info['icon'] === 'telegram') {
+                                                $iconBg = 'linear-gradient(135deg, #0088cc, #00aaff)';
+                                                $iconColor = 'white';
+                                            } elseif ($info['icon'] === 'database') {
+                                                $iconBg = 'linear-gradient(135deg, #003545, #00758f)';
+                                                $iconColor = 'white';
+                                            } elseif ($info['icon'] === 'bolt') {
+                                                $iconBg = 'linear-gradient(135deg, #d82c20, #ff4e42)';
+                                                $iconColor = 'white';
                                             }
                                         }
                                     @endphp
-                                    <div style="width: 34px; height: 34px; flex-shrink: 0; border-radius: 10px; background: {{ $iconBg }}; color: {{ $iconColor }}; display: flex; align-items: center; justify-content: center; box-shadow: {{ in_array($info['icon'], ['gemini', 'deepseek', 'openrouter']) && $info['status'] === 'online' ? '0 4px 12px rgba(0,0,0,0.2)' : 'none' }};">
+                                    <div style="width: 34px; height: 34px; flex-shrink: 0; border-radius: 10px; background: {{ $iconBg }}; color: {{ $iconColor }}; display: flex; align-items: center; justify-content: center; box-shadow: {{ in_array($info['icon'], ['gemini', 'deepseek', 'openrouter', 'n8n', 'telegram', 'database', 'bolt']) && $info['status'] === 'online' ? '0 4px 12px rgba(0,0,0,0.2)' : 'none' }};">
                                         @if($info['icon'] === 'database')
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>
                                         @elseif($info['icon'] === 'bolt')
@@ -188,6 +200,18 @@
                                                 <circle cx="12" cy="12" r="9"/>
                                                 <path d="M3.6 9h16.8M3.6 15h16.8"/>
                                                 <path d="M11.5 3a17 17 0 0 0 0 18M12.5 3a17 17 0 0 1 0 18"/>
+                                            </svg>
+                                        @elseif($info['icon'] === 'n8n')
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                                <circle cx="12" cy="12" r="3"/>
+                                                <circle cx="19" cy="5" r="3"/>
+                                                <circle cx="5" cy="19" r="3"/>
+                                                <path d="M14.5 9.5 16.5 7.5M7.5 16.5 9.5 14.5"/>
+                                            </svg>
+                                        @elseif($info['icon'] === 'telegram')
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                                             </svg>
                                         @endif
                                     </div>
