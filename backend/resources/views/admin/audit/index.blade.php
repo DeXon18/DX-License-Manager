@@ -10,6 +10,18 @@
     </div>
 </div>
 
+@if(session('success'))
+    <div style="background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); color: var(--success); padding: 12px 20px; border-radius: 8px; margin-bottom: 24px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 10px;">
+        <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
+    </div>
+@endif
+
+@if(session('error'))
+    <div style="background: rgba(239, 68, 68, 0.1); border: 1px solid var(--danger); color: var(--danger); padding: 12px 20px; border-radius: 8px; margin-bottom: 24px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 10px;">
+        <i class="fa-solid fa-circle-exclamation"></i> {{ session('error') }}
+    </div>
+@endif
+
 {{-- Tabs de Navegación --}}
 <div style="display: flex; gap: 10px; margin-bottom: 24px;">
     <a href="{{ route('admin.audit.index', ['tab' => 'activity']) }}" 
@@ -71,6 +83,12 @@
                 <span class="card-title">
                     @if($tab == 'activity') Timeline de Actividad @elseif($tab == 'system') Lector de Fichero (laravel.log) @else Historial de Emails Enviados @endif
                 </span>
+                @if($tab == 'activity')
+                <form action="{{ route('admin.audit.clear.activity') }}" method="POST" onsubmit="return confirm('¿Seguro que deseas vaciar el historial de actividad?')">
+                    @csrf
+                    <button type="submit" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); font-size: 8px; padding: 2px 8px; border-radius: 4px; cursor: pointer; text-transform: uppercase; font-weight: 700;">Resetear</button>
+                </form>
+                @endif
             </div>
             <div style="display: flex; gap: 20px;">
                 <div style="display: flex; flex-direction: column; align-items: flex-end;">
@@ -149,7 +167,13 @@
         </div>
         <div style="padding: 12px 20px; border-top: 1px solid var(--border); background: rgba(255,255,255,0.01); display: flex; justify-content: space-between; align-items: center;">
             <span style="font-size: 10px; color: var(--muted);">Mostrando las últimas 200 líneas de <code>storage/logs/laravel.log</code></span>
-            <a href="{{ route('admin.audit.index', ['tab' => 'system']) }}" class="btn btn-primary" style="font-size: 10px; padding: 4px 10px;">Refrescar</a>
+            <div style="display: flex; gap: 10px;">
+                <form action="{{ route('admin.audit.clear.system') }}" method="POST" onsubmit="return confirm('¿Seguro que deseas vaciar el fichero de log?')">
+                    @csrf
+                    <button type="submit" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); font-size: 10px; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-weight: 600;">Resetear Fichero</button>
+                </form>
+                <a href="{{ route('admin.audit.index', ['tab' => 'system']) }}" class="btn btn-primary" style="font-size: 10px; padding: 4px 10px;">Refrescar</a>
+            </div>
         </div>
 
         @elseif($tab == 'email')
@@ -194,8 +218,12 @@
                 </tbody>
             </table>
         </div>
-        <div style="padding: 15px 20px; border-top: 1px solid var(--border); background: rgba(255,255,255,0.01);">
-            {{ $logs->links() }}
+        <div style="padding: 15px 20px; border-top: 1px solid var(--border); background: rgba(255,255,255,0.01); display: flex; justify-content: space-between; align-items: center;">
+            <div>{{ $logs->links() }}</div>
+            <form action="{{ route('admin.audit.clear.email') }}" method="POST" onsubmit="return confirm('¿Seguro que deseas vaciar el historial de emails?')">
+                @csrf
+                <button type="submit" style="background: transparent; border: 1px solid var(--danger); color: var(--danger); font-size: 10px; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-weight: 600;">Resetear Historial</button>
+            </form>
         </div>
         @endif
     </div>
