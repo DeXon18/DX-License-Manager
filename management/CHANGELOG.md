@@ -15,6 +15,7 @@
 - **Estética NOC Pro**: Unificación de dimensiones (34x34), centrado absoluto y sombras elevadas para una interfaz de monitorización de alta gama.
 - **Dashboard NOC Pro**: Unificación visual de iconos (34x34px) y gradientes de marca para servicios de IA e infraestructura.
 - **Módulo de Recursos (Fase 8.5/9.2)**: Implementación de sistema dinámico de gestión de enlaces y documentación con páginas independientes para Siemens y Moldex3D. Incluye panel de gestión reactivo (Alpine.js) para Staff/Admin.
+- **Fix (UI)**: Corregida la especificidad de CSS en el Hub de Herramientas que provocaba que los nombres de utilidades Siemens se visualizaran con el color de Moldex.
 
 ## [2026-05-12] — Restauración Configuración n8n (Fix) ✅
 ### Fixed
