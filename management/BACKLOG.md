@@ -38,6 +38,15 @@ En planificación — se detallan una por una tras validación de la fase anteri
  
 ## ✅ Completado
 
+### Fase 8.5/9.2 — Módulo de Recursos y Enlaces Standalone ✅
+- **Completada:** 2026-05-12
+- **Rama:** feature/resource-links-module
+- **Módulo de Recursos (Fase 8.5/9.2)**: Implementación de sistema dinámico de gestión de enlaces y documentación con páginas independientes para Siemens y Moldex3D. Incluye panel de gestión reactivo (Alpine.js) para Staff/Admin.
+- [x] Modelo, Migración y Seeder de Recursos iniciales.
+- [x] Páginas independientes: `/herramientas/siemens/recursos` y `/herramientas/moldex3d/recursos`.
+- [x] UI de gestión dinámica con RBAC (Staff, Technician, Admin).
+- [x] Integración en el Hub de Herramientas con rutas directas.
+
 ### Herramientas IA — Asistente de Composite (COD)
 - **Completada:** 2026-05-12
 - **Rama:** feature/cod-composite-parser
