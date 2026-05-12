@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Tools;
 
+use App\Services\AI\CompositeParserService;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\CodCertificate;
@@ -15,10 +16,12 @@ use Illuminate\Support\Str;
 class CodController extends Controller
 {
     protected CodService $codService;
+    protected CompositeParserService $compositeParser;
 
-    public function __construct(CodService $codService)
+    public function __construct(CodService $codService, CompositeParserService $compositeParser)
     {
         $this->codService = $codService;
+        $this->compositeParser = $compositeParser;
     }
 
     public function index(Request $request)
@@ -171,5 +174,29 @@ class CodController extends Controller
         $certificate->delete();
 
         return back()->with('success', 'Certificado eliminado correctamente.');
+    }
+
+    /**
+     * Procesa el texto de adaptadores con IA.
+     */
+    public function parseComposite(Request $request)
+    {
+        $request->validate([
+            'text' => 'required|string|min:10|max:10000',
+        ]);
+
+        $result = $this->compositeParser->parse($request->text);
+
+        if (isset($result['error'])) {
+            return response()->json([
+                'success' => false,
+                'message' => $result['message']
+            ], 500);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => $result
+        ]);
     }
 }
