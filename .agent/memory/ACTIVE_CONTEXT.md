@@ -1,8 +1,8 @@
 ---
 project: DX License Manager
 repo: github.com/DeXon18/DX-License-Manager
-status: Phase 10.4 Completed | Phases 11 & 13 In Progress
-last_sync: 2026-05-11
+status: Phase 11 Completed | Phases 12 & 13 In Progress
+last_sync: 2026-05-12
 current_agent: Antigravity (DX Agent) 🦾
 ---
 
@@ -10,22 +10,19 @@ current_agent: Antigravity (DX Agent) 🦾
 
 ## 🎯 Objetivo Actual
 
-- [x] Tarea principal: Restauración de Infraestructura y SMTP Producción (Finalizada)
-- [ ] Subtarea en curso: Fase 11 — Gestión de Usuarios y RBAC
-- [ ] Subtarea en curso: Fase 13 — Notificaciones Automáticas (Configuración SMTP)
-- Rama activa: `dev` / `feature/user-management`
-- Fase del ROADMAP: Fase 10.4 (Completada), Fase 11 & 13 (Iniciadas)
+- [x] Fase 11: Gestión de Usuarios y RBAC (Finalizada)
+- [ ] Fase 12: Repositorio de Licencias Semanal
+- [ ] Fase 13: Notificaciones Automáticas (Configuración SMTP OK)
+- Rama activa: `feature/rbac-user-management`
+- Fase del ROADMAP: Fase 11 (Completada), Fase 12 & 13 (Iniciadas)
 
 ---
 
-## 🕒 Log de Acciones (2026-05-11)
+## 🕒 Log de Acciones (2026-05-12)
 
-- 2026-05-11 — Restauración de credenciales MariaDB Beta (`Venganz@69!MyslBetaTester`).
-- 2026-05-11 — Configuración de Mailtrap en modo Producción con nuevo API Token.
-- 2026-05-11 — Solución a problemas de sincronización `.env` en Docker mediante reinicio de contenedores.
-- 2026-05-11 — Implementación de generación de contraseñas aleatorias en `UserController`.
-- 2026-05-11 — Creación de notificaciones profesionales `NewUserCredentials`.
-- 2026-05-11 — Sincronización total de archivos de gestión (`CHANGELOG`, `ROADMAP`, `BACKLOG`).
+- 2026-05-12 — Verificación de Toggle AJAX en listado de usuarios.
+- 2026-05-12 — Sincronización de gestión: Phase 11 marcada como completada.
+- 2026-05-12 — Preparación de entorno para Fase 12.
 
 ---
 
@@ -34,33 +31,31 @@ current_agent: Antigravity (DX Agent) 🦾
 | Decisión          | Detalle                                                             | Ref                       |
 | :---------------- | :------------------------------------------------------------------ | :------------------------ |
 | SMTP Production   | Uso de `send.smtp.mailtrap.io` con puerto 587 y TLS                 | `.env.beta`               |
-| Random Passwords  | Generación automática de 12 caracteres si se deja vacío             | `UserController.php`      |
-| Docker Env Mount  | Reiniciar contenedores tras cambios en `.env` montados por volumen  | `docker-compose.beta.yml` |
-| UI Validation     | Localización completa de mensajes de error al castellano            | `lang/es/validation.php`  |
+| User AJAX Toggle  | Endpoint `/admin/users/{user}/toggle` retorna JSON                  | `UserController.php`      |
+| Role Protection   | Bloqueo de auto-desactivación para el admin logueado                | `UserController.php`      |
 
 ---
 
 ## 🚀 Handover — Próximos Pasos
 
-1. Finalizar el CRUD de usuarios con asignación de roles.
-2. Probar el flujo completo de "Alta de Usuario" y recepción de email real.
-3. Iniciar Fase 12 (Repositorio de Licencias Semanal).
-4. Refinar el perfil de usuario (My Profile) para autogestión de contraseñas.
+1. Iniciar Fase 12: Repositorio de Licencias Semanal.
+2. Definir lógica de agrupación de archivos procesados.
+3. Implementar generación de ZIP y registro de descargas.
+4. Refinar perfil de usuario (My Profile) para cambio de contraseña.
 
 ---
 
 ## 🗂️ Archivos en Foco (Working Set)
 
-- Controlador: `backend/app/Http/Controllers/Admin/UserController.php`
-- Notificación: `backend/app/Notifications/NewUserCredentials.php`
-- Vista: `backend/resources/views/admin/users/create.blade.php`
-- Config: `infra/.env.beta` | `backend/config/mail.php`
+- Modelo: `App\Models\LicenseFile`? (Por definir)
+- Servicio: `App\Services\LicenseRepositoryService`? (Por crear)
+- Vista: `admin/licenses/repository.blade.php`? (Por crear)
 
 ---
 
 ## ⚠️ Errores Conocidos / Bloqueos
 
-- Ninguno. SMTP y DB Beta estabilizados.
+- Ninguno. Infraestructura y Auth estables.
 
 ---
 
@@ -75,12 +70,12 @@ current_agent: Antigravity (DX Agent) 🦾
 | Mailtrap Prod       | ✅ connected                     |
 | Cloudflared LXC 600 | ✅ running                       |
 
-## Estado Actual: Infraestructura Estabilizada ✅
+## Estado Actual: Usuarios y RBAC Finalizados ✅
 - **Hitos**:
-  - Base de datos Beta operativa.
-  - SMTP Producción verificado y enviando.
-  - Gestión de usuarios iniciada con seguridad por defecto.
-- **Próximo Paso**: Fase 11 — Usuarios y Roles.
+  - CRUD administrativo completo.
+  - Notificaciones de bienvenida operativas.
+  - Toggle AJAX verificado.
+- **Próximo Paso**: Fase 12 — Repositorio de Licencias.
 
 ---
 _Firmado por: **Antigravity (DX Agent)** 🦾_
