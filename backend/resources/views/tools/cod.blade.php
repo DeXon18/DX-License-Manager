@@ -417,12 +417,20 @@
             </div>
             <div class="ai-modal-body">
                 <div x-show="!aiResult" x-transition>
-                    <p class="ai-hint">Pega aquí el listado de adaptadores (output de get_composite o lmutil) para que Gemini identifique el hardware óptimo.</p>
+                    <p class="ai-hint">Pega el listado de adaptadores o <strong>sube el archivo .txt</strong> para que Gemini identifique el hardware óptimo.</p>
+                    
+                    <div class="ai-upload-zone mb-4" @click="$refs.fileInput.click()" @dragover.prevent="$el.classList.add('active')" @dragleave.prevent="$el.classList.remove('active')" @drop.prevent="handleDrop($event)">
+                        <input type="file" x-ref="fileInput" class="hidden" @change="handleFileUpload($event)" accept=".txt">
+                        <i class="fa-solid fa-cloud-arrow-up text-accent" style="font-size: 24px;"></i>
+                        <div style="margin-top: 8px;">
+                            <span style="font-size: 12px; font-weight: 700; color: var(--primary);">Haz clic o arrastra el archivo composite.txt</span>
+                            <p style="font-size: 10px; color: var(--muted); margin: 4px 0 0;">Solo archivos de texto (.txt)</p>
+                        </div>
+                    </div>
+
                     <textarea x-model="aiInput" 
                               class="ai-textarea font-mono" 
-                              placeholder="Ejemplo:
-The Siemens PLM Software licensing CIDs...
-COMPOSITE=5D1980276724 - Intel(R) Ethernet..."></textarea>
+                              placeholder="O pega el texto aquí..."></textarea>
                     
                     <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
                         <button type="button" class="btn-cod-generate" @click="processAi()" :disabled="isAiProcessing || !aiInput">
@@ -1004,6 +1012,28 @@ COMPOSITE=5D1980276724 - Intel(R) Ethernet..."></textarea>
         100% { transform: scale(1); opacity: 0.3; }
     }
 
+    .ai-upload-zone {
+        border: 2px dashed var(--border);
+        border-radius: 12px;
+        padding: 24px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+        background: rgba(var(--accent-rgb), 0.02);
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+    .ai-upload-zone:hover, .ai-upload-zone.active {
+        border-color: var(--accent);
+        background: rgba(var(--accent-rgb), 0.05);
+    }
+    .ai-upload-zone i { transition: transform 0.2s; }
+    .ai-upload-zone:hover i { transform: translateY(-4px); }
+
     .ai-modal {
         background: var(--surface);
         width: 100%;
@@ -1280,6 +1310,32 @@ function codGenerator() {
             
             // Efecto visual de resaltado en los campos destino (opcional)
             // Aquí podríamos disparar un evento o similar
+        },
+
+        handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            this.readFile(file);
+        },
+
+        handleDrop(event) {
+            event.target.classList.remove('active');
+            const file = event.dataTransfer.files[0];
+            if (!file) return;
+            this.readFile(file);
+        },
+
+        readFile(file) {
+            if (!file.name.endsWith('.txt')) {
+                alert('Por favor, sube solo archivos .txt');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                this.aiInput = e.target.result;
+            };
+            reader.readAsText(file);
         }
     }
 }
