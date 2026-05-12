@@ -65,7 +65,7 @@
         @foreach($features['Siemens']->whereIn('key', ['siemens_cod', 'siemens_recursos']) as $tool)
             <a class="tool-card {{ !$tool->is_active ? 'tool-disabled' : '' }}" 
                style="--card-accent: {{ $tool->key == 'siemens_cod' ? '#0284c7' : '#6d28d9' }}"
-               href="{{ $tool->is_active ? ($tool->key == 'siemens_cod' ? route('tools.cod.index') : '#') : 'javascript:void(0)' }}">
+               href="{{ $tool->is_active ? ($tool->key == 'siemens_cod' ? route('tools.cod.index') : route('tools.siemens.resources')) : 'javascript:void(0)' }}">
                 <div class="tool-card-header">
                     <div class="tool-card-header-left">
                         <div class="tool-icon-fallback" style="background: {{ $tool->key == 'siemens_cod' ? 'rgba(2,132,199,0.08)' : 'rgba(109,40,217,0.08)' }}; color: {{ $tool->key == 'siemens_cod' ? '#0284c7' : '#6d28d9' }}">
@@ -109,7 +109,7 @@
         @foreach($features['Moldex3D'] as $tool)
             <a class="tool-card {{ !$tool->is_active ? 'tool-disabled' : '' }}" 
                style="--card-accent: var(--moldex)"
-               href="{{ $tool->is_active ? route('tools.moldex3d.index') : 'javascript:void(0)' }}">
+               href="{{ $tool->is_active ? ($tool->key == 'moldex3d_auditor' ? route('tools.moldex3d.index') : route('tools.moldex3d.resources')) : 'javascript:void(0)' }}">
                 <div class="tool-card-header">
                     <div class="tool-card-header-left">
                         <div class="tool-icon-fallback" style="background: rgba(237,28,36,0.08); color: #ED1C24">

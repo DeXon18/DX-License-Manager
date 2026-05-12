@@ -42,6 +42,9 @@ Route::middleware(['auth.jwt'])->group(function () {
 
     Route::get('/herramientas/moldex3d', [MoldexController::class, 'index'])->name('tools.moldex3d.index');
     Route::post('/herramientas/moldex3d', [MoldexController::class, 'process'])->name('tools.moldex3d.process');
+    Route::get('/herramientas/moldex3d/recursos', [MoldexController::class, 'resources'])->name('tools.moldex3d.resources');
+
+    Route::get('/herramientas/siemens/recursos', [NXSuiteController::class, 'resources'])->name('tools.siemens.resources');
 
     Route::get('/herramientas/cod', [\App\Http\Controllers\Tools\CodController::class, 'index'])->name('tools.cod.index');
     Route::post('/herramientas/cod/preview', [\App\Http\Controllers\Tools\CodController::class, 'preview'])->name('tools.cod.preview');

@@ -191,9 +191,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Bloque 3: Recursos y Enlaces -->
-        @include('tools.partials._resources', ['vendor' => 'moldex3d', 'resources' => $resources])
     </div>
 
     <!-- Sidebar Informativo -->

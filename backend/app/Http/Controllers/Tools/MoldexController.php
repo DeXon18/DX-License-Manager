@@ -32,12 +32,23 @@ class MoldexController extends Controller
      */
     public function index()
     {
+        return view('tools.moldex3d');
+    }
+
+    /**
+     * Muestra la página dedicada de recursos Moldex3D.
+     */
+    public function resources()
+    {
         $resources = ResourceLink::forVendor('moldex3d')
             ->orderBy('order')
             ->get()
             ->groupBy('category');
 
-        return view('tools.moldex3d', compact('resources'));
+        return view('tools.resources', [
+            'vendor' => 'moldex3d',
+            'resources' => $resources
+        ]);
     }
 
     /**

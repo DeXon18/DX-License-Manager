@@ -148,9 +148,6 @@
                 </div>
             </div>
         </div>
-
-        <!-- Bloque 3: Recursos y Enlaces -->
-        @include('tools.partials._resources', ['vendor' => 'siemens', 'resources' => $resources])
     </div>
 
     <!-- Panel Informativo -->
