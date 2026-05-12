@@ -7,8 +7,6 @@
 - **Conectividad**: Verificada salud del motor n8n desde el servidor Beta (Online).
 - **Callback**: Restaurada `AUDIT_CALLBACK_URL` para permitir el retorno de datos desde la IA.
 
----
-
 ## [2026-05-12] — Gestión de Backups (Fase 14) ✅
 
 ### Added
@@ -18,16 +16,12 @@
 - **Automatización**: Configuración de Cron Job diario (03:00 AM) en servidor LXC 600.
 - **Git Cleanup**: Merge de funcionalidades previas y borrado de 12 ramas obsoletas.
 
----
-
 ## [2026-05-12] — Gestión de Usuarios y Acceso (Fase 11) ✅
 
 ### Added
 - **User Toggle AJAX**: Implementada acción inmediata para activar/desactivar usuarios desde el listado sin recarga de página.
 - **RBAC Assignments**: Sistema de asignación de roles verificado y funcional en creación/edición.
 - **Delete Protection**: Blindaje contra auto-eliminación y auto-desactivación del administrador en sesión.
-
----
 
 ## [2026-05-11] — Restauración Infraestructura y SMTP ✅
 
@@ -36,8 +30,6 @@
 - **SMTP Production**: Configurado Mailtrap en modo Producción con autenticación via API Token.
 - **Docker Sync**: Resuelto problema de sincronización de archivos `.env` en contenedores Docker (inode cache).
 - **Notificaciones**: Verificado envío de emails reales desde el backend.
-
----
 
 ## [2026-05-11] — Gestión de Usuarios y RBAC (Fase 11 y 11.1) ✅
 
