@@ -13,6 +13,8 @@
 - **Iconografía Gemini**: Implementación del icono oficial **Sparkle** de Gemini en toda la plataforma (Herramientas y Dashboard).
 - **Dashboard del Sistema**: Actualización integral de la matriz de servicios con iconos premium y colores de marca para **Gemini (Flash 3.1)**, **DeepSeek**, **OpenRouter**, **n8n**, **Telegram**, **MariaDB** y **Redis**.
 - **Estética NOC Pro**: Unificación de dimensiones (34x34), centrado absoluto y sombras elevadas para una interfaz de monitorización de alta gama.
+- **Dashboard NOC Pro**: Unificación visual de iconos (34x34px) y gradientes de marca para servicios de IA e infraestructura.
+- **Módulo de Recursos (Fase 8.5/9.2)**: Implementación de sistema dinámico de gestión de enlaces y documentación para Siemens y Moldex3D con gestión RBAC (Staff+).
 
 ## [2026-05-12] — Restauración Configuración n8n (Fix) ✅
 ### Fixed
