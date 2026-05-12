@@ -1,11 +1,13 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
-## [2026-05-11] — Restauración Infraestructura y SMTP
-- Restauradas credenciales de MariaDB Beta (`dxportal_beta`).
-- Configurado Mailtrap en modo **Producción** con autenticación via API Token.
-- Resuelto problema de sincronización de archivos `.env` en contenedores Docker.
-- Verificado envío de emails reales desde el backend.
+## [2026-05-11] — Restauración Infraestructura y SMTP ✅
+
+### Fixed
+- **Base de Datos**: Restauradas credenciales de MariaDB Beta (`dxportal_beta`).
+- **SMTP Production**: Configurado Mailtrap en modo Producción con autenticación via API Token.
+- **Docker Sync**: Resuelto problema de sincronización de archivos `.env` en contenedores Docker (inode cache).
+- **Notificaciones**: Verificado envío de emails reales desde el backend.
 
 ---
 
