@@ -31,6 +31,16 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Fase 14 — Planificador de Renovaciones (Motor & UI) ✅
+- **Completada:** 2026-05-13
+- **Rama:** feature/renewal-planner
+- **Resumen:** Implementación completa del módulo operativo para el seguimiento mensual de renovaciones. Incluye motor de filtrado cíclico, soporte para múltiples archivos adjuntos por acción y visualización de historial en la ficha del cliente.
+- [x] Infraestructura: Tablas `renewal_logs` y `renewal_log_files`.
+- [x] Backend: Lógica de filtrado por mes y gestión de subidas múltiples.
+- [x] UI: Vista principal con estados corporativos y feedback de carga.
+- [x] Historial: Pestaña dedicada en Perfil de Cliente con descarga de archivos.
+- [x] Seguridad: Blindaje de dashboard administrativo para no-admins.
+
 ### Dashboard: Enfoque en Licencias ✅
 - **Completada:** 2026-05-13
 - **Rama:** feature/dashboard-license-focus (merged to dev)
