@@ -149,16 +149,32 @@
                 <span class="card-title">Gestión de Contratos</span>
             </div>
             <div style="padding: 12px; display: grid; grid-template-columns: 1fr; gap: 8px;">
-                @foreach($contractCounts as $statusKey => $count)
-                    @php
-                        // Buscamos la config en el JSON, si no existe usamos un fallback
-                        $config = $contractStatuses[$statusKey] ?? $contractStatuses['vacio'] ?? [
-                            'label' => $statusKey ?: 'Sin estado',
-                            'color' => 'gris',
-                            'icon' => 'fa-regular fa-circle-question'
-                        ];
+                @php
+                    // Preparamos los estados combinando la config (ordenada) con los datos de la BD
+                    $displayStatuses = [];
+                    foreach($contractStatuses as $key => $config) {
+                        $dbKey = ($key === 'vacio') ? "" : $key;
+                        $count = $contractCounts[$dbKey] ?? 0;
+                        if ($count > 0) {
+                            $displayStatuses[$dbKey] = array_merge($config, ['count' => $count]);
+                        }
+                    }
+                    // Añadimos estados que estén en la BD pero NO en la config (extraños)
+                    foreach($contractCounts as $dbKey => $count) {
+                        if ($count > 0 && !isset($displayStatuses[$dbKey])) {
+                            $displayStatuses[$dbKey] = [
+                                'label' => $dbKey ?: 'Sin estado',
+                                'color' => 'gris',
+                                'icon' => 'fa-regular fa-circle-question',
+                                'count' => $count
+                            ];
+                        }
+                    }
+                @endphp
 
-                        $color = match($config['color'] ?? 'gris') {
+                @foreach($displayStatuses as $dbKey => $data)
+                    @php
+                        $color = match($data['color'] ?? 'gris') {
                             'azul claro' => '#388bfd',
                             'azul intenso' => '#1d6ae8',
                             'morado' => '#a855f7',
@@ -173,12 +189,12 @@
                     <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: var(--raised); border: 1px solid var(--border); border-radius: 6px;">
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <div style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); border-radius: 4px;">
-                                <i class="{{ $config['icon'] ?? 'fa-solid fa-question' }}" style="color: {{ $color }}; font-size: 12px;"></i>
+                                <i class="{{ $data['icon'] ?? 'fa-solid fa-question' }}" style="color: {{ $color }}; font-size: 12px;"></i>
                             </div>
-                            <span style="font-size: 12px; font-weight: 500; color: var(--secondary);">{{ $config['label'] ?? $statusKey }}</span>
+                            <span style="font-size: 12px; font-weight: 500; color: var(--secondary);">{{ $data['label'] ?? $dbKey }}</span>
                         </div>
                         <span style="font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--primary);">
-                            {{ $count }}
+                            {{ $data['count'] }}
                         </span>
                     </div>
                 @endforeach
