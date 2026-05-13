@@ -12,7 +12,7 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
-        $clients = Client::withCount('contracts')
+        $clients = Client::withCount(['contracts', 'inventoryDaemons'])
             ->when($request->search, function($query) use ($request) {
                 $search = $request->search;
                 $query->where(function($q) use ($search) {
@@ -23,8 +23,12 @@ class ClientController extends Controller
                       });
                 });
             })
+            ->when($request->has_inventory, function($query) {
+                $query->has('inventoryDaemons');
+            })
             ->orderBy('name')
             ->paginate(20);
+
 
         return view('clients.index', compact('clients'));
     }
