@@ -13,14 +13,26 @@ Contexto de proyecto → `.agent/INDEX.md` · Estado activo → `.agent/memory/A
 ```
 1. Recibir tarea
 2. Leer INDEX.md → identificar skill · Leer ACTIVE_CONTEXT.md → recuperar estado
-3. Presentar plan dividido en pasos
-4. ── DETENERSE ──
-5. Esperar confirmación explícita: "adelante" / "ok" / "sí" / "procede" / "empieza"
-6. Solo entonces: ejecutar Paso 1 únicamente
+3. Presentar plan + checklist
+4. ── DETENERSE EN SILENCIO ──
+5. Esperar que Oskar escriba: "adelante" / "ok" / "sí" / "procede" / "empieza"
+6. Solo entonces: ejecutar Paso 1 únicamente — nada más
 ```
 
-Si no hay confirmación explícita → preguntar: `"¿Empezamos con el Paso 1?"`
-Una aprobación automática del sistema NO es confirmación del desarrollador.
+**Lo que NO es confirmación válida — nunca ejecutar por:**
+- Creación de un artefacto o archivo
+- Mensaje del sistema o del IDE
+- Silencio o ausencia de respuesta
+- El propio agente diciendo "Aprobación recibida"
+- Cualquier señal que no sea texto explícito de Oskar
+
+**Lo que SÍ es confirmación válida:**
+- Oskar escribe: "adelante", "ok", "sí", "procede", "empieza", "dale", "go"
+
+**Después del plan → NO preguntar "¿Empiezo?". Presentar y CALLAR.**
+El desarrollador inicia. El agente espera.
+
+⛔ "Aprobación recibida. Empiezo ejecución." → FRASE PROHIBIDA. Nunca escribirla.
 
 Al iniciar sesión, declarar: **"Modo estricto activo. No ejecuto sin confirmación explícita."**
 
@@ -65,29 +77,29 @@ git commit -m "feat/fix/chore(scope): descripción"
 ---
 
 ## 0.3 DESIGN.md — Obligatorio para Cualquier UI
- 
+
 **Antes de crear cualquier vista, componente o elemento visual → leer `DESIGN.md`.**
 No improvisar estilos. Referencia visual obligatoria: vistas Blade ya existentes en `backend/resources/views/` — mantener coherencia con lo construido, no inventar patrones nuevos.
 
 ---
- 
+
 ## 0.4 Descomposición Obligatoria — Antes de Ejecutar, Dividir
- 
+
 **Presentar siempre el plan antes de ejecutar:**
- 
+
 ```
 📋 Plan para: [tarea]
 Paso 1: [un archivo o un comando]
 Paso 2: [un archivo o un comando]
 ¿Empezamos con el Paso 1?
 ```
- 
+
 ---
- 
+
 ## 0.4.1 Modo Plan — Tareas No Triviales (3+ pasos)
- 
+
 Para cualquier tarea con 3 o más pasos, antes de presentar el plan:
- 
+
 1. Identificar archivos afectados
 2. Detectar dependencias y riesgos
 3. Escribir specs concretos (qué hace cada paso, qué NO hace)
@@ -95,25 +107,25 @@ Para cualquier tarea con 3 o más pasos, antes de presentar el plan:
 
 Si algo sale mal durante la ejecución → PARAR y re-planear desde ese punto.
 No improvisar sobre un plan roto.
- 
+
 ---
- 
+
 ## 0.4.2 Reglas de Planificación — Modo Estricto
- 
+
 - No alterar el orden sin permiso
 - No saltar pasos
 - No reordenar, no combinar, no optimizar sin preguntar
 - Si ves algo que se podría hacer mejor → solo sugerir, no ejecutar
-Cada paso debe poder completarse, verificarse y commitearse de forma independiente.
 
+Cada paso debe poder completarse, verificarse y commitearse de forma independiente.
 Una tarea que no cabe en un commit es demasiado grande — dividirla.
- 
+
 ---
- 
+
 ## 0.4.3 Checklist Obligatorio — El Agente No Puede Mentir
- 
+
 **Antes de empezar**, el agente genera el checklist completo de la tarea:
- 
+
 ```
 ✅ CHECKLIST — [nombre de la tarea]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -124,9 +136,9 @@ Una tarea que no cabe en un commit es demasiado grande — dividirla.
 [ ] Commit realizado
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
- 
+
 **Tras completar cada paso**, el agente muestra el checklist actualizado:
- 
+
 ```
 ✅ CHECKLIST — [nombre de la tarea]
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -137,7 +149,7 @@ Una tarea que no cabe en un commit es demasiado grande — dividirla.
 [ ] Commit realizado
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
- 
+
 **Reglas del checklist:**
 - Un paso solo se marca  si hay evidencia real (output de comando, archivo creado, test pasado)
 - Nunca marcar  por inferencia — solo por resultado verificado
@@ -169,14 +181,14 @@ Si NO o NO ESTOY SEGURO → ejecutar `/switch` inmediatamente. No escribir códi
 ---
 
 ## 0.5.2 Escritura de Archivos — Regla Crítica
- 
+
 Usar según lo disponible en el IDE activo:
- 
+
 | Situación | Ruta a usar |
 | :--- | :--- |
 | MCP filesystem configurado | `\\192.168.50.10\webs\DX-License-Manager\` |
 | Sin MCP — unidad mapeada | `Z:\DX-License-Manager\` o `Y:\DX-License-Manager\` |
- 
+
 **NUNCA** crear archivos fuera del proyecto activo ni mezclar rutas entre proyectos.
 
 ---
@@ -227,29 +239,21 @@ docker exec -e DB_CONNECTION=sqlite -e DB_DATABASE=:memory: dx-php-beta php arti
 ---
 
 ## 0.9 Reglas Git — Obligatorias
- 
+
 **El agente trabaja EXCLUSIVAMENTE en ramas que mergean a `dev`. Nunca tocar `main`.**
- 
+
+
+
 - **Una rama por funcionalidad.** Cuando la tarea termina, la rama termina.
 - **Formato de rama:** `feature/nombre-corto` · `fix/descripcion` · `chore/descripcion`
 - **Nunca** login + migrations + otra feature en la misma rama
 - **Nunca** reutilizar una rama después del merge
 - **Nunca** crear PR hacia `main` — el merge dev → main lo decide Oskar, no el agente
+
 **Al terminar cada fase del ROADMAP:**
 1. PR a `dev` — crear PR pero esperar autorización explícita para merge
 2. Git Tag descriptivo: `v[N.0]-[nombre-fase]-ok`
 3. Commit de cierre: `"Fase X Terminada — Punto de Restauración"`
-
----
-
-# En §0.9 Reglas Git:
-Si la rama activa es `dev` o `main` → PARAR inmediatamente.
-No escribir código. Proponer nombre de rama y esperar confirmación.
-
-# En Regla Cero:
-Después del plan → NO preguntar "¿Empiezo?".
-Presentar el plan y esperar en silencio.
-El desarrollador inicia — no el agente.
 
 ---
 
@@ -259,7 +263,7 @@ El desarrollador inicia — no el agente.
 - Archivos `.lic`: nunca en texto plano a la IA — solo metadatos
 - Tras modificar controladores o middleware de auth → cargar `laravel-security-audit` + `php-security-auditor`
 - JWT: access token 15 min + refresh token 24h con rotación automática
-- RBAC: `admin` escribe · `technician` lee · `staff` lee · `viewer` solo visualiza
+- RBAC: `admin` escribe · `technician` lee · `viewer` solo visualiza
 
 ---
 
