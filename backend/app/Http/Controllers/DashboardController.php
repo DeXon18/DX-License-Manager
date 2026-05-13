@@ -38,10 +38,12 @@ class DashboardController extends Controller
                 ->count(),
         ];
 
-        // 2. Top 10 vencimientos inminentes
+        // 2. Top 10 vencimientos inminentes (agrupados por Daemon/Sold-To)
         $upcomingExpirations = LicenseInventoryProduct::with(['daemon.client'])
             ->active()
             ->whereNotNull('expiration_date')
+            ->selectRaw('daemon_id, MIN(expiration_date) as expiration_date')
+            ->groupBy('daemon_id')
             ->orderBy('expiration_date', 'asc')
             ->limit(10)
             ->get();

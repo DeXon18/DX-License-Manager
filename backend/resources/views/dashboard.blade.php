@@ -93,7 +93,7 @@
                                 <span style="text-transform: uppercase; font-weight: 700; font-size: 10px;">{{ $vendor }}</span>
                             </div>
                             <div style="font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace; margin-top: 4px;">
-                                <span style="color: var(--secondary);">{{ $soldTo }}</span> · <span style="font-size: 10px;">{{ $license->product_code }}</span>
+                                <span style="color: var(--secondary);">{{ $soldTo }}</span>
                             </div>
                         </td>
                         <td>
