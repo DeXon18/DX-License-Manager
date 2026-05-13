@@ -22,7 +22,6 @@ El agente no avanza hasta recibir "aprobado", "adelante" o similar de forma expl
 
 ## ⏸️ Pausado / En Espera
 
-- [ ] **Fix Bug Modal Auditoría**: El botón de ojo no abre el modal en Beta.
 - [ ] **Integración n8n v2.2+**: Evolución del flujo lineal a ramificado por Vendor/Tipo Licencia.
 
 
@@ -38,6 +37,9 @@ En planificación — se detallan una por una tras validación de la fase anteri
 ---
  
 ## ✅ Completado
+
+### UI/UX — Fixes Menores ✅
+- [x] **Fix Bug Modal Auditoría**: El botón de ojo no abre el modal en Beta (Arreglado anteriormente).
 
 ### Fase 8.5/9.2 — Módulo de Recursos y Enlaces Standalone ✅
 - **Completada:** 2026-05-12
