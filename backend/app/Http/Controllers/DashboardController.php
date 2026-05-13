@@ -54,10 +54,23 @@ class DashboardController extends Controller
             ->get();
 
         // 4. Estados de Contratos (Gestión)
-        // Usamos la ruta absoluta del contenedor para evitar problemas de resolución relativo
-        $identitiesPath = '/var/www/html/.agent/secrets/identities.json';
+        // Intentamos localizar identities.json en varias rutas posibles por seguridad en Docker
+        $possiblePaths = [
+            base_path('../.agent/secrets/identities.json'),
+            '/var/www/html/.agent/secrets/identities.json',
+            realpath(base_path('..')) . '/.agent/secrets/identities.json'
+        ];
+
+        $identitiesPath = null;
+        foreach ($possiblePaths as $path) {
+            if (file_exists($path)) {
+                $identitiesPath = $path;
+                break;
+            }
+        }
+
         $contractStatuses = [];
-        if (file_exists($identitiesPath)) {
+        if ($identitiesPath) {
             $json = json_decode(file_get_contents($identitiesPath), true);
             $contractStatuses = $json['estados_contrato'] ?? [];
         }
