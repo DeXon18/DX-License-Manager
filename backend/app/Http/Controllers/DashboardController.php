@@ -16,29 +16,32 @@ class DashboardController extends Controller
     {
         $now = Carbon::now()->startOfDay();
 
-        // 1. Calcular métricas (solo productos activos)
-        $activeLicenses = LicenseInventoryProduct::active();
+        // 1. Obtener la fecha mínima de expiración por cada servidor (Daemon/Sold-To) activo
+        $daemonExpirations = LicenseInventoryProduct::active()
+            ->selectRaw('daemon_id, MIN(expiration_date) as earliest_expiration')
+            ->groupBy('daemon_id')
+            ->get();
 
+        // 2. Calcular métricas basadas en servidores únicos
         $metrics = [
-            'total' => (clone $activeLicenses)->count(),
+            'total' => $daemonExpirations->count(),
             
-            'critical' => (clone $activeLicenses)
-                ->where(function ($query) use ($now) {
-                    $query->whereDate('expiration_date', '<=', $now->copy()->addDays(7));
-                })->count(),
+            'critical' => $daemonExpirations->filter(function ($item) use ($now) {
+                return $item->earliest_expiration && Carbon::parse($item->earliest_expiration)->lte($now->copy()->addDays(7));
+            })->count(),
 
-            'upcoming' => (clone $activeLicenses)
-                ->whereDate('expiration_date', '>', $now->copy()->addDays(7))
-                ->whereDate('expiration_date', '<=', $now->copy()->addDays(30))
-                ->count(),
+            'upcoming' => $daemonExpirations->filter(function ($item) use ($now) {
+                $date = $item->earliest_expiration ? Carbon::parse($item->earliest_expiration) : null;
+                return $date && $date->gt($now->copy()->addDays(7)) && $date->lte($now->copy()->addDays(30));
+            })->count(),
 
-            'monitoring' => (clone $activeLicenses)
-                ->whereDate('expiration_date', '>', $now->copy()->addDays(30))
-                ->whereDate('expiration_date', '<=', $now->copy()->addDays(90))
-                ->count(),
+            'monitoring' => $daemonExpirations->filter(function ($item) use ($now) {
+                $date = $item->earliest_expiration ? Carbon::parse($item->earliest_expiration) : null;
+                return $date && $date->gt($now->copy()->addDays(30)) && $date->lte($now->copy()->addDays(90));
+            })->count(),
         ];
 
-        // 2. Top 10 vencimientos inminentes (agrupados por Daemon/Sold-To)
+        // 3. Top 10 vencimientos inminentes (agrupados por Daemon/Sold-To)
         $upcomingExpirations = LicenseInventoryProduct::with(['daemon.client'])
             ->active()
             ->whereNotNull('expiration_date')
