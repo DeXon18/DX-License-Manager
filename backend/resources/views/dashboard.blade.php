@@ -87,15 +87,14 @@
                                 <strong>{{ $license->daemon->client->name ?? 'Desconocido' }}</strong>
                             </a>
                         </td>
-                        <td>
-                            <div style="display: flex; flex-direction: column; gap: 1px;">
-                                <span style="text-transform: uppercase; font-weight: 800; font-size: 10px; color: {{ $vendor == 'siemens' ? 'var(--siemens)' : 'var(--moldex)' }}; letter-spacing: 0.05em; line-height: 1;">
-                                    {{ $vendor }}
-                                </span>
-                                <span style="font-size: 11px; color: var(--secondary); font-family: 'IBM Plex Mono', monospace; line-height: 1.2;">
-                                    {{ $soldTo }}
-                                </span>
-                            </div>
+                        <td style="white-space: nowrap;">
+                            <span style="text-transform: uppercase; font-weight: 800; font-size: 10px; color: {{ $vendor == 'siemens' ? 'var(--siemens)' : 'var(--moldex)' }}; letter-spacing: 0.05em;">
+                                {{ $vendor }}
+                            </span>
+                            <span style="color: var(--muted); margin: 0 4px; font-size: 10px;">·</span>
+                            <span style="font-size: 11px; color: var(--secondary); font-family: 'IBM Plex Mono', monospace;">
+                                {{ $soldTo }}
+                            </span>
                         </td>
                         <td>
                             <div class="date-main">{{ $license->expiration_date ? $license->expiration_date->format('d/m/Y') : '—' }}</div>
