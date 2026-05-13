@@ -29,7 +29,7 @@ El desarrollador inicia. El agente espera.
  
 - [x] **Fase 10**: Dashboard del Sistema y Modularización (Completada 2026-05-11).
 - [x] **Fase 16**: Centro de Logs Unificado y Auditoría Pro (Completada 2026-05-12).
-- [ ] **Fase 13**: Configuración SMTP Producción (En curso).
+- [x] **Fase 13**: Alertas y Notificaciones (Completada 2026-05-13).
 
 ---
 
@@ -49,7 +49,16 @@ En planificación — se detallan una por una tras validación de la fase anteri
  
 ---
  
-## ✅ Completado
+
+### Fase 13 — Alertas y Notificaciones ✅
+- **Completada:** 2026-05-13
+- **Rama:** feature/expiration-alerts-system
+- **Resumen:** Implementación del sistema de alertas de caducidad de licencias con reporte global interno. Incluye lógica de filtrado de inventario, mailable bilingüe consolidado, historial de envíos automático y panel administrativo de control.
+- [x] Implementación de `GlobalLicenseExpirationReport`.
+- [x] Lógica de filtrado en `LicenseExpirationService` (0, 7, 15, 30 días).
+- [x] Integración con `EmailLoggerListener` (trazabilidad única).
+- [x] Panel Administrativo `/admin/alerts` (Bento UI).
+- [x] Fix de permisos y duplicidad de logs.
 
 ### UI/UX — Fixes Menores ✅
 - [x] **Fix Bug Modal Auditoría**: El botón de ojo no abre el modal en Beta (Arreglado anteriormente).
