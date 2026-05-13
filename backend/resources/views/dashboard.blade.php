@@ -149,10 +149,16 @@
                 <span class="card-title">Gestión de Contratos</span>
             </div>
             <div style="padding: 12px; display: grid; grid-template-columns: 1fr; gap: 8px;">
-                @foreach($contractStatuses as $key => $config)
+                @foreach($contractCounts as $statusKey => $count)
                     @php
-                        $count = $contractCounts[$key] ?? 0;
-                        $color = match($config['color']) {
+                        // Buscamos la config en el JSON, si no existe usamos un fallback
+                        $config = $contractStatuses[$statusKey] ?? $contractStatuses['vacio'] ?? [
+                            'label' => $statusKey ?: 'Sin estado',
+                            'color' => 'gris',
+                            'icon' => 'fa-regular fa-circle-question'
+                        ];
+
+                        $color = match($config['color'] ?? 'gris') {
                             'azul claro' => '#388bfd',
                             'azul intenso' => '#1d6ae8',
                             'morado' => '#a855f7',
@@ -167,11 +173,11 @@
                     <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: var(--raised); border: 1px solid var(--border); border-radius: 6px;">
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <div style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); border-radius: 4px;">
-                                <i class="{{ $config['icon'] }}" style="color: {{ $color }}; font-size: 12px;"></i>
+                                <i class="{{ $config['icon'] ?? 'fa-solid fa-question' }}" style="color: {{ $color }}; font-size: 12px;"></i>
                             </div>
-                            <span style="font-size: 12px; font-weight: 500; color: var(--secondary);">{{ $config['label'] }}</span>
+                            <span style="font-size: 12px; font-weight: 500; color: var(--secondary);">{{ $config['label'] ?? $statusKey }}</span>
                         </div>
-                        <span style="font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: {{ $count > 0 ? 'var(--primary)' : 'var(--muted)' }};">
+                        <span style="font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: var(--primary);">
                             {{ $count }}
                         </span>
                     </div>
