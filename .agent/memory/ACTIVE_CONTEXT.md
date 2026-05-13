@@ -17,6 +17,7 @@ Fase 10.5 (Docker Monitor) y Fase 13 (Alertas) completadas y commiteadas. Prepar
 - [x] UI con cuenta atrás dinámica.
 - [x] Configuración de Cron Job diario.
 - [x] Limpieza de ramas y merge a `dev`.
+- [x] Fix: Bug de transformación NX Suite (VENDOR_STRING e inyección).
 - Fase del ROADMAP: Fase 11 (Completada), Fase 12 & 13 (Iniciadas)
 
 ---

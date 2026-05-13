@@ -1,6 +1,11 @@
-Rama activa: dev. Gestión de Clientes (Filtros & Estabilización) — COMPLETADA.
-Último trabajo: Fix de persistencia de filtros. Se ha implementado lógica de Sesión determinista en ClientController y limpiado la URL en la vista. El switch Industrial ahora envía 'clear_inventory=1' para resetear el estado de forma explícita, eliminando bucles en la URL.
-Estado: Sistema estable. El filtro "Solo con Licencias" se recuerda correctamente al buscar o navegar sin ensuciar la URL con hidden inputs. Git reparado y sincronizado.
-Próximo paso inmediato: Validar inicio de Fase 15 (Integraciones IA).
+Rama activa: fix/nx-suite-transform. Bugs de transformación resueltos en NX Suite, StarCCM y Heeds.
+Problema: str_starts_with y stripos detectaban VENDOR_STRING erróneamente. Falta de localhost en SERVER para temporales.
+Solución:
+1. NXSuiteService: preg_match estricto /^VENDOR\s+ugslmd\b/i y localhost unificado.
+2. StarCcmService: preg_match estricto /^VENDOR\s+cdlmd\b/i y localhost unificado.
+3. HeedsService: preg_match estricto /^VENDOR\s+RCTECH\b/i y localhost unificado.
+Controladores actualizados para pasar el flag isTemporal.
+Estado: Verificado con scripts de reproducción para los 3 servicios. Listo para merge a dev.
+Próximo paso: Merge a dev.
 Bloqueos: Ninguno.
 Stack beta: running. Stack prod: running.

@@ -87,21 +87,26 @@ class NXSuiteService
      */
     public function generateFilename(array $metadata): string
     {
-        $soldTo   = $metadata['sold_to'] ?? 'UNKNOWN';
+        $soldTo   = $metadata['sold_to_filename'] ?? $metadata['sold_to'] ?? 'UNKNOWN';
         $hostname = Str::upper(str_replace([' ', '.'], '', $metadata['hostname'] ?? 'NOHOST'));
-        $client   = Str::upper(str_replace([' ', '.'], '-', $metadata['client'] ?? 'CLIENT'));
-        $version  = $metadata['version'] ?? 'V1';
-        $date     = date('dmY'); // Formato DDMMYYYY (07052026)
-        $type     = $metadata['type'] ?? 'Standard';
+        
+        // Cliente con guion bajo y en mayúsculas
+        $client   = Str::upper(str_replace([' ', '.', '-'], '_', $metadata['client'] ?? 'CLIENT'));
+        
+        // Versión con prefijo V
+        $rawVersion = $metadata['version'] ?? 'V1';
+        $version = str_starts_with(strtoupper($rawVersion), 'V') ? strtoupper($rawVersion) : "V{$rawVersion}";
+        
+        // Fecha de caducidad formateada (DD-Mmm-YYYY)
+        $date = $this->formatExpirationDate($metadata['expiration'] ?? null);
+        
+        $type = $metadata['type'] ?? 'Standard';
 
-        // SOLDTO_HOSTNAME_CLIENTE_VERSION_Valida_FECHA.lic
         switch ($type) {
             case 'Temporal':
-                // Sin hostname para temporales: SOLDTO_CLIENTE_VERSION_TEMP_Valida_FECHA.lic
                 return "{$soldTo}_{$client}_{$version}_TEMP_Valida_{$date}.lic";
             
             case 'Dongle':
-                // Sin Hostname
                 return "{$soldTo}_{$client}_{$version}_DongleUSB_Valida_{$date}.lic";
             
             case 'Unificada':
@@ -114,12 +119,35 @@ class NXSuiteService
     }
 
     /**
-     * Determina si la licencia es tipo Dongle basándose en el contenido.
+     * Formatea la fecha de expiración al estándar DD-Mmm-YYYY.
      */
-    public function detectType(string $content): string
+    private function formatExpirationDate(?string $date): string
+    {
+        if (!$date || strtolower($date) === 'permanent') {
+            return 'Permanent';
+        }
+
+        try {
+            $d = new \DateTime($date);
+            // Formato: 14-Mar-2026 (M corta con primera mayúscula)
+            return $d->format('d-M-Y');
+        } catch (\Exception $e) {
+            return $date; // Fallback al original si falla el parseo
+        }
+    }
+
+    /**
+     * Determina el tipo de licencia basándose en el contenido y metadatos detectados.
+     */
+    public function detectType(string $content, array $metadata = []): string
     {
         if (!str_contains($content, 'SERVER') && str_contains($content, 'UG_HWKEY_ID')) {
             return 'Dongle';
+        }
+
+        // Si tiene múltiples Sold-To detectados en el header, es unificada
+        if (!empty($metadata['other_installs'])) {
+            return 'Unificada';
         }
 
         if (str_contains($content, 'YourHostname') || str_contains($content, 'ANY')) {
@@ -130,33 +158,68 @@ class NXSuiteService
     }
 
     /**
-     * Extrae metadatos básicos del contenido (Simulando lo que haría el parser en Parte 2, 
-     * pero necesario para nombrar el archivo en Parte 1).
+     * Extrae metadatos básicos del contenido.
      */
     public function extractMetadata(string $content): array
     {
         $metadata = [
-            'sold_to'  => '10300000',
-            'hostname' => 'localhost',
-            'client'   => 'Default',
-            'version'  => '2512',
-            'date'     => date('Ymd'),
-            'type'     => $this->detectType($content),
+            'sold_to'        => '10300000',
+            'other_installs' => [],
+            'hostname'       => 'localhost',
+            'client'         => 'Default',
+            'version'        => '2512',
+            'expiration'     => null,
+            'type'           => 'Standard',
         ];
 
-        // Intento de extraer Sold-To de los comentarios
+        // 1. Extraer Sold-To Principal
         if (preg_match('/Sold-To\/Install:\s*(\d+)/', $content, $matches)) {
             $metadata['sold_to'] = $matches[1];
         }
 
-        // Intento de extraer Customer Name
+        // 2. Extraer Otros Sold-To (Unificada)
+        if (preg_match('/Other Installs:\s*([^#\n\r]+)/', $content, $matches)) {
+            $installs = preg_split('/[,\s]+/', trim($matches[1]), -1, PREG_SPLIT_NO_EMPTY);
+            $metadata['other_installs'] = $installs;
+        }
+
+        // 3. Extraer Customer Name
         if (preg_match('/Customer Name:\s*([^\r\n#]+)/', $content, $matches)) {
             $metadata['client'] = trim($matches[1]);
         }
 
-        // Intento de extraer Hostname de la línea SERVER
+        // 4. Extraer Hostname de la línea SERVER
         if (preg_match('/SERVER\s+([^\s]+)/', $content, $matches)) {
             $metadata['hostname'] = $matches[1];
+        }
+
+        // 5. Extraer Versión del primer INCREMENT
+        if (preg_match('/INCREMENT\s+\S+\s+ugslmd\s+([\d.]+)/', $content, $matches)) {
+            $version = $matches[1];
+            // Si es formato 2025.12 -> 25.12
+            if (preg_match('/^\d{2}(\d{2})\.(\d+)$/', $version, $vMatches)) {
+                $metadata['version'] = $vMatches[1] . '.' . $vMatches[2];
+            } else {
+                $metadata['version'] = $version;
+            }
+        }
+
+        // 6. Extraer Fecha de Caducidad del primer INCREMENT
+        if (preg_match('/INCREMENT\s+\S+\s+ugslmd\s+[\d.]+\s+(\d+-\w+-\d+|permanent)/i', $content, $matches)) {
+            $metadata['expiration'] = $matches[1];
+        }
+
+        // 7. Determinar Tipo
+        $metadata['type'] = $this->detectType($content, $metadata);
+
+        // 8. Preparar Sold-To para el nombre del archivo (Lógica S1-S2 o S1_Multi)
+        $allIds = array_merge([$metadata['sold_to']], $metadata['other_installs']);
+        if (count($allIds) > 1) {
+            if (count($allIds) <= 3) {
+                $metadata['sold_to_filename'] = implode('-', $allIds);
+            } else {
+                $metadata['sold_to_filename'] = $allIds[0] . '_Multi';
+            }
         }
 
         return $metadata;
