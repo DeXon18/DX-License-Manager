@@ -1,7 +1,8 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-13 09:35  
+> Última actualización: 2026-05-13 11:25  
 > Sesión en: Antigravity Desktop  
-> Rama activa: feature/expiration-alerts-system
+> Rama activa: dev  
+
 
 ---
 
@@ -15,11 +16,10 @@
 
 ## Qué se hizo en esta sesión
 
-- **Reporte Global Consolidado**: Implementado `GlobalLicenseExpirationReport` para sustituir alertas individuales por un resumen único semanal.
-- **Refactor de Alertas**: Actualizado `LicenseExpirationService` y `SendWeeklyLicenseAlertsJob` para centralizar envíos a soporte.
-- **Fix Duplicidad de Logs**: Identificada duplicidad por *Event Discovery* de Laravel 11. Eliminado registro manual en `AppServiceProvider` y en el Job.
-- **Estabilización de Servidor**: Corregidos permisos 777 en `storage/framework/views` y `bootstrap/cache` vía SSH. Limpieza de caché de vistas realizada.
-- **UI Admin**: Rediseñada la vista `/admin/alerts` para cumplir con `DESIGN.md` (Bento Cards y tabla de historial limpia).
+- **Docker Fleet Monitor**: Consolidación y merge de la Fase 10.5. Telemetría CPU/RAM y acciones de reinicio operativas.
+- **Merge feature/docker-monitor**: Rama de feature cerrada y mergeada a `dev` limpiamente.
+- **Sincronización de Documentación**: ROADMAP, BACKLOG y CHANGELOG actualizados y unificados en `dev`.
+
 
 ---
 
