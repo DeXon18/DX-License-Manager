@@ -45,7 +45,8 @@ DX License Manager
 │   ├── Licencias ✅ (Inventario unificado)
 │   ├── ContraHeaders / Contratos ✅ (Importación CSV)
 │   ├── Contactos de envío ✅ (Gestión por cliente)
-│   └── Certificados de cese firmados ✅ (Gestión de CODs)
+│   ├── Certificados de cese firmados ✅ (Gestión de CODs)
+│   └── Planificador de Renovaciones ✅ (Fase 14)
 ├── 6. Herramientas ✅
 ├── 7. Páginas de herramientas & recursos
 │   ├── SIEMENS | Automatización industrial y digitalización
@@ -407,19 +408,24 @@ DX License Manager
 
 ---
 
-### ✅ Fase 14 — Gestión de Backups ✅ COMPLETADA
+### ✅ Fase 14 — Planificador de Renovaciones ✅ COMPLETADA
 
-- [x] Historial de backups en disco -> OK
-- [x] Generación manual y automatizada (Cron) -> OK
-- [x] Descarga y borrado de archivos -> OK
-- [x] Sistema de restauración con seguridad crítica -> OK
-- [x] UI con cuenta atrás dinámica y estados -> OK
+**Estado:** COMPLETADA
+**Validación:** ✅ Implementación técnica finalizada el 2026-05-13.
+**Descripción:** Herramienta operativa para el seguimiento mensual de renovaciones con soporte multi-archivo.
+
+- [x] **Motor de Seguimiento**: Filtrado cíclico por `MONTH(end_date)` para identificar tareas mensuales.
+- [x] **Registro de Acciones**: Tabla `renewal_logs` para trazabilidad de quién y cuándo envió licencias.
+- [x] **Soporte Multi-archivo**: Capacidad para adjuntar múltiples archivos `.lic` (NX, Star, Heeds) simultáneamente.
+- [x] **Repositorio de Renovaciones**: Almacenamiento seguro y estructurado por cliente.
+- [x] **UI Alta Densidad**: Vista de planificador estilo NOC Pro con contadores de progreso.
+- [x] **Integración Perfil Cliente**: Nueva pestaña de historial con acceso a descargas históricas.
 
 ---
 
 ### 📋 Fase 15 — Integraciones IA
 
-**Estado:** En planificación
+**Estado:** PAUSADA
 **Prerequisito:** ✅ Fase 14 validada por Oskar
 **Validación requerida antes de Fase 16:** Todos los proveedores IA respondiendo y FallbackChain verificado.
 
@@ -447,7 +453,7 @@ DX License Manager
 
 ### 📋 Fase 17 — Consolidación y Limpieza UI
 
-**Estado:** Planificado (Fase Final de Bloque 8.1)
+**Estado:** PAUSADA
 
 - [ ] Auditoría de estilos redundantes en vistas Blade
 - [ ] Migración de componentes CSS de `show.blade.php` a `dx-styles.css`
