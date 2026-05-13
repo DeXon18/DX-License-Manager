@@ -1,6 +1,24 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-13] — Dashboard: Enfoque en Licencias e Inventario ✅
+
+### Added
+
+- **Dashboard**: Reorientación total de la sección "Vencimientos Inminentes" de Contratos (CSV) a Licencias Reales (Inventario).
+- **Lógica**: Agrupación por Daemon (Sold-To/Machine ID) para evitar duplicidades visuales de productos en un mismo servidor.
+- **UI**: Visualización compacta en una sola línea (VENDOR · SOLD-TO) con colores corporativos.
+- **Métricas**: Actualización de contadores superiores para reflejar el estado del inventario auditado.
+
+## [2026-05-13 14:40] — Rediseño Visual de Alertas ✅
+
+### Added
+
+- **UI Bento Vertical**: Rediseño de la configuración de umbrales a un layout vertical más espacioso y legible, eliminando el grid comprimido.
+- **Iconografía NOC Pro**: Integración de iconos semánticos (`bell-concierge`, `clock`, `sliders`) y colores de estado (Crítico, Preventivo, Recordatorio).
+- **UX Adaptativa**: Ampliación del grid principal de administración a `1fr 1.5fr` para permitir que los formularios técnicos respiren.
+- **Consistencia Visual**: Unificación de bordes (10px radius), fondos raised y tipografía mono para datos de configuración.
+
 ## [2026-05-13 14:30] — Estandarización de Nomenclatura y Transformación ✅
 
 ### Added

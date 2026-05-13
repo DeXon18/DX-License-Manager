@@ -31,6 +31,22 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Dashboard: Enfoque en Licencias ✅
+- **Completada:** 2026-05-13
+- **Rama:** feature/dashboard-license-focus (merged to dev)
+- **Resumen:** Cambio de fuente de datos en la portada: de Contratos CSV a Licencias del Inventario.
+- [x] Backend: Agrupación por `daemon_id` y fecha mínima de expiración.
+- [x] UI: Rediseño de tabla (una sola línea VENDOR · SOLD-TO).
+- [x] UX: Enlaces directos a fichas de cliente desde la tabla.
+
+### Rediseño Visual de Alertas ✅
+- **Completada:** 2026-05-13
+- **Rama:** feature/alerts-ui-redesign (merged to dev)
+- **Resumen:** Rediseño integral de la configuración de umbrales en el panel de alertas. Layout vertical de alta densidad con iconos semánticos y campos técnicos optimizados.
+- [x] UI: Migración de Grid horizontal a Lista vertical.
+- [x] Layout: Ajuste de grid principal 1fr:1.5fr.
+- [x] UX: Labels de rango dinámicos y mayor espacio para inputs.
+
 ### Estandarización de Nomenclatura y Transformación ✅
 - **Completada:** 2026-05-13
 - **Rama:** feature/license-naming-standard (merged to dev)
