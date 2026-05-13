@@ -78,7 +78,7 @@ class StarCcmService
     /**
      * Transforma el contenido migrando cdlmd a saltd y puerto 29000.
      */
-    public function transform(string $content): string
+    public function transform(string $content, bool $isTemporal = false): string
     {
         $lines = explode("\n", str_replace(["\r\n", "\r"], "\n", $content));
         $transformedLines = [];
@@ -92,12 +92,17 @@ class StarCcmService
                 if (count($parts) >= 3) {
                     $hostname = $parts[1];
                     $hostid   = $parts[2];
+                    
+                    if ($isTemporal && ($hostname === 'YourHostname' || $hostname === 'ANY')) {
+                        $hostname = 'localhost';
+                    }
+
                     $line = "SERVER {$hostname} {$hostid} 29000";
                 }
             }
 
             // 2. Transformar VENDOR (cdlmd -> saltd saltd PORT=29001)
-            if (str_starts_with($trimmedLine, 'VENDOR')) {
+            if (preg_match('/^VENDOR\s+cdlmd\b/i', $trimmedLine)) {
                 $line = "VENDOR saltd saltd PORT=29001";
             }
 

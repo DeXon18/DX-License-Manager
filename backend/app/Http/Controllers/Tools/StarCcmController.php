@@ -71,7 +71,8 @@ class StarCcmController extends Controller
         );
 
         // 3. Transformación (SALT 29000)
-        $transformedContent = $this->starService->transform($content);
+        $isTemporal = ($metadata['type'] === 'Temporal');
+        $transformedContent = $this->starService->transform($content, $isTemporal);
 
         // 4. Generar nombre de archivo
         $filename = $this->starService->generateFilename($metadata);

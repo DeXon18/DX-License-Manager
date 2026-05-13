@@ -71,7 +71,8 @@ class HeedsController extends Controller
         );
 
         // 3. Transformación (SALT 29000)
-        $transformedContent = $this->heedsService->transform($content);
+        $isTemporal = ($metadata['type'] === 'Temporal');
+        $transformedContent = $this->heedsService->transform($content, $isTemporal);
 
         // 4. Generar nombre de archivo
         $filename = $this->heedsService->generateFilename($metadata);

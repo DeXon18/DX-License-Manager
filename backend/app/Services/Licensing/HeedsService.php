@@ -88,7 +88,7 @@ class HeedsService
     /**
      * Transforma el contenido migrando rctech a saltd y puerto 29000.
      */
-    public function transform(string $content): string
+    public function transform(string $content, bool $isTemporal = false): string
     {
         $lines = explode("\n", str_replace(["\r\n", "\r"], "\n", $content));
         $transformedLines = [];
@@ -102,13 +102,18 @@ class HeedsService
                 if (count($parts) >= 3) {
                     $hostname = $parts[1];
                     $hostid   = $parts[2];
+
+                    if ($isTemporal && ($hostname === 'YourHostname' || $hostname === 'ANY')) {
+                        $hostname = 'localhost';
+                    }
+
                     $line = "SERVER {$hostname} {$hostid} 29000";
                 }
             }
 
             // 2. Transformar VENDOR (rctech -> saltd saltd PORT=29001)
             // Soporta tanto VENDOR RCTECH como VENDOR rctech
-            if (stripos($trimmedLine, 'VENDOR RCTECH') !== false) {
+            if (preg_match('/^VENDOR\s+RCTECH\b/i', $trimmedLine)) {
                 $line = "VENDOR saltd saltd PORT=29001";
             }
 
