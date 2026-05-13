@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Mail\WeeklyLicenseAlert;
+use App\Mail\GlobalLicenseExpirationReport;
 use App\Models\AlertSetting;
 use App\Models\EmailLog;
 use App\Services\LicenseExpirationService;
@@ -23,10 +24,10 @@ class SendWeeklyLicenseAlertsJob implements ShouldQueue
      */
     public function handle(LicenseExpirationService $service): void
     {
-        $settings = AlertSetting::where('is_active', true)->first();
+        $settings = AlertSetting::first();
         
-        if (!$settings) {
-            Log::warning('SendWeeklyLicenseAlertsJob: No se encontró configuración de alertas activa.');
+        if (!$settings || !$settings->is_active) {
+            Log::info('SendWeeklyLicenseAlertsJob: El sistema de alertas está desactivado o no configurado.');
             return;
         }
 
@@ -37,49 +38,32 @@ class SendWeeklyLicenseAlertsJob implements ShouldQueue
             return;
         }
 
-        foreach ($reportData as $data) {
-            $client = $data['client'];
-            $expiring = $data['expiring'];
-            $recipients = $data['recipients'];
+        // Obtener destinatarios internos (Soporte AYS)
+        $recipients = $settings->internal_emails;
+        
+        // Si no hay configurados, fallback al email de soporte estándar
+        if (empty($recipients)) {
+            $recipients = ['soporte@ats-global.com'];
+        }
 
-            foreach ($recipients as $contact) {
-                try {
-                    $mailable = new WeeklyLicenseAlert($client, $expiring);
-                    
-                    // Send to contact
-                    Mail::to($contact->email)->send($mailable);
+        try {
+            // Enviar un ÚNICO reporte global con todos los clientes
+            Mail::to($recipients)->send(new GlobalLicenseExpirationReport($reportData));
 
-                    // Log success
-                    EmailLog::create([
-                        'recipient' => $contact->email,
-                        'subject' => '📅 Reporte Semanal de Caducidad de Licencias — ' . $client->name,
-                        'mailable_class' => WeeklyLicenseAlert::class,
-                        'status' => 'sent',
-                    ]);
+            Log::info('SendWeeklyLicenseAlertsJob: Reporte global enviado con éxito a ' . implode(', ', $recipients));
 
-                } catch (\Exception $e) {
-                    Log::error('Error enviando alerta semanal a ' . $contact->email . ': ' . $e->getMessage());
-                    
-                    EmailLog::create([
-                        'recipient' => $contact->email,
-                        'subject' => '📅 Reporte Semanal de Caducidad de Licencias — ' . $client->name,
-                        'mailable_class' => WeeklyLicenseAlert::class,
-                        'status' => 'failed',
-                        'error_message' => $e->getMessage(),
-                    ]);
-                }
-            }
-
-            // Send internal copies if configured
-            $internalEmails = $settings->internal_emails;
-            if (!empty($internalEmails)) {
-                foreach ($internalEmails as $internalEmail) {
-                    try {
-                        Mail::to($internalEmail)->send(new WeeklyLicenseAlert($client, $expiring));
-                    } catch (\Exception $e) {
-                        Log::error('Error enviando copia interna de alerta a ' . $internalEmail . ': ' . $e->getMessage());
-                    }
-                }
+        } catch (\Exception $e) {
+            Log::error('Error enviando reporte global de licencias: ' . $e->getMessage());
+            
+            // Aquí sí registramos el fallo manualmente porque el listener automático solo captura los enviados con éxito
+            foreach ($recipients as $email) {
+                EmailLog::create([
+                    'recipient' => $email,
+                    'subject' => '📊 REPORTE GLOBAL: Caducidad de Licencias',
+                    'mailable_class' => GlobalLicenseExpirationReport::class,
+                    'status' => 'failed',
+                    'error_message' => $e->getMessage(),
+                ]);
             }
         }
     }

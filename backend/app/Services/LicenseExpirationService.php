@@ -10,13 +10,11 @@ use Illuminate\Support\Collection;
 class LicenseExpirationService
 {
     /**
-     * Get clients that have at least one contact subscribed to alerts.
+     * Get all clients.
      */
-    public function getClientsToNotify(): Collection
+    public function getAllClients(): Collection
     {
-        return Client::whereHas('contacts', function ($query) {
-            $query->where('receives_alerts', true);
-        })->get();
+        return Client::all();
     }
 
     /**
@@ -63,7 +61,7 @@ class LicenseExpirationService
      */
     public function getWeeklyReportData(): Collection
     {
-        $clients = $this->getClientsToNotify();
+        $clients = $this->getAllClients();
         $reportData = collect();
 
         foreach ($clients as $client) {
@@ -74,7 +72,6 @@ class LicenseExpirationService
                 $reportData->push([
                     'client' => $client,
                     'expiring' => $expiring,
-                    'recipients' => $client->contacts()->where('receives_alerts', true)->get(),
                 ]);
             }
         }

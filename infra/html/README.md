@@ -1,1 +1,0 @@
-Estos HTMLs son la referencia visual aprobada. Antes de crear cualquier vista Blade, abre el HTML correspondiente y replícalo exactamente. Sin creatividad propia. Sin cambiar colores, fuentes ni estructura. Fuente: Inter.
