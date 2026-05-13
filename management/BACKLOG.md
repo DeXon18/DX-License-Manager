@@ -31,8 +31,18 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Gestión de Clientes — Identificador de Licencias e Inventario ✅
+- **Completada:** 2026-05-13
+- **Rama:** feature/client-license-filter
+- **Resumen:** Implementación de filtrado y señalización visual de clientes con licencias activas. Incluye Switch Técnico Premium (estilo iOS/Modern), badges de inventario unificados (11px) y persistencia de estado mediante Sesión para navegación fluida.
+- [x] Backend: Query optimizada con `withCount(['contracts', 'inventoryDaemons'])`.
+- [x] Filtro Persistente: Implementación de lógica de Sesión en `ClientController`.
+- [x] UI Premium: Switch de alta densidad con transiciones y sombras dinámicas.
+- [x] Badges: Unificación de tamaños y estilos siguiendo `DESIGN.md`.
+- [x] Fix: Resolución de conflictos de parámetros en URL (`clear_inventory` vs `has_inventory`).
 
 ---
+
 
 ### Fase 10.5 — Docker Monitor NOC Pro ✅
 - **Completada:** 2026-05-13
