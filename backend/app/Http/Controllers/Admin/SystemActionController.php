@@ -151,7 +151,7 @@ class SystemActionController extends Controller
             Log::info('Manual license alerts triggered by user: ' . auth()->id());
             Artisan::call('dx:send-weekly-alerts');
             $this->logAction('manual_alert_send', 'Manual license expiration alerts triggered');
-            return back()->with('success', 'El proceso de alertas se ha iniciado correctamente.');
+            return back()->with('success', 'El reporte semanal se ha generado y enviado a los contactos suscritos.');
         } catch (\Exception $e) {
             Log::error('Error triggering manual alerts: ' . $e->getMessage());
             return back()->with('error', 'Error al iniciar alertas: ' . $e->getMessage());

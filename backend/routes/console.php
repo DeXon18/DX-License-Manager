@@ -17,7 +17,7 @@ Schedule::job(new SendWeeklyLicenseAlertsJob)->mondays()->at('07:30');
 
 // Comando manual para pruebas
 Artisan::command('dx:send-weekly-alerts', function () {
-    $this->info('Iniciando envío manual de alertas semanales...');
-    SendWeeklyLicenseAlertsJob::dispatch();
-    $this->info('Job despachado correctamente a la cola.');
+    $this->info('Iniciando envío manual de alertas semanales (síncrono)...');
+    SendWeeklyLicenseAlertsJob::dispatchSync();
+    $this->info('Alertas procesadas y enviadas correctamente.');
 })->purpose('Enviar manualmente el reporte semanal de caducidad de licencias');
