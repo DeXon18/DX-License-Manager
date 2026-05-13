@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Detalle de Importación — DX Control Center')
+@section('title', 'Detalle de Importación — DX License Manager')
 
 @section('content')
 <div class="page-header">

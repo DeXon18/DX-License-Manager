@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Bandeja de Normalización — DX Control Center')
+@section('title', 'Bandeja de Normalización — DX License Manager')
 
 @section('content')
 @if(session('success'))

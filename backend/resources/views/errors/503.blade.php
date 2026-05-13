@@ -226,7 +226,7 @@
 </head>
 <body>
 
-    <div class="wordmark">DX Control Center</div>
+    <div class="wordmark">DX License Manager</div>
 
     <div class="card">
 
