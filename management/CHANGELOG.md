@@ -1,6 +1,20 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-13 14:30] — Estandarización de Nomenclatura y Transformación ✅
+
+### Added
+
+- **Nomenclatura Unificada Pro**: Implementación del nuevo estándar de nombres para NX Suite, StarCCM+ y HEEDS (`SOLDTO_HOSTNAME_CLIENTE_VERSION_Valida_FECHA.lic`).
+- **Soporte Multi-Sold-To**: Lógica dinámica para licencias unificadas (`S1-S2-S3` o `S1_Multi` para casos complejos).
+- **Extracción de Expiración**: Los nombres de archivo ahora reflejan la fecha real de caducidad (`DD-Mmm-YYYY`) extraída del bloque INCREMENT, no la fecha de creación.
+- **Normalización de Versiones**: Acortamiento inteligente de años (`2025` -> `25`) manteniendo los puntos para legibilidad (`V25.12`).
+
+### Fixed
+
+- **Blindaje de Transformación**: Corrección de bug crítico que corrompía bloques `INCREMENT` al confundir `VENDOR_STRING` con la línea `VENDOR` de cabecera.
+- **Estabilidad de Hostname**: Forzado de `localhost` en la línea `SERVER` para todas las licencias temporales, garantizando compatibilidad inmediata.
+
 ## [2026-05-13 12:45] — Gestión de Clientes y Estabilidad Alpine ✅
 
 ### Added
