@@ -10,17 +10,17 @@
 
 <div class="stats-row">
     <div class="stat-card">
-        <span class="stat-label">Contratos Activos</span>
+        <span class="stat-label">Licencias Activas</span>
         <span class="stat-value accent">{{ number_format($metrics['total']) }}</span>
-        <span class="stat-meta">Ecosistema Multi-Vendor</span>
+        <span class="stat-meta">Inventario Total Audidato</span>
     </div>
     <div class="stat-card danger">
-        <span class="stat-label">Urgentes / Caducados</span>
+        <span class="stat-label">Urgentes / Caducadas</span>
         <span class="stat-value danger">{{ number_format($metrics['critical']) }}</span>
         <span class="stat-meta">0–7 días · Acción inmediata</span>
     </div>
     <div class="stat-card warn">
-        <span class="stat-label">Próximos</span>
+        <span class="stat-label">Próximos Vencimientos</span>
         <span class="stat-value warn">{{ number_format($metrics['upcoming']) }}</span>
         <span class="stat-meta">Vencimiento en 8–30 días</span>
     </div>
@@ -34,22 +34,22 @@
 <div class="grid-2">
     <div class="card">
         <div class="card-header">
-            <span class="card-title">Vencimientos inminentes</span>
-            <a class="card-action" href="#">Ver todos →</a>
+            <span class="card-title">Vencimientos inminentes (Licencias)</span>
+            <a class="card-action" href="{{ route('admin.normalization.index') }}">Ver inventario →</a>
         </div>
         <table>
             <thead>
                 <tr>
                     <th>Cliente</th>
-                    <th>Vendor · Contrato</th>
+                    <th>Vendor · Sold-To</th>
                     <th>Caducidad</th>
                     <th>Estado</th>
                 </tr>
             </thead>
             <tbody>
-                @foreach($upcomingExpirations as $contract)
+                @foreach($upcomingExpirations as $license)
                     @php
-                        $daysLeft = now()->startOfDay()->diffInDays($contract->end_date, false);
+                        $daysLeft = now()->startOfDay()->diffInDays($license->expiration_date, false);
                         $badgeClass = 'badge-success';
                         $statusLabel = 'Vigente';
                         $dateSubClass = 'muted';
@@ -77,20 +77,27 @@
                         } else {
                             $diffText = "En $daysLeft días";
                         }
+
+                        $vendor = $license->daemon->vendor ?? 'siemens';
+                        $soldTo = $license->daemon->sold_to ?? 'N/A';
                     @endphp
                     <tr>
-                        <td><strong>{{ $contract->client->name ?? 'Desconocido' }}</strong></td>
+                        <td>
+                            <a href="{{ route('clients.show', $license->daemon->client->id ?? 0) }}" style="text-decoration: none; color: inherit;">
+                                <strong>{{ $license->daemon->client->name ?? 'Desconocido' }}</strong>
+                            </a>
+                        </td>
                         <td>
                             <div class="vendor-chip">
-                                <div class="vendor-dot" style="background: {{ str_contains(strtolower($contract->vendor->name ?? ''), 'siemens') ? 'var(--siemens)' : 'var(--moldex)' }}"></div>
-                                {{ $contract->vendor->name ?? 'Vendor' }}
+                                <div class="vendor-dot" style="background: {{ $vendor == 'siemens' ? 'var(--siemens)' : 'var(--moldex)' }}"></div>
+                                <span style="text-transform: uppercase; font-weight: 700; font-size: 10px;">{{ $vendor }}</span>
                             </div>
-                            <div style="font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace">
-                                {{ $contract->contract_number }}
+                            <div style="font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace; margin-top: 4px;">
+                                <span style="color: var(--secondary);">{{ $soldTo }}</span> · <span style="font-size: 10px;">{{ $license->product_code }}</span>
                             </div>
                         </td>
                         <td>
-                            <div class="date-main">{{ $contract->end_date ? $contract->end_date->format('d/m/Y') : '—' }}</div>
+                            <div class="date-main">{{ $license->expiration_date ? $license->expiration_date->format('d/m/Y') : '—' }}</div>
                             <div class="date-sub {{ $dateSubClass }}">{{ $diffText }}</div>
                         </td>
                         <td><span class="badge {{ $badgeClass }}">{{ $statusLabel }}</span></td>
