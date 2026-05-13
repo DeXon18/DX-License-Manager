@@ -41,7 +41,7 @@
             <thead>
                 <tr>
                     <th>Cliente</th>
-                    <th>Vendor · Sold-To</th>
+                    <th style="white-space: nowrap;">Vendor · Sold-To</th>
                     <th>Caducidad</th>
                     <th>Estado</th>
                 </tr>
