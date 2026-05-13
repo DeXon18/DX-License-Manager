@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contract;
 use App\Models\LicenseInventoryProduct;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -52,6 +53,19 @@ class DashboardController extends Controller
             ->limit(15)
             ->get();
 
-        return view('dashboard', compact('metrics', 'upcomingExpirations'));
+        // 4. Estados de Contratos (Gestión)
+        $identitiesPath = base_path('../.agent/secrets/identities.json');
+        $contractStatuses = [];
+        if (file_exists($identitiesPath)) {
+            $json = json_decode(file_get_contents($identitiesPath), true);
+            $contractStatuses = $json['estados_contrato'] ?? [];
+        }
+
+        $contractCounts = Contract::selectRaw('status, count(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status')
+            ->toArray();
+
+        return view('dashboard', compact('metrics', 'upcomingExpirations', 'contractStatuses', 'contractCounts'));
     }
 }
