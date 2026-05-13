@@ -513,82 +513,86 @@
                     <button @click="open = false" class="close-btn">&times;</button>
                 </div>
 
-                <div class="modal-body p-8" x-show="auditDetail">
-                    <!-- Top Info Cards -->
-                    <div class="audit-header-grid">
-                        <div class="audit-info-card">
-                            <span class="label">Account / Sold-To</span>
-                            <span class="value" x-text="auditDetail.sold_to || 'N/A'"></span>
-                        </div>
-                        <div class="audit-info-card">
-                            <span class="label">Ecosistema / Daemon</span>
-                            <div class="flex items-center gap-2">
-                                <span class="value daemon" x-text="auditDetail.results?.daemon || 'ugslmd'"></span>
-                                <span class="badge badge-accent sm">SIEMENS</span>
+                <div class="modal-body p-8">
+                    <template x-if="auditDetail">
+                        <div>
+                            <!-- Top Info Cards -->
+                            <div class="audit-header-grid">
+                                <div class="audit-info-card">
+                                    <span class="label">Account / Sold-To</span>
+                                    <span class="value" x-text="auditDetail?.sold_to || 'N/A'"></span>
+                                </div>
+                                <div class="audit-info-card">
+                                    <span class="label">Ecosistema / Daemon</span>
+                                    <div class="flex items-center gap-2">
+                                        <span class="value daemon" x-text="auditDetail?.results?.daemon || 'ugslmd'"></span>
+                                        <span class="badge badge-accent sm">SIEMENS</span>
+                                    </div>
+                                </div>
+                                <div class="audit-info-card" style="grid-column: span 2;">
+                                    <span class="label">Servidor / Hostname</span>
+                                    <div class="flex items-baseline gap-3">
+                                        <span class="value hostname" x-text="auditDetail?.results?.hostname || 'PENDIENTE'"></span>
+                                        <span class="text-xs font-mono" style="color: var(--accent)" x-text="auditDetail?.results?.composite ? 'Composite: ' + auditDetail.results.composite : ''"></span>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <!-- Unified Sold-Tos -->
+                            <div class="unified-box mt-6" x-show="auditDetail?.results?.unified_sold_tos?.length">
+                                <div class="flex items-center gap-3">
+                                    <i class="fa-solid fa-link text-warn" style="font-size: 10px;"></i>
+                                    <span class="label">Sold-Tos Unificados:</span>
+                                    <div class="flex flex-wrap gap-2">
+                                        <template x-for="st in auditDetail?.results?.unified_sold_tos">
+                                            <span class="badge badge-muted sm" x-text="st"></span>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+        
+                            <!-- Products Table -->
+                            <div class="mt-10">
+                                <h4 class="section-title">Desglose de Productos y Expiración</h4>
+                                <div class="audit-table-wrapper mt-4">
+                                    <table class="audit-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Producto</th>
+                                                <th>Descripción</th>
+                                                <th class="text-center">Cant.</th>
+                                                <th>Expiración</th>
+                                                <th style="width: 40px;"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template x-for="product in (auditDetail?.results?.products || [])">
+                                                <tr>
+                                                    <td class="font-bold font-mono text-sm" x-text="product.product_code || product.name" style="color: #fff;"></td>
+                                                    <td class="muted text-xs" x-text="product.description || '—'"></td>
+                                                    <td class="text-center">
+                                                        <span class="qty-badge" x-text="product.quantity || product.qty"></span>
+                                                    </td>
+                                                    <td>
+                                                        <span :class="{
+                                                            'expiry-badge': true,
+                                                            'upcoming': (product.expiration_date || product.expiry || '').includes('2026')
+                                                        }">
+                                                            <span x-text="product.expiration_date || product.expiry || 'Permanent'"></span>
+                                                            <template x-if="(product.expiration_date || product.expiry || '').includes('2026')">
+                                                                <span class="text-[9px] uppercase font-bold ml-1">(Próxima)</span>
+                                                            </template>
+                                                        </span>
+                                                    </td>
+                                                    <td><i class="fa-solid fa-trash-can text-xs opacity-20"></i></td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                        <div class="audit-info-card" style="grid-column: span 2;">
-                            <span class="label">Servidor / Hostname</span>
-                            <div class="flex items-baseline gap-3">
-                                <span class="value hostname" x-text="auditDetail.results?.hostname || 'PENDIENTE'"></span>
-                                <span class="text-xs font-mono" style="color: var(--accent)" x-text="auditDetail.results?.composite ? 'Composite: ' + auditDetail.results.composite : ''"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Unified Sold-Tos -->
-                    <div class="unified-box mt-6" x-show="auditDetail.results?.unified_sold_tos?.length">
-                        <div class="flex items-center gap-3">
-                            <i class="fa-solid fa-link text-warn" style="font-size: 10px;"></i>
-                            <span class="label">Sold-Tos Unificados:</span>
-                            <div class="flex flex-wrap gap-2">
-                                <template x-for="st in auditDetail.results?.unified_sold_tos">
-                                    <span class="badge badge-muted sm" x-text="st"></span>
-                                </template>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Products Table -->
-                    <div class="mt-10">
-                        <h4 class="section-title">Desglose de Productos y Expiración</h4>
-                        <div class="audit-table-wrapper mt-4">
-                            <table class="audit-table">
-                                <thead>
-                                    <tr>
-                                        <th>Producto</th>
-                                        <th>Descripción</th>
-                                        <th class="text-center">Cant.</th>
-                                        <th>Expiración</th>
-                                        <th style="width: 40px;"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <template x-for="product in (auditDetail.results?.products || [])">
-                                        <tr>
-                                            <td class="font-bold font-mono text-sm" x-text="product.product_code || product.name" style="color: #fff;"></td>
-                                            <td class="muted text-xs" x-text="product.description || '—'"></td>
-                                            <td class="text-center">
-                                                <span class="qty-badge" x-text="product.quantity || product.qty"></span>
-                                            </td>
-                                            <td>
-                                                <span :class="{
-                                                    'expiry-badge': true,
-                                                    'upcoming': (product.expiration_date || product.expiry || '').includes('2026')
-                                                }">
-                                                    <span x-text="product.expiration_date || product.expiry || 'Permanent'"></span>
-                                                    <template x-if="(product.expiration_date || product.expiry || '').includes('2026')">
-                                                        <span class="text-[9px] uppercase font-bold ml-1">(Próxima)</span>
-                                                    </template>
-                                                </span>
-                                            </td>
-                                            <td><i class="fa-solid fa-trash-can text-xs opacity-20"></i></td>
-                                        </tr>
-                                    </template>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    </template>
                 </div>
                 
                 <div class="modal-footer" style="background: transparent; border: none; padding-top: 0;">
