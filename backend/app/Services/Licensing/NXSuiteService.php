@@ -54,14 +54,14 @@ class NXSuiteService
         $hostid   = $parts[2];
         $port     = $parts[3];
 
+        // En licencias temporales, siempre usar localhost para evitar fallos de resolución
+        if ($isTemporal7Days && ($hostname === 'YourHostname' || $hostname === 'ANY')) {
+            $hostname = 'localhost';
+        }
+
         if ($motor === self::MOTOR_LEGACY) {
-            // Legacy (28000)
-            if ($isTemporal7Days && ($hostname === 'YourHostname' || $hostname === 'ANY')) {
-                $hostname = 'localhost';
-            }
             $port = '28000';
         } else {
-            // SALT (29000)
             $port = '29000';
         }
 
@@ -73,12 +73,12 @@ class NXSuiteService
      */
     private function transformVendorLine(string $line, string $motor): string
     {
-        if ($motor === self::MOTOR_SALT) {
+        if ($motor === self::MOTOR_SALT && preg_match('/^VENDOR\s+ugslmd\b/i', trim($line))) {
             // VENDOR ugslmd -> VENDOR saltd saltd PORT=29001
             return "VENDOR saltd saltd PORT=29001";
         }
 
-        // En Legacy, se mantiene ugslmd o el que venga
+        // Si no es la línea de definición del vendor o es legacy, mantener original
         return $line;
     }
 
