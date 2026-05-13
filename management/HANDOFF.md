@@ -1,5 +1,5 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-13 11:25  
+> Última actualización: 2026-05-13 12:50  
 > Sesión en: Antigravity Desktop  
 > Rama activa: dev  
 
@@ -8,7 +8,7 @@
 
 ## Estado General
 
-**Fase actual:** Fase 13 — Alertas y Notificaciones ✅ COMPLETADA  
+**Fase actual:** Gestión de Clientes (Filtros & Estabilización) ✅ COMPLETADA  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -16,36 +16,37 @@
 
 ## Qué se hizo en esta sesión
 
-- **Docker Fleet Monitor**: Consolidación y merge de la Fase 10.5. Telemetría CPU/RAM y acciones de reinicio operativas.
-- **Merge feature/docker-monitor**: Rama de feature cerrada y mergeada a `dev` limpiamente.
-- **Sincronización de Documentación**: ROADMAP, BACKLOG y CHANGELOG actualizados y unificados en `dev`.
-
+- **Gestión de Clientes (Inventario)**: Implementación de filtrado dinámico persistente (Sesión) y señalización visual de licencias activas.
+- **Switch Técnico Industrial**: Rediseño del filtro con estética cuadrada (6px), knob físico y look sobrio.
+- **Blindaje Alpine.js**: Eliminación total de errores de nulos en modales de auditoría y generadores mediante `x-if` y optional chaining.
+- **Unificación de Badges**: Los badges de inventario ahora cumplen con `DESIGN.md` (oficiales, pill-shape).
+- **Merge & Sync**: Integración de las ramas de feature y fix en `dev`. Documentación actualizada.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-- Validar con el usuario el siguiente paso. Las opciones son iniciar la **Fase 15 (Integraciones IA)** para terminar de configurar proveedores, o la **Fase 17 (Limpieza UI)** para consolidar estilos.
+- Validar con el usuario el inicio de la **Fase 15 (Integraciones IA)** o continuar con el refinamiento de las herramientas de auditoría.
 
 ### Tareas siguientes
-1. Configuración profunda de proveedores IA (Gemini 1.5 Pro, etc.).
-2. Auditoría de estilos redundantes en vistas Blade.
-3. Consolidación de componentes en `dx-styles.css`.
+1. Configuración de Gemini 1.5 Pro en el motor de auditoría.
+2. Refinado estético de las tablas de inventario en la vista de cliente.
+3. Auditoría de performance de las queries de búsqueda de clientes.
 
 ---
 
 ## Contexto técnico importante
 
-- **Logs de Email**: Ahora el sistema es totalmente automático. Cualquier `Mail::send()` queda registrado una sola vez gracias al `EmailLoggerListener`. No añadir `EmailLog::create()` manualmente en los Jobs.
-- **Permisos**: Si vuelven a fallar las vistas (Permission denied), ejecutar `docker exec dx-php-beta php artisan view:clear`.
-- **Asunto Emails**: Se ha unificado el sufijo "— DX License Manager" en el mailable.
+- **Persistencia de Filtros**: El filtro "Solo con Licencias" persiste en la sesión. Para limpiar todos los filtros de inventario, se usa la ruta con `clear_inventory=1`.
+- **Estabilidad Alpine**: Se ha establecido el patrón `<template x-if="data">` como obligatorio para cualquier modal que cargue datos de forma asíncrona (como auditorías).
+- **Badges**: Usar siempre la clase `.badge` y `.badge-warning` para Sold-To.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-Ninguno. Todo el sistema de alertas quedó validado y con historial limpio (1 línea por envío).
+Ninguno. El sistema es estable y la consola de desarrollo está limpia de errores de JS.
 
 ---
 
@@ -56,16 +57,17 @@ Ninguno. Todo el sistema de alertas quedó validado y con historial limpio (1 l�
 | `infra/.env.prod` | ✅ configurado |
 | `infra/.env.beta` | ✅ configurado |
 | `backend/.env` | ✅ configurado |
-| `backend/vendor/` | ✅ instalado |
+| `backend/resources/views/clients/index.blade.php` | ✅ Refinado (Industrial) |
+| `backend/resources/views/clients/show.blade.php` | ✅ Blindado (Alpine) |
 
 ---
 
 ## Comandos útiles para la próxima sesión
 
 ```bash
-# Probar envío de alertas manualmente (síncrono)
-docker exec dx-php-beta php artisan dx:send-weekly-alerts
+# Limpiar caché de vistas si hay cambios en Blade
+docker exec dx-php-beta php artisan view:clear
 
-# Ver historial de emails directamente en DB
-docker exec dx-mariadb-beta mysql -u dxportal -pVenganz@69!MyslBetaTester dxportal_beta -e 'SELECT * FROM email_logs ORDER BY created_at DESC LIMIT 10;'
+# Verificar logs del contenedor en tiempo real
+docker compose --project-directory . -f infra/docker-compose.beta.yml logs -f dx-php-beta
 ```

@@ -33,13 +33,13 @@ El desarrollador inicia. El agente espera.
 
 ### Gestión de Clientes — Identificador de Licencias e Inventario ✅
 - **Completada:** 2026-05-13
-- **Rama:** feature/client-license-filter
-- **Resumen:** Implementación de filtrado y señalización visual de clientes con licencias activas. Incluye Switch Técnico Premium (estilo iOS/Modern), badges de inventario unificados (11px) y persistencia de estado mediante Sesión para navegación fluida.
+- **Rama:** feature/client-license-filter + fix/alpine-audit-null-errors (merged)
+- **Resumen:** Implementación de filtrado y señalización visual de clientes con licencias activas. Incluye Switch Técnico Industrial (diseño cuadrado 6px, look profesional sin glow), unificación de badges de inventario y blindaje preventivo contra errores de nulos en Alpine.js (`x-if` + optional chaining) en todo el portal.
 - [x] Backend: Query optimizada con `withCount(['contracts', 'inventoryDaemons'])`.
 - [x] Filtro Persistente: Implementación de lógica de Sesión en `ClientController`.
-- [x] UI Premium: Switch de alta densidad con transiciones y sombras dinámicas.
-- [x] Badges: Unificación de tamaños y estilos siguiendo `DESIGN.md`.
-- [x] Fix: Resolución de conflictos de parámetros en URL (`clear_inventory` vs `has_inventory`).
+- [x] UI Industrial: Switch de alta precisión con bordes técnicos de 6px y knob físico.
+- [x] Estabilidad Alpine: Blindaje total en modales de auditoría y herramientas (COD, Moldex).
+- [x] Unificación: Badges de Sold-To alineados al sistema de diseño oficial.
 
 ---
 

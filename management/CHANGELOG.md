@@ -1,6 +1,22 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-13 12:45] — Gestión de Clientes y Estabilidad Alpine ✅
+
+### Added
+
+- **Filtro de Inventario Pro**: Implementación de filtrado dinámico para clientes con licencias activas.
+- **Switch Técnico Industrial**: Nuevo componente UI con diseño cuadrado (6px), knob físico y transiciones precisas, eliminando efectos de glow para un look más profesional.
+- **Persistencia de Filtros**: Lógica de persistencia basada en Sesión para mantener el estado del filtro entre navegaciones y búsquedas.
+- **Unificación de Badges**: Los badges de inventario (Sold-To) ahora siguen estrictamente el sistema de diseño (`badge badge-warning`) con forma de píldora y tipografía mono.
+- **Iconografía Técnica**: Sustitución de iconos genéricos por iconos técnicos (`fa-sliders`, `fa-database`) en toda la gestión de clientes.
+
+### Fixed
+
+- **Blindaje Alpine.js**: Eliminación definitiva de errores `Cannot read properties of null` en modales de auditoría y generador de COD mediante `<template x-if>` y encadenamiento opcional (`?.`).
+- **Navegación Fluida**: Corrección de conflictos entre parámetros de búsqueda y filtros de inventario en la URL.
+- **Layout de Clientes**: Optimización de la densidad de información en el listado principal.
+
 ## [2026-05-13] — Fase 10.5: Docker Monitor NOC Pro ✅
 
 ### Added
