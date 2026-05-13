@@ -1,6 +1,6 @@
-Rama activa: feature/expiration-alerts-system. Fase 13 — Alertas y Notificaciones ✅. 
-Último trabajo: Refactorización completa del sistema de alertas hacia un Reporte Global Interno (GlobalLicenseExpirationReport). Eliminada duplicidad de logs en EmailLoggerListener (quitando registro redundante en AppServiceProvider). Solucionado error de permisos en servidor (storage/framework/views) y limpieza de caché.
-Estado: Alertas 100% funcionales. Reporte consolidado se envía a soporte@ats-global.com cada lunes 07:30. Test manual validado.
-Próximo paso inmediato: Revisar Phase 15 (Integraciones IA) o Fase 17 (Limpieza UI).
+Rama activa: feature/docker-monitor (Commiteada). Fase 10.5 ✅ y Fase 13 ✅.
+Último trabajo: Commiteada la implementación de Docker Fleet Monitor que el agente anterior dejó pendiente. Verificado que los logs están limpios y que el sistema es estable.
+Estado: Flota Docker monitorizada desde el panel NOC Pro. Alertas de licencias funcionales con reporte global.
+Próximo paso inmediato: Iniciar Fase 15 (Integraciones IA) o Fase 17 (Limpieza UI) según decida Oskar.
 Bloqueos: Ninguno.
 Stack beta: running. Stack prod: running.
