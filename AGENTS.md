@@ -1,13 +1,35 @@
 # AGENTS.md — DX License Manager
 
 Protocolo de operación para el agente en Antigravity.
-Este documento tiene prioridad sobre cualquier instrucción implícita o asumida.
+**Este documento tiene prioridad absoluta sobre cualquier instrucción implícita o asumida.**
+Contexto de proyecto → `.agent/INDEX.md` · Estado activo → `.agent/memory/ACTIVE_CONTEXT.md`
+
+---
+
+## ⛔ REGLA CERO — LEER ANTES DE CUALQUIER COSA
+
+**NUNCA ejecutar después de presentar un plan. NUNCA. Sin excepciones.**
+
+```
+1. Recibir tarea
+2. Leer INDEX.md → identificar skill · Leer ACTIVE_CONTEXT.md → recuperar estado
+3. Presentar plan dividido en pasos
+4. ── DETENERSE ──
+5. Esperar confirmación explícita: "adelante" / "ok" / "sí" / "procede" / "empieza"
+6. Solo entonces: ejecutar Paso 1 únicamente
+```
+
+Si no hay confirmación explícita → preguntar: `"¿Empezamos con el Paso 1?"`
+Una aprobación automática del sistema NO es confirmación del desarrollador.
+
+Al iniciar sesión, declarar: **"Modo estricto activo. No ejecuto sin confirmación explícita."**
 
 ---
 
 ## 0. Idioma
 
-**Siempre responder en castellano.** Sin excepciones — aunque el código, los archivos, los errores o las preguntas estén en inglés, la respuesta siempre es en castellano. Los comentarios de código, mensajes de commit y documentación técnica sí van en inglés (estándar del sector), pero todo lo que el agente comunica al desarrollador va en castellano.
+**Siempre responder en castellano.** Sin excepciones — aunque el código, los errores o las preguntas estén en inglés.
+Excepción: comentarios de código, mensajes de commit y documentación técnica → en inglés (estándar del sector).
 
 ---
 
@@ -15,26 +37,17 @@ Este documento tiene prioridad sobre cualquier instrucción implícita o asumida
 
 **Cada `/log` y cada `/sync` termina con un commit. Sin excepciones.**
 
-Un trabajo sin commit no existe. Antes de cada commit, verificar qué se commitea:
-
 ```bash
-git status          # qué archivos están modificados
-git diff --cached   # qué cambios exactos van al commit
+git status           # revisar siempre antes
+git diff --cached    # verificar qué va al commit
+git add [archivos concretos]
+git commit -m "feat/fix/chore(scope): descripción"
 ```
 
-Solo si el diff es correcto, proceder:
-
-```bash
-# Tras /log
-git add [archivos tocados] management/CHANGELOG.md
-git commit -m "feat/fix/chore(...): descripción"
-
-# Tras /sync
-git add management/CHANGELOG.md management/ROADMAP.md management/BACKLOG.md
-git commit -m "docs(sync): [bloque] completado"
-```
-
-**Nunca usar `git add .` sin revisar `git status` primero.**
+- **Nunca** `git add .` sin revisar `git status` primero
+- **Nunca** `wip` ni `changes` como mensaje de commit
+- **Nunca** acumular varias subtareas en un solo commit
+- **Nunca** hacer merge a `main` sin autorización explícita del desarrollador — ni via PR, ni via comando, ni via workflow
 
 ---
 
@@ -42,7 +55,7 @@ git commit -m "docs(sync): [bloque] completado"
 
 **Cuando algo falla, el agente PARA. No continúa. No aplica workarounds silenciosos.**
 
-1. Mostrar el error exacto al desarrollador
+1. Mostrar el error exacto
 2. Analizar causa siguiendo `debug-reasoning.md`
 3. Proponer solución y esperar confirmación
 4. Solo continuar cuando el problema esté resuelto y verificado
@@ -51,27 +64,85 @@ git commit -m "docs(sync): [bloque] completado"
 
 ---
 
-## 0.3 DESIGN.md — Obligatorio para cualquier UI
-
+## 0.3 DESIGN.md — Obligatorio para Cualquier UI
+ 
 **Antes de crear cualquier vista, componente o elemento visual → leer `DESIGN.md`.**
-
-Sin excepción. El sistema de diseño del proyecto está definido ahí: tipografía, colores, espaciado, componentes. No improvisar estilos.
+No improvisar estilos. Referencia visual obligatoria: vistas Blade ya existentes en `backend/resources/views/` — mantener coherencia con lo construido, no inventar patrones nuevos.
 
 ---
-
+ 
 ## 0.4 Descomposición Obligatoria — Antes de Ejecutar, Dividir
-
-**Antes de ejecutar cualquier tarea, presentar el plan dividido en pasos pequeños y esperar confirmación.**
-
+ 
+**Presentar siempre el plan antes de ejecutar:**
+ 
 ```
 📋 Plan para: [tarea]
 Paso 1: [un archivo o un comando]
 Paso 2: [un archivo o un comando]
 ¿Empezamos con el Paso 1?
 ```
+ 
+---
+ 
+## 0.4.1 Modo Plan — Tareas No Triviales (3+ pasos)
+ 
+Para cualquier tarea con 3 o más pasos, antes de presentar el plan:
+ 
+1. Identificar archivos afectados
+2. Detectar dependencias y riesgos
+3. Escribir specs concretos (qué hace cada paso, qué NO hace)
+4. Estimar si algún paso requiere backup previo
 
+Si algo sale mal durante la ejecución → PARAR y re-planear desde ese punto.
+No improvisar sobre un plan roto.
+ 
+---
+ 
+## 0.4.2 Reglas de Planificación — Modo Estricto
+ 
+- No alterar el orden sin permiso
+- No saltar pasos
+- No reordenar, no combinar, no optimizar sin preguntar
+- Si ves algo que se podría hacer mejor → solo sugerir, no ejecutar
 Cada paso debe poder completarse, verificarse y commitearse de forma independiente.
-Una tarea que no cabe en un commit es una tarea demasiado grande — dividirla.
+
+Una tarea que no cabe en un commit es demasiado grande — dividirla.
+ 
+---
+ 
+## 0.4.3 Checklist Obligatorio — El Agente No Puede Mentir
+ 
+**Antes de empezar**, el agente genera el checklist completo de la tarea:
+ 
+```
+✅ CHECKLIST — [nombre de la tarea]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[ ] Paso 1: [descripción concreta]
+[ ] Paso 2: [descripción concreta]
+[ ] Paso 3: [descripción concreta]
+[ ] Verificación final: [qué demuestra que funciona]
+[ ] Commit realizado
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+ 
+**Tras completar cada paso**, el agente muestra el checklist actualizado:
+ 
+```
+✅ CHECKLIST — [nombre de la tarea]
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[x] Paso 1: [descripción] ← output: [resultado real obtenido]
+[ ] Paso 2: [descripción]
+[ ] Paso 3: [descripción]
+[ ] Verificación final
+[ ] Commit realizado
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+ 
+**Reglas del checklist:**
+- Un paso solo se marca  si hay evidencia real (output de comando, archivo creado, test pasado)
+- Nunca marcar  por inferencia — solo por resultado verificado
+- Si un paso falla → marcar  y PARAR
+- El checklist final debe estar 100% completo antes de hacer el commit de cierre
 
 ---
 
@@ -79,76 +150,42 @@ Una tarea que no cabe en un commit es una tarea demasiado grande — dividirla.
 
 **Un paso. Un archivo. Un comando. Verificar. Commitear. Siguiente.**
 
-Prohibido crear múltiples archivos a la vez, encadenar comandos sin revisar output, o pasar al siguiente paso sin verificar el anterior.
+Prohibido: crear múltiples archivos a la vez · encadenar comandos sin revisar output · avanzar sin verificar el paso anterior.
 
 ---
 
 ## 0.5.1 Detección de Cambio de Tarea — Regla Absoluta
 
-**Antes de ejecutar cualquier petición nueva, el agente se pregunta:**
+**Antes de ejecutar cualquier petición nueva:**
 
 ```
-¿Lo que me están pidiendo pertenece a la rama en la que estoy?
+¿Lo que me piden pertenece a la rama en la que estoy?
 ```
 
-Si la respuesta es NO o NO ESTOY SEGURO → ejecutar `/switch` inmediatamente. No escribir código. No ejecutar comandos. Cerrar la rama actual primero.
+Si NO o NO ESTOY SEGURO → ejecutar `/switch` inmediatamente. No escribir código. Cerrar la rama actual primero.
 
-**Señales de cambio de tarea:**
-
-- La petición involucra un módulo distinto al de la rama activa
-- El nombre de la rama no describe lo que se está pidiendo
-- El desarrollador dice "ahora vamos a...", "cambia de tema", "necesito otra cosa"
-- La nueva tarea lógicamente iría en una rama con nombre diferente
-
-Ver procedimiento completo en `.agent/workflows/switch-task.md`.
+**Señales de cambio de tarea:** módulo distinto · nombre de rama no describe lo pedido · "ahora vamos a..." / "necesito otra cosa" · lógicamente iría en otra rama.
 
 ---
 
-## 0.5.2 Validación Manual de Planes — Regla Absoluta
-
-Después de generar un plan de implementación (`implementation_plan.md`), el agente NO debe ejecutarlo automáticamente.
-
-El agente DEBE esperar una confirmación explícita del usuario, como:
-
-- "adelante"
-- "ok"
-- "sí"
-- "procede"
-- "empieza"
-
-Cualquier otra respuesta (incluyendo silencios, confirmaciones parciales o respuestas vagas) NO debe interpretarse como autorización para ejecutar el plan.
-
-**Procedimiento:**
-
-1. Generar `implementation_plan.md`
-2. Presentarlo al usuario
-3. Esperar confirmación explícita
-4. **Solo** si hay confirmación explícita, proceder a ejecutar el plan
-5. Si no hay confirmación, pedir al usuario qué desea hacer a continuación
-
-**Nunca** asumir que una aprobación automática del sistema implica autorización del usuario.
-
----
-
-## 0.5.3 Escritura de Archivos — Regla Crítica
-
-**SIEMPRE** usar el MCP filesystem con ruta UNC:
-`\\192.168.50.10\webs\[NOMBRE-PROYECTO]\`
-
-**NUNCA:**
-- Usar `write_to_file` con rutas locales
-- Usar rutas tipo `Z:\` o `Y:\`
-- Crear archivos fuera de la ruta UNC del proyecto activo
+## 0.5.2 Escritura de Archivos — Regla Crítica
+ 
+Usar según lo disponible en el IDE activo:
+ 
+| Situación | Ruta a usar |
+| :--- | :--- |
+| MCP filesystem configurado | `\\192.168.50.10\webs\DX-License-Manager\` |
+| Sin MCP — unidad mapeada | `Z:\DX-License-Manager\` o `Y:\DX-License-Manager\` |
+ 
+**NUNCA** crear archivos fuera del proyecto activo ni mezclar rutas entre proyectos.
 
 ---
 
 ## 0.6 Acciones Destructivas — Confirmación Obligatoria
 
-Estos comandos requieren "sí" explícito del desarrollador antes de ejecutarse:
+Requieren `"sí"` explícito antes de ejecutarse:
 
-`migrate:fresh` · `migrate:rollback` · `git push --force` · `git reset --hard` · `git rebase` · `git merge` · `rm -rf` · `docker compose down -v` · `docker system prune`
-
-Formato obligatorio antes de ejecutar cualquiera:
+`migrate:fresh` · `migrate:rollback` · `git push --force` · `git reset --hard` · `git rebase` · `git merge` · `rm -rf` · `docker compose down -v` · `docker system prune` · `systemctl stop cloudflared` · `systemctl disable cloudflared`
 
 ```
 ⚠️ Acción destructiva detectada
@@ -156,507 +193,95 @@ Comando: [comando exacto]
 Consecuencia: [qué se perderá]
 ¿Confirmas? (sí/no)
 ```
-`systemctl stop cloudflared` · `systemctl disable cloudflared` · `rm -rf /etc/cloudflared`
 
 ---
 
 ## 0.7 Scope — Qué Puede Tocar el Agente
 
-| Zona                                                         | Acceso             |
-| :----------------------------------------------------------- | :----------------- |
-| `backend/`, `management/`, `task.md`, `.agent/`              | ✅ Libre           |
+| Zona | Acceso |
+| :--- | :----- |
+| `backend/`, `management/`, `task.md`, `.agent/` | ✅ Libre |
 | `infra/`, `scripts/`, `.gitignore`, `AGENTS.md`, `DESIGN.md` | ⚠️ Confirmar antes |
-| `infra/.env.*`, `.agent/secrets/`, `storage/`                | 👁️ Solo Lectura    |
+| `infra/.env.*`, `.agent/secrets/`, `storage/` | 👁️ Solo Lectura |
+| `.agent/secrets/`, `infra/.env.beta`, `infra/.env.prod`, `storage/` | ⛔ No tocar |
 
 ---
 
-## 0.8 Principios de Operación y Reglas de Oro
-
-### 0.8.1 Las 5 Leyes del Modo Estricto
-
-1. **Sin plan no hay ejecución.** El agente presenta el plan y espera confirmación explícita.
-2. **Sin evidencia no hay "hecho".** Demostrar funcionamiento con logs, comandos, etc.
-3. **Sin log no hay fix.** Analizar logs antes de proponer solución.
-4. **Sin rama no hay código.** `/switch` inmediato si la tarea no corresponde.
-5. **Un archivo por respuesta.** Estricto.
-6. **Ley 6 — Sin memoria no hay contexto.** Antes de iniciar cualquier tarea, el agente DEBE leer `.agent/last_brain` y `.agent/memory/ACTIVE_CONTEXT.md` y verificar que el contexto mental del agente anterior ha sido procesado.
-
-### 0.8.2 Resumen de Penalizaciones
-
-| Infracción                      | Consecuencia                               |
-| :------------------------------ | :----------------------------------------- |
-| Ejecutar sin confirmar plan     | Desarrollador dice "STOP" — borra lo hecho |
-| Marcar como hecho sin evidencia | Demostrar funcionamiento                   |
-| Fix sin leer log                | Reformular diagnóstico                     |
-| Código en rama incorrecta       | `/switch` inmediato                        |
-| Más de un archivo por respuesta | Dev ignora respuesta                       |
-
-### 0.8.3 Principios Operativos
-
-1. **Una cosa a la vez:** Trabajar en un solo item del `task.md`.
-2. **Detección proactiva de cambio de tarea:** Siempre preguntar: "¿Pertenece a la rama actual?".
-3. **Parar ante problemas:** Nunca aplicar workarounds silenciosos.
-4. **Acciones destructivas:** Confirmación obligatoria (sí/no) para `rm`, `migrate`, etc.
-5. **Descomposición:** Todo plan debe ser dividido en pasos pequeños.
-6. **Integridad de Datos Beta:** A partir de Fase 4, la base de datos Beta contiene datos reales. **PROHIBIDO** el uso de `migrate:fresh`. Solo migraciones incrementales.
-7. **Confirmación Manual Obligatoria:** Tras presentar un plan (`implementation_plan.md`), el agente **DEBE** esperar un "adelante", "ok" o similar explícito de Oskar. Se ignorarán aprobaciones automáticas del sistema para evitar inicios no deseados.
-
----
-
-## 0.9 Protocolo de Seguridad de Datos — REGLA DE ORO
+## 0.8 Seguridad de Datos — Regla de Oro
 
 **PROHIBIDO realizar cambios estructurales o ejecutar tests en el servidor sin backup previo.**
 
-1. **Backup Preventivo Obligatorio**: Antes de cada `migrate`, `db:seed`, o ejecución de tests de integración, el agente DEBE ejecutar:
-   ```bash
-   # En el servidor (LXC 600)
-   ./scripts/backup-db.sh beta
-   ```
-2. **Aislamiento Total de Tests**: Los tests en el servidor NUNCA deben tocar MariaDB. Es obligatorio forzar SQLite en memoria en el comando `docker exec`:
-   ```bash
-   docker exec -e DB_CONNECTION=sqlite -e DB_DATABASE=:memory: dx-php-beta php artisan test
-   ```
-3. **Verificación Post-Backup**: El agente debe confirmar que el archivo de backup se ha creado en `storage/backups/db/` antes de proceder.
-4. **Prohibición de `migrate:fresh`**: Como se indica en la Fase 4, el uso de `migrate:fresh` en Beta está terminantemente prohibido. Solo migraciones incrementales.
-
----
-
-## 1. Identidad del Proyecto
-
-**DX License Manager** es un portal empresarial interno para gestión avanzada de licencias de software con auditoría por IA.
-
-| Dato          | Valor                                    |
-| :------------ | :--------------------------------------- |
-| Repo          | `github.com/DeXon18/DX-License-Manager`  |
-| Beta          | `beta.dxpro.es` → `192.168.50.60:8002`   |
-| Prod          | `portal.dxpro.es` → `192.168.50.60:8001` |
-| Servidor      | LXC 600 `srv-dxportal` en Proxmox        |
-| Desarrollador | DeXon (Oskar) — `dexon18@gmail.com`      |
-
-El contexto completo de infraestructura vive en `.agent/secrets/identities.json` (local, nunca en Git).
-
----
-
-## 2. Stack Tecnológico
-
-**⚠️ El PC del desarrollador NO tiene ningún runtime instalado.** PHP, Composer, Artisan, MariaDB y Redis corren exclusivamente dentro de Docker en el LXC 600. Nunca ejecutar `php`, `composer`, `artisan` o `mysql` en local — siempre via SSH al servidor.
-
-| Capa          | Tecnología                           |
-| :------------ | :----------------------------------- |
-| Backend       | PHP 8.2 / Laravel 11                 |
-| Vistas        | Laravel Blade                        |
-| CSS           | Tailwind CSS                         |
-| JS            | Alpine.js (sin build step)           |
-| BD            | MariaDB 10.11 LTS                    |
-| Caché / Colas | Redis 7.x                            |
-| Web server    | Nginx 1.25+                          |
-| Contenedores  | Docker 24+ / Compose V2              |
-| SSL           | Cloudflare (Nginx solo HTTP interno) |
-| CI/CD         | GitHub Actions                       |
-
----
-
-## 3. Reglas de Rama (Git) — Obligatorias
-
-### 3.1 Una rama por funcionalidad — sin excepciones
-
-Cada tarea del task.md que produzca código tiene su propia rama. Cuando la tarea termina, la rama termina.
-
-```
-feature/laravel-install     ← instalar Laravel
-feature/auth-login          ← login web
-feature/migrations-base     ← migrations del modelo real
-feature/csv-importer        ← importador CSV
-fix/nginx-redirect-loop     ← fix concreto
-chore/update-agents-docs    ← solo documentación
-```
-
-**Prohibido:**
-
-- ❌ Hacer login + migrations + importador CSV en la misma rama
-- ❌ Acumular más de una funcionalidad por rama
-- ❌ Reutilizar una rama de una sesión anterior para otra cosa distinta
-
-### 3.2 Ciclo de vida de una rama
-
-```
-1. Crear rama desde dev
-   git checkout dev
-   git pull origin dev
-   git checkout -b feature/nombre-corto
-
-2. Trabajar — un commit por subtarea completada
-
-3. Al terminar la tarea
-   git push origin feature/nombre-corto
-   → El desarrollador hace el PR y merge manualmente
-
-4. Nunca reutilizar la rama después del merge
-```
-
-### 3.3 Commit tras cada subtarea — obligatorio
-
-**Cada subtarea completada genera un commit. No esperar al final del bloque.**
-
 ```bash
-# Al terminar cada item del task.md:
-git status
-git diff --cached
-git add [archivos concretos]
-git commit -m "feat(auth): add showLogin method to AuthController"
+# Obligatorio antes de migrate, db:seed o tests de integración
+./scripts/backup-db.sh beta
+# Verificar que el backup existe en storage/backups/db/ antes de continuar
 ```
 
-Convención de mensajes:
-
-```
-feat(scope):   nueva funcionalidad
-fix(scope):    corrección de bug
-chore(scope):  mantenimiento, config, docs
-ci(scope):     cambios en CI/CD
-```
-
-**Prohibido:**
-
-- ❌ `git commit -m "wip"`
-- ❌ `git commit -m "changes"`
-- ❌ `git add .` sin revisar `git status` primero
-- ❌ Acumular varias subtareas en un solo commit
-- ❌ Llegar al final del bloque sin haber commiteado nada
-
-### 3.4 Operaciones Git destructivas — confirmación obligatoria
-
-Nunca ejecutar sin "sí" explícito del desarrollador:
-
-| Comando            | Por qué es peligroso                                                       |
-| :----------------- | :------------------------------------------------------------------------- |
-| `git push --force` | Reescribe historial remoto                                                 |
-| `git reset --hard` | Descarta cambios locales permanentemente                                   |
-| `git rebase`       | Reescribe commits                                                          |
-| `git merge`        | Lo ejecuta el agente SOLO via `/merge` con CI en verde — nunca manualmente |
-| `git stash drop`   | Borra trabajo sin commitear                                                |
-
-### 3.6 Puntos de Control por Fase — Regla Innegociable
-
-Al terminar cada fase del ROADMAP:
-1.  **Merge obligatorio** a `dev` vía Pull Request (el agente tiene permiso para crear el PR) pero siempre pidiendo autorización al usuario.
-2.  **Etiquetado obligatorio**: Crear un Git Tag descriptivo (ej: `v5.0-dashboard-ok`) para marcar el punto estable.
-3.  **Descripción clara**: El commit de cierre debe indicar explícitamente "Fase X Terminada — Punto de Restauración".
-
-Esto garantiza que si hay un fallo grave posterior, siempre se puede volver al estado exacto de la fase anterior.
-
----
-
-## 4. Arquitectura Docker — Cómo Trabajar
-
-Los stacks **beta** y **prod** son completamente independientes. Siempre lanzar desde la **raíz del proyecto** con `--project-directory .`:
-
+Tests en servidor: **siempre** forzar SQLite en memoria:
 ```bash
-# Beta (rama dev → beta.dxpro.es:8002)
-docker compose --project-directory . -f infra/docker-compose.beta.yml up -d
-docker compose --project-directory . -f infra/docker-compose.beta.yml ps
-docker compose --project-directory . -f infra/docker-compose.beta.yml logs -f
-
-# Prod (rama main → portal.dxpro.es:8001)
-docker compose --project-directory . -f infra/docker-compose.prod.yml up -d
-docker compose --project-directory . -f infra/docker-compose.prod.yml ps
-docker compose --project-directory . -f infra/docker-compose.prod.yml logs -f
+docker exec -e DB_CONNECTION=sqlite -e DB_DATABASE=:memory: dx-php-beta php artisan test
 ```
 
-Cada stack tiene 4 servicios: `nginx`, `php-fpm`, `mariadb`, `redis`.  
-Las variables de entorno viven en `infra/.env.beta` e `infra/.env.prod` — nunca en Git.
-
-### 4.1 Configuración Centralizada (Docker Volumes)
-Para evitar desincronizaciones y centralizar la gestión, el archivo `.env` de Laravel se inyecta mediante volúmenes de Docker desde la carpeta `infra/`.
-
-- **Beta**: Archivo `infra/.env.beta` montado como `/var/www/html/.env` en el contenedor `dx-php-beta`.
-- **Prod**: Archivo `infra/.env.prod` montado como `/var/www/html/.env` en el contenedor `dx-php-prod`.
-
-**Importante**: En el host (Samba), `backend/.env` debe ser un enlace simbólico **relativo** (`../infra/.env.beta`) para facilitar la edición desde el IDE sin duplicar archivos.
+**`migrate:fresh` en Beta → PROHIBIDO.** Solo migraciones incrementales.
 
 ---
 
-## 5. Flujo de Trabajo Diario
-
-```
-Tu PC (Antigravity via Samba Z:\DX-License-Manager\)
-        │
-        ├─ Editas código
-        ├─ git checkout -b feature/lo-que-sea
-        ├─ git commit -m "feat(...): descripción"
-        ├─ git push origin feature/lo-que-sea
-        │
-        ▼
-    Pull Request a dev
-        │
-        ├─ GitHub Actions: ci.yml (tests)
-        ├─ Si pasan → merge a dev
-        │
-        ▼
-    beta.dxpro.es actualizado automáticamente
-        │
-        ├─ Validación manual en beta
-        │
-        ▼
-    Pull Request dev → main
-        │
-        ▼
-    portal.dxpro.es actualizado automáticamente
-```
-
-El deploy automático usa SSH al LXC 600 vía **puerto 22** (acceso directo interno). NOTA: Puerto 2222 nunca funciona por aquí.
+## 0.9 Reglas Git — Obligatorias
+ 
+**El agente trabaja EXCLUSIVAMENTE en ramas que mergean a `dev`. Nunca tocar `main`.**
+ 
+- **Una rama por funcionalidad.** Cuando la tarea termina, la rama termina.
+- **Formato de rama:** `feature/nombre-corto` · `fix/descripcion` · `chore/descripcion`
+- **Nunca** login + migrations + otra feature en la misma rama
+- **Nunca** reutilizar una rama después del merge
+- **Nunca** crear PR hacia `main` — el merge dev → main lo decide Oskar, no el agente
+**Al terminar cada fase del ROADMAP:**
+1. PR a `dev` — crear PR pero esperar autorización explícita para merge
+2. Git Tag descriptivo: `v[N.0]-[nombre-fase]-ok`
+3. Commit de cierre: `"Fase X Terminada — Punto de Restauración"`
 
 ---
 
-## 6. Estructura de Carpetas Clave
+## 0.10 Seguridad — Reglas Fijas
 
-```
-DX-License-Manager/
-├── .agent/skills/          ← Skills del agente (en Git)
-├── .agent/
-│   ├── rules/              ← Reglas de seguridad y estándares
-│   ├── workflows/          ← Flujos de deploy y auditoría
-│   └── secrets/            ← Solo local, NUNCA en Git
-│       └── identities.json
-├── backend/                ← Laravel 11
-│   ├── app/Http/Controllers/
-│   ├── app/Models/
-│   ├── app/Services/AI/    ← Motor auditoría IA (FallbackChain)
-│   ├── app/Jobs/           ← ProcessAuditJob (Redis)
-│   ├── database/migrations/
-│   ├── database/seeders/
-│   └── resources/views/    ← Blade templates
-├── infra/
-│   ├── docker-compose.beta.yml
-│   ├── docker-compose.prod.yml
-│   ├── nginx/
-│   │   ├── beta.conf
-│   │   └── prod.conf
-│   ├── php/Dockerfile
-│   └── mariadb/
-├── scripts/
-│   ├── deploy.sh
-│   ├── rollback.sh
-│   └── backup-db.sh
-├── storage/                ← Fuera de Git (bind mount en servidor)
-│   ├── licenses/           ← Archivos .lic por vendor
-│   └── backups/db/         ← mysqldump + gpg, cron diario
-└── management/
-    ├── BACKLOG.md
-    ├── CHANGELOG.md
-    └── ROADMAP.md
-```
-
----
-
-## 7. Seguridad — Reglas Fijas
-
-- Las descargas de licencias usan IDs de BD, nunca rutas físicas: `/download?id=[UUID]`
-- Las contraseñas y API keys solo van en `infra/.env.prod` e `infra/.env.beta` (en `.gitignore`)
-- Los archivos `.lic` nunca se procesan en texto plano por la IA — solo metadatos
-- Después de modificar controladores o middleware de auth, revisar con las skills `laravel-security-audit` y `php-security-auditor`
+- Descargas de licencias: IDs de BD, nunca rutas físicas → `/download?id=[UUID]`
+- Archivos `.lic`: nunca en texto plano a la IA — solo metadatos
+- Tras modificar controladores o middleware de auth → cargar `laravel-security-audit` + `php-security-auditor`
 - JWT: access token 15 min + refresh token 24h con rotación automática
-- RBAC: `admin` escribe, `technician` lee, `viewer` solo visualiza
+- RBAC: `admin` escribe · `technician` lee · `staff` lee · `viewer` solo visualiza
 
 ---
 
-## 8. Motor de Auditoría IA
+## 0.11 Las 5 Leyes del Modo Estricto
 
-El análisis de licencias usa un sistema de fallback entre proveedores:
+1. **Sin plan no hay ejecución.** Presentar plan · esperar confirmación explícita.
+2. **Sin evidencia no hay "hecho".** Demostrar funcionamiento con logs o comandos.
+3. **Sin log no hay fix.** Analizar logs antes de proponer solución.
+4. **Sin rama no hay código.** `/switch` inmediato si la tarea no corresponde.
+5. **Un archivo por respuesta.** Sin excepciones.
+6. **Sin memoria no hay contexto.** Leer `.agent/last_brain` y `.agent/memory/ACTIVE_CONTEXT.md` antes de cualquier tarea.
 
-```
-Petición → Gemini (primario, 30s timeout)
-         → Deepseek (fallback 1)
-         → OpenRouter (fallback 2)
-         → Error controlado → notificación Telegram + reintento en cola Redis
-```
-
-Clases relevantes:
-
-- `app/Services/AI/AuditService.php` — orquestador
-- `app/Services/AI/FallbackChain.php` — lógica de fallback
-- `app/Jobs/ProcessAuditJob.php` — cola Redis
-- `config/ai.php` — configuración de proveedores
+| Infracción | Consecuencia |
+| :--------- | :----------- |
+| Ejecutar sin confirmar plan | Desarrollador dice STOP — borra lo hecho |
+| Marcar como hecho sin evidencia | Demostrar funcionamiento |
+| Fix sin leer log | Reformular diagnóstico |
+| Código en rama incorrecta | `/switch` inmediato |
+| Más de un archivo por respuesta | Dev ignora respuesta |
 
 ---
 
-## 9. Plan de Fases
- 
-| Fase                              | Estado            | Descripción                                    |
-| :-------------------------------- | :---------------- | :--------------------------------------------- |
-| 0 — Infraestructura               | ✅ COMPLETADA     | Repo, Ramas, Docker Beta/Prod, CI/CD           |
-| 1 — CSS + Assets                  | ✅ COMPLETADA     | Integración `dx-styles.css` y Fuentes          |
-| 2 — Layouts Blade + Laravel       | ✅ COMPLETADA     | Estructura base Blade y Nginx Laravel          |
-| 3 — Login                         | ✅ COMPLETADA     | JWT, RBAC, Rate Limiting y Tests               |
-| 4 — Importación CSV               | ✅ COMPLETADA     | Migraciones y Lógica de Importación            |
-| 5 — Portal Principal (Dashboard)  | ✅ COMPLETADA     | Inicio y Métricas del Ecosistema               |
-| 6 — Gestión de Clientes           | 🔜 SIGUIENTE      | Listados y Detalles de Clientes/Contratos      |
-| 7 a 9 — Herramientas              | 📋 Planificado    | Hub, Siemens y Moldex3D                        |
-| 10 a 16 — Sistema                 | 📋 Planificado    | Usuarios, Backups, IA y Logs                   |
- 
-**Ahora mismo estamos iniciando la Fase 6.**
- 
----
+## 📓 Lecciones Aprendidas
 
-## 10. Skills — Uso Obligatorio
+**El agente actualiza esta sección tras CADA corrección.** No esperar a que el desarrollador lo pida.
 
-**Las skills NO son opcionales.** Son herramientas especializadas que el agente tiene disponibles en `.agent/skills/`. Antes de ejecutar cualquier tarea, el agente identifica qué skill corresponde, la carga y la aplica. No improvisar nunca cuando existe una skill para esa tarea.
-
-### ⚠️ Regla de Activación — Sin Excepciones
-
+Formato obligatorio:
 ```
-Antes de empezar cualquier tarea:
-  1. Revisar la tabla de activación de abajo
-  2. Cargar la skill correspondiente
-  3. Solo entonces ejecutar
-
-Si no se carga la skill antes de empezar → la tarea está mal ejecutada.
+- [YYYY-MM-DD] ERROR: [qué salió mal] → REGLA: [cómo evitarlo en el futuro]
 ```
 
-El agente NO debe esperar a que el desarrollador le recuerde que existe una skill. Es responsabilidad del agente identificar y cargar la skill correcta **antes** de escribir la primera línea de código o ejecutar el primer comando.
+Al iniciar sesión con `/start`: leer esta sección completa antes de empezar.
 
----
+<!-- ENTRADAS -->
 
-### Catálogo de Skills y Activación
-
-#### 🎨 `impeccable` + `ui-ux-pro-max`
-
-**Qué hacen:** Sistema de diseño minimalista de alta precisión + inteligencia UI/UX avanzada.  
-**Cargar cuando:** Cualquier tarea que toque HTML, Blade, CSS, Tailwind, Alpine.js, componentes visuales, layouts, formularios, modales, tablas o cualquier elemento que el usuario vea.  
-**Nunca hacer sin ellas:** Crear o modificar cualquier vista sin haber leído el sistema de diseño. Improvisar clases Tailwind, colores o espaciado.  
-**Nota:** Estas dos siempre van juntas. Si la tarea toca UI, se cargan las dos.
-
----
-
-#### ⚙️ `laravel-expert`
-
-**Qué hace:** Estándares Laravel 11, patrones de arquitectura, Eloquent, servicios, jobs, middleware, testing.  
-**Cargar cuando:** Cualquier tarea que toque código PHP del proyecto — controladores, modelos, servicios, jobs, migrations, seeders, rutas, policies, tests, configuración Laravel.  
-**Nunca hacer sin ella:** Escribir código Laravel improvisando patrones o estructura. Crear un controlador sin saber si debe ser thin. Escribir una query Eloquent sin considerar N+1.
-
----
-
-#### 🐳 `docker-expert`
-
-**Qué hace:** Buenas prácticas de Docker Compose, healthchecks, volúmenes, redes, Dockerfiles optimizados.  
-**Cargar cuando:** Cualquier tarea que toque `infra/docker-compose.*.yml`, `infra/php/Dockerfile`, configuración de nginx, o cualquier archivo dentro de `infra/`.  
-**Nunca hacer sin ella:** Modificar un docker-compose sin considerar healthchecks o dependencias entre servicios.
-
----
-
-#### 🧹 `clean-code`
-
-**Qué hace:** Refactor guiado por SOLID, naming semántico, reducción de complejidad ciclomática, eliminación de deuda técnica.  
-**Cargar cuando:** Cualquier tarea de refactorización, cuando el código huele mal, cuando una función hace más de una cosa, cuando hay duplicación, o cuando se pide "limpiar" o "mejorar" código existente.  
-**Nunca hacer sin ella:** Refactorizar "a ojo" sin principios claros.
-
----
-
-#### 📋 `docs-architect`
-
-**Qué hace:** Genera documentación técnica comprensiva desde el código: arquitectura, decisiones de diseño, manuales de onboarding, referencias técnicas largas.  
-**Cargar cuando:** Se pide documentar la arquitectura del proyecto, crear un manual técnico, generar documentación de un módulo completo, o preparar materiales de onboarding para nuevos desarrolladores.  
-**Nunca hacer sin ella:** Escribir documentación técnica de arquitectura improvisando estructura o formato.
-
----
-
-#### 🔐 `laravel-security-audit`
-
-**Qué hace:** Auditor de seguridad específico de Laravel. Analiza código pensando como atacante: IDOR, mass assignment, middleware faltante, autenticación insegura, RBAC incorrecto.  
-**Cargar cuando:** Cualquier PR que toque controladores, middleware, policies, autenticación o autorización. Antes de hacer merge de cualquier feature que maneje datos de usuario o permisos.  
-**Nunca hacer sin ella:** Aprobar código de autenticación, autorización o acceso a datos sin revisión de seguridad.
-
----
-
-#### 🛡️ `php-security-auditor`
-
-**Qué hace:** Auditoría OWASP Top 10 completa para PHP/Laravel. Incluye las reglas específicas de este proyecto (política Solo Log para licencias, JWT config, RBAC). Genera reporte estructurado con severidad, impacto y remediación.  
-**Cargar cuando:** Auditoría de seguridad formal, antes de pasar código a producción, cuando se revisan endpoints de API, cuando se toca el sistema de subida de archivos `.lic` o el motor de auditoría IA.  
-**Nunca hacer sin ella:** Evaluar la seguridad de cualquier componente sin seguir metodología OWASP.  
-**Nota:** `laravel-security-audit` + `php-security-auditor` siempre van juntas en revisiones de seguridad formales.
-
----
-
-#### 🔍 `find-skills`
-
-**Qué hace:** Busca en el catálogo de skills disponibles para encontrar la más adecuada a una tarea concreta.  
-**Cargar cuando:** La tarea no encaja claramente en ninguna skill de esta lista, o cuando no está claro qué skill aplicar.  
-**Nunca hacer sin ella:** Asumir que "no hay skill para esto" sin haber buscado primero.
-
----
-
-#### 📓 `karpathy` + `obsidian-bases` + `obsidian-markdown`
-
-**Qué hacen:** `karpathy` implementa el patrón de wiki persistente con LLM — ingestión de fuentes, mantenimiento de páginas, cross-references, síntesis acumulativa. `obsidian-bases` y `obsidian-markdown` gestionan las convenciones de estructura y formato de la vault.  
-**Cargar cuando:** Cualquier tarea que toque la vault Obsidian del proyecto: ingestar una fuente nueva, actualizar páginas wiki, crear notas de arquitectura, mantener el knowledge graph del proyecto.  
-**Nunca hacer sin ellas:** Crear o editar notas en Obsidian sin seguir las convenciones de la vault. Ingestar una fuente sin actualizar los cross-references.  
-**Nota:** Estas tres siempre van juntas cuando se trabaja con Obsidian.
-
----
-
-### Combinaciones Frecuentes
-
-```
-Nueva vista Blade
-  → impeccable + ui-ux-pro-max + laravel-expert
-
-Nueva feature (controlador + vista + migration)
-  → laravel-expert + impeccable + ui-ux-pro-max
-
-PR listo para merge
-  → laravel-security-audit + php-security-auditor
-
-Modificar docker-compose o Dockerfile
-  → docker-expert
-
-Refactorizar un servicio existente
-  → clean-code + laravel-expert
-
-Documentar un módulo completo
-  → docs-architect + laravel-expert
-
-Trabajar en la vault Obsidian
-  → karpathy + obsidian-bases + obsidian-markdown
-
-No sé qué skill aplica
-  → find-skills primero, siempre
-```
-
----
-
-### Checklist Obligatorio al Inicio de Cada Tarea
-
-Responder estas preguntas antes de escribir la primera línea:
-
-```
-¿Toca UI, Blade, CSS o Alpine.js?     → impeccable + ui-ux-pro-max
-¿Toca código PHP o Laravel?           → laravel-expert
-¿Toca infra/, Docker o Dockerfile?    → docker-expert
-¿Es un refactor o limpieza?           → clean-code
-¿Hay un PR que revisar?               → laravel-security-audit + php-security-auditor
-¿Es documentación de arquitectura?    → docs-architect
-¿Toca Obsidian o la vault?            → karpathy + obsidian-bases + obsidian-markdown
-¿No encaja en nada de lo anterior?    → find-skills
-```
-
-Si no se puede responder "ninguna" a todas → hay al menos una skill que cargar.
-
----
-
-## 11. Comandos de Sesión
-
-| Comando   | Workflow           | Cuándo ejecutarlo                                      |
-| :-------- | :----------------- | :----------------------------------------------------- |
-| `/start`  | `start-session.md` | Al abrir el proyecto                                   |
-| `/log`    | `sync.md`          | Tras cada subtarea completada                          |
-| `/sync`   | `sync.md`          | Al terminar un bloque completo                         |
-| `/switch` | `switch-task.md`   | Cuando la nueva petición no pertenece a la rama activa |
-| `/end`    | `end-session.md`   | Al cerrar la sesión                                    |
-
-**Nunca empezar una tarea nueva sin preguntarse si pertenece a la rama activa.**
-**Nunca cerrar sesión sin ejecutar `/end`.**
-
----
-
-## 12. Lecciones Aprendidas (no repetir)
-
-_(sin entradas aún — el proyecto parte desde cero)_
+_(sin entradas aún)_

@@ -1,5 +1,9 @@
+---
+description: 
+---
+
 # Workflow: Fin de Sesión
-> Ruta: `.agents/workflows/end-session.md`  
+> Ruta: `.agent/workflows/end-session.md`  
 > Trigger: Al terminar el trabajo del día, o al ejecutar `/end`
 
 ---
@@ -9,17 +13,19 @@
 Dejar el proyecto en un estado limpio y autoexplicado para que cualquier agente
 (en cualquiera de los 4 PCs) pueda retomar el trabajo sin preguntas y sin contexto previo.
 
-El `HANDOFF.md` es la memoria entre sesiones. Debe quedar tan claro que si mañana
-empiezas desde otro PC con el agente frío, sepa exactamente qué hacer en los próximos 30 segundos.
+El `HANDOFF.md` es la fuente de verdad entre sesiones. El `last_brain` es el contexto técnico
+denso para arranque rápido. Ambos deben quedar actualizados antes de cerrar.
 
 ---
 
-## Pasos
+## Pasos — Seguir en orden estricto
 
 ### 1. Ejecutar sync primero
 
 Antes de cerrar, ejecutar el workflow `/sync` para que la documentación esté al día.
 No cerrar sesión sin hacer esto.
+
+---
 
 ### 2. Verificar estado Git limpio
 
@@ -33,13 +39,13 @@ git stash list
 - No dejar trabajo a medias sin documentar
 
 ```bash
-# Si todo está limpio:
-git status
-# → "nothing to commit, working tree clean"
-
 # Si hay algo en progreso que no puede commitearse aún:
 git stash push -m "WIP: descripción de lo que está en progreso"
 ```
+
+⚠️ **No continuar al paso siguiente si `git status` no está limpio.**
+
+---
 
 ### 3. Anotar el estado de los stacks
 
@@ -48,14 +54,56 @@ docker compose --project-directory . -f infra/docker-compose.beta.yml ps
 docker compose --project-directory . -f infra/docker-compose.prod.yml ps
 ```
 
-Registrar si están up o down para dejarlo en el HANDOFF.
+Registrar si están up o down para el HANDOFF y el resumen de cierre.
 
-### 4. Reescribir HANDOFF.md
+---
+
+### 4. Archivar last_brain y escribir el nuevo
+
+> `last_brain` es el contexto técnico denso de la sesión actual — un párrafo compacto
+> que permite al agente de la próxima sesión recuperar el estado mental en segundos.
+
+**Paso 4.1 — Archivar la versión anterior antes de sobreescribir:**
+
+```bash
+# Crear directorio si no existe
+mkdir -p .agent/memory/brain_history
+
+# Copiar last_brain actual al historial con fecha
+cp .agent/last_brain .agent/memory/brain_history/brain_$(date +%Y-%m-%d).md
+```
+
+**Paso 4.2 — Escribir el nuevo last_brain:**
+
+Redactar un párrafo técnico denso con todo lo que el agente de la próxima sesión
+necesita saber para orientarse en 10 segundos:
+
+```
+Rama activa: [nombre]. Fase [X] — [nombre fase]. 
+Último trabajo: [qué se hizo concretamente — archivos tocados, comandos ejecutados].
+Estado: [qué funciona, qué no, qué está a medias].
+Próximo paso inmediato: [una acción concreta].
+Bloqueos: [si hay alguno / "ninguno"].
+Stack beta: [running/down]. Stack prod: [running/down].
+```
+
+Guardar en `.agent/last_brain` (sobreescribir).
+
+**Paso 4.3 — Limpiar historial antiguo (mantener solo los últimos 5):**
+
+```bash
+# Eliminar entradas más antiguas si hay más de 5
+ls -t .agent/memory/brain_history/brain_*.md | tail -n +6 | xargs rm -f
+```
+
+---
+
+### 5. Reescribir HANDOFF.md
 
 Este archivo se **sobreescribe completamente** en cada sesión. No es un historial — es una foto del momento actual.
 
 ```markdown
-# HANDOFF — DX Management Portal
+# HANDOFF — DX License Manager
 > Última actualización: YYYY-MM-DD HH:MM  
 > Sesión en: [nombre del PC o "indeterminado"]  
 > Rama activa: [nombre]
@@ -72,7 +120,7 @@ Este archivo se **sobreescribe completamente** en cada sesión. No es un histori
 
 ## Qué se hizo en esta sesión
 
-[Lista concreta de lo que se completó — nombres de archivos, comandos ejecutados, decisiones tomadas]
+[Lista concreta de lo completado — nombres de archivos, comandos ejecutados, decisiones tomadas]
 
 ---
 
@@ -89,14 +137,13 @@ Este archivo se **sobreescribe completamente** en cada sesión. No es un histori
 
 ## Contexto técnico importante
 
-[Cualquier cosa que el agente de la próxima sesión necesite saber y que no esté en otro archivo:
-decisiones tomadas, problemas encontrados, workarounds aplicados, comandos especiales]
+[Decisiones tomadas, problemas encontrados, workarounds aplicados, comandos especiales]
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-[Si hay algo bloqueado, describir exactamente el problema y qué se intentó]
+[Si hay algo bloqueado: describir el problema y qué se intentó]
 [Si no hay nada bloqueado: "Ninguno"]
 
 ---
@@ -126,25 +173,31 @@ docker compose --project-directory . -f infra/docker-compose.beta.yml logs -f ng
 ```
 ```
 
-### 5. Commit final de cierre
+---
+
+### 6. Commit final de cierre
 
 ```bash
-git add management/HANDOFF.md management/CHANGELOG.md management/ROADMAP.md management/BACKLOG.md
-git commit -m "docs(handoff): cierre de sesión YYYY-MM-DD"
+git add management/HANDOFF.md management/CHANGELOG.md management/ROADMAP.md management/BACKLOG.md .agent/last_brain .agent/memory/brain_history/
+git commit -m "docs(handoff): cierre de sesión $(date +%Y-%m-%d)"
 git push origin [rama-activa]
 ```
 
-El push asegura que el HANDOFF esté disponible desde cualquiera de los 4 PCs al día siguiente.
+El push garantiza que HANDOFF y last_brain estén disponibles desde cualquiera de los 4 PCs.
 
-### 6. Confirmar cierre al desarrollador
+---
+
+### 7. Confirmar cierre al desarrollador
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🔴 SESIÓN CERRADA — DX Management Portal
+🔴 SESIÓN CERRADA — DX License Manager
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 ✅ Sync completado
 ✅ Git limpio — rama: [nombre]
+✅ last_brain archivado → brain_history/brain_[fecha].md
+✅ last_brain actualizado — próxima sesión arranca con contexto
 ✅ HANDOFF.md actualizado y pusheado
 ✅ Próxima tarea documentada: [primera tarea del HANDOFF]
 
