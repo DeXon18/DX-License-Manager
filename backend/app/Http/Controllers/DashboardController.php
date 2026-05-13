@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contract;
+use App\Models\LicenseInventoryProduct;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -16,33 +16,33 @@ class DashboardController extends Controller
     {
         $now = Carbon::now()->startOfDay();
 
-        // 1. Calcular métricas (solo contratos que no son BAJA)
-        $activeContracts = Contract::where('status', '!=', 'Baja');
+        // 1. Calcular métricas (solo productos activos)
+        $activeLicenses = LicenseInventoryProduct::active();
 
         $metrics = [
-            'total' => (clone $activeContracts)->count(),
+            'total' => (clone $activeLicenses)->count(),
             
-            'critical' => (clone $activeContracts)
+            'critical' => (clone $activeLicenses)
                 ->where(function ($query) use ($now) {
-                    $query->whereDate('end_date', '<=', $now->copy()->addDays(7));
+                    $query->whereDate('expiration_date', '<=', $now->copy()->addDays(7));
                 })->count(),
 
-            'upcoming' => (clone $activeContracts)
-                ->whereDate('end_date', '>', $now->copy()->addDays(7))
-                ->whereDate('end_date', '<=', $now->copy()->addDays(30))
+            'upcoming' => (clone $activeLicenses)
+                ->whereDate('expiration_date', '>', $now->copy()->addDays(7))
+                ->whereDate('expiration_date', '<=', $now->copy()->addDays(30))
                 ->count(),
 
-            'monitoring' => (clone $activeContracts)
-                ->whereDate('end_date', '>', $now->copy()->addDays(30))
-                ->whereDate('end_date', '<=', $now->copy()->addDays(90))
+            'monitoring' => (clone $activeLicenses)
+                ->whereDate('expiration_date', '>', $now->copy()->addDays(30))
+                ->whereDate('expiration_date', '<=', $now->copy()->addDays(90))
                 ->count(),
         ];
 
         // 2. Top 10 vencimientos inminentes
-        $upcomingExpirations = Contract::with(['client', 'vendor'])
-            ->where('status', '!=', 'Baja')
-            ->whereNotNull('end_date')
-            ->orderBy('end_date', 'asc')
+        $upcomingExpirations = LicenseInventoryProduct::with(['daemon.client'])
+            ->active()
+            ->whereNotNull('expiration_date')
+            ->orderBy('expiration_date', 'asc')
             ->limit(10)
             ->get();
 
