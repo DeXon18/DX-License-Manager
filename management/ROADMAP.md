@@ -356,6 +356,15 @@ DX License Manager
 
 ---
 
+### ✅ Fase 10.5 — Docker Monitor NOC Pro ✅ COMPLETADA
+
+**Estado:** COMPLETADA
+**Prerequisito:** ✅ Fase 10.4 estable
+- [ ] UI de monitorización de recursos (CPU/RAM/Uptime).
+- [ ] Acciones de reinicio de contenedores desde el portal.
+
+---
+
 ### ✅ Fase 11 — Usuarios y Acceso ✅ COMPLETADA
 
 **Estado:** COMPLETADA
