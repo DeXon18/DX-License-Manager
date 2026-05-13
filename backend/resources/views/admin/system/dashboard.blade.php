@@ -290,7 +290,7 @@
                     
                     <button @click="execute('{{ route('admin.system.toggle-maintenance') }}', 'Modo mantenimiento')" class="btn-noc" :disabled="loading" :class="metrics['os']['maintenance'] ? 'btn-success' : 'btn-danger'" style="justify-content: flex-start;">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 5px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                        <span style="margin-left: 5px;">{{ $metrics['os']['maintenance'] ? 'Desactivar Manto.' : 'Modo Mantenimiento' }}</span>
+                        <span style="margin-left: 5px;">{{ $metrics['os']['maintenance'] ? 'Desactivar Mantenimiento' : 'Modo Mantenimiento' }}</span>
                     </button>
                     <button @click="execute('{{ route('admin.system.test-telegram') }}', 'Test Telegram')" class="btn-noc" :disabled="loading" style="justify-content: flex-start; color: #fb923c; border-color: rgba(251, 146, 60, 0.15);">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: 5px;"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
