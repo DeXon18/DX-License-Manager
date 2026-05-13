@@ -41,7 +41,7 @@
     }
 }" @keyup.slash.window="sidebarOpen = !sidebarOpen">
     
-    @if(view()->shared('maintenance_active'))
+    @if($maintenance_active ?? false)
     <div style="background: #f59e0b; color: #000; padding: 8px 20px; text-align: center; font-size: 13px; font-weight: 700; position: sticky; top: 0; z-index: 10000; display: flex; align-items: center; justify-content: center; gap: 10px;">
         <span style="font-size: 16px;">⚠️</span>
         MODO MANTENIMIENTO ACTIVO - El portal no es accesible para usuarios estándar.
@@ -49,7 +49,7 @@
     </div>
     @endif
     
-    <header @if(view()->shared('maintenance_active')) style="top: 35px;" @endif>
+    <header @if($maintenance_active ?? false) style="top: 35px;" @endif>
         <div class="header-inner">
             <a class="brand" href="{{ url('/') }}">
                 <div class="brand-mark">DX</div>
