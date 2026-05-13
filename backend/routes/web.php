@@ -31,6 +31,7 @@ Route::middleware(['auth.jwt'])->group(function () {
     // Planificador de Renovaciones (Fase 14)
     Route::get('/planificador', [\App\Http\Controllers\RenewalPlannerController::class, 'index'])->name('renewal-planner.index');
     Route::post('/planificador', [\App\Http\Controllers\RenewalPlannerController::class, 'store'])->name('renewal-planner.store');
+    Route::get('/planificador/{log}/download', [\App\Http\Controllers\RenewalPlannerController::class, 'download'])->name('renewal-planner.download');
     
     Route::get('/changelog', [SystemController::class, 'changelog'])->name('system.changelog');
     

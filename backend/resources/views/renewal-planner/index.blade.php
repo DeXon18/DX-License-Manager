@@ -96,10 +96,18 @@
                         </td>
                         <td style="padding: 10px 20px; text-align: center;">
                             @if(!$isCompleted)
-                                <form action="{{ route('renewal-planner.store') }}" method="POST">
+                                <form action="{{ route('renewal-planner.store') }}" method="POST" enctype="multipart/form-data" id="form-{{ $clientId }}" style="display: flex; flex-direction: column; gap: 4px;">
                                     @csrf
                                     <input type="hidden" name="client_id" value="{{ $clientId }}">
                                     <input type="hidden" name="month" value="{{ $month }}">
+                                    
+                                    <!-- Selector de Archivo Minimalista -->
+                                    <label class="file-upload-label" style="display: flex; align-items: center; justify-content: center; gap: 6px; padding: 4px; border: 1px dashed var(--border); border-radius: 4px; cursor: pointer; transition: all 0.2s;" title="Adjuntar Licencia .lic">
+                                        <i class="fa-solid fa-paperclip" style="font-size: 10px; color: var(--muted);"></i>
+                                        <span style="font-size: 9px; color: var(--muted); text-transform: uppercase;">Adjuntar .lic</span>
+                                        <input type="file" name="license_file" style="display: none;" onchange="this.parentElement.style.borderColor = 'var(--success)'; this.parentElement.querySelector('span').innerText = 'Archivo Listo'; this.parentElement.querySelector('span').style.color = 'var(--success)';">
+                                    </label>
+
                                     <button type="submit" class="action-btn" style="padding: 5px 10px; height: auto; width: 100%; justify-content: center; background: transparent; border: 1px solid var(--accent); border-radius: 4px; transition: all 0.2s;">
                                         <span style="font-size: 10px; font-weight: 800; color: var(--accent); letter-spacing: 0.05em;">MARCAR ENVIADO</span>
                                     </button>
