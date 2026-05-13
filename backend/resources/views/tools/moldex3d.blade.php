@@ -90,65 +90,65 @@
                         <!-- Archivo -->
                         <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-subtle);">
                             <span style="color: var(--muted); font-size: 13px; min-width: 150px;">Archivo analizado</span>
-                            <span style="color: var(--primary); font-size: 13px; font-weight: 600; font-family: var(--font-mono); text-align: right; max-width: 400px; word-break: break-all;" x-text="result.filename"></span>
+                            <span style="color: var(--primary); font-size: 13px; font-weight: 600; font-family: var(--font-mono); text-align: right; max-width: 400px; word-break: break-all;" x-text="result?.filename"></span>
                         </div>
 
 
                         <!-- Customer ID -->
                         <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-subtle);">
                             <span style="color: var(--muted); font-size: 13px;">Customer ID</span>
-                            <span style="color: var(--primary); font-size: 13px; font-weight: 700; font-family: var(--font-mono);" x-text="result.metadata.customer_id || 'N/A'"></span>
+                            <span style="color: var(--primary); font-size: 13px; font-weight: 700; font-family: var(--font-mono);" x-text="result?.metadata?.customer_id || 'N/A'"></span>
                         </div>
 
                         <!-- Nombre Cliente -->
                         <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-subtle);">
                             <span style="color: var(--muted); font-size: 13px;">Nombre de Cliente</span>
-                            <span style="color: var(--primary); font-size: 13px; font-weight: 700; text-align: right;" x-text="result.metadata.customer_name"></span>
+                            <span style="color: var(--primary); font-size: 13px; font-weight: 700; text-align: right;" x-text="result?.metadata?.customer_name"></span>
                         </div>
 
                         <!-- Hostname -->
                         <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-subtle);">
                             <span style="color: var(--muted); font-size: 13px;">Servidor / Hostname</span>
-                            <span style="color: var(--primary); font-size: 13px; font-weight: 700; font-family: var(--font-mono);" x-text="result.metadata.hostname || 'N/A'"></span>
+                            <span style="color: var(--primary); font-size: 13px; font-weight: 700; font-family: var(--font-mono);" x-text="result?.metadata?.hostname || 'N/A'"></span>
                         </div>
 
                         <!-- Machine ID -->
                         <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-subtle);">
                             <span style="color: var(--muted); font-size: 13px;">Machine ID (MAC)</span>
-                            <span style="color: var(--primary); font-size: 13px; font-weight: 700; font-family: var(--font-mono); text-align: right;" x-text="result.metadata.machine_id"></span>
+                            <span style="color: var(--primary); font-size: 13px; font-weight: 700; font-family: var(--font-mono); text-align: right;" x-text="result?.metadata?.machine_id"></span>
                         </div>
 
                         <!-- Modo Licencia -->
                         <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-subtle);">
                             <span style="color: var(--muted); font-size: 13px;">Modo de Licencia</span>
-                            <span style="color: var(--primary); font-size: 13px; font-weight: 700;" x-text="result.metadata.license_mode"></span>
+                            <span style="color: var(--primary); font-size: 13px; font-weight: 700;" x-text="result?.metadata?.license_mode"></span>
                         </div>
 
                         <!-- Versión -->
                         <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-subtle);">
                             <span style="color: var(--muted); font-size: 13px;">Versión</span>
-                            <span style="background: var(--bg); color: var(--primary); border: 1px solid var(--border); font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 4px; letter-spacing: 0.5px;" x-text="'v' + result.metadata.version"></span>
+                            <span style="background: var(--bg); color: var(--primary); border: 1px solid var(--border); font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 4px; letter-spacing: 0.5px;" x-text="'v' + (result?.metadata?.version || '0')"></span>
                         </div>
 
                         <!-- Fecha Expiración -->
                         <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-subtle);">
                             <span style="color: var(--muted); font-size: 13px;">Fecha de Expiración</span>
-                            <span :style="isExpired(result.metadata.expiration) ? 'color: var(--danger)' : 'color: var(--primary)'" style="font-size: 13px; font-weight: 700; font-family: var(--font-mono);" x-text="formatDate(result.metadata.expiration)"></span>
+                            <span :style="isExpired(result?.metadata?.expiration) ? 'color: var(--danger)' : 'color: var(--primary)'" style="font-size: 13px; font-weight: 700; font-family: var(--font-mono);" x-text="formatDate(result?.metadata?.expiration)"></span>
                         </div>
 
                         <!-- Estado Sincronización -->
                         <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border-subtle);">
                             <span style="color: var(--muted); font-size: 13px;">Sincronización de Inventario</span>
                             <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                                <div x-show="result.inventory && result.inventory.synced" style="display: flex; align-items: center; gap: 6px; color: var(--success); font-size: 12px; font-weight: 700;">
+                                <div x-show="result?.inventory && result?.inventory?.synced" style="display: flex; align-items: center; gap: 6px; color: var(--success); font-size: 12px; font-weight: 700;">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                                     COMPLETADA
                                 </div>
-                                <div x-show="result.inventory && !result.inventory.synced" style="color: var(--danger); font-size: 12px; font-weight: 700;">
+                                <div x-show="result?.inventory && !result?.inventory?.synced" style="color: var(--danger); font-size: 12px; font-weight: 700;">
                                     PENDIENTE
                                 </div>
-                                <span x-show="result.inventory && result.inventory.client_name" style="font-size: 10px; color: var(--muted); margin-top: 2px;" x-text="result.inventory.client_name"></span>
-                                <span x-show="result.inventory && result.inventory.error" style="font-size: 10px; color: var(--danger); margin-top: 2px;" x-text="result.inventory.error"></span>
+                                <span x-show="result?.inventory && result?.inventory?.client_name" style="font-size: 10px; color: var(--muted); margin-top: 2px;" x-text="result?.inventory?.client_name"></span>
+                                <span x-show="result?.inventory && result?.inventory?.error" style="font-size: 10px; color: var(--danger); margin-top: 2px;" x-text="result?.inventory?.error"></span>
                             </div>
                         </div>
 
@@ -157,7 +157,7 @@
                             <div style="color: var(--muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px;">Módulos y Licencias Detectadas</div>
                             
                             <div style="display: flex; flex-direction: column; gap: 8px;">
-                                <template x-for="prod in result.metadata.products" :key="prod.code">
+                                <template x-for="prod in (result?.metadata?.products || [])" :key="prod.code">
                                     <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center;">
                                         <div style="display: flex; align-items: center; gap: 12px;">
                                             <div style="width: 18px; height: 18px; border-radius: 4px; background: var(--danger-bg); border: 1px solid var(--danger-border); display: flex; align-items: center; justify-content: center; color: var(--danger);">
@@ -183,7 +183,7 @@
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                     </div>
                     <div>
-                        <div style="font-size: 13px; font-weight: 600; color: var(--success);" x-text="result.inventory && result.inventory.synced ? 'Licencia auditada y sincronizada con el inventario del cliente' : 'Archivo procesado y almacenado correctamente en el servidor'"></div>
+                        <div style="font-size: 13px; font-weight: 600; color: var(--success);" x-text="result?.inventory && result?.inventory?.synced ? 'Licencia auditada y sincronizada con el inventario del cliente' : 'Archivo procesado y almacenado correctamente en el servidor'"></div>
                     </div>
                 </div>
                 <div style="display: flex; gap: 8px;">
