@@ -9,14 +9,11 @@ return [
     | Configuración visual (etiquetas, colores e iconos) para los estados
     | importados desde el CSV semanal de contratos.
     |
+    | El orden de este array define la prioridad lógica en el Dashboard.
+    |
     */
 
     'statuses' => [
-        'vacio' => [
-            'label' => 'Sin estado',
-            'color' => 'gris',
-            'icon' => 'fa-regular fa-circle-question'
-        ],
         'Ofertado' => [
             'label' => 'Ofertado',
             'color' => 'azul claro',
@@ -51,6 +48,11 @@ return [
             'label' => 'Baja',
             'color' => 'rojo apagado',
             'icon' => 'fa-solid fa-circle-xmark'
+        ],
+        'vacio' => [
+            'label' => 'Sin estado',
+            'color' => 'gris',
+            'icon' => 'fa-regular fa-circle-question'
         ],
     ],
 ];
