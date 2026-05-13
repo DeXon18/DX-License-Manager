@@ -1,6 +1,17 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-13] — Fase 10.5: Docker Monitor NOC Pro ✅
+
+### Added
+
+- **Monitor de Contenedores**: Nueva sección dedicada para la monitorización en tiempo real de la flota Docker (`/admin/system/docker`).
+- **Telemetría Visual Pro**: Implementación de indicadores circulares (Gauges) para CPU y barras de alta densidad para RAM siguiendo el estilo NOC Pro.
+- **Iconografía Unificada**: Integración de logos oficiales con colores de marca (PHP, MariaDB, Nginx, Redis) usando FontAwesome 6.
+- **Acciones Operativas**: Funcionalidad de reinicio de contenedores integrada con diálogos de seguridad y validación de prefijos (`dx-`).
+- **Optimización de Arquitectura**: Desacoplamiento de la lógica de Docker del dashboard principal para mejorar la velocidad de carga global.
+- **Infraestructura**: Configuración del socket de Docker y permisos en el contenedor PHP-FPM.
+
 ## [2026-05-13] — Fase 13: Sistema de Alertas de Licencias ✅
 
 ### Added

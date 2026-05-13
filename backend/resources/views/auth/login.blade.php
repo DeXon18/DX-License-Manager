@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DX Control Center — Acceso</title>
+    <title>DX License Manager — Acceso</title>
     <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/fonts.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dx-styles.css') }}?v={{ time() }}">
@@ -25,7 +25,7 @@
         <div class="inner-col">
             <div class="brand">
                 <div class="brand-mark">DX</div>
-                <span class="brand-name">DX Control Center</span>
+                <span class="brand-name">DX License Manager</span>
             </div>
 
             <div class="left-content">
@@ -34,7 +34,7 @@
             </div>
 
             <div class="left-footer">
-                <span>© 2026 DX Control Center</span>
+                <span>© 2026 DX License Manager</span>
                 <div class="theme-switch" @click="toggle()" :class="theme === 'dark' ? 'is-dark' : ''">
                     <div class="switch-track">
                         <div class="switch-knob">
