@@ -3,6 +3,20 @@
 @section('title', 'Configuración de Alertas')
 
 @section('content')
+@if(session('success'))
+<div style="background: var(--success-bg); color: var(--success); border: 1px solid var(--success-border); padding: 12px 20px; border-radius: 8px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px;">
+    <i class="fa-solid fa-circle-check"></i>
+    <span>{{ session('success') }}</span>
+</div>
+@endif
+
+@if(session('error'))
+<div style="background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-border); padding: 12px 20px; border-radius: 8px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px;">
+    <i class="fa-solid fa-circle-xmark"></i>
+    <span>{{ session('error') }}</span>
+</div>
+@endif
+
 <div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
     <div>
         <h1 class="page-title">Alertas y Notificaciones</h1>

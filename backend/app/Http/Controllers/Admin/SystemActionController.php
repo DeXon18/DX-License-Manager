@@ -93,6 +93,7 @@ class SystemActionController extends Controller
             ]);
 
             if ($response->successful()) {
+                Log::info('Telegram test successful');
                 $this->logAction('telegram_test', 'Manual telegram notification test sent');
                 return response()->json(['success' => true, 'message' => 'Notificación de prueba enviada.']);
             }
@@ -147,10 +148,12 @@ class SystemActionController extends Controller
     public function sendWeeklyAlerts()
     {
         try {
+            Log::info('Manual license alerts triggered by user: ' . auth()->id());
             Artisan::call('dx:send-weekly-alerts');
             $this->logAction('manual_alert_send', 'Manual license expiration alerts triggered');
             return back()->with('success', 'El proceso de alertas se ha iniciado correctamente.');
         } catch (\Exception $e) {
+            Log::error('Error triggering manual alerts: ' . $e->getMessage());
             return back()->with('error', 'Error al iniciar alertas: ' . $e->getMessage());
         }
     }
