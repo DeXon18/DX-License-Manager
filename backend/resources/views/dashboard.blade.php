@@ -88,9 +88,10 @@
                             </a>
                         </td>
                         <td>
-                            <div class="vendor-chip">
-                                <div class="vendor-dot" style="background: {{ $vendor == 'siemens' ? 'var(--siemens)' : 'var(--moldex)' }}"></div>
-                                <span style="text-transform: uppercase; font-weight: 700; font-size: 10px;">{{ $vendor }}</span>
+                            <div class="vendor-chip" style="background: transparent; padding: 0;">
+                                <span style="text-transform: uppercase; font-weight: 800; font-size: 11px; color: {{ $vendor == 'siemens' ? 'var(--siemens)' : 'var(--moldex)' }}; letter-spacing: 0.05em;">
+                                    {{ $vendor }}
+                                </span>
                             </div>
                             <div style="font-size:11px;color:var(--muted);font-family:'IBM Plex Mono',monospace; margin-top: 4px;">
                                 <span style="color: var(--secondary);">{{ $soldTo }}</span>
