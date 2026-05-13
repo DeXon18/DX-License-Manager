@@ -1,74 +1,74 @@
 @extends('layouts.app')
 
-@section('title', 'Configuración de Alertas — DX License Manager')
+@section('title', 'Configuración de Alertas')
 
 @section('content')
-<div class="admin-header mb-6">
-    <div class="flex justify-between items-center">
-        <div>
-            <h1 class="text-2xl font-bold text-primary">Alertas y Notificaciones</h1>
-            <p class="text-sm text-secondary">Gestión de umbrales y reporte semanal de caducidad de licencias.</p>
-        </div>
-        <div class="flex gap-3">
-            <form action="{{ route('admin.alerts.toggle') }}" method="POST">
-                @csrf
-                <button type="submit" class="btn {{ $settings->is_active ? 'btn-success' : 'btn-danger' }}">
-                    <i class="fa-solid fa-power-off mr-2"></i>
-                    {{ $settings->is_active ? 'Sistema Activo' : 'Sistema Desactivado' }}
-                </button>
-            </form>
-            <form action="/admin/system/actions/dx:send-weekly-alerts" method="POST">
-                @csrf
-                <button type="submit" class="btn btn-primary">
-                    <i class="fa-solid fa-paper-plane mr-2"></i>
-                    Test Envío Manual
-                </button>
-            </form>
-        </div>
+<div class="page-header" style="display: flex; justify-content: space-between; align-items: flex-start;">
+    <div>
+        <h1 class="page-title">Alertas y Notificaciones</h1>
+        <p class="page-sub">Gestión de umbrales y reporte semanal de caducidad de licencias.</p>
+    </div>
+    <div style="display: flex; gap: 12px;">
+        <form action="{{ route('admin.alerts.toggle') }}" method="POST">
+            @csrf
+            <button type="submit" class="btn {{ $settings->is_active ? 'badge-success' : 'badge-danger' }}" style="padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; border: none;">
+                <i class="fa-solid fa-power-off" style="margin-right: 8px;"></i>
+                {{ $settings->is_active ? 'Sistema Activo' : 'Sistema Desactivado' }}
+            </button>
+        </form>
+        <form action="/admin/system/actions/dx:send-weekly-alerts" method="POST">
+            @csrf
+            <button type="submit" class="btn-primary">
+                <i class="fa-solid fa-paper-plane" style="margin-right: 8px;"></i>
+                Test Envío Manual
+            </button>
+        </form>
     </div>
 </div>
 
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div style="display: grid; grid-template-columns: 380px 1fr; gap: 24px; align-items: start;">
     <!-- Configuración de Umbrales -->
-    <div class="lg:col-span-1">
-        <div class="card p-6 h-full">
-            <h2 class="text-lg font-semibold mb-4 border-bottom pb-2">Umbrales de Alerta</h2>
+    <div class="card" style="--accent: var(--accent)">
+        <div class="card-header">
+            <span class="card-title">Configuración de Umbrales</span>
+        </div>
+        <div style="padding: 24px;">
             <form action="{{ route('admin.alerts.update') }}" method="POST">
                 @csrf
-                <div class="space-y-4">
-                    <div class="form-group">
-                        <label class="label mb-1">Alerta Crítica (Días)</label>
-                        <div class="flex items-center gap-3">
-                            <span class="badge badge-danger">0-7</span>
-                            <input type="number" name="threshold_alerta" value="{{ $settings->threshold_alerta }}" class="form-control" required>
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div>
+                        <label class="card-title" style="display: block; margin-bottom: 8px;">Alerta Crítica (Días)</label>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span class="badge badge-danger" style="width: 50px; text-align: center;">0-7</span>
+                            <input type="number" name="threshold_alerta" value="{{ $settings->threshold_alerta }}" class="gui-input" style="flex: 1;" required>
                         </div>
                     </div>
                     
-                    <div class="form-group">
-                        <label class="label mb-1">Aviso (Días)</label>
-                        <div class="flex items-center gap-3">
-                            <span class="badge badge-warning">7-15</span>
-                            <input type="number" name="threshold_aviso" value="{{ $settings->threshold_aviso }}" class="form-control" required>
+                    <div>
+                        <label class="card-title" style="display: block; margin-bottom: 8px;">Aviso Preventivo (Días)</label>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span class="badge badge-warning" style="width: 50px; text-align: center;">7-15</span>
+                            <input type="number" name="threshold_aviso" value="{{ $settings->threshold_aviso }}" class="gui-input" style="flex: 1;" required>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="label mb-1">Recordatorio (Días)</label>
-                        <div class="flex items-center gap-3">
-                            <span class="badge badge-primary">15-30</span>
-                            <input type="number" name="threshold_recordatorio" value="{{ $settings->threshold_recordatorio }}" class="form-control" required>
+                    <div>
+                        <label class="card-title" style="display: block; margin-bottom: 8px;">Recordatorio (Días)</label>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span class="badge badge-primary" style="width: 50px; text-align: center;">15-30</span>
+                            <input type="number" name="threshold_recordatorio" value="{{ $settings->threshold_recordatorio }}" class="gui-input" style="flex: 1;" required>
                         </div>
                     </div>
 
-                    <div class="form-group pt-2 border-top">
-                        <label class="label mb-1">Copia Interna (Emails)</label>
-                        <textarea name="internal_copy_emails" rows="3" class="form-control text-xs font-mono" placeholder="email1@example.com, email2@example.com">{{ $settings->internal_copy_emails }}</textarea>
-                        <p class="text-[0.65rem] text-muted mt-1">Separar por comas para múltiples destinatarios.</p>
+                    <div style="padding-top: 16px; border-top: 1px solid var(--border);">
+                        <label class="card-title" style="display: block; margin-bottom: 8px;">Copia Interna (Emails)</label>
+                        <textarea name="internal_copy_emails" rows="3" class="gui-input" style="width: 100%; font-family: var(--mono); font-size: 11px;" placeholder="email1@example.com, email2@example.com">{{ $settings->internal_copy_emails }}</textarea>
+                        <p class="page-sub" style="margin-top: 6px; font-size: 10px;">Separar por comas para múltiples destinatarios.</p>
                     </div>
 
-                    <div class="pt-4">
-                        <button type="submit" class="btn btn-primary w-full justify-center">
-                            Guardar Configuración
+                    <div style="padding-top: 8px;">
+                        <button type="submit" class="btn-primary" style="width: 100%; justify-content: center;">
+                            Guardar Cambios
                         </button>
                     </div>
                 </div>
@@ -77,68 +77,67 @@
     </div>
 
     <!-- Historial de Envíos -->
-    <div class="lg:col-span-2">
-        <div class="card p-6 h-full">
-            <h2 class="text-lg font-semibold mb-4 border-bottom pb-2 flex justify-between items-center">
-                Historial de Notificaciones
-                <span class="badge badge-neutral text-xs">{{ $logs->total() }} registros</span>
-            </h2>
-            
-            <div class="table-responsive">
-                <table class="table w-full text-sm">
-                    <thead>
-                        <tr class="bg-raised text-muted uppercase text-[0.65rem] font-bold">
-                            <th class="p-3 text-left">Destinatario</th>
-                            <th class="p-3 text-left">Fecha</th>
-                            <th class="p-3 text-center">Estado</th>
-                            <th class="p-3 text-right">Acción</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @forelse($logs as $log)
-                        <tr class="border-bottom hover:bg-raised transition-colors">
-                            <td class="p-3 font-medium">{{ $log->recipient }}</td>
-                            <td class="p-3 font-mono text-xs">{{ $log->created_at->format('d/m/Y H:i') }}</td>
-                            <td class="p-3 text-center">
-                                @if($log->status == 'sent')
-                                    <span class="badge badge-success">Enviado</span>
-                                @else
-                                    <span class="badge badge-danger" title="{{ $log->error_message }}">Fallo</span>
-                                @endif
-                            </td>
-                            <td class="p-3 text-right">
-                                <button class="text-accent hover:text-accent-hover">
-                                    <i class="fa-solid fa-eye"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        @empty
-                        <tr>
-                            <td colspan="4" class="p-6 text-center text-muted italic">
-                                No se han registrado envíos de alertas todavía.
-                            </td>
-                        </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="mt-4">
-                {{ $logs->links() }}
-            </div>
+    <div class="card" style="--accent: var(--siemens)">
+        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <span class="card-title">Historial de Notificaciones</span>
+            <span class="badge badge-muted" style="font-size: 10px;">{{ $logs->total() }} envíos</span>
         </div>
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr style="background: var(--raised);">
+                    <th style="text-align: left; padding: 12px 20px; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em;">Destinatario</th>
+                    <th style="text-align: left; padding: 12px 20px; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em;">Fecha Envío</th>
+                    <th style="text-align: center; padding: 12px 20px; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em;">Estado</th>
+                    <th style="text-align: right; padding: 12px 20px; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em;">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse($logs as $log)
+                <tr style="border-bottom: 1px solid var(--border-subtle);">
+                    <td style="padding: 14px 20px; font-weight: 500;">{{ $log->recipient }}</td>
+                    <td style="padding: 14px 20px; font-family: var(--mono); font-size: 12px; color: var(--secondary);">{{ $log->created_at->format('d/m/Y H:i') }}</td>
+                    <td style="padding: 14px 20px; text-align: center;">
+                        @if($log->status == 'sent')
+                            <span class="badge badge-success" style="font-size: 10px;">ENVIADO</span>
+                        @else
+                            <span class="badge badge-danger" style="font-size: 10px;" title="{{ $log->error_message }}">FALLO</span>
+                        @endif
+                    </td>
+                    <td style="padding: 14px 20px; text-align: right;">
+                        <button class="btn-secondary" style="padding: 4px 8px; font-size: 11px;" title="Ver detalle">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </td>
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="4" style="padding: 40px; text-align: center; color: var(--muted); font-style: italic;">
+                        No se han registrado envíos de alertas todavía.
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+        
+        @if($logs->hasPages())
+        <div style="padding: 16px 24px; border-top: 1px solid var(--border);">
+            {{ $logs->links() }}
+        </div>
+        @endif
     </div>
 </div>
 
-<div class="mt-6 card p-6 border-left-accent">
-    <div class="flex items-start gap-4">
-        <div class="p-3 rounded-md bg-accent-muted text-accent">
-            <i class="fa-solid fa-info-circle text-lg"></i>
+<div class="card" style="margin-top: 24px; border-left: 4px solid var(--accent); background: var(--accent-muted);">
+    <div style="display: flex; align-items: flex-start; gap: 16px; padding: 20px;">
+        <div style="background: var(--surface); color: var(--accent); width: 40px; height: 40px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; border: 1px solid var(--accent-border);">
+            <i class="fa-solid fa-info-circle"></i>
         </div>
         <div>
-            <h3 class="font-bold text-primary">Información del Sistema</h3>
-            <p class="text-sm text-secondary max-w-3xl">
-                El motor de alertas procesa únicamente las licencias del inventario activo. El envío se realiza de forma automática todos los **lunes a las 07:30 AM** a todos los contactos de clientes que tengan activado el check "Recibe Alertas" en su ficha correspondiente.
+            <h3 style="font-size: 14px; font-weight: 600; color: var(--primary); margin-bottom: 4px;">Información del Motor de Alertas</h3>
+            <p style="font-size: 13px; color: var(--secondary); line-height: 1.5; max-width: 800px;">
+                El sistema procesa automáticamente las licencias del inventario cada **lunes a las 07:30 AM**. 
+                Se envían correos únicamente a los contactos que tienen habilitada la opción "Recibe Alertas" en su ficha de cliente. 
+                Las licencias se agrupan por cliente y nivel de urgencia según los umbrales configurados arriba.
             </p>
         </div>
     </div>
