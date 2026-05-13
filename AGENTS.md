@@ -242,6 +242,17 @@ docker exec -e DB_CONNECTION=sqlite -e DB_DATABASE=:memory: dx-php-beta php arti
 
 ---
 
+# En §0.9 Reglas Git:
+Si la rama activa es `dev` o `main` → PARAR inmediatamente.
+No escribir código. Proponer nombre de rama y esperar confirmación.
+
+# En Regla Cero:
+Después del plan → NO preguntar "¿Empiezo?".
+Presentar el plan y esperar en silencio.
+El desarrollador inicia — no el agente.
+
+---
+
 ## 0.10 Seguridad — Reglas Fijas
 
 - Descargas de licencias: IDs de BD, nunca rutas físicas → `/download?id=[UUID]`
