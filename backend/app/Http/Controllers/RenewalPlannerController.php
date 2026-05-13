@@ -38,7 +38,19 @@ class RenewalPlannerController extends Controller
             'client_id' => 'required|exists:clients,id',
             'month' => 'required|integer|between:1,12',
             'notes' => 'nullable|string',
+            'license_file' => 'nullable|file|max:2048', // Max 2MB
         ]);
+
+        $filePath = null;
+        if ($request->hasFile('license_file')) {
+            $client = Client::findOrFail($request->client_id);
+            $fileName = "Renewal_" . now()->format('Ymd') . "_" . $request->license_file->getClientOriginalName();
+            // Guardamos en la carpeta del cliente
+            $filePath = $request->file('license_file')->storeAs(
+                'renewals/' . $client->id,
+                $fileName
+            );
+        }
 
         RenewalLog::updateOrCreate(
             [
@@ -50,9 +62,19 @@ class RenewalPlannerController extends Controller
                 'user_id' => auth()->id(),
                 'sent_at' => now(),
                 'notes' => $request->notes,
+                'file_path' => $filePath,
             ]
         );
 
-        return back()->with('success', 'Renovación marcada como completada.');
+        return back()->with('success', 'Renovación procesada y registrada correctamente.');
+    }
+
+    public function download(RenewalLog $log)
+    {
+        if (!$log->file_path || !\Illuminate\Support\Facades\Storage::disk('local')->exists($log->file_path)) {
+            return back()->with('error', 'El archivo de licencia no existe o ha sido movido.');
+        }
+
+        return \Illuminate\Support\Facades\Storage::disk('local')->download($log->file_path);
     }
 }
