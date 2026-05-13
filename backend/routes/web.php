@@ -83,6 +83,7 @@ Route::middleware(['auth.jwt'])->group(function () {
             Route::post('/backup-db', [SystemActionController::class, 'backupDatabase'])->name('backup-db');
             Route::post('/toggle-maintenance', [SystemActionController::class, 'toggleMaintenance'])->name('toggle-maintenance');
             Route::post('/test-telegram', [SystemActionController::class, 'testTelegram'])->name('test-telegram');
+            Route::post('/send-weekly-alerts', [SystemActionController::class, 'sendWeeklyAlerts'])->name('send-weekly-alerts');
             Route::get('/download-backup/{filename}', [SystemActionController::class, 'downloadBackup'])->name('download-backup');
             Route::delete('/delete-backup/{filename}', [SystemActionController::class, 'deleteBackup'])->name('delete-backup');
         });

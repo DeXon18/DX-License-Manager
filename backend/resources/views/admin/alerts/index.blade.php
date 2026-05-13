@@ -16,7 +16,7 @@
                 {{ $settings->is_active ? 'Sistema Activo' : 'Sistema Desactivado' }}
             </button>
         </form>
-        <form action="/admin/system/actions/dx:send-weekly-alerts" method="POST">
+        <form action="{{ route('admin.system.send-weekly-alerts') }}" method="POST">
             @csrf
             <button type="submit" class="btn-primary">
                 <i class="fa-solid fa-paper-plane" style="margin-right: 8px;"></i>
