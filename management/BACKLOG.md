@@ -313,5 +313,5 @@ _Firmado por: **Antigravity (DX Agent)** 🦾_
 
 ## ?? Ideas Futuras / QoL
 
-- [ ] **AI Hardware Assistant**: Sistema de análisis de archivos `composite.txt` mediante IA para recomendar el ID más estable (Ethernet físico) a personal no técnico. Evita errores en trámites de licencia.
+(Vacío)
 
