@@ -31,6 +31,16 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Estandarización de Nomenclatura y Transformación ✅
+- **Completada:** 2026-05-13
+- **Rama:** feature/license-naming-standard (merged to dev)
+- **Resumen:** Implementación del estándar profesional de nombres para todos los productos Siemens (NX, StarCCM, Heeds). Incluye corrección de bug en la transformación de vendor y forzado de localhost en temporales.
+- [x] Backend: Refactor de `NXSuiteService`, `StarCcmService` y `HeedsService`.
+- [x] Naming: Formato `[ID]_[HOST]_[CLIENTE]_V[VER]_Valida_[FECHA].lic`.
+- [x] Unificada: Soporte para múltiples Sold-To concatenados.
+- [x] Fix: Regex estricta para línea `VENDOR` (evita corrupción de INCREMENT).
+- [x] Fix: SERVER `localhost` para licencias temporales.
+
 ### Gestión de Clientes — Identificador de Licencias e Inventario ✅
 - **Completada:** 2026-05-13
 - **Rama:** feature/client-license-filter + fix/alpine-audit-null-errors (merged)
