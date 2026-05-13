@@ -30,4 +30,9 @@ class RenewalLog extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function files()
+    {
+        return $this->hasMany(RenewalLogFile::class);
+    }
 }
