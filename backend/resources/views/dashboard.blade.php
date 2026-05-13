@@ -114,31 +114,73 @@
         </table>
     </div>
 
-    <div class="card">
-        <div class="card-header">
-            <span class="card-title">Acciones rápidas</span>
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Acciones rápidas</span>
+            </div>
+            <div class="quick-actions">
+                <a class="action-btn" href="{{ route('admin.import.index') }}">
+                    <div class="action-btn-icon">📥</div>
+                    <div class="action-btn-label">Importar CSV</div>
+                    <div class="action-btn-sub">Actualizar base instalada</div>
+                </a>
+                <a class="action-btn" href="{{ route('clients.index') }}">
+                    <div class="action-btn-icon">🔧</div>
+                    <div class="action-btn-label">Herramientas</div>
+                    <div class="action-btn-sub">NX, STAR-CCM+, HEEDS</div>
+                </a>
+                <a class="action-btn" href="{{ route('clients.index') }}">
+                    <div class="action-btn-icon">👥</div>
+                    <div class="action-btn-label">Clientes</div>
+                    <div class="action-btn-sub">Ver base instalada</div>
+                </a>
+                <a class="action-btn" href="#">
+                    <div class="action-btn-icon">📋</div>
+                    <div class="action-btn-label">Solicitar cambio</div>
+                    <div class="action-btn-sub">Documento Siemens</div>
+                </a>
+            </div>
         </div>
-        <div class="quick-actions">
-            <a class="action-btn" href="{{ route('admin.import.index') }}">
-                <div class="action-btn-icon">📥</div>
-                <div class="action-btn-label">Importar CSV</div>
-                <div class="action-btn-sub">Actualizar base instalada</div>
-            </a>
-            <a class="action-btn" href="#">
-                <div class="action-btn-icon">🔧</div>
-                <div class="action-btn-label">Herramientas</div>
-                <div class="action-btn-sub">NX, STAR-CCM+, HEEDS</div>
-            </a>
-            <a class="action-btn" href="#">
-                <div class="action-btn-icon">👥</div>
-                <div class="action-btn-label">Clientes</div>
-                <div class="action-btn-sub">Ver base instalada</div>
-            </a>
-            <a class="action-btn" href="#">
-                <div class="action-btn-icon">📋</div>
-                <div class="action-btn-label">Solicitar cambio</div>
-                <div class="action-btn-sub">Documento Siemens</div>
-            </a>
+
+        <!-- Card: Gestión de Contratos -->
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">Gestión de Contratos</span>
+            </div>
+            <div style="padding: 12px; display: grid; grid-template-columns: 1fr; gap: 8px;">
+                @foreach($contractStatuses as $key => $config)
+                    @php
+                        $count = $contractCounts[$key] ?? 0;
+                        $color = match($config['color']) {
+                            'azul claro' => '#388bfd',
+                            'azul intenso' => '#1d6ae8',
+                            'morado' => '#a855f7',
+                            'amarillo' => '#eab308',
+                            'naranja' => '#f97316',
+                            'verde' => '#238636',
+                            'rojo apagado' => '#da3633',
+                            'gris' => 'var(--muted)',
+                            default => 'var(--muted)'
+                        };
+                    @endphp
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 12px; background: var(--raised); border: 1px solid var(--border); border-radius: 6px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.05); border-radius: 4px;">
+                                <i class="{{ $config['icon'] }}" style="color: {{ $color }}; font-size: 12px;"></i>
+                            </div>
+                            <span style="font-size: 12px; font-weight: 500; color: var(--secondary);">{{ $config['label'] }}</span>
+                        </div>
+                        <span style="font-family: var(--font-mono); font-size: 13px; font-weight: 600; color: {{ $count > 0 ? 'var(--primary)' : 'var(--muted)' }};">
+                            {{ $count }}
+                        </span>
+                    </div>
+                @endforeach
+            </div>
+            <div class="card-header" style="border-top: 1px solid var(--border); border-bottom: none; background: transparent; padding: 10px 20px;">
+                <span style="font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em;">Total Contratos</span>
+                <span style="font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--accent);">{{ array_sum($contractCounts) }}</span>
+            </div>
         </div>
     </div>
 </div>
