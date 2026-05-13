@@ -144,6 +144,17 @@ class SystemActionController extends Controller
         }
     }
 
+    public function sendWeeklyAlerts()
+    {
+        try {
+            Artisan::call('dx:send-weekly-alerts');
+            $this->logAction('manual_alert_send', 'Manual license expiration alerts triggered');
+            return back()->with('success', 'El proceso de alertas se ha iniciado correctamente.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error al iniciar alertas: ' . $e->getMessage());
+        }
+    }
+
     private function logAction($action, $description)
     {
         DB::table('audit_logs')->insert([
