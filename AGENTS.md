@@ -49,12 +49,21 @@ Excepción: comentarios de código, mensajes de commit y documentación técnica
 
 **Cada `/log` y cada `/sync` termina con un commit. Sin excepciones.**
 
+**Antes de cualquier commit — verificar logs obligatoriamente:**
+
 ```bash
-git status           # revisar siempre antes
-git diff --cached    # verificar qué va al commit
+# 1. Revisar logs del contenedor PHP — cero errores antes de commitear
+docker compose --project-directory . -f infra/docker-compose.beta.yml logs --tail=50 dx-php-beta
+
+# 2. Si hay errores en logs → NO commitear → resolver primero
+# 3. Solo si logs están limpios → proceder al commit
+git status
+git diff --cached
 git add [archivos concretos]
 git commit -m "feat/fix/chore(scope): descripción"
 ```
+
+⛔ **Logs con errores = commit bloqueado.** Resolver el error, verificar logs limpios, entonces commitear.
 
 - **Nunca** `git add .` sin revisar `git status` primero
 - **Nunca** `wip` ni `changes` como mensaje de commit
@@ -151,10 +160,11 @@ Una tarea que no cabe en un commit es demasiado grande — dividirla.
 ```
 
 **Reglas del checklist:**
-- Un paso solo se marca  si hay evidencia real (output de comando, archivo creado, test pasado)
-- Nunca marcar  por inferencia — solo por resultado verificado
-- Si un paso falla → marcar  y PARAR
-- El checklist final debe estar 100% completo antes de hacer el commit de cierre
+- Un paso solo se marca [x] si hay evidencia real (output de comando, archivo creado, test pasado)
+- Nunca marcar [x] por inferencia — solo por resultado verificado
+- Si un paso falla → marcar [!] y PARAR
+- Antes del commit de cierre → revisar logs obligatoriamente (ver §0.1)
+- El checklist final debe estar 100% completo Y logs limpios antes de hacer el commit de cierre
 
 ---
 

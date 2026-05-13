@@ -1,6 +1,23 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-13] — Fase 13: Sistema de Alertas de Licencias ✅
+
+### Added
+
+- **Reporte Global Consolidado**: Implementación de `GlobalLicenseExpirationReport` para enviar un único resumen semanal a Soporte en lugar de emails individuales.
+- **Lógica de Filtrado de Licencias**: Refactorización de `LicenseExpirationService` para centrarse exclusivamente en la caducidad de productos del inventario (0, 7, 15 y 30 días).
+- **Notificaciones Internas**: Redirección de todas las alertas a la cuenta `soporte@ats-global.com` (configurable en ajustes).
+- **Trazabilidad Automática**: Integración con `EmailLoggerListener` para registro centralizado en `email_logs` sin duplicidad.
+- **Panel de Control**: Refactorización de la UI de administración (`/admin/alerts`) para cumplir con `DESIGN.md` (Bento style).
+- **Test de Alertas**: Implementación de disparo manual síncrono desde el panel con feedback inmediato vía Flash Messages.
+
+### Fixed
+
+- **Duplicidad de Logs**: Eliminado registro manual en el Job que causaba entradas triplicadas en el historial.
+- **Permisos de Vistas**: Solucionado error `Permission denied` en el servidor forzando permisos correctos y limpieza de caché de vistas.
+- **Estabilidad**: Corregida la carga de fuentes y estilos en las plantillas de email bilingües.
+
 ## [2026-05-12] — Centro de Logs Unificado
 
 ### Added
