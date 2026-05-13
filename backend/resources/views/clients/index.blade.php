@@ -21,17 +21,35 @@
                 @endif
             </form>
 
-            <div style="display: flex; align-items: center; gap: 8px;">
-                <label class="text-xs muted" style="white-space: nowrap; cursor: pointer;" x-data="{ active: {{ request('has_inventory') ? 'true' : 'false' }} }" x-on:click="window.location.href = active ? '{{ route('clients.index', array_merge(request()->except('has_inventory'))) }}' : '{{ route('clients.index', array_merge(request()->all(), ['has_inventory' => 1])) }}'">
-                    <span :class="active ? 'text-primary font-bold' : ''">Con Licencias</span>
-                    <div style="width: 34px; height: 18px; border-radius: 20px; position: relative; transition: all 0.3s;" :style="active ? 'background: var(--primary);' : 'background: var(--surface); border: 1px solid var(--border);'">
-                        <div style="width: 14px; height: 14px; background: white; border-radius: 50%; position: absolute; top: 2px; transition: all 0.3s;" :style="active ? 'left: 18px;' : 'left: 2px;'"></div>
-                    </div>
-                </label>
+            <div class="filter-actions" style="display: flex; align-items: center; gap: 10px;">
+
+                @php $hasInv = request('has_inventory'); @endphp
+                <a href="{{ $hasInv ? route('clients.index', request()->except('has_inventory')) : route('clients.index', array_merge(request()->all(), ['has_inventory' => 1])) }}" 
+                   class="filter-chip {{ $hasInv ? 'active' : '' }}"
+                   style="text-decoration: none; display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 30px; font-size: 11px; font-weight: 600; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border: 1px solid var(--border); {{ $hasInv ? 'background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px rgba(0, 102, 255, 0.2);' : 'background: var(--surface); color: var(--muted);' }}">
+                    <i class="fa-solid fa-certificate" style="{{ $hasInv ? 'color: white;' : 'color: var(--warning);' }}"></i>
+                    <span>Solo con Licencias</span>
+                    @if($hasInv)
+                        <i class="fa-solid fa-xmark" style="font-size: 9px; opacity: 0.7; margin-left: 4px;"></i>
+                    @endif
+                </a>
+                
+                <style>
+                    .filter-chip:hover {
+                        transform: translateY(-1px);
+                        border-color: var(--primary-light);
+                        background: var(--surface-light);
+                    }
+                    .filter-chip.active:hover {
+                        background: var(--primary-dark);
+                        border-color: var(--primary-dark);
+                    }
+                </style>
             </div>
         </div>
     </div>
 </div>
+
 
 <div class="card">
     <table class="table">
