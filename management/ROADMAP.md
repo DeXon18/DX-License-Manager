@@ -360,8 +360,10 @@ DX License Manager
 
 **Estado:** COMPLETADA
 **Prerequisito:** ✅ Fase 10.4 estable
-- [ ] UI de monitorización de recursos (CPU/RAM/Uptime).
-- [ ] Acciones de reinicio de contenedores desde el portal.
+**Validación:** ✅ Verificado por Oskar el 2026-05-13.
+- [x] UI de monitorización de recursos (CPU/RAM/Uptime).
+- [x] Acciones de reinicio de contenedores desde el portal.
+
 
 ---
 
