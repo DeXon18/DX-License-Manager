@@ -117,5 +117,10 @@ Route::middleware(['auth.jwt'])->group(function () {
             Route::put('/resources/{resource}', [\App\Http\Controllers\Admin\ResourceController::class, 'update'])->name('resources.update');
             Route::delete('/resources/{resource}', [\App\Http\Controllers\Admin\ResourceController::class, 'destroy'])->name('resources.destroy');
         });
+
+        // Fase 13: Gestión de Alertas y Notificaciones
+        Route::get('/alerts', [\App\Http\Controllers\Admin\AlertController::class, 'index'])->name('alerts.index');
+        Route::post('/alerts/update', [\App\Http\Controllers\Admin\AlertController::class, 'update'])->name('alerts.update');
+        Route::post('/alerts/toggle', [\App\Http\Controllers\Admin\AlertController::class, 'toggle'])->name('alerts.toggle');
     });
 });
