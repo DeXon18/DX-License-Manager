@@ -1,6 +1,6 @@
-Rama activa: feature/docker-monitor (Commiteada). Fase 10.5 ✅ y Fase 13 ✅.
-Último trabajo: Commiteada la implementación de Docker Fleet Monitor que el agente anterior dejó pendiente. Verificado que los logs están limpios y que el sistema es estable.
-Estado: Flota Docker monitorizada desde el panel NOC Pro. Alertas de licencias funcionales con reporte global.
-Próximo paso inmediato: Iniciar Fase 15 (Integraciones IA) o Fase 17 (Limpieza UI) según decida Oskar.
+Rama activa: dev. Gestión de Clientes (Filtros & Estabilización) — COMPLETADA.
+Último trabajo: Fix de persistencia de filtros. Se ha implementado lógica de Sesión determinista en ClientController y limpiado la URL en la vista. El switch Industrial ahora envía 'clear_inventory=1' para resetear el estado de forma explícita, eliminando bucles en la URL.
+Estado: Sistema estable. El filtro "Solo con Licencias" se recuerda correctamente al buscar o navegar sin ensuciar la URL con hidden inputs. Git reparado y sincronizado.
+Próximo paso inmediato: Validar inicio de Fase 15 (Integraciones IA).
 Bloqueos: Ninguno.
 Stack beta: running. Stack prod: running.
