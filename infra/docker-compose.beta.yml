@@ -27,6 +27,7 @@ services:
       - ./management:/var/www/management:ro
       - ./scripts:/var/www/html/scripts:ro
       - ./.git:/var/www/html/.git:ro
+      - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       mariadb-beta:
         condition: service_healthy

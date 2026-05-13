@@ -65,6 +65,15 @@ class SystemDashboardController extends Controller
         return view('admin.system.dashboard', compact('metrics'));
     }
 
+    /**
+     * Display the dedicated docker monitor page.
+     */
+    public function docker(\App\Services\DockerMonitorService $dockerMonitor)
+    {
+        $containers = $dockerMonitor->getContainers();
+        return view('admin.system.docker', compact('containers'));
+    }
+
     private function getUptime()
     {
         $uptime = shell_exec('uptime');
