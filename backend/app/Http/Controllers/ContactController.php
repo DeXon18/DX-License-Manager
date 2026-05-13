@@ -18,7 +18,10 @@ class ContactController extends Controller
             'email' => 'required|email|max:255',
             'position' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:255',
+            'receives_alerts' => 'boolean',
         ]);
+
+        $validated['receives_alerts'] = $request->has('receives_alerts');
 
         $client->contacts()->create($validated);
 
@@ -36,7 +39,10 @@ class ContactController extends Controller
             'email' => 'required|email|max:255',
             'position' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:255',
+            'receives_alerts' => 'boolean',
         ]);
+
+        $validated['receives_alerts'] = $request->has('receives_alerts');
 
         $contact->update($validated);
 

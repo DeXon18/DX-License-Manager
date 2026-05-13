@@ -129,6 +129,9 @@
                 <a class="sidebar-item {{ request()->routeIs('admin.import.*') || request()->routeIs('admin.normalization.*') ? 'active' : '' }}" href="{{ route('admin.import.index') }}">
                     <span class="sidebar-icon">📥</span> Importación & Datos
                 </a>
+                <a class="sidebar-item {{ request()->routeIs('admin.alerts.index') ? 'active' : '' }}" href="{{ route('admin.alerts.index') }}">
+                    <span class="sidebar-icon">🔔</span> Notificaciones
+                </a>
             </div>
             @endif
         </aside>

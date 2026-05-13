@@ -361,6 +361,7 @@
                         <th>Nombre</th>
                         <th>Email</th>
                         <th>Cargo</th>
+                        <th class="text-center">Alertas</th>
                         <th class="text-right">Acciones</th>
                     </tr>
                 </thead>
@@ -376,6 +377,15 @@
                                 <span class="muted">—</span>
                             @endif
                         </td>
+                        <td class="text-center">
+                            @if($contact->receives_alerts)
+                                <span class="badge badge-success sm" title="Recibe reporte semanal">
+                                    <i class="fa-solid fa-bell mr-1"></i> Sí
+                                </span>
+                            @else
+                                <span class="badge badge-muted sm" style="opacity: 0.5;">No</span>
+                            @endif
+                        </td>
                         <td class="text-right" style="width: 100px;">
                             <div style="display: flex; justify-content: flex-end; align-items: center; gap: 4px; white-space: nowrap;">
                                 <button class="btn-icon" 
@@ -384,7 +394,8 @@
                                         name: '{{ $contact->name }}', 
                                         email: '{{ $contact->email }}', 
                                         position: '{{ $contact->position }}',
-                                        phone: '{{ $contact->phone }}'
+                                        phone: '{{ $contact->phone }}',
+                                        receives_alerts: {{ $contact->receives_alerts ? 'true' : 'false' }}
                                     })">
                                     <i class="fa-solid fa-pen"></i>
                                 </button>
@@ -416,7 +427,7 @@
                 open: false, 
                 editMode: false,
                 action: '{{ route('contacts.store', $client) }}',
-                form: { id: '', name: '', email: '', position: '', phone: '' }
+                form: { id: '', name: '', email: '', position: '', phone: '', receives_alerts: false }
             }"
             x-show="open"
             @open-contact-modal.window="
@@ -428,7 +439,7 @@
                 } else {
                     editMode = false;
                     action = '{{ route('contacts.store', $client) }}';
-                    form = { id: '', name: '', email: '', position: '', phone: '' };
+                    form = { id: '', name: '', email: '', position: '', phone: '', receives_alerts: false };
                 }
             "
             class="modal-overlay"
@@ -463,6 +474,10 @@
                         <div class="input-group">
                             <label>Teléfono (Opcional)</label>
                             <input type="text" name="phone" x-model="form.phone" class="gui-input w-full" placeholder="+34 ...">
+                        </div>
+                        <div class="input-group flex items-center gap-3 pt-2">
+                            <input type="checkbox" name="receives_alerts" value="1" x-model="form.receives_alerts" class="w-4 h-4 rounded border-gray-300 text-accent focus:ring-accent">
+                            <label class="mb-0 cursor-pointer" @click="form.receives_alerts = !form.receives_alerts">Recibir reportes semanales de caducidad</label>
                         </div>
                     </div>
                     
