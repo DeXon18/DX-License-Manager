@@ -47,7 +47,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($upcomingExpirations as $license)
+                @forelse($upcomingExpirations as $license)
                     @php
                         $daysLeft = now()->startOfDay()->diffInDays($license->expiration_date, false);
                         $badgeClass = 'badge-success';
@@ -102,7 +102,14 @@
                         </td>
                         <td><span class="badge {{ $badgeClass }}">{{ $statusLabel }}</span></td>
                     </tr>
-                @endforeach
+                @empty
+                    <tr>
+                        <td colspan="4" style="text-align: center; padding: 40px; color: var(--muted);">
+                            <div style="font-size: 24px; margin-bottom: 10px;">🛡️</div>
+                            Todo bajo control. No hay vencimientos en los próximos 90 días.
+                        </td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>
