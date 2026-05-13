@@ -106,9 +106,6 @@
                 <a class="sidebar-item {{ request()->routeIs('tools.*') ? 'active' : '' }}" href="{{ route('tools.index') }}">
                     <span class="sidebar-icon">🛠️</span> Hub de Utilidades
                 </a>
-                <a class="sidebar-item {{ request()->routeIs('admin.repository.index') ? 'active' : '' }}" href="{{ route('admin.repository.index') }}">
-                    <span class="sidebar-icon">📂</span> Repositorio
-                </a>
             </div>
 
             @if(Auth::user() && Auth::user()->hasRole('admin'))
@@ -125,6 +122,9 @@
                 </a>
                 <a class="sidebar-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">
                     <span class="sidebar-icon">🔑</span> Usuarios y Acceso
+                </a>
+                <a class="sidebar-item {{ request()->routeIs('admin.repository.index') ? 'active' : '' }}" href="{{ route('admin.repository.index') }}">
+                    <span class="sidebar-icon">📂</span> Repositorio Semanal
                 </a>
                 <a class="sidebar-item {{ request()->routeIs('admin.import.*') || request()->routeIs('admin.normalization.*') ? 'active' : '' }}" href="{{ route('admin.import.index') }}">
                     <span class="sidebar-icon">📥</span> Importación & Datos
