@@ -30,6 +30,19 @@ El desarrollador inicia. El agente espera.
 - [x] **Fase 10**: Dashboard del Sistema y Modularización (Completada 2026-05-11).
 - [x] **Fase 16**: Centro de Logs Unificado y Auditoría Pro (Completada 2026-05-12).
 - [x] **Fase 13**: Alertas y Notificaciones (Completada 2026-05-13).
+- [x] **Fase 10.5**: Docker Monitor NOC Pro (Completada 2026-05-13).
+
+---
+
+### Fase 10.5 — Docker Monitor NOC Pro ✅
+- **Completada:** 2026-05-13
+- **Rama:** feature/docker-monitor
+- **Resumen:** Implementación de monitorización de contenedores Docker en tiempo real. Incluye telemetría de CPU/RAM con indicadores circulares, gestión segura de reinicios desde el panel y optimización de rendimiento mediante desacoplamiento del dashboard principal.
+- [x] Instalación de `docker-cli` y mapeo de socket en infraestructura.
+- [x] Implementación de `DockerMonitorService` (telemetría por entorno).
+- [x] Vista dedicada `/admin/system/docker` con diseño "Bento/NOC Pro".
+- [x] Iconografía oficial (FontAwesome 6) y colores corporativos por servicio.
+- [x] Acción de reinicio segura con confirmación de sistema.
 
 ---
 
