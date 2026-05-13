@@ -96,6 +96,9 @@
                 <a class="sidebar-item {{ request()->routeIs('clients.*') ? 'active' : '' }}" href="{{ route('clients.index') }}">
                     <span class="sidebar-icon">👥</span> Clientes
                 </a>
+                <a class="sidebar-item {{ request()->routeIs('renewal-planner.*') ? 'active' : '' }}" href="{{ route('renewal-planner.index') }}">
+                    <span class="sidebar-icon">📅</span> Planificador
+                </a>
                 <a class="sidebar-item" href="#">
                     <span class="sidebar-icon">🛡️</span> Auditoría IA
                 </a>
