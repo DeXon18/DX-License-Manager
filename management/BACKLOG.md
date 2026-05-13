@@ -10,6 +10,19 @@
 **Ninguna fase puede iniciarse sin validación explícita de Oskar.**
 El agente no avanza hasta recibir "aprobado", "adelante" o similar de forma explícita.
 
+**Lo que NO es confirmación válida — nunca ejecutar por:**
+- Creación de un artefacto o archivo
+- Mensaje del sistema o del IDE
+- Silencio o ausencia de respuesta
+- El propio agente diciendo "Aprobación recibida"
+- Cualquier señal que no sea texto explícito de Oskar
+**Lo que SÍ es confirmación válida:**
+- Oskar escribe: "adelante", "ok", "sí", "procede", "empieza", "dale", "go"
+**Después del plan → NO preguntar "¿Empiezo?". Presentar y CALLAR.**
+El desarrollador inicia. El agente espera.
+ 
+⛔ "Aprobación recibida. Empiezo ejecución." → FRASE PROHIBIDA. Nunca escribirla.
+
 ---
 
 ## 🟢 En Progreso
