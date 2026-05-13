@@ -12,6 +12,15 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
+        // Persistencia del filtro de inventario en sesión
+        if ($request->has('has_inventory')) {
+            session(['client_has_inventory' => true]);
+        } elseif ($request->has('clear_inventory')) {
+            session()->forget('client_has_inventory');
+        }
+
+        $hasInventory = session('client_has_inventory', false);
+
         $clients = Client::withCount(['contracts', 'inventoryDaemons'])
             ->when($request->search, function($query) use ($request) {
                 $search = $request->search;
@@ -23,7 +32,7 @@ class ClientController extends Controller
                       });
                 });
             })
-            ->when($request->has_inventory, function($query) {
+            ->when($hasInventory, function($query) {
                 $query->has('inventoryDaemons');
             })
             ->orderBy('name')

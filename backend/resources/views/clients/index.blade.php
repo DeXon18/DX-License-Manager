@@ -8,41 +8,110 @@
             <p class="page-sub text-sm">Visualización y búsqueda de cuentas del ecosistema.</p>
         </div>
         <div class="search-box mt-4" style="width: 450px; display: flex; align-items: center; gap: 15px;">
-            <form action="{{ route('clients.index') }}" method="GET" class="input-wrap" style="flex: 1;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="left: 12px; opacity: 0.5;">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <form action="{{ route('clients.index') }}" method="GET" style="position: relative; flex: 1; max-width: 400px;">
+                <svg style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
                 <input type="text" name="search" value="{{ request('search') }}" 
                     placeholder="Nombre del cliente..." class="gui-input" style="padding-left: 36px;"
                     x-on:input.debounce.500ms="$el.closest('form').submit()">
-                @if(request('has_inventory'))
-                    <input type="hidden" name="has_inventory" value="1">
-                @endif
             </form>
 
-            <div class="filter-actions" style="display: flex; align-items: center; gap: 10px;">
-
-                @php $hasInv = request('has_inventory'); @endphp
-                <a href="{{ $hasInv ? route('clients.index', request()->except('has_inventory')) : route('clients.index', array_merge(request()->all(), ['has_inventory' => 1])) }}" 
-                   class="filter-chip {{ $hasInv ? 'active' : '' }}"
-                   style="text-decoration: none; display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 30px; font-size: 11px; font-weight: 600; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border: 1px solid var(--border); {{ $hasInv ? 'background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px rgba(0, 102, 255, 0.2);' : 'background: var(--surface); color: var(--muted);' }}">
-                    <i class="fa-solid fa-sliders" style="{{ $hasInv ? 'color: white;' : 'color: var(--warning);' }}"></i>
-                    <span>Solo con Licencias</span>
-                    @if($hasInv)
-                        <i class="fa-solid fa-xmark" style="font-size: 9px; opacity: 0.7; margin-left: 4px;"></i>
-                    @endif
-                </a>
+            <div class="filter-actions" style="display: flex; align-items: center; gap: 12px;">
+                @php $hasInv = session('client_has_inventory', false); @endphp
                 
+                <div class="premium-switch-container">
+                    <a href="{{ $hasInv ? route('clients.index', array_merge(request()->except('has_inventory'), ['clear_inventory' => 1])) : route('clients.index', array_merge(request()->all(), ['has_inventory' => 1])) }}" 
+                       class="premium-switch {{ $hasInv ? 'active' : '' }}"
+                       title="Filtrar clientes con inventario activo">
+                        <div class="switch-track">
+                            <div class="switch-knob">
+                                <i class="fa-solid fa-sliders"></i>
+                            </div>
+                        </div>
+                        <span class="switch-text">Solo con Licencias</span>
+                    </a>
+                </div>
+
                 <style>
-                    .filter-chip:hover {
-                        transform: translateY(-1px);
-                        border-color: var(--primary-light);
-                        background: var(--surface-light);
+                    .premium-switch-container {
+                        display: flex;
+                        align-items: center;
                     }
-                    .filter-chip.active:hover {
-                        background: var(--primary-dark);
-                        border-color: var(--primary-dark);
+                    .premium-switch {
+                        display: flex;
+                        align-items: center;
+                        gap: 12px;
+                        text-decoration: none;
+                        padding: 6px 16px 6px 6px;
+                        background: var(--surface);
+                        border: 1px solid var(--border);
+                        border-radius: 6px;
+                        transition: all 0.2s ease;
+                        user-select: none;
+                    }
+                    .switch-track {
+                        width: 40px;
+                        height: 20px;
+                        background: var(--bg);
+                        border-radius: 4px;
+                        position: relative;
+                        border: 1px solid var(--border);
+                        transition: all 0.2s ease;
+                        overflow: hidden;
+                    }
+                    .switch-knob {
+                        position: absolute;
+                        top: 2px;
+                        left: 2px;
+                        width: 14px;
+                        height: 14px;
+                        background: var(--surface);
+                        border-radius: 3px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+                        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+                        border: 1px solid var(--border);
+                    }
+                    .switch-knob i {
+                        font-size: 8px;
+                        color: var(--muted);
+                        transition: all 0.2s ease;
+                    }
+                    .switch-text {
+                        font-size: 11px;
+                        font-weight: 700;
+                        color: var(--muted);
+                        text-transform: uppercase;
+                        letter-spacing: 0.05em;
+                        transition: all 0.2s ease;
+                    }
+
+                    .premium-switch.active {
+                        border-color: var(--accent);
+                        background: var(--surface);
+                    }
+                    .premium-switch.active .switch-track {
+                        background: var(--accent);
+                        border-color: var(--accent);
+                    }
+                    .premium-switch.active .switch-knob {
+                        transform: translateX(20px);
+                        background: white;
+                        border-color: white;
+                    }
+                    .premium-switch.active .switch-knob i {
+                        color: var(--accent);
+                    }
+                    .premium-switch.active .switch-text {
+                        color: var(--primary);
+                    }
+
+                    .premium-switch:hover {
+                        border-color: var(--accent);
+                        background: var(--bg);
                     }
                 </style>
             </div>
