@@ -27,7 +27,7 @@
                 <a href="{{ $hasInv ? route('clients.index', request()->except('has_inventory')) : route('clients.index', array_merge(request()->all(), ['has_inventory' => 1])) }}" 
                    class="filter-chip {{ $hasInv ? 'active' : '' }}"
                    style="text-decoration: none; display: flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 30px; font-size: 11px; font-weight: 600; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; border: 1px solid var(--border); {{ $hasInv ? 'background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 12px rgba(0, 102, 255, 0.2);' : 'background: var(--surface); color: var(--muted);' }}">
-                    <i class="fa-solid fa-certificate" style="{{ $hasInv ? 'color: white;' : 'color: var(--warning);' }}"></i>
+                    <i class="fa-solid fa-sliders" style="{{ $hasInv ? 'color: white;' : 'color: var(--warning);' }}"></i>
                     <span>Solo con Licencias</span>
                     @if($hasInv)
                         <i class="fa-solid fa-xmark" style="font-size: 9px; opacity: 0.7; margin-left: 4px;"></i>
@@ -70,15 +70,15 @@
                         <div class="font-bold">{{ $client->name }}</div>
                         @if($client->inventory_daemons_count > 0)
                             <span title="Licencias Detectadas" style="color: var(--warning); display: flex; align-items: center;" class="pulse-soft">
-                                <i class="fa-solid fa-certificate" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-database" style="font-size: 10px;"></i>
                             </span>
                         @endif
                     </div>
                 </td>
                 <td class="text-center">
                     @if($client->inventory_daemons_count > 0)
-                        <span class="body-sm font-mono" style="background: rgba(255, 170, 0, 0.1); color: var(--warning); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255, 170, 0, 0.2);">
-                            {{ $client->inventory_daemons_count }} <span class="text-xs" style="opacity: 0.6;">Sold-To</span>
+                        <span class="badge badge-warning font-mono" style="padding: 2px 10px; font-weight: 700;">
+                            {{ $client->inventory_daemons_count }} <span style="font-size: 9px; opacity: 0.8; font-weight: 400; margin-left: 2px;">Sold-To</span>
                         </span>
                     @else
                         <span class="muted text-xs">—</span>
