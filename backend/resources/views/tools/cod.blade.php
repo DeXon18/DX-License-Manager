@@ -495,21 +495,21 @@
                         <div class="ai-result-grid">
                             <div class="ai-result-item">
                                 <label>Hostname</label>
-                                <span x-text="aiResult.hostname || 'N/A'"></span>
+                                <span x-text="aiResult?.hostname || 'N/A'"></span>
                             </div>
                             <div class="ai-result-item">
                                 <label>Composite</label>
-                                <span class="font-mono" x-text="aiResult.composite || 'N/A'"></span>
+                                <span class="font-mono" x-text="aiResult?.composite || 'N/A'"></span>
                             </div>
                             <div class="ai-result-item">
                                 <label>MAC Address</label>
-                                <span class="font-mono" x-text="aiResult.mac || 'N/A'"></span>
+                                <span class="font-mono" x-text="aiResult?.mac || 'N/A'"></span>
                             </div>
                         </div>
                         <div class="ai-result-footer">
-                            <div style="font-size: 11px; font-weight: 600; color: var(--accent); margin-bottom: 4px;">Adaptador: <span x-text="aiResult.adapter" style="color: var(--text);"></span></div>
+                            <div style="font-size: 11px; font-weight: 600; color: var(--accent); margin-bottom: 4px;">Adaptador: <span x-text="aiResult?.adapter" style="color: var(--text);"></span></div>
                             <p class="ai-reason" style="font-size: 11px; color: var(--muted); margin: 0; line-height: 1.4;">
-                                <i class="fa-solid fa-info-circle me-1"></i> <span x-text="aiResult.reason"></span>
+                                <i class="fa-solid fa-info-circle me-1"></i> <span x-text="aiResult?.reason"></span>
                             </p>
                         </div>
                     </div>
