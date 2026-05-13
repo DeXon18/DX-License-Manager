@@ -76,6 +76,7 @@ Route::middleware(['auth.jwt'])->group(function () {
         Route::post('/normalization/dismiss', [\App\Http\Controllers\Admin\NormalizationController::class, 'dismiss'])->name('normalization.dismiss');
 
         Route::get('/system', [SystemDashboardController::class, 'index'])->name('system.index');
+        Route::get('/system/docker', [SystemDashboardController::class, 'docker'])->name('system.docker');
         
         Route::prefix('system/actions')->name('system.')->group(function () {
             Route::post('/clear-cache', [SystemActionController::class, 'clearCache'])->name('clear-cache');
@@ -84,6 +85,7 @@ Route::middleware(['auth.jwt'])->group(function () {
             Route::post('/toggle-maintenance', [SystemActionController::class, 'toggleMaintenance'])->name('toggle-maintenance');
             Route::post('/test-telegram', [SystemActionController::class, 'testTelegram'])->name('test-telegram');
             Route::post('/send-weekly-alerts', [SystemActionController::class, 'sendWeeklyAlerts'])->name('send-weekly-alerts');
+            Route::post('/restart-container', [SystemActionController::class, 'restartContainer'])->name('restart-container');
             Route::get('/download-backup/{filename}', [SystemActionController::class, 'downloadBackup'])->name('download-backup');
             Route::delete('/delete-backup/{filename}', [SystemActionController::class, 'deleteBackup'])->name('delete-backup');
         });

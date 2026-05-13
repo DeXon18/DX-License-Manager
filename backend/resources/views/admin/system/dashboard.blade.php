@@ -243,9 +243,18 @@
                     </div>
                 </div>
             </div>
-
+            
             {{-- Dedicated Modules Navigation --}}
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 24px;">
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 24px;">
+                <a href="{{ route('admin.system.docker') }}" class="module-card">
+                    <div class="module-icon" style="background: rgba(14, 165, 233, 0.1); color: #0ea5e9;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                    </div>
+                    <div class="module-info">
+                        <span class="module-title">Docker Monitor</span>
+                        <p class="module-desc">Salud de contenedores, telemetría de CPU/RAM y gestión de servicios en tiempo real.</p>
+                    </div>
+                </a>
                 <a href="{{ route('admin.backups.index') }}" class="module-card">
                     <div class="module-icon" style="background: rgba(67, 97, 238, 0.1); color: var(--accent);">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>

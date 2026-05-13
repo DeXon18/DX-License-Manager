@@ -158,6 +158,26 @@ class SystemActionController extends Controller
         }
     }
 
+    public function restartContainer(Request $request)
+    {
+        $name = $request->input('name');
+
+        if (!$name || !str_starts_with($name, 'dx-')) {
+            return response()->json(['success' => false, 'message' => 'Contenedor no válido.'], 400);
+        }
+
+        try {
+            // Ejecutar docker restart de forma asíncrona (no bloqueante)
+            Process::run("docker restart {$name}");
+            
+            $this->logAction('docker_restart', "Container restarted: {$name}");
+
+            return response()->json(['success' => true, 'message' => "Contenedor {$name} reiniciado con éxito."]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()], 500);
+        }
+    }
+
     private function logAction($action, $description)
     {
         DB::table('audit_logs')->insert([

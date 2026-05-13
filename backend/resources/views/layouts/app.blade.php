@@ -53,7 +53,7 @@
         <div class="header-inner">
             <a class="brand" href="{{ url('/') }}">
                 <div class="brand-mark">DX</div>
-                <span class="brand-name">DX Control Center</span>
+                <span class="brand-name">DX License Manager</span>
             </a>
             <nav class="nav-links">
                 <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Inicio</a>
