@@ -278,7 +278,8 @@ DX License Manager
 - [x] Transformación automática a SALT (29000/29001) e identificador HEEDS
 - [x] Almacenamiento jerárquico por Cliente/Mes-Año
 - [x] Auditoría IA via n8n FallbackChain
-- [x] **Validación:** ✅ Motor y UI unificada OK.
+- [x] **Nomenclatura Estándar (Refinamiento)**: Unificación de formatos para NX, StarCCM y HEEDS ✅
+- [x] **Validación:** ✅ Motor y UI unificada OK (2026-05-13).
 
 #### 8.4 — COD (`siemens_cod`) ✅
 **Estado:** COMPLETADA
@@ -360,7 +361,7 @@ DX License Manager
 
 **Estado:** COMPLETADA
 **Prerequisito:** ✅ Fase 10.4 estable
-**Validación:** ✅ Verificado por Oskar el 2026-05-13.
+**Validación:** ✅ Verificado por Oskar el 2026-05-13. Telemetría y reinicios funcionales.
 - [x] UI de monitorización de recursos (CPU/RAM/Uptime).
 - [x] Acciones de reinicio de contenedores desde el portal.
 
