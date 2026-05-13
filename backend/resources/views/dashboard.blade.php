@@ -35,7 +35,9 @@
     <div class="card">
         <div class="card-header">
             <span class="card-title">Vencimientos inminentes (Licencias)</span>
-            <a class="card-action" href="{{ route('admin.normalization.index') }}">Ver inventario →</a>
+            @if(auth()->user()->isAdmin())
+                <a class="card-action" href="{{ route('admin.normalization.index') }}">Ver inventario →</a>
+            @endif
         </div>
         <table>
             <thead>
@@ -120,11 +122,13 @@
                 <span class="card-title">Acciones rápidas</span>
             </div>
             <div class="quick-actions">
-                <a class="action-btn" href="{{ route('admin.import.index') }}">
-                    <div class="action-btn-icon">📥</div>
-                    <div class="action-btn-label">Importar CSV</div>
-                    <div class="action-btn-sub">Actualizar base instalada</div>
-                </a>
+                @if(auth()->user()->isAdmin())
+                    <a class="action-btn" href="{{ route('admin.import.index') }}">
+                        <div class="action-btn-icon">📥</div>
+                        <div class="action-btn-label">Importar CSV</div>
+                        <div class="action-btn-sub">Actualizar base instalada</div>
+                    </a>
+                @endif
                 <a class="action-btn" href="{{ route('clients.index') }}">
                     <div class="action-btn-icon">🔧</div>
                     <div class="action-btn-label">Herramientas</div>
