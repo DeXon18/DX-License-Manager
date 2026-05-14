@@ -32,12 +32,14 @@ El desarrollador inicia. El agente espera.
 ## ✅ Completado
 
 ### Fase 14 — Planificador de Renovaciones (Motor & UI) ✅
-- **Completada:** 2026-05-13
+- **Completada:** 2026-05-14
 - **Rama:** feature/renewal-planner
-- **Resumen:** Implementación completa del módulo operativo para el seguimiento mensual de renovaciones. Incluye motor de filtrado cíclico, soporte para múltiples archivos adjuntos por acción y visualización de historial en la ficha del cliente.
+- **Resumen:** Implementación completa del módulo operativo para el seguimiento mensual de renovaciones. Incluye motor de filtrado cíclico, soporte para múltiples archivos adjuntos por acción y visualización de historial en la ficha del cliente. Optimización final con diseño NOC Pro y sincronización de identidad corporativa.
 - [x] Infraestructura: Tablas `renewal_logs` y `renewal_log_files`.
 - [x] Backend: Lógica de filtrado por mes y gestión de subidas múltiples.
-- [x] UI: Vista principal con estados corporativos y feedback de carga.
+- [x] UI NOC Pro: Rediseño de alta densidad con selector de mes Alpine.js y layout espejo de Clientes.
+- [x] Identidad: Sincronización total de colores de estados con `identities.json`.
+- [x] Lógica: Sistema de reversión de logs (Undo) y limpieza rápida de filtros.
 - [x] Historial: Pestaña dedicada en Perfil de Cliente con descarga de archivos.
 - [x] Seguridad: Blindaje de dashboard administrativo para no-admins.
 
