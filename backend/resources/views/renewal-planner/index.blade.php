@@ -87,13 +87,13 @@
     </div>
 
     <div class="table-container">
-        <table style="border-collapse: separate; border-spacing: 0;">
-            <th            <thead>
+        <table>
+            <thead>
                 <tr>
-                    <th style="padding: 12px 20px; width: 250px;">Cliente</th>
-                    <th style="padding: 12px 20px; width: 140px;">Servidores</th>
-                    <th style="padding: 12px 20px;">Detalles de Contrato (Número | Vencimiento | Estado | Comentario)</th>
-                    <th style="padding: 12px 20px; width: 80px; text-align: center;">Acción</th>
+                    <th style="width: 250px;">Cliente</th>
+                    <th style="width: 140px;">Servidores</th>
+                    <th>Detalles de Contrato (Número | Vencimiento | Estado | Comentario)</th>
+                    <th style="width: 80px; text-align: center;">Acción</th>
                 </tr>
             </thead>
             <tbody>
@@ -102,23 +102,23 @@
                         $client = $contracts->first()->client;
                         $isCompleted = in_array($clientId, $completedLogs);
                     @endphp
-                    <tr style="{{ $isCompleted ? 'opacity: 0.5; background: rgba(0,255,0,0.01);' : '' }} border-bottom: 1px solid var(--border-light);">
-                        <td style="padding: 12px 20px; vertical-align: top;">
-                            <div style="font-weight: 700; font-size: 13px; color: {{ $isCompleted ? 'var(--muted)' : 'var(--primary)' }}; line-height: 1.2;">
+                    <tr class="{{ $isCompleted ? 'row-completed' : '' }}">
+                        <td style="vertical-align: top;">
+                            <div style="font-weight: 700; font-size: 13px; color: var(--primary);">
                                 {{ $client->name ?? 'Desconocido' }}
                                 @if($isCompleted)
                                     <i class="fa-solid fa-circle-check" style="margin-left: 6px; color: var(--success); font-size: 11px;"></i>
                                 @endif
                             </div>
-                            <div style="font-size: 10px; color: var(--muted); margin-top: 4px; font-style: italic; opacity: 0.5;">
+                            <div style="font-size: 10px; color: var(--muted); margin-top: 4px; font-style: italic; opacity: 0.6;">
                                 {{ $contracts->count() }} contrato{{ $contracts->count() > 1 ? 's' : '' }} detectado{{ $contracts->count() > 1 ? 's' : '' }}
                             </div>
                         </td>
-                        <td style="padding: 12px 20px; vertical-align: top;">
+                        <td style="vertical-align: top;">
                             <div style="display: flex; flex-direction: column; gap: 4px;">
                                 @forelse($client->inventoryDaemons as $daemon)
                                     @php $isSiemens = ($daemon->vendor === 'siemens'); @endphp
-                                    <div style="display: flex; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 3px; padding: 1px 5px; gap: 5px; align-self: flex-start;">
+                                    <div style="display: flex; align-items: center; background: var(--bg); border: 1px solid var(--border); border-radius: 3px; padding: 1px 5px; gap: 5px; align-self: flex-start;">
                                         <span style="font-size: 7px; font-weight: 900; color: {{ $isSiemens ? 'var(--siemens)' : 'var(--moldex)' }}; text-transform: uppercase;">
                                             {{ $daemon->vendor }}
                                         </span>
@@ -129,7 +129,7 @@
                                 @endforelse
                             </div>
                         </td>
-                        <td style="padding: 12px 20px; vertical-align: top;">
+                        <td style="vertical-align: top;">
                             <div style="display: flex; flex-direction: column; gap: 8px;">
                                 @foreach($contracts as $contract)
                                     @php
@@ -147,7 +147,7 @@
                                         $data = $statusMap[$status] ?? ['label' => $status, 'class' => 'badge-muted'];
                                     @endphp
                                     <div style="display: grid; grid-template-columns: 85px 80px 100px 1fr; gap: 12px; align-items: center;">
-                                        <span style="font-size: 9px; font-weight: 800; color: var(--accent); background: rgba(0,153,153,0.08); padding: 1px 4px; border-radius: 3px; border: 1px solid rgba(0,153,153,0.15); text-align: center;">
+                                        <span style="font-size: 9px; font-weight: 800; color: var(--accent); background: var(--bg); padding: 1px 4px; border-radius: 3px; border: 1px solid var(--border); text-align: center;">
                                             {{ $contract->contract_number }}
                                         </span>
                                         <span style="font-size: 10px; font-family: var(--font-mono); color: var(--secondary); font-weight: 600;">
@@ -163,36 +163,32 @@
                                 @endforeach
                             </div>
                         </td>
-                        <td style="padding: 12px 20px; text-align: center; vertical-align: middle;">
+                        <td style="text-align: center; vertical-align: middle;">
                             @if(!$isCompleted)
                                 <form action="{{ route('renewal-planner.store') }}" method="POST" id="form-{{ $clientId }}">
                                     @csrf
                                     <input type="hidden" name="client_id" value="{{ $clientId }}">
                                     <input type="hidden" name="month" value="{{ $month }}">
                                     
-                                    <button type="submit" class="action-btn" title="Marcar como enviado" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: 1px solid var(--accent); border-radius: 6px; transition: all 0.2s; cursor: pointer; color: var(--accent);">
+                                    <button type="submit" class="action-btn" title="Marcar como enviado" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; cursor: pointer; color: var(--accent);">
                                         <i class="fa-solid fa-check" style="font-size: 14px;"></i>
                                     </button>
                                 </form>
                             @else
                                 <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
-                                    <span style="font-size: 8px; font-weight: 900; color: var(--success); text-transform: uppercase; letter-spacing: 0.05em; background: rgba(0,255,0,0.05); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(0,255,0,0.2);">
-                                        OK
-                                    </span>
+                                    <span class="badge badge-success" style="font-size: 8px; padding: 2px 6px; text-transform: uppercase;">OK</span>
                                     <form action="{{ route('renewal-planner.destroy') }}" method="POST" onsubmit="return confirm('¿Revertir estado a pendiente?')">
                                         @csrf
                                         @method('DELETE')
                                         <input type="hidden" name="client_id" value="{{ $clientId }}">
                                         <input type="hidden" name="month" value="{{ $month }}">
-                                        <button type="submit" style="background: transparent; border: none; color: var(--danger); cursor: pointer; padding: 2px; font-size: 11px; opacity: 0.4;" title="Deshacer">
+                                        <button type="submit" style="background: transparent; border: none; color: var(--danger); cursor: pointer; padding: 2px; font-size: 11px; opacity: 0.5;" title="Deshacer">
                                             <i class="fa-solid fa-rotate-left"></i>
                                         </button>
                                     </form>
                                 </div>
                             @endif
                         </td>
-                    </tr>
-           </td>
                     </tr>
                 @empty
                     <tr>
