@@ -3,29 +3,34 @@
 
 ## [2026-05-14 12:35] — Dashboard: Rediseño NOC Pro y Estética Premium ✅
 
-### Added / Changed
+### Added
 - **Premium Metric Cards**: Rediseño de las tarjetas del Dashboard con línea de acento superior (pseudo-elemento ::before) unificado con el Hub de Herramientas.
+
 - **Background NOC Icons**: Integración de iconos Lucide SVG en el fondo de las tarjetas con opacidad 0.08 y rotación dinámica para mejorar la estética profesional.
 
-- **Brand Consistency**: Cambio de color semántico de "Licencias Activas" a verde (`success`) para alineación visual con el estado positivo del inventario.
-
 - **Hover UX**: Añadido efecto de elevación (box-shadow) y resalte de acento al pasar el ratón.
+
+### Changed
+- **Brand Consistency**: Cambio de color semántico de "Licencias Activas" a verde (`success`) para alineación visual con el estado positivo del inventario.
 
 ## [2026-05-14 11:15] — Planificador: Optimización NOC Pro e Identidad ✅
 
 ### Added
+
 - **Planificador de Renovaciones**:
-    - **UI NOC Pro**: Rediseño de alta densidad con selector de mes personalizado (Alpine.js), eliminando el `<select>` nativo para mejorar la fluidez y estética oscura.
-    - **Sincronización de Identidad**: Alineación total de colores de estados con `identities.json` (Azul claro para Ofertado, Morado para Aceptado, etc.) usando transparencias dinámicas en chips y tablas.
-    - **Sistema de Limpieza**: Botón "Limpiar Filtros" dinámico que aparece solo cuando hay filtros activos.
-    - **Reversión (Undo)**: Implementada funcionalidad para deshacer renovaciones marcadas por error directamente desde la tabla.
-    - **Mirroring Estético**: La tabla del planificador ahora es espejo de la gestión de clientes (clases `.card` y `.table`), simplificando cabeceras a "ID Licencia" y "Contrato | Vencimiento...".
+  - **UI NOC Pro**: Rediseño de alta densidad con selector de mes personalizado (Alpine.js), eliminando el `<select>` nativo para mejorar la fluidez y estética oscura.
+  - **Sincronización de Identidad**: Alineación total de colores de estados con `identities.json` (Azul claro para Ofertado, Morado para Aceptado, etc.) usando transparencias dinámicas en chips y tablas.
+  - **Sistema de Limpieza**: Botón "Limpiar Filtros" dinámico que aparece solo cuando hay filtros activos.
+  - **Reversión (Undo)**: Implementada funcionalidad para deshacer renovaciones marcadas por error directamente desde la tabla.
+  - **Mirroring Estético**: La tabla del planificador ahora es espejo de la gestión de clientes (clases `.card` y `.table`), simplificando cabeceras a "ID Licencia" y "Contrato | Vencimiento...".
 
 ### Fixed
+
 - **Contraste de Estados**: Solucionado problema de visibilidad en estados "Ofertado" y "Procesado" en modo oscuro mediante el uso de variables CSS correctas.
 - **Helper de Color**: Definida función `hexToRgb` en Blade para permitir transparencias dinámicas sobre colores HEX corporativos.
 
 ### Changed
+
 - **Terminología**: Cambio de "Servidores" a "ID Licencia" para mayor precisión técnica (Sold-To / Machine ID).
 
 ## [2026-05-14 09:05] — Planificador: Simplificación de Proceso (Sin Adjuntos) ✅
@@ -33,20 +38,20 @@
 ### Changed
 
 - **Planificador de Renovaciones**:
-    - **Simplificación de Flujo**: Eliminada la opción de adjuntar archivos `.lic` al marcar renovaciones. El proceso ahora es un registro puramente administrativo de "Envío realizado".
-    - **Optimización UI**: Eliminado selector de archivos en el planificador y columna de licencias en el historial del cliente para una interfaz más limpia y directa.
-    - **Limpieza de Backend**: Eliminada lógica de subida, almacenamiento y descarga de archivos de renovación.
+  - **Simplificación de Flujo**: Eliminada la opción de adjuntar archivos `.lic` al marcar renovaciones. El proceso ahora es un registro puramente administrativo de "Envío realizado".
+  - **Optimización UI**: Eliminado selector de archivos en el planificador y columna de licencias en el historial del cliente para una interfaz más limpia y directa.
+  - **Limpieza de Backend**: Eliminada lógica de subida, almacenamiento y descarga de archivos de renovación.
 
 ## [2026-05-13 16:05] — Fase 14: Planificador de Renovaciones Multi-Archivo ✅
 
 ### Added
 
 - **Planificador de Renovaciones (Motor & UI)**:
-    - **Estructura Multi-archivo**: Implementada tabla `renewal_log_files` y modelo asociado para soportar la subida de múltiples licencias (NX, STAR-CCM+, HEEDS) en una sola acción.
-    - **Interfaz Operativa**: Rediseño del formulario de acción con input de archivos múltiples y feedback visual de carga.
-    - **Historial Detallado**: Integración de una nueva pestaña "Renovaciones" en la ficha del cliente, permitiendo la descarga individual de cada archivo enviado históricamente.
-    - **Seguridad UI**: Ocultación selectiva de herramientas administrativas en el Dashboard para usuarios no-admin.
-    - **Automatización**: Lógica de almacenamiento estructurado en `storage/app/renewals/{client_id}/` con limpieza de nombres.
+  - **Estructura Multi-archivo**: Implementada tabla `renewal_log_files` y modelo asociado para soportar la subida de múltiples licencias (NX, STAR-CCM+, HEEDS) en una sola acción.
+  - **Interfaz Operativa**: Rediseño del formulario de acción con input de archivos múltiples y feedback visual de carga.
+  - **Historial Detallado**: Integración de una nueva pestaña "Renovaciones" en la ficha del cliente, permitiendo la descarga individual de cada archivo enviado históricamente.
+  - **Seguridad UI**: Ocultación selectiva de herramientas administrativas en el Dashboard para usuarios no-admin.
+  - **Automatización**: Lógica de almacenamiento estructurado en `storage/app/renewals/{client_id}/` con limpieza de nombres.
 
 ## [2026-05-13] — Dashboard: Enfoque en Licencias e Inventario ✅
 
