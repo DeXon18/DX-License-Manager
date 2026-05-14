@@ -9,9 +9,9 @@
 </div>
 
 <div class="stats-row">
-    <div class="stat-card accent">
+    <div class="stat-card success">
         <span class="stat-label">Licencias Activas</span>
-        <span class="stat-value accent">{{ number_format($metrics['total']) }}</span>
+        <span class="stat-value success">{{ number_format($metrics['total']) }}</span>
         <span class="stat-meta">Inventario Total Audidato</span>
     </div>
     <div class="stat-card danger">
