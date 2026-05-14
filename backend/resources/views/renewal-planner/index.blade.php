@@ -111,8 +111,13 @@
                         </td>
                         <td style="padding: 10px 20px;">
                             @foreach($contracts as $contract)
-                                <div style="font-size: 11px; font-family: var(--font-mono); color: var(--secondary); margin-bottom: 2px;">
-                                    {{ \Carbon\Carbon::parse($contract->end_date)->format('d/m/Y') }}
+                                <div style="margin-bottom: 2px; display: flex; align-items: center; gap: 6px;">
+                                    <span style="font-size: 9px; font-weight: 800; color: var(--accent); background: rgba(0,153,153,0.05); padding: 1px 4px; border-radius: 3px; border: 1px solid rgba(0,153,153,0.1);">
+                                        {{ $contract->contract_number }}
+                                    </span>
+                                    <span style="font-size: 11px; font-family: var(--font-mono); color: var(--secondary);">
+                                        {{ \Carbon\Carbon::parse($contract->end_date)->format('d/m/Y') }}
+                                    </span>
                                 </div>
                             @endforeach
                         </td>
