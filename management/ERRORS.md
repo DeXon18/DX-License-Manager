@@ -8,7 +8,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | Críticos (P1) | Importantes (P2) | Menores (P3) | Resueltos |
 | :--- | :--- | :--- | :--- |
-| 1 | 1 | 1 | 0 |
+| 1 | 2 | 1 | 0 |
 
 ---
 
@@ -16,10 +16,12 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | ID | Incidencia | Módulo | Prio | Estado | Fecha Detect. |
 | :--- | :--- | :--- | :--- | :--- | :--- |
+| #005 | Mejora en Lector de Logs (laravel.log) | Admin/Logs | P2 | 🆕 Nuevo | 2026-05-14 |
 | #004 | Revisar visualización de "Other Installs" | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
 | #003 | Filtro "Solo con Licencias" limitado a Siemens | Clientes | P2 | 🆕 Nuevo | 2026-05-14 |
 | #002 | Error de sintaxis y CRLF en backup-db.sh | Infra/Scripts | P1 | 🆕 Nuevo | 2026-05-14 |
 | #001 | [Ejemplo] Error de contraste en modo claro | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
+
 
 
 
@@ -48,6 +50,15 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 - **Causa probable**: Diseño inicial funcional pero no optimizado para alta densidad de IDs adicionales.
 - **Impacto**: Mejora de UX en la visualización de licencias unificadas.
 - **Acción**: Ajustar estilos en `clients/show.blade.php` para asegurar una disposición armoniosa de los IDs adicionales (ej. envolver en contenedor con scroll o grid compacto).
+
+### #005 — Mejora en Lector de Logs (laravel.log)
+- **Síntoma**: El lector de logs del sistema (`admin/audit?tab=system`) muestra trazas completas ilegibles y no parece estar capturando alertas correctamente (contador en 0).
+- **Causa probable**: El parser de `AuditLogController` o el servicio correspondiente no está filtrando las líneas de stack trace de Laravel y solo muestra el texto plano.
+- **Impacto**: Dificultad para el diagnóstico técnico desde la UI.
+- **Acción**: 
+  - Pulir la visualización eliminando líneas de `#0 /var/www/...` que no aportan valor visual.
+  - Implementar un sistema de "colapsado" de trazas.
+  - Verificar por qué el contador de alertas no se sincroniza con el archivo físico.
 
 ---
 
