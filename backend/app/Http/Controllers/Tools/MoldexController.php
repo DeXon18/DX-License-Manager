@@ -60,7 +60,7 @@ class MoldexController extends Controller
     public function process(Request $request)
     {
         $request->validate([
-            'license_file' => 'required|file|max:10240|mimetypes:text/plain,application/octet-stream',
+            'license_file' => 'required|file|max:10240',
         ]);
 
         // Extra: validate extension explicitly (defense in depth)
