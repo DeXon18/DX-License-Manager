@@ -9,13 +9,13 @@ current_agent: Antigravity (DX Agent) 🦾
 # 🧠 Contexto de Sesión Activa
 
 ## 🎯 Objetivo Actual
-Registro y seguimiento de incidencias detectadas en la web mediante el archivo `management/ERRORS.md`.
+Estabilización del sistema y resolución de incidencias críticas (#002 Backup) y de usabilidad (#010, #007, #005) registradas en `ERRORS.md`.
 
 ## 🛠️ Tareas en curso
-- [x] Cierre y push de `feature/multi-sold-to`.
-- [x] Creación de rama `chore/error-tracking`.
-- [x] Implementación de `management/ERRORS.md` con estética industrial.
-- [ ] Registro de primera incidencia real por parte de Oskar.
+- [x] Registro exhaustivo de 9 incidencias iniciales en `ERRORS.md`.
+- [x] Triaje de prioridades (P1-P3).
+- [/] Resolución de incidencia #002 (Scripts de Backup) — Pendiente de ejecución.
+
 
 ---
 

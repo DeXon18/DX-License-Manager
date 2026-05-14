@@ -1,13 +1,13 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-14 16:30  
-> Sesión en: Indeterminado (Windows Host)  
-> Rama activa: feature/multi-sold-to
+> Última actualización: 2026-05-14 17:05  
+> Sesión en: PC Desarrollo  
+> Rama activa: chore/error-tracking
 
 ---
 
 ## Estado General
 
-**Fase actual:** Soporte Multi-Sold-To (Licencias Unificadas) ✅  
+**Fase actual:** Fase 14.5 — Estabilización y Mantenimiento  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,37 +15,43 @@
 
 ## Qué se hizo en esta sesión
 
-- **Auditoría IA**: Actualización del flujo n8n v2.1 para extraer `additional_sold_tos`.
-- **Base de Datos**: Añadida columna JSON `additional_sold_tos` a `license_inventory_daemons`.
-- **Backend**: Implementado auto-mapeo en `AuditService@handleCallback`. Ahora cada ID adicional detectado crea automáticamente un `ClientMapping`.
-- **Persistencia**: Sincronización de IDs adicionales en el inventario activo vía `InventorySyncService`.
-- **UI Premium**: Rediseño de los badges de Sold-To en el inventario con estilo industrial (icono `fa-link`, borde punteado, colores de vendor).
-- **Verificación**: Simulación completa de callback exitosa para el cliente 391 (Gurutzpe).
+- **Cierre Fase 14**: Soporte Multi-Sold-To (Licencias Unificadas) finalizado y mergeado a `dev` (PR #8).
+- **Switch de Tarea**: Activación del modo mantenimiento mediante la rama `chore/error-tracking`.
+- **Registro de Errores**: Implementación de `management/ERRORS.md` y registro de 9 incidencias detectadas por Oskar:
+  - #002 (P1): Fallo en scripts de backup ( Bash/CRLF).
+  - #003 & #007 (P2): Problemas de filtros y duplicidad de clientes (Normalización).
+  - #005 (P2): Legibilidad del lector de logs en `admin/audit`.
+  - #010 (P2): Indicadores de seguridad en Dashboard siempre a 0.
+  - #009, #008, #006, #004 (P3): Limpieza, CSS, Acciones Rápidas y UI.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-1. **Validación con Oskar**: Confirmar si el diseño de los badges y la lógica de mapeo automático cumple con sus expectativas para otros clientes complejos.
+**Resolver #002 — Scripts de Backup.**
+1. Convertir `backend/scripts/backup-db.sh` a formato LF (Unix).
+2. Corregir error de sintaxis en el bloque `if` (línea 27).
+3. Verificar ejecución dentro del contenedor `dx-php-beta`.
 
 ### Tareas siguientes
-1. Seleccionar siguiente fase del ROADMAP (Fase 15+).
-2. Revisar si el flujo de n8n requiere ajustes de prompts para licencias de otros vendors (STAR-CCM+, HEEDS) en formato unificado.
+1. Corregir lógica de filtros en Clientes para incluir Moldex3D (#003).
+2. Estudiar integración IA para normalización semántica (#007).
+3. Mejorar el lector de logs (#005) y el contador de seguridad (#010).
 
 ---
 
 ## Contexto técnico importante
 
-- **Naming Convention**: La base de datos ahora soporta un array de IDs adicionales. La UI itera sobre este array para mostrar badges secundarios con prefijo de enlace.
-- **Auto-Mapping**: Es crítico que `ClientMapping` sea `firstOrCreate` para evitar duplicidad si una licencia se sube varias veces.
-- **Samba Permissions**: Se detectaron errores de repack en Git debido a la unidad de red Samba; ignorarlos si el commit se confirma.
+- **ERRORS.md**: Es la fuente de verdad para correcciones rápidas. Seguir el protocolo de resolución definido allí.
+- **Git**: Se ha hecho un "geometric repack" con fallos de permisos en el servidor, pero el commit y push han funcionado correctamente desde Windows.
+- **Normalización**: El cliente "Tecnalia" ha servido de ejemplo para el fallo semántico (#007).
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-Ninguno.
+- Ninguno. El sistema es totalmente operativo; las incidencias registradas son correctivas/evolutivas.
 
 ---
 
@@ -55,7 +61,7 @@ Ninguno.
 |:---|:---|
 | `infra/.env.prod` | ✅ configurado |
 | `infra/.env.beta` | ✅ configurado |
-| `backend/.env` | ✅ configurado (via Docker symlink) |
+| `backend/.env` | ✅ configurado |
 | `backend/vendor/` | ✅ instalado |
 
 ---
@@ -63,9 +69,9 @@ Ninguno.
 ## Comandos útiles para la próxima sesión
 
 ```bash
-# Simular callback desde n8n (necesita script shell en server)
-ssh root@192.168.50.60 "bash /opt/web-projects/DX-License-Manager/scripts/simulate_callback.sh"
+# Verificar backup
+docker exec dx-php-beta /var/www/html/scripts/backup-db.sh beta
 
-# Ver inventario en MariaDB
-docker exec dx-mariadb-beta mysql -u dxportal -p[DB_PASSWORD] dxportal_beta -e "SELECT * FROM license_inventory_daemons WHERE client_id=391"
+# Ver logs de PHP
+docker compose --project-directory . -f infra/docker-compose.beta.yml logs -f dx-php-beta
 ```

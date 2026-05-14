@@ -27,7 +27,20 @@ El desarrollador inicia. El agente espera.
 
 ## 🟢 En Progreso
 
-(Vacío - Seleccionar siguiente fase)
+### Fase de Mantenimiento y Estabilización (Incidencias #002-#010) 🔜
+- **Iniciada:** 2026-05-14
+- **Rama:** chore/error-tracking
+- **Resumen:** Resolución sistemática del backlog de errores detectados post-Fase 14. Prioridad absoluta en infraestructura de backup y consistencia de datos de clientes.
+- [ ] #002 (P1): Fix scripts de backup (Bash/CRLF/Syntax).
+- [ ] #003 (P2): Filtros Clientes (Siemens/Moldex).
+- [ ] #007 (P2): Normalización Semántica (IA).
+- [ ] #005 (P2): Lector de Logs (Legibilidad).
+- [ ] #010 (P2): Indicadores de Seguridad Dashboard.
+- [ ] #009 (P3): Limpieza Global de Basura.
+- [ ] #008 (P3): Unificación CSS.
+- [ ] #004 (P3): UI Multi-Sold-To.
+- [ ] #006 (P3): Acciones Rápidas (Funcionalidad).
+
 
 ## ✅ Completado
  
