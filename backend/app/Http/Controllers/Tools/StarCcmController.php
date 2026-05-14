@@ -58,6 +58,7 @@ class StarCcmController extends Controller
 
         // 1. Extraer metadatos
         $metadata = $this->starService->extractMetadata($content);
+        $isTemporal = ($metadata['type'] === 'Temporal');
 
         // 2. Auditoría IA (Principio Solo Log)
         $cleanContent = $this->parserService->clean($content);
@@ -67,11 +68,11 @@ class StarCcmController extends Controller
             auth()->id(),
             $cleanContent,
             $detectedHostIds,
-            'siemens' // Vendor Siemens para STAR-CCM+
+            'siemens', // Vendor Siemens para STAR-CCM+
+            $isTemporal
         );
 
         // 3. Transformación (SALT 29000)
-        $isTemporal = ($metadata['type'] === 'Temporal');
         $transformedContent = $this->starService->transform($content, $isTemporal);
 
         // 4. Generar nombre de archivo

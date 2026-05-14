@@ -73,23 +73,25 @@ class NXSuiteController extends Controller
 
         // Extraer metadatos para nomenclatura y almacenamiento
         $metadata = $this->nxService->extractMetadata($content);
+        $isTemporal = ($metadata['type'] === 'Temporal');
 
         // --- INICIO AUDITORÍA IA ---
         // 1. Limpiar contenido para la IA (ahorro de tokens)
         $cleanContent = $this->parserService->clean($content);
         $detectedHostIds = $this->parserService->detectHostIds($content);
 
-        // 2. Solicitar auditoría asíncrona
+        // 2. Solicitar auditoría asíncrona (Saltará n8n si es temporal)
         $audit = $this->auditService->requestAudit(
             auth()->id(), 
             $cleanContent,
-            $detectedHostIds
+            $detectedHostIds,
+            'siemens',
+            $isTemporal
         );
         // --- FIN AUDITORÍA IA ---
         
         // Transformar contenido para el usuario
-        $isTemporal7Days = ($metadata['type'] === 'Temporal');
-        $transformedContent = $this->nxService->transform($content, $motor, $isTemporal7Days);
+        $transformedContent = $this->nxService->transform($content, $motor, $isTemporal);
 
         // Generar nombre de archivo
         $filename = $this->nxService->generateFilename($metadata);
