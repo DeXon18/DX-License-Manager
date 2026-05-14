@@ -1,32 +1,31 @@
 ---
 project: DX License Manager
 repo: github.com/DeXon18/DX-License-Manager
-status: Phase 10.5 & 13 Completed | Ready for Phase 15 or 17
-last_sync: 2026-05-13
+status: Phase 14 Simplified & Completed | Ready for Dev Merge
+last_sync: 2024-05-14
 current_agent: Antigravity (DX Agent) 🦾
 ---
 
 # 🧠 Contexto de Sesión Activa
 
 ## 🎯 Objetivo Actual
-Fase 10.5 (Docker Monitor) y Fase 13 (Alertas) completadas y commiteadas. Preparando inicio de la **Fase 15 (Integraciones IA)** o **Fase 17 (Limpieza UI)**.
+Fase 14 (Planificador de Renovaciones) simplificada (sin adjuntos) y validada. Preparando el merge de `feature/renewal-planner` a `dev` para iniciar **Fase 15 (Integraciones IA)**.
 
 
 ## 🛠️ Tareas en curso
-- [x] Implementación de restauración segura.
-- [x] UI con cuenta atrás dinámica.
-- [x] Configuración de Cron Job diario.
-- [x] Limpieza de ramas y merge a `dev`.
-- [x] Fix: Bug de transformación NX Suite (VENDOR_STRING e inyección).
-- Fase del ROADMAP: Fase 11 (Completada), Fase 12 & 13 (Iniciadas)
+- [x] Implementación de Planificador de Renovaciones (Cíclico Mensual).
+- [x] Simplificación: Eliminación de adjuntos `.lic` a petición del usuario.
+- [x] Integración de historial en perfil de cliente.
+- [ ] Merge a `dev`.
+- Fase del ROADMAP: Fase 14 (Completada), Fase 15 (Siguiente)
 
 ---
 
-## 🕒 Log de Acciones (2026-05-12)
+## 🕒 Log de Acciones (2024-05-14)
 
-- 2026-05-12 — Verificación de Toggle AJAX en listado de usuarios.
-- 2026-05-12 — Sincronización de gestión: Phase 11 marcada como completada.
-- 2026-05-12 — Preparación de entorno para Fase 12.
+- 2024-05-14 — Eliminada lógica de subida y descarga de archivos en `RenewalPlannerController`.
+- 2024-05-14 — Limpieza de UI en Planificador y Ficha de Cliente (pestaña renovaciones).
+- 2024-05-14 — Commit de simplificación realizado (`fa2bfe0`).
 
 ---
 
