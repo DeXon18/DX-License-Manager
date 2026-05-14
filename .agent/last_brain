@@ -1,6 +1,6 @@
-Rama activa: dev. Fase 8 (Siemens) — Refinamiento de Nomenclatura.
-Último trabajo: Estandarización de nombres para NX, StarCCM y HEEDS. Implementada extracción de fecha de caducidad real (INCREMENT) y soporte para Unificadas multi-Sold-To. Corregido bug crítico de corrupción en VENDOR_STRING mediante regex estricta.
-Estado: Nomenclatura 100% operativa y verificada con scripts. Transformaciones estables (localhost en temporales).
-Próximo paso inmediato: Revisar integraciones de IA (Fase 15) o limpieza UI (Fase 17).
+﻿Rama activa: dev. Fase 14 — Planificador Operativo (NOC Pro) ✅. 
+Último trabajo: Rediseño NOC Pro del planificador con Alpine.js, sincronización de colores con identities.json, implementación de Undo y limpieza de filtros. Eliminación de ejemplos n8n del repo.
+Estado: Todo operativo y mergeado a dev. Rama de feature eliminada.
+Próximo paso inmediato: Iniciar Fase 15 (Integración IA avanzada y Fallback Chain).
 Bloqueos: Ninguno.
-Stack beta: running. Stack prod: running.
+Stack beta: running (vía push). Stack prod: running.
