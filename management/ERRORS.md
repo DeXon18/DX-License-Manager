@@ -8,7 +8,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | Críticos (P1) | Importantes (P2) | Menores (P3) | Resueltos |
 | :--- | :--- | :--- | :--- |
-| 1 | 2 | 2 | 0 |
+| 1 | 3 | 2 | 0 |
 
 ---
 
@@ -16,12 +16,14 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | ID | Incidencia | Módulo | Prio | Estado | Fecha Detect. |
 | :--- | :--- | :--- | :--- | :--- | :--- |
+| #007 | Fallo en Normalización / Duplicidad de Clientes | Normalización | P2 | 🆕 Nuevo | 2026-05-14 |
 | #006 | Acciones rápidas sin vínculos / Estáticas | Dashboard | P3 | 🆕 Nuevo | 2026-05-14 |
 | #005 | Mejora en Lector de Logs (laravel.log) | Admin/Logs | P2 | 🆕 Nuevo | 2026-05-14 |
 | #004 | Revisar visualización de "Other Installs" | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
 | #003 | Filtro "Solo con Licencias" limitado a Siemens | Clientes | P2 | 🆕 Nuevo | 2026-05-14 |
 | #002 | Error de sintaxis y CRLF en backup-db.sh | Infra/Scripts | P1 | 🆕 Nuevo | 2026-05-14 |
 | #001 | [Ejemplo] Error de contraste en modo claro | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
+
 
 
 
@@ -69,6 +71,15 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 - **Acción**: 
   - Vincular acciones a rutas reales (Limpiar caché, Backups, Auditoría, etc.).
   - Estudiar la posibilidad de que sean configurables o dinámicas según el rol del usuario.
+
+### #007 — Fallo en Normalización / Duplicidad de Clientes
+- **Síntoma**: Se detectan clientes duplicados con nombres muy similares que no están siendo agrupados automáticamente (ej: "Fundacion Tecnalia" vs "Fundación Tecnalia Research & Innovation").
+- **Causa probable**: El umbral del motor de normalización actual (85%) o la lógica de comparación no está capturando variaciones largas. La bandeja de normalización no está sugiriendo estos casos.
+- **Impacto**: Inventario fragmentado (Sold-To en un cliente, Contratos en otro).
+- **Acción**: 
+  - Estudiar integración con IA (Gemini/DeepSeek) para una identificación semántica de clientes.
+  - Revisar comportamiento de la bandeja de normalización.
+  - Ajustar lógica de `ClientNormalizationService`.
 
 ---
 
