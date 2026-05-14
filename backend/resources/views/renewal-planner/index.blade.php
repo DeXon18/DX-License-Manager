@@ -122,7 +122,7 @@
                 <tr>
                     <th style="width: 250px;">Cliente</th>
                     <th style="width: 140px;" class="text-center">Servidores</th>
-                    <th>Detalles de Contrato (Número | Vencimiento | Estado | Comentario)</th>
+                    <th>Contrato | Vencimiento | Estado | Comentario</th>
                     <th style="width: 80px;" class="text-right">Acción</th>
                 </tr>
             </thead>
