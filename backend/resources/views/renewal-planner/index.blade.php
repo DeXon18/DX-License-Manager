@@ -89,8 +89,8 @@
                                     <i class="fa-solid fa-circle-check" style="margin-left: 6px; color: var(--success); font-size: 11px;"></i>
                                 @endif
                             </div>
-                            <div style="font-size: 10px; color: var(--muted); margin-top: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.02em;">
-                                {{ $contracts->count() }} contrato{{ $contracts->count() > 1 ? 's' : '' }}
+                            <div style="font-size: 10px; color: var(--muted); margin-top: 4px; font-style: italic; opacity: 0.5;">
+                                {{ $contracts->count() }} contrato{{ $contracts->count() > 1 ? 's' : '' }} detectado{{ $contracts->count() > 1 ? 's' : '' }}
                             </div>
                         </td>
                         <td style="padding: 12px 20px; vertical-align: top;">
