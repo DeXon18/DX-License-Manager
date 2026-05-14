@@ -11,17 +11,47 @@
 </div>
 
     <div class="stats-grid" style="display: grid; grid-template-columns: auto 1fr auto; gap: 30px; align-items: center; background: var(--bg-dark); padding: 20px 30px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
-        <!-- Selector de Mes -->
-        <div style="display: flex; align-items: center; gap: 15px; padding-right: 25px; border-right: 1px solid var(--border);">
+        <!-- Selector de Mes (Custom Dropdown) -->
+        <div style="display: flex; align-items: center; gap: 15px; padding-right: 25px; border-right: 1px solid var(--border);" 
+             x-data="{ open: false, selected: {{ $month }}, selectedName: '{{ strtoupper(\Carbon\Carbon::create(2024, $month, 1)->translatedFormat('F')) }}' }">
             <i class="fa-solid fa-calendar-days" style="color: var(--accent); font-size: 18px;"></i>
-            <form action="{{ route('renewal-planner.index') }}" method="GET" id="month-form">
-                <select name="month" onchange="document.getElementById('month-form').submit()" style="background: transparent; border: none; color: var(--primary); font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; outline: none; padding-right: 10px;">
-                    @foreach(range(1, 12) as $m)
-                        <option value="{{ $m }}" {{ $month == $m ? 'selected' : '' }} style="background: var(--bg-dark); color: var(--primary);">
-                            {{ strtoupper(\Carbon\Carbon::create(2024, $m, 1)->translatedFormat('F')) }}
-                        </option>
-                    @endforeach
-                </select>
+            
+            <div style="position: relative;">
+                <button @click="open = !open" @click.away="open = false" type="button" 
+                        style="background: transparent; border: none; color: var(--primary); font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; outline: none; display: flex; align-items: center; gap: 10px; padding: 5px 0;">
+                    <span x-text="selectedName"></span>
+                    <i class="fa-solid fa-chevron-down" style="font-size: 12px; transition: transform 0.2s;" :style="open ? 'transform: rotate(180deg)' : ''"></i>
+                </button>
+
+                <!-- Menú Desplegable -->
+                <div x-show="open" 
+                     x-transition:enter="transition ease-out duration-100"
+                     x-transition:enter-start="opacity-0 transform scale-95"
+                     x-transition:enter-end="opacity-100 transform scale-100"
+                     x-transition:leave="transition ease-in duration-75"
+                     x-transition:leave-start="opacity-100 transform scale-100"
+                     x-transition:leave-end="opacity-0 transform scale-95"
+                     style="position: absolute; top: 100%; left: 0; z-index: 50; margin-top: 10px; width: 200px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; box-shadow: var(--elevation-2); overflow: hidden; display: none;"
+                     :style="{ display: open ? 'block' : 'none' }">
+                    <div style="max-height: 300px; overflow-y: auto; padding: 5px;">
+                        @foreach(range(1, 12) as $m)
+                            @php $mName = strtoupper(\Carbon\Carbon::create(2024, $m, 1)->translatedFormat('F')); @endphp
+                            <div @click="selected = {{ $m }}; selectedName = '{{ $mName }}'; open = false; $nextTick(() => $refs.monthForm.submit())" 
+                                 style="padding: 10px 15px; font-size: 11px; font-weight: 700; color: {{ $month == $m ? 'var(--accent)' : 'var(--secondary)' }}; cursor: pointer; border-radius: 4px; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.05em;"
+                                 onmouseover="this.style.background='var(--raised)'; this.style.color='var(--primary)'"
+                                 onmouseout="this.style.background='transparent'; this.style.color='{{ $month == $m ? 'var(--accent)' : 'var(--secondary)' }}'">
+                                {{ $mName }}
+                                @if($month == $m)
+                                    <i class="fa-solid fa-check" style="float: right; margin-top: 2px;"></i>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <form action="{{ route('renewal-planner.index') }}" method="GET" x-ref="monthForm" style="display: none;">
+                <input type="hidden" name="month" :value="selected">
                 @foreach($selectedStatuses as $s)
                     <input type="hidden" name="statuses[]" value="{{ $s }}">
                 @endforeach
