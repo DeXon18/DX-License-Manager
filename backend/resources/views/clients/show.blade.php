@@ -138,12 +138,18 @@
                             <div class="daemon-header">
                                 <div class="header-col">
                                     <span class="tech-label">{{ $daemon->vendor === 'moldex' ? 'Plataforma' : 'Daemon' }}</span>
-                                    <div style="display: flex; align-items: center;">
+                                    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 4px;">
                                         @if($daemon->vendor === 'moldex')
                                             <span class="tech-value daemon-name moldex-logo">Moldex<span class="accent">3D</span></span>
                                         @else
                                             <span class="tech-value daemon-name">{{ $daemon->daemon }}</span>
                                             <span class="inv-badge badge-{{ $daemon->vendor }}">{{ ucfirst($daemon->vendor) }}</span>
+                                        @endif
+
+                                        @if(!empty($daemon->additional_sold_tos))
+                                            @foreach($daemon->additional_sold_tos as $extraSt)
+                                                <span class="inv-badge" style="background: rgba(0, 153, 153, 0.1); color: #009999; border: 1px solid rgba(0, 153, 153, 0.2); font-size: 9px;">+{{ $extraSt }}</span>
+                                            @endforeach
                                         @endif
                                     </div>
                                 </div>
@@ -586,12 +592,12 @@
                             </div>
         
                             <!-- Unified Sold-Tos -->
-                            <div class="unified-box mt-6" x-show="auditDetail?.results?.unified_sold_tos?.length">
+                            <div class="unified-box mt-6" x-show="auditDetail?.results?.additional_sold_tos?.length">
                                 <div class="flex items-center gap-3">
                                     <i class="fa-solid fa-link text-warn" style="font-size: 10px;"></i>
                                     <span class="label">Sold-Tos Unificados:</span>
                                     <div class="flex flex-wrap gap-2">
-                                        <template x-for="st in auditDetail?.results?.unified_sold_tos">
+                                        <template x-for="st in auditDetail?.results?.additional_sold_tos">
                                             <span class="badge badge-muted sm" x-text="st"></span>
                                         </template>
                                     </div>
