@@ -111,6 +111,17 @@ class AuditService
             'status' => 'completed',
         ]);
 
+        // Sincronizar Mapeos Adicionales (Unificada)
+        if ($clientId && !empty($data['additional_sold_tos']) && is_array($data['additional_sold_tos'])) {
+            foreach ($data['additional_sold_tos'] as $extraSoldTo) {
+                ClientMapping::firstOrCreate([
+                    'client_id' => $clientId,
+                    'sold_to' => $extraSoldTo,
+                    'vendor' => $audit->vendor,
+                ]);
+            }
+        }
+
         // Sincronizar Inventario Activo
         try {
             app(InventorySyncService::class)->syncFromResult($audit);
