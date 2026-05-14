@@ -67,5 +67,5 @@ Ninguno.
 ssh root@192.168.50.60 "bash /opt/web-projects/DX-License-Manager/scripts/simulate_callback.sh"
 
 # Ver inventario en MariaDB
-docker exec dx-mariadb-beta mysql -u dxportal -pVenganz@69!MyslBetaTester dxportal_beta -e "SELECT * FROM license_inventory_daemons WHERE client_id=391"
+docker exec dx-mariadb-beta mysql -u dxportal -p[DB_PASSWORD] dxportal_beta -e "SELECT * FROM license_inventory_daemons WHERE client_id=391"
 ```
