@@ -65,4 +65,22 @@ class RenewalPlannerController extends Controller
 
         return back()->with('success', 'Renovación marcada como enviada.');
     }
+
+    public function destroy(Request $request)
+    {
+        $request->validate([
+            'client_id' => 'required|exists:clients,id',
+            'month' => 'required|integer|between:1,12',
+        ]);
+
+        $year = now()->year;
+
+        RenewalLog::where('client_id', $request->client_id)
+            ->where('month', $request->month)
+            ->where('year', $year)
+            ->delete();
+
+        return redirect()->route('renewal-planner.index', ['month' => $request->month])
+            ->with('success', 'Acción revertida correctamente.');
+    }
 }
