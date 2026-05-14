@@ -1,6 +1,17 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-13 16:05] — Fase 14: Planificador de Renovaciones Multi-Archivo ✅
+
+### Added
+
+- **Planificador de Renovaciones (Motor & UI)**:
+    - **Estructura Multi-archivo**: Implementada tabla `renewal_log_files` y modelo asociado para soportar la subida de múltiples licencias (NX, STAR-CCM+, HEEDS) en una sola acción.
+    - **Interfaz Operativa**: Rediseño del formulario de acción con input de archivos múltiples y feedback visual de carga.
+    - **Historial Detallado**: Integración de una nueva pestaña "Renovaciones" en la ficha del cliente, permitiendo la descarga individual de cada archivo enviado históricamente.
+    - **Seguridad UI**: Ocultación selectiva de herramientas administrativas en el Dashboard para usuarios no-admin.
+    - **Automatización**: Lógica de almacenamiento estructurado en `storage/app/renewals/{client_id}/` con limpieza de nombres.
+
 ## [2026-05-13] — Dashboard: Enfoque en Licencias e Inventario ✅
 
 ### Added
