@@ -9,22 +9,41 @@
 </div>
 
 <div class="stats-row">
+    {{-- Licencias Activas --}}
     <div class="stat-card success">
+        <div style="position: absolute; top: -5px; right: -15px; color: var(--success); opacity: 0.08; pointer-events: none; transform: rotate(-15deg);">
+            <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
         <span class="stat-label">Licencias Activas</span>
         <span class="stat-value success">{{ number_format($metrics['total']) }}</span>
         <span class="stat-meta">Inventario Total Audidato</span>
     </div>
+
+    {{-- Urgentes --}}
     <div class="stat-card danger">
+        <div style="position: absolute; top: -5px; right: -15px; color: var(--danger); opacity: 0.08; pointer-events: none; transform: rotate(-15deg);">
+            <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+        </div>
         <span class="stat-label">Urgentes / Caducadas</span>
         <span class="stat-value danger">{{ number_format($metrics['critical']) }}</span>
         <span class="stat-meta">0–7 días · Acción inmediata</span>
     </div>
+
+    {{-- Próximos --}}
     <div class="stat-card warn">
+        <div style="position: absolute; top: -5px; right: -15px; color: var(--warning); opacity: 0.08; pointer-events: none; transform: rotate(-15deg);">
+            <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2h4"/><path d="M12 14v-4"/><path d="M4 13a8 8 0 0 1 8-7 8 8 0 1 1-5.3 14L4 17.6"/><path d="M9 17H4v5"/></svg>
+        </div>
         <span class="stat-label">Próximos Vencimientos</span>
         <span class="stat-value warn">{{ number_format($metrics['upcoming']) }}</span>
         <span class="stat-meta">Vencimiento en 8–30 días</span>
     </div>
+
+    {{-- Seguimiento --}}
     <div class="stat-card accent">
+        <div style="position: absolute; top: -5px; right: -15px; color: var(--accent); opacity: 0.08; pointer-events: none; transform: rotate(-15deg);">
+            <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+        </div>
         <span class="stat-label">En Seguimiento</span>
         <span class="stat-value accent">{{ number_format($metrics['monitoring']) }}</span>
         <span class="stat-meta">Vencimiento en 31–90 días</span>
