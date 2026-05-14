@@ -8,7 +8,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | Críticos (P1) | Importantes (P2) | Menores (P3) | Resueltos |
 | :--- | :--- | :--- | :--- |
-| 1 | 0 | 0 | 0 |
+| 1 | 1 | 0 | 0 |
 
 ---
 
@@ -16,8 +16,10 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | ID | Incidencia | Módulo | Prio | Estado | Fecha Detect. |
 | :--- | :--- | :--- | :--- | :--- | :--- |
+| #003 | Filtro "Solo con Licencias" limitado a Siemens | Clientes | P2 | 🆕 Nuevo | 2026-05-14 |
 | #002 | Error de sintaxis y CRLF en backup-db.sh | Infra/Scripts | P1 | 🆕 Nuevo | 2026-05-14 |
 | #001 | [Ejemplo] Error de contraste en modo claro | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
+
 
 ---
 
@@ -32,6 +34,12 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 - **Impacto**: Imposibilidad de generar copias de seguridad de la base de datos.
 - **Acción**: Convertir a LF y verificar sintaxis de bloques `if`.
 
+
+### #003 — Filtro "Solo con Licencias" limitado a Siemens
+- **Síntoma**: Al activar el filtro de licencias en Gestión de Clientes, solo aparecen los que tienen licencias Siemens en el inventario.
+- **Causa probable**: La query en `ClientController` probablemente solo está contando `inventory_daemons` (donde están las de Siemens) o ignorando el flag de Moldex3D.
+- **Impacto**: Inconsistencia en la gestión de clientes que solo tienen Moldex3D.
+- **Acción**: Actualizar la lógica del filtro para incluir clientes con licencias de ambos vendors o permitir selección específica.
 
 ---
 
