@@ -13,8 +13,9 @@ infra/.env.prod
 # --- Obsidian (vault local, nunca en Git) ---
 obsidian/
 
-# --- Agente (secrets locales) ---
+# --- Agente (secrets y memoria local) ---
 .agent/secrets/
+.agent/brain/
 
 # --- Laravel ---
 /vendor
