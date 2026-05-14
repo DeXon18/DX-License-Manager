@@ -30,6 +30,16 @@ El desarrollador inicia. El agente espera.
 (Vacío - Seleccionar siguiente fase)
 
 ## ✅ Completado
+ 
+### Soporte Multi-Sold-To (Licencias Unificadas) ✅
+- **Completada:** 2026-05-14
+- **Rama:** feature/multi-sold-to
+- **Resumen:** Implementada la capacidad de procesar licencias Siemens que contienen múltiples IDs de cliente (Other Installs). El sistema ahora extrae todos los Sold-Tos mediante IA (n8n v2.1), crea mapeos automáticos y los visualiza en el inventario activo.
+- [x] n8n: Actualización del flujo de auditoría IA v2.1 para detección de IDs unificados.
+- [x] DB: Migración para añadir `additional_sold_tos` (JSON) en `license_inventory_daemons`.
+- [x] Backend: Lógica de persistencia en `InventorySyncService` y auto-mapeo en `AuditService`.
+- [x] UI: Badges de Sold-To adicionales en el perfil de cliente (Blade) y modal de auditoría (Alpine).
+- [x] Verificación: Validado mediante simulación de callback con datos reales de Gurutzpe.
 
 ### Optimización: Salto de Auditoría IA para Temporales ✅
 - **Completada:** 2026-05-14
