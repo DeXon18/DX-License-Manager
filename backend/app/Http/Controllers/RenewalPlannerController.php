@@ -38,46 +38,21 @@ class RenewalPlannerController extends Controller
             'client_id' => 'required|exists:clients,id',
             'month' => 'required|integer|between:1,12',
             'notes' => 'nullable|string',
-            'license_files.*' => 'nullable|file|max:4096', // Max 4MB per file
         ]);
 
-        DB::transaction(function () use ($request) {
-            $log = RenewalLog::updateOrCreate(
-                [
-                    'client_id' => $request->client_id,
-                    'month' => $request->month,
-                    'year' => now()->year,
-                ],
-                [
-                    'user_id' => auth()->id(),
-                    'sent_at' => now(),
-                    'notes' => $request->notes,
-                ]
-            );
+        RenewalLog::updateOrCreate(
+            [
+                'client_id' => $request->client_id,
+                'month' => $request->month,
+                'year' => now()->year,
+            ],
+            [
+                'user_id' => auth()->id(),
+                'sent_at' => now(),
+                'notes' => $request->notes,
+            ]
+        );
 
-            if ($request->hasFile('license_files')) {
-                $client = Client::findOrFail($request->client_id);
-                foreach ($request->file('license_files') as $file) {
-                    $fileName = "Renewal_" . now()->format('Ymd') . "_" . $file->getClientOriginalName();
-                    $path = $file->storeAs('renewals/' . $client->id, $fileName);
-
-                    $log->files()->create([
-                        'file_path' => $path,
-                        'file_name' => $file->getClientOriginalName(),
-                    ]);
-                }
-            }
-        });
-
-        return back()->with('success', 'Renovación procesada con todos los archivos adjuntos.');
-    }
-
-    public function downloadFile(\App\Models\RenewalLogFile $file)
-    {
-        if (!$file->file_path || !\Illuminate\Support\Facades\Storage::disk('local')->exists($file->file_path)) {
-            return back()->with('error', 'El archivo de licencia no existe o ha sido movido.');
-        }
-
-        return \Illuminate\Support\Facades\Storage::disk('local')->download($file->file_path, $file->file_name);
+        return back()->with('success', 'Renovación marcada como enviada.');
     }
 }

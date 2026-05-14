@@ -434,8 +434,7 @@
                         <th>Mes / Ciclo</th>
                         <th>Fecha de Envío</th>
                         <th>Responsable</th>
-                        <th>Notas</th>
-                        <th class="text-right">Licencia</th>
+                        <th class="text-right">Notas</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -453,25 +452,13 @@
                                 <span>{{ $log->user->name ?? 'Sistema' }}</span>
                             </div>
                         </td>
-                        <td>
-                            <span class="muted text-xs">{{ $log->notes ?: '—' }}</span>
-                        </td>
                         <td class="text-right">
-                            <div style="display: flex; justify-content: flex-end; gap: 4px; flex-wrap: wrap;">
-                                @forelse($log->files as $file)
-                                    <a href="{{ route('renewal-planner.download-file', $file) }}" class="btn-action-tool" title="Descargar {{ $file->file_name }}" style="padding: 0 4px; width: auto; min-width: 28px;">
-                                        <i class="fa-solid fa-download" style="font-size: 8px; margin-right: 4px;"></i>
-                                        <span style="font-size: 8px; font-weight: 700; max-width: 80px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ $file->file_name }}</span>
-                                    </a>
-                                @empty
-                                    <span class="muted text-[10px]">Sin archivos</span>
-                                @endforelse
-                            </div>
+                            <span class="muted text-xs">{{ $log->notes ?: '—' }}</span>
                         </td>
                     </tr>
 @empty
                     <tr>
-                        <td colspan="5" class="text-center py-12 muted">
+                        <td colspan="4" class="text-center py-12 muted">
                             No se han registrado renovaciones enviadas para este cliente.
                         </td>
                     </tr>
