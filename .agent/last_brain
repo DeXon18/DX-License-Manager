@@ -1,6 +1,6 @@
-Rama activa: dev. Fase 15 — Integración IA Avanzada & Refinamiento. 
-Último trabajo: Rediseño premium de stat-cards en Dashboard (línea superior, iconos de fondo NOC Pro) y creación de README.md premium en raíz. Fix en ChangelogService para soportar horas en los headers.
-Estado: Dashboard visualmente estable y unificado. Nuevo README consolidado.
-Próximo paso inmediato: Iniciar Fase 15 (Preparar infraestructura para Fallback Chain de modelos IA).
+Rama activa: feature/multi-sold-to. Soporte Multi-Sold-To (Licencias Unificadas). 
+Último trabajo: Implementada migración DB (columna additional_sold_tos), actualización de modelos, AuditService callback (auto-mapping) y rediseño visual premium de badges (industrial style con fa-link).
+Estado: 100% funcional y verificado mediante simulación de callback en Beta (Cliente 391).
+Próximo paso inmediato: Seleccionar nueva fase del ROADMAP o refinar el flujo de auditoría si se detectan nuevos patrones.
 Bloqueos: Ninguno.
 Stack beta: running. Stack prod: running.
