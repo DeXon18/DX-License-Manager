@@ -31,6 +31,23 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Optimización: Salto de Auditoría IA para Temporales ✅
+- **Completada:** 2026-05-14
+- **Rama:** fix/skip-ai-audit-temporary-licenses
+- **Resumen:** Eliminación del consumo innecesario de tokens de IA para licencias temporales de 7 días. El sistema ahora detecta automáticamente estas licencias en NX, Star-CCM+ y HEEDS, marcándolas como `skipped` sin realizar llamadas externas.
+- [x] Backend: Modificación de `AuditService` para interceptar peticiones temporales.
+- [x] Controladores: Actualización de `NXSuiteController`, `StarCcmController` y `HeedsController` con detección de tipo.
+- [x] Trazabilidad: Registro en BD con estado `skipped` y mensaje informativo para el usuario.
+- [x] Verificación: Validación de sintaxis y logs mediante SSH/Docker en el servidor.
+
+### Fix: Validación MIME en Herramientas (Moldex3D) ✅
+- **Completada:** 2026-05-14
+- **Rama:** fix/moldex-mime-type-validation
+- **Resumen:** Corregido error que impedía subir archivos `.mac` en algunos entornos debido a la detección inconsistente de tipos MIME por parte del navegador.
+- [x] Backend: Eliminada restricción de `mimetypes` en `MoldexController`.
+- [x] Preventivo: Aplicada la misma mejora en controladores de Siemens (NX, StarCCM, Heeds) para mayor robustez.
+- [x] Verificación: Sintaxis validada en el servidor.
+
 ### Optimización Visual Dashboard ✅
 - **Completada:** 2026-05-14
 - **Rama:** feature/dashboard-ui-optimization
@@ -265,6 +282,7 @@ _Firmado por: **Antigravity (DX Agent)** 🦾_
 - [x] Soporte para múltiples **Sold-To** agrupados por cliente.
 - [x] Identificación de hardware (**MAC/Dongle**) en la UI.
 - [x] Optimización de Prompt IA v2.2 (Soporte Dongle e IDs Numéricos) ⏳ (Pte. Verificar).
+- [x] **Fix**: Validación MIME en Herramientas (Moldex3D, Siemens).
 
 ### Fase 8.1 (Parte 1) — Siemens NX Suite (Mecanismo)
 - **Completada:** 2026-05-07

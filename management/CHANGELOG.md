@@ -1,6 +1,21 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-14 15:20] — Fix: Validación MIME en Herramientas ✅
+
+### Fixed
+- **Moldex3D**: Corregido error de validación que bloqueaba la carga de archivos `.mac`. Eliminada restricción estricta de `mimetypes` en favor de validación por extensión.
+- **Robustez Global**: Aplicada misma mejora en Siemens (NX, Star-CCM+ y HEEDS) para prevenir fallos futuros.
+
+## [2026-05-14 15:15] — Optimización: Salto de Auditoría IA para Temporales ✅
+
+### Added
+- **Ahorro de Tokens**: Implementada lógica de cortocircuito en `AuditService` para evitar llamadas a n8n/IA en licencias temporales de 7 días.
+- **Trazabilidad Silenciosa**: Auditorías saltadas se registran con estado `skipped`.
+
+### Changed
+- **Tool Controllers**: Detección de tipo antes de invocar auditoría.
+
 ## [2026-05-14 12:35] — Dashboard: Rediseño NOC Pro y Estética Premium ✅
 
 ### Added
@@ -434,11 +449,6 @@ _Firmado por: **Antigravity (DX Agent)** 🦾_
 - **Unificación**: Lógica de migración total que mueve contratos, licencias, inventario y contactos al unificar clientes.
 - **Regex**: Corregidos los patrones de extracción de nombres en los logs de importación.
 
-### Status
-
-- **Pausa Técnica**: Se detienen temporalmente las tareas de n8n v2.2 y fix del modal para priorizar la estabilidad de la UI de clientes y el motor de normalización. ⏸️
-
----
 
 ## [2026-05-07] — Optimización de Auditoría IA (v2.2) ⏳ (Pendiente Verificar)
 
