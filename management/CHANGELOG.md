@@ -1,5 +1,30 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
+## [2026-05-14 11:15] — Planificador: Optimización NOC Pro e Identidad ✅
+
+### Added
+- **Planificador de Renovaciones**:
+    - **UI NOC Pro**: Rediseño de alta densidad con selector de mes personalizado (Alpine.js), eliminando el `<select>` nativo para mejorar la fluidez y estética oscura.
+    - **Sincronización de Identidad**: Alineación total de colores de estados con `identities.json` (Azul claro para Ofertado, Morado para Aceptado, etc.) usando transparencias dinámicas en chips y tablas.
+    - **Sistema de Limpieza**: Botón "Limpiar Filtros" dinámico que aparece solo cuando hay filtros activos.
+    - **Reversión (Undo)**: Implementada funcionalidad para deshacer renovaciones marcadas por error directamente desde la tabla.
+    - **Mirroring Estético**: La tabla del planificador ahora es espejo de la gestión de clientes (clases `.card` y `.table`), simplificando cabeceras a "ID Licencia" y "Contrato | Vencimiento...".
+
+### Fixed
+- **Contraste de Estados**: Solucionado problema de visibilidad en estados "Ofertado" y "Procesado" en modo oscuro mediante el uso de variables CSS correctas.
+- **Helper de Color**: Definida función `hexToRgb` en Blade para permitir transparencias dinámicas sobre colores HEX corporativos.
+
+### Changed
+- **Terminología**: Cambio de "Servidores" a "ID Licencia" para mayor precisión técnica (Sold-To / Machine ID).
+
+## [2026-05-14 09:05] — Planificador: Simplificación de Proceso (Sin Adjuntos) ✅
+
+### Changed
+
+- **Planificador de Renovaciones**:
+    - **Simplificación de Flujo**: Eliminada la opción de adjuntar archivos `.lic` al marcar renovaciones. El proceso ahora es un registro puramente administrativo de "Envío realizado".
+    - **Optimización UI**: Eliminado selector de archivos en el planificador y columna de licencias en el historial del cliente para una interfaz más limpia y directa.
+    - **Limpieza de Backend**: Eliminada lógica de subida, almacenamiento y descarga de archivos de renovación.
 
 ## [2026-05-13 16:05] — Fase 14: Planificador de Renovaciones Multi-Archivo ✅
 
