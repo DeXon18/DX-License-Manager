@@ -67,13 +67,12 @@
 
     <div class="table-container">
         <table style="border-collapse: separate; border-spacing: 0;">
-            <thead>
+            <th            <thead>
                 <tr>
-                    <th style="padding: 12px 20px;">Cliente / Contratos</th>
-                    <th style="padding: 12px 20px;">Servidores (Sold-To)</th>
-                    <th style="padding: 12px 20px; width: 120px;">Vencimiento</th>
-                    <th style="padding: 12px 20px;">Estado / Comentario</th>
-                    <th style="padding: 12px 20px; width: 130px; text-align: center;">Acción</th>
+                    <th style="padding: 12px 20px; width: 250px;">Cliente</th>
+                    <th style="padding: 12px 20px; width: 150px;">Servidores</th>
+                    <th style="padding: 12px 20px;">Detalles de Contrato (Número | Vencimiento | Estado | Comentario)</th>
+                    <th style="padding: 12px 20px; width: 120px; text-align: center;">Acción</th>
                 </tr>
             </thead>
             <tbody>
@@ -82,48 +81,36 @@
                         $client = $contracts->first()->client;
                         $isCompleted = in_array($clientId, $completedLogs);
                     @endphp
-                    <tr style="{{ $isCompleted ? 'opacity: 0.5; background: rgba(0,255,0,0.01);' : '' }}">
-                        <td style="padding: 10px 20px;">
-                            <div style="font-weight: 700; font-size: 13px; color: {{ $isCompleted ? 'var(--muted)' : 'var(--primary)' }};">
+                    <tr style="{{ $isCompleted ? 'opacity: 0.5; background: rgba(0,255,0,0.01);' : '' }} border-bottom: 1px solid var(--border-light);">
+                        <td style="padding: 14px 20px; vertical-align: top;">
+                            <div style="font-weight: 700; font-size: 13px; color: {{ $isCompleted ? 'var(--muted)' : 'var(--primary)' }}; line-height: 1.2;">
                                 {{ $client->name ?? 'Desconocido' }}
                                 @if($isCompleted)
                                     <i class="fa-solid fa-circle-check" style="margin-left: 6px; color: var(--success); font-size: 11px;"></i>
                                 @endif
                             </div>
-                            <div style="font-size: 10px; color: var(--muted); margin-top: 2px;">
-                                {{ $contracts->count() }} contrato(s) detectado(s)
+                            <div style="font-size: 10px; color: var(--muted); margin-top: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.02em;">
+                                {{ $contracts->count() }} contrato{{ $contracts->count() > 1 ? 's' : '' }}
                             </div>
                         </td>
-                        <td style="padding: 10px 20px;">
-                            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                        <td style="padding: 14px 20px; vertical-align: top;">
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
                                 @forelse($client->inventoryDaemons as $daemon)
                                     @php $isSiemens = ($daemon->vendor === 'siemens'); @endphp
-                                    <div style="display: flex; align-items: center; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 2px 6px; gap: 6px;">
-                                        <span style="font-size: 9px; font-weight: 800; color: {{ $isSiemens ? 'var(--siemens)' : 'var(--moldex)' }}; text-transform: uppercase;">
+                                    <div style="display: flex; align-items: center; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 3px; padding: 1px 5px; gap: 5px; align-self: flex-start;">
+                                        <span style="font-size: 7px; font-weight: 900; color: {{ $isSiemens ? 'var(--siemens)' : 'var(--moldex)' }}; text-transform: uppercase;">
                                             {{ $daemon->vendor }}
                                         </span>
-                                        <span style="font-family: var(--font-mono); font-size: 11px; color: var(--secondary);">{{ $daemon->sold_to }}</span>
+                                        <span style="font-family: var(--font-mono); font-size: 10px; color: var(--secondary);">{{ $daemon->sold_to }}</span>
                                     </div>
                                 @empty
-                                    <span style="font-size: 11px; color: var(--muted); font-style: italic;">— Sin inventario auditado —</span>
+                                    <span style="font-size: 10px; color: var(--muted); font-style: italic; opacity: 0.5;">— Sin inventario —</span>
                                 @endforelse
                             </div>
                         </td>
-                        <td style="padding: 10px 20px;">
-                            @foreach($contracts as $contract)
-                                <div style="margin-bottom: 2px; display: flex; align-items: center; gap: 6px;">
-                                    <span style="font-size: 9px; font-weight: 800; color: var(--accent); background: rgba(0,153,153,0.05); padding: 1px 4px; border-radius: 3px; border: 1px solid rgba(0,153,153,0.1);">
-                                        {{ $contract->contract_number }}
-                                    </span>
-                                    <span style="font-size: 11px; font-family: var(--font-mono); color: var(--secondary);">
-                                        {{ \Carbon\Carbon::parse($contract->end_date)->format('d/m/Y') }}
-                                    </span>
-                                </div>
-                            @endforeach
-                        </td>
-                        <td style="padding: 10px 20px;">
-                            @foreach($contracts as $contract)
-                                <div style="display: flex; align-items: baseline; gap: 10px; margin-bottom: 6px;">
+                        <td style="padding: 14px 20px; vertical-align: top;">
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                @foreach($contracts as $contract)
                                     @php
                                         $status = trim($contract->status ?: 'vacio');
                                         $statusMap = [
@@ -138,32 +125,53 @@
                                         ];
                                         $data = $statusMap[$status] ?? ['label' => $status, 'class' => 'badge-muted'];
                                     @endphp
-                                    <span class="badge {{ $data['class'] }}" style="font-size: 8px; padding: 1px 6px; white-space: nowrap;">
-                                        {{ $data['label'] }}
-                                    </span>
-                                    <span style="font-size: 10px; color: var(--muted); font-style: italic; line-height: 1.2;">
-                                        {{ $contract->comment ?: '— Sin comentarios —' }}
-                                    </span>
-                                </div>
-                            @endforeach
+                                    <div style="display: grid; grid-template-columns: 85px 80px 100px 1fr; gap: 12px; align-items: center;">
+                                        <span style="font-size: 9px; font-weight: 800; color: var(--accent); background: rgba(0,153,153,0.08); padding: 1px 4px; border-radius: 3px; border: 1px solid rgba(0,153,153,0.15); text-align: center;">
+                                            {{ $contract->contract_number }}
+                                        </span>
+                                        <span style="font-size: 10px; font-family: var(--font-mono); color: var(--secondary); font-weight: 600;">
+                                            {{ \Carbon\Carbon::parse($contract->end_date)->format('d/m/Y') }}
+                                        </span>
+                                        <span class="badge {{ $data['class'] }}" style="font-size: 8px; padding: 1px 6px; white-space: nowrap; justify-self: start;">
+                                            {{ $data['label'] }}
+                                        </span>
+                                        <span style="font-size: 10px; color: var(--muted); font-style: italic; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ $contract->comment }}">
+                                            {{ $contract->comment ?: '—' }}
+                                        </span>
+                                    </div>
+                                @endforeach
+                            </div>
                         </td>
-                        <td style="padding: 10px 20px; text-align: center;">
+                        <td style="padding: 14px 20px; text-align: center; vertical-align: middle;">
                             @if(!$isCompleted)
-                                <form action="{{ route('renewal-planner.store') }}" method="POST" id="form-{{ $clientId }}" style="display: flex; flex-direction: column; gap: 4px;">
+                                <form action="{{ route('renewal-planner.store') }}" method="POST" id="form-{{ $clientId }}">
                                     @csrf
                                     <input type="hidden" name="client_id" value="{{ $clientId }}">
                                     <input type="hidden" name="month" value="{{ $month }}">
                                     
-                                    <button type="submit" class="action-btn" style="padding: 5px 10px; height: auto; width: 100%; justify-content: center; background: transparent; border: 1px solid var(--accent); border-radius: 4px; transition: all 0.2s;">
-                                        <span style="font-size: 10px; font-weight: 800; color: var(--accent); letter-spacing: 0.05em;">MARCAR ENVIADO</span>
+                                    <button type="submit" class="action-btn" style="padding: 6px 12px; height: auto; width: auto; background: transparent; border: 1px solid var(--accent); border-radius: 4px; transition: all 0.2s; cursor: pointer;">
+                                        <span style="font-size: 9px; font-weight: 800; color: var(--accent); letter-spacing: 0.05em; text-transform: uppercase;">Marcar Envío</span>
                                     </button>
                                 </form>
                             @else
-                                <span style="font-size: 10px; font-weight: 800; color: var(--success); text-transform: uppercase; letter-spacing: 0.1em; background: rgba(0,255,0,0.05); padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(0,255,0,0.2);">
-                                    PROCESADO
-                                </span>
+                                <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+                                    <span style="font-size: 9px; font-weight: 800; color: var(--success); text-transform: uppercase; letter-spacing: 0.05em; background: rgba(0,255,0,0.05); padding: 4px 8px; border-radius: 4px; border: 1px solid rgba(0,255,0,0.2);">
+                                        OK
+                                    </span>
+                                    <form action="{{ route('renewal-planner.destroy') }}" method="POST" onsubmit="return confirm('¿Revertir estado a pendiente?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input type="hidden" name="client_id" value="{{ $clientId }}">
+                                        <input type="hidden" name="month" value="{{ $month }}">
+                                        <button type="submit" style="background: transparent; border: none; color: var(--danger); cursor: pointer; padding: 2px; font-size: 12px; opacity: 0.5;" title="Deshacer">
+                                            <i class="fa-solid fa-rotate-left"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             @endif
                         </td>
+                    </tr>
+           </td>
                     </tr>
                 @empty
                     <tr>
