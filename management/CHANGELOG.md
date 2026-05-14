@@ -1,7 +1,13 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-14 16:40] — Switch: Multi-Sold-To Finalizado -> Tracking de Errores ✅
+
+### Added
+- **Log de Sesión**: Fase 14 (Soporte Multi-Sold-To) completada y validada en Beta. Rama pusheada a `origin`.
+
 ## [2026-05-14 16:20] — Soporte: Multi-Sold-To (Licencias Unificadas) ✅
+
 
 ### Added
 - **n8n Workflow v2.1**: Actualizado motor de IA para detectar "Other Installs" en archivos contractuales de Siemens.
