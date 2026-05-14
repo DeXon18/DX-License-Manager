@@ -40,6 +40,7 @@ class InventorySyncService
                 'hostname' => $data['server_hostname'] ?? null,
                 'composite' => $data['server_host_id'] ?? null,
                 'hardware_id' => $this->extractHardwareId($data),
+                'additional_sold_tos' => $data['additional_sold_tos'] ?? [],
                 'version' => $data['version'] ?? null,
                 'type' => $this->determineType($data),
             ]

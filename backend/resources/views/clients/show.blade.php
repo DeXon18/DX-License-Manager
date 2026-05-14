@@ -138,12 +138,21 @@
                             <div class="daemon-header">
                                 <div class="header-col">
                                     <span class="tech-label">{{ $daemon->vendor === 'moldex' ? 'Plataforma' : 'Daemon' }}</span>
-                                    <div style="display: flex; align-items: center;">
+                                    <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 4px;">
                                         @if($daemon->vendor === 'moldex')
                                             <span class="tech-value daemon-name moldex-logo">Moldex<span class="accent">3D</span></span>
                                         @else
                                             <span class="tech-value daemon-name">{{ $daemon->daemon }}</span>
                                             <span class="inv-badge badge-{{ $daemon->vendor }}">{{ ucfirst($daemon->vendor) }}</span>
+                                        @endif
+
+                                        @if(!empty($daemon->additional_sold_tos))
+                                            @foreach($daemon->additional_sold_tos as $extraSt)
+                                                <span class="unified-badge" title="Unified Sold-To (Other Install)">
+                                                    <i class="fa-solid fa-link"></i>
+                                                    {{ $extraSt }}
+                                                </span>
+                                            @endforeach
                                         @endif
                                     </div>
                                 </div>
@@ -586,12 +595,12 @@
                             </div>
         
                             <!-- Unified Sold-Tos -->
-                            <div class="unified-box mt-6" x-show="auditDetail?.results?.unified_sold_tos?.length">
+                            <div class="unified-box mt-6" x-show="auditDetail?.results?.additional_sold_tos?.length">
                                 <div class="flex items-center gap-3">
                                     <i class="fa-solid fa-link text-warn" style="font-size: 10px;"></i>
                                     <span class="label">Sold-Tos Unificados:</span>
                                     <div class="flex flex-wrap gap-2">
-                                        <template x-for="st in auditDetail?.results?.unified_sold_tos">
+                                        <template x-for="st in auditDetail?.results?.additional_sold_tos">
                                             <span class="badge badge-muted sm" x-text="st"></span>
                                         </template>
                                     </div>
@@ -893,6 +902,16 @@
     .moldex-logo .accent { color: #f58220 !important; }
 
     .inv-badge { display: inline-flex; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 900; text-transform: uppercase; }
+    
+    .unified-badge {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 2px 8px; background: rgba(0, 153, 153, 0.06); 
+        border: 1px dashed rgba(0, 153, 153, 0.3); border-radius: 4px;
+        color: var(--siemens); font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+        transition: all 0.2s ease; cursor: help;
+    }
+    .unified-badge i { font-size: 8px; opacity: 0.6; }
+    .unified-badge:hover { background: rgba(0, 153, 153, 0.1); border-color: var(--siemens); }
     .badge-siemens { background: var(--siemens); color: #fff; margin-left: 8px; }
     .badge-type { background: var(--accent-muted); color: var(--accent); border: 1px solid var(--accent-border); }
 
