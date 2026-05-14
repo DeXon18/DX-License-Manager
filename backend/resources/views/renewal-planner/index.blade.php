@@ -1,5 +1,23 @@
 @extends('layouts.app')
 
+@php
+    if (!function_exists('hexToRgb')) {
+        function hexToRgb($hex) {
+            $hex = str_replace("#", "", $hex);
+            if(strlen($hex) == 3) {
+                $r = hexdec(substr($hex,0,1).substr($hex,0,1));
+                $g = hexdec(substr($hex,1,1).substr($hex,1,1));
+                $b = hexdec(substr($hex,2,1).substr($hex,2,1));
+            } else {
+                $r = hexdec(substr($hex,0,2));
+                $g = hexdec(substr($hex,2,2));
+                $b = hexdec(substr($hex,4,2));
+            }
+            return "$r, $g, $b";
+        }
+    }
+@endphp
+
 @section('title', 'Planificador de Renovaciones — DX Portal')
 
 @section('content')
@@ -66,17 +84,16 @@
                 @foreach($availableStatuses as $status)
                     @php
                         $isSelected = in_array($status, $selectedStatuses);
-                        $colorClass = match(trim($status)) {
-                            'Ofertado' => 'accent',
-                            'En negociación' => 'secondary',
-                            'Aceptado por el cliente' => 'accent',
-                            'Procesado (M) - Pte fact.' => 'warning',
-                            'Facturado - Pte proc. (M)' => 'warning',
-                            'Cerrado' => 'success',
-                            'Baja' => 'danger',
-                            default => 'muted'
+                        $color = match(trim($status)) {
+                            'Ofertado' => '#58a6ff', // Azul claro
+                            'En negociación' => '#388bfd', // Azul intenso
+                            'Aceptado por el cliente' => '#bc71f8', // Morado
+                            'Procesado (M) - Pte fact.' => '#d29922', // Amarillo
+                            'Facturado - Pte proc. (M)' => '#db6d28', // Naranja
+                            'Cerrado' => '#3fb950', // Verde
+                            'Baja' => '#e05252', // Rojo apagado
+                            default => '#8b949e' // Gris
                         };
-                        $colorVar = "var(--$colorClass)";
                     @endphp
                     <label style="cursor: pointer; transition: all 0.2s;">
                         <input type="checkbox" name="statuses[]" value="{{ $status }}" {{ $isSelected ? 'checked' : '' }} onchange="this.form.submit()" style="display: none;">
@@ -86,12 +103,12 @@
                             border-radius: 20px;
                             font-size: 10px;
                             font-weight: 700;
-                            border: 1px solid {{ $isSelected ? $colorVar : 'var(--border)' }};
-                            background: {{ $isSelected ? "rgba($colorVar, 0.1)" : 'transparent' }};
-                            color: {{ $isSelected ? $colorVar : 'var(--muted)' }};
+                            border: 1px solid {{ $isSelected ? $color : 'var(--border)' }};
+                            background: {{ $isSelected ? "rgba(" . hexToRgb($color) . ", 0.1)" : 'transparent' }};
+                            color: {{ $isSelected ? $color : 'var(--muted)' }};
                             transition: all 0.2s ease;
                             white-space: nowrap;
-                        " onmouseover="this.style.borderColor='{{ $colorVar }}'; this.style.color='{{ $colorVar }}'" onmouseout="if(!{{ $isSelected ? 'true' : 'false' }}){ this.style.borderColor='var(--border)'; this.style.color='var(--muted)'; }">
+                        " onmouseover="this.style.borderColor='{{ $color }}'; this.style.color='{{ $color }}'" onmouseout="if(!{{ $isSelected ? 'true' : 'false' }}){ this.style.borderColor='var(--border)'; this.style.color='var(--muted)'; }">
                             {{ $status ?: 'Sin estado' }}
                         </span>
                     </label>
@@ -174,17 +191,16 @@
                                 @foreach($contracts as $contract)
                                     @php
                                         $status = trim($contract->status ?: 'vacio');
-                                        $statusMap = [
-                                            'vacio' => ['label' => 'Sin estado', 'class' => 'badge-muted'],
-                                            'Ofertado' => ['label' => 'Ofertado', 'class' => 'badge-info'],
-                                            'En negociación' => ['label' => 'Negociación', 'class' => 'badge-primary'],
-                                            'Aceptado por el cliente' => ['label' => 'Aceptado', 'class' => 'badge-accent'],
-                                            'Procesado (M) - Pte fact.' => ['label' => 'Procesado', 'class' => 'badge-warn'],
-                                            'Facturado - Pte proc. (M)' => ['label' => 'Facturado', 'class' => 'badge-warning'],
-                                            'Cerrado' => ['label' => 'Cerrado', 'class' => 'badge-success'],
-                                            'Baja' => ['label' => 'Baja', 'class' => 'badge-danger'],
-                                        ];
-                                        $data = $statusMap[$status] ?? ['label' => $status, 'class' => 'badge-muted'];
+                                        $statusData = match($status) {
+                                            'Ofertado' => ['label' => 'Ofertado', 'color' => '#58a6ff'],
+                                            'En negociación' => ['label' => 'Negociación', 'color' => '#388bfd'],
+                                            'Aceptado por el cliente' => ['label' => 'Aceptado', 'color' => '#bc71f8'],
+                                            'Procesado (M) - Pte fact.' => ['label' => 'Procesado', 'color' => '#d29922'],
+                                            'Facturado - Pte proc. (M)' => ['label' => 'Facturado', 'color' => '#db6d28'],
+                                            'Cerrado' => ['label' => 'Cerrado', 'color' => '#3fb950'],
+                                            'Baja' => ['label' => 'Baja', 'color' => '#e05252'],
+                                            default => ['label' => $status ?: 'Sin estado', 'color' => '#8b949e'],
+                                        };
                                     @endphp
                                     <div style="display: grid; grid-template-columns: 85px 80px 100px 1fr; gap: 12px; align-items: center;">
                                         <span class="font-mono" style="font-size: 9px; font-weight: 800; color: var(--accent); background: var(--bg); padding: 1px 4px; border-radius: 3px; border: 1px solid var(--border); text-align: center;">
@@ -193,8 +209,8 @@
                                         <span class="font-mono" style="font-size: 10px; color: var(--secondary); font-weight: 600;">
                                             {{ \Carbon\Carbon::parse($contract->end_date)->format('d/m/Y') }}
                                         </span>
-                                        <span class="badge {{ $data['class'] }}" style="font-size: 8px; padding: 1px 6px; white-space: nowrap; justify-self: start;">
-                                            {{ $data['label'] }}
+                                        <span class="badge" style="font-size: 8px; padding: 1px 6px; white-space: nowrap; justify-self: start; background: {{ "rgba(" . hexToRgb($statusData['color']) . ", 0.15)" }}; color: {{ $statusData['color'] }}; border: 1px solid {{ "rgba(" . hexToRgb($statusData['color']) . ", 0.3)" }};">
+                                            {{ $statusData['label'] }}
                                         </span>
                                         <span class="muted" style="font-size: 10px; font-style: italic; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ $contract->comment }}">
                                             {{ $contract->comment ?: '—' }}
