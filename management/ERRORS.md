@@ -8,7 +8,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | Críticos (P1) | Importantes (P2) | Menores (P3) | Resueltos |
 | :--- | :--- | :--- | :--- |
-| 1 | 2 | 1 | 0 |
+| 1 | 2 | 2 | 0 |
 
 ---
 
@@ -16,11 +16,13 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | ID | Incidencia | Módulo | Prio | Estado | Fecha Detect. |
 | :--- | :--- | :--- | :--- | :--- | :--- |
+| #006 | Acciones rápidas sin vínculos / Estáticas | Dashboard | P3 | 🆕 Nuevo | 2026-05-14 |
 | #005 | Mejora en Lector de Logs (laravel.log) | Admin/Logs | P2 | 🆕 Nuevo | 2026-05-14 |
 | #004 | Revisar visualización de "Other Installs" | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
 | #003 | Filtro "Solo con Licencias" limitado a Siemens | Clientes | P2 | 🆕 Nuevo | 2026-05-14 |
 | #002 | Error de sintaxis y CRLF en backup-db.sh | Infra/Scripts | P1 | 🆕 Nuevo | 2026-05-14 |
 | #001 | [Ejemplo] Error de contraste en modo claro | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
+
 
 
 
@@ -59,6 +61,14 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
   - Pulir la visualización eliminando líneas de `#0 /var/www/...` que no aportan valor visual.
   - Implementar un sistema de "colapsado" de trazas.
   - Verificar por qué el contador de alertas no se sincroniza con el archivo físico.
+
+### #006 — Acciones rápidas sin vínculos / Estáticas
+- **Síntoma**: Los botones del panel de "Acciones Rápidas" en el Dashboard no redirigen a ninguna parte o carecen de lógica funcional dinámica.
+- **Causa probable**: Implementación inicial centrada en el diseño visual (Bento) sin terminar de cablear los enlaces y la lógica de backend.
+- **Impacto**: Experiencia de usuario incompleta en el centro de mando.
+- **Acción**: 
+  - Vincular acciones a rutas reales (Limpiar caché, Backups, Auditoría, etc.).
+  - Estudiar la posibilidad de que sean configurables o dinámicas según el rol del usuario.
 
 ---
 
