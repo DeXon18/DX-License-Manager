@@ -10,56 +10,77 @@
     </div>
 </div>
 
-<div class="card" style="margin-bottom: 24px;">
-    <div style="padding: 12px 20px; display: flex; flex-direction: column; gap: 12px; background: var(--raised); border-bottom: 1px solid var(--border);">
-        <div style="display: flex; align-items: center; justify-content: space-between;">
-            <div style="display: flex; gap: 15px; align-items: center;">
-                <!-- Filtro de Mes -->
-                <div style="display: flex; align-items: center; gap: 8px; background: var(--bg); padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border);">
-                    <i class="fa-regular fa-calendar-check" style="color: var(--accent); font-size: 13px;"></i>
-                    <form action="{{ route('renewal-planner.index') }}" method="GET" id="filterForm" style="display: flex; gap: 10px; align-items: center;">
-                        <select name="month" onchange="document.getElementById('filterForm').submit()" 
-                            style="background: transparent; border: none; color: var(--primary); font-size: 13px; font-weight: 700; cursor: pointer; padding-right: 5px; outline: none;">
-                            @foreach(range(1, 12) as $m)
-                                @php $mDate = Carbon\Carbon::create(2024, $m, 1); @endphp
-                                <option value="{{ $m }}" {{ $month == $m ? 'selected' : '' }}>
-                                    {{ strtoupper($mDate->translatedFormat('F')) }}
-                                </option>
-                            @endforeach
-                        </select>
+    <div class="stats-grid" style="display: grid; grid-template-columns: auto 1fr auto; gap: 30px; align-items: center; background: var(--bg-dark); padding: 20px 30px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+        <!-- Selector de Mes -->
+        <div style="display: flex; align-items: center; gap: 15px; padding-right: 25px; border-right: 1px solid var(--border);">
+            <i class="fa-solid fa-calendar-days" style="color: var(--accent); font-size: 18px;"></i>
+            <form action="{{ route('renewal-planner.index') }}" method="GET" id="month-form">
+                <select name="month" onchange="document.getElementById('month-form').submit()" style="background: transparent; border: none; color: var(--primary); font-size: 18px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; outline: none; padding-right: 10px;">
+                    @foreach(range(1, 12) as $m)
+                        <option value="{{ $m }}" {{ $month == $m ? 'selected' : '' }} style="background: var(--bg-dark); color: var(--primary);">
+                            {{ strtoupper(\Carbon\Carbon::create(2024, $m, 1)->translatedFormat('F')) }}
+                        </option>
+                    @endforeach
+                </select>
+                @foreach($selectedStatuses as $s)
+                    <input type="hidden" name="statuses[]" value="{{ $s }}">
+                @endforeach
+            </form>
+        </div>
 
-                        <div style="width: 1px; height: 16px; background: var(--border); margin: 0 5px;"></div>
+        <!-- Filtros de Estado -->
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+            <span style="font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-right: 8px;">Filtrar por:</span>
+            <form action="{{ route('renewal-planner.index') }}" method="GET" id="filter-form" style="display: flex; flex-wrap: wrap; gap: 6px;">
+                <input type="hidden" name="month" value="{{ $month }}">
+                @foreach($availableStatuses as $status)
+                    @php
+                        $isSelected = in_array($status, $selectedStatuses);
+                        $colorClass = match(trim($status)) {
+                            'Ofertado' => 'info',
+                            'En negociación' => 'primary',
+                            'Aceptado por el cliente' => 'accent',
+                            'Procesado (M) - Pte fact.' => 'warn',
+                            'Facturado - Pte proc. (M)' => 'warning',
+                            'Cerrado' => 'success',
+                            'Baja' => 'danger',
+                            default => 'muted'
+                        };
+                        $colorVar = "var(--$colorClass)";
+                    @endphp
+                    <label style="cursor: pointer; transition: all 0.2s;">
+                        <input type="checkbox" name="statuses[]" value="{{ $status }}" {{ $isSelected ? 'checked' : '' }} onchange="this.form.submit()" style="display: none;">
+                        <span style="
+                            display: inline-block;
+                            padding: 4px 12px;
+                            border-radius: 20px;
+                            font-size: 10px;
+                            font-weight: 700;
+                            border: 1px solid {{ $isSelected ? $colorVar : 'var(--border)' }};
+                            background: {{ $isSelected ? "rgba($colorVar, 0.1)" : 'transparent' }};
+                            color: {{ $isSelected ? $colorVar : 'var(--muted)' }};
+                            transition: all 0.2s ease;
+                            white-space: nowrap;
+                        " onmouseover="this.style.borderColor='{{ $colorVar }}'; this.style.color='{{ $colorVar }}'" onmouseout="if(!{{ $isSelected ? 'true' : 'false' }}){ this.style.borderColor='var(--border)'; this.style.color='var(--muted)'; }">
+                            {{ $status ?: 'Sin estado' }}
+                        </span>
+                    </label>
+                @endforeach
+            </form>
+        </div>
 
-                        <!-- Filtro de Estados (Multi-chips) -->
-                        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                            @foreach($availableStatuses as $status)
-                                @php $isSelected = in_array($status, $selectedStatuses); @endphp
-                                <label style="cursor: pointer; display: flex; align-items: center;">
-                                    <input type="checkbox" name="statuses[]" value="{{ $status }}" 
-                                        {{ $isSelected ? 'checked' : '' }} 
-                                        onchange="document.getElementById('filterForm').submit()" 
-                                        style="display: none;">
-                                    <span style="font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; border: 1px solid {{ $isSelected ? 'var(--accent)' : 'var(--border)' }}; background: {{ $isSelected ? 'rgba(0,153,153,0.1)' : 'var(--bg)' }}; color: {{ $isSelected ? 'var(--accent)' : 'var(--muted)' }}; transition: all 0.2s; white-space: nowrap;">
-                                        {{ $status }}
-                                    </span>
-                                </label>
-                            @endforeach
-                        </div>
-                    </form>
+        <!-- Estadísticas -->
+        <div style="display: flex; gap: 40px; padding-left: 25px; border-left: 1px solid var(--border);">
+            <div style="text-align: right;">
+                <div style="font-size: 9px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px;">Pendientes</div>
+                <div style="font-size: 28px; font-weight: 900; color: var(--primary); font-family: var(--font-mono); line-height: 1;">
+                    {{ count($pendingRenewals) - count($completedLogs) }}
                 </div>
             </div>
-            <div style="display: flex; gap: 24px;">
-                <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                    <span style="font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">Pendientes</span>
-                    <span style="font-family: var(--font-mono); font-size: 16px; font-weight: 800; color: var(--warn);">
-                        {{ count($pendingRenewals) - count($completedLogs) }}
-                    </span>
-                </div>
-                <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                    <span style="font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px;">Completados</span>
-                    <span style="font-family: var(--font-mono); font-size: 16px; font-weight: 800; color: var(--success);">
-                        {{ count($completedLogs) }}
-                    </span>
+            <div style="text-align: right;">
+                <div style="font-size: 9px; font-weight: 800; color: var(--success); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2px;">Completados</div>
+                <div style="font-size: 28px; font-weight: 900; color: var(--success); font-family: var(--font-mono); line-height: 1;">
+                    {{ count($completedLogs) }}
                 </div>
             </div>
         </div>
