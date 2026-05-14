@@ -67,10 +67,10 @@
                     @php
                         $isSelected = in_array($status, $selectedStatuses);
                         $colorClass = match(trim($status)) {
-                            'Ofertado' => 'info',
-                            'En negociación' => 'primary',
+                            'Ofertado' => 'accent',
+                            'En negociación' => 'secondary',
                             'Aceptado por el cliente' => 'accent',
-                            'Procesado (M) - Pte fact.' => 'warn',
+                            'Procesado (M) - Pte fact.' => 'warning',
                             'Facturado - Pte proc. (M)' => 'warning',
                             'Cerrado' => 'success',
                             'Baja' => 'danger',
