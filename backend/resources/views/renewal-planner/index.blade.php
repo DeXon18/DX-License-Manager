@@ -86,14 +86,14 @@
         </div>
     </div>
 
-    <div class="table-container">
-        <table>
+    <div class="card">
+        <table class="table">
             <thead>
                 <tr>
                     <th style="width: 250px;">Cliente</th>
-                    <th style="width: 140px;">Servidores</th>
+                    <th style="width: 140px;" class="text-center">Servidores</th>
                     <th>Detalles de Contrato (Número | Vencimiento | Estado | Comentario)</th>
-                    <th style="width: 80px; text-align: center;">Acción</th>
+                    <th style="width: 80px;" class="text-right">Acción</th>
                 </tr>
             </thead>
             <tbody>
@@ -102,30 +102,30 @@
                         $client = $contracts->first()->client;
                         $isCompleted = in_array($clientId, $completedLogs);
                     @endphp
-                    <tr class="{{ $isCompleted ? 'row-completed' : '' }}">
+                    <tr class="{{ $isCompleted ? 'opacity-50' : '' }}">
                         <td style="vertical-align: top;">
-                            <div style="font-weight: 700; font-size: 13px; color: var(--primary);">
+                            <div class="font-bold" style="font-size: 13px;">
                                 {{ $client->name ?? 'Desconocido' }}
                                 @if($isCompleted)
                                     <i class="fa-solid fa-circle-check" style="margin-left: 6px; color: var(--success); font-size: 11px;"></i>
                                 @endif
                             </div>
-                            <div style="font-size: 10px; color: var(--muted); margin-top: 4px; font-style: italic; opacity: 0.6;">
+                            <div class="muted" style="font-size: 10px; margin-top: 4px; font-style: italic;">
                                 {{ $contracts->count() }} contrato{{ $contracts->count() > 1 ? 's' : '' }} detectado{{ $contracts->count() > 1 ? 's' : '' }}
                             </div>
                         </td>
-                        <td style="vertical-align: top;">
-                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                        <td style="vertical-align: top;" class="text-center">
+                            <div style="display: flex; flex-direction: column; gap: 4px; align-items: center;">
                                 @forelse($client->inventoryDaemons as $daemon)
                                     @php $isSiemens = ($daemon->vendor === 'siemens'); @endphp
-                                    <div style="display: flex; align-items: center; background: var(--bg); border: 1px solid var(--border); border-radius: 3px; padding: 1px 5px; gap: 5px; align-self: flex-start;">
+                                    <div style="display: flex; align-items: center; background: var(--bg); border: 1px solid var(--border); border-radius: 3px; padding: 1px 5px; gap: 5px;">
                                         <span style="font-size: 7px; font-weight: 900; color: {{ $isSiemens ? 'var(--siemens)' : 'var(--moldex)' }}; text-transform: uppercase;">
                                             {{ $daemon->vendor }}
                                         </span>
-                                        <span style="font-family: var(--font-mono); font-size: 10px; color: var(--secondary);">{{ $daemon->sold_to }}</span>
+                                        <span class="font-mono" style="font-size: 10px; color: var(--secondary);">{{ $daemon->sold_to }}</span>
                                     </div>
                                 @empty
-                                    <span style="font-size: 10px; color: var(--muted); font-style: italic; opacity: 0.5;">— Sin inventario —</span>
+                                    <span class="muted text-xs">—</span>
                                 @endforelse
                             </div>
                         </td>
@@ -147,36 +147,36 @@
                                         $data = $statusMap[$status] ?? ['label' => $status, 'class' => 'badge-muted'];
                                     @endphp
                                     <div style="display: grid; grid-template-columns: 85px 80px 100px 1fr; gap: 12px; align-items: center;">
-                                        <span style="font-size: 9px; font-weight: 800; color: var(--accent); background: var(--bg); padding: 1px 4px; border-radius: 3px; border: 1px solid var(--border); text-align: center;">
+                                        <span class="font-mono" style="font-size: 9px; font-weight: 800; color: var(--accent); background: var(--bg); padding: 1px 4px; border-radius: 3px; border: 1px solid var(--border); text-align: center;">
                                             {{ $contract->contract_number }}
                                         </span>
-                                        <span style="font-size: 10px; font-family: var(--font-mono); color: var(--secondary); font-weight: 600;">
+                                        <span class="font-mono" style="font-size: 10px; color: var(--secondary); font-weight: 600;">
                                             {{ \Carbon\Carbon::parse($contract->end_date)->format('d/m/Y') }}
                                         </span>
                                         <span class="badge {{ $data['class'] }}" style="font-size: 8px; padding: 1px 6px; white-space: nowrap; justify-self: start;">
                                             {{ $data['label'] }}
                                         </span>
-                                        <span style="font-size: 10px; color: var(--muted); font-style: italic; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ $contract->comment }}">
+                                        <span class="muted" style="font-size: 10px; font-style: italic; line-height: 1.2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="{{ $contract->comment }}">
                                             {{ $contract->comment ?: '—' }}
                                         </span>
                                     </div>
                                 @endforeach
                             </div>
                         </td>
-                        <td style="text-align: center; vertical-align: middle;">
+                        <td style="vertical-align: middle;" class="text-right">
                             @if(!$isCompleted)
                                 <form action="{{ route('renewal-planner.store') }}" method="POST" id="form-{{ $clientId }}">
                                     @csrf
                                     <input type="hidden" name="client_id" value="{{ $clientId }}">
                                     <input type="hidden" name="month" value="{{ $month }}">
                                     
-                                    <button type="submit" class="action-btn" title="Marcar como enviado" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: transparent; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; cursor: pointer; color: var(--accent);">
+                                    <button type="submit" class="action-btn" title="Marcar como enviado" style="width: 32px; height: 32px; display: inline-flex; align-items: center; justify-content: center; background: transparent; border: 1px solid var(--border); border-radius: 6px; transition: all 0.2s; cursor: pointer; color: var(--accent);">
                                         <i class="fa-solid fa-check" style="font-size: 14px;"></i>
                                     </button>
                                 </form>
                             @else
-                                <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
-                                    <span class="badge badge-success" style="font-size: 8px; padding: 2px 6px; text-transform: uppercase;">OK</span>
+                                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+                                    <span class="badge badge-success" style="font-size: 8px; padding: 2px 8px; text-transform: uppercase;">OK</span>
                                     <form action="{{ route('renewal-planner.destroy') }}" method="POST" onsubmit="return confirm('¿Revertir estado a pendiente?')">
                                         @csrf
                                         @method('DELETE')
@@ -189,6 +189,7 @@
                                 </div>
                             @endif
                         </td>
+                    </tr>
                     </tr>
                 @empty
                     <tr>
