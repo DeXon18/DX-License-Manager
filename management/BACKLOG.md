@@ -31,6 +31,15 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Optimización: Salto de Auditoría IA para Temporales ✅
+- **Completada:** 2026-05-14
+- **Rama:** fix/skip-ai-audit-temporary-licenses
+- **Resumen:** Eliminación del consumo innecesario de tokens de IA para licencias temporales de 7 días. El sistema ahora detecta automáticamente estas licencias en NX, Star-CCM+ y HEEDS, marcándolas como `skipped` sin realizar llamadas externas.
+- [x] Backend: Modificación de `AuditService` para interceptar peticiones temporales.
+- [x] Controladores: Actualización de `NXSuiteController`, `StarCcmController` y `HeedsController` con detección de tipo.
+- [x] Trazabilidad: Registro en BD con estado `skipped` y mensaje informativo para el usuario.
+- [x] Verificación: Validación de sintaxis y logs mediante SSH/Docker en el servidor.
+
 ### Optimización Visual Dashboard ✅
 - **Completada:** 2026-05-14
 - **Rama:** feature/dashboard-ui-optimization
