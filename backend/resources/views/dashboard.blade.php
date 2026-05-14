@@ -9,7 +9,7 @@
 </div>
 
 <div class="stats-row">
-    <div class="stat-card">
+    <div class="stat-card accent">
         <span class="stat-label">Licencias Activas</span>
         <span class="stat-value accent">{{ number_format($metrics['total']) }}</span>
         <span class="stat-meta">Inventario Total Audidato</span>
@@ -24,9 +24,9 @@
         <span class="stat-value warn">{{ number_format($metrics['upcoming']) }}</span>
         <span class="stat-meta">Vencimiento en 8–30 días</span>
     </div>
-    <div class="stat-card" style="border-bottom-color: var(--accent);">
+    <div class="stat-card accent">
         <span class="stat-label">En Seguimiento</span>
-        <span class="stat-value" style="color: var(--accent);">{{ number_format($metrics['monitoring']) }}</span>
+        <span class="stat-value accent">{{ number_format($metrics['monitoring']) }}</span>
         <span class="stat-meta">Vencimiento en 31–90 días</span>
     </div>
 </div>
