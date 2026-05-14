@@ -1,6 +1,16 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-14 15:15] — Optimización: Salto de Auditoría IA para Temporales ✅
+
+### Added
+- **Ahorro de Tokens**: Implementada lógica de cortocircuito en `AuditService` para evitar llamadas a n8n/IA en licencias temporales de 7 días (aquellas con "YourHostname" o "ANY").
+- **Trazabilidad Silenciosa**: Las auditorías saltadas se registran en la base de datos con estado `skipped`, manteniendo el historial de archivos originales sin incurrir en costes de procesamiento pesado.
+
+### Changed
+- **Tool Controllers**: Actualizados `NXSuiteController`, `StarCcmController` y `HeedsController` para realizar la detección de tipo de licencia antes de invocar el motor de auditoría.
+- **UI Feedback**: El historial de auditorías ahora muestra "SKIPPED" para las licencias temporales procesadas, indicando que el archivo es válido pero no requiere auditoría profunda.
+
 ## [2026-05-14 12:35] — Dashboard: Rediseño NOC Pro y Estética Premium ✅
 
 ### Added
