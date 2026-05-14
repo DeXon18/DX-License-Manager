@@ -96,6 +96,16 @@
                         </span>
                     </label>
                 @endforeach
+
+                @if(count($selectedStatuses) > 0)
+                    <a href="{{ route('renewal-planner.index', ['month' => $month]) }}" 
+                       style="font-size: 9px; font-weight: 800; color: var(--danger); text-decoration: none; padding: 4px 10px; border: 1px solid var(--danger-border); border-radius: 20px; background: var(--danger-bg); transition: all 0.2s; display: flex; align-items: center; gap: 5px; margin-left: 10px;"
+                       onmouseover="this.style.background='var(--danger)'; this.style.color='white'"
+                       onmouseout="this.style.background='var(--danger-bg)'; this.style.color='var(--danger)'">
+                        <i class="fa-solid fa-trash-can"></i>
+                        LIMPIAR
+                    </a>
+                @endif
             </form>
         </div>
 
