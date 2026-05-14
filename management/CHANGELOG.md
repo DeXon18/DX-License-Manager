@@ -1,5 +1,14 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
+
+## [2026-05-14 12:35] — Dashboard: Rediseño NOC Pro y Estética Premium ✅
+
+### Added / Changed
+- **Premium Metric Cards**: Rediseño de las tarjetas del Dashboard con línea de acento superior (pseudo-elemento ::before) unificado con el Hub de Herramientas.
+- **Background NOC Icons**: Integración de iconos Lucide SVG en el fondo de las tarjetas con opacidad 0.08 y rotación dinámica para mejorar la estética profesional.
+- **Brand Consistency**: Cambio de color semántico de "Licencias Activas" a verde (`success`) para alineación visual con el estado positivo del inventario.
+- **Hover UX**: Añadido efecto de elevación (box-shadow) y resalte de acento al pasar el ratón.
+
 ## [2026-05-14 11:15] — Planificador: Optimización NOC Pro e Identidad ✅
 
 ### Added
