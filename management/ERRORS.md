@@ -8,7 +8,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | Críticos (P1) | Importantes (P2) | Menores (P3) | Resueltos |
 | :--- | :--- | :--- | :--- |
-| 1 | 3 | 4 | 0 |
+| 1 | 4 | 4 | 0 |
 
 ---
 
@@ -16,6 +16,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | ID | Incidencia | Módulo | Prio | Estado | Fecha Detect. |
 | :--- | :--- | :--- | :--- | :--- | :--- |
+| #010 | Indicadores de Seguridad siempre a 0 | Dashboard | P2 | 🆕 Nuevo | 2026-05-14 |
 | #009 | Limpieza de archivos basura y registros huérfanos | Sistema | P3 | 🆕 Nuevo | 2026-05-14 |
 | #008 | Unificación de estilos CSS en archivo central | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
 | #007 | Fallo en Normalización / Duplicidad de Clientes | Normalización | P2 | 🆕 Nuevo | 2026-05-14 |
@@ -25,6 +26,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 | #003 | Filtro "Solo con Licencias" limitado a Siemens | Clientes | P2 | 🆕 Nuevo | 2026-05-14 |
 | #002 | Error de sintaxis y CRLF en backup-db.sh | Infra/Scripts | P1 | 🆕 Nuevo | 2026-05-14 |
 | #001 | [Ejemplo] Error de contraste en modo claro | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
+
 
 
 
@@ -99,6 +101,15 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
   - Realizar una auditoría de directorios (scripts, tmp, etc.).
   - Verificar registros huérfanos en tablas de inventario y auditoría.
   - Ejecutar limpieza controlada.
+
+### #010 — Indicadores de Seguridad siempre a 0
+- **Síntoma**: Los contadores de "Errores Críticos", "Logins Fallidos" y "JWT Blacklist" en el Dashboard principal siempre muestran valor 0, incluso tras forzar eventos de prueba.
+- **Causa probable**: El `DashboardController` no está consultando correctamente las tablas de `audit_log`, logs de autenticación o el estado de Redis para el TTL de los tokens.
+- **Impacto**: Falsa sensación de seguridad o ceguera ante ataques/errores reales.
+- **Acción**: 
+  - Revisar métodos de conteo en el controlador del Dashboard.
+  - Verificar que los eventos de seguridad se están registrando en la base de datos/Redis.
+  - Asegurar que el rango de tiempo (24h) está correctamente implementado.
 
 ---
 
