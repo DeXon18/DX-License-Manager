@@ -24,6 +24,7 @@
         <button class="tab-link" :class="{ 'active': tab === 'licenses' }" @click="setTab('licenses')">Licencias</button>
         <button class="tab-link" :class="{ 'active': tab === 'contacts' }" @click="setTab('contacts')">Contactos</button>
         <button class="tab-link" :class="{ 'active': tab === 'certificates' }" @click="setTab('certificates')">Certificados</button>
+        <button class="tab-link" :class="{ 'active': tab === 'renewals' }" @click="setTab('renewals')">Renovaciones</button>
     </div>
 
     <!-- Contratos Tab -->
@@ -413,6 +414,52 @@
                     <tr>
                         <td colspan="5" class="text-center py-12 muted">
                             No hay contactos registrados para este cliente.
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Renovaciones Tab (Fase 14) -->
+    <div x-show="tab === 'renewals'" class="tab-content" style="display: none;">
+        <div class="card p-0">
+            <div class="card-header flex justify-between items-center px-5 py-4">
+                <h3 class="text-sm font-bold uppercase tracking-wider">Historial de Renovaciones Mensuales</h3>
+            </div>
+            <table class="table text-sm">
+                <thead>
+                    <tr>
+                        <th>Mes / Ciclo</th>
+                        <th>Fecha de Envío</th>
+                        <th>Responsable</th>
+                        <th class="text-right">Notas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($client->renewalLogs()->orderBy('year', 'desc')->orderBy('month', 'desc')->get() as $log)
+                    <tr>
+                        <td class="font-bold">
+                            {{ Carbon\Carbon::create(2024, $log->month, 1)->translatedFormat('F') }} {{ $log->year }}
+                        </td>
+                        <td class="muted">{{ $log->sent_at ? $log->sent_at->format('d/m/Y H:i') : '—' }}</td>
+                        <td>
+                            <div class="flex items-center gap-2">
+                                <div class="avatar-xs" style="width: 20px; height: 20px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700;">
+                                    {{ substr($log->user->name ?? 'U', 0, 1) }}
+                                </div>
+                                <span>{{ $log->user->name ?? 'Sistema' }}</span>
+                            </div>
+                        </td>
+                        <td class="text-right">
+                            <span class="muted text-xs">{{ $log->notes ?: '—' }}</span>
+                        </td>
+                    </tr>
+@empty
+                    <tr>
+                        <td colspan="4" class="text-center py-12 muted">
+                            No se han registrado renovaciones enviadas para este cliente.
                         </td>
                     </tr>
                     @endforelse
