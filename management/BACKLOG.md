@@ -31,6 +31,22 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Error Tracking — Sistema de Seguimiento de Incidencias ✅
+- **Completada:** 2026-05-14
+- **Rama:** chore/error-tracking
+- **Resumen:** Creación del archivo `management/ERRORS.md` con estética industrial para el registro y triaje de errores detectados por el desarrollador.
+- [x] Gestión: Creación de `ERRORS.md` con tabla de incidencias y protocolo de resolución.
+- [x] Workflow: Implementación de la rama de mantenimiento.
+
+### Soporte Multi-Sold-To (Licencias Unificadas) ✅
+- **Completada:** 2026-05-14
+- **Rama:** feature/multi-sold-to
+- **Resumen:** Implementación del soporte para licencias Siemens que contienen múltiples IDs de cliente (Sold-To). Incluye auto-mapeo en el inventario y rediseño visual de badges industriales.
+- [x] Base de Datos: Columna `additional_sold_tos` (JSON) en `license_inventory_daemons`.
+- [x] Backend: Lógica de auto-mapeo en `AuditService` y `InventorySyncService`.
+- [x] UI: Rediseño de badges `fa-link` con alta densidad técnica.
+- [x] n8n: Actualización del motor de extracción IA.
+
 ### Optimización: Salto de Auditoría IA para Temporales ✅
 - **Completada:** 2026-05-14
 - **Rama:** fix/skip-ai-audit-temporary-licenses

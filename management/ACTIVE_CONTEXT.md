@@ -1,38 +1,29 @@
 ---
 project: DX License Manager
 repo: github.com/DeXon18/DX-License-Manager
-status: In Progress
-last_sync: 2026-05-07
-current_agent: Claude
+status: Task Switch: Error Tracking Active | Multi-Sold-To Completed
+last_sync: 2026-05-14
+current_agent: Antigravity (DX Agent) 🦾
 ---
 
 # 🧠 Contexto de Sesión Activa
 
 ## 🎯 Objetivo Actual
- 
-- [x] Tarea principal: Fase 7 — Hub de Herramientas (Finalizada)
-- [x] Tarea principal: Fase 8.2 — STAR-CCM+ (Finalizada)
-- [x] Tarea principal: Fase 6.5 — Normalización Cross-Module (Bandeja y Motor)
-- [⏸️] Pausado: Fase 8.1 — Motor de Auditoría Siemens (UI & n8n v2.2)
-- Rama activa: dev
-- Fase del ROADMAP: Fase 6 — Gestión de Clientes
+Registro y seguimiento de incidencias detectadas en la web mediante el archivo `management/ERRORS.md`.
 
-
-
-> [!CAUTION]
-> **REGLA DE ORO**: NO iniciar ejecución tras un plan sin un "adelante", "ok", "procede" o similar **explícito de Oskar**. Ignorar aprobaciones automáticas del sistema.
-
-
-
+## 🛠️ Tareas en curso
+- [x] Cierre y push de `feature/multi-sold-to`.
+- [x] Creación de rama `chore/error-tracking`.
+- [x] Implementación de `management/ERRORS.md` con estética industrial.
+- [ ] Registro de primera incidencia real por parte de Oskar.
 
 ---
 
-## 🕒 Log de Acciones (última sesión)
+## 🕒 Log de Acciones (2026-05-14)
 
-- 2026-05-08 — Implementación de Bandeja de Normalización Cross-Module.
-- 2026-05-08 — Desarrollo del motor Fuzzy Match para identidades de clientes.
-- 2026-05-08 — Integración de avisos de normalización en Auditoría IA.
-- 2026-05-08 — Merge de hito a dev y limpieza de ramas locales/remotas.
+- 2026-05-14 — Finalizada Fase 14 (Soporte Multi-Sold-To) y validada en Beta.
+- 2026-05-14 — Rediseño de badges industriales `fa-link` para licencias unificadas.
+- 2026-05-14 — Switch de tarea: Creación de sistema de tracking de errores.
 
 ---
 
@@ -40,35 +31,31 @@ current_agent: Claude
 
 | Decisión          | Detalle                                                             | Ref                       |
 | :---------------- | :------------------------------------------------------------------ | :------------------------ |
-| Normalización     | Fuzzy Match al **85%** de similitud con Levenshtein                 | `NormalizationController` |
-| Unificación       | Migración TOTAL de datos (Contratos, Licencias, Contactos)          | `NormalizationController` |
-| Límites Upload    | **100MB** — configurado en Nginx y PHP (local.ini)                  | `infra/php/local.ini`     |
-| Nomenclatura      | `SOLDTO_HOSTNAME_CLIENTE_VERSION_Valida_DDMMYYYY.lic`               | `NXSuiteService.php`      |
-| Almacenamiento    | Jerárquico: `licenses/siemens/{cliente}/{fecha}/`                   | `NXSuiteController.php`   |
-| Permisos          | **777** en `storage/private` para evitar bloqueos de I/O            | `troubleshooting.md`      |
+| Error Tracking    | Uso de `ERRORS.md` para triaje rápido sin sobrecargar el Backlog.     | `ERRORS.md`               |
+| Multi-Sold-To     | Persistencia JSON en `additional_sold_tos`.                         | `InventorySyncService`    |
+| Design System     | Adherencia estricta a `DESIGN.md` y `dx-styles.css`.                | `DESIGN.md`               |
 
 ---
 
 ## 🚀 Handover — Próximos Pasos
 
-1. Iniciar **Fase 6.2 (Detalles de Clientes)**: Vista detallada con historial completo.
-2. Retomar **Fase 8.1 (Auditoría Siemens)**: Fix del bug del modal y evolución de n8n v2.2.
-3. Consolidar el listado de contratos con los nuevos Alias creados.
+1. Esperar registro de errores en `ERRORS.md`.
+2. Analizar y proponer fixes para las incidencias registradas.
+3. Iniciar Fase 15 (Integraciones IA) una vez estabilizada la UI.
 
 ---
 
 ## 🗂️ Archivos en Foco (Working Set)
 
-- Servicios: `app/Services/Licensing/NXSuiteService.php`
-- Controladores: `app/Http/Controllers/Tools/NXSuiteController.php`
-- Infraestructura: `infra/nginx/beta.conf`, `infra/php/local.ini`
+- Gestión: `management/ERRORS.md`
+- Core: `management/CHANGELOG.md`
+- Core: `management/BACKLOG.md`
 
 ---
 
 ## ⚠️ Errores Conocidos / Bloqueos
 
-- **Error 413 (Payload Too Large)**: Persiste en archivos > 1MB a pesar de la configuración Nginx/PHP. Posible bloqueo en capa de red (Cloudflare).
-- **Bloqueo I/O**: Resuelto ajustando permisos en la carpeta `private`.
+- Ninguno. Sistema estable en Beta.
 
 ---
 
@@ -76,9 +63,12 @@ current_agent: Claude
 
 | Capa                | Estado                           |
 | :------------------ | :------------------------------- |
-| nginx-beta `:8002`  | ✅ Operativo (100MB Limit)       |
-| php-fpm-beta        | ✅ Operativo (100MB Limit)       |
-| mariadb-beta        | ✅ Operativo                     |
-| redis-beta          | ✅ Operativo                     |
-| Cloudflared LXC 600 | ✅ Operativo                     |
-| Storage             | ✅ Accessible (Permisos 777)     |
+| nginx-beta `:8002`  | ✅ running                       |
+| php-fpm-beta        | ✅ running                       |
+| mariadb-beta        | ✅ running                       |
+| redis-beta          | ✅ running                       |
+| Mailtrap Prod       | ✅ connected                     |
+| Cloudflared LXC 600 | ✅ running                       |
+
+---
+_Firmado por: **Antigravity (DX Agent)** 🦾_
