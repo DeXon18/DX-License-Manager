@@ -58,6 +58,7 @@ class HeedsController extends Controller
 
         // 1. Extraer metadatos
         $metadata = $this->heedsService->extractMetadata($content);
+        $isTemporal = ($metadata['type'] === 'Temporal');
 
         // 2. Auditoría IA (Principio Solo Log)
         $cleanContent = $this->parserService->clean($content);
@@ -67,11 +68,11 @@ class HeedsController extends Controller
             auth()->id(),
             $cleanContent,
             $detectedHostIds,
-            'siemens' // Vendor Siemens para HEEDS
+            'siemens', // Vendor Siemens para HEEDS
+            $isTemporal
         );
 
         // 3. Transformación (SALT 29000)
-        $isTemporal = ($metadata['type'] === 'Temporal');
         $transformedContent = $this->heedsService->transform($content, $isTemporal);
 
         // 4. Generar nombre de archivo
