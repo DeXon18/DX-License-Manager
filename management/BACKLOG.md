@@ -31,6 +31,15 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Optimización Visual Dashboard ✅
+- **Completada:** 2026-05-14
+- **Rama:** feature/dashboard-ui-optimization
+- **Resumen:** Transformación de las tarjetas de métricas del Dashboard a estilo premium (línea de acento superior de 3px), unificación de colores corporativos (verde para activas) e integración de iconos de fondo NOC Pro (Lucide SVGs).
+- [x] UI: Implementación de pseudo-elementos `::before` para líneas de acento.
+- [x] Identidad: Cambio de color de "Licencias Activas" a verde (`success`).
+- [x] Estética: Integración de iconos de fondo con opacidad `0.08` y rotación `-15deg`.
+- [x] UX: Sombreado dinámico en hover y unificación de `border-radius`.
+
 ### Fase 14 — Planificador de Renovaciones (Motor & UI) ✅
 - **Completada:** 2026-05-14
 - **Rama:** feature/renewal-planner

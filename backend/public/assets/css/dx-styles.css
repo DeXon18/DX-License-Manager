@@ -431,16 +431,28 @@ footer {
 .welcome-sub  { font-size:13px; color:var(--muted); }
 .stats-row    { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:24px; }
 .stat-card {
-  background:var(--surface); border:1px solid var(--border); border-radius:8px;
-  padding:18px 20px; display:flex; flex-direction:column; gap:6px; transition:background 0.2s,border-color 0.2s;
+  background:var(--surface); border:1px solid var(--border); border-radius:10px;
+  padding:18px 20px; display:flex; flex-direction:column; gap:6px; 
+  transition:background 0.2s,border-color 0.2s,box-shadow 0.2s;
+  position: relative; overflow: hidden;
 }
-.stat-card.danger { border-color:var(--danger-border); }
-.stat-card.warn   { border-color:var(--warn-border); }
+.stat-card::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+  background:var(--card-accent,var(--border)); opacity:0.4; transition:opacity 0.15s;
+}
+.stat-card:hover { border-color:var(--border); box-shadow:0 4px 15px rgba(0,0,0,0.08); }
+.stat-card:hover::before { opacity:1; }
+
+.stat-card.danger { --card-accent: var(--danger); }
+.stat-card.warn   { --card-accent: var(--warning); }
+.stat-card.accent { --card-accent: var(--accent); }
+.stat-card.success { --card-accent: var(--success); }
 .stat-label  { font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); font-weight:500; }
 .stat-value  { font-family:'IBM Plex Mono',monospace; font-size:28px; font-weight:500; line-height:1; }
 .stat-value.danger { color:var(--danger); }
 .stat-value.warn   { color:var(--warning); }
 .stat-value.accent { color:var(--accent); }
+.stat-value.success { color:var(--success); }
 .stat-meta   { font-size:12px; color:var(--muted); }
 .grid-2      { display:grid; grid-template-columns:1fr 320px; gap:16px; }
 .quick-actions { padding:14px; display:grid; grid-template-columns:1fr 1fr; gap:8px; }
