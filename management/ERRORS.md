@@ -8,7 +8,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | Críticos (P1) | Importantes (P2) | Menores (P3) | Resueltos |
 | :--- | :--- | :--- | :--- |
-| 1 | 3 | 2 | 0 |
+| 1 | 3 | 3 | 0 |
 
 ---
 
@@ -16,6 +16,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | ID | Incidencia | Módulo | Prio | Estado | Fecha Detect. |
 | :--- | :--- | :--- | :--- | :--- | :--- |
+| #008 | Unificación de estilos CSS en archivo central | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
 | #007 | Fallo en Normalización / Duplicidad de Clientes | Normalización | P2 | 🆕 Nuevo | 2026-05-14 |
 | #006 | Acciones rápidas sin vínculos / Estáticas | Dashboard | P3 | 🆕 Nuevo | 2026-05-14 |
 | #005 | Mejora en Lector de Logs (laravel.log) | Admin/Logs | P2 | 🆕 Nuevo | 2026-05-14 |
@@ -23,6 +24,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 | #003 | Filtro "Solo con Licencias" limitado a Siemens | Clientes | P2 | 🆕 Nuevo | 2026-05-14 |
 | #002 | Error de sintaxis y CRLF en backup-db.sh | Infra/Scripts | P1 | 🆕 Nuevo | 2026-05-14 |
 | #001 | [Ejemplo] Error de contraste en modo claro | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
+
 
 
 
@@ -80,6 +82,12 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
   - Estudiar integración con IA (Gemini/DeepSeek) para una identificación semántica de clientes.
   - Revisar comportamiento de la bandeja de normalización.
   - Ajustar lógica de `ClientNormalizationService`.
+
+### #008 — Unificación de estilos CSS en archivo central
+- **Síntoma**: Existen estilos dispersos en archivos Blade o archivos CSS secundarios que dificultan el mantenimiento global.
+- **Causa probable**: Crecimiento orgánico del proyecto y personalizaciones ad-hoc en vistas específicas.
+- **Impacto**: Mayor dificultad para aplicar cambios de diseño globales y riesgo de inconsistencias visuales.
+- **Acción**: Migrar todos los estilos inline y CSS secundarios a `public/css/dx-styles.css` (o un sistema de importaciones ordenado) para centralizar la identidad visual.
 
 ---
 
