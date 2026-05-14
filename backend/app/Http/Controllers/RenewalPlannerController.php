@@ -14,14 +14,17 @@ class RenewalPlannerController extends Controller
     public function index(Request $request)
     {
         $month = $request->get('month', now()->month);
+        $selectedStatuses = $request->get('statuses', []);
         $year = now()->year;
 
-        // Buscamos contratos cuyo end_date sea en el mes seleccionado (cualquier año)
-        // Agrupamos por cliente para que sea una lista de tareas por cliente
-        $pendingRenewals = Contract::with(['client.contacts', 'client.inventoryDaemons'])
-            ->whereMonth('end_date', $month)
-            ->get()
-            ->groupBy('client_id');
+        $query = Contract::with(['client.contacts', 'client.inventoryDaemons'])
+            ->whereMonth('end_date', $month);
+
+        if (!empty($selectedStatuses)) {
+            $query->whereIn('status', $selectedStatuses);
+        }
+
+        $pendingRenewals = $query->get()->groupBy('client_id');
 
         // Obtener logs de este mes/año para saber quién está completado
         $completedLogs = RenewalLog::where('month', $month)
@@ -29,7 +32,14 @@ class RenewalPlannerController extends Controller
             ->pluck('client_id')
             ->toArray();
 
-        return view('renewal-planner.index', compact('pendingRenewals', 'completedLogs', 'month'));
+        // Lista de estados para el filtro
+        $availableStatuses = Contract::whereNotNull('status')
+            ->distinct()
+            ->pluck('status')
+            ->sort()
+            ->values();
+
+        return view('renewal-planner.index', compact('pendingRenewals', 'completedLogs', 'month', 'availableStatuses', 'selectedStatuses'));
     }
 
     public function store(Request $request)
