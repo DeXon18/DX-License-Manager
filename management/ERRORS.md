@@ -8,7 +8,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | Críticos (P1) | Importantes (P2) | Menores (P3) | Resueltos |
 | :--- | :--- | :--- | :--- |
-| 0 | 2 | 4 | 9 |
+| 0 | 2 | 3 | 10 |
 
 ---
 
@@ -20,7 +20,6 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 |---:|---|---|:---:|:---:|:---:|
 | #007 | Fallo en normalización / duplicidad de clientes | Normalización | 🟠 P2 | 🆕 Nuevo | 2026-05-14 |
 | #003 | Filtro "Solo con Licencias" limitado a Siemens | Clientes | 🟠 P2 | 🆕 Nuevo | 2026-05-14 |
-| #009 | Limpieza de archivos basura y registros huérfanos | Sistema | 🟢 P3 | 🆕 Nuevo | 2026-05-14 |
 | #008 | Unificación de estilos CSS en archivo central | UI/UX | 🟢 P3 | 🆕 Nuevo | 2026-05-14 |
 | #004 | Revisar visualización de "Other Installs" | UI/UX | 🟢 P3 | 🆕 Nuevo | 2026-05-14 |
 
@@ -28,6 +27,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | ID | Incidencia | Módulo | Prioridad | Estado | Fecha detección | Fecha resolución |
 |---:|---|---|:---:|:---:|:---:|:---:|
+| #009 | Limpieza de archivos basura y registros huérfanos | Sistema | 🟢 P3 | ✅ Resuelto | 2026-05-14 | 2026-05-15 |
 | #006 | Acciones rápidas sin vínculos / estáticas | Dashboard | 🟢 P3 | ✅ Resuelto | 2026-05-14 | 2026-05-15 |
 | #013 | Invisibilidad de licencias Moldex3D en inventario | Inventario | 🔴 P1 | ✅ Resuelto | 2026-05-15 | 2026-05-15 |
 | #014 | Expiración prematura de sesión JWT | Auth/JWT | 🟠 P2 | ✅ Resuelto | 2026-05-15 | 2026-05-15 |
@@ -134,9 +134,10 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 - **Causa probable**: Acumulación por pruebas de desarrollo, migraciones incompletas o falta de una política de purga automática.
 - **Impacto**: Desorden en el sistema de archivos y posible degradación ligera del rendimiento de la base de datos.
 - **Acción**: 
-  - Realizar una auditoría de directorios (scripts, tmp, etc.).
-  - Verificar registros huérfanos en tablas de inventario y auditoría.
-  - Ejecutar limpieza controlada.
+  - Eliminada carpeta redundante `./storage` de la raíz y migrados datos a `backend/storage/app` para cumplir el estándar Laravel.
+  - Borrados archivos `.sql` y trazas de log antiguas.
+  - Configurado Git para ignorar el estado "dirty" de los submódulos de diseño/skills.
+- **Resolución**: ✅ Resuelto el 2026-05-15. Sistema de archivos normalizado y libre de residuos.
 
 ### #010 — Indicadores de Seguridad siempre a 0
 - **Síntoma**: Los contadores de "Errores Críticos", "Logins Fallidos" y "JWT Blacklist" en el Dashboard principal siempre muestran valor 0, incluso tras forzar eventos de prueba.
