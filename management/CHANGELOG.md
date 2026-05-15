@@ -1,6 +1,14 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-15 09:35] — Diagnóstico: Lector de Logs Profesional (Fix #005) ✅
+
+### Added
+- **Parser de Logs**: Nuevo motor de análisis Regex para estructurar `laravel.log` en entradas legibles con timestamp y nivel de severidad.
+- **UI Interactiva**: Implementado sistema de **Stack Traces colapsables** con Alpine.js en la pestaña de logs de sistema.
+- **Filtrado de Ruido**: Resaltado visual diferenciado para código de proyecto vs librerías `vendor`.
+- **Telemetría Unificada**: El contador de alertas del Dashboard ahora sincroniza en tiempo real los errores de la DB con los incidentes registrados en el fichero físico de logs.
+
 ## [2026-05-15 09:20] — Seguridad: Dashboard Telemetría & Blacklist (Fix #010) ✅
 
 ### Fixed

@@ -23,7 +23,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 | #008 | Unificación de estilos CSS en archivo central | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
 | #007 | Fallo en Normalización / Duplicidad de Clientes | Normalización | P2 | 🆕 Nuevo | 2026-05-14 |
 | #006 | Acciones rápidas sin vínculos / Estáticas | Dashboard | P3 | 🆕 Nuevo | 2026-05-14 |
-| #005 | Mejora en Lector de Logs (laravel.log) | Admin/Logs | P2 | 🆕 Nuevo | 2026-05-14 |
+| #005 | Mejora en Lector de Logs (laravel.log) | Admin/Logs | P2 | ✅ Resuelto | 2026-05-15 |
 | #004 | Revisar visualización de "Other Installs" | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
 | #003 | Filtro "Solo con Licencias" limitado a Siemens | Clientes | P2 | 🆕 Nuevo | 2026-05-14 |
 | #002 | Error de sintaxis y CRLF en backup-db.sh | Infra/Scripts | P1 | ✅ Resuelto | 2026-05-14 |
@@ -82,12 +82,12 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 ### #005 — Mejora en Lector de Logs (laravel.log)
 - **Síntoma**: El lector de logs del sistema (`admin/audit?tab=system`) muestra trazas completas ilegibles y no parece estar capturando alertas correctamente (contador en 0).
-- **Causa probable**: El parser de `AuditLogController` o el servicio correspondiente no está filtrando las líneas de stack trace de Laravel y solo muestra el texto plano.
-- **Impacto**: Dificultad para el diagnóstico técnico desde la UI.
+- **Causa probable**: El parser de `AuditLogController` solo mostraba texto plano sin estructurar.
 - **Acción**: 
-  - Pulir la visualización eliminando líneas de `#0 /var/www/...` que no aportan valor visual.
-  - Implementar un sistema de "colapsado" de trazas.
-  - Verificar por qué el contador de alertas no se sincroniza con el archivo físico.
+  - Implementado parser Regex en backend para estructurar logs.
+  - Implementada UI interactiva con Alpine.js (Trazas colapsables).
+  - Sincronizado contador de alertas unificando DB + Fichero físico.
+- **Resolución**: ✅ Resuelto el 2026-05-15. Diagnóstico de sistema profesionalizado.
 
 ### #006 — Acciones rápidas sin vínculos / Estáticas
 - **Síntoma**: Los botones del panel de "Acciones Rápidas" en el Dashboard no redirigen a ninguna parte o carecen de lógica funcional dinámica.
