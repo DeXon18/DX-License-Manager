@@ -116,13 +116,13 @@ class AuditLogController extends Controller
         return back()->with('tab', 'system')->with('error', 'No se encontró el fichero de log.');
     }
 
-    private function logAction($action, $description)
+    private function logAction($action, $description, $level = 'warning')
     {
         DB::table('audit_logs')->insert([
             'user_id' => auth()->id(),
             'action' => $action,
             'description' => $description,
-            'level' => 'warning',
+            'level' => $level,
             'ip_address' => request()->ip(),
             'user_agent' => request()->userAgent(),
             'created_at' => now()

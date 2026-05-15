@@ -1,14 +1,14 @@
 # HANDOFF — DX License Manager
 > Última actualización: 2026-05-15 08:50  
 > Sesión en: PC Desarrollo  
-> Rama activa: dev
-> Estado Git: Infraestructura securizada, rama fix/redis-persistence-error integrada y purgada.
+> Rama activa: fix/security-indicators-dashboard
+> Estado Git: Dashboard de seguridad restaurado y telemetría operativa.
 
 ---
 
 ## Estado General
 
-**Fase actual:** Fase 15.2 — Infraestructura y Resiliencia  
+**Fase actual:** Fase 15.3 — Seguridad y Telemetría  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -16,11 +16,13 @@
 
 ## Qué se hizo en esta sesión
 
-- **Resolución #012 (P1)**: Hotfix de persistencia en Redis.
-  - Recuperado acceso SSH directo al nodo `.60` (srv-dxportal).
-  - Corregidos permisos de `/data` (`root` -> `redis`) en el contenedor Redis Beta.
-  - Securizada la configuración de volúmenes en `docker-compose.beta.yml` y `docker-compose.prod.yml` usando volúmenes nombrados.
-- **Resolución #011 (P1)**: Pipeline de herramientas estabilizado.
+- **Resolución #012 (P1)**: Hotfix de persistencia en Redis (Volúmenes nombrados).
+- **Resolución #010 (P2)**: Restauración de Telemetría de Seguridad.
+  - Implementado log de `login_failed` en `AuthController`.
+  - Implementada **Blacklist JWT** en Redis (ZSET) para invalidación de sesiones.
+  - Sincronizados niveles de severidad (`error`, `critical`) en el Dashboard NOC Pro.
+  - Corregido conteo de sesiones activas y bloqueos en el centro de mando.
+- **Resolución #011 (P1)**: Estabilización pipeline NX.
   - Corregido flujo de descarga AJAX en `NXSuiteController`.
   - Implementado blindaje de memoria (`256M`) y `try-catch` global con degradación elegante.
   - Optimización del `LicenseParserService` para archivos de gran tamaño (procesamiento línea a línea).
