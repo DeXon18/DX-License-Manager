@@ -70,15 +70,15 @@ class AuthController extends Controller
             ])->withInput();
         }
 
-        // Generate Token
+        // Generate Token (Default 15 min)
         $token = $this->jwtService->generate([
             'sub' => $user->id,
             'name' => $user->name,
             'role' => $user->role->slug ?? 'viewer',
         ]);
 
-        // Store in HttpOnly Cookie (60 minutes)
-        $cookie = Cookie::make('jwt_token', $token, 60, null, null, true, true, false, 'Strict');
+        // Store in HttpOnly Cookie (15 minutes)
+        $cookie = Cookie::make('jwt_token', $token, 15, null, null, true, true, false, 'Strict');
 
         return redirect()->intended('/')->withCookie($cookie);
     }

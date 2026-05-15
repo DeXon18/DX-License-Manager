@@ -30,11 +30,18 @@ class JwtAuth
         }
 
         // Check if token is blacklisted
-        if (\Illuminate\Support\Facades\Redis::zscore('jwt_blacklist', $token)) {
-            return redirect('/login')->withErrors(['session' => 'Sesión revocada. Por favor, inicie sesión de nuevo.']);
+        $graceTime = \Illuminate\Support\Facades\Redis::zscore('jwt_blacklist', $token);
+        
+        if ($graceTime) {
+            // Si el tiempo de gracia ya pasó, denegar
+            if ($graceTime < time()) {
+                return redirect('/login')->withErrors(['session' => 'Sesión revocada o expirada. Por favor, inicie sesión de nuevo.']);
+            }
+            // Si estamos en ventana de gracia (petición paralela), permitimos el paso sin rotar de nuevo
+            $decoded = $this->jwtService->decode($token);
+        } else {
+            $decoded = $this->jwtService->decode($token);
         }
-
-        $decoded = $this->jwtService->decode($token);
 
         if (!$decoded || !isset($decoded['sub'])) {
             return redirect('/login')->withErrors(['session' => 'Sesión inválida o expirada.']);
@@ -46,12 +53,29 @@ class JwtAuth
             return redirect('/login')->withErrors(['session' => 'Usuario no encontrado o inactivo.']);
         }
 
-        // Authenticate user for the current request
+        // Authenticate user
         Auth::login($user);
 
         // Track active user in Redis (15 min TTL)
         \Illuminate\Support\Facades\Redis::set("user:active:{$user->id}", now()->toIso8601String(), 'EX', 900);
 
-        return $next($request);
+        $response = $next($request);
+
+        // ATOMIC ROTATION: Generar nuevo token y actualizar cookie si no estamos en gracia
+        if (!$graceTime) {
+            $newToken = $this->jwtService->generate([
+                'sub' => $user->id,
+                'name' => $user->name,
+                'role' => $decoded['role'] ?? 'viewer',
+            ]);
+
+            // Blacklistar el viejo con ventana de 30s para peticiones concurrentes
+            \Illuminate\Support\Facades\Redis::zadd('jwt_blacklist', time() + 30, $token);
+
+            // Adjuntar nueva cookie (15 min)
+            $response->withCookie(cookie('jwt_token', $newToken, 15, null, null, true, true, false, 'Strict'));
+        }
+
+        return $response;
     }
 }
