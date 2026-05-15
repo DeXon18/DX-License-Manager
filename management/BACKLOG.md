@@ -35,7 +35,6 @@ El desarrollador inicia. El agente espera.
 - [ ] #007 (P2): Normalización Semántica (IA).
 - [x] #005 (P2): Lector de Logs (Legibilidad). ✅ (2026-05-15)
 - [x] #010 (P2): Indicadores de Seguridad Dashboard. ✅ (2026-05-15)
-- [ ] #013 (P1): Invisibilidad de Licencias Moldex3D (Sincronización). 🆕
 - [ ] #014 (P2): Expiración Prematura de Sesión JWT. 🆕
 - [ ] #009 (P3): Limpieza Global de Basura.
 - [ ] #008 (P3): Unificación CSS.
@@ -44,6 +43,13 @@ El desarrollador inicia. El agente espera.
 
 
 ## ✅ Completado
+
+### Resolución de Incidencia #013 — Sincronización Moldex3D ✅
+- **Completada:** 2026-05-15
+- **Rama:** feature/fix-client-license-filter
+- **Resumen:** Solucionada la invisibilidad de licencias Moldex3D integrando `ClientNormalizationService` para evitar bloqueos por nombres distintos y manejando correctamente los errores de sincronización en `MoldexController`.
+- **PR:** #013 — merged a dev
+
 
 ### Resolución de Incidencia #003 — Filtros Clientes (Siemens/Moldex) ✅
 - **Completada:** 2026-05-15
