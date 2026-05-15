@@ -8,6 +8,7 @@
 - **UI Interactiva**: Implementado sistema de **Stack Traces colapsables** con Alpine.js en la pestaña de logs de sistema.
 - **Filtrado de Ruido**: Resaltado visual diferenciado para código de proyecto vs librerías `vendor`.
 - **Telemetría Unificada**: El contador de alertas del Dashboard ahora sincroniza en tiempo real los errores de la DB con los incidentes registrados en el fichero físico de logs.
+- **Robustez Auditoría**: Implementado blindaje contra tablas inexistentes (`email_logs`) para evitar errores 500 en la gestión de logs de sistema.
 
 ## [2026-05-15 09:20] — Seguridad: Dashboard Telemetría & Blacklist (Fix #010) ✅
 
