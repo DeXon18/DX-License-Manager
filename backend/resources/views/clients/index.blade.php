@@ -113,6 +113,27 @@
                         border-color: var(--accent);
                         background: var(--bg);
                     }
+
+                    /* Vendor colors */
+                    :root {
+                        --siemens-muted: rgba(0, 153, 153, 0.1);
+                        --siemens-dark: #008080;
+                        --siemens-border: rgba(0, 153, 153, 0.2);
+                        
+                        --moldex-muted: rgba(237, 28, 36, 0.1);
+                        --moldex-dark: #C4121A;
+                        --moldex-border: rgba(237, 28, 36, 0.2);
+                    }
+
+                    [data-theme="dark"] {
+                        --siemens-muted: rgba(42, 161, 152, 0.1);
+                        --siemens-dark: #2AA198;
+                        --siemens-border: rgba(42, 161, 152, 0.3);
+
+                        --moldex-muted: rgba(224, 82, 82, 0.1);
+                        --moldex-dark: #E05252;
+                        --moldex-border: rgba(224, 82, 82, 0.3);
+                    }
                 </style>
             </div>
         </div>
@@ -145,13 +166,23 @@
                     </div>
                 </td>
                 <td class="text-center">
-                    @if($client->inventory_daemons_count > 0)
-                        <span class="badge badge-warning font-mono" style="padding: 2px 10px; font-weight: 700;">
-                            {{ $client->inventory_daemons_count }} <span style="font-size: 9px; opacity: 0.8; font-weight: 400; margin-left: 2px;">Sold-To</span>
-                        </span>
-                    @else
-                        <span class="muted text-xs">—</span>
-                    @endif
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+                        @if($client->siemens_daemons_count > 0)
+                            <span class="badge font-mono" style="background: var(--siemens-muted); color: var(--siemens-dark); border: 1px solid var(--siemens-border); padding: 2px 8px; font-weight: 700; width: 100px; display: flex; justify-content: space-between;">
+                                <span>{{ $client->siemens_daemons_count }}</span>
+                                <span style="font-size: 8px; opacity: 0.8; font-weight: 400;">Siemens</span>
+                            </span>
+                        @endif
+                        @if($client->moldex_daemons_count > 0)
+                            <span class="badge font-mono" style="background: var(--moldex-muted); color: var(--moldex-dark); border: 1px solid var(--moldex-border); padding: 2px 8px; font-weight: 700; width: 100px; display: flex; justify-content: space-between;">
+                                <span>{{ $client->moldex_daemons_count }}</span>
+                                <span style="font-size: 8px; opacity: 0.8; font-weight: 400;">Moldex3D</span>
+                            </span>
+                        @endif
+                        @if($client->inventory_daemons_count == 0)
+                            <span class="muted text-xs">—</span>
+                        @endif
+                    </div>
                 </td>
                 <td class="text-center font-mono body-sm">
                     {{ $client->contracts_count }}

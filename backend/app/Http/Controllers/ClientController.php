@@ -21,7 +21,16 @@ class ClientController extends Controller
 
         $hasInventory = session('client_has_inventory', false);
 
-        $clients = Client::withCount(['contracts', 'inventoryDaemons'])
+        $clients = Client::withCount([
+            'contracts',
+            'inventoryDaemons',
+            'inventoryDaemons as siemens_daemons_count' => function($query) {
+                $query->where('daemon', 'not like', '%moldex%');
+            },
+            'inventoryDaemons as moldex_daemons_count' => function($query) {
+                $query->where('daemon', 'like', '%moldex%');
+            }
+        ])
             ->when($request->search, function($query) use ($request) {
                 $search = $request->search;
                 $query->where(function($q) use ($search) {
