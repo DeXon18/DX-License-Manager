@@ -20,7 +20,26 @@
     </div>
 </div>
 
-<div class="grid-main" x-data="{ fileName: '', isDragging: false }">
+<div class="grid-main" x-data="{ 
+        fileName: '', 
+        isDragging: false,
+        errorMessage: '',
+        allowedExtensions: ['lic', 'txt', 'dat', 'cid'],
+        validateAndSubmit(e) {
+            const file = this.$refs.fileInput.files[0];
+            if (!file) return;
+            
+            const ext = file.name.split('.').pop().toLowerCase();
+            if (!this.allowedExtensions.includes(ext)) {
+                this.errorMessage = 'Extensión .' + ext + ' no permitida. Use .lic, .txt, .dat o .cid';
+                this.fileName = '';
+                this.$refs.fileInput.value = '';
+                setTimeout(() => { this.errorMessage = ''; }, 4000);
+                return;
+            }
+            this.$el.submit();
+        }
+    }">
     <div class="main-panel">
         <!-- Bloque 1: Carga -->
         <div class="card" style="margin-bottom: 24px;">
@@ -30,7 +49,16 @@
             </div>
             
             <div style="padding: 24px;">
-                <form action="{{ route('tools.star-ccm.process') }}" method="POST" enctype="multipart/form-data" id="star-form">
+                <!-- Error Message Alert -->
+                <template x-if="errorMessage">
+                    <div x-transition 
+                         style="margin-bottom: 16px; padding: 12px 16px; background: rgba(211, 47, 47, 0.1); border-left: 4px solid #D32F2F; color: #D32F2F; font-size: 13px; font-weight: 600; border-radius: 4px; display: flex; align-items: center; gap: 10px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <span x-text="errorMessage"></span>
+                    </div>
+                </template>
+
+                <form action="{{ route('tools.star-ccm.process') }}" method="POST" enctype="multipart/form-data" id="star-form" @submit.prevent="validateAndSubmit">
                     @csrf
                     
                     <div class="dropzone" 
@@ -38,7 +66,7 @@
                          :class="isDragging ? 'dragging theme-teal' : ''"
                          @dragover.prevent="isDragging = true"
                          @dragleave.prevent="isDragging = false"
-                         @drop.prevent="isDragging = false; $refs.fileInput.files = $event.dataTransfer.files; fileName = $refs.fileInput.files[0].name;"
+                         @drop.prevent="isDragging = false; $refs.fileInput.files = $event.dataTransfer.files; fileName = $refs.fileInput.files[0].name; validateAndSubmit();"
                          @click="$refs.fileInput.click()"
                          style="height: 160px; border-style: dashed; border-width: 1px; border-color: var(--border); border-radius: 4px; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; background: transparent;">
                         
