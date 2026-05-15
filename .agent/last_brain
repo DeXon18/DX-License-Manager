@@ -1,6 +1,6 @@
-Rama activa: feature/fix-client-license-filter. Fase 15.5 — Inventario Granular y UI. 
-Último trabajo: Implementado control segmentado de 4 estados (OFF/ALL/SIEMENS/MOLDEX) en Clientes index. Blade y Controller actualizados con lógica de persistencia en sesión. Rediseño premium de la barra de búsqueda (600px, glassmorphism, alineación derecha).
-Estado: Filtros funcionales y UI impecable. Persistencia verificada. Registrada Incidencia #013 (Moldex3D) e Incidencia #014 (Expiración JWT).
-Próximo paso inmediato: Investigar MoldexSyncService.php (#013) y JwtService.php (#014).
-Bloqueos: #013 y #014 bajo seguimiento.
+Rama activa: dev. Fase de Mantenimiento y Estabilización (Incidencias). 
+Último trabajo: Resuelta #013 (Invisibilidad de licencias Moldex3D). Se refactorizó MoldexSyncService.php para usar ClientNormalizationService, habilitando Alias y Fuzzy Matching. Control de errores (422) añadido en MoldexController.php. Branch de feature mergeada a dev y limpiada. Documentación (BACKLOG, CHANGELOG, HANDOFF, ERRORS) completamente actualizada.
+Estado: Sincronización Moldex3D 100% operativa (el registro 'Metalocaucho Mtc - A Wabtec Company' se generó exitosamente). Todo validado y mergeado.
+Próximo paso inmediato: Investigar Incidencia #014 — Expiración Prematura de Sesión JWT. Revisar JwtService.php y configuración TTL.
+Bloqueos: Ninguno.
 Stack beta: running. Stack prod: running.
