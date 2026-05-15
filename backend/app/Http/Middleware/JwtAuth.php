@@ -33,11 +33,15 @@ class JwtAuth
         $graceTime = \Illuminate\Support\Facades\Redis::zscore('jwt_blacklist', $token);
         
         if ($graceTime) {
-            // Si el tiempo de gracia ya pasó, denegar
             if ($graceTime < time()) {
+                \Illuminate\Support\Facades\Log::warning("JWT: Sesión revocada por gracia expirada", [
+                    'token_prefix' => substr($token, 0, 10),
+                    'grace_time' => $graceTime,
+                    'current_time' => time(),
+                    'diff' => time() - $graceTime
+                ]);
                 return redirect('/login')->withErrors(['session' => 'Sesión revocada o expirada. Por favor, inicie sesión de nuevo.']);
             }
-            // Si estamos en ventana de gracia (petición paralela), permitimos el paso sin rotar de nuevo
             $decoded = $this->jwtService->decode($token);
         } else {
             $decoded = $this->jwtService->decode($token);
@@ -61,19 +65,22 @@ class JwtAuth
 
         $response = $next($request);
 
-        // ATOMIC ROTATION: Generar nuevo token y actualizar cookie si no estamos en gracia
-        if (!$graceTime) {
+        // SMART ROTATION: Solo rotar si el token tiene más de 5 minutos (evitar spam de tokens)
+        $iat = $decoded['iat'] ?? 0;
+        $shouldRotate = (time() - $iat) > 300; // 5 minutos
+
+        if (!$graceTime && $shouldRotate) {
             $newToken = $this->jwtService->generate([
                 'sub' => $user->id,
                 'name' => $user->name,
                 'role' => $decoded['role'] ?? 'viewer',
             ]);
 
-            // Blacklistar el viejo con ventana de 30s para peticiones concurrentes
-            \Illuminate\Support\Facades\Redis::zadd('jwt_blacklist', time() + 30, $token);
+            // Blacklistar el viejo con ventana de 120s (más permisivo)
+            \Illuminate\Support\Facades\Redis::zadd('jwt_blacklist', time() + 120, $token);
 
-            // Adjuntar nueva cookie (15 min)
-            $response->withCookie(cookie('jwt_token', $newToken, 15, null, null, true, true, false, 'Strict'));
+            // Adjuntar nueva cookie (60 min ahora)
+            $response->withCookie(cookie('jwt_token', $newToken, 60, null, null, true, true, false, 'Strict'));
         }
 
         return $response;

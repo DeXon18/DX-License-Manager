@@ -23,7 +23,7 @@ class JwtService
      */
     public function generate(array $payload, ?int $expiration = null): string
     {
-        $expiration = $expiration ?? 15;
+        $expiration = $expiration ?? 60;
         $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
         
         $payload['exp'] = time() + ($expiration * 60);
