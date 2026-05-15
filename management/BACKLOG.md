@@ -43,6 +43,17 @@ El desarrollador inicia. El agente espera.
 
 
 ## ✅ Completado
+
+### Resolución de Incidencia #011 — Estabilización Global de Herramientas ✅
+- **Completada:** 2026-05-15
+- **Rama:** fix/nx-ui-validation
+- **Resumen:** Resolución integral de fallos en el pipeline de licencias Siemens y Moldex3D. Se ha implementado validación de extensiones en el cliente (Alpine.js), blindaje de memoria (256MB) y gestión de errores avanzada (try-catch) con degradación elegante para asegurar la descarga de archivos incluso ante fallos de servicios secundarios.
+- [x] UI: Validación Alpine.js en NX, StarCCM+, HEEDS y Moldex3D con mensajes de error temporales.
+- [x] Soporte: Ampliación de extensiones permitidas a `.dat` y `.cid` en todas las herramientas Siemens.
+- [x] Backend: Implementación de `ini_set('memory_limit', '256M')` y `try-catch` global en controladores.
+- [x] Robustez: Garantizada la descarga del archivo transformado aunque falle la auditoría IA o el almacenamiento.
+- [x] Parser: Optimización del `LicenseParserService` para procesar archivos grandes línea a línea.
+- [x] Regex: Soporte para múltiples daemons Siemens (`saltd`, `cdlmd`, `RCTECH`) en la extracción de metadatos.
  
 ### Soporte Multi-Sold-To (Licencias Unificadas) ✅
 - **Completada:** 2026-05-14
