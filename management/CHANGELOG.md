@@ -1,6 +1,13 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-15 08:45] — Infraestructura: Fix Redis Persistence (Fix #012) ✅
+
+### Fixed
+- **Redis (Infra)**: Resuelto fallo crítico `MISCONF` que bloqueaba escrituras en el portal.
+- **Persistencia**: Implementados **volúmenes nombrados** (`redis_beta_data`, `redis_prod_data`) en Docker Compose para asegurar que los permisos de `/data` sean gestionados correctamente por Docker y persistan tras reinicios.
+- **Hotfix**: Aplicada corrección de propiedad (`chown redis:redis`) en caliente para restaurar el servicio sin downtime.
+
 ## [2026-05-15 08:35] — Estabilización Global: Validación UI & Robustez Tools (Fix #011) ✅
 
 ### Added
