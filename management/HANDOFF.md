@@ -1,13 +1,13 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-15 13:55  
-> Sesión en: PC Desarrollo (srv-dxportal remote)  
+> Última actualización: 2026-05-15 14:20  
+> Sesión en: Antigravity Beta  
 > Rama activa: dev
 
 ---
 
 ## Estado General
 
-**Fase actual:** Mantenimiento y Estabilización (Incidencias)  
+**Fase actual:** Fase 15.5 — Inventario Granular y UI ✅  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,48 +15,40 @@
 
 ## Qué se hizo en esta sesión
 
-- **Estabilización JWT (#014)**:
-  - Implementada rotación inteligente (intervalo de 5 min) para evitar spam de tokens.
-  - Aumentada la ventana de gracia a 120s en Redis para manejar peticiones asíncronas y múltiples pestañas.
-  - Ampliado el tiempo de inactividad de la sesión a 60 minutos.
-  - Añadida telemetría de logs para detectar motivos de expulsión.
-- **Dashboard Operativo (#006)**:
-  - Implementado Buscador Global Express (Sold-To, Machine ID, Cliente).
-  - Vinculación de Acciones Rápidas (Favoritos) a herramientas reales.
-  - Implementado contador dinámico de renovaciones mensuales.
-- **Limpieza de Sistema (#009)**:
-  - Unificados volúmenes de storage en `backend/storage`.
-  - Eliminados residuos de DB y archivos `.sql` huérfanos.
-  - Configurado Git para ignorar dirty submodules de diseño/skills.
-- **Fixes de Base de Datos (#007)**:
-  - Parcheadas tablas `ai_audit_results` y `normalization_decisions` con columnas faltantes.
+1.  **Rediseño Multi-SoldTo (#004)**: 
+    *   Implementada marca de agua técnica (`fa-network-wired`) sutil (4%) en el fondo de las tarjetas de daemon.
+    *   Sustitución de badges intrusivos por una franja minimalista transparente.
+    *   Coloreado técnico de IDs en amarillo crema (`#fde68a`) para look industrial premium.
+2.  **Estabilización de Sesión (#014)**:
+    *   Implementada **Rotación Inteligente** de tokens JWT (cool-off de 5 min) para evitar colisiones en ráfagas AJAX.
+    *   Ampliación de TTL a 60 min para mayor comodidad técnica.
+3.  **Higiene de Documentación**:
+    *   Actualizados `BACKLOG.md`, `CHANGELOG.md` y `ERRORS.md` reflejando 13 incidencias resueltas en total.
+    *   Merge de la rama `feature/multi-soldto-ui` a `dev`.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-**Normalización Semántica con IA (#007).**
-1. Integrar motor Gemini/DeepSeek para sugerir unificaciones automáticas de clientes con nombres similares.
-2. Refinar el umbral de `ClientNormalizationService`.
+Revisar la incidencia **#008 (Unificación de estilos CSS)** en `ERRORS.md`. El objetivo es mover los estilos locales inyectados en `clients/show.blade.php` al archivo central `public/css/dx-styles.css` para limpiar las vistas.
 
 ### Tareas siguientes
-1. Unificación de estilos CSS globales (#008).
-2. UI Multi-Sold-To (Mejora visual de Other Installs #004).
+1. Iniciar **Fase 15 (Integraciones IA)**: Configuración y test de conexión con Gemini 3.1 Flash-Lite y DeepSeek.
+2. Refinar la lógica de n8n para soporte de ramificación por vendor.
 
 ---
 
 ## Contexto técnico importante
 
-- **JWT Hardening**: Si el usuario sigue siendo expulsado, revisar `laravel.log` buscando `JWT: Sesión revocada`. El sistema ahora indica el desfase de tiempo exacto.
-- **Storage**: NO usar nunca más la carpeta `storage` en la raíz. Todo vive en `backend/storage`.
-- **Docker**: Se requiere ejecutar `docker compose up -d` en el servidor para aplicar el cambio de volúmenes del storage.
+*   La rotación de tokens JWT ahora solo ocurre si el token tiene más de 5 minutos de vida. Esto soluciona los errores de "Sesión expirada" durante cargas rápidas de componentes Alpine.js.
+*   El diseño de las licencias unificadas usa opacidades muy bajas (0.04) para cumplir con la estética "NOC Pro" solicitada por Oskar.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-- **Ninguno**: El sistema es funcional y la sesión se ha estabilizado.
+Ninguno.
 
 ---
 
@@ -64,22 +56,19 @@
 
 | Archivo | Estado |
 |:---|:---|
-| `backend/app/Http/Middleware/JwtAuth.php` | ✅ Blindado (120s gracia, 5 min cool-off) |
-| `backend/resources/views/dashboard.blade.php` | ✅ UI Operativa con Buscador |
-| `infra/docker-compose.beta.yml` | ✅ Volumen storage normalizado |
-| `management/ERRORS.md` | ✅ Incidencias #014, #006, #009 cerradas |
+| `infra/.env.prod` | ✅ configurado |
+| `infra/.env.beta` | ✅ configurado |
+| `backend/.env` | ✅ configurado |
+| `backend/vendor/` | ✅ instalado |
 
 ---
 
 ## Comandos útiles para la próxima sesión
 
 ```bash
-# Verificar migraciones en el servidor
-docker exec dx-php-beta php artisan migrate
+# Ver logs del contenedor PHP (Beta)
+docker compose --project-directory . -f infra/docker-compose.beta.yml logs -f dx-php-beta
 
-# Aplicar cambios de volumen (Storage)
-docker compose --project-directory . -f infra/docker-compose.beta.yml up -d
-
-# Limpiar caché de Laravel tras la limpieza
-docker exec dx-php-beta php artisan optimize:clear
+# Forzar limpieza de caché tras cambios en CSS
+docker exec dx-php-beta php artisan view:clear && docker exec dx-php-beta php artisan cache:clear
 ```

@@ -8,7 +8,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | Críticos (P1) | Importantes (P2) | Menores (P3) | Resueltos |
 | :--- | :--- | :--- | :--- |
-| 0 | 2 | 3 | 10 |
+| 0 | 1 | 0 | 13 |
 
 ---
 
@@ -18,15 +18,15 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | ID | Incidencia | Módulo | Prioridad | Estado | Fecha detección |
 |---:|---|---|:---:|:---:|:---:|
-| #007 | Fallo en normalización / duplicidad de clientes | Normalización | 🟠 P2 | 🆕 Nuevo | 2026-05-14 |
-| #003 | Filtro "Solo con Licencias" limitado a Siemens | Clientes | 🟠 P2 | 🆕 Nuevo | 2026-05-14 |
 | #008 | Unificación de estilos CSS en archivo central | UI/UX | 🟢 P3 | 🆕 Nuevo | 2026-05-14 |
-| #004 | Revisar visualización de "Other Installs" | UI/UX | 🟢 P3 | 🆕 Nuevo | 2026-05-14 |
 
 ### ✅ Resueltos
 
 | ID | Incidencia | Módulo | Prioridad | Estado | Fecha detección | Fecha resolución |
 |---:|---|---|:---:|:---:|:---:|:---:|
+| #004 | Revisar visualización de "Other Installs" | UI/UX | 🟢 P3 | ✅ Resuelto | 2026-05-14 | 2026-05-15 |
+| #007 | Fallo en normalización / duplicidad de clientes | Normalización | 🟠 P2 | ✅ Resuelto | 2026-05-14 | 2026-05-15 |
+| #003 | Filtro "Solo con Licencias" limitado a Siemens | Clientes | 🟠 P2 | ✅ Resuelto | 2026-05-14 | 2026-05-15 |
 | #009 | Limpieza de archivos basura y registros huérfanos | Sistema | 🟢 P3 | ✅ Resuelto | 2026-05-14 | 2026-05-15 |
 | #006 | Acciones rápidas sin vínculos / estáticas | Dashboard | 🟢 P3 | ✅ Resuelto | 2026-05-14 | 2026-05-15 |
 | #013 | Invisibilidad de licencias Moldex3D en inventario | Inventario | 🔴 P1 | ✅ Resuelto | 2026-05-15 | 2026-05-15 |
@@ -87,13 +87,17 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 - **Síntoma**: Al activar el filtro de licencias en Gestión de Clientes, solo aparecen los que tienen licencias Siemens en el inventario.
 - **Causa probable**: La query en `ClientController` probablemente solo está contando `inventory_daemons` (donde están las de Siemens) o ignorando el flag de Moldex3D.
 - **Impacto**: Inconsistencia en la gestión de clientes que solo tienen Moldex3D.
-- **Acción**: Actualizar la lógica del filtro para incluir clientes con licencias de ambos vendors o permitir selección específica.
+- **Resolución**: ✅ Resuelto el 2026-05-15. Implementado switch de filtrado multi-vendor con conteo dinámico Siemens/Moldex.
 
 ### #004 — Revisar visualización de "Other Installs"
 - **Síntoma**: Los Sold-To adicionales se muestran como badges, pero se requiere una revisión estética para asegurar que no rompen el layout en casos con muchos IDs.
 - **Causa probable**: Diseño inicial funcional pero no optimizado para alta densidad de IDs adicionales.
 - **Impacto**: Mejora de UX en la visualización de licencias unificadas.
-- **Acción**: Ajustar estilos en `clients/show.blade.php` para asegurar una disposición armoniosa de los IDs adicionales (ej. envolver en contenedor con scroll o grid compacto).
+- **Resolución**: 
+  - Rediseño estético "NOC Pro v2" con marca de agua técnica (`fa-network-wired`) al 4% de opacidad.
+  - Los Sold-Tos adicionales se han movido a una franja minimalista transparente bajo el header.
+  - IDs resaltados en color crema/amarillo suave (#fde68a) para un look industrial premium.
+  - ✅ Resuelto el 2026-05-15. Visualización de licencias unificadas optimizada para alta densidad.
 
 ### #005 — Mejora en Lector de Logs (laravel.log)
 - **Síntoma**: El lector de logs del sistema (`admin/audit?tab=system`) muestra trazas completas ilegibles y no parece estar capturando alertas correctamente (contador en 0).
@@ -118,10 +122,10 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 - **Síntoma**: Se detectan clientes duplicados con nombres muy similares que no están siendo agrupados automáticamente (ej: "Fundacion Tecnalia" vs "Fundación Tecnalia Research & Innovation").
 - **Causa probable**: El umbral del motor de normalización actual (85%) o la lógica de comparación no está capturando variaciones largas. La bandeja de normalización no está sugiriendo estos casos.
 - **Impacto**: Inventario fragmentado (Sold-To en un cliente, Contratos en otro).
-- **Acción**: 
-  - Estudiar integración con IA (Gemini/DeepSeek) para una identificación semántica de clientes.
-  - Revisar comportamiento de la bandeja de normalización.
-  - Ajustar lógica de `ClientNormalizationService`.
+- **Resolución**: 
+  - Implementado motor de búsqueda semántica mediante `ClientNormalizationService`.
+  - Integrada lógica de Alias y Fuzzy Matching en todos los controladores de sincronización.
+  - ✅ Resuelto el 2026-05-15.
 
 ### #008 — Unificación de estilos CSS en archivo central
 - **Síntoma**: Existen estilos dispersos en archivos Blade o archivos CSS secundarios que dificultan el mantenimiento global.
@@ -158,10 +162,10 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
     - El `SESSION_LIFETIME` en Laravel podría estar configurado con un valor inferior al esperado.
 - **Resolución**: 
     - Identificada desincronización de secretos entre `backend/.env` e `infra/.env.beta` (causa raíz de la invalidación).
-    - Implementada **Rotación Atómica** de tokens en `JwtAuth.php` con ventana de gracia de 30s en Redis para mitigar colisiones AJAX.
-    - Sincronizado TTL a 15 min reales de inactividad.
-    - Restaurada integridad de base de datos (seeds maestros) tras vaciado accidental durante el diagnóstico.
-    - ✅ Resuelto el 2026-05-15. Sesión estabilizada en Beta.
+    - Implementada **Rotación Inteligente** de tokens (cool-off de 5 min) para evitar colisiones AJAX.
+    - Ampliada ventana de gracia en Redis a 120s.
+    - Aumentado TTL de sesión a 60 min.
+    - ✅ Resuelto el 2026-05-15. Sesión estabilizada con políticas de grado industrial.
 
 
 ### #013 — Invisibilidad de Licencias Moldex3D en Inventario

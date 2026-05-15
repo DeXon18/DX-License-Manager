@@ -1,6 +1,6 @@
-Rama activa: dev. Fase de Mantenimiento y Estabilización (Incidencias). 
-Último trabajo: Resuelta #013 (Invisibilidad de licencias Moldex3D). Se refactorizó MoldexSyncService.php para usar ClientNormalizationService, habilitando Alias y Fuzzy Matching. Control de errores (422) añadido en MoldexController.php. Branch de feature mergeada a dev y limpiada. Documentación (BACKLOG, CHANGELOG, HANDOFF, ERRORS) completamente actualizada.
-Estado: Sincronización Moldex3D 100% operativa (el registro 'Metalocaucho Mtc - A Wabtec Company' se generó exitosamente). Todo validado y mergeado.
-Próximo paso inmediato: Investigar Incidencia #014 — Expiración Prematura de Sesión JWT. Revisar JwtService.php y configuración TTL.
+Rama activa: dev. Fase 15.5 — Inventario Granular y UI.
+Último trabajo: Rediseño Premium Multi-SoldTo (#004) con Watermark técnica (fa-network-wired, opacidad 0.04) y franja minimalista transparente con IDs en amarillo crema (#fde68a). Actualizados BACKLOG, CHANGELOG y ERRORS.
+Estado: Feature #004 mergeada a dev y verificada estéticamente. Sesión JWT estable con rotación inteligente (cool-off 5m).
+Próximo paso inmediato: Revisar unificación de estilos CSS (#008) o avanzar con Integraciones IA (Fase 15).
 Bloqueos: Ninguno.
 Stack beta: running. Stack prod: running.
