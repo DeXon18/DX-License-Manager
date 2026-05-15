@@ -31,7 +31,7 @@ El desarrollador inicia. El agente espera.
 - **Iniciada:** 2026-05-14
 - **Rama:** chore/error-tracking
 - **Resumen:** Resolución sistemática del backlog de errores detectados post-Fase 14. Prioridad absoluta en infraestructura de backup y consistencia de datos de clientes.
-- [ ] #002 (P1): Fix scripts de backup (Bash/CRLF/Syntax).
+- [x] #002 (P1): Fix scripts de backup (Bash/CRLF/Syntax). ✅ (2026-05-15)
 - [ ] #003 (P2): Filtros Clientes (Siemens/Moldex).
 - [ ] #007 (P2): Normalización Semántica (IA).
 - [ ] #005 (P2): Lector de Logs (Legibilidad).
@@ -60,6 +60,15 @@ El desarrollador inicia. El agente espera.
 - **Resumen:** Creación del archivo `management/ERRORS.md` con estética industrial para el registro y triaje de errores detectados por el desarrollador.
 - [x] Gestión: Creación de `ERRORS.md` con tabla de incidencias y protocolo de resolución.
 - [x] Workflow: Implementación de la rama de mantenimiento.
+
+### Resolución de Incidencia #002 — Scripts de Backup ✅
+- **Completada:** 2026-05-15
+- **Rama:** dev (directo tras cirugía Git)
+- **Resumen:** Reparado el script `backup-db.sh` convirtiéndolo a formato Unix (LF), corrigiendo errores de sintaxis en bloques `if` y blindando variables de entorno. Se añadió mejora de naming dinámico (`beta_manual_...`) para distinguir origen en la UI.
+- [x] Fix: Conversión CRLF -> LF.
+- [x] Syntax: Blindaje de variables y corrección de bloques `if`.
+- [x] Mejora: Naming con etiqueta manual/system.
+- [x] UI: Nueva columna "Origen" en la gestión de backups.
 
 ### Soporte Multi-Sold-To (Licencias Unificadas) ✅
 - **Completada:** 2026-05-14

@@ -1,6 +1,17 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-15 07:55] — Estabilización: Fix Scripts de Backup & Mejora UI ✅
+
+### Fixed
+- **Infraestructura (Backup)**: Reparado el script `backup-db.sh` (Fix #002). Corregidos finales de línea CRLF -> LF y errores de sintaxis en bloques `bash`.
+- **Blindaje**: Añadidas comillas de seguridad a variables de entorno (`$MYSQL_USER`, etc.) para prevenir errores con caracteres especiales.
+
+### Added
+- **Backup Naming Pro**: Evolución del formato de nombre de archivo para incluir origen (`ENV_TYPE_DATE.sql`). Ahora el sistema distingue automáticamente entre copias `SISTEMA` (cron) y `MANUAL` (UI).
+- **UI NOC Pro**: Nueva columna "Origen" en la gestión de backups con badges semánticos (Azul para Sistema, Gris para Manual) para una monitorización técnica precisa.
+- **Backend**: Actualizado `BackupController` para extraer metadatos del nombre del archivo y pasar el argumento `manual` al disparar copias desde la web.
+
 ## [2026-05-14 16:40] — Switch: Multi-Sold-To Finalizado -> Tracking de Errores ✅
 
 ### Added

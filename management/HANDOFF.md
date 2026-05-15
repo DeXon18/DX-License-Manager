@@ -1,7 +1,8 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-14 17:05  
+> Última actualización: 2026-05-15 08:00  
 > Sesión en: PC Desarrollo  
-> Rama activa: chore/error-tracking
+> Rama activa: dev
+> Estado Git: Cirugía de índice realizada (Commit cfaabde).
 
 ---
 
@@ -15,43 +16,47 @@
 
 ## Qué se hizo en esta sesión
 
-- **Cierre Fase 14**: Soporte Multi-Sold-To (Licencias Unificadas) finalizado y mergeado a `dev` (PR #8).
-- **Switch de Tarea**: Activación del modo mantenimiento mediante la rama `chore/error-tracking`.
-- **Registro de Errores**: Implementación de `management/ERRORS.md` y registro de 9 incidencias detectadas por Oskar:
-  - #002 (P1): Fallo en scripts de backup ( Bash/CRLF).
-  - #003 & #007 (P2): Problemas de filtros y duplicidad de clientes (Normalización).
-  - #005 (P2): Legibilidad del lector de logs en `admin/audit`.
-  - #010 (P2): Indicadores de seguridad en Dashboard siempre a 0.
-  - #009, #008, #006, #004 (P3): Limpieza, CSS, Acciones Rápidas y UI.
+- **Resolución #002 (P1)**: Scripts de Backup estabilizados.
+  - Conversión CRLF -> LF (Unix).
+  - Corrección de sintaxis Bash y blindaje de variables de entorno.
+  - Mejora de naming dinámico: `beta_[manual|system]_DATE.sql`.
+- **UI/UX Backups**:
+  - Implementada nueva columna "Origen" en la gestión de backups.
+  - Badges semánticos para distinguir copias de SISTEMA vs MANUAL.
+- **Registro de Errores**:
+  - Añadida incidencia #011 (P1): Transformación NX falla (No descarga/procesa).
+  - Actualización de `ERRORS.md` con causas probables.
+- **Mantenimiento Git**:
+  - Resuelta corrupción `bad tree object HEAD` mediante reconstrucción de índice y commit forzado.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-**Resolver #002 — Scripts de Backup.**
-1. Convertir `backend/scripts/backup-db.sh` a formato LF (Unix).
-2. Corregir error de sintaxis en el bloque `if` (línea 27).
-3. Verificar ejecución dentro del contenedor `dx-php-beta`.
+**Resolver #011 — Transformación de Licencia NX.**
+1. Investigar fallo en `NXSuiteController` y `NXSuiteService`.
+2. Verificar por qué el stream de descarga no se inicia tras la transformación.
+3. Comprobar logs de PHP en busca de fallos en el procesamiento del motor SALT.
 
 ### Tareas siguientes
 1. Corregir lógica de filtros en Clientes para incluir Moldex3D (#003).
 2. Estudiar integración IA para normalización semántica (#007).
-3. Mejorar el lector de logs (#005) y el contador de seguridad (#010).
+3. Mejorar el lector de logs (#005) e indicadores de seguridad (#010).
 
 ---
 
 ## Contexto técnico importante
 
-- **ERRORS.md**: Es la fuente de verdad para correcciones rápidas. Seguir el protocolo de resolución definido allí.
-- **Git**: Se ha hecho un "geometric repack" con fallos de permisos en el servidor, pero el commit y push han funcionado correctamente desde Windows.
-- **Normalización**: El cliente "Tecnalia" ha servido de ejemplo para el fallo semántico (#007).
+- **Backups**: El script ahora acepta un segundo parámetro opcional (`manual` o `system`). El cron job debe llamar a `/var/www/html/scripts/backup-db.sh beta system`.
+- **Git**: El repositorio local sufrió corrupción durante un repack geométrico en el Samba mount. Se recomienda vigilar `git status`.
+- **NX Suite**: La incidencia #011 es ahora prioridad máxima (P1) junto con el mantenimiento preventivo.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-- Ninguno. El sistema es totalmente operativo; las incidencias registradas son correctivas/evolutivas.
+- **Git Repack**: Sigue fallando el repack geométrico por permisos en la carpeta `.git/objects/pack/`. Ignorar mientras los commits/pushes funcionen.
 
 ---
 
@@ -59,19 +64,18 @@
 
 | Archivo | Estado |
 |:---|:---|
-| `infra/.env.prod` | ✅ configurado |
 | `infra/.env.beta` | ✅ configurado |
-| `backend/.env` | ✅ configurado |
-| `backend/vendor/` | ✅ instalado |
+| `backend/app/Http/Controllers/Admin/BackupController.php` | ✅ actualizado |
+| `scripts/backup-db.sh` | ✅ LF / Fix / Naming |
 
 ---
 
 ## Comandos útiles para la próxima sesión
 
 ```bash
-# Verificar backup
-docker exec dx-php-beta /var/www/html/scripts/backup-db.sh beta
+# Probar transformación NX y ver logs
+docker compose --project-directory . -f infra/docker-compose.beta.yml logs -f php-fpm-beta
 
-# Ver logs de PHP
-docker compose --project-directory . -f infra/docker-compose.beta.yml logs -f dx-php-beta
+# Verificar salud Git
+git fsck --no-dangling
 ```
