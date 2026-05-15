@@ -65,8 +65,8 @@ class NXSuiteController extends Controller
         
         // Validación extra de extensión
         $extension = strtolower($file->getClientOriginalExtension());
-        if (!in_array($extension, ['lic', 'txt'])) {
-            return back()->withErrors(['license_file' => 'Solo se permiten archivos .lic o .txt.']);
+        if (!in_array($extension, ['lic', 'txt', 'dat', 'cid'])) {
+            return back()->withErrors(['license_file' => 'Solo se permiten archivos .lic, .txt, .dat o .cid.']);
         }
 
         try {
