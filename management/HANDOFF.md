@@ -48,7 +48,7 @@
 
 ## Contexto técnico importante
 
-- **Backups**: El script ahora acepta un segundo parámetro opcional (`manual` o `system`). El cron job debe llamar a `/var/www/html/scripts/backup-db.sh beta system`. Actualmente programado a las **08:00 AM** para test de sistema.
+- **Backups**: El script ahora acepta un segundo parámetro opcional (`manual` o `system`). El cron job debe llamar a `/var/www/html/scripts/backup-db.sh beta system`. Actualmente programado a las **03:00 AM (Madrid)** tras fijar región del servidor.
 - **Git**: El repositorio local sufrió corrupción durante un repack geométrico en el Samba mount. Se recomienda vigilar `git status`.
 - **NX Suite**: La incidencia #011 es ahora prioridad máxima (P1) junto con el mantenimiento preventivo.
 
