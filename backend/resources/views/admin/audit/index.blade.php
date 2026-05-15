@@ -181,8 +181,56 @@
         </div>
 
         @elseif($tab == 'system')
-        <div style="padding: 20px; background: #000; overflow-x: auto;">
-            <pre style="margin: 0; font-family: 'IBM Plex Mono'; font-size: 11px; color: #a9b7c6; line-height: 1.5; white-space: pre-wrap;">{{ $logs }}</pre>
+        <div style="padding: 0; background: #0a0c10;" x-data="{ expanded: null }">
+            <div style="max-height: 700px; overflow-y: auto;">
+                @forelse($logs as $index => $log)
+                    <div style="border-bottom: 1px solid rgba(255,255,255,0.05); padding: 12px 20px; transition: background 0.2s;" 
+                         :style="expanded === {{ $index }} ? 'background: rgba(255,255,255,0.02);' : ''">
+                        
+                        {{-- Cabecera del Log --}}
+                        <div style="display: flex; gap: 15px; align-items: flex-start; cursor: pointer;" @click="expanded = (expanded === {{ $index }} ? null : {{ $index }})">
+                            <span style="font-family: 'IBM Plex Mono'; font-size: 11px; color: var(--muted); white-space: nowrap; margin-top: 2px;">
+                                {{ \Carbon\Carbon::parse($log['timestamp'])->format('H:i:s') }}
+                            </span>
+                            
+                            <span class="badge" style="
+                                font-size: 9px; min-width: 65px; text-align: center; border: none; padding: 2px 6px;
+                                background: {{ in_array($log['level'], ['error', 'critical', 'alert', 'emergency']) ? 'rgba(239, 68, 68, 0.15)' : ($log['level'] === 'warning' ? 'rgba(245, 158, 11, 0.15)' : 'rgba(0, 153, 153, 0.15)') }};
+                                color: {{ in_array($log['level'], ['error', 'critical', 'alert', 'emergency']) ? '#ef4444' : ($log['level'] === 'warning' ? '#f59e0b' : '#009999') }};
+                            ">{{ strtoupper($log['level']) }}</span>
+
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="font-family: 'Inter', sans-serif; font-size: 13px; color: #e2e8f0; font-weight: 500; line-height: 1.4; word-break: break-all;">
+                                    {{ $log['message'] }}
+                                </div>
+                                @if($log['stack_trace'])
+                                    <div style="margin-top: 4px; display: flex; align-items: center; gap: 6px; font-size: 10px; color: var(--muted); font-weight: 600; text-transform: uppercase;">
+                                        <i class="fa-solid" :class="expanded === {{ $index }} ? 'fa-chevron-down' : 'fa-chevron-right'"></i>
+                                        <span>Detalles de la traza</span>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                        {{-- Cuerpo del Stack Trace --}}
+                        @if($log['stack_trace'])
+                        <div x-show="expanded === {{ $index }}" x-collapse style="margin-top: 15px; margin-left: 80px; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 6px; border-left: 2px solid var(--border);">
+                            <pre style="margin: 0; font-family: 'IBM Plex Mono'; font-size: 11px; color: #8892b0; line-height: 1.6; white-space: pre-wrap;">@php
+                                $lines = explode("\n", $log['stack_trace']);
+                                foreach($lines as $line) {
+                                    $isVendor = str_contains($line, '/vendor/') || str_contains($line, 'phar://');
+                                    echo '<span style="' . ($isVendor ? 'opacity: 0.4; font-size: 10px;' : 'color: #d1d5db; font-weight: 500;') . '">' . e($line) . '</span>' . "\n";
+                                }
+                            @endphp</pre>
+                        </div>
+                        @endif
+                    </div>
+                @empty
+                    <div style="padding: 40px; text-align: center; color: var(--muted); font-size: 13px;">
+                        No hay registros en el fichero <code>laravel.log</code>.
+                    </div>
+                @endforelse
+            </div>
         </div>
         <div style="padding: 12px 20px; border-top: 1px solid var(--border); background: rgba(255,255,255,0.01); display: flex; justify-content: space-between; align-items: center;">
             <span style="font-size: 10px; color: var(--muted);">Mostrando las últimas 200 líneas de <code>storage/logs/laravel.log</code></span>

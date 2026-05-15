@@ -1,14 +1,14 @@
 # HANDOFF — DX License Manager
 > Última actualización: 2026-05-15 08:50  
 > Sesión en: PC Desarrollo  
-> Rama activa: dev
-> Estado Git: Dashboard de seguridad restaurado, rama fix integrada y purgada.
+> Rama activa: fix/system-log-reader
+> Estado Git: Lector de logs profesionalizado y telemetría sincronizada.
 
 ---
 
 ## Estado General
 
-**Fase actual:** Fase 15.3 — Seguridad y Telemetría  
+**Fase actual:** Fase 15.4 — Diagnóstico y Logs  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -18,10 +18,10 @@
 
 - **Resolución #012 (P1)**: Hotfix de persistencia en Redis (Volúmenes nombrados).
 - **Resolución #010 (P2)**: Restauración de Telemetría de Seguridad.
-  - Implementado log de `login_failed` en `AuthController`.
-  - Implementada **Blacklist JWT** en Redis (ZSET) para invalidación de sesiones.
-  - Sincronizados niveles de severidad (`error`, `critical`) en el Dashboard NOC Pro.
-  - Corregido conteo de sesiones activas y bloqueos en el centro de mando.
+- **Resolución #005 (P2)**: Mejora profesional del Lector de Logs.
+  - Implementado parser Regex para estructurar `laravel.log`.
+  - Nueva UI con Alpine.js: Trazas colapsables y resaltado de código.
+  - Sincronización del contador de "Alertas" (DB + Fichero).
 - **Resolución #011 (P1)**: Estabilización pipeline NX.
   - Corregido flujo de descarga AJAX en `NXSuiteController`.
   - Implementado blindaje de memoria (`256M`) y `try-catch` global con degradación elegante.
