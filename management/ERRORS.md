@@ -8,7 +8,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | Críticos (P1) | Importantes (P2) | Menores (P3) | Resueltos |
 | :--- | :--- | :--- | :--- |
-| 1 | 5 | 4 | 3 |
+| 0 | 3 | 5 | 6 |
 
 ---
 
@@ -18,7 +18,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | ID | Incidencia | Módulo | Prioridad | Estado | Fecha detección | Fecha resolución |
 |---:|---|---|:---:|:---:|:---:|:---:|
-| #013 | Invisibilidad de licencias Moldex3D en inventario | Inventario | 🔴 P1 | 🆕 Nuevo | 2026-05-15 | — |
+| #013 | Invisibilidad de licencias Moldex3D en inventario | Inventario | 🔴 P1 | ✅ Resuelto | 2026-05-15 | 2026-05-15 |
 | #014 | Expiración prematura de sesión JWT | Auth/JWT | 🟠 P2 | 🆕 Nuevo | 2026-05-15 | — |
 | #007 | Fallo en normalización / duplicidad de clientes | Normalización | 🟠 P2 | 🆕 Nuevo | 2026-05-14 | — |
 | #003 | Filtro "Solo con Licencias" limitado a Siemens | Clientes | 🟠 P2 | 🆕 Nuevo | 2026-05-14 | — |
@@ -163,6 +163,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
     - Verificar logs de `MoldexSync` (actualmente sin entradas recientes).
     - Crear un entorno de pruebas con datos reales para validar la persistencia.
     - Se ha creado un registro manual para "Walter Pack Sl" para verificar que la UI funciona correctamente, pero el problema de fondo en la sincronización persiste.
+- **Resolución**: ✅ Resuelto el 2026-05-15. Refactorizado `MoldexSyncService` para usar `ClientNormalizationService` (soporte Alias y Fuzzy Matching) y blindado `MoldexController` para retornar HTTP 422 si falla la persistencia.
 
 ---
 
