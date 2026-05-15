@@ -1,6 +1,13 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-15 11:28] — Resolución de Incidencia #013 (Sincronización Moldex3D) ✅
+
+### Fixed
+- **Invisibilidad Moldex3D**: Solucionado fallo crítico que impedía que las licencias de Moldex3D aparecieran en el inventario tras subirse, a pesar de que la UI indicaba éxito.
+- **Normalización**: Integración de `ClientNormalizationService` en `MoldexSyncService` para soportar búsqueda por Alias, Fuzzy Matching (85%) y creación automática de nuevos clientes (ej. `Metalocaucho Mtc - A Wabtec Company`).
+- **Control de Errores**: Actualizado `MoldexController` para que detecte correctamente los fallos internos de sincronización y retorne HTTP 422, cortando la falsa sensación de éxito.
+
 ## [2026-05-15 10:15] — Clientes: Filtro Granular de Inventario & UI Premium ✅
 
 ### Added
