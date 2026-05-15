@@ -98,7 +98,16 @@ El desarrollador inicia. El agente espera.
 - [x] UI: Badges de Sold-To adicionales en el perfil de cliente (Blade) y modal de auditoría (Alpine).
 - [x] Verificación: Validado mediante simulación de callback con datos reales de Gurutzpe.
 
-### Error Tracking — Sistema de Seguimiento de Incidencias ✅
+### Estabilización de Sesión JWT (Fix #014) ✅
+- **Completada:** 2026-05-15
+- **Rama:** fix/jwt-premature-expiration
+- **Resumen:** Implementación de rotación atómica de tokens con ventana de gracia de 30s en Redis para evitar expulsiones en peticiones concurrentes. Sincronización de TTL a 15 min y fix de desincronización de secretos en `.env`.
+- [x] Backend: Implementada rotación en `JwtAuth.php`.
+- [x] Infra: Configurado periodo de gracia en Redis.
+- [x] Config: Sincronización de `JWT_SECRET` en `infra/.env.beta`.
+- [x] Mantenimiento: Purga automática de blacklist.
+- [x] Emergencia: Restauración de tablas maestras tras vaciado accidental.
+
 - **Completada:** 2026-05-14
 - **Rama:** chore/error-tracking
 - **Resumen:** Creación del archivo `management/ERRORS.md` con estética industrial para el registro y triaje de errores detectados por el desarrollador.

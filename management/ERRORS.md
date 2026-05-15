@@ -8,7 +8,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | Críticos (P1) | Importantes (P2) | Menores (P3) | Resueltos |
 | :--- | :--- | :--- | :--- |
-| 0 | 3 | 5 | 6 |
+| 0 | 2 | 5 | 8 |
 
 ---
 
@@ -19,7 +19,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 | ID | Incidencia | Módulo | Prioridad | Estado | Fecha detección | Fecha resolución |
 |---:|---|---|:---:|:---:|:---:|:---:|
 | #013 | Invisibilidad de licencias Moldex3D en inventario | Inventario | 🔴 P1 | ✅ Resuelto | 2026-05-15 | 2026-05-15 |
-| #014 | Expiración prematura de sesión JWT | Auth/JWT | 🟠 P2 | 🆕 Nuevo | 2026-05-15 | — |
+| #014 | Expiración prematura de sesión JWT | Auth/JWT | 🟠 P2 | ✅ Resuelto | 2026-05-15 | 2026-05-15 |
 | #007 | Fallo en normalización / duplicidad de clientes | Normalización | 🟠 P2 | 🆕 Nuevo | 2026-05-14 | — |
 | #003 | Filtro "Solo con Licencias" limitado a Siemens | Clientes | 🟠 P2 | 🆕 Nuevo | 2026-05-14 | — |
 | #009 | Limpieza de archivos basura y registros huérfanos | Sistema | 🟢 P3 | 🆕 Nuevo | 2026-05-14 | — |

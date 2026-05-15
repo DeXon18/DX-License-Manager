@@ -307,6 +307,6 @@ Formato obligatorio:
 
 Al iniciar sesión con `/start`: leer esta sección completa antes de empezar.
 
-<!-- ENTRADAS -->
+- [2026-05-15] ERROR: La base de datos Beta se vació accidentalmente durante la ejecución de tests de integración debido a una mala configuración del entorno de test en el contenedor. → REGLA: Verificar SIEMPRE el aislamiento del entorno de test y realizar backup obligatorio de la DB (`./scripts/backup-db.sh beta`) antes de cualquier ejecución de tests en el servidor.
 
 _(sin entradas aún)_

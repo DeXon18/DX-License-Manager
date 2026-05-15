@@ -463,16 +463,20 @@ DX License Manager
 
 ---
 
-### 📋 Fase 17 — Consolidación y Limpieza UI
-
-**Estado:** PAUSADA
-
-- [ ] Auditoría de estilos redundantes en vistas Blade
-- [ ] Migración de componentes CSS de `show.blade.php` a `dx-styles.css`
-- [ ] Optimización de selectores y reducción de especificidad innecesaria
-- [ ] Verificación de consistencia visual en Mobile/Responsive tras la consolidación
+### ✅ Fase 18 — Estabilización de Sesión JWT
+ 
+**Estado:** COMPLETADA
+**Validación:** ✅ Verificado por Oskar el 2026-05-15. Sesión estable con rotación atómica y ventana de gracia.
+ 
+- [x] Implementación de **Rotación Atómica** de tokens.
+- [x] Ventana de gracia de 30s en Redis para peticiones concurrentes.
+- [x] Sincronización de TTL a 15 min (Cookies + Backend).
+- [x] Desacoplamiento de `JWT_SECRET` de la `APP_KEY`.
+- [x] Comando de limpieza automática de blacklist en Redis.
 
 ---
+
+## 📋 Fase 19 — Consolidación y Limpieza UI
 
 ## Stack Tecnológico
 
