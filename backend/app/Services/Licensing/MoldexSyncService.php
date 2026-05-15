@@ -7,6 +7,7 @@ use App\Models\LicenseInventoryDaemon;
 use App\Models\LicenseInventoryProduct;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use App\Services\Data\ClientNormalizationService;
 
 /**
  * MoldexSyncService
@@ -15,6 +16,13 @@ use Carbon\Carbon;
  */
 class MoldexSyncService
 {
+    protected ClientNormalizationService $normalizationService;
+
+    public function __construct(ClientNormalizationService $normalizationService)
+    {
+        $this->normalizationService = $normalizationService;
+    }
+
     /**
      * Sincroniza los datos de Moldex3D con el Inventario Activo.
      * 
@@ -30,10 +38,18 @@ class MoldexSyncService
         ];
 
         try {
-            // 1. Identificar Cliente
-            $client = $this->findClient($parsedData);
+            // 1. Identificar Cliente a través del sistema de normalización inteligente
+            $customerName = $parsedData['customer_name'] ?? 'Desconocido';
+            if ($customerName === 'Desconocido') {
+                $summary['error'] = "No se encontró el nombre del cliente en el archivo.";
+                return $summary;
+            }
+
+            $normalizationResult = $this->normalizationService->resolve($customerName);
+            $client = Client::find($normalizationResult['id']);
+
             if (!$client) {
-                $summary['error'] = "No se pudo identificar un cliente para '" . ($parsedData['customer_name'] ?? 'Desconocido') . "'";
+                $summary['error'] = "Fallo crítico en la normalización para '{$customerName}'";
                 return $summary;
             }
 
@@ -84,32 +100,7 @@ class MoldexSyncService
         return $summary;
     }
 
-    /**
-     * Busca un cliente en la base de datos basándose en el nombre parseado.
-     */
-    private function findClient(array $data): ?Client
-    {
-        $name = $data['customer_name'];
-        if (!$name) return null;
 
-        // Búsqueda exacta
-        $client = Client::where('name', $name)->first();
-        if ($client) return $client;
-
-        // Búsqueda parcial (fuzzy)
-        $client = Client::where('name', 'LIKE', "%{$name}%")->first();
-        if ($client) return $client;
-
-        // Intentar limpiar el nombre un poco más (remover SL, SA, etc)
-        $cleanName = preg_replace('/\b(S\.?L\.?|S\.?A\.?|I\+D\+I)\b/i', '', $name);
-        $cleanName = trim($cleanName);
-        
-        if ($cleanName !== $name && !empty($cleanName)) {
-            return Client::where('name', 'LIKE', "%{$cleanName}%")->first();
-        }
-
-        return null;
-    }
 
     /**
      * Parsea la fecha de Moldex3D (YYYYMMDD) a formato BD.
