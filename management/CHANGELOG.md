@@ -1,17 +1,23 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
-## [2026-05-15 13:00] — Seguridad: Estabilización de Sesión JWT (Fix #014) ✅
-
-### Fixed
-- **Expiración Prematura**: Resuelto fallo que expulsaba a los usuarios aleatoriamente. Implementada **Rotación Atómica** de tokens en cada petición.
-- **Ventana de Gracia**: Introducida ventana de 30 segundos en Redis (`jwt_blacklist`) para permitir peticiones AJAX concurrentes con tokens antiguos durante la rotación.
-- **Sincronización de Inactividad**: Unificado el TTL a **15 minutos** reales de inactividad, sincronizando cookies y lógica de backend.
-- **Mantenimiento Automático**: Nuevo comando `auth:jwt-cleanup` programado diariamente para purgar la blacklist de Redis.
+## [2026-05-15 13:50] — Dashboard Operativo y Estabilización de Sistema ✅
 
 ### Added
-- **JWT_SECRET Independiente**: Desacoplada la seguridad de sesiones de la `APP_KEY` para mayor robustez ante cambios de entorno.
-- **Restauración de Emergencia**: Re-pobladas tablas maestras (`roles`, `feature_flags`, `resource_links`) tras vaciado accidental de DB durante tests.
+- **Buscador Global Express**: Motor de búsqueda de alta visibilidad en Dashboard con soporte instantáneo para Sold-To, Machine ID y Nombres de Clientes.
+- **Favoritos (Bento Actions)**: Vinculación funcional de botones rápidos a herramientas críticas: Generación de COD, Planificador de Renovaciones y Hub de Auditoría IA.
+- **Badge de Renovaciones**: Contador dinámico en tiempo real de renovaciones pendientes para el mes en curso.
+
+### Changed
+- **JWT Deep Hardening**: Sesión estabilizada mediante rotación inteligente (solo tras 5 min de antigüedad), ventana de gracia de 120s y ampliación de inactividad a 60 minutos.
+- **Unificación de Volúmenes**: Eliminada la carpeta redundante `./storage` de la raíz. Todo el almacenamiento se ha centralizado en `backend/storage`, normalizando la infraestructura Docker.
+- **Git Hygiene**: Configurado el sistema para ignorar el estado de modificación interno de los submódulos de diseño/IA.
+
+### Fixed
+- **QueryExceptions (Database)**: Restauradas columnas faltantes `warnings`, `detected_name` y `decision` en las tablas de auditoría y normalización.
+- **Limpieza de Huérfanos**: Eliminación de residuos de base de datos y archivos `.sql` antiguos del servidor.
+
+## [2026-05-15 13:00] — Seguridad: Estabilización de Sesión JWT (Fix #014) ✅
 
 ## [2026-05-15 11:28] — Resolución de Incidencia #013 (Sincronización Moldex3D) ✅
 
