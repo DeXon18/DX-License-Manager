@@ -44,6 +44,15 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Resolución de Incidencia #012 — Hotfix Persistencia Redis ✅
+- **Completada:** 2026-05-15
+- **Rama:** fix/redis-persistence-error
+- **Resumen:** Resolución de error crítico `MISCONF` en Redis. Se restauró la persistencia RDB mediante corrección de permisos en caliente y se securizó la infraestructura con volúmenes nombrados en Docker Compose.
+- [x] Diagnóstico: Identificado conflicto de permisos (`root` vs `redis`) en `/data`.
+- [x] Hotfix: Aplicado `chown redis:redis` en el contenedor Beta.
+- [x] Infraestructura: Implementados volúmenes nombrados en `docker-compose.beta.yml` y `docker-compose.prod.yml`.
+- [x] Verificación: Confirmado `BGSAVE` exitoso y restauración de políticas de escritura.
+
 ### Resolución de Incidencia #011 — Estabilización Global de Herramientas ✅
 - **Completada:** 2026-05-15
 - **Rama:** fix/nx-ui-validation
