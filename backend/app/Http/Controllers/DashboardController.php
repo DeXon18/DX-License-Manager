@@ -61,6 +61,13 @@ class DashboardController extends Controller
             ->distinct('daemon_id')
             ->count();
 
+        // 6. Estados de Contratos (Gestión)
+        $contractStatuses = config('contracts.statuses', []);
+        $contractCounts = Contract::selectRaw('status, count(*) as count')
+            ->groupBy('status')
+            ->pluck('count', 'status')
+            ->toArray();
+
         return view('dashboard', compact('metrics', 'upcomingExpirations', 'contractStatuses', 'contractCounts', 'renewalsThisMonth'));
     }
 }
