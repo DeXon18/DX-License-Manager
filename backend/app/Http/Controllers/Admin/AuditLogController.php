@@ -125,9 +125,13 @@ class AuditLogController extends Controller
 
     public function clearEmail()
     {
-        DB::table('email_logs')->truncate();
-        $this->logAction('email_reset', 'Se ha vaciado el historial de correos (email_logs).');
-        return back()->with('tab', 'email')->with('success', 'Historial de emails reseteado.');
+        if (Schema::hasTable('email_logs')) {
+            DB::table('email_logs')->truncate();
+            $this->logAction('clear_email_logs', 'Vaciado del historial de emails enviados.', 'info');
+            return back()->with('tab', 'email')->with('success', 'Historial de emails vaciado.');
+        }
+        
+        return back()->with('tab', 'email')->with('error', 'La tabla de logs de email no existe.');
     }
 
     public function clearSystem()
