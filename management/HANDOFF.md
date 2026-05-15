@@ -1,8 +1,8 @@
 # HANDOFF — DX License Manager
 > Última actualización: 2026-05-15 08:50  
 > Sesión en: PC Desarrollo  
-> Rama activa: fix/system-log-reader
-> Estado Git: Lector de logs profesionalizado y telemetría sincronizada.
+> Rama activa: dev
+> Estado Git: Lector de logs profesionalizado, rama fix integrada y purgada.
 
 ---
 
