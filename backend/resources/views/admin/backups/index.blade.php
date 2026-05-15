@@ -32,6 +32,7 @@
                 <thead style="background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border);">
                     <tr>
                         <th style="padding: 12px 20px; text-align: left; color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase;">Fecha de Creación</th>
+                        <th style="padding: 12px 20px; text-align: left; color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase;">Origen</th>
                         <th style="padding: 12px 20px; text-align: left; color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase;">Entorno</th>
                         <th style="padding: 12px 20px; text-align: left; color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase;">Tamaño</th>
                         <th style="padding: 12px 20px; text-align: left; color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase;">Nombre de Archivo</th>
@@ -46,6 +47,9 @@
                                     <span style="color: var(--primary); font-weight: 600; font-size: 13px;">{{ \Carbon\Carbon::parse($backup['date'])->format('d M, Y') }}</span>
                                     <span style="color: var(--muted); font-size: 10px; font-family: 'IBM Plex Mono';">{{ \Carbon\Carbon::parse($backup['date'])->format('H:i:s') }}</span>
                                 </div>
+                            </td>
+                            <td style="padding: 14px 20px;">
+                                <span style="padding: 3px 8px; border-radius: 4px; background: {{ $backup['type'] === 'SISTEMA' ? 'rgba(56, 139, 253, 0.1)' : 'rgba(107, 114, 128, 0.1)' }}; color: {{ $backup['type'] === 'SISTEMA' ? 'var(--accent)' : 'var(--muted)' }}; font-size: 9px; font-weight: 800; letter-spacing: 0.05em; border: 1px solid {{ $backup['type'] === 'SISTEMA' ? 'rgba(56, 139, 253, 0.2)' : 'rgba(107, 114, 128, 0.2)' }};">{{ $backup['type'] }}</span>
                             </td>
                             <td style="padding: 14px 20px;">
                                 <span style="padding: 3px 8px; border-radius: 4px; background: {{ $backup['env'] === 'PROD' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(67, 97, 238, 0.1)' }}; color: {{ $backup['env'] === 'PROD' ? 'var(--success)' : 'var(--accent)' }}; font-size: 9px; font-weight: 800; letter-spacing: 0.05em;">{{ $backup['env'] }}</span>
@@ -68,7 +72,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" style="padding: 40px; text-align: center;">
+                            <td colspan="6" style="padding: 40px; text-align: center;">
                                 <div style="opacity: 0.3; margin-bottom: 12px;">
                                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                                 </div>
