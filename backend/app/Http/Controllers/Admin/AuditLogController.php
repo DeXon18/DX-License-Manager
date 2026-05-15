@@ -29,7 +29,9 @@ class AuditLogController extends Controller
                 $data['logs'] = $this->getSystemLogs();
                 break;
             case 'email':
-                $data['logs'] = DB::table('email_logs')->orderBy('created_at', 'desc')->paginate(20)->withQueryString();
+                $data['logs'] = Schema::hasTable('email_logs') 
+                    ? DB::table('email_logs')->orderBy('created_at', 'desc')->paginate(20)->withQueryString()
+                    : new \Illuminate\Pagination\LengthAwarePaginator([], 0, 20);
                 break;
             default:
                 $data['logs'] = $this->getActivityLogs($request);
