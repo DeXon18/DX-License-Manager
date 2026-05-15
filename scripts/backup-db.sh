@@ -11,6 +11,15 @@ BACKUP_DIR="/var/www/html/storage/app/backups/db"
 DATE=$(date +%Y-%m-%d_%H-%M-%S)
 FILENAME="${APP_ENV}_${TYPE}_${DATE}.sql"
 
+# Cargar variables de entorno si no están presentes (necesario para cron en Docker)
+if [ -z "$MYSQL_USER" ]; then
+    if [ -f "/var/www/html/.env" ]; then
+        echo "Cargando variables desde .env..."
+        # Exportar variables ignorando comentarios y líneas vacías
+        export $(grep -v '^#' /var/www/html/.env | grep -v '^$' | xargs)
+    fi
+fi
+
 # Asegurar que el directorio existe
 mkdir -p "$BACKUP_DIR"
 
