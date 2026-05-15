@@ -1,6 +1,26 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-15 08:45] — Infraestructura: Fix Redis Persistence (Fix #012) ✅
+
+### Fixed
+- **Redis (Infra)**: Resuelto fallo crítico `MISCONF` que bloqueaba escrituras en el portal.
+- **Persistencia**: Implementados **volúmenes nombrados** (`redis_beta_data`, `redis_prod_data`) en Docker Compose para asegurar que los permisos de `/data` sean gestionados correctamente por Docker y persistan tras reinicios.
+- **Hotfix**: Aplicada corrección de propiedad (`chown redis:redis`) en caliente para restaurar el servicio sin downtime.
+
+## [2026-05-15 08:35] — Estabilización Global: Validación UI & Robustez Tools (Fix #011) ✅
+
+### Added
+- **Validación Global UI**: Implementada lógica Alpine.js en NX, StarCCM+, HEEDS y Moldex3D para validar extensiones en el cliente antes de la subida.
+- **Feedback Visual**: Nuevo sistema de mensajes de error temporales (4s) con estética semántica para informar sobre extensiones no permitidas.
+- **Soporte Siemens**: Ampliado el soporte de extensiones a `.dat` y `.cid` en todas las herramientas del ecosistema Siemens.
+
+### Fixed
+- **Incidencia #011 (Crítica)**: Resuelto el fallo que impedía la descarga y transformación de licencias NX. Corregido el flujo de respuesta AJAX para garantizar el stream de descarga.
+- **Robustez Backend**: Implementada gestión de memoria avanzada (`256M`) y bloques `try-catch` con degradación elegante. El sistema ahora asegura la entrega del archivo transformado aunque fallen servicios secundarios.
+- **Optimización de Parser**: Refactorizado `LicenseParserService` para procesar archivos FlexLM masivos línea a línea, eliminando el riesgo de `Memory Exhaustion` por regex complejos.
+- **Extracción de Metadatos**: Actualizadas las expresiones regulares para soportar daemons modernos (`saltd`, `cdlmd`, `RCTECH`) de forma consistente.
+
 ## [2026-05-15 07:55] — Estabilización: Fix Scripts de Backup & Mejora UI ✅
 
 ### Fixed
