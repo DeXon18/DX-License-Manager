@@ -1,8 +1,8 @@
 # HANDOFF — DX License Manager
 > Última actualización: 2026-05-15 08:50  
 > Sesión en: PC Desarrollo  
-> Rama activa: fix/security-indicators-dashboard
-> Estado Git: Dashboard de seguridad restaurado y telemetría operativa.
+> Rama activa: dev
+> Estado Git: Dashboard de seguridad restaurado, rama fix integrada y purgada.
 
 ---
 
