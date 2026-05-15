@@ -53,14 +53,14 @@ class DashboardController extends Controller
             ->limit(15)
             ->get();
 
-        // 4. Estados de Contratos (Gestión)
-        $contractStatuses = config('contracts.statuses', []);
+        // 5. Renovaciones del mes actual (para el contador de cara al usuario)
+        $monthStart = Carbon::now()->startOfMonth();
+        $monthEnd = Carbon::now()->endOfMonth();
+        $renewalsThisMonth = LicenseInventoryProduct::active()
+            ->whereBetween('expiration_date', [$monthStart, $monthEnd])
+            ->distinct('daemon_id')
+            ->count();
 
-        $contractCounts = Contract::selectRaw('status, count(*) as count')
-            ->groupBy('status')
-            ->pluck('count', 'status')
-            ->toArray();
-
-        return view('dashboard', compact('metrics', 'upcomingExpirations', 'contractStatuses', 'contractCounts'));
+        return view('dashboard', compact('metrics', 'upcomingExpirations', 'contractStatuses', 'contractCounts', 'renewalsThisMonth'));
     }
 }
