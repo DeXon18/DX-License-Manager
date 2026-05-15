@@ -32,14 +32,14 @@ El desarrollador inicia. El agente espera.
 - **Rama:** chore/error-tracking
 - **Resumen:** Resolución sistemática del backlog de errores detectados post-Fase 14. Prioridad absoluta en infraestructura de backup y consistencia de datos de clientes.
 - [x] #002 (P1): Fix scripts de backup (Bash/CRLF/Syntax). ✅ (2026-05-15)
-- [ ] #007 (P2): Normalización Semántica (IA).
+- [x] #007 (P2): Normalización Semántica (IA - Parches DB). ✅ (2026-05-15)
 - [x] #005 (P2): Lector de Logs (Legibilidad). ✅ (2026-05-15)
 - [x] #010 (P2): Indicadores de Seguridad Dashboard. ✅ (2026-05-15)
-- [ ] #014 (P2): Expiración Prematura de Sesión JWT. 🆕
-- [ ] #009 (P3): Limpieza Global de Basura.
+- [x] #014 (P2): Estabilización profunda JWT. ✅ (2026-05-15)
+- [x] #009 (P3): Limpieza Global de Basura. ✅ (2026-05-15)
 - [ ] #008 (P3): Unificación CSS.
 - [ ] #004 (P3): UI Multi-Sold-To.
-- [ ] #006 (P3): Acciones Rápidas (Funcionalidad).
+- [x] #006 (P3): Dashboard Operativo (Buscador/Favoritos). ✅ (2026-05-15)
 
 
 ## ✅ Completado
