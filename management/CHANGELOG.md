@@ -19,7 +19,7 @@
 - **Seguridad (Dashboard)**: Corregidos indicadores (Logins fallidos, Errores 24h, Blacklist) que se mostraban a 0 por falta de registro de datos.
 - **Auditoría**: Implementado log automático de `login_failed` con captura de IP y User Agent.
 - **JWT**: Implementada **Blacklist proactiva** en Redis (ZSET) para invalidación instantánea de tokens al cerrar sesión.
-
+- **Telemetría**: Sincronización de niveles de severidad (`error`, `critical`) para una visualización real del estado de la flota en el NOC Pro.
 
 ### Added
 - **Parser de Logs**: Nuevo motor de análisis Regex para estructurar `laravel.log` en entradas legibles con timestamp y nivel de severidad.
@@ -27,14 +27,6 @@
 - **Filtrado de Ruido**: Resaltado visual diferenciado para código de proyecto vs librerías `vendor`.
 - **Telemetría Unificada**: El contador de alertas del Dashboard ahora sincroniza en tiempo real los errores de la DB con los incidentes registrados en el fichero físico de logs.
 - **Robustez Auditoría**: Implementado blindaje contra tablas inexistentes (`email_logs`) para evitar errores 500 en la gestión de logs de sistema.
-
-## [2026-05-15 09:20] — Seguridad: Dashboard Telemetría & Blacklist (Fix #010) ✅
-
-### Fixed
-- **Seguridad (Dashboard)**: Corregidos indicadores (Logins fallidos, Errores 24h, Blacklist) que se mostraban a 0 por falta de registro de datos.
-- **Auditoría**: Implementado log automático de `login_failed` con captura de IP y User Agent.
-- **JWT**: Implementada **Blacklist proactiva** en Redis (ZSET) para invalidación instantánea de tokens al cerrar sesión.
-- **Telemetría**: Sincronización de niveles de severidad (`error`, `critical`) para una visualización real del estado de la flota en el NOC Pro.
 
 ## [2026-05-15 08:45] — Infraestructura: Fix Redis Persistence (Fix #012) ✅
 
