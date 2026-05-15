@@ -11,6 +11,16 @@ current_agent: Antigravity (DX Agent) 🦾
 ## 🎯 Objetivo Actual
 Fase 14 (Planificador de Renovaciones) simplificada (sin adjuntos) y validada. Preparando el merge de `feature/renewal-planner` a `dev` para iniciar **Fase 15 (Integraciones IA)**.
 
+## Estado de la Tarea Actual
+- **Incidencia:** #003 — Filtros Clientes (Siemens/Moldex)
+- **Estado:** ✅ Completado
+- **Rama:** `feature/fix-client-license-filter`
+- **Cambios clave:** Conteo separado de daemons, badges corporativos en UI, validación de filtro inclusivo.
+
+## Próximos Pasos
+- [ ] #007 — Normalización Semántica (IA): Mejorar la detección de clientes en auditorías.
+- [ ] #010 — Indicadores de Seguridad Dashboard: Visualización de logs críticos en el panel principal.
+
 
 ## 🛠️ Tareas en curso
 - [x] Implementación de Planificador de Renovaciones (Cíclico Mensual).
