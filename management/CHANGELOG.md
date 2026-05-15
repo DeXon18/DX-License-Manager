@@ -1,6 +1,14 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-15 09:20] — Seguridad: Dashboard Telemetría & Blacklist (Fix #010) ✅
+
+### Fixed
+- **Seguridad (Dashboard)**: Corregidos indicadores (Logins fallidos, Errores 24h, Blacklist) que se mostraban a 0 por falta de registro de datos.
+- **Auditoría**: Implementado log automático de `login_failed` con captura de IP y User Agent.
+- **JWT**: Implementada **Blacklist proactiva** en Redis (ZSET) para invalidación instantánea de tokens al cerrar sesión.
+- **Telemetría**: Sincronización de niveles de severidad (`error`, `critical`) para una visualización real del estado de la flota en el NOC Pro.
+
 ## [2026-05-15 08:45] — Infraestructura: Fix Redis Persistence (Fix #012) ✅
 
 ### Fixed

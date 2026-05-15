@@ -29,6 +29,11 @@ class JwtAuth
             return redirect('/login');
         }
 
+        // Check if token is blacklisted
+        if (\Illuminate\Support\Facades\Redis::zscore('jwt_blacklist', $token)) {
+            return redirect('/login')->withErrors(['session' => 'Sesión revocada. Por favor, inicie sesión de nuevo.']);
+        }
+
         $decoded = $this->jwtService->decode($token);
 
         if (!$decoded || !isset($decoded['sub'])) {

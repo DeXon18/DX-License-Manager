@@ -18,7 +18,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | #012 | RedisException: MISCONF (Persistencia fallida) | Infra/Redis | P1 | ✅ Resuelto | 2026-05-15 |
 | #011 | Transformación de Licencia (NX) falla (No descarga/procesa) | Siemens NX | P1 | ✅ Resuelto | 2026-05-15 |
-| #010 | Indicadores de Seguridad siempre a 0 | Dashboard | P2 | 🆕 Nuevo | 2026-05-14 |
+| #010 | Indicadores de Seguridad siempre a 0 | Dashboard | P2 | ✅ Resuelto | 2026-05-15 |
 | #009 | Limpieza de archivos basura y registros huérfanos | Sistema | P3 | 🆕 Nuevo | 2026-05-14 |
 | #008 | Unificación de estilos CSS en archivo central | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
 | #007 | Fallo en Normalización / Duplicidad de Clientes | Normalización | P2 | 🆕 Nuevo | 2026-05-14 |
@@ -123,12 +123,13 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 ### #010 — Indicadores de Seguridad siempre a 0
 - **Síntoma**: Los contadores de "Errores Críticos", "Logins Fallidos" y "JWT Blacklist" en el Dashboard principal siempre muestran valor 0, incluso tras forzar eventos de prueba.
-- **Causa probable**: El `DashboardController` no está consultando correctamente las tablas de `audit_log`, logs de autenticación o el estado de Redis para el TTL de los tokens.
+- **Causa probable**: El `DashboardController` (SystemDashboardController) no estaba consultando las tablas correctas y el sistema no estaba registrando logs de login fallidos ni gestionando la blacklist.
 - **Impacto**: Falsa sensación de seguridad o ceguera ante ataques/errores reales.
 - **Acción**: 
-  - Revisar métodos de conteo en el controlador del Dashboard.
-  - Verificar que los eventos de seguridad se están registrando en la base de datos/Redis.
-  - Asegurar que el rango de tiempo (24h) está correctamente implementado.
+  - Implementado registro de `login_failed` en `AuthController`.
+  - Implementada gestión de `jwt_blacklist` en Redis (ZSET) en Logout y Middleware.
+  - Sincronizados niveles de error (`warning` vs `error`) en la telemetría del dashboard.
+- **Resolución**: ✅ Resuelto el 2026-05-15. Sistema de telemetría ahora 100% operativo.
 
 ---
 
