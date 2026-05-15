@@ -55,6 +55,7 @@ class NXSuiteController extends Controller
      */
     public function process(Request $request)
     {
+        ini_set('memory_limit', '256M');
         $request->validate([
             'license_file' => 'required|file|max:10240',
             'motor'        => 'required|in:legacy,salt',
