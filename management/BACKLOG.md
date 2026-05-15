@@ -36,6 +36,7 @@ El desarrollador inicia. El agente espera.
 - [x] #005 (P2): Lector de Logs (Legibilidad). ✅ (2026-05-15)
 - [x] #010 (P2): Indicadores de Seguridad Dashboard. ✅ (2026-05-15)
 - [ ] #013 (P1): Invisibilidad de Licencias Moldex3D (Sincronización). 🆕
+- [ ] #014 (P2): Expiración Prematura de Sesión JWT. 🆕
 - [ ] #009 (P3): Limpieza Global de Basura.
 - [ ] #008 (P3): Unificación CSS.
 - [ ] #004 (P3): UI Multi-Sold-To.

@@ -8,7 +8,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | Críticos (P1) | Importantes (P2) | Menores (P3) | Resueltos |
 | :--- | :--- | :--- | :--- |
-| 1 | 4 | 4 | 3 |
+| 1 | 5 | 4 | 3 |
 
 ---
 
@@ -16,6 +16,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | ID | Incidencia | Módulo | Prio | Estado | Fecha Detect. |
 | :--- | :--- | :--- | :--- | :--- | :--- |
+| #014 | Expiración Prematura de Sesión JWT | Auth/JWT | P2 | 🆕 Nuevo | 2026-05-15 |
 | #013 | Invisibilidad de Licencias Moldex3D en Inventario | Inventario | P1 | 🆕 Nuevo | 2026-05-15 |
 | #012 | RedisException: MISCONF (Persistencia fallida) | Infra/Redis | P1 | ✅ Resuelto | 2026-05-15 |
 | #011 | Transformación de Licencia (NX) falla (No descarga/procesa) | Siemens NX | P1 | ✅ Resuelto | 2026-05-15 |
@@ -131,6 +132,17 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
   - Implementada gestión de `jwt_blacklist` en Redis (ZSET) en Logout y Middleware.
   - Sincronizados niveles de error (`warning` vs `error`) en la telemetría del dashboard.
 - **Resolución**: ✅ Resuelto el 2026-05-15. Sistema de telemetría ahora 100% operativo.
+
+### #014 — Expiración Prematura de Sesión JWT
+- **Síntoma**: El sistema cierra la sesión del usuario de forma inesperada antes de cumplirse los 15 minutos de inactividad configurados. El usuario es redirigido al login sin previo aviso.
+- **Impacto**: Interrupción del flujo de trabajo y posible pérdida de datos no guardados en formularios largos.
+- **Causa probable**: 
+    - Desincronización entre el TTL del token JWT y el tiempo de vida de la cookie en el navegador.
+    - El middleware de rotación de Refresh Tokens podría estar invalidando el token actual incorrectamente al detectar múltiples peticiones asíncronas simultáneas.
+    - El `SESSION_LIFETIME` en Laravel podría estar configurado con un valor inferior al esperado.
+- **Acción inmediata**: 
+    - Auditar `JwtService.php` y los tiempos de expiración configurados en `.env`.
+    - Revisar el middleware de autenticación para asegurar que la rotación de tokens sea atómica y no cause falsos positivos de robo de sesión.
 
 ### #013 — Invisibilidad de Licencias Moldex3D en Inventario
 - **Síntoma**: No se detectan licencias activas de Moldex3D en el inventario a pesar de haber realizado auditorías previas. El conteo de daemons devuelve 0 para este vendor (`moldex_daemons_count`).

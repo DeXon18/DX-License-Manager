@@ -38,8 +38,9 @@
 3. Validar si el daemon name `moldex3d` es consistente en todos los archivos de este vendor.
 
 ### Tareas siguientes
-1. Unificación de estilos CSS globales (#008).
-2. Normalización Semántica con IA (#007).
+1. **Resolver #014 — Expiración Prematura de Sesión.** Auditar `JwtService.php` y TTLs.
+2. Unificación de estilos CSS globales (#008).
+3. Normalización Semántica con IA (#007).
 
 ---
 
@@ -53,7 +54,8 @@
 
 ## Bloqueos o problemas sin resolver
 
-- **#013**: Las licencias Moldex3D auditadas no se están persistiendo automáticamente en el inventario activo. Requiere revisión profunda del service.
+- **#013**: Las licencias Moldex3D auditadas no se están persistiendo automáticamente en el inventario activo.
+- **#014**: Reportada expiración de sesión antes de los 15 minutos de inactividad.
 
 ---
 
