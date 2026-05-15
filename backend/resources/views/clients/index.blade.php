@@ -23,31 +23,34 @@
                     $currentVendor = session('client_inventory_vendor', 'all');
                 @endphp
                 
-                <div class="inventory-filter-group">
-                    <span class="filter-label">Filtro Inventario</span>
-                    <div class="segmented-control">
+                <div class="inventory-filter-group" style="margin-left: auto;">
+                    <div class="premium-segmented-control">
                         <!-- OFF -->
                         <a href="{{ route('clients.index', array_merge(request()->except('has_inventory'), ['clear_inventory' => 1])) }}" 
-                           class="seg-item {{ !$hasInv ? 'active' : '' }}" title="Sin filtros">
-                            <i class="fa-solid fa-ban"></i>
+                           class="seg-item {{ !$hasInv ? 'active off' : '' }}" title="Desactivar filtros">
+                            <div class="seg-icon"><i class="fa-solid fa-ban"></i></div>
+                            <span class="seg-text">OFF</span>
                         </a>
                         
                         <!-- ALL -->
                         <a href="{{ route('clients.index', array_merge(request()->all(), ['has_inventory' => 1, 'vendor_filter' => 'all'])) }}" 
                            class="seg-item {{ $hasInv && $currentVendor === 'all' ? 'active all' : '' }}" title="Todos los vendors">
-                            <i class="fa-solid fa-layer-group"></i>
+                            <div class="seg-icon"><i class="fa-solid fa-layer-group"></i></div>
+                            <span class="seg-text">ALL</span>
                         </a>
 
                         <!-- SIEMENS -->
                         <a href="{{ route('clients.index', array_merge(request()->all(), ['has_inventory' => 1, 'vendor_filter' => 'siemens'])) }}" 
                            class="seg-item {{ $hasInv && $currentVendor === 'siemens' ? 'active siemens' : '' }}" title="Solo Siemens">
-                            <i class="fa-solid fa-microchip"></i>
+                            <div class="seg-icon"><i class="fa-solid fa-microchip"></i></div>
+                            <span class="seg-text">Siemens</span>
                         </a>
 
                         <!-- MOLDEX -->
                         <a href="{{ route('clients.index', array_merge(request()->all(), ['has_inventory' => 1, 'vendor_filter' => 'moldex'])) }}" 
                            class="seg-item {{ $hasInv && $currentVendor === 'moldex' ? 'active moldex' : '' }}" title="Solo Moldex3D">
-                            <i class="fa-solid fa-cube"></i>
+                            <div class="seg-icon"><i class="fa-solid fa-cube"></i></div>
+                            <span class="seg-text">Moldex</span>
                         </a>
                     </div>
                 </div>
@@ -55,84 +58,97 @@
                 <style>
                     .inventory-filter-group {
                         display: flex;
-                        flex-direction: column;
-                        gap: 4px;
+                        align-items: center;
                     }
-                    .filter-label {
-                        font-size: 9px;
-                        font-weight: 700;
-                        color: var(--muted);
-                        text-transform: uppercase;
-                        letter-spacing: 0.05em;
-                        margin-left: 2px;
-                    }
-                    .segmented-control {
+                    .premium-segmented-control {
                         display: flex;
-                        background: var(--bg);
+                        background: rgba(255, 255, 255, 0.02);
                         border: 1px solid var(--border);
-                        border-radius: 6px;
-                        padding: 2px;
-                        gap: 2px;
+                        border-radius: 10px;
+                        padding: 3px;
+                        gap: 3px;
+                        box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+                        backdrop-filter: blur(10px);
                     }
                     .seg-item {
                         display: flex;
                         align-items: center;
-                        justify-content: center;
-                        width: 32px;
-                        height: 26px;
-                        border-radius: 4px;
+                        gap: 8px;
+                        padding: 6px 14px;
+                        border-radius: 8px;
                         color: var(--muted);
                         text-decoration: none;
-                        transition: all 0.2s ease;
-                        font-size: 12px;
+                        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                        border: 1px solid transparent;
                     }
+                    .seg-icon {
+                        font-size: 11px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        transition: transform 0.3s ease;
+                    }
+                    .seg-text {
+                        font-size: 10px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 0.05em;
+                    }
+                    
                     .seg-item:hover {
-                        background: var(--surface);
-                        color: var(--primary);
+                        color: var(--text);
+                        background: rgba(255, 255, 255, 0.05);
                     }
+                    .seg-item:hover .seg-icon {
+                        transform: translateY(-1px);
+                    }
+
                     .seg-item.active {
                         background: var(--surface);
                         color: var(--primary);
-                        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-                        border: 1px solid var(--border);
+                        border-color: var(--border);
+                        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
                     }
-                    
-                    /* Color states */
+
+                    /* Active States — Color Coding */
+                    .seg-item.active.off {
+                        border-color: rgba(255, 255, 255, 0.1);
+                        background: rgba(255, 255, 255, 0.05);
+                        color: var(--muted);
+                    }
                     .seg-item.active.all {
                         color: var(--accent);
-                        border-color: var(--accent-border);
                         background: var(--accent-muted);
+                        border-color: rgba(0, 153, 153, 0.3);
                     }
                     .seg-item.active.siemens {
                         color: var(--siemens-dark);
-                        border-color: var(--siemens-border);
                         background: var(--siemens-muted);
+                        border-color: var(--siemens-border);
                     }
                     .seg-item.active.moldex {
                         color: var(--moldex-dark);
-                        border-color: var(--moldex-border);
                         background: var(--moldex-muted);
+                        border-color: var(--moldex-border);
                     }
 
-                    /* Vendor colors fallback if not defined elsewhere */
+                    /* Vendors color definitions */
                     :root {
                         --siemens-muted: rgba(0, 153, 153, 0.1);
-                        --siemens-dark: #008080;
-                        --siemens-border: rgba(0, 153, 153, 0.2);
-                        
+                        --siemens-dark: #009999;
+                        --siemens-border: rgba(0, 153, 153, 0.3);
                         --moldex-muted: rgba(237, 28, 36, 0.1);
-                        --moldex-dark: #C4121A;
-                        --moldex-border: rgba(237, 28, 36, 0.2);
+                        --moldex-dark: #ED1C24;
+                        --moldex-border: rgba(237, 28, 36, 0.3);
                     }
 
                     [data-theme="dark"] {
-                        --siemens-muted: rgba(42, 161, 152, 0.1);
                         --siemens-dark: #2AA198;
-                        --siemens-border: rgba(42, 161, 152, 0.3);
-
-                        --moldex-muted: rgba(224, 82, 82, 0.1);
+                        --siemens-muted: rgba(42, 161, 152, 0.1);
+                        --siemens-border: rgba(42, 161, 152, 0.4);
                         --moldex-dark: #E05252;
-                        --moldex-border: rgba(224, 82, 82, 0.3);
+                        --moldex-muted: rgba(224, 82, 82, 0.1);
+                        --moldex-border: rgba(224, 82, 82, 0.4);
                     }
                 </style>
             </div>
