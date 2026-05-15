@@ -8,7 +8,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | Críticos (P1) | Importantes (P2) | Menores (P3) | Resueltos |
 | :--- | :--- | :--- | :--- |
-| 0 | 2 | 5 | 8 |
+| 0 | 2 | 4 | 9 |
 
 ---
 
@@ -22,14 +22,13 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 | #003 | Filtro "Solo con Licencias" limitado a Siemens | Clientes | 🟠 P2 | 🆕 Nuevo | 2026-05-14 |
 | #009 | Limpieza de archivos basura y registros huérfanos | Sistema | 🟢 P3 | 🆕 Nuevo | 2026-05-14 |
 | #008 | Unificación de estilos CSS en archivo central | UI/UX | 🟢 P3 | 🆕 Nuevo | 2026-05-14 |
-| #006 | Acciones rápidas sin vínculos / estáticas | Dashboard | 🟢 P3 | 🆕 Nuevo | 2026-05-14 |
 | #004 | Revisar visualización de "Other Installs" | UI/UX | 🟢 P3 | 🆕 Nuevo | 2026-05-14 |
-| #001 | [Ejemplo] Error de contraste en modo claro | UI/UX | 🟢 P3 | 🆕 Resuelto | 2026-05-14 |
 
 ### ✅ Resueltos
 
 | ID | Incidencia | Módulo | Prioridad | Estado | Fecha detección | Fecha resolución |
 |---:|---|---|:---:|:---:|:---:|:---:|
+| #006 | Acciones rápidas sin vínculos / estáticas | Dashboard | 🟢 P3 | ✅ Resuelto | 2026-05-14 | 2026-05-15 |
 | #013 | Invisibilidad de licencias Moldex3D en inventario | Inventario | 🔴 P1 | ✅ Resuelto | 2026-05-15 | 2026-05-15 |
 | #014 | Expiración prematura de sesión JWT | Auth/JWT | 🟠 P2 | ✅ Resuelto | 2026-05-15 | 2026-05-15 |
 | #012 | RedisException: MISCONF — persistencia fallida | Infra/Redis | 🔴 P1 | ✅ Resuelto | 2026-05-15 | 2026-05-15 |
@@ -110,8 +109,10 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 - **Causa probable**: Implementación inicial centrada en el diseño visual (Bento) sin terminar de cablear los enlaces y la lógica de backend.
 - **Impacto**: Experiencia de usuario incompleta en el centro de mando.
 - **Acción**: 
-  - Vincular acciones a rutas reales (Limpiar caché, Backups, Auditoría, etc.).
-  - Estudiar la posibilidad de que sean configurables o dinámicas según el rol del usuario.
+  - Implementado **Buscador Global Express** en el Dashboard con soporte para Sold-To, Machine ID y Nombre de Cliente.
+  - Vinculadas acciones rápidas a herramientas reales: Generación de COD, Planificador de Renovaciones y Hub de Auditoría IA.
+  - Implementado **Contador de Renovaciones Pendientes** del mes actual con badge dinámico.
+- **Resolución**: ✅ Resuelto el 2026-05-15. Dashboard transformado en centro operativo funcional para el usuario.
 
 ### #007 — Fallo en Normalización / Duplicidad de Clientes
 - **Síntoma**: Se detectan clientes duplicados con nombres muy similares que no están siendo agrupados automáticamente (ej: "Fundacion Tecnalia" vs "Fundación Tecnalia Research & Innovation").
