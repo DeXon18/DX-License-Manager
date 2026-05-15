@@ -8,7 +8,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | Críticos (P1) | Importantes (P2) | Menores (P3) | Resueltos |
 | :--- | :--- | :--- | :--- |
-| 1 | 4 | 4 | 1 |
+| 0 | 4 | 4 | 2 |
 
 ---
 
@@ -16,7 +16,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | ID | Incidencia | Módulo | Prio | Estado | Fecha Detect. |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| #011 | Transformación de Licencia (NX) falla (No descarga/procesa) | Siemens NX | P1 | 🆕 Nuevo | 2026-05-15 |
+| #011 | Transformación de Licencia (NX) falla (No descarga/procesa) | Siemens NX | P1 | ✅ Resuelto | 2026-05-15 |
 | #010 | Indicadores de Seguridad siempre a 0 | Dashboard | P2 | 🆕 Nuevo | 2026-05-14 |
 | #009 | Limpieza de archivos basura y registros huérfanos | Sistema | P3 | 🆕 Nuevo | 2026-05-14 |
 | #008 | Unificación de estilos CSS en archivo central | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
@@ -38,6 +38,12 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 - **Impacto**: Bloqueo total en la generación de licencias para clientes Siemens.
 - **Causa probable**: Inconsistencia en stream de descarga o fallo en lógica Multi-Sold-To.
 - **Acción**: Investigar el flujo en `NXSuiteController` y `NXSuiteService` para detectar fallos en la generación del stream de descarga o errores silenciosos en el procesamiento.
+- **Resolución**: 
+  - Se corrigió el flujo de descarga en el controlador evitando bloqueos por peticiones AJAX asíncronas.
+  - Implementada gestión de memoria avanzada (`256M`) y `try-catch` con degradación elegante.
+  - El sistema ahora asegura la entrega del archivo transformado incluso si fallan servicios secundarios (IA/Storage).
+  - Validado el soporte para extensiones `.dat` y `.cid`.
+  - Añadida validación UI con Alpine.js para feedback inmediato al usuario.
 
 
 ### #002 — Error de sintaxis y CRLF en backup-db.sh

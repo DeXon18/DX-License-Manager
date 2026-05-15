@@ -1,14 +1,14 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-15 08:00  
+> Última actualización: 2026-05-15 08:40  
 > Sesión en: PC Desarrollo  
 > Rama activa: dev
-> Estado Git: Cirugía de índice realizada (Commit cfaabde).
+> Estado Git: Rama fix/nx-ui-validation mergeada y estabilizada.
 
 ---
 
 ## Estado General
 
-**Fase actual:** Fase 14.5 — Estabilización y Mantenimiento  
+**Fase actual:** Fase 15.1 — Estabilización Global y Validación UI  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -16,33 +16,31 @@
 
 ## Qué se hizo en esta sesión
 
-- **Resolución #002 (P1)**: Scripts de Backup estabilizados.
-  - Conversión CRLF -> LF (Unix).
-  - Corrección de sintaxis Bash y blindaje de variables de entorno.
-  - Mejora de naming dinámico: `beta_[manual|system]_DATE.sql`.
-- **UI/UX Backups**:
-  - Implementada nueva columna "Origen" en la gestión de backups.
-  - Badges semánticos para distinguir copias de SISTEMA vs MANUAL.
+- **Resolución #011 (P1)**: Pipeline de herramientas estabilizado.
+  - Corregido flujo de descarga AJAX en `NXSuiteController`.
+  - Implementado blindaje de memoria (`256M`) y `try-catch` global con degradación elegante.
+  - Optimización del `LicenseParserService` para archivos de gran tamaño (procesamiento línea a línea).
+  - Soporte para daemons modernos (`saltd`, `cdlmd`, `RCTECH`) en Siemens.
+- **Validación UI Global**:
+  - Implementada validación Alpine.js en NX, StarCCM+, HEEDS y Moldex3D.
+  - Feedback visual temporal (4s) para extensiones no permitidas.
+  - Ampliado soporte backend a `.dat` y `.cid` en todas las herramientas Siemens.
 - **Registro de Errores**:
-  - Añadida incidencia #011 (P1): Transformación NX falla (No descarga/procesa).
-  - Actualización de `ERRORS.md` con causas probables.
-- **Mantenimiento Git**:
-  - Resuelta corrupción `bad tree object HEAD` mediante reconstrucción de índice y commit forzado.
+  - Incidencia #011 marcada como **RESUELTA**.
+  - Actualización de `BACKLOG.md` y `CHANGELOG.md` (v1.15.1).
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-**Resolver #011 — Transformación de Licencia NX.**
-1. Investigar fallo en `NXSuiteController` y `NXSuiteService`.
-2. Verificar por qué el stream de descarga no se inicia tras la transformación.
-3. Comprobar logs de PHP en busca de fallos en el procesamiento del motor SALT.
+**Resolver #003 — Filtro "Solo con Licencias" limitado a Siemens.**
+1. Investigar query en `ClientController` para incluir conteo de `license_inventory_daemons` de tipo Moldex3D.
+2. Asegurar que el switch de inventario refleja clientes de ambos vendors.
 
 ### Tareas siguientes
-1. Corregir lógica de filtros en Clientes para incluir Moldex3D (#003).
-2. Estudiar integración IA para normalización semántica (#007).
-3. Mejorar el lector de logs (#005) e indicadores de seguridad (#010).
+1. Estudiar integración IA para normalización semántica (#007).
+2. Mejorar el lector de logs (#005) e indicadores de seguridad (#010).
 
 ---
 
