@@ -18,103 +18,103 @@
             </form>
 
             <div class="filter-actions" style="display: flex; align-items: center; gap: 12px;">
-                @php $hasInv = session('client_has_inventory', false); @endphp
+                @php 
+                    $hasInv = session('client_has_inventory', false); 
+                    $currentVendor = session('client_inventory_vendor', 'all');
+                @endphp
                 
-                <div class="premium-switch-container">
-                    <a href="{{ $hasInv ? route('clients.index', array_merge(request()->except('has_inventory'), ['clear_inventory' => 1])) : route('clients.index', array_merge(request()->all(), ['has_inventory' => 1])) }}" 
-                       class="premium-switch {{ $hasInv ? 'active' : '' }}"
-                       title="Filtrar clientes con inventario activo">
-                        <div class="switch-track">
-                            <div class="switch-knob">
-                                <i class="fa-solid fa-sliders"></i>
-                            </div>
-                        </div>
-                        <span class="switch-text">Solo con Licencias</span>
-                    </a>
+                <div class="inventory-filter-group">
+                    <span class="filter-label">Filtro Inventario</span>
+                    <div class="segmented-control">
+                        <!-- OFF -->
+                        <a href="{{ route('clients.index', array_merge(request()->except('has_inventory'), ['clear_inventory' => 1])) }}" 
+                           class="seg-item {{ !$hasInv ? 'active' : '' }}" title="Sin filtros">
+                            <i class="fa-solid fa-ban"></i>
+                        </a>
+                        
+                        <!-- ALL -->
+                        <a href="{{ route('clients.index', array_merge(request()->all(), ['has_inventory' => 1, 'vendor_filter' => 'all'])) }}" 
+                           class="seg-item {{ $hasInv && $currentVendor === 'all' ? 'active all' : '' }}" title="Todos los vendors">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </a>
+
+                        <!-- SIEMENS -->
+                        <a href="{{ route('clients.index', array_merge(request()->all(), ['has_inventory' => 1, 'vendor_filter' => 'siemens'])) }}" 
+                           class="seg-item {{ $hasInv && $currentVendor === 'siemens' ? 'active siemens' : '' }}" title="Solo Siemens">
+                            <i class="fa-solid fa-microchip"></i>
+                        </a>
+
+                        <!-- MOLDEX -->
+                        <a href="{{ route('clients.index', array_merge(request()->all(), ['has_inventory' => 1, 'vendor_filter' => 'moldex'])) }}" 
+                           class="seg-item {{ $hasInv && $currentVendor === 'moldex' ? 'active moldex' : '' }}" title="Solo Moldex3D">
+                            <i class="fa-solid fa-cube"></i>
+                        </a>
+                    </div>
                 </div>
 
                 <style>
-                    .premium-switch-container {
+                    .inventory-filter-group {
                         display: flex;
-                        align-items: center;
+                        flex-direction: column;
+                        gap: 4px;
                     }
-                    .premium-switch {
-                        display: flex;
-                        align-items: center;
-                        gap: 12px;
-                        text-decoration: none;
-                        padding: 6px 16px 6px 6px;
-                        background: var(--surface);
-                        border: 1px solid var(--border);
-                        border-radius: 6px;
-                        transition: all 0.2s ease;
-                        user-select: none;
-                    }
-                    .switch-track {
-                        width: 40px;
-                        height: 20px;
-                        background: var(--bg);
-                        border-radius: 4px;
-                        position: relative;
-                        border: 1px solid var(--border);
-                        transition: all 0.2s ease;
-                        overflow: hidden;
-                    }
-                    .switch-knob {
-                        position: absolute;
-                        top: 2px;
-                        left: 2px;
-                        width: 14px;
-                        height: 14px;
-                        background: var(--surface);
-                        border-radius: 3px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-                        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-                        border: 1px solid var(--border);
-                    }
-                    .switch-knob i {
-                        font-size: 8px;
-                        color: var(--muted);
-                        transition: all 0.2s ease;
-                    }
-                    .switch-text {
-                        font-size: 11px;
+                    .filter-label {
+                        font-size: 9px;
                         font-weight: 700;
                         color: var(--muted);
                         text-transform: uppercase;
                         letter-spacing: 0.05em;
+                        margin-left: 2px;
+                    }
+                    .segmented-control {
+                        display: flex;
+                        background: var(--bg);
+                        border: 1px solid var(--border);
+                        border-radius: 6px;
+                        padding: 2px;
+                        gap: 2px;
+                    }
+                    .seg-item {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 32px;
+                        height: 26px;
+                        border-radius: 4px;
+                        color: var(--muted);
+                        text-decoration: none;
                         transition: all 0.2s ease;
+                        font-size: 12px;
                     }
-
-                    .premium-switch.active {
-                        border-color: var(--accent);
+                    .seg-item:hover {
                         background: var(--surface);
-                    }
-                    .premium-switch.active .switch-track {
-                        background: var(--accent);
-                        border-color: var(--accent);
-                    }
-                    .premium-switch.active .switch-knob {
-                        transform: translateX(20px);
-                        background: white;
-                        border-color: white;
-                    }
-                    .premium-switch.active .switch-knob i {
-                        color: var(--accent);
-                    }
-                    .premium-switch.active .switch-text {
                         color: var(--primary);
                     }
-
-                    .premium-switch:hover {
-                        border-color: var(--accent);
-                        background: var(--bg);
+                    .seg-item.active {
+                        background: var(--surface);
+                        color: var(--primary);
+                        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                        border: 1px solid var(--border);
+                    }
+                    
+                    /* Color states */
+                    .seg-item.active.all {
+                        color: var(--accent);
+                        border-color: var(--accent-border);
+                        background: var(--accent-muted);
+                    }
+                    .seg-item.active.siemens {
+                        color: var(--siemens-dark);
+                        border-color: var(--siemens-border);
+                        background: var(--siemens-muted);
+                    }
+                    .seg-item.active.moldex {
+                        color: var(--moldex-dark);
+                        border-color: var(--moldex-border);
+                        background: var(--moldex-muted);
                     }
 
-                    /* Vendor colors */
+                    /* Vendor colors fallback if not defined elsewhere */
                     :root {
                         --siemens-muted: rgba(0, 153, 153, 0.1);
                         --siemens-dark: #008080;
