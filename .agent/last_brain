@@ -1,6 +1,6 @@
-Rama activa: chore/error-tracking. Fase 14.5 — Estabilización y Mantenimiento.
-Último trabajo: Registro de 9 incidencias reales en ERRORS.md tras el feedback de Oskar sobre Backups, Filtros de Clientes, Normalización IA, Logs y Dashboard.
-Estado: Backlog de errores triado (P1-P3). Infraestructura de tracking activa y documentada.
-Próximo paso inmediato: Resolver #002 (Scripts de Backup) — Corregir CRLF y sintaxis Bash en backup-db.sh.
+Rama activa: dev. Fase 15.4 — Diagnóstico y Logs.
+Último trabajo: Resolución crítica de desincronización MariaDB (archivo .ibd huérfano) vía SSH. Profesionalización del Lector de Logs con parser Regex y UI Alpine.js (trazas colapsables). Blindaje total de AuditLogController y EmailLoggerListener contra tablas ausentes (email_logs).
+Estado: Sistema estable y resiliente. Tabla email_logs recreada en InnoDB y operativa. Telemetría de alertas (5) sincronizada DB+Fichero. Rama fix integrada y purgada.
+Próximo paso inmediato: Resolver #003 (Filtro "Solo con Licencias" Siemens/Moldex).
 Bloqueos: Ninguno.
 Stack beta: running. Stack prod: running.
