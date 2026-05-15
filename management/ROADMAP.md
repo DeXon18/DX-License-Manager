@@ -438,6 +438,18 @@ DX License Manager
 
 ---
 
+### ✅ Fase 15.5 — Inventario Granular y UI
+
+**Estado:** COMPLETADA
+**Validación:** ✅ Verificado por Oskar el 2026-05-15.
+**Descripción:** Refinamiento de filtros de inventario y estandarización UI.
+
+- [x] Filtro segmentado de 4 estados (OFF, ALL, Siemens, Moldex3D).
+- [x] Rediseño premium de la barra de búsqueda (600px, glassmorphism).
+- [x] Persistencia de filtros multi-vendor por sesión.
+
+---
+
 ### ✅ Fase 16 — Centro de Logs Unificado (Auditoría Pro)
 
 **Estado:** COMPLETADA

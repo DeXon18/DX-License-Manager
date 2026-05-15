@@ -1,6 +1,6 @@
-Rama activa: dev. Fase 15.4 — Diagnóstico y Logs.
-Último trabajo: Resolución crítica de desincronización MariaDB (archivo .ibd huérfano) vía SSH. Profesionalización del Lector de Logs con parser Regex y UI Alpine.js (trazas colapsables). Blindaje total de AuditLogController y EmailLoggerListener contra tablas ausentes (email_logs).
-Estado: Sistema estable y resiliente. Tabla email_logs recreada en InnoDB y operativa. Telemetría de alertas (5) sincronizada DB+Fichero. Rama fix integrada y purgada.
-Próximo paso inmediato: Resolver #003 (Filtro "Solo con Licencias" Siemens/Moldex).
-Bloqueos: Ninguno.
+Rama activa: feature/fix-client-license-filter. Fase 15.5 — Inventario Granular y UI. 
+Último trabajo: Implementado control segmentado de 4 estados (OFF/ALL/SIEMENS/MOLDEX) en Clientes index. Blade y Controller actualizados con lógica de persistencia en sesión. Rediseño premium de la barra de búsqueda (600px, glassmorphism, alineación derecha).
+Estado: Filtros funcionales y UI impecable. Persistencia verificada. Registrada Incidencia #013 (Moldex3D) e Incidencia #014 (Expiración JWT).
+Próximo paso inmediato: Investigar MoldexSyncService.php (#013) y JwtService.php (#014).
+Bloqueos: #013 y #014 bajo seguimiento.
 Stack beta: running. Stack prod: running.
