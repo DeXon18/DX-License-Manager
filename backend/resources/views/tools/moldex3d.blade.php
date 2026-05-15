@@ -30,6 +30,15 @@
             </div>
             
             <div style="padding: 24px;">
+                <!-- Error Message Alert -->
+                <template x-if="errorMessage">
+                    <div x-transition 
+                         style="margin-bottom: 16px; padding: 12px 16px; background: rgba(211, 47, 47, 0.1); border-left: 4px solid #D32F2F; color: #D32F2F; font-size: 13px; font-weight: 600; border-radius: 4px; display: flex; align-items: center; gap: 10px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <span x-text="errorMessage"></span>
+                    </div>
+                </template>
+
                 <form @submit.prevent="uploadFile" enctype="multipart/form-data">
                     <div class="dropzone" 
                          :class="[isDragging ? 'dragging' : '', 'theme-amber']"
@@ -255,14 +264,33 @@ function moldexAuditor() {
         fileName: '',
         loading: false,
         result: null,
+        errorMessage: '',
+        allowedExtensions: ['mac', 'txt'],
 
         init() {
             console.log('Moldex3D Auditor initialized');
         },
 
+        validateFile(file) {
+            if (!file) return false;
+            const ext = file.name.split('.').pop().toLowerCase();
+            if (!this.allowedExtensions.includes(ext)) {
+                this.errorMessage = 'Extensión .' + ext + ' no permitida. Use .mac o .txt';
+                this.fileName = '';
+                this.$refs.fileInput.value = '';
+                setTimeout(() => { this.errorMessage = ''; }, 4000);
+                return false;
+            }
+            this.errorMessage = '';
+            return true;
+        },
+
         handleFileChange(e) {
             if (e.target.files.length > 0) {
-                this.fileName = e.target.files[0].name;
+                const file = e.target.files[0];
+                if (this.validateFile(file)) {
+                    this.fileName = file.name;
+                }
             }
         },
 
@@ -270,8 +298,10 @@ function moldexAuditor() {
             this.isDragging = false;
             const files = e.dataTransfer.files;
             if (files.length > 0) {
-                this.$refs.fileInput.files = files;
-                this.fileName = files[0].name;
+                if (this.validateFile(files[0])) {
+                    this.$refs.fileInput.files = files;
+                    this.fileName = files[0].name;
+                }
             }
         },
 
