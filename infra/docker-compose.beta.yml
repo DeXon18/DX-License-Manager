@@ -1,0 +1,84 @@
+services:
+  nginx-beta:
+    image: nginx:1.25-alpine
+    container_name: dx-nginx-beta
+    restart: always
+    ports:
+      - "8002:80"
+    volumes:
+      - ./infra/nginx/beta.conf:/etc/nginx/conf.d/default.conf
+      - ./backend:/var/www/html:ro
+      # - ./infra/assets:/var/www/assets:ro (DEPRECATED)
+    depends_on:
+      - php-fpm-beta
+
+  php-fpm-beta:
+    build:
+      context: ./infra/php
+    container_name: dx-php-beta
+    restart: always
+    mem_limit: 512m
+    env_file: ./infra/.env.beta
+    volumes:
+      - ./backend:/var/www/html
+      - ./infra/.env.beta:/var/www/html/.env
+      - ./infra/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./storage:/var/www/html/storage/app
+      - ./management:/var/www/management:ro
+      - ./scripts:/var/www/html/scripts:ro
+      - ./.git:/var/www/html/.git:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      mariadb-beta:
+        condition: service_healthy
+      redis-beta:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "php-fpm -t || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  mariadb-beta:
+    image: mariadb:10.11
+    container_name: dx-mariadb-beta
+    restart: always
+    mem_limit: 512m
+    env_file: ./infra/.env.beta
+    volumes:
+      - mariadb_beta_data:/var/lib/mysql
+      - ./infra/mariadb/my.cnf:/etc/mysql/conf.d/my.cnf
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  redis-beta:
+    image: redis:7-alpine
+    container_name: dx-redis-beta
+    restart: always
+    mem_limit: 128m
+    volumes:
+      - redis_beta_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  node-beta:
+    image: node:20-alpine
+    container_name: dx-node-beta
+    volumes:
+      - ./backend:/var/www/html
+      - ./infra/.env.beta:/var/www/html/.env
+    working_dir: /var/www/html
+    user: "1000:1000"
+    command: ["tail", "-f", "/dev/null"]
+
+volumes:
+  mariadb_beta_data:
+  redis_beta_data:
