@@ -8,28 +8,38 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | Críticos (P1) | Importantes (P2) | Menores (P3) | Resueltos |
 | :--- | :--- | :--- | :--- |
-| 0 | 4 | 4 | 3 |
+| 1 | 5 | 4 | 3 |
+
+---
 
 ---
 
 ## 📝 Registro de Incidencias
 
-| ID | Incidencia | Módulo | Prio | Estado | Fecha Detect. |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| #012 | RedisException: MISCONF (Persistencia fallida) | Infra/Redis | P1 | ✅ Resuelto | 2026-05-15 |
-| #011 | Transformación de Licencia (NX) falla (No descarga/procesa) | Siemens NX | P1 | ✅ Resuelto | 2026-05-15 |
-| #010 | Indicadores de Seguridad siempre a 0 | Dashboard | P2 | ✅ Resuelto | 2026-05-15 |
-| #009 | Limpieza de archivos basura y registros huérfanos | Sistema | P3 | 🆕 Nuevo | 2026-05-14 |
-| #008 | Unificación de estilos CSS en archivo central | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
-| #007 | Fallo en Normalización / Duplicidad de Clientes | Normalización | P2 | 🆕 Nuevo | 2026-05-14 |
-| #006 | Acciones rápidas sin vínculos / Estáticas | Dashboard | P3 | 🆕 Nuevo | 2026-05-14 |
-| #005 | Mejora en Lector de Logs (laravel.log) | Admin/Logs | P2 | ✅ Resuelto | 2026-05-15 |
-| #004 | Revisar visualización de "Other Installs" | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
-| #003 | Filtro "Solo con Licencias" limitado a Siemens | Clientes | P2 | 🆕 Nuevo | 2026-05-14 |
-| #002 | Error de sintaxis y CRLF en backup-db.sh | Infra/Scripts | P1 | ✅ Resuelto | 2026-05-14 |
-| #001 | [Ejemplo] Error de contraste en modo claro | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
+| ID | Incidencia | Módulo | Prioridad | Estado | Fecha detección | Fecha resolución |
+|---:|---|---|:---:|:---:|:---:|:---:|
+| #013 | Invisibilidad de licencias Moldex3D en inventario | Inventario | 🔴 P1 | 🆕 Nuevo | 2026-05-15 | — |
+| #014 | Expiración prematura de sesión JWT | Auth/JWT | 🟠 P2 | 🆕 Nuevo | 2026-05-15 | — |
+| #007 | Fallo en normalización / duplicidad de clientes | Normalización | 🟠 P2 | 🆕 Nuevo | 2026-05-14 | — |
+| #003 | Filtro "Solo con Licencias" limitado a Siemens | Clientes | 🟠 P2 | 🆕 Nuevo | 2026-05-14 | — |
+| #009 | Limpieza de archivos basura y registros huérfanos | Sistema | 🟢 P3 | 🆕 Nuevo | 2026-05-14 | — |
+| #008 | Unificación de estilos CSS en archivo central | UI/UX | 🟢 P3 | 🆕 Nuevo | 2026-05-14 | — |
+| #006 | Acciones rápidas sin vínculos / estáticas | Dashboard | 🟢 P3 | 🆕 Nuevo | 2026-05-14 | — |
+| #004 | Revisar visualización de "Other Installs" | UI/UX | 🟢 P3 | 🆕 Nuevo | 2026-05-14 | — |
+| #001 | [Ejemplo] Error de contraste en modo claro | UI/UX | 🟢 P3 | 🆕 Nuevo | 2026-05-14 | — |
+| #012 | RedisException: MISCONF — persistencia fallida | Infra/Redis | 🔴 P1 | ✅ Resuelto | 2026-05-15 | 2026-05-15 |
+| #011 | Transformación de licencia NX falla — no descarga/procesa | Siemens NX | 🔴 P1 | ✅ Resuelto | 2026-05-15 | 2026-05-15 |
+| #002 | Error de sintaxis y CRLF en `backup-db.sh` | Infra/Scripts | 🔴 P1 | ✅ Resuelto | 2026-05-14 | 2026-05-14 |
+| #010 | Indicadores de seguridad siempre a 0 | Dashboard | 🟠 P2 | ✅ Resuelto | 2026-05-15 | 2026-05-15 |
+| #005 | Mejora en lector de logs `laravel.log` | Admin/Logs | 🟠 P2 | ✅ Resuelto | 2026-05-15 | 2026-05-15 |
 
+### Leyenda de prioridad
 
+| Prioridad | Significado |
+|:---:|---|
+| 🔴 P1 | Alta — impacto crítico o bloqueo funcional |
+| 🟠 P2 | Media — afecta a funcionalidades importantes |
+| 🟢 P3 | Baja — mejora, revisión visual o tarea no bloqueante |
 ---
 
 ## 🔍 Detalle de Incidencias
@@ -130,6 +140,29 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
   - Implementada gestión de `jwt_blacklist` en Redis (ZSET) en Logout y Middleware.
   - Sincronizados niveles de error (`warning` vs `error`) en la telemetría del dashboard.
 - **Resolución**: ✅ Resuelto el 2026-05-15. Sistema de telemetría ahora 100% operativo.
+
+### #014 — Expiración Prematura de Sesión JWT
+- **Síntoma**: El sistema cierra la sesión del usuario de forma inesperada antes de cumplirse los 15 minutos de inactividad configurados. El usuario es redirigido al login sin previo aviso.
+- **Impacto**: Interrupción del flujo de trabajo y posible pérdida de datos no guardados en formularios largos.
+- **Causa probable**: 
+    - Desincronización entre el TTL del token JWT y el tiempo de vida de la cookie en el navegador.
+    - El middleware de rotación de Refresh Tokens podría estar invalidando el token actual incorrectamente al detectar múltiples peticiones asíncronas simultáneas.
+    - El `SESSION_LIFETIME` en Laravel podría estar configurado con un valor inferior al esperado.
+- **Acción inmediata**: 
+    - Auditar `JwtService.php` y los tiempos de expiración configurados en `.env`.
+    - Revisar el middleware de autenticación para asegurar que la rotación de tokens sea atómica y no cause falsos positivos de robo de sesión.
+
+### #013 — Invisibilidad de Licencias Moldex3D en Inventario
+- **Síntoma**: No se detectan licencias activas de Moldex3D en el inventario a pesar de haber realizado auditorías previas. El conteo de daemons devuelve 0 para este vendor (`moldex_daemons_count`).
+- **Impacto**: Bloqueo en el seguimiento de renovaciones y parque de licencias Moldex3D. El filtro granular implementado muestra resultados vacíos para este vendor.
+- **Causa probable**: 
+    - Desconexión entre `AiAuditResult` y la persistencia en `LicenseInventoryDaemon`.
+    - Fallo en el mapeo semántico del nombre del cliente en `MoldexSyncService`.
+    - El daemon name `moldex3d` podría no ser el único usado en archivos `.mac`.
+- **Acción inmediata**: 
+    - Verificar logs de `MoldexSync` (actualmente sin entradas recientes).
+    - Crear un entorno de pruebas con datos reales para validar la persistencia.
+    - Se ha creado un registro manual para "Walter Pack Sl" para verificar que la UI funciona correctamente, pero el problema de fondo en la sincronización persiste.
 
 ---
 

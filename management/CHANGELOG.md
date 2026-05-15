@@ -1,14 +1,17 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
-## [2026-05-15 09:35] — Diagnóstico: Lector de Logs Profesional (Fix #005) ✅
+## [2026-05-15 10:15] — Clientes: Filtro Granular de Inventario & UI Premium ✅
 
 ### Added
-- **Parser de Logs**: Nuevo motor de análisis Regex para estructurar `laravel.log` en entradas legibles con timestamp y nivel de severidad.
-- **UI Interactiva**: Implementado sistema de **Stack Traces colapsables** con Alpine.js en la pestaña de logs de sistema.
-- **Filtrado de Ruido**: Resaltado visual diferenciado para código de proyecto vs librerías `vendor`.
-- **Telemetría Unificada**: El contador de alertas del Dashboard ahora sincroniza en tiempo real los errores de la DB con los incidentes registrados en el fichero físico de logs.
-- **Robustez Auditoría**: Implementado blindaje contra tablas inexistentes (`email_logs`) para evitar errores 500 en la gestión de logs de sistema.
+- **Filtro Inteligente de Inventario**: Implementado control segmentado de 4 estados (OFF, ALL, Siemens, Moldex3D) para una gestión precisa del parque de licencias.
+- **UI Premium**: Rediseño del área de búsqueda con estética "cristal" (glassmorphism), etiquetas dinámicas y alineación ergonómica a la derecha.
+- **Búsqueda Avanzada**: Ampliado el ancho del buscador a 600px y mejorada la visibilidad del input para facilitar la localización de cuentas.
+- **Persistencia Multi-Vendor**: La lógica de filtrado ahora es 100% persistente por sesión, permitiendo navegar entre clientes manteniendo el contexto de vendor seleccionado.
+
+### Fixed
+- **Incidencia #003**: Resuelto el límite del filtro "Solo con Licencias", que ahora soporta múltiples vendors de forma independiente.
+- **Visibilidad Moldex3D**: Identificado problema de sincronización de licencias Moldex3D (Incidencia #013). Se ha creado un registro de prueba para validar la funcionalidad.
 
 ## [2026-05-15 09:20] — Seguridad: Dashboard Telemetría & Blacklist (Fix #010) ✅
 
@@ -17,6 +20,13 @@
 - **Auditoría**: Implementado log automático de `login_failed` con captura de IP y User Agent.
 - **JWT**: Implementada **Blacklist proactiva** en Redis (ZSET) para invalidación instantánea de tokens al cerrar sesión.
 - **Telemetría**: Sincronización de niveles de severidad (`error`, `critical`) para una visualización real del estado de la flota en el NOC Pro.
+
+### Added
+- **Parser de Logs**: Nuevo motor de análisis Regex para estructurar `laravel.log` en entradas legibles con timestamp y nivel de severidad.
+- **UI Interactiva**: Implementado sistema de **Stack Traces colapsables** con Alpine.js en la pestaña de logs de sistema.
+- **Filtrado de Ruido**: Resaltado visual diferenciado para código de proyecto vs librerías `vendor`.
+- **Telemetría Unificada**: El contador de alertas del Dashboard ahora sincroniza en tiempo real los errores de la DB con los incidentes registrados en el fichero físico de logs.
+- **Robustez Auditoría**: Implementado blindaje contra tablas inexistentes (`email_logs`) para evitar errores 500 en la gestión de logs de sistema.
 
 ## [2026-05-15 08:45] — Infraestructura: Fix Redis Persistence (Fix #012) ✅
 
