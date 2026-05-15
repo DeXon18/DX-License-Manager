@@ -38,11 +38,19 @@ El desarrollador inicia. El agente espera.
 - [x] #014 (P2): Estabilización profunda JWT. ✅ (2026-05-15)
 - [x] #009 (P3): Limpieza Global de Basura. ✅ (2026-05-15)
 - [ ] #008 (P3): Unificación CSS.
-- [ ] #004 (P3): UI Multi-Sold-To.
+- [x] #004 (P3): UI Multi-Sold-To. ✅ (2026-05-15)
 - [x] #006 (P3): Dashboard Operativo (Buscador/Favoritos). ✅ (2026-05-15)
 
 
 ## ✅ Completado
+
+### Resolución de Incidencia #004 — UI Multi-Sold-To (NOC Pro v2) ✅
+- **Completada:** 2026-05-15
+- **Rama:** feature/multi-soldto-ui
+- **Resumen:** Rediseño estético de alta fidelidad para licencias unificadas. Se implementó una marca de agua técnica sutil (Watermark) y una franja minimalista para Sold-Tos adicionales con resaltado en amarillo claro (#fde68a), eliminando el ruido visual en el header del daemon.
+- [x] UI: Implementada marca de agua `fa-network-wired` (Opacidad 0.04).
+- [x] UI: Nueva franja técnica transparente con IDs en amarillo suave.
+- [x] Limpieza: Eliminado badge "UNIFICADA" y popover experimental para un look más industrial.
 
 ### Resolución de Incidencia #013 — Sincronización Moldex3D ✅
 - **Completada:** 2026-05-15
