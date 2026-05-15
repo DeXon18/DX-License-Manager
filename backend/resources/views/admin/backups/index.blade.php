@@ -93,7 +93,7 @@
             <div style="display: flex; align-items: flex-start; gap: 20px;">
                 <div style="padding: 15px; border-radius: 10px; background: rgba(67, 97, 238, 0.05); border: 1px solid rgba(67, 97, 238, 0.2); color: var(--accent); flex: 1;">
                     <h4 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 700;">Cron Job Activo</h4>
-                    <p style="margin: 0; font-size: 12px; line-height: 1.6; opacity: 0.9;">El sistema realiza una copia de seguridad completa automáticamente cada día a las <b>08:00 AM</b>. Los archivos se rotan tras 30 días para optimizar el espacio.</p>
+                    <p style="margin: 0; font-size: 12px; line-height: 1.6; opacity: 0.9;">El sistema realiza una copia de seguridad completa automáticamente cada día a las <b>08:07 AM</b>. Los archivos se rotan tras 30 días para optimizar el espacio.</p>
                 </div>
                 <div style="width: 280px; display: flex; flex-direction: column; gap: 10px;">
                     <div style="font-size: 11px; color: var(--muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Próxima ejecución</div>
@@ -224,7 +224,7 @@
             updateCountdown() {
                 const now = new Date();
                 const next = new Date();
-                next.setHours(8, 0, 0, 0);
+                next.setHours(8, 7, 0, 0);
                 
                 if (now >= next) {
                     next.setDate(next.getDate() + 1);
