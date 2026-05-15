@@ -17,8 +17,6 @@
 - **QueryExceptions (Database)**: Restauradas columnas faltantes `warnings`, `detected_name` y `decision` en las tablas de auditoría y normalización.
 - **Limpieza de Huérfanos**: Eliminación de residuos de base de datos y archivos `.sql` antiguos del servidor.
 
-## [2026-05-15 13:00] — Seguridad: Estabilización de Sesión JWT (Fix #014) ✅
-
 ## [2026-05-15 11:28] — Resolución de Incidencia #013 (Sincronización Moldex3D) ✅
 
 ### Fixed

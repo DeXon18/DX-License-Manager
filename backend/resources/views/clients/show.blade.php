@@ -152,7 +152,12 @@
                     </div>
 
                     @foreach($daemons as $daemon)
-                        <div class="daemon-card {{ $daemon->vendor }}">
+                        <div class="daemon-card {{ $daemon->vendor }} {{ !empty($daemon->additional_sold_tos) ? 'unified-card' : '' }}">
+                            @if(!empty($daemon->additional_sold_tos))
+                                <div class="unified-watermark">
+                                    <i class="fa-solid fa-network-wired"></i>
+                                </div>
+                            @endif
                             <div class="daemon-header">
                                 <div class="header-col">
                                     <span class="tech-label">{{ $daemon->vendor === 'moldex' ? 'Plataforma' : 'Daemon' }}</span>
@@ -164,16 +169,21 @@
                                             <span class="inv-badge badge-{{ $daemon->vendor }}">{{ ucfirst($daemon->vendor) }}</span>
                                         @endif
 
-                                        @if(!empty($daemon->additional_sold_tos))
-                                            @foreach($daemon->additional_sold_tos as $extraSt)
-                                                <span class="unified-badge" title="Unified Sold-To (Other Install)">
-                                                    <i class="fa-solid fa-link"></i>
-                                                    {{ $extraSt }}
-                                                </span>
-                                            @endforeach
-                                        @endif
+                                </div>
+                            </div>
+
+                            @if(!empty($daemon->additional_sold_tos))
+                                <div class="daemon-unified-row">
+                                    <div class="unified-row-list">
+                                        @foreach($daemon->additional_sold_tos as $extraSt)
+                                            <span class="unified-row-item">
+                                                <i class="fa-solid fa-link"></i>
+                                                {{ $extraSt }}
+                                            </span>
+                                        @endforeach
                                     </div>
                                 </div>
+                            @endif
 
                                 <div class="header-col grow">
                                     @if($daemon->type === 'dongle')
@@ -794,10 +804,61 @@
     .legend-grid { display: flex; flex-wrap: wrap; gap: 12px 24px; }
     .legend-item { display: flex; align-items: center; gap: 8px; }
 
-    /* Upload Zone Styles */
+    /* Unified Multi-SoldTo UX Refactor (#004) */
+    .daemon-card.unified-card {
+        position: relative;
+        border-right: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    .unified-watermark {
+        position: absolute;
+        bottom: -20px;
+        right: -10px;
+        font-size: 100px;
+        color: #f59e0b;
+        opacity: 0.04;
+        pointer-events: none;
+        z-index: 1;
+        transform: rotate(-15deg);
+    }
+
+    .daemon-unified-row {
+        background: transparent;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        padding: 4px 24px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        position: relative;
+        z-index: 2;
+    }
+
+
+    .unified-row-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .unified-row-item {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        font-weight: 700;
+        color: #fde68a;
+        background: rgba(253, 230, 138, 0.05);
+        padding: 2px 8px;
+        border-radius: 4px;
+        border: 1px solid rgba(253, 230, 138, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    .unified-row-item i {
+        font-size: 8px;
+        color: #fde68a;
+        opacity: 0.5;
+    }
     .upload-zone {
-        border: 2px dashed var(--border);
-        background: rgba(255, 255, 255, 0.02);
         border-radius: 12px;
         padding: 40px 20px;
         text-align: center;
