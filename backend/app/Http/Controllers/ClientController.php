@@ -56,6 +56,16 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
+        $client->loadCount([
+            'contracts',
+            'inventoryDaemons as siemens_daemons_count' => function($query) {
+                $query->where('daemon', 'not like', '%moldex%');
+            },
+            'inventoryDaemons as moldex_daemons_count' => function($query) {
+                $query->where('daemon', 'like', '%moldex%');
+            }
+        ]);
+
         $client->load(['contracts', 'contacts', 'certificates', 'auditResults' => function($query) {
             $query->orderBy('created_at', 'desc');
         }, 'codCertificates' => function($query) {

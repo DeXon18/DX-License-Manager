@@ -7,8 +7,26 @@
         <span class="muted">/</span>
         <span class="current">{{ $client->name }}</span>
     </div>
-    <h1 class="page-title">{{ $client->name }}</h1>
-    <p class="page-sub">Perfil de cuenta y gestión de activos del ecosistema.</p>
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div>
+            <h1 class="page-title">{{ $client->name }}</h1>
+            <p class="page-sub">Perfil de cuenta y gestión de activos del ecosistema.</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+            @if($client->siemens_daemons_count > 0)
+                <div class="badge font-mono" style="background: var(--siemens-muted); color: var(--siemens-dark); border: 1px solid var(--siemens-border); padding: 4px 12px; font-weight: 700; display: flex; gap: 8px; align-items: center; border-radius: 6px;">
+                    <span style="font-size: 16px;">{{ $client->siemens_daemons_count }}</span>
+                    <span style="font-size: 10px; opacity: 0.8; font-weight: 400; text-transform: uppercase; letter-spacing: 0.05em;">Siemens</span>
+                </div>
+            @endif
+            @if($client->moldex_daemons_count > 0)
+                <div class="badge font-mono" style="background: var(--moldex-muted); color: var(--moldex-dark); border: 1px solid var(--moldex-border); padding: 4px 12px; font-weight: 700; display: flex; gap: 8px; align-items: center; border-radius: 6px;">
+                    <span style="font-size: 16px;">{{ $client->moldex_daemons_count }}</span>
+                    <span style="font-size: 10px; opacity: 0.8; font-weight: 400; text-transform: uppercase; letter-spacing: 0.05em;">Moldex3D</span>
+                </div>
+            @endif
+        </div>
+    </div>
 </div>
 
 <div x-data="{ 
@@ -667,6 +685,27 @@
 
 @push('styles')
 <style>
+    /* Vendor colors */
+    :root {
+        --siemens-muted: rgba(0, 153, 153, 0.1);
+        --siemens-dark: #008080;
+        --siemens-border: rgba(0, 153, 153, 0.2);
+        
+        --moldex-muted: rgba(237, 28, 36, 0.1);
+        --moldex-dark: #C4121A;
+        --moldex-border: rgba(237, 28, 36, 0.2);
+    }
+
+    [data-theme="dark"] {
+        --siemens-muted: rgba(42, 161, 152, 0.1);
+        --siemens-dark: #2AA198;
+        --siemens-border: rgba(42, 161, 152, 0.3);
+
+        --moldex-muted: rgba(224, 82, 82, 0.1);
+        --moldex-dark: #E05252;
+        --moldex-border: rgba(224, 82, 82, 0.3);
+    }
+
     /* DX INVENTORY SYSTEM — ROBUST RECONSTRUCTION */
     /* ORIGINAL STYLES RESTORED */
     .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 32px; gap: 8px; }
