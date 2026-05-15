@@ -8,7 +8,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | Críticos (P1) | Importantes (P2) | Menores (P3) | Resueltos |
 | :--- | :--- | :--- | :--- |
-| 0 | 4 | 4 | 2 |
+| 0 | 4 | 4 | 3 |
 
 ---
 
@@ -16,6 +16,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | ID | Incidencia | Módulo | Prio | Estado | Fecha Detect. |
 | :--- | :--- | :--- | :--- | :--- | :--- |
+| #012 | RedisException: MISCONF (Persistencia fallida) | Infra/Redis | P1 | ✅ Resuelto | 2026-05-15 |
 | #011 | Transformación de Licencia (NX) falla (No descarga/procesa) | Siemens NX | P1 | ✅ Resuelto | 2026-05-15 |
 | #010 | Indicadores de Seguridad siempre a 0 | Dashboard | P2 | 🆕 Nuevo | 2026-05-14 |
 | #009 | Limpieza de archivos basura y registros huérfanos | Sistema | P3 | 🆕 Nuevo | 2026-05-14 |
@@ -32,6 +33,17 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 ---
 
 ## 🔍 Detalle de Incidencias
+
+### #012 — RedisException: MISCONF (Persistencia fallida)
+- **Síntoma**: El portal devuelve un error 500 con el mensaje `MISCONF Redis is configured to save RDB snapshots, but it's currently unable to persist to disk`. Las escrituras en base de datos que dependen de caché o sesión están bloqueadas.
+- **Impacto**: Bloqueo total del uso del portal (Login, Acciones, Audit).
+- **Causa probable**: El proceso de fondo `BGSAVE` de Redis está fallando, posiblemente por falta de permisos en el volumen de datos o por memoria insuficiente en el contenedor para realizar el fork.
+- **Acción inmediata**: Ejecutar `config set stop-writes-on-bgsave-error no` vía redis-cli para desbloquear las escrituras. Investigar logs del contenedor Redis.
+- **Resolución**: 
+  - Diagnóstico SSH confirmó `Permission denied` en el volumen anónimo de `/data` (pertenecía a root).
+  - Aplicado `chown redis:redis /data` en caliente para restaurar el guardado RDB.
+  - Securizada la configuración mediante **volúmenes nombrados** en `docker-compose.beta.yml` y `docker-compose.prod.yml` para delegar la gestión de permisos a Docker de forma persistente.
+  - Verificado `BGSAVE` exitoso y restaurada la política de seguridad `stop-writes-on-bgsave-error yes`.
 
 ### #011 — Transformación de Licencia (NX) falla (No descarga/procesa)
 - **Síntoma**: Al intentar transformar una licencia NX, el sistema no descarga el archivo resultante ni parece procesar la lógica de transformación.
