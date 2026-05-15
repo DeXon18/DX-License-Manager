@@ -1,13 +1,13 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-15 09:40  
+> Última actualización: 2026-05-15 10:20  
 > Sesión en: PC Desarrollo (srv-dxportal remote)  
-> Rama activa: dev
+> Rama activa: feature/fix-client-license-filter
 
 ---
 
 ## Estado General
 
-**Fase actual:** Fase 15.4 — Diagnóstico y Logs  
+**Fase actual:** Fase 15.5 — Inventario Granular y UI  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,44 +15,45 @@
 
 ## Qué se hizo en esta sesión
 
-- **Resolución #005 (Crítica)**: Profesionalización del Lector de Logs.
-  - Implementado parser Regex en `AuditLogController` para estructurar `laravel.log`.
-  - Nueva UI interactiva con **Alpine.js**: Trazas colapsables y resaltado de código propio vs vendor.
-  - Sincronización de telemetría: El contador de "Alertas" del Dashboard ahora suma DB + Fichero físico (últimas 24h).
-- **Cirugía de Infraestructura**:
-  - Resuelto bloqueo de MariaDB: Eliminación de archivos huérfanos (`email_logs.ibd`) y archivos corruptos (`.CSV`) vía SSH.
-  - Recreación exitosa de la tabla `email_logs` en motor **InnoDB**.
-- **Blindaje de Robustez**:
-  - `EmailLoggerListener` y `AuditLogController` ahora verifican la existencia de tablas mediante `Schema::hasTable` antes de operar, evitando errores 500 si la base de datos se desincroniza.
-- **Limpieza de Git**:
-  - Rama `fix/system-log-reader` integrada en `dev` y eliminada local/remotamente.
+- **Filtro Granular de Inventario (#003)**:
+  - Implementado control segmentado de 4 estados (OFF, ALL, SIEMENS, MOLDEX) en la lista de clientes.
+  - Lógica de persistencia en sesión para mantener el filtro activo durante la navegación.
+  - Query en `ClientController` optimizada para diferenciar vendors mediante el conteo de daemons específicos.
+- **Rediseño UI Premium**:
+  - Ampliado el buscador global (600px max) con placeholder informativo.
+  - Alineación de filtros al extremo derecho para una barra de herramientas balanceada.
+  - Eliminación de etiquetas redundantes y aplicación de estética "cristal" (glassmorphism).
+- **Diagnóstico Moldex3D (#013)**:
+  - Identificada anomalía en la sincronización automática de licencias Moldex3D.
+  - Creado registro manual para "Walter Pack Sl" para validación de la UI granular.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-**Resolver #003 — Filtro "Solo con Licencias" limitado a Siemens.**
-1. Investigar query en `ClientController` para incluir el conteo de `license_inventory_daemons` de tipo Moldex3D.
-2. Asegurar que el switch de inventario en la lista de clientes refleja correctamente a los clientes de ambos vendors.
+**Investigar Incidencia #013 — Fallo en Sincronización Moldex3D.**
+1. Revisar `MoldexSyncService.php` y los logs de n8n para ver por qué no se están vinculando las licencias auditadas.
+2. Verificar el mapeo del `customer_id` en el parser de archivos `.mac`.
+3. Validar si el daemon name `moldex3d` es consistente en todos los archivos de este vendor.
 
 ### Tareas siguientes
 1. Unificación de estilos CSS globales (#008).
-2. Automatización de limpieza de archivos basura (#009).
+2. Normalización Semántica con IA (#007).
 
 ---
 
 ## Contexto técnico importante
 
-- **MariaDB Lock**: Si vuelves a ver un error de "Table is read only", es un archivo huérfano en el disco. Se soluciona borrando el `.ibd` correspondiente desde el host y relanzando la migración.
-- **Alertas**: El número "5" en el dashboard es real y filtrado (últimas 24h, nivel Error+).
-- **SSH**: El acceso root a la `.60` está configurado y operativo desde este terminal.
+- **Filtro Persistente**: Los parámetros `has_inventory` y `vendor_filter` se guardan en sesión (`client_has_inventory` / `client_inventory_vendor`).
+- **Datos de Prueba**: "Walter Pack Sl" tiene un registro manual de Moldex3D en `license_inventory_daemons` para pruebas visuales. No borrar hasta resolver #013.
+- **Buscador**: Usa `x-on:input.debounce.500ms` de Alpine.js para disparar la búsqueda sin botón.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-Ninguno. El sistema está en un estado de alta estabilidad.
+- **#013**: Las licencias Moldex3D auditadas no se están persistiendo automáticamente en el inventario activo. Requiere revisión profunda del service.
 
 ---
 
@@ -60,18 +61,18 @@ Ninguno. El sistema está en un estado de alta estabilidad.
 
 | Archivo | Estado |
 |:---|:---|
-| `infra/.env.beta` | ✅ configurado y persistente |
-| `backend/.env` | ✅ sincronizado con MariaDB |
-| `email_logs` table | ✅ recreada en InnoDB |
+| `backend/app/Http/Controllers/ClientController.php` | ✅ Lógica granular añadida |
+| `backend/resources/views/clients/index.blade.php` | ✅ UI Premium finalizada |
+| `management/ERRORS.md` | ✅ Incidencia #013 registrada |
 
 ---
 
 ## Comandos útiles para la próxima sesión
 
 ```bash
-# Entrar al contenedor PHP si es necesario
-docker exec -it dx-php-beta sh
+# Revisar logs del contenedor PHP para errores de MoldexSync
+docker compose --project-directory . -f infra/docker-compose.beta.yml logs -f dx-php-beta
 
-# Ver logs de sistema estructurados
-# Ir a /admin/audit?tab=system en el portal
+# Ver el registro de prueba manual
+# SELECT * FROM license_inventory_daemons WHERE daemon LIKE '%moldex%';
 ```

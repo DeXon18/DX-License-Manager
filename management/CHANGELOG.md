@@ -1,7 +1,25 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
-## [2026-05-15 09:35] — Diagnóstico: Lector de Logs Profesional (Fix #005) ✅
+## [2026-05-15 10:15] — Clientes: Filtro Granular de Inventario & UI Premium ✅
+
+### Added
+- **Filtro Inteligente de Inventario**: Implementado control segmentado de 4 estados (OFF, ALL, Siemens, Moldex3D) para una gestión precisa del parque de licencias.
+- **UI Premium**: Rediseño del área de búsqueda con estética "cristal" (glassmorphism), etiquetas dinámicas y alineación ergonómica a la derecha.
+- **Búsqueda Avanzada**: Ampliado el ancho del buscador a 600px y mejorada la visibilidad del input para facilitar la localización de cuentas.
+- **Persistencia Multi-Vendor**: La lógica de filtrado ahora es 100% persistente por sesión, permitiendo navegar entre clientes manteniendo el contexto de vendor seleccionado.
+
+### Fixed
+- **Incidencia #003**: Resuelto el límite del filtro "Solo con Licencias", que ahora soporta múltiples vendors de forma independiente.
+- **Visibilidad Moldex3D**: Identificado problema de sincronización de licencias Moldex3D (Incidencia #013). Se ha creado un registro de prueba para validar la funcionalidad.
+
+## [2026-05-15 09:20] — Seguridad: Dashboard Telemetría & Blacklist (Fix #010) ✅
+
+### Fixed
+- **Seguridad (Dashboard)**: Corregidos indicadores (Logins fallidos, Errores 24h, Blacklist) que se mostraban a 0 por falta de registro de datos.
+- **Auditoría**: Implementado log automático de `login_failed` con captura de IP y User Agent.
+- **JWT**: Implementada **Blacklist proactiva** en Redis (ZSET) para invalidación instantánea de tokens al cerrar sesión.
+
 
 ### Added
 - **Parser de Logs**: Nuevo motor de análisis Regex para estructurar `laravel.log` en entradas legibles con timestamp y nivel de severidad.

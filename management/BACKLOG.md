@@ -32,10 +32,10 @@ El desarrollador inicia. El agente espera.
 - **Rama:** chore/error-tracking
 - **Resumen:** Resolución sistemática del backlog de errores detectados post-Fase 14. Prioridad absoluta en infraestructura de backup y consistencia de datos de clientes.
 - [x] #002 (P1): Fix scripts de backup (Bash/CRLF/Syntax). ✅ (2026-05-15)
-- [ ] #003 (P2): Filtros Clientes (Siemens/Moldex).
 - [ ] #007 (P2): Normalización Semántica (IA).
 - [x] #005 (P2): Lector de Logs (Legibilidad). ✅ (2026-05-15)
-- [ ] #010 (P2): Indicadores de Seguridad Dashboard.
+- [x] #010 (P2): Indicadores de Seguridad Dashboard. ✅ (2026-05-15)
+- [ ] #013 (P1): Invisibilidad de Licencias Moldex3D (Sincronización). 🆕
 - [ ] #009 (P3): Limpieza Global de Basura.
 - [ ] #008 (P3): Unificación CSS.
 - [ ] #004 (P3): UI Multi-Sold-To.
@@ -43,6 +43,14 @@ El desarrollador inicia. El agente espera.
 
 
 ## ✅ Completado
+
+### Resolución de Incidencia #003 — Filtros Clientes (Siemens/Moldex) ✅
+- **Completada:** 2026-05-15
+- **Rama:** chore/error-tracking
+- **Resumen:** Implementación de filtros dinámicos en inventario para separar licencias Siemens y Moldex3D, permitiendo un conteo preciso por tecnología.
+- [x] Backend: Lógica de filtrado en el repositorio de licencias.
+- [x] UI: Switch de selección en la vista de inventario.
+- [x] Verificación: Conteo correcto en entornos de prueba.
 
 ### Resolución de Incidencia #005 — Lector de Logs Profesional ✅
 - **Completada:** 2026-05-15
