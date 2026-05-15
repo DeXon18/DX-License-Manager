@@ -7,23 +7,24 @@
             <h1 class="page-title">Gestión de Clientes</h1>
             <p class="page-sub text-sm">Visualización y búsqueda de cuentas del ecosistema.</p>
         </div>
-        <div class="search-box mt-4" style="width: 450px; display: flex; align-items: center; gap: 15px;">
-            <form action="{{ route('clients.index') }}" method="GET" style="position: relative; flex: 1; max-width: 400px;">
-                <svg style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); width: 16px; height: 16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="search-box mt-4" style="width: 100%; display: flex; align-items: center; gap: 20px;">
+            <form action="{{ route('clients.index') }}" method="GET" style="position: relative; flex: 1; max-width: 600px;">
+                <svg style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
                 <input type="text" name="search" value="{{ request('search') }}" 
-                    placeholder="Nombre del cliente..." class="gui-input" style="padding-left: 36px;"
+                    placeholder="Buscar clientes por nombre o identificador..." class="gui-input" 
+                    style="padding-left: 44px; height: 42px; font-size: 14px; width: 100%;"
                     x-on:input.debounce.500ms="$el.closest('form').submit()">
             </form>
 
-            <div class="filter-actions" style="display: flex; align-items: center; gap: 12px;">
+            <div class="filter-actions" style="display: flex; align-items: center; gap: 12px; margin-left: auto;">
                 @php 
                     $hasInv = session('client_has_inventory', false); 
                     $currentVendor = session('client_inventory_vendor', 'all');
                 @endphp
                 
-                <div class="inventory-filter-group" style="margin-left: auto;">
+                <div class="inventory-filter-group">
                     <div class="premium-segmented-control">
                         <!-- OFF -->
                         <a href="{{ route('clients.index', array_merge(request()->except('has_inventory'), ['clear_inventory' => 1])) }}" 
