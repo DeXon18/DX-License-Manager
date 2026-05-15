@@ -8,7 +8,16 @@ El agente debe revisar este archivo al inicio de cada sesión.
 
 ---
 
-## [2026-05-05] — Bloqueo de Assets y Layout en Beta
+## [2026-05-15] — Vaciado Accidental de Base de Datos Beta
+- **Qué pasó:** La ejecución de tests de integración desde el contenedor vació todas las tablas de la base de datos MariaDB Beta.
+- **Por qué pasó:** Fallo en la configuración de aislamiento del entorno de test. El contenedor ejecutó limpiezas sobre la base de datos real en lugar de SQLite en memoria por una desincronización de variables de entorno.
+- **Regla nueva:** **PROHIBIDO** ejecutar tests en el servidor sin un backup previo verificado de la base de datos (`./scripts/backup-db.sh beta`).
+
+## [2026-05-15] — Desincronización de Archivos .env
+- **Qué pasó:** Cambios realizados en `backend/.env` no se reflejaban en la aplicación.
+- **Por qué pasó:** El contenedor Docker usa un bind mount desde `infra/.env.beta` ignorando el archivo de la raíz de Laravel.
+- **Regla nueva:** Editar siempre `infra/.env.beta` para cambios en Beta. Añadido aviso ⚠️ en `backend/.env`.
+
 - **Qué pasó:** El entorno de Beta no cargaba CSS y el layout se veía roto.
 - **Por qué pasó:** 
   1. Uso de Nginx `alias` para assets externos (conflicto de rutas).

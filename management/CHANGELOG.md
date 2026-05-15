@@ -1,6 +1,18 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-15 13:00] — Seguridad: Estabilización de Sesión JWT (Fix #014) ✅
+
+### Fixed
+- **Expiración Prematura**: Resuelto fallo que expulsaba a los usuarios aleatoriamente. Implementada **Rotación Atómica** de tokens en cada petición.
+- **Ventana de Gracia**: Introducida ventana de 30 segundos en Redis (`jwt_blacklist`) para permitir peticiones AJAX concurrentes con tokens antiguos durante la rotación.
+- **Sincronización de Inactividad**: Unificado el TTL a **15 minutos** reales de inactividad, sincronizando cookies y lógica de backend.
+- **Mantenimiento Automático**: Nuevo comando `auth:jwt-cleanup` programado diariamente para purgar la blacklist de Redis.
+
+### Added
+- **JWT_SECRET Independiente**: Desacoplada la seguridad de sesiones de la `APP_KEY` para mayor robustez ante cambios de entorno.
+- **Restauración de Emergencia**: Re-pobladas tablas maestras (`roles`, `feature_flags`, `resource_links`) tras vaciado accidental de DB durante tests.
+
 ## [2026-05-15 11:28] — Resolución de Incidencia #013 (Sincronización Moldex3D) ✅
 
 ### Fixed
