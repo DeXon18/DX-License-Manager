@@ -24,7 +24,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 | #008 | Unificación de estilos CSS en archivo central | UI/UX | 🟢 P3 | 🆕 Nuevo | 2026-05-14 |
 | #006 | Acciones rápidas sin vínculos / estáticas | Dashboard | 🟢 P3 | 🆕 Nuevo | 2026-05-14 |
 | #004 | Revisar visualización de "Other Installs" | UI/UX | 🟢 P3 | 🆕 Nuevo | 2026-05-14 |
-| #001 | [Ejemplo] Error de contraste en modo claro | UI/UX | 🟢 P3 | 🆕 Nuevo | 2026-05-14 |
+| #001 | [Ejemplo] Error de contraste en modo claro | UI/UX | 🟢 P3 | 🆕 Resuelto | 2026-05-14 |
 
 ### ✅ Resueltos
 
@@ -37,6 +37,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 | #002 | Error de sintaxis y CRLF en `backup-db.sh` | Infra/Scripts | 🔴 P1 | ✅ Resuelto | 2026-05-14 | 2026-05-14 |
 | #010 | Indicadores de seguridad siempre a 0 | Dashboard | 🟠 P2 | ✅ Resuelto | 2026-05-15 | 2026-05-15 |
 | #005 | Mejora en lector de logs `laravel.log` | Admin/Logs | 🟠 P2 | ✅ Resuelto | 2026-05-15 | 2026-05-15 |
+| #001 | [Ejemplo] Error de contraste en modo claro | UI/UX | 🟢 P3 | ✅ Resuelto | 2026-05-14 | 2026-05-14 |
 
 ### Leyenda de prioridad
 

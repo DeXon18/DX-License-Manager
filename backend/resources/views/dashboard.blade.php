@@ -50,6 +50,23 @@
     </div>
 </div>
 
+{{-- Buscador Global Express --}}
+<div class="card" style="margin-bottom: 24px; background: var(--surface); border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
+    <div style="padding: 16px 24px;">
+        <form action="{{ route('clients.index') }}" method="GET" style="display: flex; gap: 12px; align-items: center;">
+            <div style="flex: 1; position: relative;">
+                <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 14px;"></i>
+                <input type="text" name="search" placeholder="Buscador Global Express: Sold-To, Cliente o Machine ID..." 
+                    style="width: 100%; padding: 14px 14px 14px 45px; background: var(--raised); border: 1px solid var(--border); border-radius: 8px; color: var(--primary); font-size: 14px; outline: none; transition: border-color 0.2s;"
+                    onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+            </div>
+            <button type="submit" class="btn btn-primary" style="padding: 14px 24px; border-radius: 8px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-bolt"></i> Localizar
+            </button>
+        </form>
+    </div>
+</div>
+
 <div class="grid-2">
     <div class="card">
         <div class="card-header">
@@ -141,27 +158,30 @@
                 <span class="card-title">Acciones rápidas</span>
             </div>
             <div class="quick-actions">
-                @if(auth()->user()->isAdmin())
-                    <a class="action-btn" href="{{ route('admin.import.index') }}">
-                        <div class="action-btn-icon">📥</div>
-                        <div class="action-btn-label">Importar CSV</div>
-                        <div class="action-btn-sub">Actualizar base instalada</div>
-                    </a>
-                @endif
-                <a class="action-btn" href="{{ route('clients.index') }}">
+                <a class="action-btn" href="{{ route('renewal-planner.index') }}" style="position: relative;">
+                    @if($renewalsThisMonth > 0)
+                        <span style="position: absolute; top: -8px; right: -8px; background: var(--danger); color: white; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 800; box-shadow: 0 2px 10px rgba(0,0,0,0.5); z-index: 10;">
+                            {{ $renewalsThisMonth }}
+                        </span>
+                    @endif
+                    <div class="action-btn-icon">📅</div>
+                    <div class="action-btn-label">Renovaciones</div>
+                    <div class="action-btn-sub">{{ $renewalsThisMonth > 0 ? 'Tareas pendientes este mes' : 'Todo al día este mes' }}</div>
+                </a>
+                <a class="action-btn" href="{{ route('tools.cod.index') }}">
+                    <div class="action-btn-icon">📄</div>
+                    <div class="action-btn-label">Generar COD</div>
+                    <div class="action-btn-sub">Certificado de Cese Siemens</div>
+                </a>
+                <a class="action-btn" href="{{ route('tools.index') }}">
                     <div class="action-btn-icon">🔧</div>
-                    <div class="action-btn-label">Herramientas</div>
-                    <div class="action-btn-sub">NX, STAR-CCM+, HEEDS</div>
+                    <div class="action-btn-label">Auditoría IA</div>
+                    <div class="action-btn-sub">Subir NX, STAR-CCM, Moldex</div>
                 </a>
                 <a class="action-btn" href="{{ route('clients.index') }}">
                     <div class="action-btn-icon">👥</div>
-                    <div class="action-btn-label">Clientes</div>
-                    <div class="action-btn-sub">Ver base instalada</div>
-                </a>
-                <a class="action-btn" href="#">
-                    <div class="action-btn-icon">📋</div>
-                    <div class="action-btn-label">Solicitar cambio</div>
-                    <div class="action-btn-sub">Documento Siemens</div>
+                    <div class="action-btn-label">Base Clientes</div>
+                    <div class="action-btn-sub">Buscar y gestionar cuentas</div>
                 </a>
             </div>
         </div>
