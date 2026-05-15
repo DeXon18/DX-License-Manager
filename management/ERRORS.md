@@ -8,7 +8,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | Críticos (P1) | Importantes (P2) | Menores (P3) | Resueltos |
 | :--- | :--- | :--- | :--- |
-| 0 | 4 | 4 | 3 |
+| 1 | 4 | 4 | 3 |
 
 ---
 
@@ -16,6 +16,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | ID | Incidencia | Módulo | Prio | Estado | Fecha Detect. |
 | :--- | :--- | :--- | :--- | :--- | :--- |
+| #013 | Invisibilidad de Licencias Moldex3D en Inventario | Inventario | P1 | 🆕 Nuevo | 2026-05-15 |
 | #012 | RedisException: MISCONF (Persistencia fallida) | Infra/Redis | P1 | ✅ Resuelto | 2026-05-15 |
 | #011 | Transformación de Licencia (NX) falla (No descarga/procesa) | Siemens NX | P1 | ✅ Resuelto | 2026-05-15 |
 | #010 | Indicadores de Seguridad siempre a 0 | Dashboard | P2 | ✅ Resuelto | 2026-05-15 |
@@ -130,6 +131,18 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
   - Implementada gestión de `jwt_blacklist` en Redis (ZSET) en Logout y Middleware.
   - Sincronizados niveles de error (`warning` vs `error`) en la telemetría del dashboard.
 - **Resolución**: ✅ Resuelto el 2026-05-15. Sistema de telemetría ahora 100% operativo.
+
+### #013 — Invisibilidad de Licencias Moldex3D en Inventario
+- **Síntoma**: No se detectan licencias activas de Moldex3D en el inventario a pesar de haber realizado auditorías previas. El conteo de daemons devuelve 0 para este vendor (`moldex_daemons_count`).
+- **Impacto**: Bloqueo en el seguimiento de renovaciones y parque de licencias Moldex3D. El filtro granular implementado muestra resultados vacíos para este vendor.
+- **Causa probable**: 
+    - Desconexión entre `AiAuditResult` y la persistencia en `LicenseInventoryDaemon`.
+    - Fallo en el mapeo semántico del nombre del cliente en `MoldexSyncService`.
+    - El daemon name `moldex3d` podría no ser el único usado en archivos `.mac`.
+- **Acción inmediata**: 
+    - Verificar logs de `MoldexSync` (actualmente sin entradas recientes).
+    - Crear un entorno de pruebas con datos reales para validar la persistencia.
+    - Se ha creado un registro manual para "Walter Pack Sl" para verificar que la UI funciona correctamente, pero el problema de fondo en la sincronización persiste.
 
 ---
 
