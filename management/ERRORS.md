@@ -8,7 +8,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | Críticos (P1) | Importantes (P2) | Menores (P3) | Resueltos |
 | :--- | :--- | :--- | :--- |
-| 1 | 4 | 4 | 0 |
+| 2 | 4 | 4 | 0 |
 
 ---
 
@@ -16,6 +16,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | ID | Incidencia | Módulo | Prio | Estado | Fecha Detect. |
 | :--- | :--- | :--- | :--- | :--- | :--- |
+| #011 | Transformación de Licencia (NX) falla (No descarga/procesa) | Siemens NX | P1 | 🆕 Nuevo | 2026-05-15 |
 | #010 | Indicadores de Seguridad siempre a 0 | Dashboard | P2 | 🆕 Nuevo | 2026-05-14 |
 | #009 | Limpieza de archivos basura y registros huérfanos | Sistema | P3 | 🆕 Nuevo | 2026-05-14 |
 | #008 | Unificación de estilos CSS en archivo central | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
@@ -38,6 +39,13 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 ---
 
 ## 🔍 Detalle de Incidencias
+
+### #011 — Transformación de Licencia (NX) falla (No descarga/procesa)
+- **Síntoma**: Al intentar transformar una licencia NX, el sistema no descarga el archivo resultante ni parece procesar la lógica de transformación.
+- **Impacto**: Bloqueo total en la generación de licencias para clientes Siemens.
+- **Causa probable**: Inconsistencia en stream de descarga o fallo en lógica Multi-Sold-To.
+- **Acción**: Investigar el flujo en `NXSuiteController` y `NXSuiteService` para detectar fallos en la generación del stream de descarga o errores silenciosos en el procesamiento.
+
 
 ### #002 — Error de sintaxis y CRLF en backup-db.sh
 - **Síntoma**: El script de backup falla al ejecutarse en el contenedor PHP.
