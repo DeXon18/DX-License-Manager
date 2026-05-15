@@ -1,8 +1,8 @@
 # HANDOFF — DX License Manager
 > Última actualización: 2026-05-15 08:50  
 > Sesión en: PC Desarrollo  
-> Rama activa: fix/redis-persistence-error
-> Estado Git: Infraestructura securizada y acceso SSH recuperado.
+> Rama activa: dev
+> Estado Git: Infraestructura securizada, rama fix/redis-persistence-error integrada y purgada.
 
 ---
 
