@@ -148,9 +148,13 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
     - Desincronización entre el TTL del token JWT y el tiempo de vida de la cookie en el navegador.
     - El middleware de rotación de Refresh Tokens podría estar invalidando el token actual incorrectamente al detectar múltiples peticiones asíncronas simultáneas.
     - El `SESSION_LIFETIME` en Laravel podría estar configurado con un valor inferior al esperado.
-- **Acción inmediata**: 
-    - Auditar `JwtService.php` y los tiempos de expiración configurados en `.env`.
-    - Revisar el middleware de autenticación para asegurar que la rotación de tokens sea atómica y no cause falsos positivos de robo de sesión.
+- **Resolución**: 
+    - Identificada desincronización de secretos entre `backend/.env` e `infra/.env.beta` (causa raíz de la invalidación).
+    - Implementada **Rotación Atómica** de tokens en `JwtAuth.php` con ventana de gracia de 30s en Redis para mitigar colisiones AJAX.
+    - Sincronizado TTL a 15 min reales de inactividad.
+    - Restaurada integridad de base de datos (seeds maestros) tras vaciado accidental durante el diagnóstico.
+    - ✅ Resuelto el 2026-05-15. Sesión estabilizada en Beta.
+
 
 ### #013 — Invisibilidad de Licencias Moldex3D en Inventario
 - **Síntoma**: No se detectan licencias activas de Moldex3D en el inventario a pesar de haber realizado auditorías previas. El conteo de daemons devuelve 0 para este vendor (`moldex_daemons_count`).
