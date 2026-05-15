@@ -8,7 +8,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | Críticos (P1) | Importantes (P2) | Menores (P3) | Resueltos |
 | :--- | :--- | :--- | :--- |
-| 2 | 4 | 4 | 0 |
+| 1 | 4 | 4 | 1 |
 
 ---
 
@@ -25,15 +25,8 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 | #005 | Mejora en Lector de Logs (laravel.log) | Admin/Logs | P2 | 🆕 Nuevo | 2026-05-14 |
 | #004 | Revisar visualización de "Other Installs" | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
 | #003 | Filtro "Solo con Licencias" limitado a Siemens | Clientes | P2 | 🆕 Nuevo | 2026-05-14 |
-| #002 | Error de sintaxis y CRLF en backup-db.sh | Infra/Scripts | P1 | 🆕 Nuevo | 2026-05-14 |
+| #002 | Error de sintaxis y CRLF en backup-db.sh | Infra/Scripts | P1 | ✅ Resuelto | 2026-05-14 |
 | #001 | [Ejemplo] Error de contraste en modo claro | UI/UX | P3 | 🆕 Nuevo | 2026-05-14 |
-
-
-
-
-
-
-
 
 
 ---
@@ -52,9 +45,9 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 - **Error Logs**: 
   - `$'\r': command not found` (CRLF detectado).
   - `syntax error: unexpected end of file from 'if' command on line 27`.
-- **Causa probable**: El archivo fue guardado con finales de línea Windows (CRLF) en lugar de Unix (LF), lo que rompe la interpretación de Bash.
+- **Causa**: Finales de línea Windows (CRLF) que rompen la interpretación de Bash y falta de comillas en variables de entorno.
 - **Impacto**: Imposibilidad de generar copias de seguridad de la base de datos.
-- **Acción**: Convertir a LF y verificar sintaxis de bloques `if`.
+- **Acción**: Conversión a LF (Unix), limpieza de sintaxis en bloques `if` y blindaje de variables con comillas.
 
 
 ### #003 — Filtro "Solo con Licencias" limitado a Siemens
