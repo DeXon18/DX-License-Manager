@@ -34,7 +34,7 @@ El desarrollador inicia. El agente espera.
 - [x] #002 (P1): Fix scripts de backup (Bash/CRLF/Syntax). ✅ (2026-05-15)
 - [ ] #003 (P2): Filtros Clientes (Siemens/Moldex).
 - [ ] #007 (P2): Normalización Semántica (IA).
-- [ ] #005 (P2): Lector de Logs (Legibilidad).
+- [x] #005 (P2): Lector de Logs (Legibilidad). ✅ (2026-05-15)
 - [ ] #010 (P2): Indicadores de Seguridad Dashboard.
 - [ ] #009 (P3): Limpieza Global de Basura.
 - [ ] #008 (P3): Unificación CSS.
@@ -43,6 +43,15 @@ El desarrollador inicia. El agente espera.
 
 
 ## ✅ Completado
+
+### Resolución de Incidencia #005 — Lector de Logs Profesional ✅
+- **Completada:** 2026-05-15
+- **Rama:** fix/system-log-reader
+- **Resumen:** Transformación del lector de logs de sistema de texto plano a una herramienta de diagnóstico profesional. Incluye parser Regex para estructurar `laravel.log`, UI interactiva con Alpine.js (trazas colapsables) y sincronización de telemetría de alertas (DB + Fichero).
+- [x] Backend: Implementado parser estructurado con niveles de severidad.
+- [x] UI: Rediseño con Alpine.js y resaltado de código propio vs vendor.
+- [x] Telemetría: Sincronización del contador de "Alertas" en tiempo real.
+- [x] Robustez: Blindaje contra tablas inexistentes en el módulo de auditoría.
 
 ### Resolución de Incidencia #012 — Hotfix Persistencia Redis ✅
 - **Completada:** 2026-05-15
