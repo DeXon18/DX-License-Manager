@@ -41,8 +41,17 @@ El desarrollador inicia. El agente espera.
 - [x] #004 (P3): UI Multi-Sold-To. ✅ (2026-05-15)
 - [x] #006 (P3): Dashboard Operativo (Buscador/Favoritos). ✅ (2026-05-15)
 - [x] #015 (P1): Fix Preview COD & IA Assistant placement. ✅ (2026-05-16)
+- [x] #016 (P1): Fix COD physical file deletion (Path normalization). ✅ (2026-05-16)
 
 ## ✅ Completado
+
+### Resolución de Incidencia #016 — Fix COD File Deletion ✅
+- **Completada:** 2026-05-16
+- **Rama:** fix/cod-delete-file-fail
+- **Resumen:** Corregido el fallo por el cual los archivos PDF de los CODs permanecían en el disco tras ser borrados de la UI. Se implementó una normalización agresiva de rutas y se añadieron logs de telemetría en el borrado físico.
+- [x] Fix: Normalización de espacios y caracteres en `CodService`.
+- [x] Refuerzo: Logs de éxito/fallo y borrado atómico en `CodController`.
+- [x] Telemetría: Registro detallado de rutas en `laravel.log`.
 
 ### Resolución de Incidencia #015 — Fix Preview COD & UI Optimization ✅
 - **Completada:** 2026-05-16
