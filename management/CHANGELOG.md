@@ -1,6 +1,12 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-16 16:15] — Herramientas: Fix Borrado Físico COD (#016) ✅
+
+### Fixed
+- **Incidencia #016 (Crítica)**: Corregido bug que impedía el borrado físico de archivos PDF en el servidor. Se implementó una normalización de rutas más robusta para evitar discrepancias de encoding/espacios en Linux.
+- **Robustez**: Añadida telemetría de borrado en `CodController@destroy` para registrar el éxito o fallo de cada operación de archivo.
+
 ## [2026-05-16 15:45] — Herramientas: Fix COD Preview & UI Contextual IA ✅
 
 ### Fixed
