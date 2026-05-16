@@ -201,9 +201,19 @@
 
                 <!-- Nueva Máquina -->
                 <div class="form-section">
-                    <div class="section-title">
-                        <i class="fa-solid fa-tower-broadcast"></i>
-                        <span>Nueva Máquina</span>
+                    <div class="section-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <i class="fa-solid fa-tower-broadcast"></i>
+                            <span>Nueva Máquina</span>
+                        </div>
+                        <button type="button" class="btn-ai-mini shadow-sm" @click="openAiModal()">
+                            <div class="ai-icon-pulse-mini">
+                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 2C12 2 12.6 7.4 14.5 9.5C16.6 11.4 22 12 22 12C22 12 16.6 12.6 14.5 14.5C12.6 16.6 12 22 12 22C12 22 11.4 16.6 9.5 14.5C7.4 12.6 2 12 2 12C2 12 7.4 11.4 9.5 9.5C11.4 7.4 12 2 12 2Z" fill="currentColor"/>
+                                </svg>
+                            </div>
+                            <span>Analizar Hardware</span>
+                        </button>
                     </div>
                     <div class="fields-stack">
                         <div class="field-row">
@@ -996,7 +1006,56 @@
 
     [x-cloak] { display: none !important; }
 
+    /* AI Assistant Mini Version */
+    .btn-ai-mini {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 10px;
+        background: var(--surface);
+        border: 1px solid rgba(var(--accent-rgb), 0.3);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
+        color: var(--text);
+        font-size: 10px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .btn-ai-mini:hover {
+        border-color: var(--accent);
+        background: rgba(var(--accent-rgb), 0.05);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.15);
+    }
+    .ai-icon-pulse-mini {
+        width: 18px;
+        height: 18px;
+        background: linear-gradient(135deg, #4e8cff, #9171ff);
+        color: white;
+        border-radius: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+    }
+    .ai-icon-pulse-mini::after {
+        content: '';
+        position: absolute;
+        inset: -3px;
+        border: 1px solid #9171ff;
+        border-radius: 7px;
+        opacity: 0;
+        transition: all 0.4s;
+    }
+    .btn-ai-mini:hover .ai-icon-pulse-mini::after {
+        opacity: 0.4;
+        animation: pulse-ai 2s infinite;
+    }
+
     /* AI Assistant Styles */
+
     .btn-ai-assist {
         display: flex;
         align-items: center;

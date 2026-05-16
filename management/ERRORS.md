@@ -27,7 +27,6 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 |---:|---|---|:---:|:---:|:---:|:---:|
 | #015 | Fallo en vista previa COD (nesting HTML roto) | Herramientas | 🔴 P1 | ✅ Resuelto | 2026-05-16 | 2026-05-16 |
 | #004 | Revisar visualización de "Other Installs" | UI/UX | 🟢 P3 | ✅ Resuelto | 2026-05-14 | 2026-05-15 |
-
 | #007 | Fallo en normalización / duplicidad de clientes | Normalización | 🟠 P2 | ✅ Resuelto | 2026-05-14 | 2026-05-15 |
 | #003 | Filtro "Solo con Licencias" limitado a Siemens | Clientes | 🟠 P2 | ✅ Resuelto | 2026-05-14 | 2026-05-15 |
 | #009 | Limpieza de archivos basura y registros huérfanos | Sistema | 🟢 P3 | ✅ Resuelto | 2026-05-14 | 2026-05-15 |
