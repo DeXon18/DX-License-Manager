@@ -31,9 +31,9 @@ El desarrollador inicia. El agente espera.
 ### Fase 19 — Unificación CSS & Limpieza UI 🔜
 - **Iniciada:** 2026-05-16
 - **Rama:** `feature/css-unification-global`
-- **Resumen:** Migración de estilos inline y redundantes a `dx-styles.css` usando el namespace `.dx-v2-`. Seguir Plan Maestro de 10 Oleadas (ver ROADMAP).
-- [ ] #008 (P3): Unificación CSS — Oleada 1 (Base Global).
-- [ ] #017 (P3): Unificación CSS — Oleadas 2-10 (Plan Maestro).
+- **Resumen:** Migración de estilos inline y redundantes a `dx-styles.css` usando el namespace `.dx-v2-`. Plan Maestro de 10 Subfases (ver ROADMAP).
+- [ ] #008 (P3): Unificación CSS — Subfase 19.1 (Base Global).
+- [ ] #017 (P3): Unificación CSS — Subfases 19.2 a 19.10 (Plan Maestro).
 
 ## ✅ Completado
 

@@ -482,18 +482,48 @@ DX License Manager
 **Prerequisito:** ✅ Auditoría Forense CSS (#008) finalizada
 **Validación requerida:** Consistencia visual total sin estilos inline en layouts ni componentes comunes.
 
-- [ ] **Oleada 1**: Base Global (Layout, Sidebar, Footer, Paginación `vendor/pagination/`).
-- [ ] **Oleada 2**: Dashboard & Portada (Métricas, Stats, Home).
-- [ ] **Oleada 3**: Módulo Clientes (show.blade.php) & Planificador Renovaciones.
-- [ ] **Oleada 4**: Herramientas Siemens (NX, STAR-CCM+, HEEDS, COD).
-- [ ] **Oleada 5**: Herramienta Moldex3D & Recursos.
-- [ ] **Oleada 6**: Admin: Sistema & Infra (Dashboard Sistema, Docker Monitor).
-- [ ] **Oleada 7**: Admin: Auditoría & Logs (Audit Index, Activity Logs).
-- [ ] **Oleada 8**: Admin: Gestión de Datos (Importación, Normalización).
-- [ ] **Oleada 9**: Admin: Configuración (Alertas, Usuarios, Repositorio).
-- [ ] **Oleada 10**: Refactor de Componentes (Modales, Tablas, Badges, Botones).
+- [ ] **Subfase 19.1**: Base Global (Layout, Sidebar, Footer, Paginación `vendor/pagination/`).
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [ ] **Subfase 19.2**: Dashboard & Portada (Métricas, Stats, Home).
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [ ] **Subfase 19.3**: Módulo Clientes (show.blade.php) & Planificador Renovaciones.
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [ ] **Subfase 19.4**: Herramientas Siemens (NX, STAR-CCM+, HEEDS, COD).
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [ ] **Subfase 19.5**: Herramienta Moldex3D & Recursos.
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [ ] **Subfase 19.6**: Admin: Sistema & Infra (Dashboard Sistema, Docker Monitor).
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [ ] **Subfase 19.7**: Admin: Auditoría & Logs (Audit Index, Activity Logs).
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [ ] **Subfase 19.8**: Admin: Gestión de Datos (Importación, Normalización).
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [ ] **Subfase 19.9**: Admin: Configuración (Alertas, Usuarios, Repositorio).
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [ ] **Subfase 19.10**: Refactor de Componentes (Modales, Tablas, Badges, Botones).
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
 - [ ] Hardening: Eliminación de parches `!important` y variables huérfanas.
-- [ ] Verificación: Cero instancias de `style=` en `resources/views/` (excl. emails/pdf).
+- [ ] Verificación Final: Cero instancias de `style=` en `resources/views/` (excl. emails/pdf).
 
 ## Stack Tecnológico
 

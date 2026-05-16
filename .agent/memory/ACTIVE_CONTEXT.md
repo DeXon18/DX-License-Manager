@@ -18,8 +18,8 @@ Iniciar **Fase 19 (Unificación CSS & Limpieza UI)**. Extraer estilos inline de 
 - **Cambios clave:** Namespacing `.dx-v2-`, limpieza de estilos inline en `app.blade.php`.
 
 ## Próximos Pasos
-- [ ] Oleada 1: Unificación Global (Layout, Footer, Pagination).
-- [ ] Oleada 2: Módulo Clientes.
+- [ ] Subfase 19.1: Unificación Global (Layout, Footer, Pagination).
+- [ ] Subfases 19.2 a 19.10: Plan Maestro.
 
 
 ## 🛠️ Tareas en curso
