@@ -1,13 +1,13 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-16 15:50  
-> Sesión en: Antigravity Beta  
+> Última actualización: 2026-05-16 16:54  
+> Sesión en: Windows Host (Antigravity)  
 > Rama activa: dev
 
 ---
 
 ## Estado General
 
-**Fase actual:** Fase de Mantenimiento y Estabilización ✅  
+**Fase actual:** Fase 15 — Estabilización y Unificación CSS  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,41 +15,40 @@
 
 ## Qué se hizo en esta sesión
 
-1.  **Fix COD Preview (#015)**: 
-    *   Reparado nesting HTML en `cod.blade.php` que bloqueaba modales.
-    *   Refactor de rutas de almacenamiento a **MAYÚSCULAS** (Nombre Real Cliente).
-    *   Limpieza de infraestructura: Eliminada carpeta residual `backend/storage/private`.
-2.  **UX Optimization (Herramientas)**:
-    *   Reubicado asistente IA de Composite a sección contextual "Nueva Máquina".
-    *   Eliminados botones redundantes para limpiar el layout.
-3.  **Higiene Documental**:
-    *   Actualizados `BACKLOG.md`, `CHANGELOG.md` y `ERRORS.md`.
-    *   Merge de las ramas `fix/cod-preview-fail` y `fix/cod-delete-file-fail` a `dev`.
+1.  **Resolución Incidencia #016**: Fix de borrado de archivos COD. Se normalizaron rutas y se añadió logging de auditoría. Verificado y mergeado.
+2.  **Auditoría Forense CSS (#008)**: Análisis profundo de la fragmentación de estilos en 40 archivos Blade.
+    *   Detectados 200+ colores HEX hardcoded.
+    *   Detectados 45 parches con `!important`.
+    *   Detectados 350+ redundancias de layout (Flexbox/Grid).
+3.  **Documentación**: Generado el informe maestro `analysis_css_unification.md` con el listado detallado de archivos y la estrategia por oleadas.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Revisar la incidencia **#008 (Unificación de estilos CSS)** en `ERRORS.md`. El objetivo es mover los estilos locales inyectados en `clients/show.blade.php` y `tools/cod.blade.php` al archivo central `public/css/dx-styles.css` para limpiar las vistas.
-
+**Iniciar Oleada 1 de Unificación CSS.**
+1. Crear rama: `feature/css-unification-global`.
+2. Extraer estilos inline de `layouts/app.blade.php`, `footer.blade.php` y los archivos de paginación en `vendor/pagination/`.
+3. Moverlos a `dx-styles.css` usando el prefijo `.dx-v2-`.
 
 ### Tareas siguientes
-1. Iniciar **Fase 15 (Integraciones IA)**: Configuración y test de conexión con Gemini 3.1 Flash-Lite y DeepSeek.
-2. Refinar la lógica de n8n para soporte de ramificación por vendor.
+1. Refactorización del módulo de Clientes (`clients/show.blade.php`).
+2. Centralización de componentes de Herramientas (`tools/`).
 
 ---
 
 ## Contexto técnico importante
 
-*   La rotación de tokens JWT ahora solo ocurre si el token tiene más de 5 minutos de vida. Esto soluciona los errores de "Sesión expirada" durante cargas rápidas de componentes Alpine.js.
-*   El diseño de las licencias unificadas usa opacidades muy bajas (0.04) para cumplir con la estética "NOC Pro" solicitada por Oskar.
+- **Estrategia Namespacing**: Usar siempre `.dx-v2-` para nuevos estilos para evitar colisiones con el CSS "Frankenstein" existente mientras se limpia.
+- **Zonas Protegidas**: NO TOCAR archivos en `emails/` o `pdf/` durante la unificación (requieren estilos inline por compatibilidad).
+- **IA Readiness**: El objetivo final es dejar el CSS tan limpio que cualquier agente pueda generar nuevas vistas 100% coherentes sin inventar estilos.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-Ninguno.
+Ninguno. El camino para la unificación está despejado y documentado.
 
 ---
 
@@ -57,19 +56,19 @@ Ninguno.
 
 | Archivo | Estado |
 |:---|:---|
-| `infra/.env.prod` | ✅ configurado |
-| `infra/.env.beta` | ✅ configurado |
-| `backend/.env` | ✅ configurado |
-| `backend/vendor/` | ✅ instalado |
+| `analysis_css_unification.md` | ✅ Completo (Versión Full) |
+| `management/CHANGELOG.md` | ✅ Actualizado con fix #016 |
+| `management/ERRORS.md` | ✅ Actualizado (#008 en curso) |
+| `backend/storage/` | ✅ Permisos verificados tras fix #016 |
 
 ---
 
 ## Comandos útiles para la próxima sesión
 
 ```bash
-# Ver logs del contenedor PHP (Beta)
-docker compose --project-directory . -f infra/docker-compose.beta.yml logs -f dx-php-beta
+# Verificar archivos con estilos inline restantes
+grep -r "style=" resources/views/ | wc -l
 
-# Forzar limpieza de caché tras cambios en CSS
-docker exec dx-php-beta php artisan view:clear && docker exec dx-php-beta php artisan cache:clear
+# Ver logs de auditoría (para verificar borrados COD)
+tail -f storage/logs/laravel.log
 ```
