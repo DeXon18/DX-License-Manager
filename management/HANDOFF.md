@@ -24,7 +24,7 @@
     *   Eliminados botones redundantes para limpiar el layout.
 3.  **Higiene Documental**:
     *   Actualizados `BACKLOG.md`, `CHANGELOG.md` y `ERRORS.md`.
-    *   Merge de la rama `fix/cod-preview-fail` a `dev`.
+    *   Merge de las ramas `fix/cod-preview-fail` y `fix/cod-delete-file-fail` a `dev`.
 
 ---
 
