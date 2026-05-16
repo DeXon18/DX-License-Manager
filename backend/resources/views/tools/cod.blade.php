@@ -212,7 +212,7 @@
                                     <path d="M12 2C12 2 12.6 7.4 14.5 9.5C16.6 11.4 22 12 22 12C22 12 16.6 12.6 14.5 14.5C12.6 16.6 12 22 12 22C12 22 11.4 16.6 9.5 14.5C7.4 12.6 2 12 2 12C2 12 7.4 11.4 9.5 9.5C11.4 7.4 12 2 12 2Z" fill="currentColor"/>
                                 </svg>
                             </div>
-                            <span>Analizar Hardware</span>
+                            <span>Analizar Composite.txt</span>
                         </button>
                     </div>
                     <div class="fields-stack">
