@@ -83,8 +83,17 @@ class CodService
      */
     public function getStoragePath(string $clientName): string
     {
-        $safeName = preg_replace('/[^A-Za-z0-9 ]/', '', $clientName);
+        // 1. Eliminar caracteres no deseados (mantener letras, números y espacios)
+        $safeName = preg_replace('/[^A-Za-z0-9 ]/', ' ', $clientName);
+        
+        // 2. Normalizar espacios (eliminar dobles espacios y trim)
+        $safeName = preg_replace('/\s+/', ' ', $safeName);
         $safeName = trim(strtoupper($safeName));
+        
+        // 3. Fallback si el nombre queda vacío
+        if (empty($safeName)) {
+            $safeName = 'UNKNOWN_CLIENT';
+        }
         
         return "licenses/siemens/{$safeName}/COD";
     }
