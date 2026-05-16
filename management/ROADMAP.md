@@ -423,7 +423,7 @@ DX License Manager
 
 ---
 
-### 📋 Fase 15 — Integraciones IA
+### 📋 Fase 15 — Integraciones IA & Readiness
 
 **Estado:** PAUSADA
 **Prerequisito:** ✅ Fase 14 validada por Oskar
@@ -476,7 +476,18 @@ DX License Manager
 
 ---
 
-## 📋 Fase 19 — Consolidación y Limpieza UI
+### 📋 Fase 19 — Unificación CSS & Limpieza UI
+
+**Estado:** INICIADA
+**Prerequisito:** ✅ Auditoría Forense CSS (#008) finalizada
+**Validación requerida:** Consistencia visual total sin estilos inline en layouts ni componentes comunes.
+
+- [ ] **Oleada 1**: Unificación Global (Layouts, Footer, Paginación).
+- [ ] **Oleada 2**: Unificación Módulo Clientes (show.blade.php).
+- [ ] **Oleada 3**: Unificación Módulo Herramientas (tools/).
+- [ ] **Oleada 4**: Auditoría de Componentes Alpine.js (modales).
+- [ ] Eliminación total de parches `!important` no críticos.
+- [ ] Estandarización de nombres de clases `.dx-v2-`.
 
 ## Stack Tecnológico
 
