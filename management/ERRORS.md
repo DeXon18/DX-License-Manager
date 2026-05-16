@@ -8,7 +8,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | Críticos (P1) | Importantes (P2) | Menores (P3) | Resueltos |
 | :--- | :--- | :--- | :--- |
-| 0 | 1 | 0 | 13 |
+| 0 | 1 | 0 | 14 |
 
 ---
 
@@ -20,11 +20,14 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 |---:|---|---|:---:|:---:|:---:|
 | #008 | Unificación de estilos CSS en archivo central | UI/UX | 🟢 P3 | 🆕 Nuevo | 2026-05-14 |
 
+
 ### ✅ Resueltos
 
 | ID | Incidencia | Módulo | Prioridad | Estado | Fecha detección | Fecha resolución |
 |---:|---|---|:---:|:---:|:---:|:---:|
+| #015 | Fallo en vista previa COD (nesting HTML roto) | Herramientas | 🔴 P1 | ✅ Resuelto | 2026-05-16 | 2026-05-16 |
 | #004 | Revisar visualización de "Other Installs" | UI/UX | 🟢 P3 | ✅ Resuelto | 2026-05-14 | 2026-05-15 |
+
 | #007 | Fallo en normalización / duplicidad de clientes | Normalización | 🟠 P2 | ✅ Resuelto | 2026-05-14 | 2026-05-15 |
 | #003 | Filtro "Solo con Licencias" limitado a Siemens | Clientes | 🟠 P2 | ✅ Resuelto | 2026-05-14 | 2026-05-15 |
 | #009 | Limpieza de archivos basura y registros huérfanos | Sistema | 🟢 P3 | ✅ Resuelto | 2026-05-14 | 2026-05-15 |
