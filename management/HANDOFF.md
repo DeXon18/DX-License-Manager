@@ -31,6 +31,7 @@
 1. Crear rama: `feature/css-unification-global`.
 2. Extraer estilos inline de `layouts/app.blade.php`, `footer.blade.php` y los archivos de paginación en `vendor/pagination/`.
 3. Moverlos a `dx-styles.css` usando el prefijo `.dx-v2-`.
+4. Seguir Plan Maestro de 10 Oleadas (detallado en ROADMAP.md).
 
 ### Tareas siguientes
 1. Refactorización del módulo de Clientes (`clients/show.blade.php`).

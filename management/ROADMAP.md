@@ -482,12 +482,18 @@ DX License Manager
 **Prerequisito:** ✅ Auditoría Forense CSS (#008) finalizada
 **Validación requerida:** Consistencia visual total sin estilos inline en layouts ni componentes comunes.
 
-- [ ] **Oleada 1**: Unificación Global (Layouts, Footer, Paginación).
-- [ ] **Oleada 2**: Unificación Módulo Clientes (show.blade.php).
-- [ ] **Oleada 3**: Unificación Módulo Herramientas (tools/).
-- [ ] **Oleada 4**: Auditoría de Componentes Alpine.js (modales).
-- [ ] Eliminación total de parches `!important` no críticos.
-- [ ] Estandarización de nombres de clases `.dx-v2-`.
+- [ ] **Oleada 1**: Base Global (Layout, Sidebar, Footer, Paginación `vendor/pagination/`).
+- [ ] **Oleada 2**: Dashboard & Portada (Métricas, Stats, Home).
+- [ ] **Oleada 3**: Módulo Clientes (show.blade.php) & Planificador Renovaciones.
+- [ ] **Oleada 4**: Herramientas Siemens (NX, STAR-CCM+, HEEDS, COD).
+- [ ] **Oleada 5**: Herramienta Moldex3D & Recursos.
+- [ ] **Oleada 6**: Admin: Sistema & Infra (Dashboard Sistema, Docker Monitor).
+- [ ] **Oleada 7**: Admin: Auditoría & Logs (Audit Index, Activity Logs).
+- [ ] **Oleada 8**: Admin: Gestión de Datos (Importación, Normalización).
+- [ ] **Oleada 9**: Admin: Configuración (Alertas, Usuarios, Repositorio).
+- [ ] **Oleada 10**: Refactor de Componentes (Modales, Tablas, Badges, Botones).
+- [ ] Hardening: Eliminación de parches `!important` y variables huérfanas.
+- [ ] Verificación: Cero instancias de `style=` en `resources/views/` (excl. emails/pdf).
 
 ## Stack Tecnológico
 
