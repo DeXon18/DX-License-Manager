@@ -25,23 +25,14 @@ El desarrollador inicia. El agente espera.
 
 ---
 
+
 ## 🟢 En Progreso
 
-### Fase de Mantenimiento y Estabilización (Incidencias #002-#010) 🔜
-- **Iniciada:** 2026-05-14
-- **Rama:** chore/error-tracking
-- **Resumen:** Resolución sistemática del backlog de errores detectados post-Fase 14. Prioridad absoluta en infraestructura de backup y consistencia de datos de clientes.
-- [x] #002 (P1): Fix scripts de backup (Bash/CRLF/Syntax). ✅ (2026-05-15)
-- [x] #007 (P2): Normalización Semántica (IA - Parches DB). ✅ (2026-05-15)
-- [x] #005 (P2): Lector de Logs (Legibilidad). ✅ (2026-05-15)
-- [x] #010 (P2): Indicadores de Seguridad Dashboard. ✅ (2026-05-15)
-- [x] #014 (P2): Estabilización profunda JWT. ✅ (2026-05-15)
-- [x] #009 (P3): Limpieza Global de Basura. ✅ (2026-05-15)
-- [ ] #008 (P3): Unificación CSS.
-- [x] #004 (P3): UI Multi-Sold-To. ✅ (2026-05-15)
-- [x] #006 (P3): Dashboard Operativo (Buscador/Favoritos). ✅ (2026-05-15)
-- [x] #015 (P1): Fix Preview COD & IA Assistant placement. ✅ (2026-05-16)
-- [x] #016 (P1): Fix COD physical file deletion (Path normalization). ✅ (2026-05-16)
+### Fase 19 — Unificación CSS & Limpieza UI 🔜
+- **Iniciada:** 2026-05-16
+- **Rama:** `feature/css-unification-global`
+- **Resumen:** Migración de estilos inline y redundantes a `dx-styles.css` usando el namespace `.dx-v2-`.
+- [ ] #008 (P3): Unificación CSS — Oleada 1 (Global).
 
 ## ✅ Completado
 
