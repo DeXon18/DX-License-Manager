@@ -65,12 +65,11 @@ class CodController extends Controller
         ]);
 
         $client = Client::findOrFail($request->client_id);
-        $clientSlug = Str::slug($client->name);
         
         $pdf = $this->codService->generatePdf($request->all(), $request->Language);
-        
         $fileName = 'COD_' . strtoupper($request->docType) . '_' . date('Ymd_His') . '.pdf';
-        $directory = $this->codService->getStoragePath($clientSlug);
+        
+        $directory = $this->codService->getStoragePath($client->name);
         $filePath = $directory . '/' . $fileName;
 
         Storage::disk('private')->put($filePath, $pdf->output());
@@ -121,7 +120,7 @@ class CodController extends Controller
         $certificate = CodCertificate::where('uuid', $uuid)->firstOrFail();
         $client = $certificate->client;
 
-        $directory = 'licenses/siemens/' . Str::slug($client->name) . '/COD';
+        $directory = $this->codService->getStoragePath($client->name);
         $fileName = 'COD_SIGNED_' . $certificate->type . '_' . now()->format('Ymd_His') . '.pdf';
         
         // Uso de putFileAs para mayor seguridad y manejo de streams
