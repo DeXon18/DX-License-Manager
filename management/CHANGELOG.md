@@ -1,7 +1,21 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-16 15:45] — Herramientas: Fix COD Preview & UI Contextual IA ✅
+
+### Fixed
+- **Incidencia #015 (Crítica)**: Reparado fallo de anidamiento HTML en `cod.blade.php`. Un bloque duplicado del modal de IA impedía la apertura de la "Vista Previa" del certificado.
+- **Storage Hygiene**: Eliminada la carpeta residual `backend/storage/private` (fuera del árbol de la app), centralizando todo en el disco `private` oficial de Laravel.
+
+### Changed
+- **UX: Asistente IA Contextual**: Reubicado el botón "Analizar Composite.txt" directamente en la sección "Nueva Máquina". Se eliminó el botón grande redundante de la parte inferior para una interfaz más limpia y ergonómica.
+- **Storage Refactor**: Modificada la lógica de rutas de almacenamiento de CODs. Ahora se utiliza el **Nombre Real del Cliente en MAYÚSCULAS** (ej. `ABAD INTEGRACION...`) en lugar de slugs, mejorando la legibilidad en el sistema de archivos.
+
+### Added
+- **Refuerzo UI**: Nuevos estilos `btn-ai-mini` y animaciones de pulso sutiles para los botones contextuales de IA.
+
 ## [2026-05-15 13:50] — Dashboard Operativo y Estabilización de Sistema ✅
+
 
 ### Added
 - **Buscador Global Express**: Motor de búsqueda de alta visibilidad en Dashboard con soporte instantáneo para Sold-To, Machine ID y Nombres de Clientes.

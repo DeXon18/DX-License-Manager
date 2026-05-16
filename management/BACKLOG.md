@@ -40,9 +40,19 @@ El desarrollador inicia. El agente espera.
 - [ ] #008 (P3): Unificación CSS.
 - [x] #004 (P3): UI Multi-Sold-To. ✅ (2026-05-15)
 - [x] #006 (P3): Dashboard Operativo (Buscador/Favoritos). ✅ (2026-05-15)
-
+- [x] #015 (P1): Fix Preview COD & IA Assistant placement. ✅ (2026-05-16)
 
 ## ✅ Completado
+
+### Resolución de Incidencia #015 — Fix Preview COD & UI Optimization ✅
+- **Completada:** 2026-05-16
+- **Rama:** fix/cod-preview-fail
+- **Resumen:** Reparado el fallo de anidamiento HTML que impedía abrir la vista previa de CODs. Se reubicó el asistente IA de Composite a una posición contextual en "Nueva Máquina" y se refactorizó la lógica de almacenamiento para usar nombres reales en MAYÚSCULAS.
+- [x] Fix: Eliminado bloque HTML duplicado e incompleto en `cod.blade.php`.
+- [x] UI: Reubicado botón "Analizar Composite.txt" a cabecera de sección.
+- [x] Storage: Refactor de `CodService` para carpetas en MAYÚSCULAS.
+- [x] Limpieza: Eliminada carpeta residual `storage/private`.
+
 
 ### Resolución de Incidencia #004 — UI Multi-Sold-To (NOC Pro v2) ✅
 - **Completada:** 2026-05-15
