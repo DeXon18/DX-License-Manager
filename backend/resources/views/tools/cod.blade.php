@@ -280,20 +280,7 @@
                 </button>
             </div>
 
-            <!-- ASISTENTE IA (Añadido) -->
-            <div style="margin-top: 40px; padding-top: 30px; border-top: 1px dashed var(--border); display: flex; justify-content: center;">
-                <button type="button" class="btn-ai-assist shadow-premium" @click="openAiModal()">
-                    <div class="ai-icon-pulse">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M12 2C12 2 12.6 7.4 14.5 9.5C16.6 11.4 22 12 22 12C22 12 16.6 12.6 14.5 14.5C12.6 16.6 12 22 12 22C12 22 11.4 16.6 9.5 14.5C7.4 12.6 2 12 2 12C2 12 7.4 11.4 9.5 9.5C11.4 7.4 12 2 12 2Z" fill="currentColor"/>
-                        </svg>
-                    </div>
-                    <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px;">
-                        <span style="font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;">Asistente de Identificadores</span>
-                        <span style="font-size: 10px; opacity: 0.7;">Analizar output de hardware con Gemini AI</span>
-                    </div>
-                </button>
-            </div>
+
         </div>
 
         <!-- FOOTER: CONTROLES Y ACCIONES -->
