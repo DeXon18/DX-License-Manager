@@ -476,54 +476,371 @@ DX License Manager
 
 ---
 
-### 📋 Fase 19 — Unificación CSS & Limpieza UI
+# 📋 Fase 19 — Unificación CSS & Limpieza UI
 
 **Estado:** INICIADA
 **Prerequisito:** ✅ Auditoría Forense CSS (#008) finalizada
-**Validación requerida:** Consistencia visual total sin estilos inline en layouts ni componentes comunes.
+**Validación requerida:** Consistencia visual total. Cero `style=` inline en vistas (excl. emails/pdf).
 
-- [ ] **Subfase 19.1**: Base Global (Layout, Sidebar, Footer, Paginación `vendor/pagination/`).
+---
+
+## 🔷 GIT — ESTRATEGIA DE RAMAS & COMMITS
+
+**Rama única de trabajo:** `dev`
+
+### Convención de commits
+
+Usar prefijo `css:` para todos los commits de esta fase:
+
+```
+css(19.0): design tokens -- namespace --dx-v2-* y limpieza huérfanas
+css(19.2): layouts -- extracción sidebar/footer a .dx-v2-
+css(19.5): clientes -- limpieza style= inline en show.blade.php
+css(19.28): componentes -- modales y tablas refactor namespace
+css(19-hardening): eliminación !important sin justificación
+css(19-docs): style guide interno + README fase
+```
+
+### Checkpoints de commit en `dev`
+
+No acumular trabajo sin commitear. Puntos de commit recomendados:
+
+- [ ] **Checkpoint A** — tras 19.0 + 19.1 + 19.2 *(tokens + css base + layouts)*
+- [ ] **Checkpoint B** — tras 19.3 → 19.9 *(auth + dashboard + clientes completo)*
+- [ ] **Checkpoint C** — tras 19.10 → 19.17 *(herramientas + siemens + moldex3d)*
+- [ ] **Checkpoint D** — tras 19.18 → 19.25 *(sistema & configuración completo)*
+- [ ] **Checkpoint E** — tras 19.26 → 19.29 *(especiales + componentes + exclusiones)*
+- [ ] **Commit final** — tras hardening + documentación
+
+### Backup de seguridad antes de iniciar
+
+- [ ] Tag git en estado actual: `git tag backup/pre-fase-19`
+- [ ] Push del tag al remoto: `git push origin backup/pre-fase-19`
+
+---
+
+## 🔷 RELEASES (tags en `dev`)
+
+- [ ] **Tag v2.19.0-rc1** — tras Checkpoint C *(parcial, herramientas limpias)*
+    - [ ] `git tag v2.19.0-rc1 && git push origin v2.19.0-rc1`
+- [ ] **Tag v2.19.0-rc2** — tras Checkpoint E *(completo, previo a hardening)*
+    - [ ] `git tag v2.19.0-rc2 && git push origin v2.19.0-rc2`
+- [ ] **Tag v2.19.0** — tras commit final + verificación de criterios de aceptación
+    - [ ] `git tag v2.19.0 && git push origin v2.19.0`
+    - [ ] CHANGELOG actualizado con lista de subfases completadas.
+    - [ ] Nota de release: consistencia visual total, zero `style=` inline, namespace `.dx-v2-`.
+
+---
+
+## 🔷 AGRUPACIÓN DE ESTILOS COMUNES & PROBLEMÁTICOS
+
+### Archivos compartidos a crear antes de refactorizar subfases
+
+Identificar y extraer estos patrones repetidos a su hoja común **antes** de procesar cada subfase:
+
+- [ ] **`dx-v2-status-badges.css`** — badges de estado (activo, caducado, próximo, suspendido)
+    > Aparecen en: Clientes, Licencias, Planificador, Alertas, Logs.
+
+- [ ] **`dx-v2-data-tables.css`** — tablas de datos con ordenación, filtros y paginación
+    > Aparecen en: Licencias, Contratos, Usuarios, Importaciones, Repositorio, Logs.
+
+- [ ] **`dx-v2-stat-cards.css`** — tarjetas de métricas / KPI cards
+    > Aparecen en: Dashboard, Inicio, Sistema, Clientes show.
+
+- [ ] **`dx-v2-timeline.css`** — líneas de tiempo y actividad
+    > Aparecen en: Planificador, Logs de actividad, Historial de importaciones.
+
+- [ ] **`dx-v2-tool-header.css`** — cabecera de página de herramienta (ícono + título + descripción + acciones)
+    > Aparecen en: NX, STAR-CCM+, HEEDS, COD, Moldex3D.
+
+- [ ] **`dx-v2-connection-status.css`** — indicadores de conexión / estado de servicio
+    > Aparecen en: Dashboard Sistema, Integraciones IA, Docker Monitor.
+
+- [ ] **`dx-v2-empty-states.css`** — estados vacíos (sin datos, sin resultados, primer uso)
+    > Aparecen en: Licencias, Logs, Repositorio, Historial backups.
+
+- [ ] **`dx-v2-forms-common.css`** — inputs, selects, grupos de formulario con validación
+    > Aparecen en: toda la app (crear/editar en casi todos los módulos).
+
+### Estilos problemáticos a vigilar durante el refactor
+
+- [ ] Selectores de ID (`#id { }`) → reemplazar por clase `.dx-v2-`.
+- [ ] Valores hardcodeados de `color`, `background`, `font-size` (hex/px) → reemplazar por tokens `--dx-v2-*`.
+- [ ] `z-index` sin escala definida → centralizar tabla de z-index en el archivo de tokens.
+- [ ] `transition` y `animation` duplicados entre componentes → centralizar en `dx-v2-motion.css`.
+
+---
+
+## 🔷 PRE-TRABAJO
+
+- [ ] **Subfase 19.0** — Design Tokens & Variables CSS *(obligatorio antes de 19.1)*
+    - [ ] Inventario completo de `--variables` en uso.
+    - [ ] Eliminación de variables huérfanas o duplicadas.
+    - [ ] Namespace unificado: `--dx-v2-*` (colores, espaciados, tipografía, radios, sombras).
+    - [ ] Centralizar tabla de `z-index`.
+    - [ ] Documentar mapa de tokens final.
+
+---
+
+## 🔷 [1–2] CSS GLOBAL & LAYOUTS
+
+- [ ] **Subfase 19.1** — CSS Base & Assets (`resources/css/`, `resources/js/`, `public/`)
+    - [ ] Consolidar hojas sueltas / imports redundantes.
+    - [ ] Verificar que el build (Vite/Mix) no purgue clases `.dx-v2-` usadas dinámicamente (JS/Alpine).
+    - [ ] Limpieza de `!important` sin justificación.
+
+- [ ] **Subfase 19.2** — Layouts Blade (app layout, sidebar, topbar, footer, paginación `vendor/pagination/`)
     - [ ] Extracción y Namespace `.dx-v2-`.
     - [ ] Limpieza de `style=` inline.
     - [ ] Verificación visual (Light/Dark) y Responsive.
-- [ ] **Subfase 19.2**: Dashboard & Portada (Métricas, Stats, Home).
+
+---
+
+## 🔷 [3] AUTH
+
+- [ ] **Subfase 19.3** — Login & Auth (login, forgot-password, reset, 2FA)
     - [ ] Extracción y Namespace `.dx-v2-`.
     - [ ] Limpieza de `style=` inline.
     - [ ] Verificación visual (Light/Dark) y Responsive.
-- [ ] **Subfase 19.3**: Módulo Clientes (show.blade.php) & Planificador Renovaciones.
+
+---
+
+## 🔷 [4] INICIO / DASHBOARD
+
+- [ ] **Subfase 19.4** — Inicio & Dashboard (home, métricas, stats, widgets)
     - [ ] Extracción y Namespace `.dx-v2-`.
     - [ ] Limpieza de `style=` inline.
     - [ ] Verificación visual (Light/Dark) y Responsive.
-- [ ] **Subfase 19.4**: Herramientas Siemens (NX, STAR-CCM+, HEEDS, COD).
+
+---
+
+## 🔷 [5] CLIENTES
+
+- [ ] **Subfase 19.5** — Clientes: Vista principal (`index`, `show`, `edit`)
     - [ ] Extracción y Namespace `.dx-v2-`.
     - [ ] Limpieza de `style=` inline.
     - [ ] Verificación visual (Light/Dark) y Responsive.
-- [ ] **Subfase 19.5**: Herramienta Moldex3D & Recursos.
+
+- [ ] **Subfase 19.6** — Clientes: Licencias (inventario unificado)
     - [ ] Extracción y Namespace `.dx-v2-`.
     - [ ] Limpieza de `style=` inline.
     - [ ] Verificación visual (Light/Dark) y Responsive.
-- [ ] **Subfase 19.6**: Admin: Sistema & Infra (Dashboard Sistema, Docker Monitor).
+
+- [ ] **Subfase 19.7** — Clientes: Contratos / ContraHeaders (importación CSV)
     - [ ] Extracción y Namespace `.dx-v2-`.
     - [ ] Limpieza de `style=` inline.
     - [ ] Verificación visual (Light/Dark) y Responsive.
-- [ ] **Subfase 19.7**: Admin: Auditoría & Logs (Audit Index, Activity Logs).
+
+- [ ] **Subfase 19.8** — Clientes: Contactos de envío & Certificados de cese (CODs)
     - [ ] Extracción y Namespace `.dx-v2-`.
     - [ ] Limpieza de `style=` inline.
     - [ ] Verificación visual (Light/Dark) y Responsive.
-- [ ] **Subfase 19.8**: Admin: Gestión de Datos (Importación, Normalización).
+
+- [ ] **Subfase 19.9** — Planificador de Renovaciones
     - [ ] Extracción y Namespace `.dx-v2-`.
     - [ ] Limpieza de `style=` inline.
     - [ ] Verificación visual (Light/Dark) y Responsive.
-- [ ] **Subfase 19.9**: Admin: Configuración (Alertas, Usuarios, Repositorio).
+
+---
+
+## 🔷 [6] HERRAMIENTAS
+
+- [ ] **Subfase 19.10** — Herramientas: Vista general / índice
     - [ ] Extracción y Namespace `.dx-v2-`.
     - [ ] Limpieza de `style=` inline.
     - [ ] Verificación visual (Light/Dark) y Responsive.
-- [ ] **Subfase 19.10**: Refactor de Componentes (Modales, Tablas, Badges, Botones).
+
+---
+
+## 🔷 [7] PÁGINAS DE HERRAMIENTAS & RECURSOS
+
+- [ ] **Subfase 19.11** — Siemens: NX Suite (ugslmd, saltd)
     - [ ] Extracción y Namespace `.dx-v2-`.
     - [ ] Limpieza de `style=` inline.
     - [ ] Verificación visual (Light/Dark) y Responsive.
-- [ ] Hardening: Eliminación de parches `!important` y variables huérfanas.
-- [ ] Verificación Final: Cero instancias de `style=` en `resources/views/` (excl. emails/pdf).
+
+- [ ] **Subfase 19.12** — Siemens: STAR-CCM+ (cdlmd)
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+
+- [ ] **Subfase 19.13** — Siemens: HEEDS (RCTECH)
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+
+- [ ] **Subfase 19.14** — Siemens: COD (Generador + Asistente IA)
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+
+- [ ] **Subfase 19.15** — Siemens: Recursos & enlaces 
+    - [ ] Definir estructura de vista antes de aplicar namespace.
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+
+- [ ] **Subfase 19.16** — Moldex3D (Parser .mac + Sincronización)
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+
+- [ ] **Subfase 19.17** — Moldex3D: Recursos & enlaces 
+    - [ ] Definir estructura de vista antes de aplicar namespace.
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+
+---
+
+## 🔷 [8] SISTEMA & CONFIGURACIÓN
+
+- [ ] **Subfase 19.18** — Dashboard del Sistema (NOC Pro + Brand Icons)
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+
+- [ ] **Subfase 19.19** — Usuarios y acceso (listado, crear/editar, roles y permisos)
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+
+- [ ] **Subfase 19.20** — Datos e importación (importar CSV, historial, errores)
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+
+- [ ] **Subfase 19.21** — Repositorio de licencias (archivo semanal, historial)
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+
+- [ ] **Subfase 19.22** — Alertas y notificaciones (caducidad, umbrales, destinatarios, historial, SMTP)
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+
+- [ ] **Subfase 19.23** — Backups (manual, historial, configuración automática)
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+
+- [ ] **Subfase 19.24** — Integraciones IA (Gemini, Deepseek, OpenRouter, Telegram Bot, estado de conexión)
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+
+- [ ] **Subfase 19.25** — Logs y auditoría (actividad, errores, auditoría IA)
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+
+---
+
+## 🔷 VISTAS ESPECIALES
+
+- [ ] **Subfase 19.26** — Páginas de Error (`errors/`: 403, 404, 419, 500, 503)
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark).
+
+---
+
+## 🔷 COMPONENTES COMPARTIDOS
+
+- [ ] **Subfase 19.27** — Componentes de Formulario (inputs, selects, textareas, checkboxes, radios, file uploads)
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación de estados: default, focus, disabled, error, readonly.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+
+- [ ] **Subfase 19.28** — Componentes UI (Modales, Tablas, Badges, Botones, Toasts/Alerts)
+    - [ ] Extracción y Namespace `.dx-v2-`.
+    - [ ] Limpieza de `style=` inline.
+    - [ ] Verificación visual (Light/Dark) y Responsive.
+
+---
+
+## 🔷 EXCLUSIONES DOCUMENTADAS
+
+- [ ] **Subfase 19.29** — Revisión (no refactor) de Emails & PDFs
+    - [ ] Inventariar `style=` inline existente y justificar excepción.
+    - [ ] Verificar que no hereden variables `--dx-v2-*` que se rompan en clientes de correo.
+    - [ ] Registrar excepciones en CHANGELOG de la fase.
+
+---
+
+## 🔷 DOCUMENTACIÓN DE CÓDIGO
+
+### En los archivos CSS
+
+Header obligatorio en cada hoja nueva o refactorizada:
+
+```css
+/**
+ * @module    dx-v2-[nombre]
+ * @fase      19.[N]
+ * @desc      [Qué cubre este archivo]
+ * @afecta    [Vistas / componentes que lo consumen]
+ * @version   2.19.0
+ */
+```
+
+Comentario de sección para cada bloque temático:
+
+```css
+/* ─── Sidebar nav items ──────────────────────────────── */
+/* ─── Responsive breakpoints ────────────────────────── */
+/* ─── Dark mode overrides ───────────────────────────── */
+```
+
+Justificación obligatoria en cada `!important` que sobreviva al hardening:
+
+```css
+/* !important: sobrescribe librería vendor Bootstrap [componente X] */
+```
+
+### En los Blade components
+
+Comentario en componentes que usen clases `.dx-v2-` no obvias:
+
+```blade
+{{-- dx-v2-badge--expired: estado caducado, ver resources/css/badges.css --}}
+```
+
+---
+
+## 🔷 CIERRE & HARDENING
+
+- [ ] Eliminación de `!important` sin comentario justificado.
+- [ ] Eliminación de variables `--dx-v2-*` huérfanas post-refactor.
+- [ ] Verificación Final: `grep -r 'style=' resources/views/` → cero resultados (excl. emails/pdf).
+- [ ] Verificación build: clases dinámicas no purgadas por Vite.
+
+---
+
+## 🔷 DOCUMENTACIÓN FINAL
+
+- [ ] Style guide interno: inventario de componentes `.dx-v2-` con ejemplos de uso.
+- [ ] README de la fase: decisiones tomadas, excepciones justificadas, variables deprecadas.
+- [ ] Actualizar CHANGELOG del proyecto.
+
+---
+
+## ✅ Criterios de Aceptación
+
+| Criterio | Check |
+|---|---|
+| Zero `style=` en `resources/views/` (excl. emails/pdf) | [ ] |
+| Zero clases sin namespace `.dx-v2-` en hojas nuevas | [ ] |
+| Zero variables huérfanas post-refactor | [ ] |
+| Zero `!important` sin comentario justificado | [ ] |
+| Verificación visual OK — Light & Dark mode | [ ] |
+| Verificación Responsive OK (mobile / tablet / desktop) | [ ] |
+| Build Vite sin purge de clases dinámicas | [ ] |
+| Style guide interno entregado | [ ] |
+| CHANGELOG actualizado | [ ] |
+| Tag `v2.19.0` pusheado al remoto desde `dev` | [ ] |
+
+---
 
 ## Stack Tecnológico
 
