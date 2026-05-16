@@ -1,6 +1,6 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-16 16:54  
-> Sesión en: Windows Host (Antigravity)  
+> Última actualización: 2026-05-16 17:36  
+> Sesión en: Proxmox Host / LXC 600  
 > Rama activa: dev
 
 ---
@@ -15,12 +15,15 @@
 
 ## Qué se hizo en esta sesión
 
-1.  **Resolución Incidencia #016**: Fix de borrado de archivos COD. Se normalizaron rutas y se añadió logging de auditoría. Verificado y mergeado.
-2.  **Auditoría Forense CSS (#008)**: Análisis profundo de la fragmentación de estilos en 40 archivos Blade.
-    *   Detectados 200+ colores HEX hardcoded.
-    *   Detectados 45 parches con `!important`.
-    *   Detectados 350+ redundancias de layout (Flexbox/Grid).
-3.  **Documentación**: Generado el informe maestro `analysis_css_unification.md` con el listado detallado de archivos y la estrategia por oleadas.
+1. **Auditoría CSS**: Detección de 1192 instancias de `style=` inline y 18 bloques `<style>`.
+2. **Reestructuración Roadmap**:
+    - Separación de Fase 15 (IA) y Fase 19 (CSS).
+    - Creación de Plan Maestro de **30 subfases** (19.0 a 19.29).
+    - Definición de estrategia Git: trabajar en `dev` con prefijo `css(19.N):`.
+    - Establecimiento de Checkpoints A-E y tags de release.
+3. **Git Infrastructure**:
+    - Tag de backup creado: `backup/pre-fase-19`.
+    - Sincronización completa de `ROADMAP.md`, `BACKLOG.md`, `HANDOFF.md` y `ACTIVE_CONTEXT.md`.
 
 ---
 
@@ -28,28 +31,27 @@
 
 ### Tarea inmediata (empezar aquí)
 **Iniciar Subfase 19.0 (Pre-trabajo: Design Tokens & Variables).**
-1. Rama activa: `feature/css-unification-global`.
-2. Inventariar `--variables` CSS en uso en todo el proyecto.
-3. Definir y documentar namespace `--dx-v2-*`.
-4. Seguir Plan Maestro de 30 Subfases (detallado en ROADMAP.md).
+1. Inventariar todas las `--variables` CSS actualmente en uso en el proyecto (localizar en `app.css`, `index.css` y bloques `<style>`).
+2. Definir el mapeo al nuevo namespace `--dx-v2-*`.
+3. Eliminar variables huérfanas detectadas.
 
 ### Tareas siguientes
-1. Refactorización del módulo de Clientes (`clients/show.blade.php`).
-2. Centralización de componentes de Herramientas (`tools/`).
+1. **Subfase 19.1**: Consolidación de CSS Base & Assets.
+2. **Subfase 19.2**: Refactor de Layouts Blade (Sidebar, Footer, Pagination).
 
 ---
 
 ## Contexto técnico importante
 
-- **Estrategia Namespacing**: Usar siempre `.dx-v2-` para nuevos estilos para evitar colisiones con el CSS "Frankenstein" existente mientras se limpia.
-- **Zonas Protegidas**: NO TOCAR archivos en `emails/` o `pdf/` durante la unificación (requieren estilos inline por compatibilidad).
-- **IA Readiness**: El objetivo final es dejar el CSS tan limpio que cualquier agente pueda generar nuevas vistas 100% coherentes sin inventar estilos.
+- **Estrategia Git**: Se ha decidido trabajar directamente en `dev` para evitar la complejidad de merges de larga duración, usando commits atómicos por subfase o checkpoint.
+- **Backups**: El tag `backup/pre-fase-19` marca el punto exacto antes de empezar a alterar los archivos de estilos.
+- **Namespace**: Todo lo nuevo o refactorizado debe usar `.dx-v2-` para evitar colisiones con el CSS legado.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-Ninguno. El camino para la unificación está despejado y documentado.
+Ninguno. El camino técnico está 100% definido y documentado en `ROADMAP.md`.
 
 ---
 
@@ -57,19 +59,19 @@ Ninguno. El camino para la unificación está despejado y documentado.
 
 | Archivo | Estado |
 |:---|:---|
-| `analysis_css_unification.md` | ✅ Completo (Versión Full) |
-| `management/CHANGELOG.md` | ✅ Actualizado con fix #016 |
-| `management/ERRORS.md` | ✅ Actualizado (#008 en curso) |
-| `backend/storage/` | ✅ Permisos verificados tras fix #016 |
+| `infra/.env.prod` | ✅ configurado |
+| `infra/.env.beta` | ✅ configurado |
+| `backend/.env` | ✅ configurado |
+| `backend/vendor/` | ✅ instalado |
 
 ---
 
 ## Comandos útiles para la próxima sesión
 
 ```bash
-# Verificar archivos con estilos inline restantes
-grep -r "style=" resources/views/ | wc -l
+# Verificar logs del contenedor PHP antes de cada commit
+docker compose --project-directory . -f infra/docker-compose.beta.yml logs --tail=50 dx-php-beta
 
-# Ver logs de auditoría (para verificar borrados COD)
-tail -f storage/logs/laravel.log
+# Buscar estilos inline restantes
+grep -r "style=" resources/views/ --exclude-dir=emails --exclude-dir=pdf
 ```
