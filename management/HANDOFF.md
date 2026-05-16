@@ -1,5 +1,5 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-15 14:20  
+> Última actualización: 2026-05-16 15:50  
 > Sesión en: Antigravity Beta  
 > Rama activa: dev
 
@@ -7,7 +7,7 @@
 
 ## Estado General
 
-**Fase actual:** Fase 15.5 — Inventario Granular y UI ✅  
+**Fase actual:** Fase de Mantenimiento y Estabilización ✅  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,23 +15,24 @@
 
 ## Qué se hizo en esta sesión
 
-1.  **Rediseño Multi-SoldTo (#004)**: 
-    *   Implementada marca de agua técnica (`fa-network-wired`) sutil (4%) en el fondo de las tarjetas de daemon.
-    *   Sustitución de badges intrusivos por una franja minimalista transparente.
-    *   Coloreado técnico de IDs en amarillo crema (`#fde68a`) para look industrial premium.
-2.  **Estabilización de Sesión (#014)**:
-    *   Implementada **Rotación Inteligente** de tokens JWT (cool-off de 5 min) para evitar colisiones en ráfagas AJAX.
-    *   Ampliación de TTL a 60 min para mayor comodidad técnica.
-3.  **Higiene de Documentación**:
-    *   Actualizados `BACKLOG.md`, `CHANGELOG.md` y `ERRORS.md` reflejando 13 incidencias resueltas en total.
-    *   Merge de la rama `feature/multi-soldto-ui` a `dev`.
+1.  **Fix COD Preview (#015)**: 
+    *   Reparado nesting HTML en `cod.blade.php` que bloqueaba modales.
+    *   Refactor de rutas de almacenamiento a **MAYÚSCULAS** (Nombre Real Cliente).
+    *   Limpieza de infraestructura: Eliminada carpeta residual `backend/storage/private`.
+2.  **UX Optimization (Herramientas)**:
+    *   Reubicado asistente IA de Composite a sección contextual "Nueva Máquina".
+    *   Eliminados botones redundantes para limpiar el layout.
+3.  **Higiene Documental**:
+    *   Actualizados `BACKLOG.md`, `CHANGELOG.md` y `ERRORS.md`.
+    *   Merge de la rama `fix/cod-preview-fail` a `dev`.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Revisar la incidencia **#008 (Unificación de estilos CSS)** en `ERRORS.md`. El objetivo es mover los estilos locales inyectados en `clients/show.blade.php` al archivo central `public/css/dx-styles.css` para limpiar las vistas.
+Revisar la incidencia **#008 (Unificación de estilos CSS)** en `ERRORS.md`. El objetivo es mover los estilos locales inyectados en `clients/show.blade.php` y `tools/cod.blade.php` al archivo central `public/css/dx-styles.css` para limpiar las vistas.
+
 
 ### Tareas siguientes
 1. Iniciar **Fase 15 (Integraciones IA)**: Configuración y test de conexión con Gemini 3.1 Flash-Lite y DeepSeek.
