@@ -96,6 +96,31 @@
   --toggle-bg: var(--dx-v2-toggle-bg);
   --font-sans: var(--dx-v2-font-sans);
   --font-mono: var(--dx-v2-font-mono);
+
+  /* Aliases de compatibilidad base para refactorización unificada */
+  --dx-v2-bg-base: var(--dx-v2-bg);
+  --dx-v2-surface-base: var(--dx-v2-surface);
+  --dx-v2-raised-base: var(--dx-v2-raised);
+  --dx-v2-primary-base: var(--dx-v2-primary);
+  --dx-v2-secondary-base: var(--dx-v2-secondary);
+  --dx-v2-accent-base: var(--dx-v2-accent);
+  --dx-v2-accent-hover-base: var(--dx-v2-accent-hover);
+  --dx-v2-accent-muted-base: var(--dx-v2-accent-muted);
+  --dx-v2-accent-border-base: var(--dx-v2-accent-border);
+  --dx-v2-border-base: var(--dx-v2-border);
+  --dx-v2-border-subtle-base: var(--dx-v2-border-subtle);
+  --dx-v2-muted-base: var(--dx-v2-muted);
+  --dx-v2-success-base: var(--dx-v2-success);
+  --dx-v2-success-bg-base: var(--dx-v2-success-bg);
+  --dx-v2-success-border-base: var(--dx-v2-success-border);
+  --dx-v2-warning-base: var(--dx-v2-warning);
+  --dx-v2-warning-bg-base: var(--dx-v2-warning-bg);
+  --dx-v2-warning-border-base: var(--dx-v2-warning-border);
+  --dx-v2-danger-base: var(--dx-v2-danger);
+  --dx-v2-danger-bg-base: var(--dx-v2-danger-bg);
+  --dx-v2-danger-border-base: var(--dx-v2-danger-border);
+  --dx-v2-siemens-base: var(--dx-v2-siemens);
+  --dx-v2-moldex-base: var(--dx-v2-moldex);
 }
 
 /* ============================================================
@@ -1512,6 +1537,12 @@ footer {
 /* ============================================================
    27. PÁGINA: CLIENTES  (Refactored Subfase 19.5)
    ============================================================ */
+.inventory-filter-group {
+  display: flex;
+  align-items: center;
+  gap: var(--dx-v2-spacing-2);
+}
+
 /* Segmented Controls (Filtro Inventario) */
 .dx-v2-clients-seg-control {
   display: flex;
