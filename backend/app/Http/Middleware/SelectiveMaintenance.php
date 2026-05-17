@@ -22,7 +22,7 @@ class SelectiveMaintenance
             $user = $request->user();
 
             // Si es admin, permitimos el paso pero marcamos una variable global para el aviso
-            if ($user && isset($user->role) && $user->role->slug === 'admin') {
+            if ($user && $user->hasRole('admin')) {
                 view()->share('maintenance_active', true);
                 return $next($request);
             }

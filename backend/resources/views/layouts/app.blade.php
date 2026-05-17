@@ -39,14 +39,14 @@
 }" @keyup.slash.window="sidebarOpen = !sidebarOpen">
     
     @if($maintenance_active ?? false)
-    <div style="background: #f59e0b; color: #000; padding: 8px 20px; text-align: center; font-size: 13px; font-weight: 700; position: sticky; top: 0; z-index: 10000; display: flex; align-items: center; justify-content: center; gap: 10px;">
-        <span style="font-size: 16px;">⚠️</span>
+    <div class="dx-v2-maintenance-banner">
+        <span>⚠️</span>
         MODO MANTENIMIENTO ACTIVO - El portal no es accesible para usuarios estándar.
-        <a href="{{ route('admin.system.index') }}" style="color: #000; text-decoration: underline; margin-left: 10px;">Gestionar</a>
+        <a href="{{ route('admin.system.index') }}">Gestionar</a>
     </div>
     @endif
     
-    <header @if($maintenance_active ?? false) style="top: 35px;" @endif>
+    <header class="{{ ($maintenance_active ?? false) ? 'dx-v2-maintenance-header' : '' }}">
         <div class="header-inner">
             <a class="brand" href="{{ url('/') }}">
                 <div class="brand-mark">DX</div>
