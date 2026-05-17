@@ -2,30 +2,30 @@
 project: DX License Manager
 repo: github.com/DeXon18/DX-License-Manager
 status: Phase 19 - Unificación CSS | In Progress
-last_sync: 2026-05-16
+last_sync: 2026-05-17
 current_agent: Antigravity (DX Agent) 🦾
 ---
 
 # 🧠 Contexto de Sesión Activa
 
 ## 🎯 Objetivo Actual
-Iniciar **Fase 19 (Unificación CSS & Limpieza UI)**. Extraer estilos inline de layouts, footer y paginación para centralizar en `dx-styles.css` con namespace `.dx-v2-`.
+Avanzar en la **Fase 19 (Unificación CSS & Limpieza UI)**. Unificar y extraer todos los estilos inline y bloques incrustados locales de las vistas de Clientes (`index.blade.php`, `show.blade.php`) a clases modulares `.dx-v2-clients-*` dentro de `dx-styles.css`.
 
 ## Estado de la Tarea Actual
 - **Incidencia:** #008 — Unificación CSS
-- **Estado:** 🔜 Iniciando Oleada 1
-- **Rama:** `feature/css-unification-global`
-- **Cambios clave:** Namespacing `.dx-v2-`, limpieza de estilos inline en `app.blade.php`.
+- **Estado:** 🔜 Subfase 19.4 Completada, listos para Subfase 19.5
+- **Rama:** `feature/css-tokens`
+- **Cambios clave:** Extracción de estilos inline y centralización en `dx-styles.css` con namespace `.dx-v2-clients-`.
 
 ## Próximos Pasos
-- [ ] Subfase 19.0: Pre-trabajo (Design Tokens & Variables).
-- [ ] Subfases 19.1 a 19.29: Plan Maestro Ultra-Granular.
+- [x] Subfase 19.0: Pre-trabajo (Design Tokens & Variables) ✅
+- [x] Subfases 19.1 a 19.4: Layout, Login, Sidebar, Inicio & Dashboard ✅
+- [ ] Subfase 19.5: Clientes: Vista principal (index, show, edit) 🔜
 
 
 ## 🛠️ Tareas en curso
-- [x] Resolución Incidencia #016 (Borrado COD).
-- [x] Resolución Incidencia #015 (Preview COD).
-- [/] Fase 19: Oleada 1 CSS.
+- [x] Subfase 19.4: Inicio & Dashboard ✅
+- [ ] Subfase 19.5: Clientes: Vista principal (index, show) 🔜
 - Fase del ROADMAP: Fase 19 (Iniciada)
 
 ---
