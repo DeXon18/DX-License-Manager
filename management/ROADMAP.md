@@ -640,10 +640,17 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
 
 ## 🔷 [5] CLIENTES
 
-- [ ] **Subfase 19.5** — Clientes: Vista principal (`index`, `show`, `edit`)
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.5** — Clientes: Vista principal (`index`, `show`) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Añadidas utilidades globales `.text-xs` y clases de componentes semánticas `.dx-v2-clients-db-icon` y `.dx-v2-clients-empty-state`.
+    > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/clients/index.blade.php) - Limpieza total de estilos locales, clases de utilidad obsoletas y corrección del bug estructural de colspan de la celda de la tabla de clientes.
+    >
+    > **Área Visual Afectada:**
+    > - Listado de clientes, envoltura del estado vacío cuando no hay resultados (ahora centrado y expandido a lo largo de las 5 columnas simétricamente), ícono de la advertencia de base de datos de licencias y subtítulo de la página principal.
 
 - [ ] **Subfase 19.6** — Clientes: Licencias (inventario unificado)
     - [ ] Extracción y Namespace `.dx-v2-`.
