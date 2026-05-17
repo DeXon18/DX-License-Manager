@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DX License Manager — Acceso</title>
     <link rel="icon" type="image/png" href="{{ asset('assets/img/favicon.png') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/fonts.css') }}?v={{ time() }}">
     <link rel="stylesheet" href="{{ asset('assets/css/dx-styles.css') }}?v={{ time() }}">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
