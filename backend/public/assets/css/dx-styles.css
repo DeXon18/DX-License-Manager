@@ -1546,6 +1546,8 @@ footer {
 /* Segmented Controls (Filtro Inventario) */
 .dx-v2-clients-seg-control {
   display: flex;
+  height: 42px; /* Mismo alto que la barra de búsqueda */
+  box-sizing: border-box;
   background: rgba(255, 255, 255, 0.02);
   border: 1px solid var(--dx-v2-border-base);
   border-radius: var(--dx-v2-rounded-md);
@@ -1560,8 +1562,10 @@ footer {
 .dx-v2-clients-seg-item {
   display: flex;
   align-items: center;
+  height: 100%;
+  box-sizing: border-box;
   gap: 8px;
-  padding: 6px 14px;
+  padding: 0 14px; /* Eliminado padding vertical, centrado controlado por height: 100% */
   border-radius: var(--dx-v2-rounded-sm);
   color: var(--dx-v2-text-muted);
   text-decoration: none;
