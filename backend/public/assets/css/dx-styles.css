@@ -548,6 +548,207 @@ footer {
 .action-btn-label     { font-size:12px; font-weight:600; color:var(--dx-v2-primary); }
 .action-btn-sub       { font-size:11px; color:var(--dx-v2-muted); }
 
+/* Icono Traslúcido de Tarjeta de Estadísticas */
+.dx-v2-dashboard-stat-icon {
+  position: absolute;
+  top: -5px;
+  right: -15px;
+  opacity: 0.08;
+  pointer-events: none;
+  transform: rotate(-15deg);
+}
+.stat-card.success .dx-v2-dashboard-stat-icon { color: var(--dx-v2-success); }
+.stat-card.danger .dx-v2-dashboard-stat-icon  { color: var(--dx-v2-danger); }
+.stat-card.warn .dx-v2-dashboard-stat-icon    { color: var(--dx-v2-warning); }
+.stat-card.accent .dx-v2-dashboard-stat-icon  { color: var(--dx-v2-accent); }
+
+/* Buscador Global Express Card */
+.dx-v2-dashboard-search-card {
+  margin-bottom: 24px;
+  background: var(--dx-v2-surface);
+  border: 1px solid var(--dx-v2-border);
+  box-shadow: var(--dx-v2-shadow-3);
+}
+.dx-v2-dashboard-search-body {
+  padding: 16px 24px;
+}
+.dx-v2-dashboard-search-form {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.dx-v2-dashboard-search-input-wrap {
+  flex: 1;
+  position: relative;
+}
+.dx-v2-dashboard-search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--dx-v2-muted);
+  font-size: 14px;
+}
+.dx-v2-dashboard-search-input {
+  width: 100%;
+  padding: 14px 14px 14px 45px;
+  background: var(--dx-v2-raised);
+  border: 1px solid var(--dx-v2-border);
+  border-radius: var(--dx-v2-rounded-md);
+  color: var(--dx-v2-primary);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.dx-v2-dashboard-search-input:focus {
+  border-color: var(--dx-v2-accent);
+  box-shadow: 0 0 0 3px var(--dx-v2-accent-muted);
+}
+.dx-v2-dashboard-search-submit {
+  padding: 14px 24px;
+  border-radius: var(--dx-v2-rounded-md);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Listado de vencimientos - Modificadores */
+.dx-v2-dashboard-vendor-text {
+  text-transform: uppercase;
+  font-weight: 800;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+}
+.dx-v2-dashboard-vendor-text.siemens { color: var(--dx-v2-siemens); }
+.dx-v2-dashboard-vendor-text.moldex  { color: var(--dx-v2-moldex); }
+
+.dx-v2-dashboard-table-dot {
+  color: var(--dx-v2-muted);
+  margin: 0 4px;
+  font-size: 10px;
+}
+.dx-v2-dashboard-table-soldto {
+  font-size: 11px;
+  color: var(--dx-v2-secondary);
+  font-family: var(--dx-v2-font-mono);
+}
+.dx-v2-dashboard-empty-td {
+  text-align: center !important;
+  padding: 40px !important;
+  color: var(--dx-v2-muted) !important;
+}
+.dx-v2-dashboard-empty-icon {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+/* Columna lateral */
+.dx-v2-dashboard-right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.dx-v2-dashboard-action-btn-rel {
+  position: relative;
+}
+.dx-v2-dashboard-badge-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--dx-v2-danger);
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: var(--dx-v2-rounded-xl);
+  font-size: 11px;
+  font-weight: 800;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  z-index: 10;
+}
+
+/* Gestión de Contratos */
+.dx-v2-dashboard-contracts-grid {
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+.dx-v2-dashboard-contract-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--dx-v2-raised);
+  border: 1px solid var(--dx-v2-border);
+  border-radius: var(--dx-v2-rounded-md);
+}
+.dx-v2-dashboard-contract-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.dx-v2-dashboard-contract-icon-box {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--dx-v2-rounded-sm);
+}
+.dx-v2-dashboard-contract-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--dx-v2-secondary);
+}
+.dx-v2-dashboard-contract-count {
+  font-family: var(--dx-v2-font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--dx-v2-primary);
+}
+.dx-v2-dashboard-contract-footer {
+  border-top: 1px solid var(--dx-v2-border);
+  border-bottom: none;
+  background: transparent;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.dx-v2-dashboard-contract-footer-label {
+  font-size: 11px;
+  color: var(--dx-v2-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.dx-v2-dashboard-contract-footer-value {
+  font-family: var(--dx-v2-font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--dx-v2-accent);
+}
+
+/* --- UTILITY CLASSES --- */
+.dx-v2-table-nowrap {
+  white-space: nowrap !important;
+}
+.dx-v2-link-inherit {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+/* Utilidades de color de Contratos */
+.dx-v2-color-azul-claro { color: var(--dx-v2-accent); }
+.dx-v2-color-azul-intenso { color: #1d6ae8; }
+.dx-v2-color-morado { color: #a855f7; }
+.dx-v2-color-amarillo { color: var(--dx-v2-warning); }
+.dx-v2-color-naranja { color: #f97316; }
+.dx-v2-color-verde { color: var(--dx-v2-success); }
+.dx-v2-color-rojo-apagado { color: var(--dx-v2-danger); }
+.dx-v2-color-gris { color: var(--dx-v2-muted); }
+
+
 /* ============================================================
    20. PÁGINA: HERRAMIENTAS  (03-herramientas.html)
    ============================================================ */
