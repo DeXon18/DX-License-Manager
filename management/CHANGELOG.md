@@ -1,6 +1,31 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-17 15:50] — CSS Unification: Subfase 19.4 & 19.5 (Dashboard & Clientes) ✅
+
+### Added
+- **Dashboard Centralization (19.4)**:
+  - Creadas las clases del namespace `.dx-v2-dashboard-*` para encapsular la estructura y el comportamiento del dashboard principal en `dx-styles.css`.
+  - Diseñadas las clases del buscador global `.dx-v2-dashboard-search-card` y asociadas, utilizando selectores nativos de CSS `:focus` para prescindir de controladores Javascript inline.
+  - Implementado el componente de icono traslúcido rotado `.dx-v2-dashboard-stat-icon` para las tarjetas de estadísticas.
+  - Creadas utilidades de color contextuales `.dx-v2-color-*` y utilidades compactas `.dx-v2-table-nowrap` y `.dx-v2-link-inherit`.
+- **Clientes Centralization (19.5)**:
+  - Definida la utilidad de texto ultra-compacto `.text-xs` para unificar clases heredadas de Tailwind sin duplicación.
+  - Creada la clase semántica `.dx-v2-clients-db-icon` para dimensionar el ícono de DB de las advertencias de licencias a exactamente `10px`.
+  - Diseñada la clase `.dx-v2-clients-empty-state` para controlar el padding vertical, la alineación y el color de texto atenuado de la celda de tabla vacía de forma centralizada.
+
+### Changed
+- **Dashboard Refactor**:
+  - Eliminados el 100% de los atributos `style="..."` en las tarjetas estadísticas, envolturas de íconos SVG y contenedores de la columna lateral.
+  - Limpiados los atributos interactivos `onfocus`/`onblur` del buscador Express, delegando la interactividad visual a selectores CSS puros en la hoja de estilos global.
+  - Eliminado el bloque complejo `match` dinámico en PHP que inyectaba colores directos hexadecimales en la vista lateral de contratos, reemplazándolo por un mapeo directo de clases tipificadas `.dx-v2-color-[estado]`.
+- **Clientes Refactor**:
+  - Removido el 100% de los estilos inline locales de la vista de listado de clientes (eliminada la declaración `style="font-size: 10px;"` del ícono de DB).
+  - Eliminada la clase redundante `text-sm` del subtítulo `.page-sub` para heredar nativamente la tipografía definida en el CSS.
+
+### Fixed
+- **Integridad de Tabla de Clientes**: Corregido el `colspan` del estado vacío (`@empty`) en `index.blade.php` de `colspan="4"` a `colspan="5"`. Al tener la tabla 5 columnas de cabecera, la celda vacía ahora se extiende perfectamente a lo ancho de toda la tabla, evitando desalineaciones visuales.
+
 ## [2026-05-16 16:15] — Herramientas: Fix Borrado Físico COD (#016) ✅
 
 ### Fixed
