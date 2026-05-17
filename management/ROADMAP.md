@@ -624,10 +624,17 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
 
 ## 🔷 [4] INICIO / DASHBOARD
 
-- [ ] **Subfase 19.4** — Inicio & Dashboard (home, métricas, stats, widgets)
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.4** — Inicio & Dashboard (home, métricas, stats, widgets) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Añadidas clases namespaced `.dx-v2-dashboard-*` y utilidades de color `.dx-v2-color-*` mapeando colores contractuales.
+    > - [dashboard.blade.php](file:///z:/DX-License-Manager/backend/resources/views/dashboard.blade.php) - Limpieza total de estilos inline y JavaScript inline events (`onfocus`/`onblur`), integrando clases namespaced y selectores `:focus` nativos.
+    >
+    > **Área Visual Afectada:**
+    > - Tarjetas de estadísticas de la cabecera (con íconos rotados traslúcidos), Buscador Global Express interactivo, tabla de vencimientos próximos de licencias y listado dinámico de contratos del panel lateral.
 
 ---
 
