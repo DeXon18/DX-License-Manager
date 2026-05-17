@@ -297,6 +297,7 @@ body {
 .font-mono { font-family: var(--dx-v2-font-mono) !important; }
 .muted { color: var(--dx-v2-muted) !important; }
 .body-sm { font-size: 13px !important; }
+.text-xs { font-size: 11px !important; }
 .mb-4 { margin-bottom: 16px !important; }
 .mt-4 { margin-top: 16px !important; }
 .mt-6 { margin-top: 24px !important; }
@@ -1668,6 +1669,14 @@ footer {
   color: var(--dx-v2-warning-base);
   display: flex;
   align-items: center;
+}
+.dx-v2-clients-db-icon {
+  font-size: 10px;
+}
+.dx-v2-clients-empty-state {
+  padding: 48px 0;
+  text-align: center;
+  color: var(--dx-v2-muted);
 }
 .dx-v2-clients-flex-column-center {
   display: flex;
