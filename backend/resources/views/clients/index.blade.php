@@ -5,7 +5,7 @@
     <div class="header-actions">
         <div>
             <h1 class="page-title">Gestión de Clientes</h1>
-            <p class="page-sub text-sm">Visualización y búsqueda de cuentas del ecosistema.</p>
+            <p class="page-sub">Visualización y búsqueda de cuentas del ecosistema.</p>
         </div>
         <div class="search-box mt-4 dx-v2-clients-search-box">
             <form action="{{ route('clients.index') }}" method="GET" class="dx-v2-clients-search-form">
@@ -79,7 +79,7 @@
                         <div class="font-bold">{{ $client->name }}</div>
                         @if($client->inventory_daemons_count > 0)
                             <span title="Licencias Detectadas" class="dx-v2-clients-pulse-warning pulse-soft">
-                                <i class="fa-solid fa-database" style="font-size: 10px;"></i>
+                                <i class="fa-solid fa-database dx-v2-clients-db-icon"></i>
                             </span>
                         @endif
                     </div>
@@ -120,7 +120,7 @@
 
             @empty
             <tr>
-                <td colspan="4" class="text-center py-12 muted">
+                <td colspan="5" class="dx-v2-clients-empty-state">
                     No se encontraron clientes que coincidan con la búsqueda.
                 </td>
             </tr>
