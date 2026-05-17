@@ -608,10 +608,17 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
 
 ## 🔷 [3] AUTH
 
-- [ ] **Subfase 19.3** — Login & Auth (login, forgot-password, reset, 2FA)
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.3** — Login & Auth (login, forgot-password, reset, 2FA) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Refactorizadas clases de login bajo el namespace unificado `.dx-v2-login-*` y añadida la clase de alerta de error `.dx-v2-login-error` con design tokens.
+    > - [login.blade.php](file:///z:/DX-License-Manager/backend/resources/views/auth/login.blade.php) - Migración a clases namespaced y eliminación total del bloque de estilos inline de la alerta.
+    >
+    > **Área Visual Afectada:**
+    > - Interfaz completa de la pantalla de inicio de sesión (diseño corporativo responsive, envoltura del formulario, campos de entrada, botones de acción, selector del interruptor del tema claro/oscuro y banner de visualización de errores del portal).
 
 ---
 
