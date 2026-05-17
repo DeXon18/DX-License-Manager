@@ -584,10 +584,11 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
 
 ## 🔷 [1–2] CSS GLOBAL & LAYOUTS
 
-- [ ] **Subfase 19.1** — CSS Base & Assets (`resources/css/`, `resources/js/`, `public/`)
-    - [ ] Consolidar hojas sueltas / imports redundantes.
-    - [ ] Verificar que el build (Vite/Mix) no purgue clases `.dx-v2-` usadas dinámicamente (JS/Alpine).
-    - [ ] Limpieza de `!important` sin justificación.
+- [x] **Subfase 19.1** — CSS Base & Assets (`resources/css/`, `resources/js/`, `public/`)
+    - [x] Consolidar hojas sueltas / imports redundantes (Optimizada cabecera de `app.blade.php` y `login.blade.php` eliminando llamadas externas).
+    - [x] Verificar que el build (Vite/Mix) no purgue clases `.dx-v2-` usadas dinámicamente (JS/Alpine) (Confirmada inmunidad frente a purgas automáticas).
+    - [x] Limpieza de `!important` sin justificación (Confirmados utilitarios legítimos y anulación de estilos en botones).
+    > **Impacto visual:** Afecta a la tipografía de **todo el portal global y la pantalla de acceso**, migrando a fuentes locales offline para rendimiento ultra-rápido y privacidad.
 
 - [ ] **Subfase 19.2** — Layouts Blade (app layout, sidebar, topbar, footer, paginación `vendor/pagination/`)
     - [ ] Extracción y Namespace `.dx-v2-`.
