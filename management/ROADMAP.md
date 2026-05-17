@@ -505,7 +505,7 @@ css(19-docs): style guide interno + README fase
 
 No acumular trabajo sin commitear. Puntos de commit recomendados:
 
-- [ ] **Checkpoint A** — tras 19.0 + 19.1 + 19.2 *(tokens + css base + layouts)*
+- [x] **Checkpoint A** — tras 19.0 + 19.1 + 19.2 *(tokens + css base + layouts)*
 - [ ] **Checkpoint B** — tras 19.3 → 19.9 *(auth + dashboard + clientes completo)*
 - [ ] **Checkpoint C** — tras 19.10 → 19.17 *(herramientas + siemens + moldex3d)*
 - [ ] **Checkpoint D** — tras 19.18 → 19.25 *(sistema & configuración completo)*
@@ -590,10 +590,19 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
     - [x] Limpieza de `!important` sin justificación (Confirmados utilitarios legítimos y anulación de estilos en botones).
     > **Impacto visual:** Afecta a la tipografía de **todo el portal global y la pantalla de acceso**, migrando a fuentes locales offline para rendimiento ultra-rápido y privacidad.
 
-- [ ] **Subfase 19.2** — Layouts Blade (app layout, sidebar, topbar, footer, paginación `vendor/pagination/`)
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.2** — Layouts Blade (app layout, sidebar, topbar, footer, paginación `vendor/pagination/`) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [app.blade.php](file:///z:/DX-License-Manager/backend/resources/views/layouts/app.blade.php) - Modificados contenedores globales, header y el banner superior de advertencia por mantenimiento.
+    > - [footer.blade.php](file:///z:/DX-License-Manager/backend/resources/views/layouts/partials/footer.blade.php) - Limpieza de colores inline de elementos dinámicos (ícono del corazón).
+    > - [SelectiveMaintenance.php](file:///z:/DX-License-Manager/backend/app/Http/Middleware/SelectiveMaintenance.php) - Blindaje del middleware de mantenimiento para accesibilidad infalible de administradores.
+    > - [dx.blade.php](file:///z:/DX-License-Manager/backend/resources/views/vendor/pagination/dx.blade.php), [dx-modern.blade.php](file:///z:/DX-License-Manager/backend/resources/views/vendor/pagination/dx-modern.blade.php), [dx-simple.blade.php](file:///z:/DX-License-Manager/backend/resources/views/vendor/pagination/dx-simple.blade.php), [dx-jump.blade.php](file:///z:/DX-License-Manager/backend/resources/views/vendor/pagination/dx-jump.blade.php) - Limpieza total de estilos inline y Javascript events en las 4 plantillas de paginación del portal.
+    >
+    > **Área Visual Afectada:**
+    > - Envoltura global de la app, banner de mantenimiento persistente en la cabecera, pie de página del portal y controles interactivos de paginación en todas las listas de datos (Siemens, Moldex3D, Logs, Clientes, Usuarios, etc.).
 
 ---
 
