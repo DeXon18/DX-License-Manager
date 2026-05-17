@@ -514,8 +514,8 @@ No acumular trabajo sin commitear. Puntos de commit recomendados:
 
 ### Backup de seguridad antes de iniciar
 
-- [ ] Tag git en estado actual: `git tag backup/pre-fase-19`
-- [ ] Push del tag al remoto: `git push origin backup/pre-fase-19`
+- [x] Tag git en estado actual: `git tag backup/pre-fase-19`
+- [x] Push del tag al remoto: `git push origin backup/pre-fase-19`
 
 ---
 
@@ -573,12 +573,12 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
 
 ## 🔷 PRE-TRABAJO
 
-- [ ] **Subfase 19.0** — Design Tokens & Variables CSS *(obligatorio antes de 19.1)*
-    - [ ] Inventario completo de `--variables` en uso.
-    - [ ] Eliminación de variables huérfanas o duplicadas.
-    - [ ] Namespace unificado: `--dx-v2-*` (colores, espaciados, tipografía, radios, sombras).
-    - [ ] Centralizar tabla de `z-index`.
-    - [ ] Documentar mapa de tokens final.
+- [x] **Subfase 19.0** — Design Tokens & Variables CSS *(obligatorio antes de 19.1)*
+    - [x] Inventario completo de `--variables` en uso.
+    - [x] Eliminación de variables huérfanas o duplicadas.
+    - [x] Namespace unificado: `--dx-v2-*` (colores, espaciados, tipografía, radios, sombras).
+    - [x] Centralizar tabla de `z-index`.
+    - [x] Documentar mapa de tokens final.
 
 ---
 
