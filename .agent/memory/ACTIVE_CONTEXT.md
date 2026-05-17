@@ -13,19 +13,20 @@ Avanzar en la **Fase 19 (Unificación CSS & Limpieza UI)**. Unificar y extraer t
 
 ## Estado de la Tarea Actual
 - **Incidencia:** #008 — Unificación CSS
-- **Estado:** 🔜 Subfase 19.4 Completada, listos para Subfase 19.5
+- **Estado:** 🔜 Subfase 19.5 Completada, listos para Subfase 19.6
 - **Rama:** `feature/css-tokens`
 - **Cambios clave:** Extracción de estilos inline y centralización en `dx-styles.css` con namespace `.dx-v2-clients-`.
 
 ## Próximos Pasos
 - [x] Subfase 19.0: Pre-trabajo (Design Tokens & Variables) ✅
 - [x] Subfases 19.1 a 19.4: Layout, Login, Sidebar, Inicio & Dashboard ✅
-- [ ] Subfase 19.5: Clientes: Vista principal (index, show, edit) 🔜
+- [x] Subfase 19.5: Clientes: Vista principal (index, show) ✅
+- [ ] Subfase 19.6: Clientes: Licencias (inventario unificado) 🔜
 
 
 ## 🛠️ Tareas en curso
-- [x] Subfase 19.4: Inicio & Dashboard ✅
-- [ ] Subfase 19.5: Clientes: Vista principal (index, show) 🔜
+- [x] Subfase 19.5: Clientes: Vista principal (index, show) ✅
+- [ ] Subfase 19.6: Clientes: Licencias (inventario unificado) 🔜
 - Fase del ROADMAP: Fase 19 (Iniciada)
 
 ---
