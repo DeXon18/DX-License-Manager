@@ -13,19 +13,20 @@ Avanzar en la **Fase 19 (Unificación CSS & Limpieza UI)**. Unificar y extraer t
 
 ## Estado de la Tarea Actual
 - **Incidencia:** #008 — Unificación CSS
-- **Estado:** 🔜 Subfase 19.16 Completada, listos para Subfase 19.17
+- **Estado:** 🔜 Subfase 19.17 Completada, listos para Subfase 19.18
 - **Rama:** `feature/css-tokens`
 - **Cambios clave:** Extracción de estilos inline del auditor Moldex3D y centralización en `dx-styles.css` con namespace `.dx-v2-tools-moldex-`.
 
 ## Próximos Pasos
 - [x] Subfases 19.0 a 19.15: Vistas principales, Dashboard, Herramientas, NX, STAR-CCM+, HEEDS, COD y Siemens Recursos ✅
 - [x] Subfase 19.16: Moldex3D (Parser .mac + Sincronización) ✅
-- [ ] Subfase 19.17: Moldex3D: Recursos & enlaces 🔜
+- [x] Subfase 19.17: Moldex3D: Recursos & enlaces (Unificado con 19.15) ✅
+- [ ] Subfase 19.18: Dashboard del Sistema (NOC Pro + Brand Icons) 🔜
 
 
 ## 🛠️ Tareas en curso
-- [x] Subfase 19.16: Moldex3D (Parser .mac + Sincronización) ✅
-- [ ] Subfase 19.17: Moldex3D: Recursos & enlaces 🔜
+- [x] Subfase 19.17: Moldex3D: Recursos & enlaces (Unificado con 19.15) ✅
+- [ ] Subfase 19.18: Dashboard del Sistema (NOC Pro + Brand Icons) 🔜
 - Fase del ROADMAP: Fase 19 (En curso)
 
 ---
