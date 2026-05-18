@@ -1,6 +1,22 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-18 15:39] — CSS Unification: Subfase 19.19 (Usuarios y Acceso) ✅
+
+### Added
+- **Namespace de Usuarios y Acceso (`.dx-v2-users-*`)**: Diseñado e integrado un completo bloque de estilos ergonómicos en [dx-styles.css] con más de 340 líneas de código para el control total del CRUD de personal:
+  - Layouts estructurales `.dx-v2-users-header-layout` y envolturas breadcrumb `.dx-v2-users-breadcrumb-wrapper` con enlaces de retroceso estilizados `.dx-v2-users-breadcrumb-link`.
+  - Título y subtítulos ergonómicos `.dx-v2-users-title` y `.dx-v2-users-subtitle`.
+  - Barra de filtrado unificada `.dx-v2-users-filter-bar` con buscadores de texto absolutos `.dx-v2-users-search-wrapper` y selectores de rol integrados `.dx-v2-users-filter-select`.
+  - Tabla de visualización limpia `.dx-v2-users-table` con celdas de usuario que agrupan avatares circulares con iniciales `.dx-v2-users-avatar` y metadatos de email `.dx-v2-users-email`.
+  - Telemetría en vivo para la última conexión `.dx-v2-users-online-badge` y puntos de presencia `.dx-v2-users-dot` reactivos (ONLINE/OFFLINE).
+  - Acciones rápidas simétricas `.dx-v2-users-actions` y botones de control de peligro `.dx-v2-users-actions-btn.danger`.
+  - Estructuras para formularios de alta/edición `.dx-v2-users-form-container`, `.dx-v2-users-form-body` y grids simétricos de contraseña `.dx-v2-users-form-grid`.
+  - Panel de configuración de seguridad lateral `.dx-v2-users-security-box` y banners informativos de envío de credenciales `.dx-v2-users-banner`.
+
+### Changed
+- **Vistas del CRUD de Usuarios**: Refactorizadas por completo las vistas [index.blade.php], [create.blade.php] y [edit.blade.php] bajo el directorio `admin/users/`, purgando el 100% de los estilos inline locales y los bloques `<style>` incrustados. Delegada toda la lógica visual a las clases centralizadas de `dx-styles.css`.
+
 ## [2026-05-18 15:33] — CSS Unification: Subfase 19.19 (Docker Fleet Monitor & Padding Fix) ✅
 
 ### Added

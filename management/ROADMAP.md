@@ -826,10 +826,19 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
     > - [docker.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/system/docker.blade.php) - Purga completa de estilos inline y del bloque local `<style>`.
 
 
-- [ ] **Subfase 19.19** — Usuarios y acceso (listado, crear/editar, roles y permisos)
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.19** — Usuarios y acceso (listado, crear/editar, roles y permisos) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-users-*` definido e integrado en dx-styles.css.
+    - [x] Limpieza del 100% de `style=` inline y locales en el CRUD de usuarios.
+    - [x] Verificación visual y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Añadido el namespace `.dx-v2-users-*` con más de 340 líneas de estilos ergonómicos para listado, avatares, estados online y formularios.
+    > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/users/index.blade.php) - Purga completa de estilos inline locales y tablas.
+    > - [create.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/users/create.blade.php) - Purga de estilos inline y grid del formulario.
+    > - [edit.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/users/edit.blade.php) - Purga de inline styles de perfil, seguridad y switch de estado.
+    >
+    > **Área Visual Afectada:**
+    > - Módulo de Gestión de Usuarios y Accesos, incluyendo listado de usuarios con badges de rol, switches de estado activo, avatares con iniciales, telemetría de última conexión en vivo (ONLINE/OFFLINE), y formularios de alta/edición de perfiles y seguridad de accesos.
 
 - [ ] **Subfase 19.20** — Datos e importación (importar CSV, historial, errores)
     - [ ] Extracción y Namespace `.dx-v2-`.
