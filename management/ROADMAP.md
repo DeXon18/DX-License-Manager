@@ -664,10 +664,20 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
     > **Área Visual Afectada:**
     > - Pestaña de Inventario Activo (Licencias) en la ficha detallada del cliente, pestañas secundarias (Certificados, Contactos, Renovaciones) y modal interactivo de gestión de contactos corporativos.
 
-- [ ] **Subfase 19.7** — Clientes: Contratos / ContraHeaders (importación CSV)
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.7** — Clientes: Contratos / ContraHeaders (importación CSV) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Añadido el namespace `.dx-v2-import-*` para cubrir Dropzones, protocolo de mapeo, alertas de éxito y componentes de logs.
+    > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/import/index.blade.php) - Limpieza total de estilos inline y mapeo a clases del namespace.
+    > - [logs/index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/import/logs/index.blade.php) - Eliminación del bloque de estilos local `<style>` incrustado e inline styles de botones.
+    > - [logs/show.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/import/logs/show.blade.php) - Eliminación del 100% de los estilos inline locales del breadcrumb, tarjetas de estadísticas y tablas de metadatos.
+    >
+    > **Área Visual Afectada:**
+    > - Panel principal de Importación de Datos, historial de importaciones (logs) y detalle detallado del log de auditoría del sistema de contratos.
+
 
 - [ ] **Subfase 19.8** — Clientes: Contactos de envío & Certificados de cese (CODs)
     - [ ] Extracción y Namespace `.dx-v2-`.
