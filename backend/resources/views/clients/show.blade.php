@@ -136,7 +136,7 @@
     </div>
 
     <!-- Licencias Tab (Inventario Activo) -->
-    <div x-show="tab === 'licenses'" style="display: none;">
+    <div x-show="tab === 'licenses'" x-cloak>
         <div class="dx-v2-clients-inv-container">
             @forelse($inventoryBySoldTo as $soldTo => $daemons)
                 <div class="dx-v2-clients-soldto-block">
@@ -305,7 +305,7 @@
     </div>
 
     <!-- Certificados Tab (Fase 8.4) -->
-    <div x-show="tab === 'certificates'" class="tab-content" style="display: none;">
+    <div x-show="tab === 'certificates'" class="tab-content" x-cloak>
         <div class="card p-0">
             <div class="card-header flex justify-between items-center px-5 py-4">
                 <h3 class="text-sm font-bold uppercase tracking-wider">Certificados de Cese (COD)</h3>
@@ -389,7 +389,7 @@
     </div>
 
     <!-- Contactos Tab -->
-    <div x-show="tab === 'contacts'" class="tab-content" style="display: none;">
+    <div x-show="tab === 'contacts'" class="tab-content" x-cloak>
         <div class="card p-0">
             <div class="card-header flex justify-between items-center px-5 py-4">
                 <h3 class="text-sm font-bold uppercase tracking-wider">Personas de Contacto</h3>
@@ -464,7 +464,7 @@
     </div>
 
     <!-- Renovaciones Tab (Fase 14) -->
-    <div x-show="tab === 'renewals'" class="tab-content" style="display: none;">
+    <div x-show="tab === 'renewals'" class="tab-content" x-cloak>
         <div class="card p-0">
             <div class="card-header flex justify-between items-center px-5 py-4">
                 <h3 class="text-sm font-bold uppercase tracking-wider">Historial de Renovaciones Mensuales</h3>
@@ -531,7 +531,7 @@
                 }
             "
             class="dx-v2-clients-modal-overlay"
-            style="display: none;"
+            x-cloak
         >
             <div class="dx-v2-clients-modal-content" @click.outside="open = false">
                 <div class="dx-v2-clients-modal-header">
