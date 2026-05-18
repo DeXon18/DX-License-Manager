@@ -4128,6 +4128,281 @@ footer {
   margin-bottom: 20px;
 }
 
+/* ============================================================
+   28. UNIFICACIÓN V2: HUB DE HERRAMIENTAS (.dx-v2-tools-*)
+   ============================================================ */
+
+.dx-v2-tools-vendor-section {
+  margin-bottom: 32px;
+}
+
+.dx-v2-tools-vendor-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.dx-v2-tools-vendor-label {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+.dx-v2-tools-vendor-label.siemens {
+  background: rgba(0, 153, 153, 0.1);
+  color: var(--dx-v2-siemens) !important;
+}
+
+.dx-v2-tools-vendor-label.docs {
+  background: rgba(109, 40, 217, 0.1);
+  color: #a78bfa !important;
+}
+
+.dx-v2-tools-vendor-label.moldex {
+  background: rgba(237, 28, 36, 0.1);
+  color: var(--dx-v2-moldex) !important;
+}
+
+.dx-v2-tools-vendor-label.moldex .accent {
+  color: #f58220 !important;
+  font-weight: 800;
+}
+
+.dx-v2-tools-vendor-desc {
+  font-size: 11px;
+  color: var(--dx-v2-muted);
+}
+
+.dx-v2-tools-vendor-line {
+  flex: 1;
+  height: 1px;
+  background: var(--dx-v2-border);
+}
+
+.dx-v2-tools-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.dx-v2-tools-grid-2 {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.dx-v2-tools-grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 992px) {
+  .dx-v2-tools-grid-2,
+  .dx-v2-tools-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dx-v2-tools-card {
+  background: var(--dx-v2-surface) !important;
+  border: 1px solid var(--dx-v2-border) !important;
+  border-radius: var(--dx-v2-rounded-lg) !important;
+  padding: 20px !important;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s !important;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+.dx-v2-tools-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--card-accent, var(--dx-v2-border)) !important;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.dx-v2-tools-card:hover {
+  border-color: var(--card-accent, var(--dx-v2-border)) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+  transform: translateY(-2px);
+}
+
+.dx-v2-tools-card:hover::before {
+  opacity: 1;
+}
+
+.dx-v2-tools-card-disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  filter: grayscale(0.8) !important;
+}
+
+.dx-v2-tools-card-disabled:hover {
+  transform: none !important;
+  box-shadow: none !important;
+  border-color: var(--dx-v2-border) !important;
+}
+
+.dx-v2-tools-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.dx-v2-tools-card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.dx-v2-tools-icon-box {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--dx-v2-rounded-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--icon-bg, rgba(255, 255, 255, 0.03)) !important;
+  color: var(--card-accent, var(--dx-v2-primary-base)) !important;
+}
+
+.dx-v2-tools-icon-box svg {
+  width: 20px;
+  height: 20px;
+}
+
+.dx-v2-tools-card-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--dx-v2-primary-base) !important;
+  letter-spacing: -0.01em;
+}
+
+.dx-v2-tools-card-name.siemens-name {
+  color: var(--dx-v2-siemens) !important;
+}
+
+.dx-v2-tools-card-name.moldex-name {
+  color: var(--dx-v2-moldex) !important;
+}
+
+.dx-v2-tools-card-name.moldex-name .accent {
+  color: #f58220 !important;
+  font-weight: 800;
+}
+
+.dx-v2-tools-badge {
+  font-size: 8px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.dx-v2-tools-badge.ai {
+  background: rgba(56, 139, 253, 0.15);
+  color: var(--dx-v2-accent-base);
+  border: 1px solid rgba(56, 139, 253, 0.3);
+}
+
+.dx-v2-tools-badge.doc {
+  background: rgba(109, 40, 217, 0.15);
+  color: #c084fc;
+  border: 1px solid rgba(109, 40, 217, 0.3);
+}
+
+.dx-v2-tools-badge.upcoming {
+  background: rgba(139, 148, 158, 0.1);
+  color: var(--dx-v2-muted);
+  border: 1px solid rgba(139, 148, 158, 0.2);
+}
+
+.dx-v2-tools-card-desc {
+  font-size: 12px;
+  color: var(--dx-v2-muted) !important;
+  line-height: 1.6;
+}
+
+.dx-v2-tools-card-footer {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--dx-v2-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dx-v2-tools-card-meta {
+  font-size: 10px;
+  color: var(--dx-v2-muted);
+  font-family: var(--dx-v2-font-mono);
+}
+
+.dx-v2-tools-card-cta {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--card-accent, var(--dx-v2-accent-base)) !important;
+  white-space: nowrap;
+}
+
+.dx-v2-tools-card-add {
+  background: rgba(255, 255, 255, 0.01) !important;
+  border: 1px dashed var(--dx-v2-border) !important;
+  border-radius: var(--dx-v2-rounded-lg) !important;
+  padding: 20px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  min-height: 160px;
+  transition: border-color 0.2s, background 0.2s, transform 0.2s !important;
+}
+
+.dx-v2-tools-card-add:hover {
+  border-color: var(--dx-v2-accent-base) !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+  transform: translateY(-2px);
+}
+
+.dx-v2-tools-card-add-icon {
+  font-size: 20px;
+  color: var(--dx-v2-muted);
+}
+
+.dx-v2-tools-card-add:hover .dx-v2-tools-card-add-icon {
+  color: var(--dx-v2-accent-base);
+}
+
+.dx-v2-tools-card-add-label {
+  font-size: 12px;
+  color: var(--dx-v2-muted);
+  text-align: center;
+  font-weight: 600;
+}
+
+.dx-v2-tools-card-add:hover .dx-v2-tools-card-add-label {
+  color: var(--dx-v2-primary-base);
+}
+
 
 
 
