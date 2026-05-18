@@ -679,10 +679,19 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
     > - Panel principal de Importación de Datos, historial de importaciones (logs) y detalle detallado del log de auditoría del sistema de contratos.
 
 
-- [ ] **Subfase 19.8** — Clientes: Contactos de envío & Certificados de cese (CODs)
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.8** — Clientes: Contactos de envío & Certificados de cese (CODs) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Añadido el namespace `.dx-v2-cod-*` para cubrir el generador de COD, el cargador y previsualizador de certificados de cese firmados y el asistente inteligente de análisis de hardware.
+    > - [cod.blade.php](file:///z:/DX-License-Manager/backend/resources/views/tools/cod.blade.php) - Eliminación total del bloque de estilos local `<style>` incrustado (más de 850 líneas de CSS duplicado) e inline styles del formulario y del asistente IA, migrando todo al namespace.
+    > - [show.blade.php](file:///z:/DX-License-Manager/backend/resources/views/clients/show.blade.php) - Auditoría y verificación de las pestañas de contactos y certificados COD, confirmando la ausencia de estilos locales y unificación bajo el estándar visual.
+    >
+    > **Área Visual Afectada:**
+    > - Generador de Certificados de Cese (COD), asistente de Composite por IA, envoltura interactiva para arrastrar ficheros y listados de contactos corporativos.
+
 
 - [ ] **Subfase 19.9** — Planificador de Renovaciones
     - [ ] Extracción y Namespace `.dx-v2-`.
