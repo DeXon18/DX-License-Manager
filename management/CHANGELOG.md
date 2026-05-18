@@ -1,7 +1,41 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-18 15:33] — CSS Unification: Subfase 19.19 (Docker Fleet Monitor & Padding Fix) ✅
+
+### Added
+- **Namespace de Docker Fleet Monitor (`.dx-v2-sys-docker-*`)**: Diseñado e integrado un completo bloque de clases semánticas en [dx-styles.css] para modularizar la sección de monitorización de contenedores:
+  - Estructuras para la cabecera `.dx-v2-sys-docker-page-header`, su layout flexible `.dx-v2-sys-docker-header-layout`, el breadcrumb `.dx-v2-sys-docker-breadcrumb-wrapper` e indicadores en vivo del túnel.
+  - Rejilla responsiva para contenedores `.dx-v2-sys-docker-grid` con soporte para móvil.
+  - Tarjetas de servicio individual `.dx-v2-sys-docker-card` con hover de elevación 3D, y logo contenedor `.dx-v2-sys-docker-icon-box`.
+  - Caja de métricas unificada `.dx-v2-sys-docker-metrics-box` con indicadores circulares de CPU y barra de RAM `.dx-v2-sys-docker-ram-meter-box`.
+  - Botón de reinicio rápido `.dx-v2-sys-docker-btn-restart` y botón de control global `.dx-v2-sys-docker-btn-noc`.
+  - Caja interactiva de estado vacío (Empty State) `.dx-v2-sys-docker-empty-state` para cuando no se puede conectar con el socket de Docker.
+- **Clase Global `.card-body`**: Añadida la definición global `.card-body { padding: 24px !important; }` en la sección de tarjetas para restaurar la ergonomía visual y paddings en la Matriz de Servicios del Dashboard principal (Subfase 19.18).
+
+### Changed
+- **Vista de Docker Fleet Monitor**: Refactorizada por completo la vista [docker.blade.php], purgando el 100% de los estilos inline locales y el bloque de estilos incrustado de `<style>`. Integrada la lógica de control de estado vacío si la lista de contenedores está vacía.
+
+## [2026-05-18 15:15] — CSS Unification: Subfase 19.18 (Dashboard del Sistema / NOC Pro) ✅
+
+### Added
+- **Namespace de Dashboard del Sistema (`.dx-v2-sys-dash-*`)**: Diseñado e integrado un completo y profesional bloque de clases en [dx-styles.css] para dar al centro de control técnico (NOC Pro) un acabado industrial premium:
+  - Estructuras para la cabecera `.dx-v2-sys-dash-header-meta`, su layout flex `.dx-v2-sys-dash-header-meta-layout` e items individuales `.dx-v2-sys-dash-header-meta-item` con soporte para colores de acento y éxito del hash Git.
+  - Rejilla responsiva para estadísticas de hardware `.dx-v2-sys-dash-stats-grid` con breakpoints para tablet y móvil.
+  - Tarjetas de métrica individual `.dx-v2-sys-dash-stat-card` con hover de elevación 3D, soporte para iconos marca de agua absolutos y barras de progreso dinámicas con estados de peligro.
+  - Bloque de tráfico y red `.dx-v2-sys-dash-stat-card-traffic-layout` con separadores y medidor en vivo con animación de latido `.dx-v2-sys-dash-dot-live`.
+  - Rejilla de servicios `.dx-v2-sys-dash-services-grid` y cabeceras categóricas `.dx-v2-sys-dash-services-cat-row` con líneas divisoras.
+  - Tarjetas de item de servicio `.dx-v2-sys-dash-service-item` con gradientes de IA de alta intensidad (Gemini, Deepseek, OpenRouter, n8n, etc.), sombras de elevación e información de hilos/queries lentas.
+  - Rejilla de navegación modular `.dx-v2-sys-dash-modules-grid` y tarjetas de navegación `.dx-v2-sys-dash-module-card` con hover interactivo.
+  - Botones de acción rápida `.dx-v2-sys-dash-btn-noc` con micro-desplazamiento en hover y estados de color personalizados (accent, indigo, warn, orange, danger, success).
+  - Toast dinámico premium para retroalimentación AJAX `.dx-v2-sys-dash-toast`.
+  - Panel de seguridad lateral `.dx-v2-sys-dash-sec-box` con listados `.dx-v2-sys-dash-sec-row` y notas técnicas.
+
+### Changed
+- **Vista del Dashboard de Administración**: Refactorizada por completo la vista principal [dashboard.blade.php], eliminando más de 100 líneas de estilos locales y purgando el 100% de los estilos inline locales de métricas, rejillas, listas de servicios y botones. Delegada toda la maquetación a la hoja global y centralizado el Toast interactivo de Alpine.js.
+
 ## [2026-05-18 11:21] — CSS Unification: Subfase 19.16 (Moldex3D: Parser .mac) ✅
+
 
 ### Added
 - **Namespace de Moldex3D (`.dx-v2-tools-moldex-*`)**: Diseñado e integrado un completo y robusto bloque de clases semánticas en [dx-styles.css] para unificar y profesionalizar la sección del auditor Moldex3D:
