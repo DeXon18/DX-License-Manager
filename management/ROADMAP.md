@@ -761,10 +761,10 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
     > **Área Visual Afectada:**
     > - Vista individual de la herramienta HEEDS, dropzone de arrastre de archivos, tablas de auditoría y nomenclatura de licencias, y aviso de almacenamiento lateral.
 
-- [ ] **Subfase 19.14** — Siemens: COD (Generador + Asistente IA)
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.14** — Siemens: COD (Generador + Asistente IA) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
 
 - [ ] **Subfase 19.15** — Siemens: Recursos & enlaces 
     - [ ] Definir estructura de vista antes de aplicar namespace.

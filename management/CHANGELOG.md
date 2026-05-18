@@ -1,6 +1,19 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-18 11:06] — CSS Unification: Subfase 19.14 (Siemens: COD) ✅
+
+### Added
+- **Refuerzo del Namespace de COD (`.dx-v2-cod-*`)**: Diseñadas e integradas clases semánticas de apoyo en [dx-styles.css] para modularizar la visualización y mejorar el diseño visual adaptativo del Generador de COD y su Asistente IA:
+  - Fila de dos columnas con espaciado vertical específico `.dx-v2-cod-columns-2-spaced`.
+  - Botón de eliminación posicionado absolutamente y centrado verticalmente para MACs adicionales `.dx-v2-cod-remove-btn`.
+  - Envoltura flexible para el título de sección con botón de asistente de IA integrado `.dx-v2-cod-section-title-wrapper` e indicador inline `.dx-v2-cod-title-inline`.
+  - Fila flexible de botones del modal de IA `.dx-v2-cod-modal-btn-row` y fila de acciones principales `.dx-v2-cod-modal-action-row`.
+  - Etiqueta destacada en color de acento Siemens para adaptadores recomendados por IA `.dx-v2-cod-ai-adapter-label`.
+
+### Changed
+- **Vista del Generador de COD**: Refactorizada la vista [cod.blade.php] purgando el 100% de los estilos inline locales restantes (como los botones de eliminación de MACs y los divs del modal del asistente IA), asegurando el perfecto anidamiento de los divs del modal y la preservación completa de los estilos dinámicos calculados reactivamente de Alpine.js (`:style`).
+
 ## [2026-05-18 11:01] — CSS Unification: Subfase 19.13 (Siemens: HEEDS) ✅
 
 ### Added

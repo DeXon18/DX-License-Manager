@@ -134,7 +134,7 @@
             </div>
 
             <!-- SECCIÓN: MÁQUINAS (PARALELO) -->
-            <div class="dx-v2-cod-columns-2" style="margin-top: 24px;">
+            <div class="dx-v2-cod-columns-2-spaced">
                 <!-- Máquina Actual -->
                 <div class="dx-v2-cod-form-section">
                     <div class="dx-v2-cod-section-title">
@@ -192,7 +192,7 @@
                                            class="gui-input" 
                                            placeholder="MAC Extra (sin guiones)" 
                                            maxlength="12">
-                                    <button type="button" class="remove-btn" @click="removeMacPair(index)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--dx-v2-muted); cursor: pointer;">&times;</button>
+                                    <button type="button" class="dx-v2-cod-remove-btn" @click="removeMacPair(index)">&times;</button>
                                 </div>
                             </div>
                         </template>
@@ -201,8 +201,8 @@
 
                 <!-- Nueva Máquina -->
                 <div class="dx-v2-cod-form-section">
-                    <div class="dx-v2-cod-section-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-                        <div style="display: flex; align-items: center; gap: 10px;">
+                    <div class="dx-v2-cod-section-title dx-v2-cod-section-title-wrapper">
+                        <div class="dx-v2-cod-title-inline">
                             <i class="fa-solid fa-tower-broadcast"></i>
                             <span>Nueva Máquina</span>
                         </div>
@@ -453,14 +453,14 @@
                               class="dx-v2-cod-ai-textarea font-mono" 
                               placeholder="O pega el texto aquí..."></textarea>
                     
-                    <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
+                    <div class="dx-v2-cod-modal-btn-row">
                         <button type="button" class="dx-v2-cod-btn-generate" @click="processAi()" :disabled="isAiProcessing || !aiInput">
                             <span x-show="!isAiProcessing">Analizar con Gemini</span>
                             <span x-show="isAiProcessing"><i class="fa-solid fa-spinner fa-spin me-2"></i> Procesando...</span>
                         </button>
                     </div>
                 </div>
-
+ 
                 <div x-show="aiResult" x-transition>
                     <div class="dx-v2-cod-ai-result-box">
                         <div class="dx-v2-cod-ai-result-header">
@@ -486,14 +486,14 @@
                             </div>
                         </div>
                         <div class="dx-v2-cod-ai-result-footer">
-                            <div style="font-size: 11px; font-weight: 600; color: var(--dx-v2-accent-base); margin-bottom: 4px;">Adaptador: <span x-text="aiResult?.adapter" class="text-primary"></span></div>
-                            <p class="dx-v2-cod-ai-reason" style="margin: 0;">
+                            <div class="dx-v2-cod-ai-adapter-label">Adaptador: <span x-text="aiResult?.adapter" class="text-primary"></span></div>
+                            <p class="dx-v2-cod-ai-reason">
                                 <i class="fa-solid fa-info-circle me-1"></i> <span x-text="aiResult?.reason"></span>
                             </p>
                         </div>
                     </div>
-
-                    <div style="display: flex; justify-content: space-between; margin-top: 24px; gap: 12px;">
+ 
+                    <div class="dx-v2-cod-modal-action-row">
                         <button type="button" class="dx-v2-cod-btn-secondary-tech" @click="aiResult = null">
                             <i class="fa-solid fa-arrow-left"></i> <span>Volver a Analizar</span>
                         </button>

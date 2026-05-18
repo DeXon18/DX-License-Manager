@@ -3046,6 +3046,78 @@ footer {
   gap: 24px;
 }
 
+.dx-v2-cod-columns-2-spaced {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-top: 24px;
+}
+
+@media (max-width: 768px) {
+  .dx-v2-cod-columns-2-spaced {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+.dx-v2-cod-remove-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--dx-v2-muted);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  transition: all 0.2s ease-in-out;
+}
+
+.dx-v2-cod-remove-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--dx-v2-danger, #D32F2F);
+}
+
+.dx-v2-cod-section-title-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.dx-v2-cod-title-inline {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dx-v2-cod-modal-btn-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.dx-v2-cod-ai-adapter-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--dx-v2-accent-base);
+  margin-bottom: 4px;
+}
+
+.dx-v2-cod-modal-action-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+  gap: 12px;
+}
+
+
 /* Sugerencias Autocompletado */
 .dx-v2-cod-suggestions-dropdown {
   position: absolute;
