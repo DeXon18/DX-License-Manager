@@ -13,11 +13,11 @@ Avanzar en la **Fase 19 (Unificación CSS & Limpieza UI)**. Unificar y extraer t
 
 ## Estado de la Tarea Actual
 - **Incidencia:** #008 — Unificación CSS
-- **Estado:** 🔜 Subfase 19.20 (Datos e Importación) Completada, listos para Subfase 19.21 (Repositorio de Licencias)
+- **Estado:** 🔜 Subfase 19.21 (Repositorio de Licencias) Completada, listos para Subfase 19.22 (Alertas y Notificaciones)
 - **Rama:** `feature/css-tokens`
 - **Cambios clave:** 
-  - Verificada la unificación completa y ausencia de estilos inline en el módulo de Datos e Importación (Subfase 19.20).
-  - Listos para abordar el refactor del Repositorio de Licencias (Subfase 19.21).
+  - Purga completa del 100% de los estilos inline en la vista del Repositorio de Licencias Semanal (`repository.blade.php`).
+  - Diseñado e inyectado el namespace de estilos ergonómicos `.dx-v2-lic-repo-*` en `dx-styles.css`.
 
 ## Próximos Pasos
 - [x] Subfases 19.0 a 19.15: Vistas principales, Dashboard, Herramientas, NX, STAR-CCM+, HEEDS, COD y Siemens Recursos ✅
@@ -27,10 +27,11 @@ Avanzar en la **Fase 19 (Unificación CSS & Limpieza UI)**. Unificar y extraer t
 - [x] Subfase 19.18.1: Dashboard de Docker / Docker Monitor ✅
 - [x] Subfase 19.19: Usuarios y acceso (listado, crear/editar, roles y permisos) ✅
 - [x] Subfase 19.20: Datos e importación (importar CSV, historial, logs y detalles) ✅
+- [x] Subfase 19.21: Repositorio de licencias (archivo semanal, historial) ✅
 
 ## 🛠️ Tareas en curso
-- [x] Subfase 19.20: Datos e importación (importar CSV, historial, logs y detalles) ✅
-- [ ] Subfase 19.21: Repositorio de licencias (archivo semanal, historial) 🔜
+- [x] Subfase 19.21: Repositorio de licencias (archivo semanal, historial) ✅
+- [ ] Subfase 19.22: Alertas y notificaciones (caducidad, umbrales, destinatarios, historial, SMTP) 🔜
 
 - Fase del ROADMAP: Fase 19 (En curso)
 
