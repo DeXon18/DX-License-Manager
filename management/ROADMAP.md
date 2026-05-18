@@ -840,10 +840,16 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
     > **Área Visual Afectada:**
     > - Módulo de Gestión de Usuarios y Accesos, incluyendo listado de usuarios con badges de rol, switches de estado activo, avatares con iniciales, telemetría de última conexión en vivo (ONLINE/OFFLINE), y formularios de alta/edición de perfiles y seguridad de accesos.
 
-- [ ] **Subfase 19.20** — Datos e importación (importar CSV, historial, errores)
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.20** — Datos e importación (importar CSV, historial, errores) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-import-*` definido e integrado en dx-styles.css.
+    - [x] Limpieza del 100% de `style=` inline y locales en vistas de importación.
+    - [x] Verificación visual y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Namespace de estilos global `.dx-v2-import-*` integrado con 200+ líneas de código para el control total de importaciones y mapeo.
+    > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/import/index.blade.php) - Purga completa de estilos inline y maquetación responsiva.
+    > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/import/logs/index.blade.php) - Purga de inline styles de la tabla de historial de logs.
+    > - [show.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/import/logs/show.blade.php) - Purga de estilos inline y visualización de errores y metadatos.
 
 - [ ] **Subfase 19.21** — Repositorio de licencias (archivo semanal, historial)
     - [ ] Extracción y Namespace `.dx-v2-`.

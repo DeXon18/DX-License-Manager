@@ -1,6 +1,18 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-18 15:45] — CSS Unification: Subfase 19.20 (Datos e Importación) ✅
+
+### Added
+- **Namespace de Datos e Importación (`.dx-v2-import-*`)**: Diseñado e integrado un completo y estructurado bloque de estilos en [dx-styles.css] para modularizar la visualización de la carga masiva y control de mapeo:
+  - Estructuras para dropzone de arrastre responsivo `.dx-v2-import-dropzone`, botones de acción primary `.dx-v2-import-btn-submit` y alertas dinámicas de éxito con enlace a detalles.
+  - Rejilla de mapeo estructurada `.dx-v2-import-mapping-grid` y visualización de columnas de datos `.dx-v2-import-mapping-col`.
+  - Caja de aviso técnico persistente `.dx-v2-import-info-box` e indicadores de seguridad con estado de certificado SSL validado.
+  - Badges de alerta e historial de advertencias `.dx-v2-import-badge-warn` e items vacíos (Empty State) con iconos deterministas.
+
+### Changed
+- **Vistas del Módulo de Importación**: Verificado el desacoplamiento completo y purga de estilos inline y `<style>` incrustados en [index.blade.php] (Carga), [index.blade.php] (Historial) y [show.blade.php] (Detalles de log) bajo la carpeta `admin/import/`, enlazando todas las estructuras directamente a las reglas del namespace global.
+
 ## [2026-05-18 15:39] — CSS Unification: Subfase 19.19 (Usuarios y Acceso) ✅
 
 ### Added
