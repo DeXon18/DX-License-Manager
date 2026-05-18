@@ -652,10 +652,17 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
     > **Área Visual Afectada:**
     > - Listado de clientes, envoltura del estado vacío cuando no hay resultados (ahora centrado y expandido a lo largo de las 5 columnas simétricamente), ícono de la advertencia de base de datos de licencias y subtítulo de la página principal.
 
-- [ ] **Subfase 19.6** — Clientes: Licencias (inventario unificado)
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.6** — Clientes: Licencias (inventario unificado) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Corregidas variables CSS rotas (`--dx-v2-surface-raised` y `--dx-v2-text-muted`) por sus equivalentes unificados, y añadida directiva `[x-cloak]` global.
+    > - [show.blade.php](file:///z:/DX-License-Manager/backend/resources/views/clients/show.blade.php) - Limpieza total de estilos inline locales `style="display: none;"` en tabs Alpine y modal, migrándolos al estándar `x-cloak`.
+    >
+    > **Área Visual Afectada:**
+    > - Pestaña de Inventario Activo (Licencias) en la ficha detallada del cliente, pestañas secundarias (Certificados, Contactos, Renovaciones) y modal interactivo de gestión de contactos corporativos.
 
 - [ ] **Subfase 19.7** — Clientes: Contratos / ContraHeaders (importación CSV)
     - [ ] Extracción y Namespace `.dx-v2-`.
