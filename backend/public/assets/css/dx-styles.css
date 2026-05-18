@@ -5517,20 +5517,23 @@ footer {
   box-shadow: 0 10px 30px rgba(0,0,0,0.15);
   overflow: hidden;
 }
+.dx-v2-resources-modal-body {
+  padding: 24px !important;
+}
 
 .dx-v2-resources-modal-form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 20px !important;
 }
 
 .dx-v2-resources-modal-form-row {
-  margin-bottom: 16px;
+  margin-bottom: 20px !important;
 }
 
 .dx-v2-resources-modal-form-row-large {
-  margin-bottom: 24px;
+  margin-bottom: 28px !important;
 }
 
 .dx-v2-resources-modal-label {
@@ -5539,7 +5542,7 @@ footer {
   font-weight: 700;
   color: var(--dx-v2-muted);
   text-transform: uppercase;
-  margin-bottom: 6px;
+  margin-bottom: 8px !important;
   letter-spacing: 0.05em;
 }
 
@@ -5580,6 +5583,7 @@ textarea.dx-v2-resources-modal-input {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
+  margin-top: 12px !important;
 }
 
 .dx-v2-resources-empty-state {
