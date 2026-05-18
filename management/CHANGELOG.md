@@ -1,6 +1,20 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-18 15:48] — CSS Unification: Subfase 19.21 (Repositorio de Licencias) ✅
+
+### Added
+- **Namespace del Repositorio de Licencias (`.dx-v2-lic-repo-*`)**: Diseñado e integrado un bloque de estilos cohesivos y modulares en [dx-styles.css] para el control del empaquetado de licencias semanales:
+  - Estructuras para espaciado de tarjetas `.dx-v2-lic-repo-card-mb`, alineación flex de cabeceras `.dx-v2-lic-repo-header-row` y grupo de botones `.dx-v2-lic-repo-btn-group` con padding específico para botones compactos `.dx-v2-lic-repo-btn-sm`.
+  - Contenedor de cuerpo `.dx-v2-lic-repo-body` y envoltura de alertas en rejilla para estados de éxito/información/peligro `.dx-v2-lic-repo-alert` con bordes y fondos HSL matizados.
+  - Formato mono con espaciado lateral para indicador de año `.dx-v2-lic-repo-year-label`, fila de archivo `.dx-v2-lic-repo-file-row` con icono unificado `.dx-v2-lic-repo-file-icon` en color naranja advertencia y fuente destacada `.dx-v2-lic-repo-file-name`.
+  - Texto de resumen `.dx-v2-lic-repo-summary-text`, columnas de fechas compactas `.dx-v2-lic-repo-date` y botones de acción rápida de auditoría y borrado `.dx-v2-lic-repo-btn-action` con estados hover responsivos y colores semánticos.
+  - Diseño completo de Empty State con animaciones de opacidad `.dx-v2-lic-repo-empty-container`, contenedor interior `.dx-v2-lic-repo-empty-inner`, icono `.dx-v2-lic-repo-empty-icon`, título `.dx-v2-lic-repo-empty-title` y descripción técnica `.dx-v2-lic-repo-empty-desc`.
+  - Panel informativo lateral unificado `.dx-v2-lic-repo-sidebar-card`, cabecera de ayuda `.dx-v2-lic-repo-sidebar-header`, título en mayúsculas `.dx-v2-lic-repo-sidebar-title`, texto fluido `.dx-v2-lic-repo-sidebar-text` y pie de firma `.dx-v2-lic-repo-sidebar-footer` con borde superior integrado.
+
+### Changed
+- **Vista de Repositorio**: Purgado el 100% de los estilos inline locales (26 declaraciones `style="..."` eliminadas) en [repository.blade.php] enlazándolo directamente al nuevo bloque semántico unificado, corrigiendo a su vez una duplicación sintáctica menor en la sección `@endsection`.
+
 ## [2026-05-18 15:45] — CSS Unification: Subfase 19.20 (Datos e Importación) ✅
 
 ### Added
