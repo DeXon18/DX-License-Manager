@@ -1,6 +1,21 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-18 11:09] — CSS Unification: Subfase 19.15 (Siemens: Recursos & Enlaces) ✅
+
+### Added
+- **Namespace de Recursos (`.dx-v2-resources-*`)**: Diseñado e integrado un completo sistema de estilos en [dx-styles.css] para unificar y profesionalizar la sección de Recursos e Enlaces de soporte técnico de Siemens y Moldex3D:
+  - Estructuras alineadas para la cabecera `.dx-v2-resources-header-layout` y caja de título/subtítulo `.dx-v2-resources-title-block`.
+  - Iconos de alta fidelidad `.dx-v2-resources-header-icon` y badges de marca `.dx-v2-resources-badge` con subclases dinámicas `.siemens` y `.moldex3d` para acentos de color específicos.
+  - Tarjetas informativas laterales `.dx-v2-resources-sidebar-card` y paneles de acción destacada `.dx-v2-resources-sidebar-action`.
+  - Cuadrícula responsiva de enlaces `.dx-v2-resources-card-list` y filas/títulos de categorías `.dx-v2-resources-category-row`.
+  - Tarjetas interactivas de recurso individual `.dx-v2-resources-card` con soporte para hover, elevación de caja, acentos dinámicos, descripción multi-línea truncada `.dx-v2-resources-card-description` y acciones flotantes `.dx-v2-resources-card-actions`.
+  - Capas de fondo difuminado de alto premium `.dx-v2-resources-modal-overlay` y maquetación de modales con grid de formulario `.dx-v2-resources-modal-form-grid` e inputs unificados `.dx-v2-resources-modal-input`.
+  - Bloque de estados vacíos del módulo `.dx-v2-resources-empty-state` (con su icono y texto semántico).
+
+### Changed
+- **Vista de Recursos y parcial de enlaces**: Refactorizadas por completo la vista principal [resources.blade.php] y su parcial [_resources.blade.php], purgando el 100% de los estilos inline locales (como tarjetas, modales y layouts flex) y eliminando por completo el bloque incrustado local `<style>`, delegando todo el control visual e interactivo a la hoja de estilos global sin alterar la reactividad de Alpine.js.
+
 ## [2026-05-18 11:06] — CSS Unification: Subfase 19.14 (Siemens: COD) ✅
 
 ### Added
