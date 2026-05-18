@@ -9,32 +9,32 @@
     <p class="page-sub">Generación de Certificado de Cese (COD) oficial de Siemens Digital Industries Software</p>
 </div>
 
-<div x-data="codGenerator()" class="cod-container">
-    <div id="codForm" class="cod-card shadow-premium">
+<div x-data="codGenerator()" class="dx-v2-cod-container">
+    <div id="codForm" class="dx-v2-cod-card shadow-premium">
         @csrf
         
         <!-- Header del Formulario -->
-        <div class="cod-card-header">
-            <div class="header-title-block">
-                <div class="header-icon">
+        <div class="dx-v2-cod-card-header">
+            <div class="dx-v2-cod-header-title-block">
+                <div class="dx-v2-cod-header-icon">
                     <i class="fa-solid fa-file-signature"></i>
                 </div>
-                <h2 class="header-title">Certificado de Cese</h2>
+                <h2 class="dx-v2-cod-header-title">Certificado de Cese</h2>
             </div>
-            <div class="header-line"></div>
+            <div class="dx-v2-cod-header-line"></div>
         </div>
 
-        <div class="cod-card-body">
+        <div class="dx-v2-cod-card-body">
             <!-- SECCIÓN: DATOS DE LA EMPRESA -->
-            <div class="form-section">
-                <div class="section-title">
+            <div class="dx-v2-cod-form-section">
+                <div class="dx-v2-cod-section-title">
                     <i class="fa-solid fa-building"></i>
                     <span>Datos de la Empresa</span>
                 </div>
 
-                <div class="fields-container">
+                <div class="dx-v2-cod-fields-container">
                     <!-- Fila 1: Sold To (Ancho completo) -->
-                    <div class="field-row">
+                    <div class="dx-v2-cod-field-row">
                         <div class="input-wrap">
                             <i class="fa-solid fa-shield-halved"></i>
                             <input type="text" x-model="formData.Data_SoldTo" class="gui-input" placeholder="Número de licencia (Sold To)" required maxlength="10">
@@ -42,8 +42,8 @@
                     </div>
 
                     <!-- Fila 2: Solicitante y Empresa (50/50) -->
-                    <div class="columns-2 mt-4">
-                        <div class="field-row">
+                    <div class="dx-v2-cod-columns-2 mt-4">
+                        <div class="dx-v2-cod-field-row">
                             <div class="input-wrap">
                                 <i class="fa-solid fa-user"></i>
                                 <input type="text" 
@@ -54,7 +54,7 @@
                                        required>
                             </div>
                         </div>
-                        <div class="field-row" x-data="{ showSuggestions: false }" @click.away="showSuggestions = false">
+                        <div class="dx-v2-cod-field-row" x-data="{ showSuggestions: false }" @click.away="showSuggestions = false">
                             <div class="input-wrap">
                                 <i class="fa-solid fa-globe"></i>
                                 <input type="text" 
@@ -68,13 +68,13 @@
                                 
                                 <!-- Sugerencias de Empresa -->
                                 <div x-show="showSuggestions && filteredClients().length > 0" 
-                                     class="suggestions-dropdown"
+                                     class="dx-v2-cod-suggestions-dropdown"
                                      x-transition:enter="fade-in"
                                      style="display: none;">
                                     <template x-for="client in filteredClients()" :key="client.id">
-                                        <div class="suggestion-item" @click="selectClient(client); showSuggestions = false">
-                                            <div class="suggestion-name" x-text="client.name"></div>
-                                            <div class="suggestion-meta" x-text="client.inventory_daemons.length > 0 ? 'Vínculo DX Detectado' : 'Cliente Registrado'"></div>
+                                        <div class="dx-v2-cod-suggestion-item" @click="selectClient(client); showSuggestions = false">
+                                            <div class="dx-v2-cod-suggestion-name" x-text="client.name"></div>
+                                            <div class="dx-v2-cod-suggestion-meta" x-text="client.inventory_daemons.length > 0 ? 'Vínculo DX Detectado' : 'Cliente Registrado'"></div>
                                         </div>
                                     </template>
                                 </div>
@@ -85,16 +85,16 @@
             </div>
 
             <!-- SECCIÓN: TIPO DE SOLICITUD -->
-            <div class="form-section">
-                <div class="section-title">
+            <div class="dx-v2-cod-form-section">
+                <div class="dx-v2-cod-section-title">
                     <i class="fa-solid fa-diagram-project"></i>
                     <span>Tipo de Solicitud</span>
                 </div>
                 
-                <div class="segmented-wrapper">
-                    <div class="segmented-large relative">
+                <div class="dx-v2-cod-segmented-wrapper">
+                    <div class="dx-v2-cod-segmented-large relative">
                         <!-- Indicador deslizante -->
-                        <div class="active-indicator" 
+                        <div class="dx-v2-cod-active-indicator" 
                              :style="{
                                  width: '33.33%',
                                  left: formData.docType === 'Change_Full' ? '0%' : (formData.docType === 'Change_Composite' ? '33.33%' : '66.66%')
@@ -117,7 +117,7 @@
                 </div>
 
                 <!-- Descripción del tipo seleccionado -->
-                <div class="type-description-box">
+                <div class="dx-v2-cod-type-description-box">
                     <div x-show="formData.docType === 'Change_Full'" x-transition:enter="fade-in">
                         <i class="fa-solid fa-circle-info"></i>
                         <span>Cambio total del servidor: implica nuevo <strong>Hostname</strong> y nuevo identificador <strong>Composite</strong>.</span>
@@ -134,15 +134,15 @@
             </div>
 
             <!-- SECCIÓN: MÁQUINAS (PARALELO) -->
-            <div class="columns-2" style="gap: 24px; margin-top: 24px;">
+            <div class="dx-v2-cod-columns-2" style="margin-top: 24px;">
                 <!-- Máquina Actual -->
-                <div class="form-section">
-                    <div class="section-title">
+                <div class="dx-v2-cod-form-section">
+                    <div class="dx-v2-cod-section-title">
                         <i class="fa-solid fa-desktop"></i>
                         <span>Máquina Actual</span>
                     </div>
-                    <div class="fields-stack">
-                        <div class="field-row">
+                    <div class="dx-v2-cod-fields-stack">
+                        <div class="dx-v2-cod-field-row">
                             <div class="input-wrap">
                                 <i class="fa-solid fa-terminal"></i>
                                 <input type="text" 
@@ -154,7 +154,7 @@
                                        :disabled="formData.docType === 'Change_NodeLocked'">
                             </div>
                         </div>
-                        <div class="field-row">
+                        <div class="dx-v2-cod-field-row">
                             <div class="input-wrap">
                                 <i class="fa-solid fa-code"></i>
                                 <input type="text" 
@@ -167,7 +167,7 @@
                                        maxlength="12">
                             </div>
                         </div>
-                        <div class="field-row">
+                        <div class="dx-v2-cod-field-row">
                             <div class="input-wrap">
                                 <i class="fa-solid fa-id-card"></i>
                                 <input type="text" 
@@ -183,7 +183,7 @@
                         
                         <!-- MACs Adicionales -->
                         <template x-for="(mac, index) in formData.MAC_Old_Extra" :key="index">
-                            <div class="field-row">
+                            <div class="dx-v2-cod-field-row">
                                 <div class="input-wrap">
                                     <i class="fa-solid fa-id-card opacity-50"></i>
                                     <input type="text" 
@@ -192,7 +192,7 @@
                                            class="gui-input" 
                                            placeholder="MAC Extra (sin guiones)" 
                                            maxlength="12">
-                                    <button type="button" class="remove-btn" @click="removeMacPair(index)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--muted); cursor: pointer;">&times;</button>
+                                    <button type="button" class="remove-btn" @click="removeMacPair(index)" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--dx-v2-muted); cursor: pointer;">&times;</button>
                                 </div>
                             </div>
                         </template>
@@ -200,14 +200,14 @@
                 </div>
 
                 <!-- Nueva Máquina -->
-                <div class="form-section">
-                    <div class="section-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <div class="dx-v2-cod-form-section">
+                    <div class="dx-v2-cod-section-title" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <i class="fa-solid fa-tower-broadcast"></i>
                             <span>Nueva Máquina</span>
                         </div>
-                        <button type="button" class="btn-ai-mini shadow-sm" @click="openAiModal()">
-                            <div class="ai-icon-pulse-mini">
+                        <button type="button" class="dx-v2-cod-btn-ai-mini shadow-sm" @click="openAiModal()">
+                            <div class="dx-v2-cod-ai-icon-pulse-mini">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 2C12 2 12.6 7.4 14.5 9.5C16.6 11.4 22 12 22 12C22 12 16.6 12.6 14.5 14.5C12.6 16.6 12 22 12 22C12 22 11.4 16.6 9.5 14.5C7.4 12.6 2 12 2 12C2 12 7.4 11.4 9.5 9.5C11.4 7.4 12 2 12 2Z" fill="currentColor"/>
                                 </svg>
@@ -215,8 +215,8 @@
                             <span>Analizar Composite.txt</span>
                         </button>
                     </div>
-                    <div class="fields-stack">
-                        <div class="field-row">
+                    <div class="dx-v2-cod-fields-stack">
+                        <div class="dx-v2-cod-field-row">
                             <div class="input-wrap">
                                 <i class="fa-solid fa-terminal"></i>
                                 <input type="text" 
@@ -228,7 +228,7 @@
                                        :disabled="formData.docType === 'Change_NodeLocked'">
                             </div>
                         </div>
-                        <div class="field-row">
+                        <div class="dx-v2-cod-field-row">
                             <div class="input-wrap">
                                 <i class="fa-solid fa-code"></i>
                                 <input type="text" 
@@ -241,7 +241,7 @@
                                        maxlength="12">
                             </div>
                         </div>
-                        <div class="field-row">
+                        <div class="dx-v2-cod-field-row">
                             <div class="input-wrap">
                                 <i class="fa-solid fa-id-card"></i>
                                 <input type="text" 
@@ -257,7 +257,7 @@
 
                         <!-- MACs Adicionales -->
                         <template x-for="(mac, index) in formData.MAC_New_Extra" :key="index">
-                            <div class="field-row">
+                            <div class="dx-v2-cod-field-row">
                                 <div class="input-wrap">
                                     <i class="fa-solid fa-id-card opacity-50"></i>
                                     <input type="text" 
@@ -275,21 +275,19 @@
 
             <!-- Botón Añadir MACs (Solo NodeLocked) -->
             <div class="flex justify-center mt-2" x-show="formData.docType === 'Change_NodeLocked'">
-                <button type="button" class="btn-add-mac" @click="addMacPair()">
+                <button type="button" class="dx-v2-cod-btn-add-mac" @click="addMacPair()">
                     <i class="fa-solid fa-plus"></i> Añadir par de MACs
                 </button>
             </div>
-
-
         </div>
 
         <!-- FOOTER: CONTROLES Y ACCIONES -->
-        <div class="cod-card-footer">
-            <div class="footer-left">
+        <div class="dx-v2-cod-card-footer">
+            <div class="dx-v2-cod-footer-left">
                 <!-- Idioma -->
-                <div class="segmented-wrapper small">
-                    <div class="segmented-small relative">
-                        <div class="active-indicator-small" 
+                <div class="dx-v2-cod-segmented-wrapper small">
+                    <div class="dx-v2-cod-segmented-small relative">
+                        <div class="dx-v2-cod-active-indicator-small" 
                              :style="{
                                  width: 'calc(50% - 6px)',
                                  left: formData.Language === 'Spanish' ? '3px' : 'calc(50% + 3px)'
@@ -301,9 +299,9 @@
                 </div>
 
                 <!-- S.O. -->
-                <div class="segmented-wrapper small">
-                    <div class="segmented-small relative">
-                        <div class="active-indicator-small" 
+                <div class="dx-v2-cod-segmented-wrapper small">
+                    <div class="dx-v2-cod-segmented-small relative">
+                        <div class="dx-v2-cod-active-indicator-small" 
                              :style="{
                                  width: 'calc(50% - 6px)',
                                  left: formData.os === 'WINDOWS' ? '3px' : 'calc(50% + 3px)'
@@ -319,16 +317,16 @@
                 </div>
             </div>
 
-            <div class="footer-right">
+            <div class="dx-v2-cod-footer-right">
                 <!-- Limpiar (Estilo Selector) -->
-                <div class="btn-wrapper-tech">
-                    <button type="button" class="btn-tech-base btn-cod-clear" @click="resetForm()">
+                <div class="dx-v2-cod-btn-wrapper-tech">
+                    <button type="button" class="dx-v2-cod-btn-tech-base dx-v2-cod-btn-clear" @click="resetForm()">
                         <i class="fa-solid fa-eraser"></i> Limpiar
                     </button>
                 </div>
 
                 <!-- Generar (Abre Preview) -->
-                <button type="button" class="btn-cod-generate" @click="openPreview()" :disabled="isGenerating">
+                <button type="button" class="dx-v2-cod-btn-generate" @click="openPreview()" :disabled="isGenerating">
                     <template x-if="!isGenerating">
                         <i class="fa-solid fa-eye"></i>
                     </template>
@@ -348,30 +346,30 @@
 
 
     <!-- Overlay de Previsualización Limpia -->
-    <div class="preview-overlay" x-show="showPreview" x-transition x-cloak>
-        <div class="preview-modal shadow-premium" @click.away="showPreview = false">
-            <div class="preview-header">
-                <div class="preview-title-container">
+    <div class="dx-v2-cod-preview-overlay" x-show="showPreview" x-transition x-cloak>
+        <div class="dx-v2-cod-preview-modal shadow-premium" @click.away="showPreview = false">
+            <div class="dx-v2-cod-preview-header">
+                <div class="dx-v2-cod-preview-title-container">
                     <i class="fa-solid fa-file-pdf text-accent"></i>
-                    <span class="preview-title">Vista Previa</span>
+                    <span class="dx-v2-cod-preview-title">Vista Previa</span>
                 </div>
-                <button type="button" class="btn-close-minimal" @click="showPreview = false">
+                <button type="button" class="dx-v2-cod-btn-close-minimal" @click="showPreview = false">
                     <i class="fa-solid fa-xmark"></i>
                     <span>Cerrar</span>
                 </button>
             </div>
-            <div class="preview-body">
-                <div x-show="isPreviewLoading" class="preview-loader">
+            <div class="dx-v2-cod-preview-body">
+                <div x-show="isPreviewLoading" class="dx-v2-cod-preview-loader">
                     <i class="fa-solid fa-circle-notch fa-spin"></i>
                     <span>Cargando documento...</span>
                 </div>
                 <iframe x-show="!isPreviewLoading" :src="previewUrl" frameborder="0"></iframe>
             </div>
-            <div class="preview-footer">
-                <button type="button" class="btn-tech-base" @click="showPreview = false">
+            <div class="dx-v2-cod-preview-footer">
+                <button type="button" class="dx-v2-cod-btn-tech-base" @click="showPreview = false">
                     <i class="fa-solid fa-arrow-left"></i> <span>Volver a Editar</span>
                 </button>
-                <button type="button" class="btn-cod-generate" @click="generate('store')" :disabled="isSaving">
+                <button type="button" class="dx-v2-cod-btn-generate" @click="generate('store')" :disabled="isSaving">
                     <template x-if="!isSaving">
                         <i class="fa-solid fa-file-signature"></i>
                     </template>
@@ -390,26 +388,26 @@
     </div>
 
     <!-- Modal de Asistente IA -->
-    <div class="preview-overlay" x-show="showAiModal" x-transition x-cloak>
-        <div class="ai-modal shadow-premium" @click.away="showAiModal = false">
-            <div class="preview-header" style="background: var(--accent-muted); border-bottom: 1px solid var(--accent-border);">
-                <div class="preview-title-container">
+    <div class="dx-v2-cod-preview-overlay" x-show="showAiModal" x-transition x-cloak>
+        <div class="dx-v2-cod-ai-modal shadow-premium" @click.away="showAiModal = false">
+            <div class="dx-v2-cod-preview-header">
+                <div class="dx-v2-cod-preview-title-container">
                     <i class="fa-solid fa-microchip-ai text-accent"></i>
-                    <span class="preview-title">Asistente Inteligente de Composite</span>
+                    <span class="dx-v2-cod-preview-title">Asistente Inteligente de Composite</span>
                 </div>
-                <button type="button" class="btn-close-minimal" @click="showAiModal = false">
+                <button type="button" class="dx-v2-cod-btn-close-minimal" @click="showAiModal = false">
                     <i class="fa-solid fa-xmark"></i>
                     <span>Cerrar</span>
                 </button>
             </div>
-            <div class="ai-modal-body">
+            <div class="dx-v2-cod-ai-modal-body">
                 <div x-show="!aiResult" x-transition>
-                    <p class="ai-hint">
+                    <p class="dx-v2-cod-ai-hint">
                         <i class="fa-solid fa-wand-magic-sparkles mr-2 text-accent"></i>
                         Pega el listado de adaptadores o arrastra el archivo <strong>composite.txt</strong> para un análisis automático.
                     </p>
                     
-                    <div class="ai-upload-zone mb-4" 
+                    <div class="dx-v2-cod-ai-upload-zone mb-4" 
                          @click="$refs.fileInput.click()" 
                          @dragover.prevent="isDragging = true" 
                          @dragleave.prevent="isDragging = false" 
@@ -420,43 +418,43 @@
                         
                         <template x-if="!fileName">
                             <div class="flex flex-col items-center justify-center gap-6 w-full">
-                                <div class="upload-icon-wrapper">
+                                <div class="dx-v2-cod-upload-icon-wrapper">
                                     <i class="fa-solid fa-file-circle-plus"></i>
                                 </div>
-                                <div class="upload-text-content">
-                                    <span class="upload-main-text text-lg">Haz clic o arrastra el archivo composite.txt</span>
-                                    <span class="upload-sub-text">Sube el log de adaptadores para análisis instantáneo</span>
+                                <div class="dx-v2-cod-upload-text-content">
+                                    <span class="dx-v2-cod-upload-main-text text-lg">Haz clic o arrastra el archivo composite.txt</span>
+                                    <span class="dx-v2-cod-upload-sub-text">Sube el log de adaptadores para análisis instantáneo</span>
                                 </div>
                             </div>
                         </template>
 
                         <template x-if="fileName">
                             <div class="flex flex-col items-center gap-3 fade-in w-full">
-                                <div class="upload-icon-wrapper success">
+                                <div class="dx-v2-cod-upload-icon-wrapper success">
                                     <i class="fa-solid fa-file-circle-check"></i>
                                 </div>
                                 <div class="flex flex-col items-center gap-1">
                                     <span class="font-bold text-primary" x-text="fileName"></span>
                                     <span class="text-xs text-muted">Archivo listo para procesar</span>
                                 </div>
-                                <button type="button" @click.stop="clearFile()" class="btn-clear-file">
+                                <button type="button" @click.stop="clearFile()" class="dx-v2-cod-btn-clear-file">
                                     <i class="fa-solid fa-trash-can"></i>
                                     <span>Quitar archivo</span>
                                 </button>
                             </div>
                         </template>
 
-                        <div class="upload-progress-bar" x-show="isAiProcessing">
-                            <div class="upload-progress-inner"></div>
+                        <div class="dx-v2-cod-upload-progress-bar" x-show="isAiProcessing">
+                            <div class="dx-v2-cod-upload-progress-inner"></div>
                         </div>
                     </div>
 
                     <textarea x-model="aiInput" 
-                              class="ai-textarea font-mono" 
+                              class="dx-v2-cod-ai-textarea font-mono" 
                               placeholder="O pega el texto aquí..."></textarea>
                     
                     <div style="display: flex; justify-content: flex-end; margin-top: 16px;">
-                        <button type="button" class="btn-cod-generate" @click="processAi()" :disabled="isAiProcessing || !aiInput">
+                        <button type="button" class="dx-v2-cod-btn-generate" @click="processAi()" :disabled="isAiProcessing || !aiInput">
                             <span x-show="!isAiProcessing">Analizar con Gemini</span>
                             <span x-show="isAiProcessing"><i class="fa-solid fa-spinner fa-spin me-2"></i> Procesando...</span>
                         </button>
@@ -464,42 +462,42 @@
                 </div>
 
                 <div x-show="aiResult" x-transition>
-                    <div class="ai-result-box">
-                        <div class="ai-result-header">
-                            <div style="width: 24px; height: 24px; color: var(--accent); display: flex; align-items: center; justify-content: center;">
+                    <div class="dx-v2-cod-ai-result-box">
+                        <div class="dx-v2-cod-ai-result-header">
+                            <div class="dx-v2-cod-ai-icon-pulse-mini">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M12 2C12 2 12.6 7.4 14.5 9.5C16.6 11.4 22 12 22 12C22 12 16.6 12.6 14.5 14.5C12.6 16.6 12 22 12 22C12 22 11.4 16.6 9.5 14.5C7.4 12.6 2 12 2 12C2 12 7.4 11.4 9.5 9.5C11.4 7.4 12 2 12 2Z" fill="currentColor"/>
                                 </svg>
                             </div>
                             <span>Hardware Recomendado</span>
                         </div>
-                        <div class="ai-result-grid">
-                            <div class="ai-result-item">
+                        <div class="dx-v2-cod-ai-result-grid">
+                            <div class="dx-v2-cod-ai-result-item">
                                 <label>Hostname</label>
                                 <span x-text="aiResult?.hostname || 'N/A'"></span>
                             </div>
-                            <div class="ai-result-item">
+                            <div class="dx-v2-cod-ai-result-item">
                                 <label>Composite</label>
                                 <span class="font-mono" x-text="aiResult?.composite || 'N/A'"></span>
                             </div>
-                            <div class="ai-result-item">
+                            <div class="dx-v2-cod-ai-result-item">
                                 <label>MAC Address</label>
                                 <span class="font-mono" x-text="aiResult?.mac || 'N/A'"></span>
                             </div>
                         </div>
-                        <div class="ai-result-footer">
-                            <div style="font-size: 11px; font-weight: 600; color: var(--accent); margin-bottom: 4px;">Adaptador: <span x-text="aiResult?.adapter" style="color: var(--text);"></span></div>
-                            <p class="ai-reason" style="font-size: 11px; color: var(--muted); margin: 0; line-height: 1.4;">
+                        <div class="dx-v2-cod-ai-result-footer">
+                            <div style="font-size: 11px; font-weight: 600; color: var(--dx-v2-accent-base); margin-bottom: 4px;">Adaptador: <span x-text="aiResult?.adapter" class="text-primary"></span></div>
+                            <p class="dx-v2-cod-ai-reason" style="margin: 0;">
                                 <i class="fa-solid fa-info-circle me-1"></i> <span x-text="aiResult?.reason"></span>
                             </p>
                         </div>
                     </div>
 
                     <div style="display: flex; justify-content: space-between; margin-top: 24px; gap: 12px;">
-                        <button type="button" class="btn-secondary-tech" @click="aiResult = null">
+                        <button type="button" class="dx-v2-cod-btn-secondary-tech" @click="aiResult = null">
                             <i class="fa-solid fa-arrow-left"></i> <span>Volver a Analizar</span>
                         </button>
-                        <button type="button" class="btn-cod-generate" @click="applyAiResult()">
+                        <button type="button" class="dx-v2-cod-btn-generate" @click="applyAiResult()">
                             <i class="fa-solid fa-bolt"></i> <span>Aplicar a Nueva Máquina</span>
                         </button>
                     </div>
@@ -508,866 +506,6 @@
         </div>
     </div>
 </div>
-
-@push('styles')
-<style>
-    .cod-container {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding-bottom: 60px;
-    }
-    .cod-card {
-        background: var(--card-bg);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        overflow: hidden;
-    }
-    .cod-card-header {
-        padding: 32px 40px 16px;
-    }
-    .header-icon {
-        width: 56px;
-        height: 56px;
-        background: rgba(var(--accent-rgb), 0.1);
-        border-radius: 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 24px;
-        color: var(--accent);
-        flex-shrink: 0;
-    }
-    .header-title-block {
-        display: flex;
-        flex-direction: row !important;
-        align-items: center;
-        gap: 16px;
-    }
-    .header-title {
-        font-size: 24px;
-        font-weight: 800;
-        letter-spacing: -0.02em;
-        color: var(--text);
-        margin: 0;
-    }
-    .header-line {
-        height: 1px;
-        background: linear-gradient(to right, var(--accent), transparent);
-        margin-top: 16px;
-        opacity: 0.3;
-    }
-    .cod-card-body {
-        padding: 24px 40px;
-    }
-    .form-section {
-        margin-bottom: 32px;
-    }
-    .section-header {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 14px;
-        font-weight: 700;
-        color: var(--accent);
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        margin-bottom: 20px;
-    }
-    .section-header i { font-size: 12px; }
-
-    :root {
-        --accent-rgb: 56, 139, 253;
-    }
-
-    /* Estilos Específicos COD */
-    .cod-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        overflow: hidden;
-    }
-    
-    .cod-card-header {
-        background: var(--accent-muted);
-        padding: 24px 32px;
-        border-bottom: 1px solid var(--border);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .form-section {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 24px;
-        margin-bottom: 24px;
-    }
-
-    .vinculo-container {
-        margin-bottom: 24px;
-    }
-
-    .select-vinculo {
-        background: var(--accent-muted) !important;
-        border: 1px dashed var(--accent) !important;
-        color: var(--accent) !important;
-        font-weight: 500;
-    }
-
-    .input-wrap i {
-        position: absolute;
-        left: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--muted);
-        font-size: 14px;
-        pointer-events: none;
-        z-index: 5;
-    }
-
-    .fields-stack {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-    }
-
-    .mt-4 { margin-top: 16px; }
-    .opacity-50 { opacity: 0.5; }
-
-    /* Estilos Autocompletado */
-    .suggestions-dropdown {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: var(--surface);
-        border: 1px solid var(--accent);
-        border-radius: 12px;
-        margin-top: 8px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-        z-index: 1000;
-        overflow: hidden;
-    }
-    .suggestion-item {
-        padding: 12px 16px;
-        cursor: pointer;
-        transition: all 0.2s;
-        border-bottom: 1px solid var(--border);
-    }
-    .suggestion-item:last-child { border-bottom: none; }
-    .suggestion-item:hover {
-        background: rgba(var(--accent-rgb), 0.1);
-    }
-    .suggestion-name {
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--primary);
-    }
-    .suggestion-meta {
-        font-size: 11px;
-        color: var(--accent);
-        margin-top: 2px;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-
-    /* Segmented Control Premium con Animación */
-    .segmented-wrapper {
-        background: var(--raised);
-        padding: 4px;
-        border-radius: 14px;
-        border: 1px solid var(--border);
-        margin-top: 12px;
-    }
-
-    .segmented-large {
-        display: flex;
-        position: relative;
-        z-index: 1;
-    }
-
-    .segmented-large button {
-        flex: 1;
-        background: none !important;
-        border: none !important;
-        padding: 10px 12px;
-        color: var(--muted);
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: color 0.3s;
-        z-index: 2;
-    }
-
-    .segmented-large button i {
-        font-size: 14px;
-        margin-bottom: 0;
-    }
-
-    .segmented-large button.active {
-        color: var(--accent);
-    }
-
-    .active-indicator {
-        position: absolute;
-        height: 100%;
-        background: var(--accent-muted);
-        border: 1px solid var(--accent-border);
-        border-radius: 10px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 1;
-    }
-
-    /* Caja de Descripción */
-    .type-description-box {
-        margin-top: 20px;
-        padding: 16px 20px;
-        background: var(--accent-muted);
-        border-left: 3px solid var(--accent);
-        border-radius: 0 8px 8px 0;
-        font-size: 13px;
-        color: var(--secondary);
-        line-height: 1.5;
-    }
-
-    .type-description-box i {
-        margin-right: 8px;
-        color: var(--accent);
-    }
-
-    .type-description-box strong {
-        color: var(--accent);
-        font-weight: 700;
-    }
-
-    .input-with-icon input:focus, .input-with-icon select:focus {
-        border-color: var(--accent);
-        background: rgba(var(--accent-rgb), 0.02);
-        box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.1);
-    }
-    .input-with-icon select option {
-        background: var(--card-bg);
-        color: var(--text);
-    }
-    .input-with-icon input:disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
-    }
-    .input-with-icon.extra input {
-        background: rgba(0,0,0,0.05);
-        border-style: dashed;
-    }
-
-    .remove-btn {
-        position: absolute;
-        right: 12px;
-        width: 24px;
-        height: 24px;
-        border: none;
-        background: rgba(239, 68, 68, 0.1);
-        color: #ef4444;
-        border-radius: 6px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* Footer & Actions */
-    /* Footer & Actions Refined */
-    .cod-card-footer {
-        padding: 32px 40px;
-        background: var(--accent-muted);
-        border-top: 1px solid var(--border);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 20px;
-    }
-
-    .footer-left, .footer-right {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-    }
-
-    .segmented-wrapper.small, .btn-wrapper-tech {
-        height: 40px;
-        padding: 2px;
-        border-radius: 9px;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        display: flex;
-        align-items: center;
-    }
-
-    .segmented-small {
-        display: flex;
-        position: relative;
-        z-index: 1;
-        min-width: 240px;
-        height: 100%;
-        width: 100%;
-    }
-
-    .segmented-small button, .btn-tech-base {
-        flex: 1;
-        height: 100%;
-        background: none !important;
-        border: none !important;
-        padding: 0 12px;
-        color: var(--muted);
-        font-size: 10px;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        z-index: 2;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        white-space: nowrap;
-    }
-
-    .segmented-small button i, .btn-tech-base i { 
-        font-size: 13px; 
-        width: 16px;
-        display: flex;
-        justify-content: center;
-    }
-
-    .segmented-small button.active {
-        color: var(--accent);
-    }
-
-    .active-indicator-small {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        background: rgba(var(--accent-rgb), 0.05);
-        border: 1px solid var(--accent);
-        box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.1);
-        border-radius: 7px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 1;
-    }
-
-    /* Botones de Acción Estilo Tech */
-    .btn-cod-clear {
-        color: var(--muted);
-    }
-    .btn-cod-clear:hover {
-        color: var(--danger);
-    }
-
-    .btn-cod-generate {
-        height: 40px;
-        background: var(--accent);
-        color: white;
-        border: 1px solid var(--accent);
-        padding: 0 24px;
-        border-radius: 9px;
-        font-weight: 800;
-        font-size: 10px;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        cursor: pointer;
-        transition: all 0.2s;
-        box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.3);
-        display: flex;
-        flex-direction: row !important;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        white-space: nowrap !important;
-    }
-
-    .btn-cod-generate i {
-        font-size: 13px;
-        width: 16px;
-        display: flex;
-        justify-content: center;
-    }
-
-    .btn-cod-generate:hover:not(:disabled) {
-        background: var(--accent-hover);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(var(--accent-rgb), 0.4);
-    }
-
-    .btn-cod-generate:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-
-    /* Botón Añadir MAC */
-    .btn-add-mac {
-        padding: 8px 16px;
-        background: var(--surface);
-        border: 1px dashed var(--accent);
-        color: var(--accent);
-        border-radius: 8px;
-        font-size: 12px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: all 0.2s;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-
-    .btn-add-mac:hover {
-        background: var(--accent-muted);
-        border-style: solid;
-    }
-
-    /* Preview Modal - Dark & Clean (Ajuste Final) */
-    .preview-overlay {
-        position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85);
-        backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center;
-        z-index: 2000; padding: 20px;
-    }
-    .preview-modal {
-        background: var(--surface); width: 100%; max-width: 1200px;
-        height: 92vh; border-radius: 16px; overflow: hidden; display: flex; flex-direction: column;
-        box-shadow: 0 25px 70px rgba(0,0,0,0.5); border: 1px solid var(--border);
-    }
-    .preview-header { 
-        padding: 16px 28px; 
-        background: var(--surface);
-        border-bottom: 1px solid var(--border); 
-        display: flex; 
-        flex-direction: row !important;
-        justify-content: space-between; 
-        align-items: center; 
-    }
-    .preview-title-container {
-        display: flex;
-        flex-direction: row !important;
-        align-items: center;
-        gap: 12px;
-    }
-    .preview-title { font-size: 15px; font-weight: 700; color: var(--text); }
-    
-    .btn-close-minimal {
-        display: flex; align-items: center; gap: 8px; padding: 8px 16px;
-        background: var(--raised); color: var(--muted); border: 1px solid var(--border); border-radius: 8px;
-        font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; cursor: pointer; transition: all 0.2s;
-    }
-    .btn-close-minimal:hover { background: var(--danger-muted); color: var(--danger); border-color: var(--danger-muted); }
-
-    .preview-body { flex: 1; background: #262626; position: relative; }
-    .preview-body iframe { width: 100%; height: 100%; border: none; }
-    
-    .preview-loader {
-        position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
-        gap: 16px; color: var(--text); background: #262626;
-    }
-    .preview-loader i { font-size: 32px; color: var(--accent); }
-
-    .preview-footer { 
-        padding: 20px 32px; 
-        background: var(--surface);
-        border-top: 1px solid var(--border); 
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-    }
-
-    .btn-secondary-tech {
-        height: 40px; padding: 0 20px; border-radius: 9px; border: 1px solid var(--border);
-        background: var(--surface); color: var(--muted); font-size: 10px; font-weight: 800;
-        text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer; transition: all 0.2s;
-        display: flex; align-items: center; gap: 8px;
-    }
-    .btn-secondary-tech:hover { border-color: var(--accent); color: var(--accent); }
-
-    [x-cloak] { display: none !important; }
-
-    /* AI Assistant Mini Version */
-    .btn-ai-mini {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 5px 10px;
-        background: var(--surface);
-        border: 1px solid rgba(var(--accent-rgb), 0.3);
-        border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s;
-        color: var(--text);
-        font-size: 10px;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-    .btn-ai-mini:hover {
-        border-color: var(--accent);
-        background: rgba(var(--accent-rgb), 0.05);
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.15);
-    }
-    .ai-icon-pulse-mini {
-        width: 18px;
-        height: 18px;
-        background: linear-gradient(135deg, #4e8cff, #9171ff);
-        color: white;
-        border-radius: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-    }
-    .ai-icon-pulse-mini::after {
-        content: '';
-        position: absolute;
-        inset: -3px;
-        border: 1px solid #9171ff;
-        border-radius: 7px;
-        opacity: 0;
-        transition: all 0.4s;
-    }
-    .btn-ai-mini:hover .ai-icon-pulse-mini::after {
-        opacity: 0.4;
-        animation: pulse-ai 2s infinite;
-    }
-
-    /* AI Assistant Styles */
-
-    .btn-ai-assist {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        padding: 14px 28px;
-        background: var(--surface);
-        border: 1px solid rgba(var(--accent-rgb), 0.2);
-        border-radius: 14px;
-        cursor: pointer;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        color: var(--text);
-        text-align: left;
-        position: relative;
-        overflow: hidden;
-    }
-    .btn-ai-assist::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, rgba(78, 140, 255, 0.05), rgba(145, 113, 255, 0.05));
-        opacity: 0;
-        transition: opacity 0.4s;
-    }
-    .btn-ai-assist:hover {
-        border-color: rgba(145, 113, 255, 0.5);
-        transform: translateY(-3px);
-        box-shadow: 0 12px 30px rgba(78, 140, 255, 0.15);
-    }
-    .btn-ai-assist:hover::before {
-        opacity: 1;
-    }
-    .ai-icon-pulse {
-        width: 42px;
-        height: 42px;
-        background: linear-gradient(135deg, #4e8cff, #9171ff);
-        color: white;
-        border-radius: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-        box-shadow: 0 4px 15px rgba(78, 140, 255, 0.3);
-    }
-    .ai-icon-pulse::after {
-        content: '';
-        position: absolute;
-        inset: -5px;
-        border: 2px solid #9171ff;
-        border-radius: 16px;
-        opacity: 0;
-        transition: all 0.4s;
-    }
-    .btn-ai-assist:hover .ai-icon-pulse::after {
-        opacity: 0.4;
-        animation: pulse-ai 2s infinite;
-    }
-    @keyframes pulse-ai {
-        0% { transform: scale(1); opacity: 0.4; }
-        50% { transform: scale(1.15); opacity: 0; }
-        100% { transform: scale(1); opacity: 0.4; }
-    }
-
-    .ai-upload-zone {
-        border: 2px dashed var(--accent);
-        border-radius: 20px;
-        padding: 48px 32px;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        background: rgba(var(--accent-rgb), 0.05);
-        margin-bottom: 24px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 20px;
-        position: relative;
-        overflow: hidden;
-        min-height: 240px;
-    }
-    .ai-upload-zone::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.1), transparent);
-        opacity: 0;
-        transition: opacity 0.3s;
-    }
-    .ai-upload-zone:hover::before, .ai-upload-zone.active::before {
-        opacity: 1;
-    }
-    .ai-upload-zone:hover, .ai-upload-zone.active {
-        border-color: var(--accent);
-        transform: translateY(-2px);
-        box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-    }
-    .upload-icon-wrapper {
-        width: 80px;
-        height: 80px;
-        margin: 0 auto;
-        background: var(--surface);
-        border: 2px solid var(--border);
-        border-radius: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 32px;
-        color: var(--accent);
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-        z-index: 1;
-        position: relative;
-    }
-    .upload-icon-wrapper::after {
-        content: '';
-        position: absolute;
-        inset: -10px;
-        background: var(--accent);
-        opacity: 0.1;
-        border-radius: 30px;
-        z-index: -1;
-        animation: icon-pulse 3s infinite;
-    }
-    @keyframes icon-pulse {
-        0% { transform: scale(1); opacity: 0.1; }
-        50% { transform: scale(1.15); opacity: 0.05; }
-        100% { transform: scale(1); opacity: 0.1; }
-    }
-    .ai-upload-zone:hover .upload-icon-wrapper {
-        background: var(--accent);
-        color: white;
-        border-color: var(--accent);
-        transform: translateY(-5px);
-        box-shadow: 0 15px 35px rgba(var(--accent-rgb), 0.3);
-    }
-    .upload-text-content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        text-align: center;
-        width: 100%;
-        z-index: 1;
-    }
-    .upload-main-text {
-        font-size: 14px;
-        font-weight: 700;
-        color: var(--primary);
-        letter-spacing: -0.01em;
-    }
-    .upload-sub-text {
-        font-size: 11px;
-        color: var(--muted);
-    }
-    .upload-file-info {
-        margin-top: 8px;
-        padding: 6px 14px;
-        background: var(--accent-muted);
-        border: 1px solid var(--accent-border);
-        border-radius: 20px;
-        font-size: 11px;
-        font-weight: 700;
-        color: var(--accent);
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        z-index: 1;
-    }
-
-    .ai-upload-zone input[type="file"] {
-        display: none !important;
-    }
-    .upload-icon-wrapper.success {
-        background: rgba(var(--success-rgb), 0.1);
-        color: var(--success);
-        border-color: var(--success);
-        box-shadow: 0 0 20px rgba(var(--success-rgb), 0.2);
-    }
-    .ai-upload-zone.has-file {
-        border-style: solid;
-        background: rgba(var(--success-rgb), 0.02);
-        border-color: rgba(var(--success-rgb), 0.3);
-    }
-    .ai-upload-zone.active {
-        border-color: var(--accent);
-        background: rgba(var(--accent-rgb), 0.08);
-        transform: scale(1.01);
-    }
-    .upload-progress-bar {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background: rgba(var(--accent-rgb), 0.1);
-    }
-    .upload-progress-inner {
-        height: 100%;
-        background: var(--accent);
-        width: 30%;
-        animation: progress-slide 2s infinite linear;
-    }
-    .btn-clear-file {
-        margin-top: 12px;
-        background: rgba(var(--danger-rgb), 0.1);
-        color: var(--danger);
-        border: 1px solid rgba(var(--danger-rgb), 0.2);
-        padding: 6px 14px;
-        border-radius: 8px;
-        font-size: 11px;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-    .btn-clear-file:hover {
-        background: var(--danger);
-        color: white;
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(var(--danger-rgb), 0.3);
-    }
-
-    .ai-modal {
-        background: var(--surface);
-        width: 100%;
-        max-width: 600px;
-        border-radius: 16px;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        box-shadow: 0 25px 70px rgba(0,0,0,0.5);
-        border: 1px solid var(--border);
-    }
-    .ai-modal-body { padding: 24px 32px 32px; }
-    .ai-hint { 
-        font-size: 14px; 
-        color: var(--muted); 
-        margin-bottom: 24px; 
-        line-height: 1.6; 
-        padding: 12px 16px;
-        background: rgba(var(--accent-rgb), 0.05);
-        border-left: 3px solid var(--accent);
-        border-radius: 4px 12px 12px 4px;
-    }
-    .ai-textarea {
-        width: 100%;
-        height: 200px;
-        background: rgba(0,0,0,0.2);
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 16px;
-        color: var(--primary);
-        font-size: 12px;
-        line-height: 1.6;
-        resize: none;
-        outline: none;
-    }
-    .ai-textarea:focus { border-color: var(--accent); }
-
-    .ai-result-box {
-        background: rgba(var(--accent-rgb), 0.03);
-        border: 1px solid var(--accent-border);
-        border-radius: 16px;
-        padding: 24px;
-        box-shadow: inset 0 0 40px rgba(var(--accent-rgb), 0.05);
-    }
-    .ai-result-header {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-size: 15px;
-        font-weight: 800;
-        color: var(--primary);
-        margin-bottom: 24px;
-    }
-    .ai-result-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        margin-bottom: 24px;
-    }
-    .ai-result-item { 
-        display: flex; 
-        flex-direction: column; 
-        gap: 6px;
-        padding: 12px;
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-    }
-    .ai-result-item label { 
-        font-size: 10px; 
-        font-weight: 800; 
-        text-transform: uppercase; 
-        color: var(--muted); 
-        letter-spacing: 0.08em; 
-    }
-    .ai-result-item span { 
-        font-size: 14px; 
-        color: var(--primary); 
-        font-weight: 700;
-        font-family: var(--font-mono);
-    }
-    .ai-result-footer {
-        padding-top: 20px;
-        border-top: 1px dashed var(--accent-border);
-    }
-    .ai-reason {
-        font-size: 13px;
-        color: var(--muted);
-        line-height: 1.6;
-        font-style: italic;
-    }
-
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(5px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .fade-in {
-        animation: fadeIn 0.3s ease forwards;
-    }
-</style>
-@endpush
 
 @push('scripts')
 <script>
