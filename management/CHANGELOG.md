@@ -1,6 +1,28 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-18 15:54] — CSS Unification: Subfase 19.23 (Backups) ✅
+
+### Added
+- **Namespace de Gestión de Backups (`.dx-v2-backups-*`)**: Diseñado e integrado un completo y robusto bloque de clases semánticas en [dx-styles.css] para el control, historial y restauración de copias de seguridad:
+  - Cabecera flex de tarjeta `.dx-v2-backups-card-header` con alineación vertical `.dx-v2-backups-header-left` y el badge de tiempo de retención `.dx-v2-backups-header-badge` estilizado.
+  - Sección flex derecha `.dx-v2-backups-header-right` con el panel detallado de espacio total ocupado `.dx-v2-backups-storage-panel`, etiqueta `.dx-v2-backups-storage-label` y valor numérico destacado `.dx-v2-backups-storage-value`.
+  - Botón de generación manual `.dx-v2-backups-btn-run` con icono centrado `.dx-v2-backups-btn-icon`.
+  - Tabla de alta densidad `.dx-v2-backups-table` con cabecera de surface sólido `.dx-v2-backups-table-thead`, columnas de datos `.dx-v2-backups-table-th` and `.dx-v2-backups-table-th-right`, filas con transición hover `.dx-v2-backups-table-tr` y celdas compactas `.dx-v2-backups-table-td` y `.dx-v2-backups-table-td-right`.
+  - Grupo de fecha `.dx-v2-backups-date-group`, fecha principal `.dx-v2-backups-date-primary` e indicador de hora mono `.dx-v2-backups-date-secondary`.
+  - Badges semánticos para tipo de backup `.dx-v2-backups-badge-type` (en sus variantes system y manual) y entorno de origen `.dx-v2-backups-badge-env` (prod y beta) con colores HSL atenuados y bordes matizados.
+  - Indicador de tamaño de archivo `.dx-v2-backups-file-size` y nombre de copia `.dx-v2-backups-file-name` con fuentes mono.
+  - Botones simétricos de acción rápida `.dx-v2-backups-actions-group` para restaurar, descargar y eliminar copias.
+  - Diseño de Empty State con celda unificada `.dx-v2-backups-empty-td`, icono de baja opacidad `.dx-v2-backups-empty-icon` y texto técnico descriptivo `.dx-v2-backups-empty-text`.
+  - Panel ergonómico de programación automática `.dx-v2-backups-scheduling-card` con cuerpo `.dx-v2-backups-scheduling-body`, layout adaptable `.dx-v2-backups-scheduling-layout` (con flex vertical bajo `768px`) y caja de información del Cron Job `.dx-v2-backups-scheduling-box`, su título `.dx-v2-backups-scheduling-title` y descripción técnica `.dx-v2-backups-scheduling-desc`.
+  - Contenedor de cuenta regresiva `.dx-v2-backups-countdown-container`, etiqueta `.dx-v2-backups-countdown-label`, valor del tiempo restante `.dx-v2-backups-countdown-value`, barra de progreso `.dx-v2-backups-progress-bar` y relleno del porcentaje `.dx-v2-backups-progress-fill`.
+  - Ventana modal de restauración destructiva `.dx-v2-backups-modal-overlay`, tarjeta `.dx-v2-backups-modal-card`, cabecera de advertencia `.dx-v2-backups-modal-header`, título rojo `.dx-v2-backups-modal-title`, cuerpo `.dx-v2-backups-modal-body` y mensaje descriptivo `.dx-v2-backups-modal-msg` con el archivo seleccionado `.dx-v2-backups-modal-file`.
+  - Caja de aviso de peligro `.dx-v2-backups-modal-warning-box` con texto de urgencia `.dx-v2-backups-modal-warning-text`.
+  - Campo de entrada de confirmación aislado `.dx-v2-backups-modal-input`, etiqueta de instrucción `.dx-v2-backups-modal-label`, rejilla de botones `.dx-v2-backups-modal-actions` y botones simétricos `.dx-v2-backups-modal-btn`.
+
+### Changed
+- **Vista de Backups**: Refactorizada por completo la vista [index.blade.php] en `admin/backups/` purgando el 100% de los estilos inline locales (declaraciones `style="..."` eliminadas) y eliminando el bloque `<style>` incrustado local en favor de las clases de namespace del archivo central.
+
 ## [2026-05-18 15:52] — CSS Unification: Subfase 19.22 (Alertas y Notificaciones) ✅
 
 ### Added
