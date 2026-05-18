@@ -1,7 +1,22 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-18 10:40] — CSS Unification: Subfase 19.8 (Contactos & Certificados COD) ✅
+
+### Added
+- **Namespace COD (`.dx-v2-cod-*`)**: Creadas y documentadas las clases semánticas dedicadas en [dx-styles.css] para encapsular y estilizar de forma limpia el generador de Certificado de Cese (COD) y el asistente inteligente de análisis de Composite:
+  - Estructura `.dx-v2-cod-container` y tarjeta de alta fidelidad `.dx-v2-cod-card` con bordes premium.
+  - Cabecera estilizada de alta densidad `.dx-v2-cod-card-header` con línea degradada interactiva `.dx-v2-cod-header-line`.
+  - Componente segmentado dinámico de tres estados `.dx-v2-cod-segmented-large` y de dos estados `.dx-v2-cod-segmented-small` con indicador reactivo deslizante `.dx-v2-cod-active-indicator` con transiciones fluidas en Alpine.js.
+  - Envoltura para el asistente inteligente de Composite y arrastre de logs `.dx-v2-cod-ai-upload-zone` con efecto pulso interactivo.
+  - Grids de alta densidad para la previsualización del hardware recomendado `.dx-v2-cod-ai-result-grid` y explicaciones del motor IA `.dx-v2-cod-ai-reason`.
+
+### Changed
+- **Generador de COD**: Refactorizada la vista [cod.blade.php], removiendo el bloque de estilos locales `<style>` incrustado (más de 850 líneas de CSS duplicado) e inline styles, remapeando todo el marcado a las clases semánticas unificadas en el namespace `.dx-v2-cod-*`.
+- **Vista Detallada de Clientes**: Auditada la vista [show.blade.php] para verificar la total adherencia a las clases unificadas en las pestañas de contactos y certificados COD, confirmando que tiene cero estilos inline y excelente consistencia visual.
+
 ## [2026-05-18 10:35] — CSS Unification: Subfase 19.7 (Importación CSV) ✅
+
 
 ### Added
 - **Namespace de Importación (`.dx-v2-import-*`)**: Diseñadas clases semánticas dedicadas en [dx-styles.css] para aislar y normalizar el módulo de importación de datos y visualización de logs históricos:

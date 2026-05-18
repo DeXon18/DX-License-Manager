@@ -36,6 +36,7 @@ El desarrollador inicia. El agente espera.
 - [x] Subfase 19.5 (Clientes Listado)
 - [x] Subfase 19.6 (Clientes Licencias)
 - [x] Subfase 19.7 (Clientes Contratos / Importación CSV)
+- [x] Subfase 19.8 (Clientes Contactos / Certificados COD)
 - [ ] #017 (P3): Unificación CSS — Subfases 19.1 a 19.29 (Ejecución & Hardening).
 
 ## ✅ Completado
