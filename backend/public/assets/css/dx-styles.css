@@ -8715,5 +8715,510 @@ textarea.dx-v2-resources-modal-input {
   box-shadow: 0 4px 12px rgba(216, 44, 32, 0.25) !important;
 }
 
+/**
+ * @module    dx-v2-audit
+ * @fase      19.25
+ * @desc      Reglas y maquetación ergonómica para el Centro de Logs y Auditoría
+ * @afecta    admin/audit/index.blade.php
+ * @version   2.25.0
+ */
+
+/* ─── Session status banners ──────────────────────────── */
+.dx-v2-audit-banner-success {
+  background: rgba(16, 185, 129, 0.1) !important;
+  border: 1px solid var(--dx-v2-success, #10b981) !important;
+  color: var(--dx-v2-success, #10b981) !important;
+  padding: 12px 20px !important;
+  border-radius: 8px !important;
+  margin-bottom: 24px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.dx-v2-audit-banner-error {
+  background: rgba(239, 68, 68, 0.1) !important;
+  border: 1px solid var(--dx-v2-danger, #ef4444) !important;
+  color: var(--dx-v2-danger, #ef4444) !important;
+  padding: 12px 20px !important;
+  border-radius: 8px !important;
+  margin-bottom: 24px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+/* ─── Navigation Tabs ────────────────────────────────── */
+.dx-v2-audit-tabs-container {
+  display: flex !important;
+  gap: 10px !important;
+  margin-bottom: 24px !important;
+}
+
+.dx-v2-audit-tab-link {
+  padding: 10px 20px !important;
+  border-radius: 8px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  font-size: 11px !important;
+  text-decoration: none !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  color: var(--dx-v2-muted, #8b949e) !important;
+  border: 1px solid var(--dx-v2-border-base, rgba(255, 255, 255, 0.1)) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.dx-v2-audit-tab-link i {
+  margin-right: 8px !important;
+}
+
+.dx-v2-audit-tab-link:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: var(--dx-v2-primary-base, #ffffff) !important;
+  border-color: var(--dx-v2-border-focus, rgba(255, 255, 255, 0.2)) !important;
+}
+
+.dx-v2-audit-tab-link.active {
+  background: var(--dx-v2-accent-base, #4361ee) !important;
+  color: #ffffff !important;
+  border-color: var(--dx-v2-accent-base, #4361ee) !important;
+}
+
+/* ─── Search & Filters Card ──────────────────────────── */
+.dx-v2-audit-search-card {
+  margin-bottom: 24px !important;
+}
+
+.dx-v2-audit-search-body {
+  padding: 20px !important;
+}
+
+.dx-v2-audit-filter-form {
+  display: flex !important;
+  gap: 15px !important;
+  align-items: flex-end !important;
+}
+
+.dx-v2-audit-filter-field {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.dx-v2-audit-filter-field.grow {
+  flex: 1 !important;
+}
+
+.dx-v2-audit-filter-field.width-180 {
+  width: 180px !important;
+}
+
+.dx-v2-audit-filter-label {
+  display: block !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  color: var(--dx-v2-muted, #8b949e) !important;
+  text-transform: uppercase !important;
+  margin-bottom: 6px !important;
+}
+
+.dx-v2-audit-filter-input {
+  width: 100% !important;
+}
+
+/* ─── Card Header Layout ─────────────────────────────── */
+.dx-v2-audit-card-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.dx-v2-audit-header-title-block {
+  display: flex !important;
+  align-items: center !important;
+  gap: 15px !important;
+}
+
+.dx-v2-audit-card-title {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: var(--dx-v2-primary-base, #ffffff) !important;
+}
+
+.dx-v2-audit-reset-btn {
+  background: rgba(239, 68, 68, 0.05) !important;
+  border: 1px solid rgba(239, 68, 68, 0.2) !important;
+  color: var(--dx-v2-danger, #ef4444) !important;
+  padding: 4px 12px !important;
+  border-radius: 6px !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  font-family: var(--font-sans, 'Inter') !important;
+  letter-spacing: 0.02em !important;
+}
+
+.dx-v2-audit-reset-btn:hover {
+  background: var(--dx-v2-danger, #ef4444) !important;
+  color: #ffffff !important;
+  border-color: var(--dx-v2-danger, #ef4444) !important;
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.25) !important;
+}
+
+/* ─── Telemetry Statistics Counters ──────────────────── */
+.dx-v2-audit-stats-group {
+  display: flex !important;
+  gap: 12px !important;
+}
+
+.dx-v2-audit-stat-box {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+  padding: 6px 12px !important;
+  border-radius: 8px !important;
+  border: 1px solid var(--dx-v2-border-base, rgba(255, 255, 255, 0.1)) !important;
+}
+
+.dx-v2-audit-stat-box.danger-brand {
+  background: rgba(239, 68, 68, 0.05) !important;
+  border-color: rgba(239, 68, 68, 0.1) !important;
+}
+
+.dx-v2-audit-stat-icon {
+  font-size: 14px !important;
+  opacity: 0.7 !important;
+}
+
+.dx-v2-audit-stat-icon.primary {
+  color: var(--dx-v2-primary-base, #ffffff) !important;
+}
+
+.dx-v2-audit-stat-icon.accent {
+  color: var(--dx-v2-accent-base, #4361ee) !important;
+}
+
+.dx-v2-audit-stat-icon.danger {
+  color: var(--dx-v2-danger, #ef4444) !important;
+}
+
+.dx-v2-audit-stat-info {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.dx-v2-audit-stat-label {
+  font-size: 8px !important;
+  color: var(--dx-v2-muted, #8b949e) !important;
+  text-transform: uppercase !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.05em !important;
+}
+
+.dx-v2-audit-stat-value {
+  font-size: 13px !important;
+  font-weight: 800 !important;
+}
+
+.dx-v2-audit-stat-value.primary {
+  color: var(--dx-v2-primary-base, #ffffff) !important;
+}
+
+.dx-v2-audit-stat-value.accent {
+  color: var(--dx-v2-accent-base, #4361ee) !important;
+}
+
+.dx-v2-audit-stat-value.danger {
+  color: var(--dx-v2-danger, #ef4444) !important;
+}
+
+/* ─── High Density Tables ────────────────────────────── */
+.dx-v2-audit-table-wrapper {
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+.dx-v2-audit-table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  font-size: 12px !important;
+}
+
+.dx-v2-audit-table-thead {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border-bottom: 1px solid var(--dx-v2-border-base, rgba(255, 255, 255, 0.1)) !important;
+}
+
+.dx-v2-audit-table-th {
+  padding: 12px 20px !important;
+  text-align: left !important;
+  color: var(--dx-v2-muted, #8b949e) !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+}
+
+.dx-v2-audit-table-th.width-100 { width: 100px !important; }
+.dx-v2-audit-table-th.width-120 { width: 120px !important; }
+.dx-v2-audit-table-th.width-130 { width: 130px !important; }
+.dx-v2-audit-table-th.width-150 { width: 150px !important; }
+.dx-v2-audit-table-th.width-250 { width: 250px !important; }
+
+.dx-v2-audit-table-tr {
+  border-bottom: 1px solid var(--dx-v2-border-base, rgba(255, 255, 255, 0.1)) !important;
+  transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.dx-v2-audit-table-tr:hover {
+  background: rgba(255, 255, 255, 0.01) !important;
+}
+
+.dx-v2-audit-table-td {
+  padding: 14px 20px !important;
+  vertical-align: middle !important;
+}
+
+/* ─── Cell Inner Components ─────────────────────────── */
+.dx-v2-audit-td-timestamp {
+  font-family: var(--font-mono, 'IBM Plex Mono') !important;
+  font-size: 11px !important;
+  color: var(--dx-v2-muted, #8b949e) !important;
+}
+
+.dx-v2-audit-user-badge {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.dx-v2-audit-user-avatar {
+  width: 24px !important;
+  height: 24px !important;
+  border-radius: 50% !important;
+  background: var(--dx-v2-border-base, rgba(255, 255, 255, 0.1)) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 10px !important;
+  font-weight: 800 !important;
+  color: var(--dx-v2-primary-base, #ffffff) !important;
+}
+
+.dx-v2-audit-user-name {
+  font-weight: 600 !important;
+  color: var(--dx-v2-primary-base, #ffffff) !important;
+}
+
+.dx-v2-audit-action-group {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+}
+
+.dx-v2-audit-action-title {
+  font-weight: 800 !important;
+  color: var(--dx-v2-accent-base, #4361ee) !important;
+  font-size: 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+.dx-v2-audit-badge-level {
+  font-size: 8px !important;
+  width: fit-content !important;
+  border: none !important;
+  padding: 1px 6px !important;
+  font-weight: 700 !important;
+}
+
+.dx-v2-audit-badge-level.error {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: var(--dx-v2-danger, #ef4444) !important;
+}
+
+.dx-v2-audit-badge-level.warning {
+  background: rgba(245, 158, 11, 0.15) !important;
+  color: var(--dx-v2-warning, #f59e0b) !important;
+}
+
+.dx-v2-audit-badge-level.info {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: var(--dx-v2-success, #10b981) !important;
+}
+
+.dx-v2-audit-td-desc {
+  color: var(--dx-v2-primary-base, #ffffff) !important;
+  line-height: 1.4 !important;
+}
+
+.dx-v2-audit-td-ip {
+  font-family: var(--font-mono, 'IBM Plex Mono') !important;
+  font-size: 10px !important;
+  color: var(--dx-v2-muted, #8b949e) !important;
+}
+
+.dx-v2-audit-pagination-wrapper {
+  padding: 15px 20px !important;
+  border-top: 1px solid var(--dx-v2-border-base, rgba(255, 255, 255, 0.1)) !important;
+  background: rgba(255, 255, 255, 0.01) !important;
+}
+
+/* ─── System Logs Terminal View ──────────────────────── */
+.dx-v2-audit-console-container {
+  padding: 0 !important;
+  background: #0a0c10 !important;
+}
+
+.dx-v2-audit-console-scroller {
+  max-height: 700px !important;
+  overflow-y: auto !important;
+}
+
+.dx-v2-audit-console-item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  padding: 12px 20px !important;
+  transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.dx-v2-audit-console-item-header {
+  display: flex !important;
+  gap: 15px !important;
+  align-items: flex-start !important;
+  cursor: pointer !important;
+}
+
+.dx-v2-audit-console-time {
+  font-family: var(--font-mono, 'IBM Plex Mono') !important;
+  font-size: 11px !important;
+  color: var(--dx-v2-muted, #8b949e) !important;
+  white-space: nowrap !important;
+  margin-top: 2px !important;
+}
+
+.dx-v2-audit-console-badge {
+  font-size: 9px !important;
+  min-width: 65px !important;
+  text-align: center !important;
+  border: none !important;
+  padding: 2px 6px !important;
+  font-weight: 700 !important;
+}
+
+.dx-v2-audit-console-badge.danger {
+  background: rgba(239, 68, 68, 0.15) !important;
+  color: var(--dx-v2-danger, #ef4444) !important;
+}
+
+.dx-v2-audit-console-badge.warning {
+  background: rgba(245, 158, 11, 0.15) !important;
+  color: var(--dx-v2-warning, #f59e0b) !important;
+}
+
+.dx-v2-audit-console-badge.info {
+  background: rgba(0, 153, 153, 0.15) !important;
+  color: #009999 !important;
+}
+
+.dx-v2-audit-console-msg-block {
+  flex: 1 !important;
+  min-width: 0 !important;
+}
+
+.dx-v2-audit-console-message {
+  font-family: var(--font-sans, 'Inter') !important;
+  font-size: 13px !important;
+  color: #e2e8f0 !important;
+  font-weight: 500 !important;
+  line-height: 1.4 !important;
+  word-break: break-all !important;
+}
+
+.dx-v2-audit-console-toggle-trace {
+  margin-top: 4px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-size: 10px !important;
+  color: var(--dx-v2-muted, #8b949e) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+}
+
+.dx-v2-audit-console-trace-wrapper {
+  margin-top: 15px !important;
+  margin-left: 80px !important;
+  padding: 15px !important;
+  background: rgba(0, 0, 0, 0.3) !important;
+  border-radius: 6px !important;
+  border-left: 2px solid var(--dx-v2-border-base, rgba(255, 255, 255, 0.1)) !important;
+}
+
+.dx-v2-audit-console-trace-pre {
+  margin: 0 !important;
+  font-family: var(--font-mono, 'IBM Plex Mono') !important;
+  font-size: 11px !important;
+  color: #8892b0 !important;
+  line-height: 1.6 !important;
+  white-space: pre-wrap !important;
+}
+
+.dx-v2-audit-console-footer {
+  padding: 12px 20px !important;
+  border-top: 1px solid var(--dx-v2-border-base, rgba(255, 255, 255, 0.1)) !important;
+  background: rgba(255, 255, 255, 0.01) !important;
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.dx-v2-audit-console-footer-text {
+  font-size: 10px !important;
+  color: var(--dx-v2-muted, #8b949e) !important;
+}
+
+/* ─── Email Logs View ────────────────────────────────── */
+.dx-v2-audit-td-email-recipient {
+  font-weight: 600 !important;
+  color: var(--dx-v2-primary-base, #ffffff) !important;
+}
+
+.dx-v2-audit-td-email-subject {
+  color: var(--dx-v2-primary-base, #ffffff) !important;
+}
+
+.dx-v2-audit-td-email-class {
+  font-size: 10px !important;
+  color: var(--dx-v2-muted, #8b949e) !important;
+  margin-top: 4px !important;
+}
+
+.dx-v2-audit-badge-email-status {
+  font-size: 9px !important;
+  width: fit-content !important;
+  border: none !important;
+  font-weight: 700 !important;
+}
+
+.dx-v2-audit-badge-email-status.sent {
+  background: rgba(16, 185, 129, 0.1) !important;
+  color: var(--dx-v2-success, #10b981) !important;
+}
+
+.dx-v2-audit-badge-email-status.failed {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: var(--dx-v2-danger, #ef4444) !important;
+}
+
+
 
 
