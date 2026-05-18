@@ -1,6 +1,20 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-18 10:55] — CSS Unification: Subfase 19.11 (Siemens: NX Suite) ✅
+
+### Added
+- **Namespace de NX Suite (`.dx-v2-tools-nx-*`)**: Diseñadas e integradas clases semánticas dedicadas en [dx-styles.css] para modularizar la visualización y mejorar la ergonomía de la herramienta individual de NX Suite:
+  - Estructura flexible de alineación de cabecera `.dx-v2-tools-nx-header-layout` y su contenedor de icono traslúcido estilizado `.dx-v2-tools-nx-header-icon`.
+  - Títulos y subtítulos ergonómicos `.dx-v2-tools-nx-header-title` y `.dx-v2-tools-nx-header-sub`.
+  - Grid responsivo de dos columnas para tarjetas de motor `.dx-v2-tools-nx-motor-grid` y tarjetas premium `.dx-v2-tools-nx-motor-card` (con estados `.active-red` y `.active-teal` y variables CSS inline).
+  - Zona de arrastre responsiva interactiva `.dx-v2-tools-nx-dropzone` con soporte nativo de estados de Alpine (`.dragging`, `.theme-red` y `.theme-teal`).
+  - Grid responsivo de especificaciones técnicas `.dx-v2-tools-nx-specs-grid` y filas de alineación compactas `.dx-v2-tools-nx-spec-row`.
+  - Contenedor lateral de avisos de almacenamiento `.dx-v2-tools-nx-sidebar-warning` y bloques de daemons e información `.dx-v2-tools-nx-sidebar-info`.
+
+### Changed
+- **Vista de la Herramienta NX Suite**: Refactorizada por completo la vista [nx-suite.blade.php], purgando el 100% de los estilos inline locales redundantes en las tarjetas de motor, en la zona de arrastre, en el botón de procesado y en el panel lateral informativo, delegando toda la interactividad a las clases unificadas del namespace y variables HSL nativas.
+
 ## [2026-05-18 10:48] — CSS Unification: Subfase 19.10 (Herramientas: Vista general / índice) ✅
 
 ### Added

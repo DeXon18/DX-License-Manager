@@ -725,10 +725,17 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
 
 ## 🔷 [7] PÁGINAS DE HERRAMIENTAS & RECURSOS
 
-- [ ] **Subfase 19.11** — Siemens: NX Suite (ugslmd, saltd)
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.11** — Siemens: NX Suite (ugslmd, saltd) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Incorporado el namespace `.dx-v2-tools-nx-*` cubriendo tarjetas de motor, dropzone de arrastre, grids de especificaciones y paneles laterales.
+    > - [nx-suite.blade.php](file:///z:/DX-License-Manager/backend/resources/views/tools/nx-suite.blade.php) - Refactorización completa purgando el 100% de los estilos inline locales, delegando la interactividad y colores a variables CSS y clases globales.
+    >
+    > **Área Visual Afectada:**
+    > - Vista individual de herramienta NX Suite, selector de motor (Legacy vs SALT), dropzone de arrastre e información técnica del vendor.
 
 - [ ] **Subfase 19.12** — Siemens: STAR-CCM+ (cdlmd)
     - [ ] Extracción y Namespace `.dx-v2-`.
