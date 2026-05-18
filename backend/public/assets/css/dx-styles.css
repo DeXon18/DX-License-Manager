@@ -4687,6 +4687,28 @@ footer {
   line-height: 1.6;
 }
 
+.dx-v2-tools-nx-card-body {
+  padding: 24px !important;
+}
+
+.dx-v2-tools-nx-card-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.dx-v2-tools-nx-btn-container {
+  display: flex !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+}
+
+.dx-v2-tools-nx-sidebar-warning-desc strong {
+  color: var(--dx-v2-danger, #D32F2F) !important;
+  font-weight: 700 !important;
+}
+
+
 
 
 

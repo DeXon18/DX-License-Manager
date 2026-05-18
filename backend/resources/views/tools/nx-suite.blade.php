@@ -44,12 +44,12 @@
     <div class="main-panel">
         <!-- Bloque 1: Carga -->
         <div class="card mb-4">
-            <div class="card-header d-flex align-items-center justify-content-between">
+            <div class="card-header dx-v2-tools-nx-card-header">
                 <span class="card-title">Transformación de Licencia (NX)</span>
                 <span class="badge" style="background: rgba(0,153,153,0.1); color: var(--vendor-siemens, #009999); border: 1px solid rgba(0,153,153,0.2);">PROCESO AUTOMÁTICO</span>
             </div>
             
-            <div class="card-body">
+            <div class="dx-v2-tools-nx-card-body">
                 <!-- Error Message Alert -->
                 <template x-if="errorMessage">
                     <div x-transition 
@@ -118,7 +118,7 @@
                         <input type="file" name="license_file" x-ref="fileInput" id="file-input" style="display: none;" @change="if($event.target.files.length > 0) fileName = $event.target.files[0].name;">
                     </div>
 
-                    <div class="d-flex justify-content-end">
+                    <div class="dx-v2-tools-nx-btn-container">
                         <button type="submit" class="btn-primary" :style="motor === 'legacy' ? 'background: #D32F2F; border-color: #D32F2F;' : 'background: var(--vendor-siemens, #009999); border-color: var(--vendor-siemens, #009999);'" style="padding: 10px 24px; font-weight: 600; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 8px;">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/><polyline points="16 16 12 12 8 16"/></svg>
                             PROCESAR LICENCIA
@@ -133,7 +133,7 @@
             <div class="card-header">
                 <span class="card-title">Especificaciones de Transformación</span>
             </div>
-            <div class="card-body">
+            <div class="dx-v2-tools-nx-card-body">
                 <div class="dx-v2-tools-nx-specs-grid">
                     <!-- Columna Izquierda -->
                     <div class="dx-v2-tools-nx-specs-column">
