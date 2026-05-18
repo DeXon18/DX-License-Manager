@@ -766,10 +766,10 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
     - [x] Limpieza de `style=` inline.
     - [x] Verificación visual (Light/Dark) y Responsive.
 
-- [ ] **Subfase 19.15** — Siemens: Recursos & enlaces 
-    - [ ] Definir estructura de vista antes de aplicar namespace.
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
+- [x] **Subfase 19.15** — Siemens: Recursos & enlaces ✅ COMPLETADA
+    - [x] Definir estructura de vista antes de aplicar namespace.
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
 
 - [ ] **Subfase 19.16** — Moldex3D (Parser .mac + Sincronización)
     - [ ] Extracción y Namespace `.dx-v2-`.
