@@ -8829,6 +8829,83 @@ textarea.dx-v2-resources-modal-input {
 
 .dx-v2-audit-filter-input {
   width: 100% !important;
+  background: #12141a !important;
+  border: 1px solid var(--dx-v2-border-base, rgba(255, 255, 255, 0.1)) !important;
+  color: var(--dx-v2-primary-base, #ffffff) !important;
+  padding: 8px 12px !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  height: 38px !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  font-family: var(--font-sans, 'Inter') !important;
+}
+
+.dx-v2-audit-filter-input:focus {
+  outline: none !important;
+  border-color: var(--dx-v2-accent-base, #4361ee) !important;
+  background: #161922 !important;
+  box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.15) !important;
+}
+
+.dx-v2-audit-filter-input option {
+  background: #12141a !important;
+  color: var(--dx-v2-primary-base, #ffffff) !important;
+}
+
+select.dx-v2-audit-filter-input {
+  appearance: none !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%238b949e'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 12px center !important;
+  background-size: 16px !important;
+  padding-right: 35px !important;
+}
+
+.dx-v2-audit-btn-clear {
+  height: 38px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 0 16px !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid var(--dx-v2-border-base, rgba(255, 255, 255, 0.1)) !important;
+  color: var(--dx-v2-muted, #8b949e) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  letter-spacing: 0.02em !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  cursor: pointer !important;
+}
+
+.dx-v2-audit-btn-clear:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: var(--dx-v2-primary-base, #ffffff) !important;
+  border-color: var(--dx-v2-border-focus, rgba(255, 255, 255, 0.2)) !important;
+}
+
+.dx-v2-audit-btn-submit {
+  height: 38px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 20px !important;
+  border-radius: 8px !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.02em !important;
+  border: none !important;
+  background: var(--dx-v2-accent-base, #4361ee) !important;
+  color: #ffffff !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.dx-v2-audit-btn-submit:hover {
+  background: #3652d9 !important;
+  box-shadow: 0 0 12px rgba(67, 97, 238, 0.3) !important;
 }
 
 /* ─── Card Header Layout ─────────────────────────────── */
