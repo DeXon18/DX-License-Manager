@@ -709,10 +709,17 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
 
 ## 🔷 [6] HERRAMIENTAS
 
-- [ ] **Subfase 19.10** — Herramientas: Vista general / índice
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.10** — Herramientas: Vista general / índice ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline y remoción del bloque style local.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Incorporado el namespace `.dx-v2-tools-*` cubriendo tarjetas de herramientas, layouts responsivos, estados bloqueados, placeholders e iconos dinámicos.
+    > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/tools/index.blade.php) - Refactorización completa purgando el bloque `<style>` incrustado y todos los estilos inline redundantes, delegando la interactividad y colores a variables CSS y clases globales.
+    >
+    > **Área Visual Afectada:**
+    > - Hub de Herramientas, tarjetas de tecnologías (Siemens PLM, Moldex3D y Documentación), estados bloqueados y hover tridimensional.
 
 ---
 

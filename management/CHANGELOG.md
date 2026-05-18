@@ -1,6 +1,22 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-18 10:48] — CSS Unification: Subfase 19.10 (Herramientas: Vista general / índice) ✅
+
+### Added
+- **Namespace de Herramientas (`.dx-v2-tools-*`)**: Diseñadas e integradas clases semánticas dedicadas en [dx-styles.css] para modularizar la visualización y mejorar la ergonomía del Hub de Herramientas:
+  - Estructuras de layouts responsivos `.dx-v2-tools-grid`, `.dx-v2-tools-grid-2` (2 columnas) y `.dx-v2-tools-grid-3` (3 columnas).
+  - Envoltura modular por tecnología `.dx-v2-tools-vendor-section` y su cabecera ergonómica `.dx-v2-tools-vendor-header`.
+  - Badges de marca estilizados con fondos traslúcidos HSL en base a su fabricante `.dx-v2-tools-vendor-label.siemens`, `.dx-v2-tools-vendor-label.docs` y `.dx-v2-tools-vendor-label.moldex`.
+  - Tarjeta de herramienta premium interactiva `.dx-v2-tools-card` con hover tridimensional en 3D, elevación de sombras y soporte nativo para variable `--card-accent`.
+  - Estado deshabilitado `.dx-v2-tools-card-disabled` con filtros en escala de grises y desactivación de elevaciones.
+  - Tarjeta placeholder para agregar herramientas futuras `.dx-v2-tools-card-add` con bordes discontinuos e interactividad premium.
+  - Componente de contenedor de icono traslúcido estilizado `.dx-v2-tools-icon-box`.
+  - Badges de estado contextuales de alta densidad `.dx-v2-tools-badge.ai`, `.dx-v2-tools-badge.doc` y `.dx-v2-tools-badge.upcoming`.
+
+### Changed
+- **Vista Principal de Herramientas**: Refactorizada la vista [index.blade.php], purgando por completo el bloque `<style>` incrustado (más de 20 líneas de CSS local) y todos los estilos inline redundantes, delegando la interactividad y colores a variables CSS y clases globales.
+
 ## [2026-05-18 10:44] — CSS Unification: Subfase 19.9 (Planificador de Renovaciones) ✅
 
 ### Added
