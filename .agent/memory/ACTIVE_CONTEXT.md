@@ -13,11 +13,11 @@ Avanzar en la **Fase 19 (Unificación CSS & Limpieza UI)**. Unificar y extraer t
 
 ## Estado de la Tarea Actual
 - **Incidencia:** #008 — Unificación CSS
-- **Estado:** 🔜 Subfase 19.22 (Alertas y Notificaciones) Completada, listos para Subfase 19.23 (Backups)
+- **Estado:** 🔜 Subfase 19.23 (Backups) Completada, listos para Subfase 19.24 (Integraciones IA)
 - **Rama:** `feature/css-tokens`
 - **Cambios clave:** 
-  - Purga completa del 100% de los estilos inline en la vista de Alertas y Notificaciones (`index.blade.php`).
-  - Diseñado e inyectado el namespace de estilos ergonómicos `.dx-v2-alerts-*` en `dx-styles.css` con aislamiento completo de inputs y maquetación anti-wrapping.
+  - Purga completa del 100% de los estilos inline en la vista de Gestión de Backups (`index.blade.php`).
+  - Diseñado e inyectado el namespace de estilos ergonómicos `.dx-v2-backups-*` en `dx-styles.css` con alineación responsiva flex de programación cron y modal destructivo de restauración aislado.
 
 ## Próximos Pasos
 - [x] Subfases 19.0 a 19.15: Vistas principales, Dashboard, Herramientas, NX, STAR-CCM+, HEEDS, COD y Siemens Recursos ✅
@@ -29,10 +29,11 @@ Avanzar en la **Fase 19 (Unificación CSS & Limpieza UI)**. Unificar y extraer t
 - [x] Subfase 19.20: Datos e importación (importar CSV, historial, logs y detalles) ✅
 - [x] Subfase 19.21: Repositorio de licencias (archivo semanal, historial) ✅
 - [x] Subfase 19.22: Alertas y notificaciones (caducidad, umbrales, destinatarios, historial, SMTP) ✅
+- [x] Subfase 19.23: Backups (manual, historial, configuración automática) ✅
 
 ## 🛠️ Tareas en curso
-- [x] Subfase 19.22: Alertas y notificaciones (caducidad, umbrales, destinatarios, historial, SMTP) ✅
-- [ ] Subfase 19.23: Backups (manual, historial, configuración automática) 🔜
+- [x] Subfase 19.23: Backups (manual, historial, configuración automática) ✅
+- [ ] Subfase 19.24: Integraciones IA (Gemini, Deepseek, OpenRouter, Telegram Bot, estado de conexión) 🔜
 
 - Fase del ROADMAP: Fase 19 (En curso)
 
@@ -48,24 +49,24 @@ Avanzar en la **Fase 19 (Unificación CSS & Limpieza UI)**. Unificar y extraer t
 
 ## 🕒 Log de Acciones (2026-05-18)
 
+- 2026-05-18 — Finalizada la Subfase 19.23 (Backups), purgando el 100% de los estilos inline locales, modularizando las cabeceras flex, las etiquetas de origen y entorno, las interfaces cron responsive y el modal crítico de restauración.
 - 2026-05-18 — Finalizada la Subfase 19.22 (Alertas y Notificaciones), purgando el 100% de estilos inline, aislando campos numéricos sin spinners del navegador y optimizando la rejilla a un mínimo de 440px contra envoltura de texto.
 - 2026-05-18 — Finalizada la Subfase 19.21 (Repositorio de Licencias), purgando el 100% de los estilos inline locales y diseñando el namespace `.dx-v2-lic-repo-*` en `dx-styles.css`.
 - 2026-05-18 — Finalizada la Subfase 19.20 (Datos e Importación), verificando la purga del 100% de los estilos inline locales en las tres vistas del módulo.
-- 2026-05-18 — Finalizada la Subfase 19.19 (Usuarios y Acceso), eliminando el 100% de estilos inline y locales de todas las vistas del CRUD de personal y diseñando el namespace `.dx-v2-users-*` en `dx-styles.css`.
 
 ---
 
 ## 🚀 Handover — Próximos Pasos
 
-1. Continuar con la unificación de la interfaz de **Backups** (Subfase 19.23).
-2. Extraer estilos locales y purgar inline CSS de las vistas de backups manuales, historial y configuración automática (`admin/backups/index.blade.php` o correspondientes).
+1. Continuar con la unificación de la interfaz de **Integraciones IA** (Subfase 19.24).
+2. Extraer estilos locales y purgar inline CSS de las vistas de estado de conexión, consumo de tokens y configuraciones de proveedores (`admin/system/` o correspondientes).
 
 ---
 
 ## 🗂️ Archivos en Foco (Working Set)
 
 - Hoja de Estilos: `backend/public/assets/css/dx-styles.css`
-- Módulo Backups: `backend/resources/views/admin/backups/`
+- Módulo Integraciones IA: `backend/resources/views/admin/system/`
 
 ---
 

@@ -868,10 +868,13 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
     > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Inyectado namespace `.dx-v2-alerts-*` con 360+ líneas de código de maquetación limpia.
     > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/alerts/index.blade.php) - Purga absoluta de estilos inline de banners, rejillas, campos de umbrales y tablas.
 
-- [ ] **Subfase 19.23** — Backups (manual, historial, configuración automática)
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.23** — Backups (manual, historial, configuración automática) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-backups-*` integrado en public/assets/css/dx-styles.css.
+    - [x] Limpieza completa del 100% de `style=` inline en `admin/backups/index.blade.php`.
+    - [x] Verificación visual de alta resolución en Light/Dark, modal destructivo aislado, e interfaces cron adaptativas bajo `768px`.
+    > **Evidencia:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Inyectado namespace `.dx-v2-backups-*` con 380+ líneas de código de maquetación limpia.
+    > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/backups/index.blade.php) - Purga absoluta de estilos inline de cabeceras, tablas, paneles de programación y modales.
 
 - [ ] **Subfase 19.24** — Integraciones IA (Gemini, Deepseek, OpenRouter, Telegram Bot, estado de conexión)
     - [ ] Extracción y Namespace `.dx-v2-`.
