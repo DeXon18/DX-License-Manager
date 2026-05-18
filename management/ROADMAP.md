@@ -737,10 +737,17 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
     > **Área Visual Afectada:**
     > - Vista individual de herramienta NX Suite, selector de motor (Legacy vs SALT), dropzone de arrastre e información técnica del vendor.
 
-- [ ] **Subfase 19.12** — Siemens: STAR-CCM+ (cdlmd)
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.12** — Siemens: STAR-CCM+ (cdlmd) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Incorporado el namespace `.dx-v2-tools-star-*` cubriendo cabeceras de página, tarjetas de proceso, dropzone de arrastre, grids de especificaciones y avisos laterales.
+    > - [star-ccm.blade.php](file:///z:/DX-License-Manager/backend/resources/views/tools/star-ccm.blade.php) - Refactorización completa purgando el 100% de los estilos inline locales, delegando la interactividad y alineaciones a clases globales y variables CSS.
+    >
+    > **Área Visual Afectada:**
+    > - Vista individual de la herramienta STAR-CCM+, dropzone de arrastre de archivos, tablas de auditoría y nomenclatura de licencias, y aviso de almacenamiento lateral.
 
 - [ ] **Subfase 19.13** — Siemens: HEEDS (RCTECH)
     - [ ] Extracción y Namespace `.dx-v2-`.
