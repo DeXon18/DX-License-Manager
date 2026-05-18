@@ -1,6 +1,15 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-18 10:30] — CSS Unification: Subfase 19.6 (Clientes: Licencias) ✅
+
+### Fixed
+- **Variables CSS rotas**: Corregidas variables inexistentes (`--dx-v2-surface-raised` y `--dx-v2-text-muted`) en [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) por sus equivalentes unificados (`--dx-v2-raised` y `--dx-v2-muted`), reparando la renderización de la cabecera del daemon, la tabla de productos y el historial de auditoría de licencias.
+- **Soporte x-cloak**: Añadida la regla global `[x-cloak] { display: none !important; }` en la hoja de estilos global para manejar de forma nativa la visibilidad reactiva de Alpine.js.
+
+### Changed
+- **Limpieza de estilos inline**: Removidos todos los estilos inline `style="display: none;"` de los tabs interactivos y modales en la vista detallada de clientes [show.blade.php](file:///z:/DX-License-Manager/backend/resources/views/clients/show.blade.php), sustituyéndolos por la directiva limpia `x-cloak`.
+
 ## [2026-05-17 15:50] — CSS Unification: Subfase 19.4 & 19.5 (Dashboard & Clientes) ✅
 
 ### Added

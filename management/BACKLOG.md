@@ -30,9 +30,11 @@ El desarrollador inicia. El agente espera.
 
 ### Fase 19 — Unificación CSS & Limpieza UI 🔜
 - **Iniciada:** 2026-05-16
-- **Rama:** `feature/css-unification-global`
+- **Rama:** `feature/css-tokens`
 - **Resumen:** Refactorización CSS ultra-granular en 30 subfases. Namespace `.dx-v2-`, eliminación de `style=` inline y consolidación de tokens.
-- [ ] #008 (P3): Unificación CSS — Subfase 19.0 (Pre-trabajo: Tokens & Variables).
+- [x] Subfase 19.4 (Dashboard Centralization)
+- [x] Subfase 19.5 (Clientes Listado)
+- [x] Subfase 19.6 (Clientes Licencias)
 - [ ] #017 (P3): Unificación CSS — Subfases 19.1 a 19.29 (Ejecución & Hardening).
 
 ## ✅ Completado
