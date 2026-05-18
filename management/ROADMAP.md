@@ -779,10 +779,17 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
     > **Área Visual Afectada:**
     > - Vista de Recursos de Siemens PLM y Moldex3D, y su ventana modal de adición/edición de enlaces.
 
-- [ ] **Subfase 19.16** — Moldex3D (Parser .mac + Sincronización)
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.16** — Moldex3D (Parser .mac + Sincronización) ✅
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Namespace de estilos global `.dx-v2-tools-moldex-*` definido e integrado con 500+ líneas.
+    > - [moldex3d.blade.php](file:///z:/DX-License-Manager/backend/resources/views/tools/moldex3d.blade.php) - Purga completa de estilos inline locales y del bloque `<style>` incrustado local.
+    >
+    > **Área Visual Afectada:**
+    > - Herramienta individual del Auditor Moldex3D (dropzone de subida, tarjeta de metadatos de auditoría y módulos detectados, paneles laterales).
 
 - [ ] **Subfase 19.17** — Moldex3D: Recursos & enlaces 
     - [ ] Definir estructura de vista antes de aplicar namespace.

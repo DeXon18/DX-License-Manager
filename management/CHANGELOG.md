@@ -1,6 +1,22 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-18 11:21] — CSS Unification: Subfase 19.16 (Moldex3D: Parser .mac) ✅
+
+### Added
+- **Namespace de Moldex3D (`.dx-v2-tools-moldex-*`)**: Diseñado e integrado un completo y robusto bloque de clases semánticas en [dx-styles.css] para unificar y profesionalizar la sección del auditor Moldex3D:
+  - Estructuras alineadas para la cabecera `.dx-v2-tools-moldex-header-layout` y el icono de vendor estilizado traslúcido `.dx-v2-tools-moldex-header-icon`.
+  - Títulos y subtítulos ergonómicos `.dx-v2-tools-moldex-header-title` and `.dx-v2-tools-moldex-header-sub`, con su distintivo acento naranja `.dx-v2-tools-moldex-vendor-label` específico para el motor Core Plastic.
+  - Tarjetas de proceso `.dx-v2-tools-moldex-card` con alineación interna de encabezados `.dx-v2-tools-moldex-card-header` y su cuerpo con padding de 24px `.dx-v2-tools-moldex-card-body`.
+  - Dropzone de arrastre responsivo interactivo `.dx-v2-tools-moldex-dropzone`, con envolturas de texto interno `.dx-v2-tools-moldex-dropzone-inner`, iconos y tipografías reactivas para estados seleccionados.
+  - Banner lateral de alertas de error en extensión de archivos `.dx-v2-tools-moldex-error-alert`.
+  - Panel de resultados completo `.dx-v2-tools-moldex-results-card`, con su cabecera `.dx-v2-tools-moldex-results-header`, icono destacado `.dx-v2-tools-moldex-results-header-icon`, filas de alineación compactas de propiedades `.dx-v2-tools-moldex-property-row` y código `.dx-v2-tools-moldex-property-val-mono`.
+  - Grids de módulos detectados `.dx-v2-tools-moldex-modules-section` y filas individuales `.dx-v2-tools-moldex-module-item` con sus viñetas `.dx-v2-tools-moldex-module-bullet` e indicadores de asientos.
+  - Carteles laterales unificados de estándar de nomenclatura `.dx-v2-tools-moldex-sidebar-card` y aviso de privacidad determinista `.dx-v2-tools-moldex-sidebar-warning`.
+
+### Changed
+- **Vista del Auditor Moldex3D**: Refactorizada por completo la vista principal [moldex3d.blade.php], purgando el 100% de los estilos inline locales y el bloque local incrustado de `<style>`, modularizando toda la vista e integrando las nuevas clases del namespace global de forma impecable sin alterar la lógica reactiva de Alpine.js.
+
 ## [2026-05-18 11:09] — CSS Unification: Subfase 19.15 (Siemens: Recursos & Enlaces) ✅
 
 ### Added

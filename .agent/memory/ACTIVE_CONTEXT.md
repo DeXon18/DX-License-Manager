@@ -2,32 +2,31 @@
 project: DX License Manager
 repo: github.com/DeXon18/DX-License-Manager
 status: Phase 19 - Unificación CSS | In Progress
-last_sync: 2026-05-17
+last_sync: 2026-05-18
 current_agent: Antigravity (DX Agent) 🦾
 ---
 
 # 🧠 Contexto de Sesión Activa
 
 ## 🎯 Objetivo Actual
-Avanzar en la **Fase 19 (Unificación CSS & Limpieza UI)**. Unificar y extraer todos los estilos inline y bloques incrustados locales de las vistas de Clientes (`index.blade.php`, `show.blade.php`) a clases modulares `.dx-v2-clients-*` dentro de `dx-styles.css`.
+Avanzar en la **Fase 19 (Unificación CSS & Limpieza UI)**. Unificar y extraer todos los estilos inline y bloques incrustados locales de la herramienta Moldex3D a clases modulares `.dx-v2-tools-moldex-*` dentro de `dx-styles.css`.
 
 ## Estado de la Tarea Actual
 - **Incidencia:** #008 — Unificación CSS
-- **Estado:** 🔜 Subfase 19.5 Completada, listos para Subfase 19.6
+- **Estado:** 🔜 Subfase 19.16 Completada, listos para Subfase 19.17
 - **Rama:** `feature/css-tokens`
-- **Cambios clave:** Extracción de estilos inline y centralización en `dx-styles.css` con namespace `.dx-v2-clients-`.
+- **Cambios clave:** Extracción de estilos inline del auditor Moldex3D y centralización en `dx-styles.css` con namespace `.dx-v2-tools-moldex-`.
 
 ## Próximos Pasos
-- [x] Subfase 19.0: Pre-trabajo (Design Tokens & Variables) ✅
-- [x] Subfases 19.1 a 19.4: Layout, Login, Sidebar, Inicio & Dashboard ✅
-- [x] Subfase 19.5: Clientes: Vista principal (index, show) ✅
-- [ ] Subfase 19.6: Clientes: Licencias (inventario unificado) 🔜
+- [x] Subfases 19.0 a 19.15: Vistas principales, Dashboard, Herramientas, NX, STAR-CCM+, HEEDS, COD y Siemens Recursos ✅
+- [x] Subfase 19.16: Moldex3D (Parser .mac + Sincronización) ✅
+- [ ] Subfase 19.17: Moldex3D: Recursos & enlaces 🔜
 
 
 ## 🛠️ Tareas en curso
-- [x] Subfase 19.5: Clientes: Vista principal (index, show) ✅
-- [ ] Subfase 19.6: Clientes: Licencias (inventario unificado) 🔜
-- Fase del ROADMAP: Fase 19 (Iniciada)
+- [x] Subfase 19.16: Moldex3D (Parser .mac + Sincronización) ✅
+- [ ] Subfase 19.17: Moldex3D: Recursos & enlaces 🔜
+- Fase del ROADMAP: Fase 19 (En curso)
 
 ---
 
