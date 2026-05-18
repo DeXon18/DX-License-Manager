@@ -876,12 +876,15 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
     > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Inyectado namespace `.dx-v2-backups-*` con 380+ líneas de código de maquetación limpia.
     > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/backups/index.blade.php) - Purga absoluta de estilos inline de cabeceras, tablas, paneles de programación y modales.
 
-- [ ] **Subfase 19.24** — Integraciones IA (Gemini, Deepseek, OpenRouter, Telegram Bot, estado de conexión)
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.24** — Integraciones IA (Gemini, Deepseek, OpenRouter, Telegram Bot, estado de conexión) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-sys-dash-*` (degradados premium de IA) en dx-styles.css.
+    - [x] Limpieza completa del 100% de `style=` inline dinámicos PHP y estáticos en `dashboard.blade.php`.
+    - [x] Verificación visual de alta resolución en Light/Dark de los gradientes de marca e indicadores en vivo.
+    > **Evidencia:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Inyectado el namespace `.dx-v2-sys-dash-service-icon-box.online.[brand]` con los colores corporativos y sombras premium de Gemini, DeepSeek, OpenRouter, n8n y Telegram.
+    > - [dashboard.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/system/dashboard.blade.php) - Purga completa de 27 líneas de lógica PHP de estilos dinámicos, eliminando por completo el atributo `style` de la matriz de microservicios.
 
-- [ ] **Subfase 19.25** — Logs y auditoría (actividad, errores, auditoría IA)
+- [ ] **Subfase 19.25** — Logs y auditoría (actividad, errores, auditoría IA) 🔜
     - [ ] Extracción y Namespace `.dx-v2-`.
     - [ ] Limpieza de `style=` inline.
     - [ ] Verificación visual (Light/Dark) y Responsive.

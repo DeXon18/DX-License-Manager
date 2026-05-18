@@ -1,6 +1,26 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-18 15:58] — CSS Unification: Subfase 19.24 (Integraciones IA) ✅
+
+### Added
+- **Namespace de Integraciones IA (`.dx-v2-sys-dash-*`)**: Diseñado e integrado un completo y robusto bloque de clases semánticas en [dx-styles.css] para modularizar la sección de salud y latido de proveedores de Inteligencia AI y canales de alerta:
+  - Estructuras para indicador circular del estado de conexión `.dx-v2-sys-dash-service-status-dot` (en sus variantes online y danger/offline) con animación de latido CSS nativa.
+  - Definición de caja contenedora de icono del servicio `.dx-v2-sys-dash-service-icon-box` con transiciones de color de escala cúbica y curvatura de esquinas suave (`border-radius: 10px`).
+  - Gradientes premium de marca y efectos de sombra 3D con colores HSL calculados para cuando el servicio está activo:
+    - **Gemini Engine**: Gradiente lineal de azul a violeta con sombra envolvente de baja densidad (`linear-gradient(135deg, #4e8cff, #9171ff)`).
+    - **DeepSeek Engine**: Gradiente lineal azul eléctrico a cian (`linear-gradient(135deg, #007aff, #00c6ff)`).
+    - **OpenRouter Gateway**: Gradiente lineal naranja a amarillo fuego (`linear-gradient(135deg, #ff4f00, #ff9000)`).
+    - **n8n Workflow Engine**: Gradiente lineal rojo anaranjado a coral (`linear-gradient(135deg, #ff6d5b, #ff4d4d)`).
+    - **Telegram Notification Bot**: Gradiente lineal azul Telegram a celeste (`linear-gradient(135deg, #0088cc, #00aaff)`).
+    - **MariaDB Database & Redis Queues**: Gradiente lineal azul petróleo a cian oscuro (`linear-gradient(135deg, #003545, #00758f)`).
+    - **Cloudflare Live Tunnel**: Gradiente lineal rojo rubí a naranja fuego (`linear-gradient(135deg, #d82c20, #ff4e42)`).
+  - Estructuras de marca dedicadas para los botones de navegación rápida de módulos de administración `.dx-v2-sys-dash-module-icon-box` (en sus variantes docker-brand, backups-brand y audit-brand).
+  - Clase para punto de separación sutil de métricas del sistema operativo `.dx-v2-sys-dash-dot-separator`.
+
+### Changed
+- **Vista de Dashboard del Sistema**: Refactorizada por completo la vista [dashboard.blade.php] en `admin/system/` purgando el 100% de la lógica PHP que calculaba estilos dinámicos (27 líneas de variables de color eliminadas) y eliminando todos los estilos inline estáticos restantes de botones y separadores. Delegada toda la presentación al motor de renderizado de la hoja CSS global.
+
 ## [2026-05-18 15:54] — CSS Unification: Subfase 19.23 (Backups) ✅
 
 ### Added
