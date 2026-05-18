@@ -803,10 +803,28 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
 
 ## 🔷 [8] SISTEMA & CONFIGURACIÓN
 
-- [ ] **Subfase 19.18** — Dashboard del Sistema (NOC Pro + Brand Icons)
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.18** — Dashboard del Sistema (NOC Pro + Brand Icons) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Namespace de estilos global `.dx-v2-sys-dash-*` definido e integrado con 670+ líneas para maquetar el control técnico.
+    > - [dashboard.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/system/dashboard.blade.php) - Purga completa de estilos inline locales y del bloque `<style>` incrustado de más de 100 líneas.
+    >
+    > **Área Visual Afectada:**
+    > - Centro de control de administración del sistema (NOC Pro), incluyendo métricas OS, RAM, CPU, disco, tráfico de red, latido del túnel en vivo, matriz de microservicios e integraciones IA, accesos rápidos y panel lateral.
+
+- [x] **Subfase 19.18.1** — Docker Fleet Monitor (NOC Pro + Empty State) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-sys-docker-*`.
+    - [x] Limpieza de `style=` inline y bloques locales `<style>`.
+    - [x] Inyección de Empty State dinámico e interactivo si no hay conexión con el socket.
+    - [x] Verificación visual y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Añadido el namespace del monitor de Docker `.dx-v2-sys-docker-*` con todas las clases de grid, tarjetas de telemetría y CPU gauges.
+    > - [docker.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/system/docker.blade.php) - Purga completa de estilos inline y del bloque local `<style>`.
+
 
 - [ ] **Subfase 19.19** — Usuarios y acceso (listado, crear/editar, roles y permisos)
     - [ ] Extracción y Namespace `.dx-v2-`.

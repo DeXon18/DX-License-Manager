@@ -12,8 +12,8 @@
                 </p>
                 <div class="footer-social">
                     <a href="#" title="Documentación"><i class="fa-solid fa-book"></i></a>
-                    <a href="#" title="Soporte"><i class="fa-solid fa-headset"></i></a>
-                    <a href="#" title="GitHub"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/oskar-blazquez/" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="https://github.com/DeXon18" title="GitHub"><i class="fa-brands fa-github"></i></a>
                 </div>
             </div>
 
