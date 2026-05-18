@@ -4708,6 +4708,221 @@ footer {
   font-weight: 700 !important;
 }
 
+/* ============================================================
+   30. UNIFICACIÓN V2: SIEMENS STAR-CCM+ (.dx-v2-tools-star-*)
+   ============================================================ */
+
+.dx-v2-tools-star-header-layout {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.dx-v2-tools-star-header-icon {
+  background: var(--vendor-siemens-dark-muted, rgba(0, 153, 153, 0.1)) !important;
+  color: var(--vendor-siemens, #009999) !important;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid rgba(0, 153, 153, 0.15);
+}
+
+.dx-v2-tools-star-header-title {
+  margin: 0 !important;
+  font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+
+.dx-v2-tools-star-header-sub {
+  margin: 0 !important;
+  font-size: 13px;
+  color: var(--dx-v2-muted);
+}
+
+.dx-v2-tools-star-card-body {
+  padding: 24px !important;
+}
+
+.dx-v2-tools-star-card-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.dx-v2-tools-star-dropzone {
+  height: 160px;
+  border: 1px dashed var(--dx-v2-border) !important;
+  border-radius: 6px !important;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out !important;
+  background: rgba(255, 255, 255, 0.005) !important;
+}
+
+.dx-v2-tools-star-dropzone:hover {
+  background: rgba(255, 255, 255, 0.015) !important;
+  border-color: var(--dx-v2-muted) !important;
+}
+
+.dx-v2-tools-star-dropzone.dragging {
+  border-style: solid !important;
+  transform: scale(0.995);
+  border-color: var(--vendor-siemens, #009999) !important;
+  background: rgba(0, 153, 153, 0.03) !important;
+}
+
+.dx-v2-tools-star-dropzone-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.dx-v2-tools-star-dropzone-title {
+  font-size: 14px;
+  color: var(--dx-v2-primary-base) !important;
+  font-weight: 500;
+}
+
+.dx-v2-tools-star-dropzone-subtitle {
+  font-size: 11px;
+  color: var(--dx-v2-muted) !important;
+  opacity: 0.8;
+}
+
+.dx-v2-tools-star-btn-container {
+  display: flex !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+}
+
+.dx-v2-tools-star-specs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+@media (max-width: 768px) {
+  .dx-v2-tools-star-specs-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+.dx-v2-tools-star-specs-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dx-v2-tools-star-specs-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--dx-v2-muted);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  letter-spacing: 0.05em;
+}
+
+.dx-v2-tools-star-spec-row {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--dx-v2-border-subtle) !important;
+  padding-bottom: 8px;
+}
+
+.dx-v2-tools-star-spec-row:last-child {
+  border-bottom: none !important;
+}
+
+.dx-v2-tools-star-spec-code {
+  min-width: 44px;
+  font-family: var(--dx-v2-font-mono) !important;
+  font-size: 10px !important;
+  color: var(--vendor-siemens, #009999) !important;
+  background: rgba(0, 153, 153, 0.08) !important;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-align: center;
+  font-weight: 700;
+  margin-right: 12px;
+}
+
+.dx-v2-tools-star-spec-details {
+  flex: 1;
+}
+
+.dx-v2-tools-star-spec-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--dx-v2-primary-base) !important;
+}
+
+.dx-v2-tools-star-spec-desc {
+  font-size: 10px;
+  color: var(--dx-v2-muted) !important;
+}
+
+.dx-v2-tools-star-sidebar-warning {
+  background: var(--dx-v2-warning-bg) !important;
+  border: 1px solid var(--dx-v2-warn-border) !important;
+  padding: 16px !important;
+  border-radius: 6px !important;
+  margin-bottom: 16px;
+}
+
+.dx-v2-tools-star-sidebar-warning-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: var(--dx-v2-warning) !important;
+}
+
+.dx-v2-tools-star-sidebar-warning-title {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dx-v2-tools-star-sidebar-warning-desc {
+  font-size: 12px;
+  color: var(--dx-v2-muted) !important;
+  line-height: 1.6;
+}
+
+.dx-v2-tools-star-sidebar-warning-desc strong {
+  color: var(--dx-v2-danger, #D32F2F) !important;
+  font-weight: 700 !important;
+}
+
+.dx-v2-tools-star-sidebar-info {
+  padding: 16px !important;
+  border: 1px solid var(--dx-v2-border) !important;
+  border-radius: 6px !important;
+  background: rgba(255, 255, 255, 0.005) !important;
+  margin-bottom: 16px;
+}
+
+.dx-v2-tools-star-sidebar-info-text {
+  font-size: 11px;
+  color: var(--dx-v2-muted) !important;
+  line-height: 1.6;
+}
+
+
 
 
 
