@@ -58,8 +58,8 @@
                     <label class="dx-v2-audit-filter-label">Tipo de Acción</label>
                     <input type="text" name="action" value="{{ request('action') }}" placeholder="Ej: db_backup" class="form-control dx-v2-audit-filter-input">
                 </div>
-                <button type="submit" class="btn btn-primary">Filtrar</button>
-                <a href="{{ route('admin.audit.index', ['tab' => 'activity']) }}" class="btn-clear">Limpiar</a>
+                <button type="submit" class="dx-v2-audit-btn-submit">Filtrar</button>
+                <a href="{{ route('admin.audit.index', ['tab' => 'activity']) }}" class="dx-v2-audit-btn-clear">Limpiar</a>
             </form>
         </div>
     </div>
