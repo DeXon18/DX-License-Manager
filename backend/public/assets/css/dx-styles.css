@@ -954,7 +954,7 @@ footer {
 .form-row .form-group { flex:1; display:flex; flex-direction:column; gap:6px; margin-bottom:0; }
 .form-row .form-group label .req { color:var(--dx-v2-danger); margin-left:2px; }
 .input-wrap { position:relative; }
-.input-wrap svg { position:absolute; top:50%; left:11px; transform:translateY(-50%); color:var(--dx-v2-muted); pointer-events:none; }
+.input-wrap i, .input-wrap svg { position:absolute; top:50%; left:11px; transform:translateY(-50%); color:var(--dx-v2-muted); pointer-events:none; }
 .gui-input {
   width:100%; background:var(--input-bg); border:1px solid var(--dx-v2-border); border-radius: var(--dx-v2-rounded-md);
   padding:9px 12px 9px 34px; font-size:13px; font-family:'Inter',sans-serif; color:var(--dx-v2-primary);
