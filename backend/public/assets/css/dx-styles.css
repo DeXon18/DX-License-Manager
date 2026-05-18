@@ -8616,4 +8616,104 @@ textarea.dx-v2-resources-modal-input {
   padding: 10px !important;
 }
 
+/**
+ * @module    dx-v2-sys-dash (AI Integrations)
+ * @fase      19.24
+ * @desc      Reglas y degradados premium para integraciones de Inteligencia AI y servicios del Dashboard
+ * @afecta    admin/system/dashboard.blade.php
+ * @version   2.24.0
+ */
+
+/* ─── Separators ──────────────────────────────────────── */
+.dx-v2-sys-dash-dot-separator {
+  opacity: 0.3 !important;
+  margin: 0 4px !important;
+}
+
+/* ─── Dedicated Modules Branding ──────────────────────── */
+.dx-v2-sys-dash-module-icon-box.docker-brand {
+  background: rgba(14, 165, 233, 0.1) !important;
+  color: #0ea5e9 !important;
+}
+
+.dx-v2-sys-dash-module-icon-box.backups-brand {
+  background: rgba(67, 97, 238, 0.1) !important;
+  color: var(--dx-v2-accent-base, #4361ee) !important;
+}
+
+.dx-v2-sys-dash-module-icon-box.audit-brand {
+  background: rgba(16, 185, 129, 0.1) !important;
+  color: var(--dx-v2-success, #10b981) !important;
+}
+
+/* ─── Services Matrix Icons (AI & Core Services) ──────── */
+.dx-v2-sys-dash-service-icon-box {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+/* Offline / Danger state */
+.dx-v2-sys-dash-service-icon-box.offline,
+.dx-v2-sys-dash-service-icon-box.danger {
+  background: var(--dx-v2-danger-dim, rgba(239, 68, 68, 0.1)) !important;
+  color: var(--dx-v2-danger, #ef4444) !important;
+  box-shadow: none !important;
+}
+
+/* Online states (Standard fallback) */
+.dx-v2-sys-dash-service-icon-box.online {
+  background: var(--dx-v2-success-dim, rgba(16, 185, 129, 0.1)) !important;
+  color: var(--dx-v2-success, #10b981) !important;
+  box-shadow: none !important;
+}
+
+/* Premium Gradient Brands when Online */
+.dx-v2-sys-dash-service-icon-box.online.gemini {
+  background: linear-gradient(135deg, #4e8cff, #9171ff) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(78, 140, 255, 0.25) !important;
+}
+
+.dx-v2-sys-dash-service-icon-box.online.deepseek {
+  background: linear-gradient(135deg, #007aff, #00c6ff) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.25) !important;
+}
+
+.dx-v2-sys-dash-service-icon-box.online.openrouter {
+  background: linear-gradient(135deg, #ff4f00, #ff9000) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(255, 79, 0, 0.25) !important;
+}
+
+.dx-v2-sys-dash-service-icon-box.online.n8n {
+  background: linear-gradient(135deg, #ff6d5b, #ff4d4d) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(255, 109, 91, 0.25) !important;
+}
+
+.dx-v2-sys-dash-service-icon-box.online.telegram {
+  background: linear-gradient(135deg, #0088cc, #00aaff) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 136, 204, 0.25) !important;
+}
+
+.dx-v2-sys-dash-service-icon-box.online.database {
+  background: linear-gradient(135deg, #003545, #00758f) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(0, 53, 69, 0.25) !important;
+}
+
+.dx-v2-sys-dash-service-icon-box.online.bolt {
+  background: linear-gradient(135deg, #d82c20, #ff4e42) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(216, 44, 32, 0.25) !important;
+}
+
+
 

@@ -34,7 +34,7 @@
                 {{ $metrics['os']['load']['1m'] }}
             </div>
             <div class="dx-v2-sys-dash-stat-card-meta-mono">
-                5M: {{ $metrics['os']['load']['5m'] }} <span style="opacity: 0.3; margin: 0 4px;">·</span> 15M: {{ $metrics['os']['load']['15m'] }}
+                5M: {{ $metrics['os']['load']['5m'] }} <span class="dx-v2-sys-dash-dot-separator">·</span> 15M: {{ $metrics['os']['load']['15m'] }}
             </div>
         </div>
 
@@ -152,36 +152,7 @@
                             </div>
                             @foreach($items as $id => $info)
                                 <div class="dx-v2-sys-dash-service-item">
-                                    @php
-                                        $iconBg = $info['status'] === 'online' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)';
-                                        $iconColor = $info['status'] === 'online' ? 'var(--success)' : 'var(--danger)';
-                                        
-                                        if ($info['status'] === 'online') {
-                                            if ($info['icon'] === 'gemini') {
-                                                $iconBg = 'linear-gradient(135deg, #4e8cff, #9171ff)';
-                                                $iconColor = 'white';
-                                            } elseif ($info['icon'] === 'deepseek') {
-                                                $iconBg = 'linear-gradient(135deg, #007aff, #00c6ff)';
-                                                $iconColor = 'white';
-                                            } elseif ($info['icon'] === 'openrouter') {
-                                                $iconBg = 'linear-gradient(135deg, #ff4f00, #ff9000)';
-                                                $iconColor = 'white';
-                                            } elseif ($info['icon'] === 'n8n') {
-                                                $iconBg = 'linear-gradient(135deg, #ff6d5b, #ff4d4d)';
-                                                $iconColor = 'white';
-                                            } elseif ($info['icon'] === 'telegram') {
-                                                $iconBg = 'linear-gradient(135deg, #0088cc, #00aaff)';
-                                                $iconColor = 'white';
-                                            } elseif ($info['icon'] === 'database') {
-                                                $iconBg = 'linear-gradient(135deg, #003545, #00758f)';
-                                                $iconColor = 'white';
-                                            } elseif ($info['icon'] === 'bolt') {
-                                                $iconBg = 'linear-gradient(135deg, #d82c20, #ff4e42)';
-                                                $iconColor = 'white';
-                                            }
-                                        }
-                                    @endphp
-                                    <div class="dx-v2-sys-dash-service-icon-box" style="background: {{ $iconBg }}; color: {{ $iconColor }}; box-shadow: {{ in_array($info['icon'], ['gemini', 'deepseek', 'openrouter', 'n8n', 'telegram', 'database', 'bolt']) && $info['status'] === 'online' ? '0 4px 12px rgba(0,0,0,0.2)' : 'none' }};">
+                                    <div class="dx-v2-sys-dash-service-icon-box {{ $info['status'] }} {{ $info['icon'] }}">
                                         @if($info['icon'] === 'database')
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>
                                         @elseif($info['icon'] === 'bolt')
@@ -250,7 +221,7 @@
             {{-- Dedicated Modules Navigation --}}
             <div class="dx-v2-sys-dash-modules-grid">
                 <a href="{{ route('admin.system.docker') }}" class="dx-v2-sys-dash-module-card">
-                    <div class="dx-v2-sys-dash-module-icon-box" style="background: rgba(14, 165, 233, 0.1); color: #0ea5e9;">
+                    <div class="dx-v2-sys-dash-module-icon-box docker-brand">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
                     </div>
                     <div class="dx-v2-sys-dash-module-text-box">
@@ -259,7 +230,7 @@
                     </div>
                 </a>
                 <a href="{{ route('admin.backups.index') }}" class="dx-v2-sys-dash-module-card">
-                    <div class="dx-v2-sys-dash-module-icon-box" style="background: rgba(67, 97, 238, 0.1); color: var(--accent);">
+                    <div class="dx-v2-sys-dash-module-icon-box backups-brand">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                     </div>
                     <div class="dx-v2-sys-dash-module-text-box">
@@ -268,7 +239,7 @@
                     </div>
                 </a>
                 <a href="{{ route('admin.audit.index') }}" class="dx-v2-sys-dash-module-card">
-                    <div class="dx-v2-sys-dash-module-icon-box" style="background: rgba(16, 185, 129, 0.1); color: var(--success);">
+                    <div class="dx-v2-sys-dash-module-icon-box audit-brand">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                     </div>
                     <div class="dx-v2-sys-dash-module-text-box">
