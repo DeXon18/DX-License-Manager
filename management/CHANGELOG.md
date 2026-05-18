@@ -1,6 +1,24 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-18 15:52] — CSS Unification: Subfase 19.22 (Alertas y Notificaciones) ✅
+
+### Added
+- **Namespace de Alertas y Notificaciones (`.dx-v2-alerts-*`)**: Diseñado e integrado un bloque de estilos cohesivos y ergonómicos en [dx-styles.css] para modularizar la configuración de umbrales e historial de envíos SMTP:
+  - Estructuras para banner de alertas `.dx-v2-alerts-alert-banner` (en sus variantes success y danger) con fondos y bordes HSL matizados.
+  - Cabecera flexible `.dx-v2-alerts-header-row`, grupo de botones `.dx-v2-alerts-btn-group` y botón de activación `.dx-v2-alerts-toggle-btn`.
+  - Rejilla adaptativa `.dx-v2-alerts-grid` fijando la columna de umbrales a exactamente `440px` (con comportamiento responsive a una sola columna bajo `1200px`) para evitar la envoltura de texto no deseada.
+  - Estructura `.dx-v2-alerts-card-thresholds` con cabecera `.dx-v2-alerts-card-header`, envoltura interior `.dx-v2-alerts-card-header-inner` y contenedor de iconos pequeños `.dx-v2-alerts-icon-wrapper-sm`.
+  - Contenedor de cuerpo `.dx-v2-alerts-body` y listado de umbrales `.dx-v2-alerts-threshold-list` con ítems estilizados `.dx-v2-alerts-threshold-item` y su layout interno `.dx-v2-alerts-threshold-info`.
+  - Indicadores circulares `.dx-v2-alerts-threshold-icon-circle` (danger, warning, accent) con títulos `.dx-v2-alerts-threshold-title` y descripciones `.dx-v2-alerts-threshold-desc` bajo fuentes mono con `white-space: nowrap` para evitar rupturas de palabras.
+  - Contenedores de inputs numéricos aislados `.dx-v2-alerts-input-container` (fijados a `110px` de ancho y `38px` de alto) y campos `.dx-v2-alerts-input-field` con spinners del navegador ocultos, alineación central y reseteo completo de bordes y sombras para evitar colisiones con la clase `.gui-input`.
+  - Caja de copia interna de emails `.dx-v2-alerts-copy-box`, cabecera `.dx-v2-alerts-copy-header`, etiqueta `.dx-v2-alerts-copy-label`, textarea `.dx-v2-alerts-copy-textarea` y texto de ayuda `.dx-v2-alerts-copy-help`.
+  - Historial de notificaciones en tarjeta `.dx-v2-alerts-card-history`, cabecera `.dx-v2-alerts-card-history-header` y tabla de alta densidad `.dx-v2-alerts-table` con filas `.dx-v2-alerts-table-thead-tr`, `.dx-v2-alerts-table-tbody-tr`, cabeceras `.dx-v2-alerts-table-th`, destinatarios `.dx-v2-alerts-table-td-recipient`, fecha de envío `.dx-v2-alerts-table-td-date`, estado `.dx-v2-alerts-table-td-status` y acciones rápidas `.dx-v2-alerts-table-td-actions`.
+  - Caja de ayuda informativa del motor `.dx-v2-alerts-info-box`, cuerpo `.dx-v2-alerts-info-box-inner`, icono `.dx-v2-alerts-info-box-icon`, título `.dx-v2-alerts-info-box-title` y descripción técnica `.dx-v2-alerts-info-box-desc`.
+
+### Changed
+- **Vista de Alertas**: Refactorizada la vista [index.blade.php] en `admin/alerts/` purgando el 100% de los estilos inline locales (declaraciones `style="..."` eliminadas), aislando sus campos numéricos de la clase global `.gui-input` y delegando el 100% de la maquetación a las clases centralizadas de `dx-styles.css`.
+
 ## [2026-05-18 15:48] — CSS Unification: Subfase 19.21 (Repositorio de Licencias) ✅
 
 ### Added

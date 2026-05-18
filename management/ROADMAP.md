@@ -860,10 +860,13 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
     > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Namespace de estilos global `.dx-v2-lic-repo-*` integrado con 200+ líneas de código de maquetación limpia.
     > - [repository.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/licenses/repository.blade.php) - Purga completa de los 26 estilos inline de tablas, alertas y paneles informativos.
 
-- [ ] **Subfase 19.22** — Alertas y notificaciones (caducidad, umbrales, destinatarios, historial, SMTP)
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.22** — Alertas y notificaciones (caducidad, umbrales, destinatarios, historial, SMTP) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-alerts-*` integrado en public/assets/css/dx-styles.css.
+    - [x] Limpieza completa del 100% de `style=` inline en `admin/alerts/index.blade.php`.
+    - [x] Verificación visual de alta resolución en Light/Dark, inputs aislados sin spinners nativos, y diseño adaptativo a una sola columna bajo `1200px`.
+    > **Evidencia:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Inyectado namespace `.dx-v2-alerts-*` con 360+ líneas de código de maquetación limpia.
+    > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/alerts/index.blade.php) - Purga absoluta de estilos inline de banners, rejillas, campos de umbrales y tablas.
 
 - [ ] **Subfase 19.23** — Backups (manual, historial, configuración automática)
     - [ ] Extracción y Namespace `.dx-v2-`.
