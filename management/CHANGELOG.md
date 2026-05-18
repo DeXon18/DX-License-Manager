@@ -1,6 +1,22 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-18 10:44] — CSS Unification: Subfase 19.9 (Planificador de Renovaciones) ✅
+
+### Added
+- **Namespace del Planificador (`.dx-v2-planner-*`)**: Diseñadas e integradas clases semánticas dedicadas en [dx-styles.css] para modularizar la visualización y mejorar la ergonomía del Planificador de Renovaciones:
+  - Estructura contenedora de la cabecera `.dx-v2-planner-header-grid` con alineación ergonómica de estadísticas y selección de ciclo.
+  - Componente selector interactivo `.dx-v2-planner-month-picker`, disparador `.dx-v2-planner-month-btn` y menú flotante absoluto `.dx-v2-planner-dropdown` para la selección de meses.
+  - Componentes de filtros de estado contractual `.dx-v2-planner-filters-wrap` y chips interactivos de estado `.dx-v2-planner-filter-chip` con soporte nativo de variables inline CSS.
+  - Panel de estadísticas ergonómico de alto impacto `.dx-v2-planner-stats` y sub-items de contadores numéricos `.dx-v2-planner-stat-value`.
+  - Componentes de contratos `.dx-v2-planner-contracts-list`, filas del grid contractual `.dx-v2-planner-contract-row` y badges mono-espaciados para contratos `.dx-v2-planner-contract-number`.
+  - Botones de acción ergonómicos `.dx-v2-planner-btn-action` y reversiones de estado `.dx-v2-planner-btn-action-revert`.
+  - Estado vacío premium `.dx-v2-planner-empty` y su icono atenuado `.dx-v2-planner-empty-icon`.
+
+### Changed
+- **Vista Principal del Planificador**: Refactorizada la vista [index.blade.php], eliminando el 100% de los estilos inline locales (más de 60 atributos) y purgando controladores arcaicos `onmouseover`/`onmouseout` locales, delegando toda la interacción dinámica a clases del namespace y selectores nativos CSS `:hover`.
+- **Higiene de Marcado**: Corregida la etiqueta duplicada `</tr>` residual en la tabla y simplificada la estructura HTML de alineación.
+
 ## [2026-05-18 10:40] — CSS Unification: Subfase 19.8 (Contactos & Certificados COD) ✅
 
 ### Added
