@@ -1858,7 +1858,7 @@ footer {
   flex-direction: row;
   align-items: center;
   padding: 20px 24px;
-  background: linear-gradient(to right, var(--dx-v2-surface-raised), transparent);
+  background: linear-gradient(to right, var(--dx-v2-raised), transparent);
   border-bottom: 1px solid var(--dx-v2-border-base);
   gap: 40px;
   position: relative;
@@ -1973,13 +1973,13 @@ footer {
   border-collapse: collapse;
 }
 .dx-v2-clients-inv-table th {
-  background: var(--dx-v2-surface-raised);
+  background: var(--dx-v2-raised);
   padding: 10px 24px;
   text-align: left;
   font-size: 9px;
   font-weight: 800;
   text-transform: uppercase;
-  color: var(--dx-v2-text-muted);
+  color: var(--dx-v2-muted);
   border-bottom: 1px solid var(--dx-v2-border-base);
 }
 .dx-v2-clients-inv-table td {
@@ -1990,7 +1990,7 @@ footer {
   color: var(--dx-v2-primary-base);
 }
 .dx-v2-clients-inv-table tr:hover td {
-  background: var(--dx-v2-surface-raised);
+  background: var(--dx-v2-raised);
 }
 .dx-v2-clients-product-row.inactive {
   opacity: 0.3;
@@ -2003,7 +2003,7 @@ footer {
 .dx-v2-clients-host-id-mono {
   font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--dx-v2-text-muted);
+  color: var(--dx-v2-muted);
   opacity: 0.6;
 }
 .dx-v2-clients-qty-badge {
@@ -2012,7 +2012,7 @@ footer {
   justify-content: center;
   width: 28px;
   height: 22px;
-  background: var(--dx-v2-surface-raised);
+  background: var(--dx-v2-raised);
   border: 1px solid var(--dx-v2-border-base);
   border-radius: var(--dx-v2-rounded-sm);
   font-size: 11px;
@@ -2025,7 +2025,7 @@ footer {
   border-radius: var(--dx-v2-rounded-sm);
   border: 1px solid var(--dx-v2-border-base);
   background: transparent;
-  color: var(--dx-v2-text-muted);
+  color: var(--dx-v2-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -2361,7 +2361,7 @@ footer {
   padding: 12px 16px;
   font-size: 10px;
   text-transform: uppercase;
-  color: var(--dx-v2-text-muted);
+  color: var(--dx-v2-muted);
   font-weight: 700;
 }
 .dx-v2-clients-audit-table td {
@@ -2385,7 +2385,7 @@ footer {
   color: #fff;
 }
 .dx-v2-clients-audit-product-desc {
-  color: var(--dx-v2-text-muted);
+  color: var(--dx-v2-muted);
   font-size: 11px;
 }
 .dx-v2-clients-expiry-badge {
@@ -2420,7 +2420,7 @@ footer {
   border: none;
   background: none;
   cursor: pointer;
-  color: var(--dx-v2-text-muted);
+  color: var(--dx-v2-muted);
   font-size: 13px;
   font-weight: 600;
   border-bottom: 2px solid transparent;
@@ -2444,7 +2444,7 @@ footer {
   align-items: center;
   gap: 8px;
   margin-bottom: 12px;
-  color: var(--dx-v2-text-muted);
+  color: var(--dx-v2-muted);
 }
 .dx-v2-clients-legend-header-title {
   font-size: 10px;
@@ -2490,10 +2490,10 @@ footer {
   color: var(--dx-v2-siemens);
 }
 .dx-v2-clients-expiry-status.default {
-  color: var(--dx-v2-text-muted);
+  color: var(--dx-v2-muted);
 }
 .dx-v2-clients-history-date {
-  color: var(--dx-v2-text-muted);
+  color: var(--dx-v2-muted);
   opacity: 0.5;
 }
 .dx-v2-clients-history-daemon {
@@ -2576,6 +2576,10 @@ footer {
   border: none;
   width: 20px;
   height: 20px;
+}
+
+[x-cloak] {
+  display: none !important;
 }
 
 
