@@ -884,16 +884,15 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
     > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Inyectado el namespace `.dx-v2-sys-dash-service-icon-box.online.[brand]` con los colores corporativos y sombras premium de Gemini, DeepSeek, OpenRouter, n8n y Telegram.
     > - [dashboard.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/system/dashboard.blade.php) - Purga completa de 27 líneas de lógica PHP de estilos dinámicos, eliminando por completo el atributo `style` de la matriz de microservicios.
 
-- [ ] **Subfase 19.25** — Logs y auditoría (actividad, errores, auditoría IA) 🔜
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.25** — Logs y auditoría (actividad, errores, auditoría IA) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-audit-*` en dx-styles.css.
+    - [x] Limpieza completa del 100% de `style=` inline estáticos y dinámicos en `admin/audit/index.blade.php`.
+    - [x] Verificación visual de alta resolución en Light/Dark, eliminando eventos de hover JS por pseudo-clases nativas CSS.
+    > **Evidencia:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Inyectado el namespace `.dx-v2-audit-*` (500+ líneas) que define estilos unificados para banners, tabs de navegación, formularios de filtrado, contadores métricos, rejillas de datos de alta densidad, trazas del Stack Trace colapsables y estados de email.
+    > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/audit/index.blade.php) - Purga absoluta de declaraciones `style` y eventos inline en las tres pestañas de visualización. Eliminada la hoja de estilos local `<style>` de más de 80 líneas.
 
----
-
-## 🔷 VISTAS ESPECIALES
-
-- [ ] **Subfase 19.26** — Páginas de Error (`errors/`: 403, 404, 419, 500, 503)
+- [ ] **Subfase 19.26** — Páginas de Error (`errors/`: 403, 404, 419, 500, 503) 🔜
     - [ ] Extracción y Namespace `.dx-v2-`.
     - [ ] Limpieza de `style=` inline.
     - [ ] Verificación visual (Light/Dark).

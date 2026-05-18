@@ -13,11 +13,11 @@ Avanzar en la **Fase 19 (Unificación CSS & Limpieza UI)**. Unificar y extraer t
 
 ## Estado de la Tarea Actual
 - **Incidencia:** #008 — Unificación CSS
-- **Estado:** 🔜 Subfase 19.24 (Integraciones IA) Completada, listos para Subfase 19.25 (Logs y auditoría)
+- **Estado:** 🔜 Subfase 19.25 (Logs y Auditoría) Completada, listos para Subfase 19.26 (Páginas de Error)
 - **Rama:** `feature/css-tokens`
 - **Cambios clave:** 
-  - Purga completa del 100% de los estilos inline dinámicos PHP y estáticos en la vista de Dashboard del Sistema (`dashboard.blade.php`).
-  - Diseñado e inyectado el namespace de estilos premium `.dx-v2-sys-dash-*` en `dx-styles.css` con degradados y sombras 3D de alta gama para Gemini, DeepSeek, OpenRouter, n8n y Telegram.
+  - Purga absoluta del 100% de declaraciones style y eventos inline en las tres pestañas de visualización de Logs y Auditoría. Eliminada la hoja de estilos local <style> de más de 80 líneas.
+  - Diseñado e inyectado el namespace `.dx-v2-audit-*` cubriendo banners, pestañas, contadores en vivo, tablas de alta densidad y visor de logs estilo consola de terminal compactado a 5px de padding y 12px de texto para densidad NOC Pro óptima.
 
 ## Próximos Pasos
 - [x] Subfases 19.0 a 19.15: Vistas principales, Dashboard, Herramientas, NX, STAR-CCM+, HEEDS, COD y Siemens Recursos ✅
@@ -31,10 +31,11 @@ Avanzar en la **Fase 19 (Unificación CSS & Limpieza UI)**. Unificar y extraer t
 - [x] Subfase 19.22: Alertas y notificaciones (caducidad, umbrales, destinatarios, historial, SMTP) ✅
 - [x] Subfase 19.23: Backups (manual, historial, configuración automática) ✅
 - [x] Subfase 19.24: Integraciones IA (Gemini, Deepseek, OpenRouter, Telegram Bot, estado de conexión) ✅
+- [x] Subfase 19.25: Logs y auditoría (actividad, errores, auditoría IA) ✅
 
 ## 🛠️ Tareas en curso
-- [x] Subfase 19.24: Integraciones IA (Gemini, Deepseek, OpenRouter, Telegram Bot, estado de conexión) ✅
-- [ ] Subfase 19.25: Logs y auditoría (actividad, errores, auditoría IA) 🔜
+- [x] Subfase 19.25: Logs y auditoría (actividad, errores, auditoría IA) ✅
+- [ ] Subfase 19.26: Páginas de Error (`errors/`: 403, 404, 419, 500, 503) 🔜
 
 - Fase del ROADMAP: Fase 19 (En curso)
 
@@ -50,6 +51,7 @@ Avanzar en la **Fase 19 (Unificación CSS & Limpieza UI)**. Unificar y extraer t
 
 ## 🕒 Log de Acciones (2026-05-18)
 
+- 2026-05-18 — Finalizada la Subfase 19.25 (Logs y Auditoría), extrayendo más de 500 líneas de estilos semánticos unificados para el visor de actividad, trazas de laravel.log ySMTP logs, compactando la consola terminal a 5px de padding y 12px de texto para alta densidad NOC Pro.
 - 2026-05-18 — Finalizada la Subfase 19.24 (Integraciones IA), purgando el 100% de los estilos inline estáticos y eliminando las variables de cálculo dinámico PHP de colores del Blade. Diseñados los gradientes y sombras premium en CSS para Gemini, DeepSeek, OpenRouter y Telegram.
 - 2026-05-18 — Finalizada la Subfase 19.23 (Backups), purgando el 100% de los estilos inline locales, modularizando las cabeceras flex, las etiquetas de origen y entorno, las interfaces cron responsive y el modal crítico de restauración.
 - 2026-05-18 — Finalizada la Subfase 19.22 (Alertas y Notificaciones), purgando el 100% de estilos inline, aislando campos numéricos sin spinners del navegador y optimizando la rejilla a un mínimo de 440px contra envoltura de texto.
@@ -60,8 +62,8 @@ Avanzar en la **Fase 19 (Unificación CSS & Limpieza UI)**. Unificar y extraer t
 
 ## 🚀 Handover — Próximos Pasos
 
-1. Continuar con la unificación de la interfaz de **Logs y auditoría** (Subfase 19.25).
-2. Extraer estilos locales y purgar inline CSS de las vistas de historial de actividad, logs de errores del sistema y resultados de auditoría IA (`admin/audit/`).
+1. Continuar con la unificación de las **Páginas de Error** (Subfase 19.26).
+2. Extraer estilos locales y purgar inline CSS de las vistas de error (`errors/`: 403, 404, 419, 500, 503).
 
 ---
 
