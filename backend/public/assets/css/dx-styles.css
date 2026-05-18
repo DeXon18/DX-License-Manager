@@ -3763,6 +3763,371 @@ footer {
   font-style: italic;
 }
 
+/**
+ * @module    dx-v2-planner
+ * @fase      19.9
+ * @desc      Planificador de Renovaciones
+ * @afecta    [renewal-planner/index.blade.php]
+ * @version   2.19.0
+ */
+
+/* ─── Layout & Stats Grid ────────────────────────────── */
+.dx-v2-planner-header-grid {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 30px;
+  align-items: center;
+  background: var(--dx-v2-raised);
+  padding: 20px 30px;
+  border-radius: 12px;
+  border: 1px solid var(--dx-v2-border);
+  margin-bottom: 25px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+/* ─── Month Picker & Custom Dropdown ─────────────────── */
+.dx-v2-planner-month-picker {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding-right: 25px;
+  border-right: 1px solid var(--dx-v2-border);
+  position: relative;
+}
+
+.dx-v2-planner-month-picker-icon {
+  color: var(--dx-v2-accent-base);
+  font-size: 18px;
+}
+
+.dx-v2-planner-month-btn {
+  background: transparent !important;
+  border: none !important;
+  color: var(--dx-v2-primary-base);
+  font-size: 18px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  outline: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 0;
+  transition: color 0.2s;
+}
+
+.dx-v2-planner-month-btn:hover {
+  color: var(--dx-v2-accent-base);
+}
+
+.dx-v2-planner-month-btn i {
+  font-size: 12px;
+  transition: transform 0.2s;
+}
+
+.dx-v2-planner-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 50;
+  margin-top: 10px;
+  width: 200px;
+  background: var(--dx-v2-surface);
+  border: 1px solid var(--dx-v2-border);
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  overflow: hidden;
+}
+
+.dx-v2-planner-dropdown-container {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 5px;
+}
+
+.dx-v2-planner-dropdown-item {
+  padding: 10px 15px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--dx-v2-muted);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dx-v2-planner-dropdown-item:hover {
+  background: var(--dx-v2-raised);
+  color: var(--dx-v2-primary-base);
+}
+
+.dx-v2-planner-dropdown-item.active {
+  color: var(--dx-v2-accent-base);
+  background: rgba(56, 139, 253, 0.05);
+}
+
+/* ─── State Filters & Interactive Chips ──────────────── */
+.dx-v2-planner-filters-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.dx-v2-planner-filter-label {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--dx-v2-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-right: 8px;
+}
+
+.dx-v2-planner-filter-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.dx-v2-planner-filter-chip {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+  border: 1px solid var(--dx-v2-border);
+  background: transparent;
+  color: var(--dx-v2-muted);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.dx-v2-planner-filter-chip:hover {
+  border-color: var(--filter-color, var(--dx-v2-accent-base));
+  color: var(--filter-color, var(--dx-v2-accent-base));
+}
+
+.dx-v2-planner-filter-chip.active {
+  border-color: var(--filter-color, var(--dx-v2-accent-base));
+  background: var(--filter-bg-active);
+  color: var(--filter-color, var(--dx-v2-accent-base));
+}
+
+.dx-v2-planner-filter-clear {
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--dx-v2-danger);
+  text-decoration: none;
+  padding: 4px 10px;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: 20px;
+  background: rgba(239, 68, 68, 0.05);
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.dx-v2-planner-filter-clear:hover {
+  background: var(--dx-v2-danger);
+  color: white;
+  border-color: var(--dx-v2-danger);
+}
+
+/* ─── Compact Stats Panel ───────────────────────────── */
+.dx-v2-planner-stats {
+  display: flex;
+  gap: 40px;
+  padding-left: 25px;
+  border-left: 1px solid var(--dx-v2-border);
+}
+
+.dx-v2-planner-stat-item {
+  text-align: right;
+}
+
+.dx-v2-planner-stat-label {
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--stat-color, var(--dx-v2-muted));
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 2px;
+}
+
+.dx-v2-planner-stat-value {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--stat-color, var(--dx-v2-primary-base));
+  font-family: var(--font-mono);
+  line-height: 1;
+}
+
+/* ─── Table Cell Formatting ────────────────────────── */
+.dx-v2-planner-client-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--dx-v2-primary-base);
+  display: flex;
+  align-items: center;
+}
+
+.dx-v2-planner-client-title i {
+  margin-left: 6px;
+  color: var(--dx-v2-success);
+  font-size: 11px;
+}
+
+.dx-v2-planner-client-subtitle {
+  font-size: 10px;
+  color: var(--dx-v2-muted);
+  margin-top: 4px;
+  font-style: italic;
+}
+
+.dx-v2-planner-daemons-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+}
+
+.dx-v2-planner-vendor-badge {
+  display: flex;
+  align-items: center;
+  background: var(--dx-v2-surface);
+  border: 1px solid var(--dx-v2-border);
+  border-radius: 3px;
+  padding: 1px 5px;
+  gap: 5px;
+}
+
+.dx-v2-planner-vendor-label {
+  font-size: 7px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.dx-v2-planner-vendor-label.siemens {
+  color: var(--dx-v2-accent-base);
+}
+
+.dx-v2-planner-vendor-label.moldex3d {
+  color: #bc71f8;
+}
+
+.dx-v2-planner-vendor-value {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--dx-v2-muted);
+}
+
+/* ─── Contract Rows & High-Density Grid ────────────── */
+.dx-v2-planner-contracts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dx-v2-planner-contract-row {
+  display: grid;
+  grid-template-columns: 85px 80px 100px 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+.dx-v2-planner-contract-number {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--dx-v2-accent-base);
+  background: var(--dx-v2-surface);
+  padding: 1px 4px;
+  border-radius: 3px;
+  border: 1px solid var(--dx-v2-border);
+  text-align: center;
+}
+
+.dx-v2-planner-contract-date {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--dx-v2-muted);
+  font-weight: 600;
+}
+
+.dx-v2-planner-contract-comment {
+  font-size: 10px;
+  color: var(--dx-v2-muted);
+  font-style: italic;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ─── Action Buttons & Indicators ───────────────────── */
+.dx-v2-planner-btn-action {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent !important;
+  border: 1px solid var(--dx-v2-border) !important;
+  border-radius: 6px;
+  transition: all 0.2s;
+  cursor: pointer;
+  color: var(--dx-v2-accent-base);
+}
+
+.dx-v2-planner-btn-action:hover {
+  border-color: var(--dx-v2-accent-base) !important;
+  background: rgba(56, 139, 253, 0.05) !important;
+}
+
+.dx-v2-planner-btn-action-revert {
+  background: transparent !important;
+  border: none !important;
+  color: var(--dx-v2-danger);
+  cursor: pointer;
+  padding: 2px;
+  font-size: 11px;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.dx-v2-planner-btn-action-revert:hover {
+  opacity: 1;
+}
+
+.dx-v2-planner-completed-status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+/* ─── Empty States ─────────────────────────────────── */
+.dx-v2-planner-empty {
+  text-align: center;
+  padding: 60px;
+  color: var(--dx-v2-muted);
+}
+
+.dx-v2-planner-empty-icon {
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+
 
 
 
