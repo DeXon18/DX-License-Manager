@@ -17,7 +17,7 @@
         </div>
     @endif
 
-    <div class="card" style="--accent: var(--accent);">
+    <div class="card dx-v2-profile-card" style="--accent: var(--accent);">
         <div class="card-header">
             <span class="card-title">Datos Personales</span>
         </div>

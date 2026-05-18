@@ -13,33 +13,27 @@ Avanzar en la **Fase 19 (Unificación CSS & Limpieza UI)**. Unificar y extraer t
 
 ## Estado de la Tarea Actual
 - **Incidencia:** #008 — Unificación CSS
-- **Estado:** 🔜 Subfase 19.19 Completada, listos para Subfase 19.20
+- **Estado:** 🔜 Subfase 19.19 (Usuarios y Acceso) Completada, listos para Subfase 19.20 (Datos e Importación)
 - **Rama:** `feature/css-tokens`
 - **Cambios clave:** 
-  - Corrección de padding en la Matriz de Servicios (Subfase 19.18).
-  - Extracción y namespace de estilos para Docker Fleet Monitor (`docker.blade.php`) a `dx-styles.css` con el namespace `.dx-v2-sys-docker-`.
-  - Inyección de estado vacío interactivo (Empty State) para el monitor de Docker si no se detecta el Daemon.
+  - Refactor del CRUD completo de Usuarios (Subfase 19.19) en `index.blade.php`, `create.blade.php` y `edit.blade.php`.
+  - Diseñado e inyectado el namespace de estilos ergonómicos `.dx-v2-users-*` en `dx-styles.css`.
+  - Remoción completa del 100% de los estilos inline locales, avatares hardcodeados y grids manuales del CRUD de personal.
 
 ## Próximos Pasos
 - [x] Subfases 19.0 a 19.15: Vistas principales, Dashboard, Herramientas, NX, STAR-CCM+, HEEDS, COD y Siemens Recursos ✅
 - [x] Subfase 19.16: Moldex3D (Parser .mac + Sincronización) ✅
 - [x] Subfase 19.17: Moldex3D: Recursos & enlaces (Unificado con 19.15) ✅
 - [x] Subfase 19.18: Dashboard del Sistema (NOC Pro + Brand Icons) ✅
-- [x] Subfase 19.19: Dashboard de Docker / Docker Monitor ✅
-- [ ] Subfase 19.20: Usuarios y acceso (listado, crear/editar, roles y permisos) 🔜
+- [x] Subfase 19.18.1: Dashboard de Docker / Docker Monitor ✅
+- [x] Subfase 19.19: Usuarios y acceso (listado, crear/editar, roles y permisos) ✅
+- [ ] Subfase 19.20: Datos e importación (importar CSV, historial, logs y detalles) 🔜
 
 ## 🛠️ Tareas en curso
-- [x] Subfase 19.19: Dashboard de Docker / Docker Monitor (CSS Extraction) ✅
-- [ ] Subfase 19.20: Usuarios y acceso (listado, crear/editar, roles y permisos) 🔜
+- [x] Subfase 19.19: Usuarios y acceso (listado, crear/editar, roles y permisos) ✅
+- [ ] Subfase 19.20: Datos e importación (importar CSV, historial, logs y detalles) 🔜
 
 - Fase del ROADMAP: Fase 19 (En curso)
-
-## 🕒 Log de Acciones (2026-05-18)
-
-- 2026-05-18 — Finalizada la Subfase 19.19 (Docker Monitor), eliminando estilos locales e incrustados, mapeando a clases semánticas e inyectando un estado vacío de alta fidelidad.
-- 2026-05-18 — Corregida la regresión de padding global del `.card-body` en `dx-styles.css` (Subfase 19.18), restaurando el espaciado correcto de la Matriz de Servicios.
-
----
 
 ## 💡 Decisiones Técnicas Activas (no olvidar)
 
@@ -51,23 +45,31 @@ Avanzar en la **Fase 19 (Unificación CSS & Limpieza UI)**. Unificar y extraer t
 
 ---
 
+## 🕒 Log de Acciones (2026-05-18)
+
+- 2026-05-18 — Finalizada la Subfase 19.19 (Usuarios y Acceso), eliminando el 100% de estilos inline y locales de todas las vistas del CRUD de personal y diseñando el namespace `.dx-v2-users-*` en `dx-styles.css`.
+- 2026-05-18 — Finalizada la Subfase 19.18.1 (Docker Fleet Monitor), eliminando estilos locales e incrustados e inyectando Empty State interactivo.
+- 2026-05-18 — Corregida la regresión de padding global del `.card-body` en `dx-styles.css` (Subfase 19.18), restaurando el espaciado correcto de la Matriz de Servicios.
+
+---
+
 ## 🚀 Handover — Próximos Pasos
 
-1. Continuar con la unificación de la interfaz de administración de **Usuarios y Acceso** (Subfase 19.20).
-2. Extraer estilos locales y purgar inline CSS de las vistas de CRUD de usuarios (`index.blade.php`, `create.blade.php`, `edit.blade.php`).
+1. Continuar con la unificación de la interfaz de **Datos e Importación** (Subfase 19.20).
+2. Extraer estilos locales y purgar inline CSS de las vistas de importación CSV, historial de logs y vistas detalladas de importación (`admin/import/index.blade.php`, `admin/import/logs/index.blade.php`, `admin/import/logs/show.blade.php`).
 
 ---
 
 ## 🗂️ Archivos en Foco (Working Set)
 
 - Hoja de Estilos: `backend/public/assets/css/dx-styles.css`
-- Vista Usuarios: `backend/resources/views/admin/users/index.blade.php`
+- Vista Importaciones: `backend/resources/views/admin/import/index.blade.php`
 
 ---
 
 ## ⚠️ Errores Conocidos / Bloqueos
 
-- Ninguno. Infraestructura y Auth estables.
+- Ninguno. Infraestructura, sockets de Docker y Auth estables.
 
 ---
 

@@ -4,10 +4,12 @@
 
 @section('content')
 <div class="page-header">
-    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+    <div class="dx-v2-users-header-layout">
         <div>
-            <h1 class="page-title">Gestión de Usuarios</h1>
-            <p class="page-sub">Administra el acceso y roles del personal del portal.</p>
+            <h1 class="page-title">
+                <i class="fas fa-users dx-v2-users-title-icon"></i> Gestión de Usuarios
+            </h1>
+            <p class="dx-v2-users-subtitle">Administra el acceso y roles del personal del portal.</p>
         </div>
         <a href="{{ route('admin.users.create') }}" class="btn-primary">
             <i class="fas fa-plus me-1"></i> Nuevo Usuario
@@ -21,15 +23,15 @@
     </div>
 @endif
 
-<div class="card" style="--accent: var(--accent);">
+<div class="card">
     <div class="card-header">
-        <form action="{{ route('admin.users.index') }}" method="GET" style="display: flex; gap: 12px; width: 100%;">
-            <div style="flex: 1; position: relative;">
-                <i class="fas fa-search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 12px;"></i>
-                <input type="text" name="search" class="gui-input" style="padding-left: 34px; width: 100%;" 
+        <form action="{{ route('admin.users.index') }}" method="GET" class="dx-v2-users-filter-bar">
+            <div class="dx-v2-users-search-wrapper">
+                <i class="fas fa-search dx-v2-users-search-icon"></i>
+                <input type="text" name="search" class="gui-input dx-v2-users-search-input" 
                        placeholder="Buscar por nombre o email..." value="{{ request('search') }}">
             </div>
-            <select name="role" class="gui-input" style="width: 200px; padding-left: 12px;" onchange="this.form.submit()">
+            <select name="role" class="gui-input dx-v2-users-filter-select" onchange="this.form.submit()">
                 <option value="">Todos los roles</option>
                 @foreach($roles as $role)
                     <option value="{{ $role->slug }}" {{ request('role') == $role->slug ? 'selected' : '' }}>
@@ -37,33 +39,33 @@
                     </option>
                 @endforeach
             </select>
-            <a href="{{ route('admin.users.index') }}" class="btn-secondary" style="padding: 8px 16px;">
+            <a href="{{ route('admin.users.index') }}" class="btn-secondary dx-v2-users-btn-clear">
                 Limpiar
             </a>
         </form>
     </div>
 
-    <table class="table">
+    <table class="table dx-v2-users-table">
         <thead>
             <tr>
-                <th style="padding-left: 24px;">Usuario</th>
+                <th>Usuario</th>
                 <th>Rol</th>
                 <th>Estado</th>
                 <th>Acceso</th>
-                <th style="text-align: right; padding-right: 24px;">Acciones</th>
+                <th style="text-align: right;">Acciones</th>
             </tr>
         </thead>
         <tbody>
             @forelse($users as $user)
                 <tr>
-                    <td style="padding-left: 24px;">
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div class="avatar">
+                    <td>
+                        <div class="dx-v2-users-col-user">
+                            <div class="avatar dx-v2-users-avatar">
                                 {{ strtoupper(substr($user->name, 0, 1)) }}
                             </div>
-                            <div>
-                                <div style="font-weight: 600; color: var(--primary);">{{ $user->name }}</div>
-                                <div class="font-mono" style="font-size: 11px; color: var(--muted);">{{ $user->email }}</div>
+                            <div class="dx-v2-users-name-box">
+                                <div class="dx-v2-users-name">{{ $user->name }}</div>
+                                <div class="dx-v2-users-email">{{ $user->email }}</div>
                             </div>
                         </div>
                     </td>
@@ -77,13 +79,13 @@
                         </span>
                     </td>
                     <td>
-                        <div style="display: flex; align-items: center; gap: 8px;">
+                        <div class="dx-v2-users-status-row">
                             <button type="button" 
                                     class="switch {{ $user->is_active ? 'on' : 'off' }}" 
                                     onclick="toggleStatus({{ $user->id }}, this)"
                                     {{ $user->id === auth()->id() ? 'disabled' : '' }}>
                             </button>
-                            <span class="font-mono" style="font-size: 10px; color: var(--secondary);">
+                            <span class="dx-v2-users-status-label">
                                 {{ $user->is_active ? 'ACTIVO' : 'INACTIVO' }}
                             </span>
                         </div>
@@ -93,16 +95,18 @@
                             $lastActive = \Illuminate\Support\Facades\Redis::get("user:active:{$user->id}");
                         @endphp
                         @if($lastActive)
-                            <span class="font-mono" style="font-size: 10px; color: var(--success);">
-                                <span class="dot online" style="width: 6px; height: 6px; margin-right: 4px;"></span> ONLINE
+                            <span class="dx-v2-users-online-badge online">
+                                <span class="dx-v2-users-dot online"></span> ONLINE
                             </span>
                         @else
-                            <span class="font-mono" style="font-size: 10px; color: var(--muted);">OFFLINE</span>
+                            <span class="dx-v2-users-online-badge offline">
+                                <span class="dx-v2-users-dot"></span> OFFLINE
+                            </span>
                         @endif
                     </td>
-                    <td style="text-align: right; padding-right: 24px;">
-                        <div style="display: flex; gap: 6px; justify-content: flex-end;">
-                            <a href="{{ route('admin.users.edit', $user) }}" class="btn-secondary" style="padding: 6px 10px; font-size: 11px;">
+                    <td style="text-align: right;">
+                        <div class="dx-v2-users-actions">
+                            <a href="{{ route('admin.users.edit', $user) }}" class="btn-secondary dx-v2-users-actions-btn">
                                 <i class="fas fa-edit"></i>
                             </a>
                             @if($user->id !== auth()->id())
@@ -110,7 +114,7 @@
                                       onsubmit="return confirm('¿Estás seguro de eliminar este usuario? Esta acción no se puede deshacer.')">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn-secondary" style="padding: 6px 10px; font-size: 11px; color: var(--danger) !important;">
+                                    <button type="submit" class="btn-secondary dx-v2-users-actions-btn danger">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </form>
