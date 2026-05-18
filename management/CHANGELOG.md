@@ -15,6 +15,7 @@
 
 ### Changed
 - **Vista de Recursos y parcial de enlaces**: Refactorizadas por completo la vista principal [resources.blade.php] y su parcial [_resources.blade.php], purgando el 100% de los estilos inline locales (como tarjetas, modales y layouts flex) y eliminando por completo el bloque incrustado local `<style>`, delegando todo el control visual e interactivo a la hoja de estilos global sin alterar la reactividad de Alpine.js.
+- **Correcciones de maquetación y espaciado del modal**: Resuelto el problema de padding perimetral en la vista de tarjetas de recursos y en la ventana modal de edición/creación mediante la clase `.dx-v2-resources-body` y `.dx-v2-resources-modal-body` con `padding: 24px !important`. Corregido el grid unificado y aplicados márgenes defensivos (`margin-bottom: 20px !important`) a los campos y botones del formulario.
 
 ## [2026-05-18 11:06] — CSS Unification: Subfase 19.14 (Siemens: COD) ✅
 

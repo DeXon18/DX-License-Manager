@@ -54,7 +54,7 @@ DX License Manager
 │   │   ├── STAR-CCM+ ✅ (cdlmd)
 │   │   ├── HEEDS ✅ (RCTECH)
 │   │   ├── COD ✅ (Generador + Asistente IA)
-│   │   └── Recursos & enlaces 📋
+│   │   └── Recursos & enlaces ✅
 │   └── Moldex3D | Software de simulación de moldeo por inyección de plástico
 │       ├── Moldex3D ✅ (Parser .mac + Sincronización)
 │       └── Recursos & enlaces 📋
@@ -770,6 +770,14 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
     - [x] Definir estructura de vista antes de aplicar namespace.
     - [x] Extracción y Namespace `.dx-v2-`.
     - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Incorporados los selectores de rejilla unificada `.dx-v2-resources-card-list`, las tarjetas de recursos y su respectiva versión modal `.dx-v2-resources-modal-*` con padding y márgenes optimizados de forma nativa.
+    > - [_resources.blade.php](file:///z:/DX-License-Manager/backend/resources/views/tools/partials/_resources.blade.php) - Limpieza integral de estilos inline tanto en el listado de recursos como en el modal interactivo de creación/edición de enlaces.
+    >
+    > **Área Visual Afectada:**
+    > - Vista de Recursos de Siemens PLM y Moldex3D, y su ventana modal de adición/edición de enlaces.
 
 - [ ] **Subfase 19.16** — Moldex3D (Parser .mac + Sincronización)
     - [ ] Extracción y Namespace `.dx-v2-`.
