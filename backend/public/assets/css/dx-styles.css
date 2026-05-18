@@ -8232,3 +8232,388 @@ textarea.dx-v2-resources-modal-input {
   max-width: 800px !important;
 }
 
+/**
+ * @module    dx-v2-backups
+ * @fase      19.23
+ * @desc      Módulo de gestión de backups, histórico de copias y modal de restauración
+ * @afecta    admin/backups/index.blade.php
+ * @version   2.19.0
+ */
+
+/* ─── Cards & Headers Layout ──────────────────────────── */
+.dx-v2-backups-card-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  gap: 16px !important;
+}
+
+.dx-v2-backups-header-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 15px !important;
+}
+
+.dx-v2-backups-header-badge {
+  font-size: 0.6rem !important;
+  color: var(--dx-v2-muted) !important;
+  border: 1px solid var(--dx-v2-border) !important;
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+.dx-v2-backups-header-right {
+  display: flex !important;
+  gap: 15px !important;
+  align-items: center !important;
+}
+
+.dx-v2-backups-storage-panel {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  padding-right: 15px !important;
+  border-right: 1px solid var(--dx-v2-border) !important;
+}
+
+.dx-v2-backups-storage-label {
+  font-size: 9px !important;
+  color: var(--dx-v2-muted) !important;
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+}
+
+.dx-v2-backups-storage-value {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: var(--dx-v2-primary-base) !important;
+}
+
+.dx-v2-backups-btn-run {
+  height: 32px !important;
+  font-size: 11px !important;
+  padding: 0 12px !important;
+}
+
+.dx-v2-backups-btn-icon {
+  margin-right: 6px !important;
+}
+
+.dx-v2-backups-table-container {
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+/* ─── Table Structure ─────────────────────────────────── */
+.dx-v2-backups-table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+}
+
+.dx-v2-backups-table-thead {
+  background: var(--dx-v2-surface) !important;
+  border-bottom: 1px solid var(--dx-v2-border) !important;
+}
+
+.dx-v2-backups-table-th {
+  padding: 12px 20px !important;
+  text-align: left !important;
+  color: var(--dx-v2-muted) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+}
+
+.dx-v2-backups-table-th-right {
+  padding: 12px 20px !important;
+  text-align: right !important;
+  color: var(--dx-v2-muted) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+}
+
+.dx-v2-backups-table-tr {
+  border-bottom: 1px solid var(--dx-v2-border) !important;
+  transition: background 0.2s !important;
+}
+
+.dx-v2-backups-table-tr:hover {
+  background: var(--dx-v2-accent-dim, rgba(56, 139, 253, 0.05)) !important;
+}
+
+.dx-v2-backups-table-td {
+  padding: 14px 20px !important;
+  vertical-align: middle !important;
+}
+
+.dx-v2-backups-table-td-right {
+  padding: 14px 20px !important;
+  text-align: right !important;
+  vertical-align: middle !important;
+}
+
+.dx-v2-backups-date-group {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.dx-v2-backups-date-primary {
+  color: var(--dx-v2-primary-base) !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+}
+
+.dx-v2-backups-date-secondary {
+  color: var(--dx-v2-muted) !important;
+  font-size: 10px !important;
+  font-family: var(--font-mono) !important;
+}
+
+/* ─── Badges ─────────────────────────────────────────── */
+.dx-v2-backups-badge-type {
+  padding: 3px 8px !important;
+  border-radius: 4px !important;
+  font-size: 9px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.05em !important;
+  display: inline-block !important;
+}
+
+.dx-v2-backups-badge-type.system {
+  background: var(--dx-v2-accent-dim, rgba(56, 139, 253, 0.15)) !important;
+  color: var(--dx-v2-accent-base, #388bfd) !important;
+  border: 1px solid var(--dx-v2-accent-border, #388bfd) !important;
+}
+
+.dx-v2-backups-badge-type.manual {
+  background: var(--dx-v2-secondary-dim, rgba(107, 114, 128, 0.15)) !important;
+  color: var(--dx-v2-muted) !important;
+  border: 1px solid var(--dx-v2-border) !important;
+}
+
+.dx-v2-backups-badge-env {
+  padding: 3px 8px !important;
+  border-radius: 4px !important;
+  font-size: 9px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.05em !important;
+  display: inline-block !important;
+}
+
+.dx-v2-backups-badge-env.prod {
+  background: var(--dx-v2-success-dim, rgba(16, 185, 129, 0.15)) !important;
+  color: var(--dx-v2-success, #10b981) !important;
+  border: 1px solid var(--dx-v2-success-border, #10b981) !important;
+}
+
+.dx-v2-backups-badge-env.beta {
+  background: var(--dx-v2-accent-dim, rgba(67, 97, 238, 0.15)) !important;
+  color: var(--dx-v2-accent-base, #4361ee) !important;
+  border: 1px solid var(--dx-v2-accent-border, #4361ee) !important;
+}
+
+.dx-v2-backups-file-size {
+  font-family: var(--font-mono) !important;
+  font-size: 12px !important;
+  color: var(--dx-v2-primary-base) !important;
+}
+
+.dx-v2-backups-file-name {
+  color: var(--dx-v2-secondary) !important;
+  font-size: 11px !important;
+}
+
+.dx-v2-backups-actions-group {
+  display: flex !important;
+  gap: 8px !important;
+  justify-content: flex-end !important;
+}
+
+/* ─── Empty State ────────────────────────────────────── */
+.dx-v2-backups-empty-td {
+  padding: 40px !important;
+  text-align: center !important;
+}
+
+.dx-v2-backups-empty-icon {
+  opacity: 0.3 !important;
+  margin-bottom: 12px !important;
+  color: var(--dx-v2-muted) !important;
+}
+
+.dx-v2-backups-empty-text {
+  color: var(--dx-v2-muted) !important;
+}
+
+/* ─── Scheduling Panel ────────────────────────────────── */
+.dx-v2-backups-scheduling-card {
+  margin-top: 24px !important;
+}
+
+.dx-v2-backups-scheduling-body {
+  padding: 24px !important;
+}
+
+.dx-v2-backups-scheduling-layout {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 20px !important;
+}
+
+@media (max-width: 768px) {
+  .dx-v2-backups-scheduling-layout {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+}
+
+.dx-v2-backups-scheduling-box {
+  padding: 15px !important;
+  border-radius: 10px !important;
+  background: var(--dx-v2-accent-dim, rgba(67, 97, 238, 0.05)) !important;
+  border: 1px solid var(--dx-v2-accent-border, rgba(67, 97, 238, 0.2)) !important;
+  color: var(--dx-v2-accent-base, #4361ee) !important;
+  flex: 1 !important;
+}
+
+.dx-v2-backups-scheduling-title {
+  margin: 0 0 8px 0 !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: var(--dx-v2-accent-base, #4361ee) !important;
+}
+
+.dx-v2-backups-scheduling-desc {
+  margin: 0 !important;
+  font-size: 12px !important;
+  line-height: 1.6 !important;
+  opacity: 0.9 !important;
+}
+
+.dx-v2-backups-countdown-container {
+  width: 280px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+
+@media (max-width: 768px) {
+  .dx-v2-backups-countdown-container {
+    width: 100% !important;
+  }
+}
+
+.dx-v2-backups-countdown-label {
+  font-size: 11px !important;
+  color: var(--dx-v2-muted) !important;
+  text-transform: uppercase !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.05em !important;
+}
+
+.dx-v2-backups-countdown-value {
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  color: var(--dx-v2-primary-base) !important;
+}
+
+.dx-v2-backups-progress-bar {
+  height: 4px !important;
+  background: var(--dx-v2-border) !important;
+  border-radius: 2px !important;
+  margin-top: 4px !important;
+  overflow: hidden !important;
+}
+
+.dx-v2-backups-progress-fill {
+  height: 100% !important;
+  background: var(--dx-v2-accent-base, #4361ee) !important;
+  transition: width 1s ease-in-out !important;
+}
+
+/* ─── Modal & Confirmation ───────────────────────────── */
+.dx-v2-backups-modal-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(0, 0, 0, 0.8) !important;
+  backdrop-filter: blur(4px) !important;
+  z-index: 1000 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 20px !important;
+}
+
+.dx-v2-backups-modal-card {
+  max-width: 450px !important;
+  width: 100% !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+}
+
+.dx-v2-backups-modal-header {
+  background: var(--dx-v2-danger-dim, rgba(239, 68, 68, 0.05)) !important;
+  border-bottom: 1px solid var(--dx-v2-danger-border, rgba(239, 68, 68, 0.1)) !important;
+}
+
+.dx-v2-backups-modal-title {
+  color: var(--dx-v2-danger, #ef4444) !important;
+}
+
+.dx-v2-backups-modal-body {
+  padding: 24px !important;
+}
+
+.dx-v2-backups-modal-msg {
+  color: var(--dx-v2-primary-base) !important;
+  font-size: 14px !important;
+  margin-bottom: 16px !important;
+}
+
+.dx-v2-backups-modal-file {
+  color: var(--dx-v2-accent-base, #388bfd) !important;
+  display: block !important;
+  margin-top: 8px !important;
+}
+
+.dx-v2-backups-modal-warning-box {
+  background: var(--dx-v2-danger-dim, rgba(239, 68, 68, 0.05)) !important;
+  border-left: 3px solid var(--dx-v2-danger, #ef4444) !important;
+  padding: 12px !important;
+  border-radius: 4px !important;
+  margin-bottom: 24px !important;
+}
+
+.dx-v2-backups-modal-warning-text {
+  color: var(--dx-v2-danger, #ef4444) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  margin: 0 !important;
+}
+
+.dx-v2-backups-modal-label {
+  font-size: 10px !important;
+  color: var(--dx-v2-muted) !important;
+  margin-bottom: 8px !important;
+}
+
+.dx-v2-backups-modal-input {
+  width: 100% !important;
+  text-align: center !important;
+  letter-spacing: 0.1em !important;
+}
+
+.dx-v2-backups-modal-actions {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 12px !important;
+  margin-top: 24px !important;
+}
+
+.dx-v2-backups-modal-btn {
+  padding: 10px !important;
+}
+
+
