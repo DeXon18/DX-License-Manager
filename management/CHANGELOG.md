@@ -1,6 +1,25 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-18 16:00] — CSS Unification: Subfase 19.25 (Logs y Auditoría) ✅
+
+### Added
+- **Namespace Semántico de Logs y Auditoría (`.dx-v2-audit-*`)**: Diseñado e inyectado al final de [dx-styles.css] (más de 500 líneas de código CSS optimizado) para estructurar el panel de actividad, logs de Laravel y correos SMTP sin dependencias estáticas:
+  - Banners de estado de sesión unificados para éxitos y errores `.dx-v2-audit-banner-success` y `.dx-v2-audit-banner-error`.
+  - Pestañas de navegación e interactividad avanzada `.dx-v2-audit-tabs-container` e interactores `.dx-v2-audit-tab-link` con soporte para estados activos (`.active`) y transiciones fluidas.
+  - Formulario de búsqueda rápida y selectores de filtrado ergonómicos `.dx-v2-audit-search-card`, `.dx-v2-audit-filter-form`, `.dx-v2-audit-filter-field`, `.dx-v2-audit-filter-label` e inputs.
+  - Cabecera del panel y botón de reinicio `.dx-v2-audit-card-header`, `.dx-v2-audit-header-title-block` y `.dx-v2-audit-reset-btn` con efecto hover sutil y brillo.
+  - Indicadores y contadores métricos en vivo `.dx-v2-audit-stats-group`, `.dx-v2-audit-stat-box` (en sus variantes estándar y danger-brand) con iconos alineados y tipografías HSL calculadas.
+  - Rejillas de datos de alta densidad `.dx-v2-audit-table-wrapper`, `.dx-v2-audit-table`, `.dx-v2-audit-table-thead`, `.dx-v2-audit-table-tr:hover` y celdas estilizadas `.dx-v2-audit-td-timestamp`, `.dx-v2-audit-td-ip` con fuentes monospace.
+  - Badges semánticas de nivel de alerta `.dx-v2-audit-badge-level` (info, warning, error) y perfil de usuario con inicial avatar dinámico `.dx-v2-audit-user-badge`.
+  - Consola de terminal para trazas de laravel.log `.dx-v2-audit-console-container`, `.dx-v2-audit-console-scroller` y logs expandibles `.dx-v2-audit-console-item` con Alpine.js, integrando atenuador automático de líneas procedentes de `/vendor/` (`opacity: 0.4; font-size: 10px;`) para mejorar el diagnóstico técnico.
+  - Estructuras y estados de correos SMTP enviados y fallidos `.dx-v2-audit-badge-email-status` (sent/failed).
+
+### Changed
+- **Vista de Auditoría e Historial (`admin/audit/index.blade.php`)**: Refactorizada por completo para purgar el 100% de los estilos en línea estáticos y dinámicos (badges de nivel, filas hover, contadores métricos, pestañas activas, stack traces colapsables) y eliminar una hoja de estilos `<style>` local de más de 80 líneas, migrando toda la capa de diseño de las tres pestañas al namespace semántico centralizado.
+
+---
+
 ## [2026-05-18 15:58] — CSS Unification: Subfase 19.24 (Integraciones IA) ✅
 
 ### Added
