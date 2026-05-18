@@ -791,10 +791,13 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
     > **Área Visual Afectada:**
     > - Herramienta individual del Auditor Moldex3D (dropzone de subida, tarjeta de metadatos de auditoría y módulos detectados, paneles laterales).
 
-- [ ] **Subfase 19.17** — Moldex3D: Recursos & enlaces 
-    - [ ] Definir estructura de vista antes de aplicar namespace.
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
+- [x] **Subfase 19.17** — Moldex3D: Recursos & enlaces ✅ COMPLETADA
+    - [x] Definir estructura de vista antes de aplicar namespace.
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+
+    > **Archivos Afectados:**
+    > - Completado de forma unificada en la [Subfase 19.15](file:///z:/DX-License-Manager/management/ROADMAP.md#L769) junto a Siemens, compartiendo las mismas vistas [resources.blade.php](file:///z:/DX-License-Manager/backend/resources/views/tools/resources.blade.php) y su parcial [_resources.blade.php](file:///z:/DX-License-Manager/backend/resources/views/tools/partials/_resources.blade.php).
 
 ---
 
