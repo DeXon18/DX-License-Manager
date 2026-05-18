@@ -1,14 +1,28 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-18 10:35] — CSS Unification: Subfase 19.7 (Importación CSV) ✅
+
+### Added
+- **Namespace de Importación (`.dx-v2-import-*`)**: Diseñadas clases semánticas dedicadas en [dx-styles.css] para aislar y normalizar el módulo de importación de datos y visualización de logs históricos:
+  - Estructuras `.dx-v2-import-dropzone` y `.dx-v2-import-dropzone-inner` para la carga visual interactiva de ficheros con transiciones suaves en hover y colores adaptados a la base visual.
+  - El grid y la tabla del protocolo de mapeo de datos de alta densidad `.dx-v2-import-mapping-grid` y `.dx-v2-import-mapping-item`.
+  - Tarjetas estadísticas compactas con soporte de estado para avisos y fallos, y los contenedores de metadatos `.dx-v2-import-metadata-row`.
+  - Componente estilizado reutilizable `.dx-v2-import-btn-icon` para los listados del historial.
+
+### Changed
+- **Vista Principal de Importación**: Refactorizada [index.blade.php], eliminando el 100% de los estilos inline locales de la tarjeta de carga, dropzone y protocolo de mapeo, delegando la visualización a las clases semánticas del namespace.
+- **Historial de Logs**: Limpiado [logs/index.blade.php] al remover el bloque `<style>` incrustado y los estilos locales de alineaciones y botones de acción, migrando todo al estándar global.
+- **Detalle de Log**: Limpiado el 100% de los estilos inline locales en [logs/show.blade.php] de breadcrumbs, envolturas estadísticas y metadatos.
+
 ## [2026-05-18 10:30] — CSS Unification: Subfase 19.6 (Clientes: Licencias) ✅
 
 ### Fixed
-- **Variables CSS rotas**: Corregidas variables inexistentes (`--dx-v2-surface-raised` y `--dx-v2-text-muted`) en [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) por sus equivalentes unificados (`--dx-v2-raised` y `--dx-v2-muted`), reparando la renderización de la cabecera del daemon, la tabla de productos y el historial de auditoría de licencias.
+- **Variables CSS rotas**: Corregidas variables inexistentes (`--dx-v2-surface-raised` y `--dx-v2-text-muted`) en [dx-styles.css] por sus equivalentes unificados (`--dx-v2-raised` y `--dx-v2-muted`), reparando la renderización de la cabecera del daemon, la tabla de productos y el historial de auditoría de licencias.
 - **Soporte x-cloak**: Añadida la regla global `[x-cloak] { display: none !important; }` en la hoja de estilos global para manejar de forma nativa la visibilidad reactiva de Alpine.js.
 
 ### Changed
-- **Limpieza de estilos inline**: Removidos todos los estilos inline `style="display: none;"` de los tabs interactivos y modales en la vista detallada de clientes [show.blade.php](file:///z:/DX-License-Manager/backend/resources/views/clients/show.blade.php), sustituyéndolos por la directiva limpia `x-cloak`.
+- **Limpieza de estilos inline**: Removidos todos los estilos inline `style="display: none;"` de los tabs interactivos y modales en la vista detallada de clientes [show.blade.php], sustituyéndolos por la directiva limpia `x-cloak`.
 
 ## [2026-05-17 15:50] — CSS Unification: Subfase 19.4 & 19.5 (Dashboard & Clientes) ✅
 
