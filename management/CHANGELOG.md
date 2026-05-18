@@ -1,6 +1,20 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-18 10:59] — CSS Unification: Subfase 19.12 (Siemens: STAR-CCM+) ✅
+
+### Added
+- **Namespace de STAR-CCM+ (`.dx-v2-tools-star-*`)**: Diseñadas e integradas clases semánticas dedicadas en [dx-styles.css] para modularizar la visualización y mejorar la ergonomía de la herramienta individual de STAR-CCM+:
+  - Estructura flexible de alineación de cabecera `.dx-v2-tools-star-header-layout` y su contenedor de icono traslúcido estilizado `.dx-v2-tools-star-header-icon`.
+  - Títulos y subtítulos ergonómicos `.dx-v2-tools-star-header-title` y `.dx-v2-tools-star-header-sub`.
+  - Envoltura modular del cuerpo de la tarjeta `.dx-v2-tools-star-card-body` con padding uniforme de 24px, y su cabecera espacial `.dx-v2-tools-star-card-header`.
+  - Zona de arrastre responsiva interactiva `.dx-v2-tools-star-dropzone` y sus subclases y estados (`.dragging`).
+  - Grid responsivo de especificaciones técnicas `.dx-v2-tools-star-specs-grid` y filas de alineación compactas `.dx-v2-tools-star-spec-row` y código `.dx-v2-tools-star-spec-code`.
+  - Contenedor lateral de avisos de almacenamiento `.dx-v2-tools-star-sidebar-warning` y bloques de daemons e información `.dx-v2-tools-star-sidebar-info`.
+
+### Changed
+- **Vista de la Herramienta STAR-CCM+**: Refactorizada por completo la vista [star-ccm.blade.php], purgando el 100% de los estilos inline locales redundantes en la cabecera de página, tarjetas de proceso, dropzone de arrastre, botón de acción y paneles laterales, delegando la maquetación y la interactividad a las clases unificadas del namespace global.
+
 ## [2026-05-18 10:55] — CSS Unification: Subfase 19.11 (Siemens: NX Suite) ✅
 
 ### Added
