@@ -9,13 +9,13 @@
         <a href="{{ route('tools.index') }}">Herramientas</a> ›
         HEEDS
     </div>
-    <div style="display: flex; align-items: center; gap: 12px; margin-top: 8px;">
-        <div class="tool-icon-fallback" style="background: var(--vendor-siemens-dark-muted, rgba(0,153,153,0.1)); color: var(--vendor-siemens, #009999); width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+    <div class="dx-v2-tools-heeds-header-layout">
+        <div class="dx-v2-tools-heeds-header-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
         </div>
         <div>
-            <h1 class="page-title" style="margin: 0;">HEEDS <span class="vendor-label siemens" style="font-size: 10px; padding: 2px 6px; margin-left: 8px;">Siemens Digital Industries</span></h1>
-            <p class="page-sub" style="margin: 0;">Software de exploración y optimización de diseño multidisciplinar</p>
+            <h1 class="dx-v2-tools-heeds-header-title">HEEDS <span class="vendor-label siemens">Siemens Digital Industries</span></h1>
+            <p class="dx-v2-tools-heeds-header-sub">Software de exploración y optimización de diseño multidisciplinar</p>
         </div>
     </div>
 </div>
@@ -42,13 +42,13 @@
     }">
     <div class="main-panel">
         <!-- Bloque 1: Carga -->
-        <div class="card" style="margin-bottom: 24px;">
-            <div class="card-header" style="justify-content: space-between;">
+        <div class="card mb-4">
+            <div class="card-header dx-v2-tools-heeds-card-header">
                 <span class="card-title">Procesamiento de Licencia (rctech → saltd)</span>
                 <span class="badge" style="background: rgba(0,153,153,0.1); color: var(--vendor-siemens, #009999); border: 1px solid rgba(0,153,153,0.2);">MOTOR SALT (29000)</span>
             </div>
             
-            <div style="padding: 24px;">
+            <div class="dx-v2-tools-heeds-card-body">
                 <!-- Error Message Alert -->
                 <template x-if="errorMessage">
                     <div x-transition 
@@ -61,33 +61,32 @@
                 <form action="{{ route('tools.heeds.process') }}" method="POST" enctype="multipart/form-data" id="heeds-form" @submit.prevent="validateAndSubmit">
                     @csrf
                     
-                    <div class="dropzone" 
+                    <div class="dx-v2-tools-heeds-dropzone" 
                          id="dropzone"
-                         :class="isDragging ? 'dragging theme-teal' : ''"
+                         :class="isDragging ? 'dragging' : ''"
                          @dragover.prevent="isDragging = true"
                          @dragleave.prevent="isDragging = false"
                          @drop.prevent="isDragging = false; $refs.fileInput.files = $event.dataTransfer.files; fileName = $refs.fileInput.files[0].name; validateAndSubmit();"
-                         @click="$refs.fileInput.click()"
-                         style="height: 160px; border-style: dashed; border-width: 1px; border-color: var(--border); border-radius: 4px; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; transition: all 0.2s; background: transparent;">
+                         @click="$refs.fileInput.click()">
                         
-                        <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                        <div class="dx-v2-tools-heeds-dropzone-content">
                             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--vendor-siemens, #009999)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
                             
                             <template x-if="!fileName">
-                                <div class="dropzone-text" style="font-size: 14px; color: var(--primary);">Arrastre archivo .lic aquí o haga clic</div>
+                                <div class="dx-v2-tools-heeds-dropzone-title">Arrastre archivo .lic aquí o haga clic</div>
                             </template>
                             <template x-if="fileName">
-                                <div class="dropzone-text" style="font-size: 14px; font-weight: 500; color: var(--vendor-siemens, #009999);" x-text="'Seleccionado: ' + fileName"></div>
+                                <div class="dx-v2-tools-heeds-dropzone-title" style="color: var(--vendor-siemens, #009999) !important;" x-text="'Seleccionado: ' + fileName"></div>
                             </template>
                             
-                            <div class="dropzone-subtext" style="font-size: 11px; opacity: 0.6; color: var(--secondary);">Daemon detectado: rctech</div>
+                            <div class="dx-v2-tools-heeds-dropzone-subtitle">Daemon detectado: rctech</div>
                         </div>
                         <input type="file" name="license_file" x-ref="fileInput" id="file-input" style="display: none;" @change="if($event.target.files.length > 0) fileName = $event.target.files[0].name;">
                     </div>
 
-                    <div style="display: flex; justify-content: flex-end;">
-                        <button type="submit" class="btn-primary" style="background: var(--vendor-siemens, #009999); border-color: var(--vendor-siemens, #009999); padding: 10px 24px; font-weight: 600; letter-spacing: 0.5px; display: flex; align-items: center;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/><polyline points="16 16 12 12 8 16"/></svg>
+                    <div class="dx-v2-tools-heeds-btn-container">
+                        <button type="submit" class="btn-primary" style="background: var(--vendor-siemens, #009999); border-color: var(--vendor-siemens, #009999); padding: 10px 24px; font-weight: 600; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/><polyline points="16 16 12 12 8 16"/></svg>
                             PROCESAR Y AUDITAR
                         </button>
                     </div>
@@ -100,36 +99,36 @@
             <div class="card-header">
                 <span class="card-title">Especificaciones HEEDS</span>
             </div>
-            <div style="padding: 24px;">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
-                    <div style="display: flex; flex-direction: column; gap: 12px;">
-                        <div style="font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; margin-bottom: 4px;">Auditoría IA (RCTECH)</div>
+            <div class="dx-v2-tools-heeds-card-body">
+                <div class="dx-v2-tools-heeds-specs-grid">
+                    <div class="dx-v2-tools-heeds-specs-column">
+                        <div class="dx-v2-tools-heeds-specs-title">Auditoría IA (RCTECH)</div>
                         @foreach([
                             ['A1', 'Parser de Cabecera', 'Extracción precisa desde Siemens Comment Block'],
                             ['A2', 'Vendor String', 'Soporte fallback para sold-to/cliente'],
                             ['A3', 'Integridad', 'Validación de fecha de expiración en INCREMENT']
                         ] as $item)
-                        <div style="display: flex; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
-                            <code style="min-width: 40px; font-family: var(--font-mono); font-size: 10px; color: var(--vendor-siemens, #009999);">{{ $item[0] }}</code>
-                            <div style="flex: 1;">
-                                <div style="font-size: 12px; font-weight: 500; color: var(--primary);">{{ $item[1] }}</div>
-                                <div style="font-size: 10px; color: var(--muted);">{{ $item[2] }}</div>
+                        <div class="dx-v2-tools-heeds-spec-row">
+                            <code class="dx-v2-tools-heeds-spec-code">{{ $item[0] }}</code>
+                            <div class="dx-v2-tools-heeds-spec-details">
+                                <div class="dx-v2-tools-heeds-spec-name">{{ $item[1] }}</div>
+                                <div class="dx-v2-tools-heeds-spec-desc">{{ $item[2] }}</div>
                             </div>
                         </div>
                         @endforeach
                     </div>
-                    <div style="display: flex; flex-direction: column; gap: 12px;">
-                        <div style="font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; margin-bottom: 4px;">Nomenclatura HEEDS</div>
+                    <div class="dx-v2-tools-heeds-specs-column">
+                        <div class="dx-v2-tools-heeds-specs-title">Nomenclatura HEEDS</div>
                         @foreach([
                             ['N1', 'Versión V', 'Inclusión automática de versión mayor'],
                             ['N2', 'Tag Valida', 'Identificación de estado contractual'],
                             ['N3', 'Tag TEMP', 'Identificación de licencias temporales']
                         ] as $item)
-                        <div style="display: flex; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
-                            <code style="min-width: 40px; font-family: var(--font-mono); font-size: 10px; color: var(--vendor-siemens, #009999);">{{ $item[0] }}</code>
-                            <div style="flex: 1;">
-                                <div style="font-size: 12px; font-weight: 500; color: var(--primary);">{{ $item[1] }}</div>
-                                <div style="font-size: 10px; color: var(--muted);">{{ $item[2] }}</div>
+                        <div class="dx-v2-tools-heeds-spec-row">
+                            <code class="dx-v2-tools-heeds-spec-code">{{ $item[0] }}</code>
+                            <div class="dx-v2-tools-heeds-spec-details">
+                                <div class="dx-v2-tools-heeds-spec-name">{{ $item[1] }}</div>
+                                <div class="dx-v2-tools-heeds-spec-desc">{{ $item[2] }}</div>
                             </div>
                         </div>
                         @endforeach
@@ -143,18 +142,18 @@
     <div class="sidebar-panel">
         @include('tools.partials._engine_selector')
 
-        <div style="background: var(--warning-bg); border: 1px solid var(--warn-border); padding: 16px; border-radius: 4px;">
-            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--warning);">
+        <div class="dx-v2-tools-heeds-sidebar-warning">
+            <div class="dx-v2-tools-heeds-sidebar-warning-header">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                <span style="font-size: 12px; font-weight: 700; text-transform: uppercase;">Aviso de Almacenamiento</span>
+                <span class="dx-v2-tools-heeds-sidebar-warning-title">Aviso de Almacenamiento</span>
             </div>
-            <div style="font-size: 12px; color: var(--secondary); line-height: 1.6;">
-                Las licencias <strong>Temporales</strong> solo se transforman para descarga inmediata. <span style="color: var(--danger); font-weight: 600;">NO</span> se guardarán en el servidor ni afectarán el inventario.
+            <div class="dx-v2-tools-heeds-sidebar-warning-desc">
+                Las licencias <strong>Temporales</strong> solo se transforman para descarga inmediata. <strong>NO</strong> se guardarán en el servidor ni afectarán el inventario.
             </div>
         </div>
 
-        <div style="margin-top: 16px; padding: 16px; border: 1px solid var(--border-subtle); border-radius: 4px; background: var(--card-bg);">
-            <div style="font-size: 11px; color: var(--muted); line-height: 1.5;">
+        <div class="dx-v2-tools-heeds-sidebar-info">
+            <div class="dx-v2-tools-heeds-sidebar-info-text">
                 <strong>Transformación SALT (HEEDS):</strong><br>
                 - <strong>SERVER PORT:</strong> 29000<br>
                 - <strong>VENDOR PORT:</strong> 29001<br>
