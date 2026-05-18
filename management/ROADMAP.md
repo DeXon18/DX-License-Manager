@@ -693,10 +693,17 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
     > - Generador de Certificados de Cese (COD), asistente de Composite por IA, envoltura interactiva para arrastrar ficheros y listados de contactos corporativos.
 
 
-- [ ] **Subfase 19.9** — Planificador de Renovaciones
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.9** — Planificador de Renovaciones ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline y eventos mouseover/mouseout locales.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Incorporado el namespace `.dx-v2-planner-*` con clases estructurales y decorativas completas para el planificador, cabecera flexible, dropdown de mes custom, chips interactivos de estado y cuadrícula de alta densidad.
+    > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/renewal-planner/index.blade.php) - Refactorización íntegra purgando más de 60 atributos de estilos inline, eliminando controladores `onmouseover` / `onmouseout` e implementando variables de entorno dinámicas CSS.
+    >
+    > **Área Visual Afectada:**
+    > - Planificador de Renovaciones, selector interactivo de meses, chips segmentados de filtrado y tabla de contratos activos.
 
 ---
 
