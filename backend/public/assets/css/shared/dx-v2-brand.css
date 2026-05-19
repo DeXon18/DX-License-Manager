@@ -1,0 +1,124 @@
+/**
+ * @module    dx-v2-brand
+ * @fase      21.3
+ * @desc      Estilos del lockup, mark interactivo con efecto de barrido scan y wordmark del logo oficial de DeXon (DX).
+ * @afecta    [layouts/app.blade.php, auth/login.blade.php]
+ * @version   2.21.0
+ */
+
+/* Lockup Container */
+.dx-lockup {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  user-select: none;
+  text-decoration: none;
+}
+
+header .dx-lockup {
+  margin-right: 60px; /* Alineación perfecta con el inicio del contenido principal */
+}
+
+.main-footer .dx-lockup {
+  margin-bottom: 20px; /* Separación con el texto inferior del footer */
+}
+
+/* Square Logomark */
+.dx-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 7px;
+  background: var(--dx-v2-accent-base, #388BFD);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(56, 139, 253, 0.25);
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dx-mark:active {
+  transform: scale(0.95);
+}
+
+.dx-mark span {
+  color: #ffffff;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.5px;
+  position: relative;
+  z-index: 2;
+}
+
+/* Pseudo-element Scan Line */
+.dx-mark::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -100%;
+  width: 100%;
+  height: 40%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    transparent
+  );
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Trigger scan line animation on hover */
+.dx-mark:hover::after {
+  animation: dx-scan 0.5s ease forwards;
+}
+
+@keyframes dx-scan {
+  from { top: -100%; }
+  to   { top: 100%; }
+}
+
+/* Wordmark Text */
+.dx-wordmark {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.dx-name {
+  display: block;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: -0.4px;
+  color: #0D1117;
+  line-height: 1.1;
+  transition: color 0.2s ease;
+}
+
+.dx-sub {
+  display: block;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 1.3px;
+  color: #6B7280;
+  text-transform: uppercase;
+  margin-top: 2px;
+  transition: color 0.2s ease;
+}
+
+/* Dark mode overrides */
+.dark .dx-name,
+[data-theme="dark"] .dx-name {
+  color: #E6EDF3;
+}
+
+.dark .dx-sub,
+[data-theme="dark"] .dx-sub {
+  color: #8B949E;
+}
