@@ -929,10 +929,17 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
 
 ## 🔷 EXCLUSIONES DOCUMENTADAS
 
-- [ ] **Subfase 19.29** — Revisión (no refactor) de Emails & PDFs
-    - [ ] Inventariar `style=` inline existente y justificar excepción.
-    - [ ] Verificar que no hereden variables `--dx-v2-*` que se rompan en clientes de correo.
-    - [ ] Registrar excepciones en CHANGELOG de la fase.
+- [x] **Subfase 19.29** — Revisión (no refactor) de Emails & PDFs ✅ COMPLETADA
+    - [x] Inventariar `style=` inline existente y justificar excepción.
+    - [x] Verificar que no hereden variables `--dx-v2-*` que se rompan en clientes de correo o generador PDF.
+    - [x] Registrar excepciones en CHANGELOG de la fase.
+    > **Evidencia:**
+    > - **Inventario de Exclusiones Justificadas**:
+    >   1. `emails/global-license-report.blade.php`: Estilos inline y tablas de maquetación tradicionales para compatibilidad absoluta con clientes de correo (Gmail, Outlook, iOS Mail).
+    >   2. `emails/weekly-license-alert.blade.php`: Hoja de estilos `<style>` local autocontenida y sin dependencias.
+    >   3. `emails/weekly-report.blade.php`: Bloque `<style>` minimalista de compatibilidad y variables de color plano estáticas.
+    >   4. `pdf/cod-template.blade.php`: Estilos inline y fuentes locales autohospedadas (Calibri) necesarias para la compilación hermética de Dompdf sin dependencias de red ni del compilador de assets.
+    > - **Aislamiento de Entorno**: Verificado que ninguno de estos archivos hereda variables dinámicas CSS `--dx-v2-*` ni enlaza hojas de estilos externas complejas, garantizando robustez y cero roturas visuales en destinatarios.
 
 ---
 
