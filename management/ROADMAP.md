@@ -1006,24 +1006,24 @@ Logotipo y marca premium para la cabecera de `beta.dxpro.es` y entornos de produ
 
 ## 🔷 SUBFASES DE LA FASE 20
 
-- [ ] **Subfase 20.1** — **Registro y Estructuración**
+- [x] **Subfase 20.1** — **Registro y Estructuración** ✅ COMPLETADA
     - [x] Agregar la Fase 20 al final de `ROADMAP.md` y planificar pasos atómicos.
     - [x] Registrar la fase e inventario de objetivos en `CHANGELOG.md`.
 
-- [ ] **Subfase 20.2** — **Estilos del Logotipo en `dx-styles.css`**
-    - [ ] Incorporar el namespace `.dx-lockup`, `.dx-mark` y `.dx-wordmark` con variables semánticas HSL y fuentes del sistema (`Inter`).
-    - [ ] Desarrollar la animación dinámica `@keyframes dx-scan` con pseudo-elemento `::after` para el efecto **scan line** táctil al hacer hover.
-    - [ ] Validar compatibilidad en clases oscuras (`.dark` y `[data-theme="dark"]`).
+- [x] **Subfase 20.2** — **Estilos del Logotipo en `dx-styles.css`** ✅ COMPLETADA
+    - [x] Incorporar el namespace `.dx-lockup`, `.dx-mark` y `.dx-wordmark` con variables semánticas HSL y fuentes del sistema (`Inter`).
+    - [x] Desarrollar la animación dinámica `@keyframes dx-scan` con pseudo-elemento `::after` para el efecto **scan line** táctil al hacer hover.
+    - [x] Validar compatibilidad en clases oscuras (`.dark` y `[data-theme="dark"]`).
 
-- [ ] **Subfase 20.3** — **Generación de Ficheros SVG Standalone & Favicon**
-    - [ ] Crear el fichero SVG para el lockup en modo claro `logo-light.svg` en `backend/public/assets/images/`.
-    - [ ] Crear el fichero SVG para el lockup en modo oscuro `logo-dark.svg`.
-    - [ ] Crear el fichero SVG para la marca sola `logo-mark.svg` y configurarlo como Favicon oficial del portal.
+- [x] **Subfase 20.3** — **Generación de Ficheros SVG Standalone & Favicon** ✅ COMPLETADA
+    - [x] Crear el fichero SVG para el lockup en modo claro `logo-light.svg` en `backend/public/assets/images/`.
+    - [x] Crear el fichero SVG para el lockup en modo oscuro `logo-dark.svg`.
+    - [x] Crear el fichero SVG para la marca sola `logo-mark.svg` y configurarlo como Favicon oficial del portal.
 
-- [ ] **Subfase 20.4** — **Integración de Vistas en el Shell del Portal**
-    - [ ] Reemplazar la cabecera del Layout Principal (`layouts/app.blade.php`) por el lockup del logotipo interactivo HTML.
-    - [ ] Integrar el logotipo en las vistas de Autenticación (`auth/login`, registro, etc.).
-    - [ ] Validar la correcta visualización reactiva con Alpine.js.
+- [x] **Subfase 20.4** — **Integración de Vistas en el Shell del Portal** ✅ COMPLETADA
+    - [x] Reemplazar la cabecera del Layout Principal (`layouts/app.blade.php`) por el lockup del logotipo interactivo HTML.
+    - [x] Integrar el logotipo en las vistas de Autenticación (`auth/login`, registro, etc.).
+    - [x] Validar la correcta visualización reactiva con Alpine.js.
 
 - [ ] **Subfase 20.5** — **Control de Calidad, Hardening y Cierre**
     - [ ] Verificar el efecto scan line al hacer hover a 36px y 192px en navegadores reales.
