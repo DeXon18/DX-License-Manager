@@ -48,59 +48,61 @@
     <!-- Contratos Tab -->
     <div x-show="tab === 'contracts'" class="tab-content">
         <div class="card">
-            <table class="table text-sm">
-                <thead>
-                    <tr>
-                        <th>ContraHeader</th>
-                        <th>Vendor</th>
-                        <th>Producto</th>
-                        <th>Fin Contrato</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($client->contracts as $contract)
-                    <tr>
-                        <td class="font-bold">{{ $contract->contract_number }}</td>
-                        <td class="font-bold">
-                            @if($contract->vendor->name == 'Siemens')
-                                <span class="vendor-chip"><span class="dx-v2-clients-vendor-dot siemens"></span> Siemens</span>
-                            @elseif($contract->vendor->name == 'Moldex3D')
-                                <span class="vendor-chip"><span class="dx-v2-clients-vendor-dot moldex"></span> Moldex3D</span>
-                            @else
-                                {{ $contract->vendor->name }}
-                            @endif
-                        </td>
-                        <td class="font-bold">{{ $contract->type_product }}</td>
-                        <td class="font-bold">{{ $contract->end_date ? $contract->end_date->format('d/m/Y') : '—' }}</td>
-                        <td>
-                            @php
-                                $status = trim($contract->status ?: 'vacio');
-                                $statusMap = [
-                                    'vacio' => ['label' => 'Sin estado', 'class' => 'badge-muted', 'icon' => 'fa-regular fa-circle-question'],
-                                    'Ofertado' => ['label' => 'Ofertado', 'class' => 'badge-info', 'icon' => 'fa-solid fa-file-signature'],
-                                    'En negociación' => ['label' => 'En negociación', 'class' => 'badge-primary', 'icon' => 'fa-solid fa-handshake'],
-                                    'Aceptado por el cliente' => ['label' => 'Aceptado', 'class' => 'badge-accent', 'icon' => 'fa-solid fa-circle-check'],
-                                    'Procesado (M) - Pte fact.' => ['label' => 'Procesado', 'class' => 'badge-warn', 'icon' => 'fa-solid fa-gears'],
-                                    'Facturado - Pte proc. (M)' => ['label' => 'Facturado', 'class' => 'badge-warning', 'icon' => 'fa-solid fa-file-invoice-dollar'],
-                                    'Cerrado' => ['label' => 'Cerrado', 'class' => 'badge-success', 'icon' => 'fa-solid fa-lock'],
-                                    'Baja' => ['label' => 'Baja', 'class' => 'badge-danger', 'icon' => 'fa-solid fa-circle-xmark'],
-                                ];
-                                $data = $statusMap[$status] ?? $statusMap['vacio'];
-                            @endphp
-                            <span class="badge {{ $data['class'] }}">
-                                <i class="{{ $data['icon'] }} dx-v2-clients-status-icon"></i>
-                                {{ $data['label'] }}
-                            </span>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" class="text-center py-12 muted">No hay contratos registrados para este cliente.</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
+            <div class="dx-v2-ui-table-wrapper">
+                <table class="dx-v2-ui-table">
+                    <thead>
+                        <tr>
+                            <th>ContraHeader</th>
+                            <th>Vendor</th>
+                            <th>Producto</th>
+                            <th>Fin Contrato</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($client->contracts as $contract)
+                        <tr>
+                            <td class="font-bold">{{ $contract->contract_number }}</td>
+                            <td class="font-bold">
+                                @if($contract->vendor->name == 'Siemens')
+                                    <span class="vendor-chip"><span class="dx-v2-clients-vendor-dot siemens"></span> Siemens</span>
+                                @elseif($contract->vendor->name == 'Moldex3D')
+                                    <span class="vendor-chip"><span class="dx-v2-clients-vendor-dot moldex"></span> Moldex3D</span>
+                                @else
+                                    {{ $contract->vendor->name }}
+                                @endif
+                            </td>
+                            <td class="font-bold">{{ $contract->type_product }}</td>
+                            <td class="font-bold">{{ $contract->end_date ? $contract->end_date->format('d/m/Y') : '—' }}</td>
+                            <td>
+                                @php
+                                    $status = trim($contract->status ?: 'vacio');
+                                    $statusMap = [
+                                        'vacio' => ['label' => 'Sin estado', 'class' => 'badge-muted', 'icon' => 'fa-regular fa-circle-question'],
+                                        'Ofertado' => ['label' => 'Ofertado', 'class' => 'badge-info', 'icon' => 'fa-solid fa-file-signature'],
+                                        'En negociación' => ['label' => 'En negociación', 'class' => 'badge-primary', 'icon' => 'fa-solid fa-handshake'],
+                                        'Aceptado por el cliente' => ['label' => 'Aceptado', 'class' => 'badge-accent', 'icon' => 'fa-solid fa-circle-check'],
+                                        'Procesado (M) - Pte fact.' => ['label' => 'Procesado', 'class' => 'badge-warn', 'icon' => 'fa-solid fa-gears'],
+                                        'Facturado - Pte proc. (M)' => ['label' => 'Facturado', 'class' => 'badge-warning', 'icon' => 'fa-solid fa-file-invoice-dollar'],
+                                        'Cerrado' => ['label' => 'Cerrado', 'class' => 'badge-success', 'icon' => 'fa-solid fa-lock'],
+                                        'Baja' => ['label' => 'Baja', 'class' => 'badge-danger', 'icon' => 'fa-solid fa-circle-xmark'],
+                                    ];
+                                    $data = $statusMap[$status] ?? $statusMap['vacio'];
+                                @endphp
+                                <span class="badge {{ $data['class'] }}">
+                                    <i class="{{ $data['icon'] }} dx-v2-clients-status-icon"></i>
+                                    {{ $data['label'] }}
+                                </span>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="5" class="text-center py-12 muted">No hay contratos registrados para este cliente.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
 
             <!-- Card Footer Legend -->
             <div class="dx-v2-clients-legend-wrapper">
@@ -313,7 +315,8 @@
                     <i class="fa-solid fa-plus mr-2"></i> Nuevo COD
                 </a>
             </div>
-            <table class="table text-sm">
+            <div class="dx-v2-ui-table-wrapper">
+                <table class="dx-v2-ui-table">
                 <thead>
                     <tr>
                         <th>Fecha</th>
@@ -385,6 +388,7 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 
@@ -393,11 +397,12 @@
         <div class="card p-0">
             <div class="card-header flex justify-between items-center px-5 py-4">
                 <h3 class="text-sm font-bold uppercase tracking-wider">Personas de Contacto</h3>
-                <button class="btn-primary sm" @click="$dispatch('open-contact-modal')">
+                <button class="dx-v2-ui-btn dx-v2-ui-btn-primary" @click="$dispatch('open-contact-modal')">
                     <i class="fa-solid fa-plus mr-2"></i> Nuevo Contacto
                 </button>
             </div>
-            <table class="table text-sm">
+            <div class="dx-v2-ui-table-wrapper">
+                <table class="dx-v2-ui-table">
                 <thead>
                     <tr>
                         <th>Nombre</th>
@@ -460,6 +465,7 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 
@@ -469,7 +475,8 @@
             <div class="card-header flex justify-between items-center px-5 py-4">
                 <h3 class="text-sm font-bold uppercase tracking-wider">Historial de Renovaciones Mensuales</h3>
             </div>
-            <table class="table text-sm">
+            <div class="dx-v2-ui-table-wrapper">
+                <table class="dx-v2-ui-table">
                 <thead>
                     <tr>
                         <th>Mes / Ciclo</th>
@@ -506,6 +513,7 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 
@@ -530,13 +538,13 @@
                     form = { id: '', name: '', email: '', position: '', phone: '', receives_alerts: false };
                 }
             "
-            class="dx-v2-clients-modal-overlay"
+            class="dx-v2-ui-modal-overlay"
             x-cloak
         >
-            <div class="dx-v2-clients-modal-content" @click.outside="open = false">
-                <div class="dx-v2-clients-modal-header">
-                    <h3 x-text="editMode ? 'Editar Contacto' : 'Nuevo Contacto'"></h3>
-                    <button type="button" @click="open = false" class="dx-v2-clients-modal-close">&times;</button>
+            <div class="dx-v2-ui-modal-content" @click.outside="open = false">
+                <div class="dx-v2-ui-modal-header">
+                    <h3 class="dx-v2-ui-modal-title" x-text="editMode ? 'Editar Contacto' : 'Nuevo Contacto'"></h3>
+                    <button type="button" @click="open = false" class="dx-v2-ui-modal-close">&times;</button>
                 </div>
                 <form :action="action" method="POST">
                     @csrf
@@ -544,7 +552,7 @@
                         <input type="hidden" name="_method" value="PUT">
                     </template>
                     
-                    <div class="modal-body space-y-5">
+                    <div class="dx-v2-ui-modal-body space-y-5">
                         <div class="grid grid-cols-2 gap-6">
                             <div class="dx-v2-form-group" style="margin-bottom: 0;">
                                 <label class="dx-v2-form-label">Nombre Completo</label>
@@ -571,9 +579,9 @@
                         </div>
                     </div>
                     
-                    <div class="dx-v2-clients-modal-footer">
-                        <button type="button" @click="open = false" class="btn-secondary">Cancelar</button>
-                        <button type="submit" class="btn-primary" x-text="editMode ? 'Guardar Cambios' : 'Crear Contacto'"></button>
+                    <div class="dx-v2-ui-modal-footer">
+                        <button type="button" @click="open = false" class="dx-v2-ui-btn dx-v2-ui-btn-secondary">Cancelar</button>
+                        <button type="submit" class="dx-v2-ui-btn dx-v2-ui-btn-primary" x-text="editMode ? 'Guardar Cambios' : 'Crear Contacto'"></button>
                     </div>
                 </form>
             </div>
@@ -585,24 +593,24 @@
         <div x-data="{ open: false }"
             x-show="open"
             @open-audit-modal.window="open = true"
-            class="dx-v2-clients-modal-overlay high-z-index"
+            class="dx-v2-ui-modal-overlay high-z-index"
             x-cloak
         >
-            <div class="dx-v2-clients-modal-content audit-modal-width" @click.outside="open = false">
-                <div class="dx-v2-clients-modal-header no-border no-padding-bottom">
+            <div class="dx-v2-ui-modal-content wide" @click.outside="open = false">
+                <div class="dx-v2-ui-modal-header no-border no-padding-bottom">
                     <div class="flex items-center gap-4">
                         <div class="dx-v2-clients-audit-icon-box">
                             <i class="fa-solid fa-shield-halved"></i>
                         </div>
                         <div>
-                            <h3 class="margin-bottom-4 text-white">Detalle de Auditoría Siemens</h3>
+                            <h3 class="dx-v2-ui-modal-title text-white" style="margin-bottom: 4px !important;">Detalle de Auditoría Siemens</h3>
                             <span class="text-xs muted uppercase tracking-widest font-bold">Analizado por Motor FallbackChain v2.1</span>
                         </div>
                     </div>
-                    <button type="button" @click="open = false" class="dx-v2-clients-modal-close">&times;</button>
+                    <button type="button" @click="open = false" class="dx-v2-ui-modal-close">&times;</button>
                 </div>
 
-                <div class="modal-body p-8">
+                <div class="dx-v2-ui-modal-body p-8">
                     <template x-if="auditDetail">
                         <div>
                             <!-- Top Info Cards -->
@@ -684,9 +692,9 @@
                     </template>
                 </div>
                 
-                <div class="dx-v2-clients-modal-footer transparent no-border no-padding-top">
-                    <button type="button" @click="open = false" class="btn-secondary">Cerrar Detalle</button>
-                    <button type="button" class="btn-primary">
+                <div class="dx-v2-ui-modal-footer transparent no-border no-padding-top">
+                    <button type="button" @click="open = false" class="dx-v2-ui-btn dx-v2-ui-btn-secondary">Cerrar Detalle</button>
+                    <button type="button" class="dx-v2-ui-btn dx-v2-ui-btn-primary">
                         <i class="fa-solid fa-file-export mr-2"></i> Exportar Reporte
                     </button>
                 </div>

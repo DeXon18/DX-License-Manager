@@ -65,29 +65,29 @@
 
     <!-- Modal Manager (Alpine.js) -->
     <template x-if="showModal">
-        <div class="dx-v2-resources-modal-overlay">
-            <div class="dx-v2-resources-modal card">
-                <div class="card-header">
-                    <span class="card-title" x-text="editingId ? 'Editar Recurso' : 'Nuevo Recurso'"></span>
-                    <button @click="showModal = false" class="btn-close-x">
+        <div class="dx-v2-ui-modal-overlay">
+            <div class="dx-v2-ui-modal-content">
+                <div class="dx-v2-ui-modal-header">
+                    <span class="dx-v2-ui-modal-title" x-text="editingId ? 'Editar Recurso' : 'Nuevo Recurso'"></span>
+                    <button @click="showModal = false" class="dx-v2-ui-modal-close">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                     </button>
                 </div>
-                <div class="dx-v2-resources-modal-body">
+                <div class="dx-v2-ui-modal-body">
                     <form @submit.prevent="saveResource()">
-                        <div class="dx-v2-resources-modal-form-grid">
-                            <div>
-                                <label class="dx-v2-resources-modal-label">Categoría</label>
-                                <select x-model="form.category" class="dx-v2-resources-modal-input {{ $vendor }}">
+                        <div class="dx-v2-resources-modal-form-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+                            <div class="dx-v2-form-group" style="margin-bottom: 0;">
+                                <label class="dx-v2-form-label">Categoría</label>
+                                <select x-model="form.category" class="dx-v2-form-select w-full">
                                     <option value="official">Oficial</option>
                                     <option value="internal">Interno</option>
                                     <option value="utility">Utilidad</option>
                                     <option value="support">Soporte</option>
                                 </select>
                             </div>
-                            <div>
-                                <label class="dx-v2-resources-modal-label">Icono</label>
-                                <select x-model="form.icon" class="dx-v2-resources-modal-input {{ $vendor }}">
+                            <div class="dx-v2-form-group" style="margin-bottom: 0;">
+                                <label class="dx-v2-form-label">Icono</label>
+                                <select x-model="form.icon" class="dx-v2-form-select w-full">
                                     <option value="link">Enlace (Globo)</option>
                                     <option value="book">Libro (Doc)</option>
                                     <option value="shield">Escudo (Seguridad)</option>
@@ -96,24 +96,24 @@
                             </div>
                         </div>
 
-                        <div class="dx-v2-resources-modal-form-row">
-                            <label class="dx-v2-resources-modal-label">Título del Recurso</label>
-                            <input type="text" x-model="form.label" class="dx-v2-resources-modal-input {{ $vendor }}" placeholder="Ej: Manual de Instalación NX">
+                        <div class="dx-v2-form-group" style="margin-bottom: 20px;">
+                            <label class="dx-v2-form-label">Título del Recurso</label>
+                            <input type="text" x-model="form.label" class="dx-v2-form-input w-full" placeholder="Ej: Manual de Instalación NX">
                         </div>
 
-                        <div class="dx-v2-resources-modal-form-row">
-                            <label class="dx-v2-resources-modal-label">URL (Enlace)</label>
-                            <input type="url" x-model="form.url" class="dx-v2-resources-modal-input {{ $vendor }}" placeholder="https://...">
+                        <div class="dx-v2-form-group" style="margin-bottom: 20px;">
+                            <label class="dx-v2-form-label">URL (Enlace)</label>
+                            <input type="url" x-model="form.url" class="dx-v2-form-input w-full" placeholder="https://...">
                         </div>
 
-                        <div class="dx-v2-resources-modal-form-row-large">
-                            <label class="dx-v2-resources-modal-label">Descripción Corta</label>
-                            <textarea x-model="form.description" class="dx-v2-resources-modal-input {{ $vendor }}" placeholder="Breve detalle sobre qué contiene este enlace..."></textarea>
+                        <div class="dx-v2-form-group" style="margin-bottom: 20px;">
+                            <label class="dx-v2-form-label">Descripción Corta</label>
+                            <textarea x-model="form.description" class="dx-v2-form-textarea w-full" style="height: 100px;" placeholder="Breve detalle sobre qué contiene este enlace..."></textarea>
                         </div>
 
-                        <div class="dx-v2-resources-modal-footer">
-                            <button type="button" @click="showModal = false" class="btn-secondary">CANCELAR</button>
-                            <button type="submit" class="btn-primary" x-text="loading ? 'Guardando...' : 'GUARDAR RECURSO'"></button>
+                        <div class="dx-v2-ui-modal-footer" style="margin: 24px -24px -24px -24px;">
+                            <button type="button" @click="showModal = false" class="dx-v2-ui-btn dx-v2-ui-btn-secondary">CANCELAR</button>
+                            <button type="submit" class="dx-v2-ui-btn dx-v2-ui-btn-primary" x-text="loading ? 'Guardando...' : 'GUARDAR RECURSO'"></button>
                         </div>
                     </form>
                 </div>
