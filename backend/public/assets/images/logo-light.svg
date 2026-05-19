@@ -1,0 +1,12 @@
+<svg width="192" height="36" viewBox="0 0 192 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="36" height="36" rx="7" fill="#388BFD"/>
+  <text x="18" y="24" text-anchor="middle" fill="#FFFFFF"
+        font-family="Inter, system-ui, -apple-system, sans-serif"
+        font-weight="700" font-size="16" letter-spacing="-0.5">DX</text>
+  <text x="48" y="17" fill="#0D1117"
+        font-family="Inter, system-ui, -apple-system, sans-serif"
+        font-weight="700" font-size="14" letter-spacing="-0.4">License Manager</text>
+  <text x="48" y="30" fill="#6B7280"
+        font-family="Inter, system-ui, -apple-system, sans-serif"
+        font-weight="600" font-size="10" letter-spacing="1.4">BY DXPRO</text>
+</svg>
