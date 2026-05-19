@@ -1,0 +1,18 @@
+/**
+ * @module    dx-v2-page-admin
+ * @fase      21.6
+ * @desc      Estilos específicos para la vista de Administración. Contiene la rejilla de visualización del sistema en 3 columnas (`.system-grid`), las tarjetas individuales de métricas físicas y lógicas del servidor, textos con fuentes monoespaciadas para valores de hardware, y barras de carga específicas del uso de almacenamiento (`.storage-track` / `.storage-fill`).
+ * @afecta    [admin/index.blade.php]
+ * @version   2.21.0
+ */
+
+.system-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:24px; }
+.system-card {
+  background:var(--dx-v2-surface); border:1px solid var(--dx-v2-border); border-radius: var(--dx-v2-rounded-lg);
+  padding:20px; display:flex; flex-direction:column; gap:6px;
+}
+.sys-label  { font-size:11px; font-weight:600; text-transform:uppercase; color:var(--dx-v2-muted); letter-spacing:0.05em; }
+.sys-value  { font-family:'IBM Plex Mono',monospace; font-size:20px; font-weight:600; color:var(--dx-v2-primary); }
+.sys-meta   { font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--dx-v2-muted); font-weight:500; }
+.storage-track { height:8px; background:var(--dx-v2-bg); border-radius: var(--dx-v2-rounded-sm); margin:12px 0; border:1px solid var(--dx-v2-border); overflow:hidden; }
+.storage-fill  { height:100%; background:var(--dx-v2-accent); border-radius: var(--dx-v2-rounded-sm); }

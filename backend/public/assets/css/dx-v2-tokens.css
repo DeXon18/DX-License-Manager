@@ -1,0 +1,159 @@
+/**
+ * @module    dx-v2-tokens
+ * @fase      21.1
+ * @desc      Variables CSS de tokens globales: colores, tipografía, espaciado, sombras y z-index, para modo claro y oscuro.
+ * @afecta    [Global App Portal]
+ * @version   2.21.0
+ */
+
+/* 2. VARIABLES — MODO CLARO */
+:root {
+  /* ─── COLOR TOKENS (LIGHT MODE) ─── */
+  --dx-v2-bg: #F7F8FA;
+  --dx-v2-surface: #FFFFFF;
+  --dx-v2-raised: #F0F2F5;
+  --dx-v2-primary: #0D1117;
+  --dx-v2-secondary: #374151;
+  --dx-v2-accent: #388BFD;
+  --dx-v2-accent-hover: #1D6AE8;
+  --dx-v2-accent-muted: #EFF6FF;
+  --dx-v2-accent-border: #BFDBFE;
+  --dx-v2-border: #DDE1E7;
+  --dx-v2-border-subtle: #EAECEF;
+  --dx-v2-muted: #6B7280;
+  --dx-v2-success: #15803D;
+  --dx-v2-success-bg: #F0FDF4;
+  --dx-v2-success-border: #BBF7D0;
+  --dx-v2-warning: #B45309;
+  --dx-v2-warning-bg: #FFFBEB;
+  --dx-v2-warning-border: #FDE68A;
+  --dx-v2-danger: #B91C1C;
+  --dx-v2-danger-bg: #FEF2F2;
+  --dx-v2-danger-border: #FECACA;
+  --dx-v2-siemens: #009999;
+  --dx-v2-moldex: #ED1C24;
+  --dx-v2-toggle-bg: #e5e7eb;
+
+  /* ─── TYPOGRAPHY TOKENS ─── */
+  --dx-v2-font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --dx-v2-font-mono: 'IBM Plex Mono', Fira Code, monospace;
+
+  /* ─── SPACING TOKENS (4PT Modular System) ─── */
+  --dx-v2-spacing-1: 4px;
+  --dx-v2-spacing-2: 8px;
+  --dx-v2-spacing-3: 12px;
+  --dx-v2-spacing-4: 16px;
+  --dx-v2-spacing-5: 20px;
+  --dx-v2-spacing-6: 24px;
+  --dx-v2-spacing-8: 32px;
+  --dx-v2-spacing-10: 40px;
+  --dx-v2-spacing-12: 48px;
+  --dx-v2-spacing-16: 64px;
+
+  /* ─── BORDER RADIUS TOKENS (ROUNDED) ─── */
+  --dx-v2-rounded-sm: 4px;
+  --dx-v2-rounded-md: 6px;
+  --dx-v2-rounded-lg: 10px;
+  --dx-v2-rounded-xl: 16px;
+  --dx-v2-rounded-full: 9999px;
+
+  /* ─── ELEVATION TOKENS (SHADOW - LIGHT) ─── */
+  --dx-v2-shadow-0: none;
+  --dx-v2-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --dx-v2-shadow-2: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --dx-v2-shadow-3: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  /* ─── Z-INDEX SCALE TOKENS ─── */
+  --dx-v2-z-base: 0;
+  --dx-v2-z-raised: 10;
+  --dx-v2-z-dropdown: 20;
+  --dx-v2-z-sticky: 40;
+  --dx-v2-z-modal: 100;
+  --dx-v2-z-toast: 1000;
+
+  /* ─── LEGACY COMPATIBILITY LAYER ─── */
+  --bg: var(--dx-v2-bg);
+  --surface: var(--dx-v2-surface);
+  --raised: var(--dx-v2-raised);
+  --primary: var(--dx-v2-primary);
+  --secondary: var(--dx-v2-secondary);
+  --accent: var(--dx-v2-accent);
+  --accent-hover: var(--dx-v2-accent-hover);
+  --accent-muted: var(--dx-v2-accent-muted);
+  --accent-border: var(--dx-v2-accent-border);
+  --border: var(--dx-v2-border);
+  --border-subtle: var(--dx-v2-border-subtle);
+  --muted: var(--dx-v2-muted);
+  --success: var(--dx-v2-success);
+  --success-bg: var(--dx-v2-success-bg);
+  --success-border: var(--dx-v2-success-border);
+  --warning: var(--dx-v2-warning);
+  --warning-bg: var(--dx-v2-warning-bg);
+  --warning-border: var(--dx-v2-warning-border);
+  --danger: var(--dx-v2-danger);
+  --danger-bg: var(--dx-v2-danger-bg);
+  --danger-border: var(--dx-v2-danger-border);
+  --siemens: var(--dx-v2-siemens);
+  --moldex: var(--dx-v2-moldex);
+  --toggle-bg: var(--dx-v2-toggle-bg);
+  --font-sans: var(--dx-v2-font-sans);
+  --font-mono: var(--dx-v2-font-mono);
+
+  /* Aliases de compatibilidad base para refactorización unificada */
+  --dx-v2-bg-base: var(--dx-v2-bg);
+  --dx-v2-surface-base: var(--dx-v2-surface);
+  --dx-v2-raised-base: var(--dx-v2-raised);
+  --dx-v2-primary-base: var(--dx-v2-primary);
+  --dx-v2-secondary-base: var(--dx-v2-secondary);
+  --dx-v2-accent-base: var(--dx-v2-accent);
+  --dx-v2-accent-hover-base: var(--dx-v2-accent-hover);
+  --dx-v2-accent-muted-base: var(--dx-v2-accent-muted);
+  --dx-v2-accent-border-base: var(--dx-v2-accent-border);
+  --dx-v2-border-base: var(--dx-v2-border);
+  --dx-v2-border-subtle-base: var(--dx-v2-border-subtle);
+  --dx-v2-muted-base: var(--dx-v2-muted);
+  --dx-v2-success-base: var(--dx-v2-success);
+  --dx-v2-success-bg-base: var(--dx-v2-success-bg);
+  --dx-v2-success-border-base: var(--dx-v2-success-border);
+  --dx-v2-warning-base: var(--dx-v2-warning);
+  --dx-v2-warning-bg-base: var(--dx-v2-warning-bg);
+  --dx-v2-warning-border-base: var(--dx-v2-warning-border);
+  --dx-v2-danger-base: var(--dx-v2-danger);
+  --dx-v2-danger-bg-base: var(--dx-v2-danger-bg);
+  --dx-v2-danger-border-base: var(--dx-v2-danger-border);
+  --dx-v2-siemens-base: var(--dx-v2-siemens);
+  --dx-v2-moldex-base: var(--dx-v2-moldex);
+}
+
+/* 3. VARIABLES — MODO OSCURO */
+[data-theme="dark"] {
+  /* ─── COLOR TOKENS OVERRIDES ─── */
+  --dx-v2-bg: #0D1117;
+  --dx-v2-surface: #161B22;
+  --dx-v2-raised: #21262D;
+  --dx-v2-primary: #E6EDF3;
+  --dx-v2-secondary: #CDD9E5;
+  --dx-v2-accent: #388BFD;
+  --dx-v2-accent-hover: #58A6FF;
+  --dx-v2-accent-muted: #0D1B2E;
+  --dx-v2-accent-border: #1F4B8E;
+  --dx-v2-border: #30363D;
+  --dx-v2-border-subtle: #21262D;
+  --dx-v2-muted: #8B949E;
+  --dx-v2-success: #3FB950;
+  --dx-v2-success-bg: #0D2818;
+  --dx-v2-success-border: #1A5C2A;
+  --dx-v2-warning: #D29922;
+  --dx-v2-warning-bg: #2D1F00;
+  --dx-v2-warning-border: #5A3E00;
+  --dx-v2-danger: #E05252;
+  --dx-v2-danger-bg: #2D0F0F;
+  --dx-v2-danger-border: #5C1A1A;
+  --dx-v2-siemens: #2AA198;
+  --dx-v2-moldex: #E05252;
+
+  /* ─── ELEVATION TOKENS OVERRIDES (SHADOW - DARK) ─── */
+  --dx-v2-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.30);
+  --dx-v2-shadow-2: 0 2px 8px rgba(0, 0, 0, 0.40);
+  --dx-v2-shadow-3: 0 8px 24px rgba(0, 0, 0, 0.60);
+}

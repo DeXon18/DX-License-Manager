@@ -1,6 +1,6 @@
-Rama activa: dev. Fase 19 — Unificación CSS & Limpieza UI. 
-Último trabajo: Estructuración de 30 subfases (19.0 a 19.29) en ROADMAP.md, incluyendo estrategia Git y checkpoints.
-Estado: Docs sincronizados. Tag backup/pre-fase-19 creado. Entorno listo para iniciar subfase 19.0 en dev.
-Próximo paso inmediato: Iniciar Subfase 19.0 (inventario de variables y tokens).
-Bloqueos: ninguno.
+Rama activa: feature/css-tokens. Fase 19 — Unificación CSS & Limpieza UI.
+Último trabajo: Finalizada la Subfase 19.25 (Logs y Auditoría), purgando el 100% de estilos inline y bloques locales <style> de la vista index.blade.php. Inyectado el namespace de estilos premium `.dx-v2-audit-*` en dx-styles.css cubriendo pestañas, badges en vivo, tablas y un visor de logs estilo consola de terminal compactado a 5px de padding y 12px de texto para alta densidad NOC Pro. Realizados los ajustes de inputs y botones de filtros tras revisión visual con Oskar.
+Estado: 100% estable. Commits y documentación al día.
+Próximo paso inmediato: Iniciar Subfase 19.26: Páginas de Error (errors/503.blade.php y otros si aplican) para purgar bloques locales <style>.
+Bloqueos: Ninguno.
 Stack beta: running. Stack prod: running.

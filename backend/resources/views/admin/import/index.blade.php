@@ -13,21 +13,21 @@
 <div class="grid-main">
     <div class="main-panel">
         <!-- Bloque 1: Carga -->
-        <div class="card" style="margin-bottom: 24px;">
-            <div class="card-header" style="justify-content: space-between;">
+        <div class="card dx-v2-import-card-mb">
+            <div class="card-header flex justify-between items-center">
                 <span class="card-title">Carga de Datos (CSV/TXT)</span>
                 <span class="badge badge-ai">PROCESO AUTOMÁTICO</span>
             </div>
             
-            <div style="padding: 24px;">
+            <div class="dx-v2-import-metadata-container">
                 @if(session('success'))
-                    <div class="badge badge-success" style="width: 100%; padding: 12px; margin-bottom: 24px; justify-content: space-between; text-transform: none; border-radius: 4px;">
-                        <div style="display: flex; align-items: center;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 8px;"><polyline points="20 6 9 17 4 12"/></svg>
+                    <div class="dx-v2-import-success-alert">
+                        <div class="dx-v2-import-success-alert-left">
+                            <svg class="dx-v2-import-success-alert-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                             {{ session('success') }}
                         </div>
                         @if(session('log_id'))
-                            <a href="{{ route('admin.import.logs.show', session('log_id')) }}" class="btn-primary sm" style="padding: 4px 12px; font-size: 11px; margin-left: 16px; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.3);">
+                            <a href="{{ route('admin.import.logs.show', session('log_id')) }}" class="dx-v2-import-success-alert-btn">
                                 VER DETALLES
                             </a>
                         @endif
@@ -36,17 +36,17 @@
 
                 <form action="{{ route('admin.import.store') }}" method="POST" enctype="multipart/form-data" id="import-form">
                     @csrf
-                    <div class="dropzone" id="dropzone" onclick="document.getElementById('file-input').click()" style="height: 160px; border-style: dashed; border-width: 1px; margin-bottom: 20px;">
-                        <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                    <div class="dropzone dx-v2-import-dropzone" id="dropzone" onclick="document.getElementById('file-input').click()">
+                        <div class="dx-v2-import-dropzone-inner">
                             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                            <div class="dropzone-text" style="font-size: 14px;">Arrastre archivo aquí o haga clic para seleccionar</div>
-                            <div id="file-name-display" class="dropzone-subtext" style="font-size: 11px; opacity: 0.6;">Soporta .csv y .txt (UTF-8)</div>
+                            <div class="dropzone-text dx-v2-import-dropzone-title">Arrastre archivo aquí o haga clic para seleccionar</div>
+                            <div id="file-name-display" class="dropzone-subtext dx-v2-import-dropzone-subtext">Soporta .csv y .txt (UTF-8)</div>
                         </div>
                         <input type="file" name="csv_file" id="file-input" style="display: none;" onchange="updateFileName(this)">
                     </div>
 
-                    <div style="display: flex; justify-content: flex-end;">
-                        <button type="submit" class="btn-primary" style="padding: 10px 24px; font-weight: 600; letter-spacing: 0.5px;">
+                    <div class="dx-v2-import-submit-row">
+                        <button type="submit" class="btn-primary dx-v2-import-btn-submit">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/><polyline points="16 16 12 12 8 16"/></svg>
                             PROCESAR ARCHIVO
                         </button>
@@ -60,10 +60,10 @@
             <div class="card-header">
                 <span class="card-title">Protocolo de Mapeo de Datos</span>
             </div>
-            <div style="padding: 24px;">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+            <div class="dx-v2-import-metadata-container">
+                <div class="dx-v2-import-mapping-grid">
                     <!-- Columna Izquierda -->
-                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div class="dx-v2-import-mapping-col">
                         @foreach([
                             ['C1', 'Contraheader', 'Identificador único del contrato (CONH)'],
                             ['C2', 'Centro Coste', 'Referencia contable del cliente'],
@@ -71,28 +71,28 @@
                             ['C4', 'Vendor', 'Proveedor origen (Siemens/Moldex)'],
                             ['C5', 'Producto', 'Módulo o paquete de software']
                         ] as $item)
-                        <div style="display: flex; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
-                            <code style="min-width: 40px; font-family: var(--font-mono); font-size: 10px; color: var(--accent);">{{ $item[0] }}</code>
-                            <div style="flex: 1;">
-                                <div style="font-size: 12px; font-weight: 500; color: var(--primary);">{{ $item[1] }}</div>
-                                <div style="font-size: 10px; color: var(--muted);">{{ $item[2] }}</div>
+                        <div class="dx-v2-import-mapping-item">
+                            <code class="dx-v2-import-mapping-code">{{ $item[0] }}</code>
+                            <div class="dx-v2-import-mapping-content">
+                                <div class="dx-v2-import-mapping-title">{{ $item[1] }}</div>
+                                <div class="dx-v2-import-mapping-desc">{{ $item[2] }}</div>
                             </div>
                         </div>
                         @endforeach
                     </div>
                     <!-- Columna Derecha -->
-                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <div class="dx-v2-import-mapping-col">
                         @foreach([
                             ['C6', 'Sub-Producto', 'Variante o nivel del producto'],
                             ['C7', 'Vencimiento', 'Fecha efectiva de caducidad (DD/MM/AAAA)'],
                             ['C8', 'Estado', 'Situación actual en origen'],
                             ['C9', 'Comentarios', 'Observaciones técnicas adicionales']
                         ] as $item)
-                        <div style="display: flex; align-items: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 8px;">
-                            <code style="min-width: 40px; font-family: var(--font-mono); font-size: 10px; color: var(--accent);">{{ $item[0] }}</code>
-                            <div style="flex: 1;">
-                                <div style="font-size: 12px; font-weight: 500; color: var(--primary);">{{ $item[1] }}</div>
-                                <div style="font-size: 10px; color: var(--muted);">{{ $item[2] }}</div>
+                        <div class="dx-v2-import-mapping-item">
+                            <code class="dx-v2-import-mapping-code">{{ $item[0] }}</code>
+                            <div class="dx-v2-import-mapping-content">
+                                <div class="dx-v2-import-mapping-title">{{ $item[1] }}</div>
+                                <div class="dx-v2-import-mapping-desc">{{ $item[2] }}</div>
                             </div>
                         </div>
                         @endforeach
@@ -104,32 +104,32 @@
 
     <!-- Panel Informativo -->
     <div class="sidebar-panel">
-        <div style="background: var(--warning-bg); border: 1px solid var(--warn-border); padding: 16px; border-radius: 4px;">
-            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--warning);">
+        <div class="dx-v2-import-info-box">
+            <div class="dx-v2-import-info-header">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-                <span style="font-size: 12px; font-weight: 700; text-transform: uppercase;">Aviso de Sincronización</span>
+                <span class="dx-v2-import-info-title">Aviso de Sincronización</span>
             </div>
-            <div style="font-size: 12px; color: var(--secondary); line-height: 1.6;">
-                La carga es **destructiva** para estados obsoletos. Contratos activos ausentes en este archivo serán marcados automáticamente como <span style="color: var(--danger); font-weight: 600;">BAJA</span>.
+            <div class="dx-v2-import-info-text">
+                La carga es **destructiva** para estados obsoletos. Contratos activos ausentes en este archivo serán marcados automáticamente como <span class="dx-v2-import-info-text-danger">BAJA</span>.
             </div>
         </div>
 
-        <div style="margin-top: 12px;">
-            <a href="{{ route('admin.import.logs.index') }}" class="btn-secondary" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 10px; padding: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">
+        <div class="dx-v2-import-sidebar-links">
+            <a href="{{ route('admin.import.logs.index') }}" class="btn-secondary dx-v2-import-sidebar-btn">
                 <i class="fa-solid fa-clock-rotate-left"></i>
                 Ver Historial de Logs
             </a>
         </div>
 
-        <div style="margin-top: 12px;">
-            <a href="{{ route('admin.normalization.index') }}" class="btn-primary" style="width: 100%; display: flex; justify-content: center; align-items: center; gap: 10px; padding: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; background: var(--accent-muted); color: var(--accent); border: 1px solid var(--accent-border);">
+        <div class="dx-v2-import-sidebar-links">
+            <a href="{{ route('admin.normalization.index') }}" class="btn-primary dx-v2-import-sidebar-btn">
                 <i class="fa-solid fa-wand-magic-sparkles"></i>
                 Bandeja de Normalización
             </a>
         </div>
 
-        <div style="margin-top: 16px; padding: 16px; border: 1px solid var(--border-subtle); border-radius: 4px; background: var(--card-bg);">
-            <div style="font-size: 11px; color: var(--muted); line-height: 1.5;">
+        <div class="dx-v2-import-req-box">
+            <div class="dx-v2-import-req-text">
                 <strong>Requisitos Técnicos:</strong><br>
                 - Encoding: UTF-8 (Sin BOM)<br>
                 - Separador: Automático (`,` o `;`)
