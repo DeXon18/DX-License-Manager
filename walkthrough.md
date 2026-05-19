@@ -1,6 +1,25 @@
-# Walkthrough — Subfase 19.15, 19.14, 19.13, 19.12, 19.11, 19.10 & 19.9 (Visual & CSS Unification)
+# Walkthrough — Subfase 19.26, 19.15, 19.14, 19.13, 19.12, 19.11, 19.10 & 19.9 (Visual & CSS Unification)
 
-Hemos completado con éxito la **Subfase 19.15** del plan de unificación visual y CSS del portal, realizando la refactorización e higienización completa del módulo de **Recursos & Enlaces de Referencia** de Siemens y Moldex3D.
+Hemos completado con éxito la **Subfase 19.26** del plan de unificación visual y CSS del portal, realizando la refactorización, modularización e higienización completa de la **Vista de Mantenimiento (`errors/503.blade.php`)**.
+
+---
+
+## Cambios Realizados en Subfase 19.26 (Páginas de Error: Mantenimiento 503)
+
+### Hojas de Estilos (CSS)
+- **[dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css)**:
+  - Diseñado e integrado un completo sistema de estilos semánticos en el namespace `.dx-v2-maint-*` para controlar la estética industrial y "NOC Pro" del portal en modo parada técnica:
+    - `.dx-v2-maint-body`: Centrado vertical y horizontal, fondo oscuro semántico, e inyección de fuentes del sistema.
+    - `.dx-v2-maint-wordmark`: Wordmark de marca mono-espaciada con tracking aumentado.
+    - `.dx-v2-maint-card` & `.dx-v2-maint-card-header`: Tarjeta con borde sutil, fondo de superficie y sombras semánticas de elevación alta.
+    - `.dx-v2-maint-badge` & `.dx-v2-maint-badge-dot`: Badge de estado dinámico que hereda las variables semánticas de advertencia con animación de latido interactiva `livePulse`.
+    - `.dx-v2-maint-panel`, `.dx-v2-maint-status-list` & `.dx-v2-maint-status-row`: Cuadrícula compacta de estados de daemons y clústeres.
+    - `.dx-v2-maint-status-badge` & `.dx-v2-maint-status-dot`: Mapeo de estados `ok` (verde), `warn` (naranja) y `off` (gris) vinculados a latidos dinámicos interactivos.
+
+### Vistas (Blade/HTML)
+- **[503.blade.php](file:///z:/DX-License-Manager/backend/resources/views/errors/503.blade.php)**:
+  - Refactorizada por completo, purgando la hoja de estilos incrustada `<style>` de más de 200 líneas y vinculando directamente la hoja de estilos global `/assets/css/dx-styles.css`.
+  - Mapeado el 100% del árbol HTML al nuevo namespace `.dx-v2-maint-*`, asegurando la adaptabilidad automática al motor del tema e interactividad nativa por CSS.
 
 ---
 
