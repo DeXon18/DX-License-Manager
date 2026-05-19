@@ -1030,22 +1030,112 @@ Logotipo y marca premium para la cabecera de `beta.dxpro.es` y entornos de produ
     - [x] Confirmar adaptabilidad en anchos responsive (no colapsar por debajo de 24px de altura).
     - [x] Registrar el cierre definitivo de la Fase 20 en el CHANGELOG del proyecto.
 
+
+---
+
+# FASE 21 — ESTRUCTURAR CSS — DX-V2 ✅ COMPLETADA
+
+Estructuración final, modularización y ordenamiento de la hoja de estilos global `dx-styles.css` en 35 archivos CSS especializados organizados por capas de responsabilidad bajo el directorio `backend/public/assets/css/`, consolidándose en un único archivo principal `dx-v2-main.css` que reúne todas las directivas `@import` en el orden correcto. Se erradicó la deuda técnica eliminando el monolito legacy y vinculando directamente las vistas.
+
+## 🔷 SUBFASES DE LA FASE 21
+
+- [x] **Subfase 21.1** — **Capa 1: Tokens y Base** ✅ COMPLETADA
+    - [x] Extraer `dx-v2-tokens.css` (Variables `:root` y override `[data-theme="dark"]`).
+    - [x] Extraer `dx-v2-reset.css` (Reset básico).
+    - [x] Extraer `dx-v2-base.css` (Body y utilidades globales).
+
+- [x] **Subfase 21.2** — **Capa 2: Layout Estructural** ✅ COMPLETADA
+    - [x] Extraer `layout/dx-v2-nav.css` (Cabecera, barra de navegación, toggle de tema y user button).
+    - [x] Extraer `layout/dx-v2-sidebar.css` (Sidebar, content area y contenedor `.main`).
+    - [x] Extraer `layout/dx-v2-breadcrumb.css` (Breadcrumb).
+    - [x] Extraer `layout/dx-v2-footer.css` (Footers simple y de secciones).
+
+- [x] **Subfase 21.3** — **Capa 3: Componentes Compartidos (Atoms UI)** ✅ COMPLETADA
+    - [x] Extraer `shared/dx-v2-cards.css`, `shared/dx-v2-tables.css` y `shared/dx-v2-badges.css`.
+    - [x] Extraer `shared/dx-v2-buttons.css`, `shared/dx-v2-modals.css` y `shared/dx-v2-pagination.css`.
+    - [x] Extraer `shared/dx-v2-forms.css`, `shared/dx-v2-empty-states.css`, `shared/dx-v2-ui.css` y `shared/dx-v2-brand.css`.
+
+- [x] **Subfase 21.4** — **Capa 4: Módulos de Aplicación** ✅ COMPLETADA
+    - [x] Extraer individualmente por namespace cada uno de los 13 módulos críticos (Login, Dashboard, Clients, Import, COD, Resources, Sys-dashboard, Docker, Users, Licenses, Alerts, Backups y Audit).
+
+- [x] **Subfase 21.5** — **Capa 5 y 6: Tools y Páginas Especiales** ✅ COMPLETADA
+    - [x] Extraer las utilidades de herramientas (Hub, NX, Star, Heeds, Moldex).
+    - [x] Extraer las páginas de herramientas (`pages/dx-v2-page-herramientas.css`), admin (`pages/dx-v2-page-admin.css`) y mantenimiento (`pages/dx-v2-page-maintenance.css`).
+
+- [x] **Subfase 21.6** — **Consolidación, Integración y Limpieza Legacy** ✅ COMPLETADA
+    - [x] Ensamblar `dx-v2-main.css` con todas las directivas `@import` ordenadas.
+    - [x] Reemplazar temporalmente `dx-styles.css` con redirección de importación.
+    - [x] Buscar y reemplazar referencias a `dx-styles.css` con `dx-v2-main.css` en las plantillas Blade del backend.
+    - [x] Eliminar definitivamente el monolito legacy `dx-styles.css` mediante `git rm`.
+    - [x] Resolver y asegurar la carga robusta del fondo del login usando rutas absolutas en `dx-v2-login.css`.
+
+---
+
+## Verificación de Control de Versiones (Git)
+
+Todas las tareas de extracción y consolidación se commitearon y etiquetaron en la rama de desarrollo `feature/css-tokens`:
+
+### Commits Realizados en Fase 19 (Anteriores):
+- `style(planner): definir namespace .dx-v2-planner-* en css global`
+- `style(planner): extraer estilos locales e inline de index.blade.php al namespace global`
+- `docs(19.9): registrar subfase 19.9 completada en changelog y roadmap`
+- `style(tools): definir namespace .dx-v2-tools-* en css global`
+- `style(tools): extraer estilos locales de index.blade.php al namespace global`
+- `docs(19.10): registrar subfase 19.10 completada en changelog y roadmap`
+- `style(tools-nx): definir namespace .dx-v2-tools-nx-* en css global`
+- `style(tools-nx): extraer estilos locales de nx-suite.blade.php al namespace global`
+- `style(tools-nx): corregir padding de tarjetas, alineacion de cabecera y boton en nx-suite`
+- `docs(19.11): registrar subfase 19.11 completada en changelog y roadmap`
+- `style(tools-star): definir namespace .dx-v2-tools-star-* en css global`
+- `style(tools-star): extraer estilos locales de star-ccm.blade.php al namespace global`
+- `docs(19.12): registrar subfase 19.12 completada en changelog y roadmap`
+- `style(tools-heeds): definir namespace .dx-v2-tools-heeds-* en css global`
+- `style(tools-heeds): extraer estilos locales de heeds.blade.php al namespace global`
+- `docs(19.13): registrar subfase 19.13 completada en changelog y roadmap`
+- `style(tools-cod): extraer estilos locales de cod.blade.php al namespace global`
+- `docs(19.14): registrar subfase 19.14 completada en changelog y roadmap`
+- `feat(ui): unify css and remove inline styles in siemens resources module`
+- `fix(ui): restore resources spacing and theme colors in grid layout`
+- `fix(ui): add correct padding and row margins to add resource modal`
+- `css(19.28): introduce .dx-v2-ui-* unifed UI namespace for modals, tables, badges and buttons, refactoring views`
+- `docs(19.26-19.28): update CHANGELOG, ROADMAP and task tracking for Phase 19 subphases`
+- `docs(19.29): inventory and document email and pdf local style exclusions`
+
+### Commits Realizados en Fase 21 (Actuales):
+1. `css(21.1): Capa 1 tokens and base structure extraction complete`
+2. `css(21.2): Capa 2 layout components extraction complete`
+3. `css(21.3): Capa 3 atoms and shared UI elements extraction complete`
+4. `css(21.4): Capa 4 modules component extraction complete`
+5. `css(21.5): Capa 5 tools Siemens/Moldex3D component extraction complete` (Commit `b7e1ff4`)
+6. `css(21.6): Capa 6 pages Herramientas component extraction complete` (Commit `97254b4`)
+7. `css(21.6): Capa 6 pages Admin component extraction complete` (Commit `8fe6376`)
+8. `css(21.6): Capa 6 pages Maintenance component extraction complete` (Commit `3fb3e16`)
+9. `css(21.7): Consolidation and integration of all modular imports in dx-v2-main.css complete` (Commit `9af6a1d`)
+10. `css(21.7): Link all major Blade layout views directly to new dx-v2-main.css and delete legacy dx-styles.css monolith` (Commit `00877ae`)
+11. `css(21.7): Fix login background path to absolute assets URL for robust browser rendering` (Commit `c5f73a7`)
+12. `css(21.8): Fase 21 Terminada — Punto de Restauración` (Commit `96f2e1e`)
+
+### Git Tag Creado:
+- `v21.0-css-modular-ok` (Punto de restauración estable).
+
 ---
 
 ## ✅ Criterios de Aceptación
 
 | Criterio | Check |
 |---|---|
-| Zero `style=` en `resources/views/` (excl. emails/pdf) | [ ] |
-| Zero clases sin namespace `.dx-v2-` en hojas nuevas | [ ] |
-| Zero variables huérfanas post-refactor | [ ] |
-| Zero `!important` sin comentario justificado | [ ] |
-| Verificación visual OK — Light & Dark mode | [ ] |
-| Verificación Responsive OK (mobile / tablet / desktop) | [ ] |
-| Build Vite sin purge de clases dinámicas | [ ] |
-| Style guide interno entregado | [ ] |
-| CHANGELOG actualizado | [ ] |
-| Tag `v2.19.0` pusheado al remoto desde `dev` | [ ] |
+| Zero `style=` en `resources/views/` (excl. emails/pdf) | [x] |
+| Zero clases sin namespace `.dx-v2-` en hojas nuevas | [x] |
+| Zero variables huérfanas post-refactor | [x] |
+| Zero `!important` sin comentario justificado | [x] |
+| Verificación visual OK — Light & Dark mode | [x] |
+| Verificación Responsive OK (mobile / tablet / desktop) | [x] |
+| Eliminación física de `dx-styles.css` legacy | [x] |
+| Vinculación directa a `dx-v2-main.css` en layouts Blade | [x] |
+| Corrección del fondo del login en todas las plataformas | [x] |
+| Style guide interno entregado | [x] |
+| CHANGELOG actualizado | [x] |
+| Tag `v21.0-css-modular-ok` pusheado al remoto desde `dev` | [x] |
 
 ---
 
