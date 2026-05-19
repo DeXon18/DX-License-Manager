@@ -8,7 +8,7 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | Críticos (P1) | Importantes (P2) | Menores (P3) | Resueltos |
 | :--- | :--- | :--- | :--- |
-| 0 | 1 | 0 | 14 |
+| 0 | 1 | 0 | 15 |
 
 ---
 
@@ -18,13 +18,13 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 
 | ID | Incidencia | Módulo | Prioridad | Estado | Fecha detección |
 |---:|---|---|:---:|:---:|:---:|
-| #008 | Unificación de estilos CSS en archivo central | UI/UX | 🟢 P3 | 🆕 Nuevo | 2026-05-14 |
 
 
 ### ✅ Resueltos
 
 | ID | Incidencia | Módulo | Prioridad | Estado | Fecha detección | Fecha resolución |
 |---:|---|---|:---:|:---:|:---:|:---:|
+| #008 | Unificación de estilos CSS en archivo central | UI/UX | 🟢 P3 | ✅ Resuelto | 2026-05-14 | 2026-05-19 |
 | #015 | Fallo en vista previa COD (nesting HTML roto) | Herramientas | 🔴 P1 | ✅ Resuelto | 2026-05-16 | 2026-05-16 |
 | #004 | Revisar visualización de "Other Installs" | UI/UX | 🟢 P3 | ✅ Resuelto | 2026-05-14 | 2026-05-15 |
 | #007 | Fallo en normalización / duplicidad de clientes | Normalización | 🟠 P2 | ✅ Resuelto | 2026-05-14 | 2026-05-15 |
@@ -134,6 +134,11 @@ Registro centralizado de bugs, errores de UI y discrepancias técnicas detectada
 - **Causa probable**: Crecimiento orgánico del proyecto y personalizaciones ad-hoc en vistas específicas.
 - **Impacto**: Mayor dificultad para aplicar cambios de diseño globales y riesgo de inconsistencias visuales.
 - **Acción**: Migrar todos los estilos inline y CSS secundarios a `public/css/dx-styles.css` (o un sistema de importaciones ordenado) para centralizar la identidad visual.
+- **Resolución**: ✅ Resuelto el 2026-05-19.
+  - Finalizada la unificación y modularización de estilos en 35 archivos CSS independientes organizados jerárquicamente en 6 capas funcionales bajo `backend/public/assets/css/`.
+  - Consolidada toda la importación en un archivo central maestro `dx-v2-main.css`.
+  - Purgado por completo el monolito legacy redundante `dx-styles.css` de disco y Git.
+  - Actualizados todos los layouts Blade (`app.blade.php`, `login.blade.php`, `503.blade.php`) para apuntar directamente al nuevo sistema modular con cache-buster dinámico.
 
 ### #009 — Limpieza de archivos basura y registros huérfanos
 - **Síntoma**: Presencia de directorios temporales, archivos de backup antiguos o registros en base de datos que ya no tienen relación con identidades activas.
