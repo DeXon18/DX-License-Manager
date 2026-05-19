@@ -1000,7 +1000,7 @@ Comentario en componentes que usen clases `.dx-v2-` no obvias:
 
 ---
 
-# FASE 20 — IDENTIDAD VISUAL E INTEGRACIÓN DEL LOGOTIPO PREMIUM 🔜
+# FASE 20 — IDENTIDAD VISUAL E INTEGRACIÓN DEL LOGOTIPO PREMIUM ✅ COMPLETADA
 
 Logotipo y marca premium para la cabecera de `beta.dxpro.es` y entornos de producción. Incorpora efectos interactivos dinámicos de destello "scan line" al hacer hover, compatibilidad nativa con modo claro/oscuro e implementaciones SVG standalone para favicons y exportaciones oficiales.
 
@@ -1025,10 +1025,10 @@ Logotipo y marca premium para la cabecera de `beta.dxpro.es` y entornos de produ
     - [x] Integrar el logotipo en las vistas de Autenticación (`auth/login`, registro, etc.).
     - [x] Validar la correcta visualización reactiva con Alpine.js.
 
-- [ ] **Subfase 20.5** — **Control de Calidad, Hardening y Cierre**
-    - [ ] Verificar el efecto scan line al hacer hover a 36px y 192px en navegadores reales.
-    - [ ] Confirmar adaptabilidad en anchos responsive (no colapsar por debajo de 24px de altura).
-    - [ ] Registrar el cierre definitivo de la Fase 20 en el CHANGELOG del proyecto.
+- [x] **Subfase 20.5** — **Control de Calidad, Hardening y Cierre** ✅ COMPLETADA
+    - [x] Verificar el efecto scan line al hacer hover a 36px y 192px en navegadores reales.
+    - [x] Confirmar adaptabilidad en anchos responsive (no colapsar por debajo de 24px de altura).
+    - [x] Registrar el cierre definitivo de la Fase 20 en el CHANGELOG del proyecto.
 
 ---
 

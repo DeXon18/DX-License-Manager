@@ -1,6 +1,18 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-19 12:30] — DX Brand & Logo: Fase 20 CERRADA ✅
+
+### Added
+- **Cierre de Fase 20**: Finalizada oficialmente la **Fase 20 — Identidad Visual e Integración del Logotipo Premium**.
+- **Refinamiento de Micro-alineación e Interacción**:
+  - Ajustado el espaciado lateral derecho de la marca en el header (`header .dx-lockup`) a `60px` para desplazar los enlaces de navegación, logrando una alineación perfecta de la pestaña "**Inicio**" a la altura del título "**Bienvenido, Oskar**" en el contenido principal.
+  - Agregado margen inferior de `20px` al logotipo en el footer (`.main-footer .dx-lockup`) para separarlo limpiamente del párrafo descriptivo inferior.
+  - Optimizado el párrafo `.footer-desc` reduciendo su tamaño de letra a `12px` (estilización minimalista premium) e incrementando su margen inferior a `28px` para evitar colisiones visuales con los iconos de redes sociales.
+- **Control de Calidad (Hardening)**: Verificada la reactividad en el login del portal y la adaptabilidad responsive y de modo oscuro en todos los navegadores.
+
+---
+
 ## [2026-05-19 12:20] — DX Brand & Logo: Subfases 20.2 - 20.4 (Estilos, SVGs e Integración de Vistas) ✅
 
 ### Added
