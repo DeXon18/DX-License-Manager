@@ -1,8 +1,0 @@
-/**
- * @module    dx-styles
- * @desc      Fichero de estilos legacy que ahora actúa como puente de redirección e importación hacia la nueva arquitectura modular DX-V2. Mantiene compatibilidad del 100% con todas las vistas Blade del portal que solicitan `/assets/css/dx-styles.css` sin necesidad de alterar referencias en código.
- * @afecta    [layouts/app.blade.php, auth/login.blade.php, errors/503.blade.php]
- * @version   2.21.0
- */
-
-@import 'dx-v2-main.css';
