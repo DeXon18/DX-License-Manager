@@ -1,6 +1,30 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-19 15:20] — DX CSS Unification: Fase 21 CERRADA ✅
+
+### Added
+- **Cierre de Fase 21**: Finalizada oficialmente la **Fase 21 — Estructurar CSS — dx-v2**, modularizando el monolito CSS heredado de 10,118 líneas en 35 hojas de estilos compactas y organizadas jerárquicamente en 6 capas funcionales.
+- **Estructura de la Arquitectura Modular CSS**:
+  - **Capa 1 (Tokens & Base)**: `dx-v2-tokens.css`, `dx-v2-reset.css` y `dx-v2-base.css` (variables HSL, keyframes y reset global).
+  - **Capa 2 (Layout Estructural)**: Navbar (`dx-v2-nav.css`), Sidebar (`dx-v2-sidebar.css`), Breadcrumb (`dx-v2-breadcrumb.css`) y Footers (`dx-v2-footer.css`).
+  - **Capa 3 (Atoms UI Compartidos)**: `shared/dx-v2-cards.css`, `shared/dx-v2-tables.css`, `shared/dx-v2-badges.css`, `shared/dx-v2-buttons.css`, `shared/dx-v2-modals.css`, `shared/dx-v2-pagination.css`, `shared/dx-v2-forms.css`, `shared/dx-v2-empty-states.css`, `shared/dx-v2-ui.css` y `shared/dx-v2-brand.css`.
+  - **Capa 4 (Módulos de Aplicación)**: 13 archivos dedicados a flujos independientes (Login, Dashboard, Clients, Import, COD, Resources, Sys-dashboard, Docker, Users, Licenses, Alerts, Backups y Audit).
+  - **Capa 5 (Herramientas Técnicas de Vendors)**: `tools/dx-v2-tools-hub.css`, `tools/dx-v2-tools-nx.css`, `tools/dx-v2-tools-star.css`, `tools/dx-v2-tools-heeds.css` y `tools/dx-v2-tools-moldex.css`.
+  - **Capa 6 (Páginas Especiales)**: `pages/dx-v2-page-herramientas.css`, `pages/dx-v2-page-admin.css` y `pages/dx-v2-page-maintenance.css`.
+- **Fichero Maestro Consolidado**: Creado `dx-v2-main.css` unificando las 35 directivas de importación en el estricto orden jerárquico de cascada y especificidad.
+
+### Changed
+- **Modernización y Desacoplamiento de Layouts Blade**: Actualizadas las referencias a las hojas de estilo en el `<head>` del layout principal del portal (`layouts/app.blade.php`), la pantalla de mantenimiento (`errors/503.blade.php`) y la interfaz de login (`auth/login.blade.php`), llamando directamente al maestro modular `dx-v2-main.css?v={{ time() }}` y ganando rendimiento en carga de red.
+
+### Fixed
+- **Resolución de Recursos de Imagen del Login**: Corregido el bug de carga del fondo del login provocado por los `@import` relativos anidados, consolidando la ruta de carga en `dx-v2-login.css` a la ruta absoluta `/assets/img/login-bg-corporate.png`, asegurando su visualización robusta.
+
+### Deleted
+- **Purga de Deuda Técnica Legacy**: Eliminado físicamente de disco y de Git el archivo monolítico redundante heredado `dx-styles.css` (`git rm`), limpiando el espacio de trabajo.
+
+---
+
 ## [2026-05-19 12:30] — DX Brand & Logo: Fase 20 CERRADA ✅
 
 ### Added
