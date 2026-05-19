@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mantenimiento — DX License Manager</title>
-    <link rel="stylesheet" href="/assets/css/dx-styles.css">
+    <link rel="stylesheet" href="/assets/css/dx-v2-main.css">
 </head>
 <body class="dx-v2-maint-body">
 
