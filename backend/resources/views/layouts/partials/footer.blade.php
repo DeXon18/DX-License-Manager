@@ -3,9 +3,14 @@
         <div class="footer-grid">
             <!-- Columna 1: Marca -->
             <div class="footer-col brand-col">
-                <div class="footer-logo">
-                    <div class="logo-box">DX</div>
-                    <span class="logo-text">License Manager</span>
+                <div class="dx-lockup">
+                    <div class="dx-mark">
+                        <span>DX</span>
+                    </div>
+                    <div class="dx-wordmark">
+                        <span class="dx-name">License Manager</span>
+                        <span class="dx-sub">by DXPro</span>
+                    </div>
                 </div>
                 <p class="footer-desc">
                     Gestión inteligente y auditoría avanzada de licencias de software industrial para el ecosistema Siemens PLM y Moldex3D.

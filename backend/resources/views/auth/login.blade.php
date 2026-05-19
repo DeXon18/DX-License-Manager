@@ -22,9 +22,14 @@
 <div class="dx-v2-login-container">
     <div class="dx-v2-login-left">
         <div class="dx-v2-login-inner-col">
-            <div class="dx-v2-login-brand">
-                <div class="dx-v2-login-brand-mark">DX</div>
-                <span class="dx-v2-login-brand-name">DX License Manager</span>
+            <div class="dx-lockup">
+                <div class="dx-mark">
+                    <span>DX</span>
+                </div>
+                <div class="dx-wordmark">
+                    <span class="dx-name">License Manager</span>
+                    <span class="dx-sub">by DXPro</span>
+                </div>
             </div>
 
             <div class="left-content">
