@@ -1,6 +1,21 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-19 12:20] — DX Brand & Logo: Subfases 20.2 - 20.4 (Estilos, SVGs e Integración de Vistas) ✅
+
+### Added
+- **Estilos de Logotipo y Scan Line (`dx-styles.css`)**: Implementado el namespace global `.dx-lockup`, `.dx-mark` y `.dx-wordmark` con variables de color semánticas HSL y fuentes del sistema (`Inter`). Desarrollada la animación `@keyframes dx-scan` con pseudo-elemento `::after` para el destello scan line interactivo al hacer hover.
+- **Exportaciones SVG Oficiales**: Generados los tres archivos SVG oficiales (`logo-light.svg`, `logo-dark.svg` y `logo-mark.svg` para favicon) bajo el directorio `public/assets/images/`.
+- **Integración de Logotipos en Vistas**: Reemplazada la cabecera de la marca estática tradicional con el bloque HTML interactivo de logotipo premium unificado en:
+  - Layout Principal del Portal (`layouts/app.blade.php`).
+  - Layout e interfaces de Autenticación (`auth/login.blade.php`).
+  - Pie de página unificado (`layouts/partials/footer.blade.php`).
+
+### Changed
+- **Soporte Light/Dark**: Configurada la adaptabilidad dinámica de color para los textos del wordmark (`.dx-name`, `.dx-sub`) mediante selectores oscuros (`.dark`, `[data-theme="dark"]`).
+
+---
+
 ## [2026-05-19 12:10] — DX Brand & Logo: Subfase 20.1 (Registro y Estructuración) ✅
 
 ### Added
