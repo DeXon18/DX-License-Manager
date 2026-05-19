@@ -916,10 +916,14 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
     > - [profile/index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/profile/index.blade.php) - Eliminados paddings y grids manuales, enlazando variables CSS globales.
     > - [clients/show.blade.php](file:///z:/DX-License-Manager/backend/resources/views/clients/show.blade.php) - Modal de contactos migrado de `.gui-input` a `.dx-v2-form-input` y `.dx-v2-form-checkbox-wrapper`.
 
-- [ ] **Subfase 19.28** — Componentes UI (Modales, Tablas, Badges, Botones, Toasts/Alerts)
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.28** — Componentes UI (Modales, Tablas, Badges, Botones, Toasts/Alerts) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-ui-*` para tablas industriales, modales glassmorphism, badges unificados de estado, botones transicionales y alertas semánticas.
+    - [x] Limpieza de `style=` inline de modales y tablas en vistas críticas.
+    - [x] Verificación visual (Light/Dark) y resolución de bug de display inline de Alpine.js en `.dx-v2-ui-modal-overlay`.
+    > **Evidencia:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Añadido el namespace `.dx-v2-ui-*` con 313 líneas de código CSS HSL unificando modales, tablas, botones, badges y toasts sin `!important` en displays reactivos.
+    > - [show.blade.php](file:///z:/DX-License-Manager/backend/resources/views/clients/show.blade.php) - Refactorizados modales de contactos y auditoría, y unificadas todas las tablas (contratos, licencias, certificados, contactos, renovaciones) bajo el wrapper de alta densidad.
+    > - [_resources.blade.php](file:///z:/DX-License-Manager/backend/resources/views/tools/partials/_resources.blade.php) - Modal de creación/edición de enlaces unificado al namespace de UI y formularios globales.
 
 ---
 

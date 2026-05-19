@@ -1,6 +1,42 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-19 11:50] — CSS Unification: Subfase 19.28 (Componentes UI Compartidos) ✅
+
+### Added
+- **Namespace de UI Compartida (`.dx-v2-ui-*`)**: Diseñado e inyectado un bloque unificado de estilos en [dx-styles.css] (más de 310 líneas de código CSS HSL) para estandarizar los elementos visuales comunes:
+  - Modales glassmorphic premium `.dx-v2-ui-modal-overlay` y `.dx-v2-ui-modal-content` con animaciones fluidas (`dxFadeIn` / `dxScaleIn`) y filtros blur de alta fidelidad.
+  - Tablas industriales de alta densidad `.dx-v2-ui-table-wrapper` y `.dx-v2-ui-table` con filas translúcidas en hover y cabeceras monoespaciadas.
+  - Botones simétricos `.dx-v2-ui-btn` (en variantes primary, secondary y actions) con transiciones suaves y micro-desplazamientos interactivos.
+  - Badges compactas de estado y alertas deterministas.
+
+### Changed
+- **Estandarización de Vistas de Clientes (`clients/show.blade.php`)**: Migradas al 100% las tablas de contratos, licencias, certificados, contactos y renovaciones bajo el nuevo estándar industrial, así como los modales de contacto y de auditoría de licencias.
+- **Vista de Enlaces de Recursos (`tools/partials/_resources.blade.php`)**: Modal de administración unificado al namespace de UI global.
+
+### Fixed
+- **Resolución de Incidencia de Reactividad (Alpine.js)**: Removido el modificador `!important` en el display de `.dx-v2-ui-modal-overlay` en [dx-styles.css]. Esto corrige el bug crítico que forzaba la visualización persistente del modal "Detalle de Auditoría Siemens" al entrar en la ficha del cliente, restaurando el correcto funcionamiento de `x-show` y `x-cloak`.
+
+---
+
+## [2026-05-19 11:35] — CSS Unification: Subfase 19.27 (Componentes de Formulario) ✅
+
+### Added
+- **Namespace de Formularios (`.dx-v2-form-*`)**: Creada una especificación centralizada en [dx-styles.css] con estilos para campos de texto, inputs, selectores de opciones, checkboxes y envolturas de subida interactiva. Soporta focus shadows ergonómicos, estados deshabilitados y animaciones de borde con variables HSL.
+
+### Changed
+- **Formularios de Perfil (`profile/index.blade.php`)**: Refactorizados inputs, textareas y selectores de perfil para purgar paddings inline y heredar variables semánticas HSL globales.
+- **Formulario de Contacto (`clients/show.blade.php`)**: Migrado el modal de alta de contactos de la clase obsoleta `.gui-input` al namespace semántico `.dx-v2-form-*`.
+
+---
+
+## [2026-05-19 11:20] — CSS Unification: Subfase 19.26 (Páginas de Error) ✅
+
+### Changed
+- **Mantenimiento Técnico (`errors/503.blade.php`)**: Purgado por completo un bloque complejo de estilos locales `<style>` de más de 200 líneas, delegando toda la presentación visual del modo mantenimiento premium y su temporizador interactivo a la hoja de estilos global `dx-styles.css`.
+
+---
+
 ## [2026-05-18 16:00] — CSS Unification: Subfase 19.25 (Logs y Auditoría) ✅
 
 ### Added

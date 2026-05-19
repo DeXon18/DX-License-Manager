@@ -39,6 +39,12 @@ El agente NO marca `[x]` una tarea hasta que todos sus checks están completados
   - [x] Evidencia: Purga absoluta de declaraciones locales de inputs, inyectando el namespace `.dx-v2-form-*` con variables semánticas HSL y optimización focus/estados.
   - [x] Rama: feature/css-tokens
 
+- [x] Subfase 19.28: Componentes UI Compartidos (Modales, Tablas, Badges, Botones, Toasts/Alerts)
+  - [x] Regla aplicada: `AGENTS.md` §0.3 (DESIGN.md), `impeccable.md` & `troubleshooting.md`
+  - [x] Check pre-ejecución: Analizar tablas y modales redundantes en `clients/show.blade.php` y `tools/partials/_resources.blade.php`.
+  - [x] Evidencia: Estandarización de tablas responsivas (`.dx-v2-ui-table`), modales semánticos (`.dx-v2-ui-modal-*`) y botones interactivos. Corrección del bug crítico de Alpine.js removiendo `!important` del display del overlay.
+  - [x] Rama: feature/css-tokens
+
 ### 🛡️ Seguridad & RBAC Hardening
 - [ ] 1. Corrección de Seguridad Fase 2 (MIME & Fallbacks)
   - [ ] Regla aplicada: `security-check.md` §4 & §3
@@ -65,6 +71,7 @@ El agente NO marca `[x]` una tarea hasta que todos sus checks están completados
 - [x] Subfase 19.25: Logs y auditoría (actividad, errores, auditoría IA)
 - [x] Subfase 19.26: Páginas de Error (mantenimiento 503)
 - [x] Subfase 19.27: Componentes de Formulario (inputs, selects, textareas, checkboxes, radios, switches y file uploads)
+- [x] Subfase 19.28: Componentes UI Compartidos (Modales, Tablas, Badges, Botones, Toasts/Alerts)
 
 ### 📊 Historial de Tareas Previas
 
