@@ -26,15 +26,15 @@
             <form action="{{ route('profile.update') }}" method="POST">
                 @csrf
 
-                <div class="form-group">
-                    <label for="name">NOMBRE COMPLETO</label>
-                    <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required>
+                <div class="dx-v2-form-group">
+                    <label for="name" class="dx-v2-form-label">NOMBRE COMPLETO</label>
+                    <input type="text" name="name" id="name" class="dx-v2-form-input" value="{{ old('name', $user->name) }}" required>
                     @error('name') <p class="date-sub" style="margin-top: 4px;">{{ $message }}</p> @enderror
                 </div>
 
-                <div class="form-group">
-                    <label for="email">EMAIL INSTITUCIONAL</label>
-                    <input type="email" name="email" id="email" class="font-mono" value="{{ old('email', $user->email) }}" required>
+                <div class="dx-v2-form-group">
+                    <label for="email" class="dx-v2-form-label">EMAIL INSTITUCIONAL</label>
+                    <input type="email" name="email" id="email" class="dx-v2-form-input font-mono" value="{{ old('email', $user->email) }}" required>
                     @error('email') <p class="date-sub" style="margin-top: 4px;">{{ $message }}</p> @enderror
                 </div>
 
@@ -57,21 +57,21 @@
                         <i class="fas fa-shield-alt me-2"></i>Seguridad y Contraseña
                     </div>
 
-                    <div class="form-group">
-                        <label for="current_password" style="font-size: 11px;">CONTRASEÑA ACTUAL</label>
-                        <input type="password" name="current_password" id="current_password" class="font-mono" style="padding: 10px 14px;">
+                    <div class="dx-v2-form-group">
+                        <label for="current_password" class="dx-v2-form-label">CONTRASEÑA ACTUAL</label>
+                        <input type="password" name="current_password" id="current_password" class="dx-v2-form-input font-mono">
                         @error('current_password') <p class="date-sub" style="margin-top: 4px;">{{ $message }}</p> @enderror
                     </div>
 
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div class="form-group" style="margin-bottom: 0;">
-                            <label for="new_password" style="font-size: 11px;">NUEVA CONTRASEÑA</label>
-                            <input type="password" name="new_password" id="new_password" class="font-mono" style="padding: 10px 14px;">
+                        <div class="dx-v2-form-group" style="margin-bottom: 0;">
+                            <label for="new_password" class="dx-v2-form-label">NUEVA CONTRASEÑA</label>
+                            <input type="password" name="new_password" id="new_password" class="dx-v2-form-input font-mono">
                             @error('new_password') <p class="date-sub" style="margin-top: 4px;">{{ $message }}</p> @enderror
                         </div>
-                        <div class="form-group" style="margin-bottom: 0;">
-                            <label for="new_password_confirmation" style="font-size: 11px;">REPETIR NUEVA</label>
-                            <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="font-mono" style="padding: 10px 14px;">
+                        <div class="dx-v2-form-group" style="margin-bottom: 0;">
+                            <label for="new_password_confirmation" class="dx-v2-form-label">REPETIR NUEVA</label>
+                            <input type="password" name="new_password_confirmation" id="new_password_confirmation" class="dx-v2-form-input font-mono">
                         </div>
                     </div>
                     <p style="font-size: 11px; color: var(--muted); margin-top: 16px; font-style: italic;">
