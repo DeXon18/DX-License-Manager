@@ -1,0 +1,24 @@
+/**
+ * @module    dx-v2-cards
+ * @fase      21.3
+ * @desc      Estilos comunes para tarjetas (cards) base, de KPI y de configuración estructural del portal.
+ * @afecta    [Global App Portal]
+ * @version   2.21.0
+ */
+
+/* 12. CARDS */
+.card {
+  background:var(--dx-v2-surface); border:1px solid var(--dx-v2-border); border-radius: var(--dx-v2-rounded-sm);
+  overflow:hidden; transition:background 0.2s,border-color 0.2s;
+}
+/* Admin: card con acento superior */
+.card[style*="--accent"] { border-radius: var(--dx-v2-rounded-lg); box-shadow:0 1px 3px rgba(0,0,0,0.05); position:relative; }
+.card[style*="--accent"]::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:var(--dx-v2-accent); opacity:0.8; }
+.card-header {
+  padding:16px 24px; border-bottom:1px solid var(--dx-v2-border);
+  display:flex; align-items:center; justify-content:space-between;
+}
+.card > .card-header { padding:16px 24px; background:rgba(255,255,255,0.02); }
+.card-title { font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.07em; color:var(--dx-v2-secondary); }
+.card-action { font-size:12px; color:var(--dx-v2-accent); cursor:pointer; text-decoration:none; }
+.card-body { padding: 24px !important; }
