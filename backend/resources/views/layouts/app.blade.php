@@ -48,9 +48,14 @@
     
     <header class="{{ ($maintenance_active ?? false) ? 'dx-v2-maintenance-header' : '' }}">
         <div class="header-inner">
-            <a class="brand" href="{{ url('/') }}">
-                <div class="brand-mark">DX</div>
-                <span class="brand-name">DX License Manager</span>
+            <a class="dx-lockup" href="{{ url('/') }}">
+                <div class="dx-mark">
+                    <span>DX</span>
+                </div>
+                <div class="dx-wordmark">
+                    <span class="dx-name">License Manager</span>
+                    <span class="dx-sub">by DXPro</span>
+                </div>
             </a>
             <nav class="nav-links">
                 <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Inicio</a>
