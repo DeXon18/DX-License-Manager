@@ -27,11 +27,11 @@ El agente NO marca `[x]` una tarea hasta que todos sus checks están completados
 ## Tareas de la Sesión Actual
 
 ### 🎨 Fase 19 — Unificación CSS & Limpieza UI (Activa)
-- [ ] Subfase 19.26: Páginas de Error (`errors/`: 403, 404, 419, 500, 503)
-  - [ ] Regla aplicada: `AGENTS.md` §0.3 (DESIGN.md) & §0.4 (Descomposición)
-  - [ ] Check pre-ejecución: Analizar bloque local `<style>` en `errors/503.blade.php`.
-  - [ ] Evidencia: Purga completa del bloque `<style>` de más de 200 líneas y vinculación exitosa a `dx-styles.css`.
-  - [ ] Rama: feature/css-tokens
+- [x] Subfase 19.26: Páginas de Error (`errors/`: 403, 404, 419, 500, 503)
+  - [x] Regla aplicada: `AGENTS.md` §0.3 (DESIGN.md) & §0.4 (Descomposición)
+  - [x] Check pre-ejecución: Analizar bloque local `<style>` en `errors/503.blade.php`.
+  - [x] Evidencia: Purga completa del bloque `<style>` de más de 200 líneas y vinculación exitosa a `dx-styles.css`.
+  - [x] Rama: feature/css-tokens
 
 ### 🛡️ Seguridad & RBAC Hardening
 - [ ] 1. Corrección de Seguridad Fase 2 (MIME & Fallbacks)
@@ -57,6 +57,7 @@ El agente NO marca `[x]` una tarea hasta que todos sus checks están completados
 - [x] Subfase 19.23: Backups (manual, historial, configuración automática)
 - [x] Subfase 19.24: Integraciones IA (Gemini, Deepseek, OpenRouter, Telegram Bot, estado de conexión)
 - [x] Subfase 19.25: Logs y auditoría (actividad, errores, auditoría IA)
+- [x] Subfase 19.26: Páginas de Error (mantenimiento 503)
 
 ### 📊 Historial de Tareas Previas
 

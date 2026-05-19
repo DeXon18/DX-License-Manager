@@ -892,10 +892,13 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
     > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Inyectado el namespace `.dx-v2-audit-*` (500+ líneas) que define estilos unificados para banners, tabs de navegación, formularios de filtrado, contadores métricos, rejillas de datos de alta densidad, trazas del Stack Trace colapsables y estados de email.
     > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/audit/index.blade.php) - Purga absoluta de declaraciones `style` y eventos inline en las tres pestañas de visualización. Eliminada la hoja de estilos local `<style>` de más de 80 líneas.
 
-- [ ] **Subfase 19.26** — Páginas de Error (`errors/`: 403, 404, 419, 500, 503) 🔜
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación visual (Light/Dark).
+- [x] **Subfase 19.26** — Páginas de Error (`errors/`: 403, 404, 419, 500, 503) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-maint-*` (estilos unificados de mantenimiento) definido e integrado en dx-styles.css.
+    - [x] Limpieza completa de estilos inline locales y hoja de estilos `<style>` de más de 200 líneas en `errors/503.blade.php`.
+    - [x] Verificación visual de alta resolución en Light/Dark, preservando latido de estados en vivo y diseño NOC Pro.
+    > **Evidencia:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Inyectado el namespace `.dx-v2-maint-*` (190+ líneas) con clases desacopladas y variables semánticas HSL.
+    > - [503.blade.php](file:///z:/DX-License-Manager/backend/resources/views/errors/503.blade.php) - Purga absoluta de 218 líneas de estilos inline, vinculando la hoja global unificada y aplicando clases limpias.
 
 ---
 
