@@ -28,18 +28,22 @@ El desarrollador inicia. El agente espera.
 
 ## 🟢 En Progreso
 
-### Fase 19 — Unificación CSS & Limpieza UI 🔜
+*Actualmente en espera de la definición de nuevos objetivos y prioridades por parte de Oskar.*
+
+## ✅ Completado
+
+### Fase 19 y 21 — Modularización CSS & Limpieza UI (DX-V2) ✅
 - **Iniciada:** 2026-05-16
+- **Completada:** 2026-05-19
 - **Rama:** `feature/css-tokens`
-- **Resumen:** Refactorización CSS ultra-granular en 30 subfases. Namespace `.dx-v2-`, eliminación de `style=` inline y consolidación de tokens.
+- **Resumen:** Refactorización CSS ultra-granular y modularización del monolito legacy de 10k líneas en 35 hojas estructuradas en 6 capas jerárquicas y unificadas en `dx-v2-main.css`. Erradicación de `style=` inline, inyección de namespaces `.dx-v2-`, variables HSL y soporte completo light/dark mode.
 - [x] Subfase 19.4 (Dashboard Centralization)
 - [x] Subfase 19.5 (Clientes Listado)
 - [x] Subfase 19.6 (Clientes Licencias)
 - [x] Subfase 19.7 (Clientes Contratos / Importación CSV)
 - [x] Subfase 19.8 (Clientes Contactos / Certificados COD)
-- [ ] #017 (P3): Unificación CSS — Subfases 19.1 a 19.29 (Ejecución & Hardening).
-
-## ✅ Completado
+- [x] #017 (P3): Unificación CSS — Subfases 19.1 a 19.29 (Ejecución & Hardening).
+- [x] Fase 21: Modularización CSS en 35 archivos e invalidación robusta de caché en login.
 
 ### Resolución de Incidencia #016 — Fix COD File Deletion ✅
 - **Completada:** 2026-05-16
