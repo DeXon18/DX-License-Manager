@@ -1,0 +1,9 @@
+/**
+ * @module    dx-v2-main
+ * @fase      21.0
+ * @desc      Fichero CSS maestro que reúne todos los @import en el orden correcto de capas de responsabilidad.
+ * @afecta    [layouts/app.blade.php, auth/login.blade.php]
+ * @version   2.21.0
+ */
+
+@import 'fonts.css';
