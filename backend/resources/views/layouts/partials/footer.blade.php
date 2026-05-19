@@ -3,17 +3,22 @@
         <div class="footer-grid">
             <!-- Columna 1: Marca -->
             <div class="footer-col brand-col">
-                <div class="footer-logo">
-                    <div class="logo-box">DX</div>
-                    <span class="logo-text">License Manager</span>
+                <div class="dx-lockup">
+                    <div class="dx-mark">
+                        <span>DX</span>
+                    </div>
+                    <div class="dx-wordmark">
+                        <span class="dx-name">License Manager</span>
+                        <span class="dx-sub">by DXPro</span>
+                    </div>
                 </div>
                 <p class="footer-desc">
                     Gestión inteligente y auditoría avanzada de licencias de software industrial para el ecosistema Siemens PLM y Moldex3D.
                 </p>
                 <div class="footer-social">
                     <a href="#" title="Documentación"><i class="fa-solid fa-book"></i></a>
-                    <a href="#" title="Soporte"><i class="fa-solid fa-headset"></i></a>
-                    <a href="#" title="GitHub"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/oskar-blazquez/" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="https://github.com/DeXon18" title="GitHub"><i class="fa-brands fa-github"></i></a>
                 </div>
             </div>
 
@@ -73,7 +78,7 @@
                 &copy; {{ date('Y') }} DX License Manager. Todos los derechos reservados.
             </div>
             <div class="footer-meta">
-                <span>Desarrollado con <i class="fa-solid fa-heart" style="color: #ef4444;"></i> por Antigravity (DX Agent)</span>
+                <span>Desarrollado con <i class="fa-solid fa-heart dx-v2-heart"></i> por Antigravity (DX Agent)</span>
             </div>
         </div>
     </div>

@@ -1,0 +1,12 @@
+/**
+ * @module    dx-v2-breadcrumb
+ * @fase      21.2
+ * @desc      Estilos minimalistas estructurados para la barra de migas de pan (breadcrumb).
+ * @afecta    [layouts/app.blade.php]
+ * @version   2.21.0
+ */
+
+/* 11. BREADCRUMB */
+.breadcrumb { font-size:12px; color:var(--dx-v2-muted); margin-bottom:8px; display:flex; gap:6px; align-items:center; }
+.breadcrumb a { color:var(--dx-v2-muted); text-decoration:none; }
+.breadcrumb a:hover { color:var(--dx-v2-primary); }

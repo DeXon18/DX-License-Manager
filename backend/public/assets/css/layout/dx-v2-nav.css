@@ -1,0 +1,71 @@
+/**
+ * @module    dx-v2-nav
+ * @fase      21.2
+ * @desc      Estilos estructurados para la cabecera, barra de navegación superior, toggle de tema y botón de usuario.
+ * @afecta    [layouts/app.blade.php]
+ * @version   2.21.0
+ */
+
+/* 5. HEADER */
+header {
+  background:var(--dx-v2-surface); border-bottom:1px solid var(--dx-v2-border);
+  position:sticky; top:0; z-index: var(--dx-v2-z-modal);
+  transition:background 0.2s,border-color 0.2s;
+}
+.header-inner {
+  max-width:1280px; width:100%; margin:0 auto; height:56px;
+  display:flex; align-items:center; padding:0 24px;
+}
+
+/* 6. BRAND */
+.brand { display:flex; align-items:center; gap:9px; text-decoration:none; margin-right:40px; }
+.brand-mark {
+  width:30px; height:30px; background:var(--dx-v2-primary); border-radius: var(--dx-v2-rounded-md);
+  display:flex; align-items:center; justify-content:center;
+  font-family: var(--dx-v2-font-mono); font-size:11px; font-weight:500;
+  color:var(--dx-v2-bg); letter-spacing:0.05em; transition:background 0.2s;
+}
+.brand-name { font-size:14px; font-weight:600; color:var(--dx-v2-primary); letter-spacing:-0.01em; }
+
+/* 7. NAVEGACIÓN */
+.nav-links { display:flex; align-items:center; gap:1px; flex:1; }
+.nav-link {
+  padding:5px 13px; font-size:13px; font-weight:500; color:var(--dx-v2-muted);
+  text-decoration:none; border-radius: var(--dx-v2-rounded-md); transition:color 0.12s,background 0.12s; cursor:pointer;
+}
+.nav-link:hover { color:var(--dx-v2-secondary); background:var(--dx-v2-bg); }
+.nav-link.active { color:var(--dx-v2-primary); background:var(--dx-v2-bg); font-weight:600; }
+.nav-right { display:flex; align-items:center; gap:12px; margin-left:auto; }
+
+/* 8. TOGGLE DE TEMA — medidas de 03-herramientas.html */
+.theme-toggle { display:flex; align-items:center; gap:8px; cursor:pointer; user-select:none; }
+.toggle-track {
+  width:40px; height:22px; background:var(--dx-v2-toggle-bg); border-radius: var(--dx-v2-rounded-lg);
+  position:relative; transition:background 0.2s; border:1px solid var(--dx-v2-border);
+}
+.toggle-knob {
+  width:16px; height:16px; background:var(--dx-v2-surface); border-radius: var(--dx-v2-rounded-full);
+  position:absolute; top:2px; left:2px; transition:left 0.2s,background 0.2s;
+  box-shadow:0 1px 3px rgba(0,0,0,0.2);
+}
+[data-theme="dark"] .toggle-knob { left:20px; background:var(--dx-v2-accent); }
+.toggle-icon { font-size:14px; }
+
+/* Toggle sobre fondo oscuro (panel izquierdo de login) */
+.left .toggle-track { background:rgba(255,255,255,0.1); border-color:rgba(255,255,255,0.15); }
+.left .toggle-knob  { background:var(--left-muted); }
+[data-theme="dark"] .left .toggle-knob { background:var(--dx-v2-accent); }
+
+/* 9. BOTÓN DE USUARIO */
+.user-btn {
+  display:flex; align-items:center; gap:8px; border:1px solid var(--dx-v2-border);
+  border-radius: var(--dx-v2-rounded-md); padding:5px 11px 5px 5px; cursor:pointer; background:var(--dx-v2-surface);
+  transition:border-color 0.15s,background 0.2s;
+}
+.user-btn:hover { border-color:var(--dx-v2-border); }
+.avatar {
+  width:26px; height:26px; background:var(--dx-v2-primary); border-radius: var(--dx-v2-rounded-md);
+  display:flex; align-items:center; justify-content:center; font-size:10px;
+  font-weight:600; color:var(--dx-v2-bg); font-family: var(--dx-v2-font-mono); transition:background 0.2s;
+}
+.user-name { font-size:13px; font-weight:500; color:var(--dx-v2-primary); }
