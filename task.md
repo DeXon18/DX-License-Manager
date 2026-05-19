@@ -33,6 +33,12 @@ El agente NO marca `[x]` una tarea hasta que todos sus checks están completados
   - [x] Evidencia: Purga completa del bloque `<style>` de más de 200 líneas y vinculación exitosa a `dx-styles.css`.
   - [x] Rama: feature/css-tokens
 
+- [ ] Subfase 19.27: Componentes de Formulario (inputs, selects, textareas, checkboxes, radios, file uploads)
+  - [ ] Regla aplicada: `AGENTS.md` §0.3 (DESIGN.md) & `impeccable.md`
+  - [ ] Check pre-ejecución: Analizar inputs e inline styling en `auth/login.blade.php`, `admin/users/create.blade.php`, `admin/users/edit.blade.php`, `profile/index.blade.php` y `clients/show.blade.php`.
+  - [ ] Evidencia: Purga de estilos inline de inputs, mapeo al namespace global `.dx-v2-form-*` y verificación visual en Light/Dark/Responsive en el contenedor Beta.
+  - [ ] Rama: feature/css-tokens
+
 ### 🛡️ Seguridad & RBAC Hardening
 - [ ] 1. Corrección de Seguridad Fase 2 (MIME & Fallbacks)
   - [ ] Regla aplicada: `security-check.md` §4 & §3
