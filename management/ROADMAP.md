@@ -904,11 +904,17 @@ Identificar y extraer estos patrones repetidos a su hoja común **antes** de pro
 
 ## 🔷 COMPONENTES COMPARTIDOS
 
-- [ ] **Subfase 19.27** — Componentes de Formulario (inputs, selects, textareas, checkboxes, radios, file uploads)
-    - [ ] Extracción y Namespace `.dx-v2-`.
-    - [ ] Limpieza de `style=` inline.
-    - [ ] Verificación de estados: default, focus, disabled, error, readonly.
-    - [ ] Verificación visual (Light/Dark) y Responsive.
+- [x] **Subfase 19.27** — Componentes de Formulario (inputs, selects, textareas, checkboxes, radios, file uploads) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-form-*` (180+ líneas) consolidando estilos robustos con HSL en `dx-styles.css`.
+    - [x] Limpieza absoluta de estilos `style=` inline de inputs en las 5 vistas afectadas (`auth/login`, `admin/users/create`, `admin/users/edit`, `profile/index`, `clients/show`).
+    - [x] Verificación de estados reactivos (focus shadow, disabled backgrounds, errors, toggles/switches responsivos).
+    - [x] Verificación visual en el contenedor de pruebas Beta.
+    > **Evidencia:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Añadido el namespace `.dx-v2-form-*` con soporte para inputs text, select, textareas, custom checkbox, toggles de estado Alpine y wrappers de subida.
+    > - [login.blade.php](file:///z:/DX-License-Manager/backend/resources/views/auth/login.blade.php) - Campos email/password acoplados al namespace semántico.
+    > - [create.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/users/create.blade.php) & [edit.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/users/edit.blade.php) - Limpieza de paddings inline, switches y selección de roles integrados al tema central.
+    > - [profile/index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/profile/index.blade.php) - Eliminados paddings y grids manuales, enlazando variables CSS globales.
+    > - [clients/show.blade.php](file:///z:/DX-License-Manager/backend/resources/views/clients/show.blade.php) - Modal de contactos migrado de `.gui-input` a `.dx-v2-form-input` y `.dx-v2-form-checkbox-wrapper`.
 
 - [ ] **Subfase 19.28** — Componentes UI (Modales, Tablas, Badges, Botones, Toasts/Alerts)
     - [ ] Extracción y Namespace `.dx-v2-`.

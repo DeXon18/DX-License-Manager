@@ -1,6 +1,26 @@
-# Walkthrough — Subfase 19.26, 19.15, 19.14, 19.13, 19.12, 19.11, 19.10 & 19.9 (Visual & CSS Unification)
+# Walkthrough — Subfase 19.27, 19.26, 19.15, 19.14, 19.13, 19.12, 19.11, 19.10 & 19.9 (Visual & CSS Unification)
 
-Hemos completado con éxito la **Subfase 19.26** del plan de unificación visual y CSS del portal, realizando la refactorización, modularización e higienización completa de la **Vista de Mantenimiento (`errors/503.blade.php`)**.
+Hemos completado con éxito la **Subfase 19.27** del plan de unificación visual y CSS del portal, realizando la refactorización, modularización e higienización completa de los **Componentes de Formulario (inputs, selects, textareas, checkboxes, radios, switches y file uploads)**.
+
+---
+
+## Cambios Realizados en Subfase 19.27 (Componentes de Formulario)
+
+### Hojas de Estilos (CSS)
+- **[dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css)**:
+  - Inyectado un completo namespace semántico `.dx-v2-form-*` (180+ líneas) que centraliza el diseño de los formularios del portal:
+    - `.dx-v2-form-group`: Maquetación flexible vertical con gap unificado.
+    - `.dx-v2-form-label`: Etiquetas semánticas compactas e industriales en peso 600, mayúsculas y color HSL atenuado.
+    - `.dx-v2-form-input`, `.dx-v2-form-select` y `.dx-v2-form-textarea`: Diseño impecable de campos de alta densidad con transiciones fluidas de color de borde y anillo de sombra translúcido en enfoque (`focus`).
+    - **Estados de Campo**: Estilos unificados para variantes de `.error` (borde y halo en tono rojo peligro) y estados `.disabled` / `.readonly` (cursor bloqueado y opacidad reducida).
+    - `.dx-v2-form-checkbox-wrapper`, `.dx-v2-form-checkbox` y `.dx-v2-form-switch`: Controles personalizados de checkboxes e interruptores interactivos Alpine.js estilizados.
+    - `.dx-v2-form-file-wrapper` y `.dx-v2-form-file-label`: Wrapper y caja de arrastre con borde discontinuo interactivo hover-active para subida de ficheros.
+
+### Vistas (Blade/HTML)
+- **[login.blade.php](file:///z:/DX-License-Manager/backend/resources/views/auth/login.blade.php)**: Mapeado de inputs a las clases semánticas globals del portal, eliminando localismos.
+- **[create.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/users/create.blade.php)** & **[edit.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/users/edit.blade.php)**: Purga total de atributos inline y refactorización de los controles de Nombre, Email, Password, Selector de Roles y Toggle Alpine.js.
+- **[index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/profile/index.blade.php)**: Purga de estilos locales en inputs de perfil y cambio de contraseña, homogeneizando a la estética semántica oscura/clara HSL.
+- **[show.blade.php](file:///z:/DX-License-Manager/backend/resources/views/clients/show.blade.php)**: Refactor del modal de contactos, reemplazando la clase antigua `.gui-input` por `.dx-v2-form-input` y aplicando la clase unificada `.dx-v2-form-checkbox-wrapper` para el control de alertas semanales.
 
 ---
 
