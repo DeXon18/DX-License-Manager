@@ -64,13 +64,13 @@
                         </div>
                     @endif
 
-                    <div class="dx-v2-login-form-group">
-                        <label for="email">Correo electrónico</label>
-                        <input type="email" name="email" id="email" value="{{ old('email') }}" placeholder="usuario@dxpro.es" required autofocus>
+                    <div class="dx-v2-form-group">
+                        <label for="email" class="dx-v2-form-label">Correo electrónico</label>
+                        <input type="email" name="email" id="email" class="dx-v2-form-input" value="{{ old('email') }}" placeholder="usuario@dxpro.es" required autofocus>
                     </div>
-                    <div class="dx-v2-login-form-group">
-                        <label for="password">Contraseña</label>
-                        <input type="password" name="password" id="password" placeholder="••••••••" required>
+                    <div class="dx-v2-form-group">
+                        <label for="password" class="dx-v2-form-label">Contraseña</label>
+                        <input type="password" name="password" id="password" class="dx-v2-form-input" placeholder="••••••••" required>
                     </div>
                     <button type="submit" class="dx-v2-login-btn">Iniciar sesión</button>
                 </form>

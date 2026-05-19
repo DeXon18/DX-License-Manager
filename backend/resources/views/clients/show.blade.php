@@ -546,26 +546,28 @@
                     
                     <div class="modal-body space-y-5">
                         <div class="grid grid-cols-2 gap-6">
-                            <div class="input-group">
-                                <label>Nombre Completo</label>
-                                <input type="text" name="name" x-model="form.name" required class="gui-input w-full" placeholder="Ej. Juan Pérez">
+                            <div class="dx-v2-form-group" style="margin-bottom: 0;">
+                                <label class="dx-v2-form-label">Nombre Completo</label>
+                                <input type="text" name="name" x-model="form.name" required class="dx-v2-form-input w-full" placeholder="Ej. Juan Pérez">
                             </div>
-                            <div class="input-group">
-                                <label>Email Corporativo</label>
-                                <input type="email" name="email" x-model="form.email" required class="gui-input w-full" placeholder="email@empresa.com">
+                            <div class="dx-v2-form-group" style="margin-bottom: 0;">
+                                <label class="dx-v2-form-label">Email Corporativo</label>
+                                <input type="email" name="email" x-model="form.email" required class="dx-v2-form-input w-full" placeholder="email@empresa.com">
                             </div>
                         </div>
-                        <div class="input-group">
-                            <label>Cargo / Departamento</label>
-                            <input type="text" name="position" x-model="form.position" class="gui-input w-full" placeholder="Ej. IT Manager">
+                        <div class="dx-v2-form-group" style="margin-bottom: 0;">
+                            <label class="dx-v2-form-label">Cargo / Departamento</label>
+                            <input type="text" name="position" x-model="form.position" class="dx-v2-form-input w-full" placeholder="Ej. IT Manager">
                         </div>
-                        <div class="input-group">
-                            <label>Teléfono (Opcional)</label>
-                            <input type="text" name="phone" x-model="form.phone" class="gui-input w-full" placeholder="+34 ...">
+                        <div class="dx-v2-form-group" style="margin-bottom: 0;">
+                            <label class="dx-v2-form-label">Teléfono (Opcional)</label>
+                            <input type="text" name="phone" x-model="form.phone" class="dx-v2-form-input w-full" placeholder="+34 ...">
                         </div>
-                        <div class="input-group flex items-center gap-3 pt-2">
-                            <input type="checkbox" name="receives_alerts" value="1" x-model="form.receives_alerts" class="w-4 h-4 rounded border-gray-300 text-accent focus:ring-accent cursor-pointer">
-                            <label class="mb-0 cursor-pointer" @click="form.receives_alerts = !form.receives_alerts">Recibir reportes semanales de caducidad</label>
+                        <div class="dx-v2-form-group" style="margin-bottom: 0; padding-top: 8px;">
+                            <label class="dx-v2-form-checkbox-wrapper">
+                                <input type="checkbox" name="receives_alerts" value="1" x-model="form.receives_alerts" class="dx-v2-form-checkbox">
+                                <span class="dx-v2-form-label" style="text-transform: none; font-size: 13px; color: var(--dx-v2-primary) !important; cursor: pointer;">Recibir reportes semanales de caducidad</span>
+                            </label>
                         </div>
                     </div>
                     

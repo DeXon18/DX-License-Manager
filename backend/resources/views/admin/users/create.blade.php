@@ -27,33 +27,33 @@
             <form action="{{ route('admin.users.store') }}" method="POST">
                 @csrf
 
-                <div class="form-group">
-                    <label for="name">NOMBRE COMPLETO</label>
-                    <input type="text" name="name" id="name" value="{{ old('name') }}" placeholder="Ej: Juan Pérez" required autofocus>
+                <div class="dx-v2-form-group">
+                    <label for="name" class="dx-v2-form-label">NOMBRE COMPLETO</label>
+                    <input type="text" name="name" id="name" class="dx-v2-form-input" value="{{ old('name') }}" placeholder="Ej: Juan Pérez" required autofocus>
                     @error('name') <p class="date-sub">{{ $message }}</p> @enderror
                 </div>
 
-                <div class="form-group">
-                    <label for="email">EMAIL INSTITUCIONAL</label>
-                    <input type="email" name="email" id="email" class="font-mono" value="{{ old('email') }}" placeholder="usuario@dxpro.es" required>
+                <div class="dx-v2-form-group">
+                    <label for="email" class="dx-v2-form-label">EMAIL INSTITUCIONAL</label>
+                    <input type="email" name="email" id="email" class="dx-v2-form-input font-mono" value="{{ old('email') }}" placeholder="usuario@dxpro.es" required>
                     @error('email') <p class="date-sub">{{ $message }}</p> @enderror
                 </div>
 
                 <div class="dx-v2-users-form-grid">
-                    <div class="form-group">
-                        <label for="password">CONTRASEÑA (OPCIONAL)</label>
-                        <input type="password" name="password" id="password" class="font-mono" placeholder="Vacío = Aleatoria">
+                    <div class="dx-v2-form-group">
+                        <label for="password" class="dx-v2-form-label">CONTRASEÑA (OPCIONAL)</label>
+                        <input type="password" name="password" id="password" class="dx-v2-form-input font-mono" placeholder="Vacío = Aleatoria">
                         @error('password') <p class="date-sub">{{ $message }}</p> @enderror
                     </div>
-                    <div class="form-group">
-                        <label for="password_confirmation">CONFIRMAR</label>
-                        <input type="password" name="password_confirmation" id="password_confirmation" class="font-mono" placeholder="Opcional">
+                    <div class="dx-v2-form-group">
+                        <label for="password_confirmation" class="dx-v2-form-label">CONFIRMAR</label>
+                        <input type="password" name="password_confirmation" id="password_confirmation" class="dx-v2-form-input font-mono" placeholder="Opcional">
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="role_id">ROL EN EL SISTEMA</label>
-                    <select name="role_id" id="role_id" class="dx-v2-users-select" required>
+                <div class="dx-v2-form-group">
+                    <label for="role_id" class="dx-v2-form-label">ROL EN EL SISTEMA</label>
+                    <select name="role_id" id="role_id" class="dx-v2-form-select" required>
                         <option value="" disabled selected>Selecciona un rol...</option>
                         @foreach($roles as $role)
                             <option value="{{ $role->id }}" {{ old('role_id') == $role->id ? 'selected' : '' }}>
@@ -64,7 +64,7 @@
                     @error('role_id') <p class="date-sub">{{ $message }}</p> @enderror
                 </div>
 
-                <div class="form-group" x-data="{ active: true }">
+                <div class="dx-v2-form-group" x-data="{ active: true }">
                     <div class="dx-v2-users-switch-box">
                         <div>
                             <div class="dx-v2-users-switch-title">Usuario Activo</div>
@@ -72,9 +72,10 @@
                         </div>
                         <input type="hidden" name="is_active" :value="active ? 1 : 0">
                         <button type="button" 
-                                class="switch" 
-                                :class="active ? 'on' : 'off'"
+                                class="dx-v2-form-switch" 
+                                :class="active ? 'active' : ''"
                                 @click="active = !active">
+                            <span class="dx-v2-form-switch-dot"></span>
                         </button>
                     </div>
                 </div>
