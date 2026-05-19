@@ -1,6 +1,18 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-19 12:00] — CSS Unification: Subfase 19.29 (Exclusiones Documentadas de Emails & PDFs) ✅
+
+### Added
+- **Inventariado y Justificación de Exclusiones de Estilos**: Realizada una auditoría detallada de portabilidad y compatibilidad en las vistas de correos electrónicos y plantillas PDF del portal:
+  - `emails/global-license-report.blade.php`, `emails/weekly-license-alert.blade.php` y `emails/weekly-report.blade.php`: Se determinó que el uso de estilos inline y hojas de estilos locales `<style>` está 100% justificado para asegurar la correcta compatibilidad con clientes de correo estándar (Gmail, Outlook, Apple Mail) sin dependencias del compilador de assets ni variables CSS del tema.
+  - `pdf/cod-template.blade.php`: Se verificó el uso de estilos locales y fuentes autohospedadas (Calibri) como requisito de diseño estricto para la correcta compilación del motor PDF Dompdf de forma hermética y sin dependencias de red.
+
+### Changed
+- **Aislamiento del Entorno de Renderizado**: Verificado y garantizado que ninguna de estas vistas herede variables de CSS `--dx-v2-*` ni cargue recursos externos que puedan romperse o producir fallos de visualización en destinatarios finales.
+
+---
+
 ## [2026-05-19 11:50] — CSS Unification: Subfase 19.28 (Componentes UI Compartidos) ✅
 
 ### Added
