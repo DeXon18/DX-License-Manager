@@ -9296,6 +9296,198 @@ select.dx-v2-audit-filter-input {
   color: var(--dx-v2-danger, #ef4444) !important;
 }
 
+/* ============================================================
+   26. SYSTEM MAINTENANCE PAGE (503.blade.php)
+   ============================================================ */
+.dx-v2-maint-body {
+  font-family: var(--dx-v2-font-sans, 'Inter'), system-ui, sans-serif !important;
+  font-size: 0.889rem !important;
+  line-height: 1.65 !important;
+  background: var(--dx-v2-bg) !important;
+  color: var(--dx-v2-primary) !important;
+  min-height: 100vh !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 32px 16px !important;
+  overflow: hidden !important;
+}
+
+.dx-v2-maint-wordmark {
+  font-family: var(--dx-v2-font-mono, 'IBM Plex Mono'), monospace !important;
+  font-size: 0.694rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  color: var(--dx-v2-muted) !important;
+  margin-bottom: 24px !important;
+  text-align: center !important;
+}
+
+.dx-v2-maint-card {
+  width: 100% !important;
+  max-width: 460px !important;
+  background: var(--dx-v2-surface) !important;
+  border: 1px solid var(--dx-v2-border) !important;
+  border-radius: var(--dx-v2-rounded-lg, 10px) !important;
+  box-shadow: var(--dx-v2-shadow-1) !important;
+  overflow: hidden !important;
+}
+
+.dx-v2-maint-card-header {
+  padding: 24px 24px 20px !important;
+  border-bottom: 1px solid var(--dx-v2-border) !important;
+}
+
+.dx-v2-maint-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: var(--dx-v2-warning-bg) !important;
+  color: var(--dx-v2-warning) !important;
+  border: 1px solid var(--dx-v2-warning-border) !important;
+  border-radius: var(--dx-v2-rounded-full, 9999px) !important;
+  padding: 3px 8px !important;
+  font-size: 0.694rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  margin-bottom: 16px !important;
+}
+
+.dx-v2-maint-badge-dot {
+  width: 6px !important;
+  height: 6px !important;
+  border-radius: 50% !important;
+  background: var(--dx-v2-warning) !important;
+  flex-shrink: 0 !important;
+  animation: livePulse 1.8s ease-in-out infinite !important;
+}
+
+.dx-v2-maint-title {
+  font-size: 1.602rem !important;
+  font-weight: 700 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.02em !important;
+  color: var(--dx-v2-primary) !important;
+  margin-bottom: 8px !important;
+}
+
+.dx-v2-maint-description {
+  font-size: 0.889rem !important;
+  color: var(--dx-v2-muted) !important;
+  line-height: 1.65 !important;
+}
+
+.dx-v2-maint-panel {
+  padding: 20px 24px !important;
+}
+
+.dx-v2-maint-panel-label {
+  font-size: 0.694rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  color: var(--dx-v2-muted) !important;
+  margin-bottom: 12px !important;
+}
+
+.dx-v2-maint-status-list {
+  border: 1px solid var(--dx-v2-border) !important;
+  border-radius: var(--dx-v2-rounded-md, 6px) !important;
+  overflow: hidden !important;
+}
+
+.dx-v2-maint-status-row {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 10px 12px !important;
+  background: var(--dx-v2-surface) !important;
+  border-bottom: 1px solid var(--dx-v2-border-subtle) !important;
+}
+
+.dx-v2-maint-status-row:last-child {
+  border-bottom: none !important;
+}
+
+.dx-v2-maint-status-name {
+  font-family: var(--dx-v2-font-mono, 'IBM Plex Mono'), monospace !important;
+  font-size: 0.8125rem !important;
+  color: var(--dx-v2-secondary) !important;
+}
+
+.dx-v2-maint-status-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-size: 0.694rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  border-radius: var(--dx-v2-rounded-full, 9999px) !important;
+  padding: 3px 8px !important;
+  border: 1px solid !important;
+}
+
+.dx-v2-maint-status-badge.ok {
+  background: var(--dx-v2-success-bg) !important;
+  color: var(--dx-v2-success) !important;
+  border-color: var(--dx-v2-success-border) !important;
+}
+
+.dx-v2-maint-status-badge.warn {
+  background: var(--dx-v2-warning-bg) !important;
+  color: var(--dx-v2-warning) !important;
+  border-color: var(--dx-v2-warning-border) !important;
+}
+
+.dx-v2-maint-status-badge.off {
+  background: var(--dx-v2-raised) !important;
+  color: var(--dx-v2-muted) !important;
+  border-color: var(--dx-v2-border) !important;
+}
+
+.dx-v2-maint-status-dot {
+  width: 6px !important;
+  height: 6px !important;
+  border-radius: 50% !important;
+  flex-shrink: 0 !important;
+}
+
+.dx-v2-maint-status-badge.ok .dx-v2-maint-status-dot {
+  background: var(--dx-v2-success) !important;
+  animation: livePulse 2.2s ease-in-out infinite !important;
+}
+
+.dx-v2-maint-status-badge.warn .dx-v2-maint-status-dot {
+  background: var(--dx-v2-warning) !important;
+  animation: livePulse 1.6s ease-in-out infinite !important;
+}
+
+.dx-v2-maint-status-badge.off .dx-v2-maint-status-dot {
+  background: var(--dx-v2-muted) !important;
+}
+
+.dx-v2-maint-footer-note {
+  padding: 14px 24px !important;
+  border-top: 1px solid var(--dx-v2-border) !important;
+  background: var(--dx-v2-raised) !important;
+  font-size: 0.79rem !important;
+  color: var(--dx-v2-muted) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 8px !important;
+}
+
+.dx-v2-maint-footer-note span {
+  font-family: var(--dx-v2-font-mono, 'IBM Plex Mono'), monospace !important;
+  font-size: 0.79rem !important;
+  color: var(--dx-v2-muted) !important;
+}
+
 
 
 
