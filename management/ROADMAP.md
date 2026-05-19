@@ -1076,30 +1076,30 @@ Estructuración final, modularización y ordenamiento de la hoja de estilos glob
 Todas las tareas de extracción y consolidación se commitearon y etiquetaron en la rama de desarrollo `feature/css-tokens`:
 
 ### Commits Realizados en Fase 19 (Anteriores):
-- `style(planner): definir namespace .dx-v2-planner-* en css global`
-- `style(planner): extraer estilos locales e inline de index.blade.php al namespace global`
-- `docs(19.9): registrar subfase 19.9 completada en changelog y roadmap`
-- `style(tools): definir namespace .dx-v2-tools-* en css global`
-- `style(tools): extraer estilos locales de index.blade.php al namespace global`
-- `docs(19.10): registrar subfase 19.10 completada en changelog y roadmap`
-- `style(tools-nx): definir namespace .dx-v2-tools-nx-* en css global`
-- `style(tools-nx): extraer estilos locales de nx-suite.blade.php al namespace global`
-- `style(tools-nx): corregir padding de tarjetas, alineacion de cabecera y boton en nx-suite`
-- `docs(19.11): registrar subfase 19.11 completada en changelog y roadmap`
-- `style(tools-star): definir namespace .dx-v2-tools-star-* en css global`
-- `style(tools-star): extraer estilos locales de star-ccm.blade.php al namespace global`
-- `docs(19.12): registrar subfase 19.12 completada en changelog y roadmap`
-- `style(tools-heeds): definir namespace .dx-v2-tools-heeds-* en css global`
-- `style(tools-heeds): extraer estilos locales de heeds.blade.php al namespace global`
-- `docs(19.13): registrar subfase 19.13 completada en changelog y roadmap`
-- `style(tools-cod): extraer estilos locales de cod.blade.php al namespace global`
-- `docs(19.14): registrar subfase 19.14 completada en changelog y roadmap`
-- `feat(ui): unify css and remove inline styles in siemens resources module`
-- `fix(ui): restore resources spacing and theme colors in grid layout`
-- `fix(ui): add correct padding and row margins to add resource modal`
-- `css(19.28): introduce .dx-v2-ui-* unifed UI namespace for modals, tables, badges and buttons, refactoring views`
-- `docs(19.26-19.28): update CHANGELOG, ROADMAP and task tracking for Phase 19 subphases`
-- `docs(19.29): inventory and document email and pdf local style exclusions`
+1. `style(planner): definir namespace .dx-v2-planner-* en css global`
+2. `style(planner): extraer estilos locales e inline de index.blade.php al namespace global`
+3. `docs(19.9): registrar subfase 19.9 completada en changelog y roadmap`
+4. `style(tools): definir namespace .dx-v2-tools-* en css global`
+5. `style(tools): extraer estilos locales de index.blade.php al namespace global`
+6. `docs(19.10): registrar subfase 19.10 completada en changelog y roadmap`
+7. `style(tools-nx): definir namespace .dx-v2-tools-nx-* en css global`
+8. `style(tools-nx): extraer estilos locales de nx-suite.blade.php al namespace global`
+9. `style(tools-nx): corregir padding de tarjetas, alineacion de cabecera y boton en nx-suite`
+10. `docs(19.11): registrar subfase 19.11 completada en changelog y roadmap`
+11. `style(tools-star): definir namespace .dx-v2-tools-star-* en css global`
+12. `style(tools-star): extraer estilos locales de star-ccm.blade.php al namespace global`
+13. `docs(19.12): registrar subfase 19.12 completada en changelog y roadmap`
+14. `style(tools-heeds): definir namespace .dx-v2-tools-heeds-* en css global`
+15. `style(tools-heeds): extraer estilos locales de heeds.blade.php al namespace global`
+16. `docs(19.13): registrar subfase 19.13 completada en changelog y roadmap`
+17. `style(tools-cod): extraer estilos locales de cod.blade.php al namespace global`
+18. `docs(19.14): registrar subfase 19.14 completada en changelog y roadmap`
+19. `feat(ui): unify css and remove inline styles in siemens resources module`
+20. `fix(ui): restore resources spacing and theme colors in grid layout`
+21. `fix(ui): add correct padding and row margins to add resource modal`
+22. `css(19.28): introduce .dx-v2-ui-* unifed UI namespace for modals, tables, badges and buttons, refactoring views`
+23. `docs(19.26-19.28): update CHANGELOG, ROADMAP and task tracking for Phase 19 subphases`
+24. `docs(19.29): inventory and document email and pdf local style exclusions`
 
 ### Commits Realizados en Fase 21 (Actuales):
 1. `css(21.1): Capa 1 tokens and base structure extraction complete`
