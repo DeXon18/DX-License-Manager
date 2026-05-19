@@ -1,6 +1,14 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-19 12:10] — DX Brand & Logo: Subfase 20.1 (Registro y Estructuración) ✅
+
+### Added
+- **Fase 20 en ROADMAP.md**: Registrada oficialmente la **Fase 20 — Identidad Visual e Integración del Logotipo Premium** en la planificación general del proyecto.
+- **Planificación de Subfases**: Definidas las 5 subfases correspondientes para guiar de forma estructurada la inyección de estilos de logo interactivos con efecto "scan line", exportación de ficheros SVG standalone oficiales para modo claro/oscuro, integración en layouts y vistas Blade, y control de calidad final.
+
+---
+
 ## [2026-05-19 12:00] — CSS Unification: Subfase 19.29 (Exclusiones Documentadas de Emails & PDFs) ✅
 
 ### Added
