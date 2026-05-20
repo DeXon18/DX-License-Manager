@@ -57,7 +57,7 @@ DX License Manager
 │   │   └── Recursos & enlaces ✅
 │   └── Moldex3D | Software de simulación de moldeo por inyección de plástico
 │       ├── Moldex3D ✅ (Parser .mac + Sincronización)
-│       └── Recursos & enlaces 📋
+│       └── Recursos & enlaces ✅
 └── 8. Sistema y configuración ✅
     ├── Dashboard del sistema ✅ (NOC Pro + Brand Icons)
     ├── Usuarios y acceso ✅
@@ -534,33 +534,39 @@ No acumular trabajo sin commitear. Puntos de commit recomendados:
 
 ## 🔷 AGRUPACIÓN DE ESTILOS COMUNES & PROBLEMÁTICOS
 
-### Archivos compartidos a crear antes de refactorizar subfases
+### Estructura CSS Modular Real (Capa 3: Atoms UI Compartidos)
 
-Identificar y extraer estos patrones repetidos a su hoja común **antes** de procesar cada subfase:
+Se ha implementado una arquitectura modular robusta y jerárquica en 6 capas, donde los componentes y patrones visuales repetidos se extrajeron y centralizaron bajo **Capa 3 (Atoms UI Compartidos)** y carpetas de herramientas específicas:
 
-- [ ] **`dx-v2-status-badges.css`** — badges de estado (activo, caducado, próximo, suspendido)
-    > Aparecen en: Clientes, Licencias, Planificador, Alertas, Logs.
+- [x] **`shared/dx-v2-badges.css`** — badges de estado, severidad e indicadores (activo, caducado, niveles de log).
+    > Implementado y en uso en: Clientes, Licencias, Planificador, Alertas, Usuarios, Logs, Importaciones.
 
-- [ ] **`dx-v2-data-tables.css`** — tablas de datos con ordenación, filtros y paginación
-    > Aparecen en: Licencias, Contratos, Usuarios, Importaciones, Repositorio, Logs.
+- [x] **`shared/dx-v2-tables.css`** — tablas industriales de alta densidad con filas translúcidas en hover y cabeceras monoespaciadas.
+    > Implementado y en uso en: Clientes, Licencias, Contratos, Usuarios, Importaciones, Repositorio, Logs, Backups.
 
-- [ ] **`dx-v2-stat-cards.css`** — tarjetas de métricas / KPI cards
-    > Aparecen en: Dashboard, Inicio, Sistema, Clientes show.
+- [x] **`shared/dx-v2-cards.css`** — envolturas de tarjetas raised con elevación 3D, bordes premium y layouts bento.
+    > Implementado y en uso en: Dashboard, Inicio, Sistema, Clientes, Herramientas, Alertas.
 
-- [ ] **`dx-v2-timeline.css`** — líneas de tiempo y actividad
-    > Aparecen en: Planificador, Logs de actividad, Historial de importaciones.
+- [x] **`shared/dx-v2-buttons.css`** — botones simétricos y de acciones rápidas con transiciones fluidas.
+    > Implementado y en uso en: toda la plataforma.
 
-- [ ] **`dx-v2-tool-header.css`** — cabecera de página de herramienta (ícono + título + descripción + acciones)
-    > Aparecen en: NX, STAR-CCM+, HEEDS, COD, Moldex3D.
+- [x] **`shared/dx-v2-modals.css`** — ventanas flotantes con glassmorphism de alta fidelidad, animaciones fluidas y filtros blur.
+    > Implementado y en uso en: Clientes, COD, Recursos, Backups, Auditorías.
 
-- [ ] **`dx-v2-connection-status.css`** — indicadores de conexión / estado de servicio
-    > Aparecen en: Dashboard Sistema, Integraciones IA, Docker Monitor.
+- [x] **`shared/dx-v2-forms.css`** — inputs, selectores de opciones, checkboxes y zonas de subida interactiva con reseteo de spinners nativos.
+    > Implementado y en uso en: formularios de perfiles, alta de usuarios, modales de contacto, parámetros de alertas.
 
-- [ ] **`dx-v2-empty-states.css`** — estados vacíos (sin datos, sin resultados, primer uso)
-    > Aparecen en: Licencias, Logs, Repositorio, Historial backups.
+- [x] **`shared/dx-v2-empty-states.css`** — estados vacíos unificados con iconos translúcidos y textos técnicos de baja opacidad.
+    > Implementado y en uso en: Licencias, Logs, Repositorio, Backups, Importación, Planificador.
 
-- [ ] **`dx-v2-forms-common.css`** — inputs, selects, grupos de formulario con validación
-    > Aparecen en: toda la app (crear/editar en casi todos los módulos).
+- [x] **`shared/dx-v2-toast.css`** — sistema de notificaciones Toasts Premium flotante con efecto glassmorphic y soporte reactivo Alpine.js.
+    > Implementado e inyectado en el layout principal del portal.
+
+- [x] **`shared/dx-v2-pagination.css`** — paginación industrial `dx-jump` con botones direccionales y saltador numérico dropdown.
+    > Implementado en listados densos de clientes y logs de auditoría.
+
+- [x] **`shared/dx-v2-brand.css`** — logotipo lockup premium `.dx-lockup` con tipografías y destello interactivo scan-line.
+    > Integrado en Navbar, Login y Footer global.
 
 ### Estilos problemáticos a vigilar durante el refactor
 
