@@ -612,25 +612,25 @@
                     <div class="dx-v2-ui-modal-body space-y-5">
                         <div class="grid grid-cols-2 gap-6">
                             <div class="dx-v2-form-group" style="margin-bottom: 0;">
-                                <label class="dx-v2-form-label">Nombre Completo</label>
-                                <input type="text" name="name" x-model="form.name" required class="dx-v2-form-input w-full" placeholder="Ej. Juan Pérez">
+                                <label class="dx-v2-form-label" for="contact_name">Nombre Completo</label>
+                                <input type="text" id="contact_name" name="name" x-model="form.name" required autocomplete="name" class="dx-v2-form-input w-full" placeholder="Ej. Juan Pérez">
                             </div>
                             <div class="dx-v2-form-group" style="margin-bottom: 0;">
-                                <label class="dx-v2-form-label">Email Corporativo</label>
-                                <input type="email" name="email" x-model="form.email" required class="dx-v2-form-input w-full" placeholder="email@empresa.com">
+                                <label class="dx-v2-form-label" for="contact_email">Email Corporativo</label>
+                                <input type="email" id="contact_email" name="email" x-model="form.email" required autocomplete="email" class="dx-v2-form-input w-full" placeholder="email@empresa.com">
                             </div>
                         </div>
                         <div class="dx-v2-form-group" style="margin-bottom: 0;">
-                            <label class="dx-v2-form-label">Cargo / Departamento</label>
-                            <input type="text" name="position" x-model="form.position" class="dx-v2-form-input w-full" placeholder="Ej. IT Manager">
+                            <label class="dx-v2-form-label" for="contact_position">Cargo / Departamento</label>
+                            <input type="text" id="contact_position" name="position" x-model="form.position" autocomplete="organization-title" class="dx-v2-form-input w-full" placeholder="Ej. IT Manager">
                         </div>
                         <div class="dx-v2-form-group" style="margin-bottom: 0;">
-                            <label class="dx-v2-form-label">Teléfono (Opcional)</label>
-                            <input type="text" name="phone" x-model="form.phone" class="dx-v2-form-input w-full" placeholder="+34 ...">
+                            <label class="dx-v2-form-label" for="contact_phone">Teléfono (Opcional)</label>
+                            <input type="text" id="contact_phone" name="phone" x-model="form.phone" autocomplete="tel" class="dx-v2-form-input w-full" placeholder="+34 ...">
                         </div>
                         <div class="dx-v2-form-group" style="margin-bottom: 0; padding-top: 8px;">
-                            <label class="dx-v2-form-checkbox-wrapper">
-                                <input type="checkbox" name="receives_alerts" value="1" x-model="form.receives_alerts" class="dx-v2-form-checkbox">
+                            <label class="dx-v2-form-checkbox-wrapper" for="contact_receives_alerts">
+                                <input type="checkbox" id="contact_receives_alerts" name="receives_alerts" value="1" x-model="form.receives_alerts" class="dx-v2-form-checkbox">
                                 <span class="dx-v2-form-label" style="text-transform: none; font-size: 13px; color: var(--dx-v2-primary) !important; cursor: pointer;">Recibir reportes semanales de caducidad</span>
                             </label>
                         </div>
