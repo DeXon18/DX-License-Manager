@@ -117,7 +117,7 @@
   height: 18px;
 }
 .dx-v2-clients-search-input {
-  padding-left: 44px;
+  padding-left: 44px !important;
   height: 42px;
   font-size: 14px;
   width: 100%;

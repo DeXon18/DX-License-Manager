@@ -113,7 +113,7 @@
                             <i class="fa-solid fa-envelope-open-text mr-2 text-accent"></i> COPIA INTERNA (EMAILS)
                         </label>
                     </div>
-                    <textarea name="internal_copy_emails" rows="2" class="gui-input dx-v2-alerts-copy-textarea" placeholder="email1@example.com, email2@example.com">{{ $settings->internal_copy_emails }}</textarea>
+                    <textarea name="internal_copy_emails" rows="2" class="dx-v2-form-textarea dx-v2-alerts-copy-textarea" placeholder="email1@example.com, email2@example.com">{{ $settings->internal_copy_emails }}</textarea>
                     <p class="page-sub dx-v2-alerts-copy-help">
                         <i class="fa-solid fa-circle-info text-accent"></i> Separar por comas para múltiples destinatarios.
                     </p>
