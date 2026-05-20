@@ -991,18 +991,18 @@ Comentario en componentes que usen clases `.dx-v2-` no obvias:
 
 ## 🔷 CIERRE & HARDENING
 
-- [ ] Eliminación de `!important` sin comentario justificado.
-- [ ] Eliminación de variables `--dx-v2-*` huérfanas post-refactor.
-- [ ] Verificación Final: `grep -r 'style=' resources/views/` → cero resultados (excl. emails/pdf).
-- [ ] Verificación build: clases dinámicas no purgadas por Vite.
+- [x] Eliminación de `!important` sin comentario justificado.
+- [x] Eliminación de variables `--dx-v2-*` huérfanas post-refactor.
+- [x] Verificación Final: `grep -r 'style=' resources/views/` → cero resultados (excl. emails/pdf).
+- [x] Verificación build: clases dinámicas no purgadas por Vite.
 
 ---
 
 ## 🔷 DOCUMENTACIÓN FINAL
 
-- [ ] Style guide interno: inventario de componentes `.dx-v2-` con ejemplos de uso.
-- [ ] README de la fase: decisiones tomadas, excepciones justificadas, variables deprecadas.
-- [ ] Actualizar CHANGELOG del proyecto.
+- [x] Style guide interno: inventario de componentes `.dx-v2-` con ejemplos de uso (documentado en `DESIGN.md`).
+- [x] README de la fase: decisiones tomadas, excepciones justificadas, variables deprecadas (especificado en `DESIGN.md`).
+- [x] Actualizar CHANGELOG del proyecto.
 
 ---
 
