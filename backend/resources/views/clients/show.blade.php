@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/modules/dx-v2-clients.css?v=' . time()) }}">
+@endpush
+
 @section('content')
 <div class="page-header">
     <div class="breadcrumb">
@@ -246,11 +250,27 @@
                                             </td>
                                             <td>
                                                 @php
-                                                    $isExpired = $product->expiration_date?->isPast();
-                                                    $statusClass = $isExpired ? 'expired' : (!$product->expiration_date ? 'permanent' : 'default');
+                                                    $expiration = $product->expiration_date;
+                                                    $isExpired = $expiration?->isPast();
+                                                    $diffInDays = $expiration ? now()->diffInDays($expiration, false) : null;
+                                                    
+                                                    if ($isExpired) {
+                                                        $statusClass = 'expired';
+                                                        $icon = 'fa-solid fa-circle-xmark';
+                                                    } elseif ($diffInDays !== null && $diffInDays >= 0 && $diffInDays <= 30) {
+                                                        $statusClass = 'warning';
+                                                        $icon = 'fa-solid fa-triangle-exclamation';
+                                                    } elseif (!$expiration) {
+                                                        $statusClass = 'permanent';
+                                                        $icon = 'fa-solid fa-infinity';
+                                                    } else {
+                                                        $statusClass = 'default';
+                                                        $icon = 'fa-solid fa-calendar-check';
+                                                    }
                                                 @endphp
                                                 <span class="dx-v2-clients-expiry-status {{ $statusClass }}">
-                                                    {{ $product->expiration_date ? $product->expiration_date->format('d/m/Y') : 'PERMANENTE' }}
+                                                    <i class="{{ $icon }}"></i>
+                                                    {{ $expiration ? $expiration->format('d/m/Y') : 'PERMANENTE' }}
                                                 </span>
                                             </td>
                                             <td class="text-right">

@@ -946,15 +946,33 @@
 .dx-v2-clients-expiry-status {
   font-family: var(--font-mono);
   font-weight: 700;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: 0.5px;
 }
 .dx-v2-clients-expiry-status.expired {
-  color: var(--dx-v2-danger-base);
+  color: #f87171 !important;
+  background: rgba(239, 68, 68, 0.12) !important;
+  border: 1px solid rgba(239, 68, 68, 0.25) !important;
+}
+.dx-v2-clients-expiry-status.warning {
+  color: var(--dx-v2-warning, #d29922) !important;
+  background: var(--dx-v2-warning-bg, rgba(210, 153, 34, 0.12)) !important;
+  border: 1px solid var(--dx-v2-warning-border, rgba(210, 153, 34, 0.25)) !important;
 }
 .dx-v2-clients-expiry-status.permanent {
-  color: var(--dx-v2-siemens);
+  color: var(--dx-v2-siemens, #00a6d6) !important;
+  background: rgba(0, 166, 214, 0.08) !important;
+  border: 1px solid rgba(0, 166, 214, 0.2) !important;
 }
 .dx-v2-clients-expiry-status.default {
-  color: var(--dx-v2-muted);
+  color: var(--dx-v2-muted, #8b949e) !important;
+  background: rgba(139, 148, 158, 0.05) !important;
+  border: 1px solid rgba(139, 148, 158, 0.15) !important;
 }
 .dx-v2-clients-history-date {
   color: var(--dx-v2-muted);
