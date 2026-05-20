@@ -32,6 +32,7 @@
 <div x-data="{ 
     tab: localStorage.getItem('activeTab') || '{{ request('tab', 'contracts') }}',
     auditDetail: null,
+    historyOpen: false,
     setTab(name) {
         this.tab = name;
         localStorage.setItem('activeTab', name);
@@ -275,33 +276,97 @@
             @endforelse
 
             @if($client->auditResults->count() > 0)
-                <details class="dx-v2-clients-history-details">
-                    <summary class="dx-v2-clients-history-toggle">
-                        <div class="dx-v2-clients-history-header">
-                            <i class="fa-solid fa-clock-rotate-left"></i>
-                            <span class="dx-v2-clients-tech-label">Historial de archivos originales</span>
+                <div class="dx-v2-clients-history-card" style="margin-top: 24px; border: 1px solid var(--border); border-radius: 8px; background: rgba(16, 18, 30, 0.45); backdrop-filter: blur(8px); overflow: hidden; transition: all 0.3s ease;">
+                    <!-- Acordeón Header Toggle -->
+                    <div class="dx-v2-clients-history-header-toggle" 
+                         @click="historyOpen = !historyOpen" 
+                         style="padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; background: rgba(255,255,255,0.02); transition: background 0.2s;"
+                         :style="historyOpen ? 'border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.04);' : ''"
+                         @mouseenter="$el.style.background = 'rgba(255,255,255,0.05)'"
+                         @mouseleave="$el.style.background = historyOpen ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.02)'">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 32px; height: 32px; border-radius: 6px; background: rgba(167, 139, 250, 0.1); border: 1px solid rgba(167, 139, 250, 0.2); display: flex; align-items: center; justify-content: center; color: #a78bfa;">
+                                <i class="fa-solid fa-clock-rotate-left" style="font-size: 14px;"></i>
+                            </div>
+                            <div>
+                                <span style="font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #fff;">Historial de Archivos de Licencia Originales</span>
+                                <span style="display: block; font-size: 10px; color: var(--muted); margin-top: 2px;">{{ $client->auditResults->count() }} archivos subidos en este cliente</span>
+                            </div>
                         </div>
-                        <i class="fa-solid fa-chevron-down toggle-icon"></i>
-                    </summary>
-                    <div class="dx-v2-clients-history-content">
-                        <table class="dx-v2-clients-inv-table">
-                            <tbody>
-                                @foreach($client->auditResults as $result)
-                                    <tr>
-                                        <td class="dx-v2-clients-product-code white-text">{{ $result->sold_to ?? 'N/A' }}</td>
-                                        <td class="opacity-50">{{ $result->created_at->format('d/m/Y H:i') }}</td>
-                                        <td class="dx-v2-clients-tech-label siemens-color">{{ $result->results['vendor_daemon'] ?? '—' }}</td>
-                                        <td class="text-right">
-                                            <button class="dx-v2-clients-btn-action" @click="auditDetail = @js($result); $dispatch('open-audit-modal')">
-                                                <i class="fa-solid fa-eye"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                        <i class="fa-solid fa-chevron-down" style="font-size: 12px; color: var(--muted); transition: transform 0.3s ease;" :style="historyOpen ? 'transform: rotate(180deg); color: #a78bfa;' : ''"></i>
                     </div>
-                </details>
+
+                    <!-- Contenido con Animación Alpine.js -->
+                    <div x-show="historyOpen" x-cloak x-transition style="display: none;">
+                        <div style="padding: 20px;">
+                            <!-- Banner Explicativo de Propósito -->
+                            <div style="background: rgba(167, 139, 250, 0.04); border: 1px solid rgba(167, 139, 250, 0.15); border-radius: 6px; padding: 12px 16px; margin-bottom: 20px; display: flex; gap: 12px; align-items: flex-start;">
+                                <i class="fa-solid fa-circle-info" style="color: #a78bfa; font-size: 14px; margin-top: 2px;"></i>
+                                <div>
+                                    <h5 style="font-size: 11px; font-weight: 800; color: #a78bfa; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 4px 0;">Fuente de Verdad Histórica (Solo Lectura)</h5>
+                                    <p style="font-size: 11px; color: var(--muted); line-height: 1.5; margin: 0;">
+                                        Estos registros representan los archivos físicos originales (`.lic` o `.mac`) que se cargaron en el sistema. Los datos extraídos fueron validados e importados al inventario activo actual del cliente. Úsalos como respaldo técnico de auditoría.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Tabla de Auditorías de Alta Densidad -->
+                            <div class="dx-v2-ui-table-wrapper" style="border: 1px solid var(--border); border-radius: 6px; background: rgba(0,0,0,0.25);">
+                                <table class="dx-v2-ui-table" style="margin: 0;">
+                                    <thead>
+                                        <tr>
+                                            <th style="font-size: 9px; padding: 10px 16px;">Ecosistema / Daemon</th>
+                                            <th style="font-size: 9px; padding: 10px 16px;">Cuenta / Sold-To</th>
+                                            <th style="font-size: 9px; padding: 10px 16px;">Fecha de Subida</th>
+                                            <th style="font-size: 9px; padding: 10px 16px;">Servidor / Hostname</th>
+                                            <th style="font-size: 9px; padding: 10px 16px;" class="text-right">Inspección</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($client->auditResults as $result)
+                                            @php
+                                                $daemonVal = $result->results['vendor_daemon'] ?? ($result->results['daemon'] ?? 'Desconocido');
+                                                $isMoldex = str_contains(strtolower($daemonVal), 'moldex') || !isset($result->results['vendor_daemon']);
+                                                $hostName = $result->results['hostname'] ?? 'N/A';
+                                            @endphp
+                                            <tr style="transition: background 0.15s;">
+                                                <td style="padding: 10px 16px; vertical-align: middle;">
+                                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                                        <span class="badge {{ $isMoldex ? 'moldex' : 'siemens' }}" style="font-size: 8px; font-weight: 800; padding: 2px 6px;">
+                                                            {{ $isMoldex ? 'MOLDEX3D' : 'SIEMENS' }}
+                                                        </span>
+                                                        <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #a78bfa;">{{ $daemonVal }}</span>
+                                                    </div>
+                                                </td>
+                                                <td style="padding: 10px 16px; vertical-align: middle;">
+                                                    <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #fff;">{{ $result->sold_to ?? 'N/A' }}</span>
+                                                </td>
+                                                <td style="padding: 10px 16px; vertical-align: middle; font-size: 11px; color: var(--muted);">
+                                                    <i class="fa-regular fa-calendar opacity-40 mr-1"></i>
+                                                    {{ $result->created_at->format('d/m/Y H:i') }}
+                                                </td>
+                                                <td style="padding: 10px 16px; vertical-align: middle;">
+                                                    <span style="font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-transform: uppercase;">{{ $hostName }}</span>
+                                                </td>
+                                                <td style="padding: 10px 16px; vertical-align: middle;" class="text-right">
+                                                    <button class="dx-v2-clients-btn-action" 
+                                                            @click="auditDetail = @js($result); $dispatch('open-audit-modal')"
+                                                            style="padding: 6px 10px; border-radius: 4px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;"
+                                                            @mouseenter="$el.style.background = 'rgba(167, 139, 250, 0.1)'; $el.style.borderColor = 'rgba(167, 139, 250, 0.3)'"
+                                                            @mouseleave="$el.style.background = 'rgba(255,255,255,0.05)'; $el.style.borderColor = 'var(--border)'"
+                                                            title="Inspeccionar archivo de licencia original">
+                                                        <i class="fa-solid fa-eye" style="font-size: 12px;"></i>
+                                                        <span style="font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Ver Auditoría</span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             @endif
         </div>
     </div>
@@ -588,7 +653,7 @@
         </div>
     </template>
 
-    <!-- Audit Detail Modal -->
+    <!-- Audit Detail Modal (NOC Pro Inmutable Console) -->
     <template x-teleport="body">
         <div x-data="{ open: false }"
             x-show="open"
@@ -596,92 +661,111 @@
             class="dx-v2-ui-modal-overlay high-z-index"
             x-cloak
         >
-            <div class="dx-v2-ui-modal-content wide" @click.outside="open = false">
-                <div class="dx-v2-ui-modal-header no-border no-padding-bottom">
+            <div class="dx-v2-ui-modal-content wide" @click.outside="open = false" style="background: #0d0f19; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.65);">
+                <div class="dx-v2-ui-modal-header no-border no-padding-bottom" style="padding: 24px 32px 12px 32px;">
                     <div class="flex items-center gap-4">
-                        <div class="dx-v2-clients-audit-icon-box">
-                            <i class="fa-solid fa-shield-halved"></i>
+                        <div class="dx-v2-clients-audit-icon-box" style="background: rgba(167, 139, 250, 0.1); border: 1px solid rgba(167, 139, 250, 0.2); width: 44px; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #a78bfa;">
+                            <i class="fa-solid fa-file-invoice" style="font-size: 18px;"></i>
                         </div>
                         <div>
-                            <h3 class="dx-v2-ui-modal-title text-white" style="margin-bottom: 4px !important;">Detalle de Auditoría Siemens</h3>
-                            <span class="text-xs muted uppercase tracking-widest font-bold">Analizado por Motor FallbackChain v2.1</span>
+                            <h3 class="dx-v2-ui-modal-title text-white" style="margin-bottom: 4px !important;" 
+                                x-text="(auditDetail?.results?.vendor_daemon || auditDetail?.results?.daemon || '').toLowerCase().includes('moldex') ? 'Detalle de Auditoría Moldex3D' : 'Detalle de Auditoría Siemens'">
+                                Detalle de Auditoría
+                            </h3>
+                            <span class="text-xs muted uppercase tracking-widest font-bold" style="font-size: 9px;">Inspección del Respaldo Físico Original</span>
                         </div>
                     </div>
-                    <button type="button" @click="open = false" class="dx-v2-ui-modal-close">&times;</button>
+                    <button type="button" @click="open = false" class="dx-v2-ui-modal-close" style="font-size: 24px; color: var(--muted); hover: color: #fff;">&times;</button>
                 </div>
 
-                <div class="dx-v2-ui-modal-body p-8">
+                <div class="dx-v2-ui-modal-body p-8" style="padding: 12px 32px 32px 32px;">
                     <template x-if="auditDetail">
                         <div>
-                            <!-- Top Info Cards -->
-                            <div class="dx-v2-clients-audit-header-grid">
-                                <div class="dx-v2-clients-audit-info-card">
-                                    <span class="label">Account / Sold-To</span>
-                                    <span class="value text-white" x-text="auditDetail?.sold_to || 'N/A'"></span>
+                            <!-- Banner de Inmutabilidad Técnica -->
+                            <div style="background: rgba(16, 185, 129, 0.04); border: 1px solid rgba(16, 185, 129, 0.15); border-radius: 6px; padding: 12px 16px; margin-bottom: 24px; display: flex; gap: 12px; align-items: center;">
+                                <div style="width: 20px; height: 20px; border-radius: 50%; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); display: flex; align-items: center; justify-content: center; color: #10b981; flex-shrink: 0;">
+                                    <i class="fa-solid fa-lock" style="font-size: 10px;"></i>
                                 </div>
-                                <div class="dx-v2-clients-audit-info-card">
-                                    <span class="label">Ecosistema / Daemon</span>
-                                    <div class="flex items-center gap-2">
-                                        <span class="value daemon-color font-mono" x-text="auditDetail?.results?.daemon || 'ugslmd'"></span>
-                                        <span class="badge badge-accent sm">SIEMENS</span>
+                                <div style="flex-grow: 1;">
+                                    <span style="font-size: 11px; font-weight: 800; color: #10b981; text-transform: uppercase; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 6px;">
+                                        Archivo de Licencia Inmutable 
+                                        <span style="font-size: 8px; font-weight: 900; background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 1px 4px; border-radius: 3px;">RESPALDO TÉCNICO</span>
+                                    </span>
+                                    <p style="font-size: 11px; color: var(--muted); margin: 2px 0 0 0; line-height: 1.4;">
+                                        Este registro es una copia exacta e inmutable del archivo subido el 
+                                        <span class="text-white font-bold" x-text="auditDetail ? new Date(auditDetail.created_at).toLocaleDateString('es-ES', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit'}) : ''"></span>. 
+                                        Para modificar el inventario activo de producción actual, edita los bloques de licencias en la pestaña principal.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Bento Grid de Metadatos del Servidor -->
+                            <div class="grid grid-cols-4 gap-4" style="margin-bottom: 28px;">
+                                <div style="background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px;">
+                                    <span style="display: block; font-size: 9px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">ID Cuenta / Sold-To</span>
+                                    <span style="font-family: var(--font-mono); font-size: 14px; font-weight: 800; color: #fff;" x-text="auditDetail?.sold_to || 'N/A'"></span>
+                                </div>
+                                <div style="background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px;">
+                                    <span style="display: block; font-size: 9px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Ecosistema / Daemon</span>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span style="font-family: var(--font-mono); font-size: 14px; font-weight: 800; color: #a78bfa;" x-text="auditDetail?.results?.vendor_daemon || auditDetail?.results?.daemon || 'ugslmd'"></span>
+                                        <span class="badge badge-accent sm" style="font-size: 7px; padding: 1px 4px; font-weight: 800;" x-text="(auditDetail?.results?.vendor_daemon || auditDetail?.results?.daemon || '').toLowerCase().includes('moldex') ? 'MOLDEX3D' : 'SIEMENS'">SIEMENS</span>
                                     </div>
                                 </div>
-                                <div class="dx-v2-clients-audit-info-card col-span-2">
-                                    <span class="label">Servidor / Hostname</span>
-                                    <div class="flex items-baseline gap-3">
-                                        <span class="value hostname-color font-mono" x-text="auditDetail?.results?.hostname || 'PENDIENTE'"></span>
-                                        <span class="text-xs font-mono text-accent" x-text="auditDetail?.results?.composite ? 'Composite: ' + auditDetail.results.composite : ''"></span>
+                                <div class="col-span-2" style="background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px;">
+                                    <span style="display: block; font-size: 9px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Servidor / Hostname</span>
+                                    <div style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;">
+                                        <span style="font-family: var(--font-mono); font-size: 14px; font-weight: 800; color: #fff; text-transform: uppercase;" x-text="auditDetail?.results?.hostname || 'PENDIENTE'"></span>
+                                        <span style="font-family: var(--font-mono); font-size: 10px; color: var(--muted);" x-text="auditDetail?.results?.composite ? '(COMPOSITE: ' + auditDetail.results.composite + ')' : (auditDetail?.results?.mac ? '(MACHINE ID: ' + auditDetail.results.mac + ')' : '')"></span>
                                     </div>
                                 </div>
                             </div>
         
                             <!-- Unified Sold-Tos -->
-                            <div class="dx-v2-clients-unified-box mt-6" x-show="auditDetail?.results?.additional_sold_tos?.length">
-                                <div class="flex items-center gap-3">
-                                    <i class="fa-solid fa-link text-warn text-xs"></i>
-                                    <span class="label">Sold-Tos Unificados:</span>
-                                    <div class="flex flex-wrap gap-2">
-                                        <template x-for="st in auditDetail?.results?.additional_sold_tos">
-                                            <span class="badge badge-muted sm" x-text="st"></span>
-                                        </template>
-                                    </div>
+                            <div class="dx-v2-clients-unified-box" x-show="auditDetail?.results?.additional_sold_tos?.length" style="background: rgba(245, 158, 11, 0.03); border: 1px solid rgba(245, 158, 11, 0.1); border-radius: 6px; padding: 12px 16px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px;">
+                                <i class="fa-solid fa-link text-warn" style="font-size: 12px;"></i>
+                                <span style="font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em;">Sold-Tos Unificados en esta Licencia:</span>
+                                <div class="flex flex-wrap gap-2">
+                                    <template x-for="st in auditDetail?.results?.additional_sold_tos">
+                                        <span class="badge badge-muted" style="font-size: 9px; font-family: var(--font-mono); font-weight: 700; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--border);" x-text="st"></span>
+                                    </template>
                                 </div>
                             </div>
         
                             <!-- Products Table -->
-                            <div class="mt-10">
-                                <h4 class="dx-v2-clients-section-title">Desglose de Productos y Expiración</h4>
-                                <div class="audit-table-wrapper mt-4">
-                                    <table class="dx-v2-clients-audit-table">
+                            <div>
+                                <div class="flex justify-between items-center" style="margin-bottom: 12px;">
+                                    <h4 style="font-size: 11px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Desglose de Líneas de Producto Originales</h4>
+                                    <span style="font-size: 10px; color: var(--muted);" x-text="(auditDetail?.results?.products || []).length + ' productos en archivo'"></span>
+                                </div>
+                                <div class="dx-v2-ui-table-wrapper" style="border: 1px solid var(--border); border-radius: 6px; background: rgba(0,0,0,0.2); max-height: 280px; overflow-y: auto;">
+                                    <table class="dx-v2-ui-table" style="margin: 0;">
                                         <thead>
                                             <tr>
-                                                <th>Producto</th>
-                                                <th>Descripción</th>
-                                                <th class="text-center">Cant.</th>
-                                                <th>Expiración</th>
-                                                <th class="w-40"></th>
+                                                <th style="font-size: 9px; padding: 10px 16px;">Código de Producto</th>
+                                                <th style="font-size: 9px; padding: 10px 16px;">Descripción Técnica del Módulo</th>
+                                                <th style="font-size: 9px; padding: 10px 16px; text-align: center;">Asientos</th>
+                                                <th style="font-size: 9px; padding: 10px 16px;">Fecha Expiración</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <template x-for="product in (auditDetail?.results?.products || [])">
-                                                <tr>
-                                                    <td class="font-bold font-mono text-sm text-white" x-text="product.product_code || product.name"></td>
-                                                    <td class="muted text-xs" x-text="product.description || '—'"></td>
-                                                    <td class="text-center">
-                                                        <span class="dx-v2-clients-qty-badge" x-text="product.quantity || product.qty"></span>
+                                                <tr style="transition: background 0.15s;">
+                                                    <td style="padding: 10px 16px; vertical-align: middle; font-family: var(--font-mono); font-size: 12px; font-weight: 800; color: #fff;" x-text="product.product_code || product.name"></td>
+                                                    <td style="padding: 10px 16px; vertical-align: middle; font-size: 11px; color: var(--muted);" x-text="product.description || '—'"></td>
+                                                    <td style="padding: 10px 16px; vertical-align: middle; text-align: center;">
+                                                        <span class="dx-v2-clients-qty-badge" style="font-size: 10px; font-family: var(--font-mono); font-weight: 700; background: rgba(255,255,255,0.08); padding: 2px 8px; border-radius: 4px; color: #fff;" x-text="product.quantity || product.qty"></span>
                                                     </td>
-                                                    <td>
+                                                    <td style="padding: 10px 16px; vertical-align: middle;">
                                                         <span :class="{
-                                                            'dx-v2-clients-expiry-badge': true,
-                                                            'upcoming': (product.expiration_date || product.expiry || '').includes('2026')
-                                                        }">
-                                                            <span x-text="product.expiration_date || product.expiry || 'Permanent'"></span>
-                                                            <template x-if="(product.expiration_date || product.expiry || '').includes('2026')">
-                                                                <span class="upcoming-indicator">(Próxima)</span>
-                                                            </template>
+                                                            'dx-v2-clients-expiry-status': true,
+                                                            'expired': (product.expiration_date || product.expiry || '').toLowerCase().includes('expired') || (product.expiration_date || product.expiry || '').includes('2024') || (product.expiration_date || product.expiry || '').includes('2025'),
+                                                            'permanent': (product.expiration_date || product.expiry || '').toLowerCase().includes('permanent') || (product.expiration_date || product.expiry || '') === '',
+                                                            'default': !(product.expiration_date || product.expiry || '').toLowerCase().includes('expired') && !(product.expiration_date || product.expiry || '').toLowerCase().includes('permanent')
+                                                        }" style="font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px;">
+                                                            <span x-text="product.expiration_date || product.expiry || 'PERMANENTE'"></span>
                                                         </span>
                                                     </td>
-                                                    <td><i class="fa-solid fa-trash-can text-xs opacity-20"></i></td>
                                                 </tr>
                                             </template>
                                         </tbody>
@@ -692,10 +776,12 @@
                     </template>
                 </div>
                 
-                <div class="dx-v2-ui-modal-footer transparent no-border no-padding-top">
-                    <button type="button" @click="open = false" class="dx-v2-ui-btn dx-v2-ui-btn-secondary">Cerrar Detalle</button>
-                    <button type="button" class="dx-v2-ui-btn dx-v2-ui-btn-primary">
-                        <i class="fa-solid fa-file-export mr-2"></i> Exportar Reporte
+                <div class="dx-v2-ui-modal-footer transparent no-border no-padding-top" style="padding: 12px 32px 24px 32px; display: flex; justify-content: flex-end; gap: 12px; background: rgba(0,0,0,0.15);">
+                    <button type="button" @click="open = false" class="dx-v2-ui-btn dx-v2-ui-btn-secondary" style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Cerrar Detalle</button>
+                    <button type="button" class="dx-v2-ui-btn dx-v2-ui-btn-primary" 
+                            @click="navigator.clipboard.writeText(JSON.stringify(auditDetail?.results, null, 4)); alert('Metadatos JSON copiados al portapapeles')"
+                            style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 6px;">
+                        <i class="fa-solid fa-copy"></i> Copiar Metadatos JSON
                     </button>
                 </div>
             </div>
