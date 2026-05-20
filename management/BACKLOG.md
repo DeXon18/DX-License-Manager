@@ -32,6 +32,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Fase 23.6 — Normalización Tabs, Filtro de Descriptores Léxicos, Caché & Modal Teatral ✅
+- **Completada:** 2026-05-20
+- **Rama:** `feature/manual-normalization`
+- **Resumen:** Restauración del diseño de 3 pestañas dinámicas con persistencia Alpine.js (`localStorage`). Optimización del motor léxico para omitir descriptores corporativos de prefijo, eliminando falsos positivos. Implementada transliteración ASCII (`iconv`) para evitar que acentos rompan los tokens léxicos (ej: *Codesal* vs *Oregi*). Cacheado del escáner e invalidación automática. Centrado geométrico absoluto del modal de escaneo en la UI y remoción de retardo simulado en Alpine.js.
+- **PR:** #024 — merged a dev
+
 ### Fase 23 — Normalización de Identidades con IA & Unificación Forzada ✅
 - **Completada:** 2026-05-20
 - **Rama:** `feature/ai-normalization-force`
