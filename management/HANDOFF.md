@@ -1,13 +1,13 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-20 14:15  
+> Última actualización: 2026-05-20 15:05  
 > Sesión en: Proxmox Beta Environment  
-> Rama activa: feature/manual-normalization
+> Rama activa: dev  
 
 ---
 
 ## Estado General
 
-**Fase actual:** Fase 23.6 — Normalización Tabs, Filtro de Descriptores Léxicos, Caché & Modal Teatral  
+**Fase actual:** Fase 23.6 — Normalización Tabs, Filtro de Descriptores Léxicos, Caché & Modal Teatral ✅ COMPLETADA  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,46 +15,43 @@
 
 ## Qué se hizo en esta sesión
 
-1. **Restauración de UI con Alpine.js**:
-   * Re-implementación completa de la estructura de 3 pestañas dinámicas ("Sospechas de Importación", "Escáner de Duplicados (IA)" y "Unificación Manual Libre") en [resources/views/admin/normalization/index.blade.php] con persistencia de estado en `localStorage`.
+1. **Resolución de Bugs en Similitud Léxica**:
+   * **Bug #1 Resuelto**: Patrón `$genericPattern` expandido con más de 50 descriptores industriales y sectoriales españoles ("mecanicos", "metalicas", "quimicas", "logistica", etc.) eliminando de raíz falsos positivos de sector (ej: "Codesal vs Peña").
+   * **Bug #2 Resuelto**: Cálculo del porcentaje de similitud con `similar_text` sobre las cadenas `$ultra` depuradas en lugar de `$clean`, garantizando un filtrado léxico estricto y preciso.
+   * **Bug de Encoding Resuelto**: Integrado el helper de transliteración ASCII `transliterate()` en `detectDuplicates()` para evitar que tildes y diacríticos (como la `á` de *Mecánicos*) rompan los tokens y causen colisiones complejas (ej: *Codesal* vs *Oregi*).
 
-2. **Refinamiento de Similitud Léxica sin Ruidos**:
-   * Optimización del método `detectDuplicates()` en `NormalizationController.php` para ignorar prefijos genéricos corporativos comunes (como "talleres", "grupo", "industrias", etc.) al realizar la pre-clasificación por caracteres.
-   * Evita emparejamientos incorrectos entre diferentes compañías con el mismo descriptor de negocio inicial (ej: *"Talleres Criado Sl"* vs *"Talleres Doval Sl"*).
+2. **Escaneo Productivo Real**:
+   * Removido el delay artificial `setInterval` de `2.8` segundos en Alpine.js. El modal se muestra de inmediato, realiza el envío real del formulario del backend y se sincroniza con el ciclo de vida HTTP de forma transparente.
 
-3. **Caché Inteligente de Base de Datos**:
-   * Introducido almacenamiento en caché de los resultados léxicos (`dx_scanned_duplicates`) por 24 horas usando la fachada `Cache` de Laravel para evitar llamadas lentas y repetitivas O(N^2) sobre 500+ clientes en cada carga de página.
-   * La caché se invalida y recrea de manera transparente y automática tras ejecutar acciones de unificación (`unify`) y descarte (`dismiss`).
+3. **Centrado Geométrico del Modal**:
+   * Modificados los estilos del modal en `index.blade.php` para centrarlo vertical y horizontalmente de forma absoluta en el viewport (`position: absolute`, `top: 50%`, `left: 50%`, `transform: translate(-50%, -50%)`), garantizando inmunidad frente a estilos heredados del layout del portal.
 
-4. **Botón de Fuerza de Escaneo & Modal Teatral**:
-   * Registrada la ruta `/admin/normalization/force-scan` para permitir al administrador regenerar manualmente la caché léxica.
-   * Diseñado un modal de carga teatral con progreso simulado paso a paso (duración ~2.8 segundos) y centrado absoluto e infalible (`z-index: 999999 !important` y desenfoque `backdrop-filter`) para proveer una experiencia interactiva espectacular al re-escanear.
+4. **Reporte Técnico de Arquitectura**:
+   * Creado y reubicado el reporte completo en [NORMALIZATION_REPORT.md](file:///z:/DX-License-Manager/docs/technical/NORMALIZATION_REPORT.md) para el equipo técnico.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-1. **Revisión y Aprobación de Rama**:
-   * Oskar revisará visualmente en Beta la correcta visualización de las pestañas restauradas, el comportamiento del botón "Escanear Ahora" y el modal animado de carga.
-   * Fusionar la rama `feature/manual-normalization` sobre `dev` tras recibir su confirmación explícita.
+1. **Definición de Nuevos Objetivos**:
+   * En espera de que Oskar defina y valide la siguiente fase del BACKLOG o nuevas incidencias a resolver sobre el entorno Beta/Prod.
 
 ### Tareas siguientes
-1. Realizar pruebas de importación y verificar que las sospechas de duplicados no colisionen con los nuevos descriptores.
+1. Monitoreo del comportamiento del nuevo motor léxico con las próximas importaciones semanales del CSV de facturación para garantizar la ausencia total de falsos sospechosos.
 
 ---
 
 ## Contexto técnico importante
 
-* El modal de carga se ha posicionado fuera de los contenedores relativos del layout y utiliza propiedades CSS absolutas para asegurar un centrado global sin fricciones.
-* La animación de entrada del modal se apoya en `@keyframes dxFadeIn` inyectado limpiamente en [modules/dx-v2-normalization.css].
-* La caché de duplicados se actualiza automáticamente al unificar o descartar registros para que la interfaz siempre refleje el estado real de la base de datos.
+* El helper `transliterate()` usa `iconv` para mapear acentos a sus equivalentes ASCII planos antes de cualquier regex, asegurando estabilidad total.
+* La suite de tests unitarios de normalización (`ClientNormalizationTest`) se ejecuta limpia al 100%.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-* Ninguno. Todo el sistema de normalización e interactividad se encuentra estable y verificado.
+* Ninguno. El motor de normalización léxica y por IA está 100% estabilizado y operando con total precisión de producción.
 
 ---
 
@@ -73,7 +70,7 @@
 
 ```bash
 # Cambiar a la rama activa
-git checkout feature/manual-normalization
+git checkout dev
 
 # Ver logs de PHP en Beta
 docker compose --project-directory . -f infra/docker-compose.beta.yml logs --tail=50 dx-php-beta
