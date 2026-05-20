@@ -245,4 +245,116 @@ EOT;
             'reason' => $reason
         ];
     }
+
+    /**
+     * Evalúa si dos nombres de cliente existentes se refieren a la misma entidad.
+     *
+     * @param string $name1 Nombre del primer cliente.
+     * @param string $name2 Nombre del segundo cliente.
+     * @return array [is_duplicate, confidence, provider, reason]
+     */
+    public function evaluateDuplicatePair(string $name1, string $name2): array
+    {
+        $name1 = trim($name1);
+        $name2 = trim($name2);
+        
+        $prompt = <<<EOT
+Determina de forma experta si los dos siguientes nombres de cliente corresponden a la misma empresa o entidad de negocio (ej. variantes ortográficas, erratas, fusiones, siglas de la misma marca, o filiales idénticas).
+
+Cliente A: "{$name1}"
+Cliente B: "{$name2}"
+
+Instrucciones críticas:
+1. Responde ÚNICAMENTE con un objeto JSON válido.
+2. Si consideras que son la misma empresa, establece "is_duplicate" a true.
+3. Si son empresas claramente distintas, establece "is_duplicate" a false.
+4. Explica detalladamente en español tu razonamiento en el campo "reason" (máximo una frase).
+
+Responde estrictamente en formato JSON con la siguiente estructura:
+{
+  "is_duplicate": true | false,
+  "confidence": <número flotante entre 0 y 1>,
+  "reason": "<explicación del razonamiento en español>"
+}
+EOT;
+
+        // Exec fallback chain (Gemini -> Deepseek)
+        $geminiKey = config('ai.gemini_key');
+        if ($geminiKey) {
+            try {
+                $response = Http::timeout(10)->post(
+                    "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key={$geminiKey}",
+                    [
+                        'contents' => [['parts' => [['text' => $prompt]]]],
+                        'generationConfig' => ['response_mime_type' => 'application/json']
+                    ]
+                );
+
+                if ($response->successful()) {
+                    $resData = $response->json();
+                    $text = $resData['candidates'][0]['content']['parts'][0]['text'] ?? '{}';
+                    $decoded = $this->parseJsonAndValidateDuplicate($text);
+                    if ($decoded) {
+                        $decoded['provider'] = 'gemini';
+                        return $decoded;
+                    }
+                }
+            } catch (\Exception $e) {
+                Log::warning("ClientAiNormalizationService: Error evaluando par en Gemini: " . $e->getMessage());
+            }
+        }
+        
+        // Deepseek fallback
+        $deepseekKey = config('ai.deepseek_key');
+        if ($deepseekKey) {
+            try {
+                $response = Http::timeout(10)
+                    ->withHeaders(['Authorization' => "Bearer {$deepseekKey}", 'Content-Type' => 'application/json'])
+                    ->post('https://api.deepseek.com/chat/completions', [
+                        'model' => 'deepseek-chat',
+                        'messages' => [['role' => 'user', 'content' => $prompt]],
+                        'response_format' => ['type' => 'json_object'],
+                        'temperature' => 0.1
+                    ]);
+
+                if ($response->successful()) {
+                    $resData = $response->json();
+                    $text = $resData['choices'][0]['message']['content'] ?? '{}';
+                    $decoded = $this->parseJsonAndValidateDuplicate($text);
+                    if ($decoded) {
+                        $decoded['provider'] = 'deepseek';
+                        return $decoded;
+                    }
+                }
+            } catch (\Exception $e) {
+                Log::warning("ClientAiNormalizationService: Error evaluando par en Deepseek: " . $e->getMessage());
+            }
+        }
+
+        // Return local warning response
+        return [
+            'is_duplicate' => true,
+            'confidence' => 0.75,
+            'provider' => 'local',
+            'reason' => 'Coincidencia local por alto porcentaje de similitud.'
+        ];
+    }
+
+    private function parseJsonAndValidateDuplicate(string $text): ?array
+    {
+        $text = trim($text);
+        $text = preg_replace('/```json\s*|```/i', '', $text);
+        $text = trim($text);
+
+        $decoded = json_decode($text, true);
+        if (json_last_error() !== JSON_ERROR_NONE || !is_array($decoded)) {
+            return null;
+        }
+
+        return [
+            'is_duplicate' => (bool) ($decoded['is_duplicate'] ?? false),
+            'confidence' => (float) ($decoded['confidence'] ?? 0.0),
+            'reason' => (string) ($decoded['reason'] ?? 'Analizado semánticamente.'),
+        ];
+    }
 }

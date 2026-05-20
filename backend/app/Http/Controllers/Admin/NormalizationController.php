@@ -53,8 +53,9 @@ class NormalizationController extends Controller
         });
 
         $allClients = Client::orderBy('name', 'asc')->get(['id', 'name']);
-
-        return view('admin.normalization.index', compact('findings', 'allClients'));
+        $scannedDuplicates = $this->detectDuplicates();
+ 
+        return view('admin.normalization.index', compact('findings', 'allClients', 'scannedDuplicates'));
     }
 
     /**
@@ -199,5 +200,86 @@ class NormalizationController extends Controller
         );
 
         return redirect()->back()->with('info', "El cliente '{$request->detected_name}' ha sido descartado y no volverá a aparecer en la bandeja.");
+    }
+
+    /**
+     * AJAX endpoint to run semantic AI check on a candidate pair.
+     */
+    public function analyzeAi(Request $request)
+    {
+        $request->validate([
+            'client1' => 'required|string',
+            'client2' => 'required|string',
+        ]);
+
+        $service = new \App\Services\AI\ClientAiNormalizationService();
+        $result = $service->evaluateDuplicatePair($request->client1, $request->client2);
+
+        return response()->json($result);
+    }
+
+    /**
+     * Algoritmo de detección de duplicados en base de datos.
+     */
+    private function detectDuplicates()
+    {
+        $clients = Client::orderBy('name', 'asc')->get();
+        $suspicions = [];
+
+        $ignoredNames = NormalizationDecision::where('decision', 'ignore')
+            ->pluck('detected_name')
+            ->toArray();
+
+        $count = count($clients);
+        for ($i = 0; $i < $count; $i++) {
+            $c1 = $clients[$i];
+
+            if (in_array($c1->name, $ignoredNames)) continue;
+
+            $n1 = strtolower(trim(preg_replace('/\s+/', ' ', preg_replace('/[^a-z0-9 ]/i', ' ', $c1->name))));
+
+            // Strip common suffixes for cleaner comparison
+            $clean1 = trim(preg_replace('/\b(sl|sa|slu|s\s*l|s\s*a|s\s*l\s*u|limitada|limited|ltd|gmbh|co|corp|inc|group|grupo|solutions|servicios|services|espanola|espana|spain)\b/i', '', $n1));
+            if (empty($clean1)) continue;
+
+            for ($j = $i + 1; $j < $count; $j++) {
+                $c2 = $clients[$j];
+
+                if (in_array($c2->name, $ignoredNames)) continue;
+
+                $n2 = strtolower(trim(preg_replace('/\s+/', ' ', preg_replace('/[^a-z0-9 ]/i', ' ', $c2->name))));
+                $clean2 = trim(preg_replace('/\b(sl|sa|slu|s\s*l|s\s*a|s\s*l\s*u|limitada|limited|ltd|gmbh|co|corp|inc|group|grupo|solutions|servicios|services|espanola|espana|spain)\b/i', '', $n2));
+                if (empty($clean2)) continue;
+
+                // Fast check: check if first 5 characters match exactly
+                $prefixMatch = false;
+                if (strlen($clean1) >= 5 && strlen($clean2) >= 5) {
+                    if (substr($clean1, 0, 5) === substr($clean2, 0, 5)) {
+                        $prefixMatch = true;
+                    }
+                }
+
+                if ($prefixMatch) {
+                    similar_text($clean1, $clean2, $percent);
+
+                    if ($percent >= 70) {
+                        // Suggest keeping the older one (smaller ID)
+                        $older = $c1->id < $c2->id ? $c1 : $c2;
+                        $newer = $c1->id < $c2->id ? $c2 : $c1;
+
+                        $suspicions[] = [
+                            'duplicate' => $newer,
+                            'target' => $older,
+                            'similarity' => round($percent),
+                            'reason' => "Similitud del " . round($percent) . "% ('$clean1' vs '$clean2')"
+                        ];
+                    }
+                }
+            }
+        }
+        usort($suspicions, function($a, $b) {
+            return $b['similarity'] <=> $a['similarity'];
+        });
+        return $suspicions;
     }
 }
