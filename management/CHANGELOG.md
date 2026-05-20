@@ -1,6 +1,20 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-20 11:00] — AI Normalization Engine: Fase 23 CERRADA ✅
+
+### Added
+- **Core de Normalización de Identidades con IA**: Implementación de `ClientAiNormalizationService.php` en [backend/app/Services/AI/ClientAiNormalizationService.php]. Realiza un pre-filtrado tokenizado local de candidatos usando queries SQL `LIKE` para extraer coincidencias potenciales del mismo cliente.
+- **Cliente HTTP con Cadena de Fallback Multi-API**: Conexión a Gemini 3.5 Flash Lite (`GEMINI_API_KEY`), DeepSeek Chat (`DEEPSEEK_API_KEY`) y OpenRouter (`OPENROUTER_API_KEY` con modelo Llama 3 8B) de forma secuencial y tolerante a fallos, abstrayendo credenciales en variables del entorno.
+- **Rediseño Premium de la Bandeja de Normalización**: Adaptación visual de la bandeja de normalización con badges premium NOC Pro IA en [admin/normalization/index.blade.php], mostrando dinámicamente el proveedor (Gemini, DeepSeek, etc.), porcentaje de confianza y la razón técnica detallada de la IA.
+- **Estilos Modulares para AI Normalization**: Cumpliendo estrictamente las directivas de `DESIGN.md` (cero CSS incrostado en Blade), las clases de estilos y animaciones se han integrado limpiamente al final de [modules/dx-v2-import.css].
+- **Cobertura de Tests Unitarios Robustos**: Creación de tests y mock en [tests/Unit/ClientNormalizationTest.php] simulando llamadas de alta y baja confianza en SQLite en memoria.
+
+### Changed
+- **Desvío Inteligente en el Normalizador**: Integrado el servicio de IA en [backend/app/Services/Data/ClientNormalizationService.php] como fallback (Nivel 3.5) ante similitudes menores al 85%. Si la IA encuentra una coincidencia con alta confianza (>= 80%), el flujo se desvía a sospecha (`suspicion`) con su correspondiente advertencia, ID y razón técnica detallada.
+
+---
+
 ## [2026-05-20 09:50] — DX Toasts & Estilos Usuarios: Incidencias #020 y #017 CERRADAS ✅
 
 ### Added

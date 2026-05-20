@@ -32,6 +32,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Fase 23 — Normalización de Identidades con IA & Unificación Forzada ✅
+- **Completada:** 2026-05-20
+- **Rama:** `feature/ai-normalization-force`
+- **Resumen:** Implementación completa del motor de normalización inteligente por IA (Gemini -> DeepSeek -> OpenRouter con fallback chain automático) y desarrollo de la unificación manual forzada mediante un buscador predictivo `<datalist>` HTML5 que migra de forma atómica contratos, licencias, deamonios, contactos y auditorías al cliente real, asocia el alias y destruye el duplicado.
+- **PR:** #023 — merged a dev
+
 ### Resolución de Incidencia #020 y #017 — Sistema de Toasts & Estilos en Búsqueda de Usuarios ✅
 - **Completada:** 2026-05-20
 - **Rama:** `fix/clientes-search-style`

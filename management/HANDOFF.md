@@ -1,13 +1,13 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-20 10:00  
-> Sesión en: Windows PC  
-> Rama activa: dev
+> Última actualización: 2026-05-20 11:25  
+> Sesión en: Proxmox Beta Environment  
+> Rama activa: feature/ai-normalization-force
 
 ---
 
 ## Estado General
 
-**Fase actual:** Fase 22 — Unificación CSS Completa & Control de Calidad ✅  
+**Fase actual:** Fase 23 — Normalización de Identidades con IA  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,38 +15,47 @@
 
 ## Qué se hizo en esta sesión
 
-1. **Resolución de Incidencia #020 (Toasts Globales Premium)**:
-    - Diseñado e implementado un motor reactivo de notificaciones flotantes con Alpine.js en [layouts/partials/toasts.blade.php](file:///y:/DX-License-Manager/backend/resources/views/layouts/partials/toasts.blade.php).
-    - Creado el archivo modular CSS de diseño premium glassmorphic [shared/dx-v2-toast.css](file:///y:/DX-License-Manager/backend/public/assets/css/shared/dx-v2-toast.css) con variables HSL, aceleración por hardware y soporte nativo light/dark mode.
-    - Purgados todos los bloques de alertas inline estáticos y redundantes de las 7 vistas principales del portal unificando el feedback en Toasts.
-2. **Resolución de Incidencia #017 (Estilos Búsqueda Usuarios)**:
-    - Corregidos los inputs de búsqueda rápida, filtros de roles y selectores de estados de la sección de Gestión de Usuarios que colisionaban con el modo oscuro.
-3. **Mantenimiento y Control de Calidad**:
-    - Fusión exitosa en remoto de la rama de feature `fix/clientes-search-style` por Oskar (PR #15).
-    - Sincronizados los últimos cambios locales en `dev`, borrada la rama de feature local y remoto, y depuradas las referencias remotas.
-    - Actualizados `management/CHANGELOG.md`, `management/ERRORS.md` y `.agent/memory/ACTIVE_CONTEXT.md` al 100%.
+1. **Flujo de Normalización Cognitivo (IA)**:
+   * Diseñado e implementado `ClientAiNormalizationService.php` con pre-filtrado local por tokens (`LIKE`) y llamadas de validación cognitiva en cadena de fallback: **Gemini -> DeepSeek -> OpenRouter**.
+   * Integrado el fallback en `ClientNormalizationService.php` como Nivel 3.5 para desviar sospechas de similitud media/baja (< 85%) con confianza >= 80% al estado `suspicion`.
+   * Enriquecida la interfaz de la Bandeja de Normalización con badges de IA NOC Pro, indicación del proveedor utilizado y razones explicativas del modelo.
+
+2. **Unificación Forzada Manual (Incidencia Urovesa)**:
+   * Desarrollada una característica de unificación forzada para entradas de tipo `NUEVA IDENTIDAD`.
+   * Implementado un buscador autocomplete predictivo nativo `<datalist>` HTML5 que renderiza dinámicamente todos los clientes del sistema en orden alfabético.
+   * Añadido el botón de acción **FORZAR** que unifica atómicamente contratos, licencias, demonios, contactos y auditorías, asocia el alias y elimina el duplicado de la base de datos de manera limpia.
+
+3. **Pruebas y Hardening**:
+   * Creados tests robustos y mocks para simular llamadas IA exitosas, de baja confianza y fallos en `ClientNormalizationTest.php`.
+   * Limpieza total de estilos locales Blade y migración al archivo modular unificado `modules/dx-v2-import.css` conforme a `DESIGN.md`.
+   * Git Checkpoints A, B, C, D, E completados con tags `v1.23.0-rc1`, `v1.23.0-rc2` y release final `v1.23.0`.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-**Definición de nuevas prioridades por parte de Oskar**
-1. Preguntar a Oskar por la siguiente fase a acometer del ROADMAP o backlog de incidencias en espera.
+1. **Aprobar Pull Request y Merge**:
+   * Revisar los cambios de la rama `feature/ai-normalization-force` en GitHub.
+   * Fusionala sobre la rama `dev` tras la revisión visual interactiva de Oskar.
+
+### Tareas siguientes
+1. Realizar pruebas con importaciones reales de archivos `.lic` y ficheros CSV semanales.
+2. Continuar con el backlog de mantenimiento visual y técnico del panel administrativo.
 
 ---
 
 ## Contexto técnico importante
 
-- **Estrategia Git**: Entorno dev 100% limpio y actualizado. Para futuras tareas, crear una rama descriptiva de feature/bugfix partiendo de `dev`.
-- **Caché y Cookies**: El sistema de Toasts se alimenta del estado de sesión de Laravel. Si un mensaje no se borra automáticamente al recargar, la cola de Alpine.js gestiona la rotación y auto-dismiss robusto.
-- **Modo Estricto de Agentes**: Siempre presentar plan + checklist y esperar la aprobación explícita de Oskar antes de ejecutar cualquier acción.
+* Las API keys para Gemini, DeepSeek y OpenRouter están configuradas de forma segura en `backend/.env`.
+* Las llamadas a la IA tienen un timeout de 10-12 segundos y están envueltas en `try-catch` con degradación natural a `new client` en caso de fallo, garantizando alta tolerancia a caídas de red o fallos de tokens.
+* Los estilos de normalización de la IA se encuentran al final del archivo `modules/dx-v2-import.css` respetando el estándar modular de diseño del proyecto.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-Ninguno. El sistema, base de datos y contenedores se encuentran estables con cero errores en la flota.
+* Ninguno. Todos los tests de normalización en SQLite corren y pasan al 100%.
 
 ---
 
@@ -64,12 +73,12 @@ Ninguno. El sistema, base de datos y contenedores se encuentran estables con cer
 ## Comandos útiles para la próxima sesión
 
 ```bash
-# Crear nueva rama de desarrollo partiendo de dev
-git checkout -b feature/nueva-funcionalidad
+# Cambiar a la rama de la funcionalidad
+git checkout feature/ai-normalization-force
 
-# Limpiar caché de vistas de Laravel
-docker exec dx-php-beta php artisan view:clear
+# Entrar al contenedor PHP de Beta
+docker exec -it dx-php-beta sh
 
-# Verificar logs del contenedor PHP antes de cada commit
-docker compose --project-directory . -f infra/docker-compose.beta.yml logs --tail=50 dx-php-beta
+# Ejecutar tests forzando SQLite en memoria
+docker exec -e DB_CONNECTION=sqlite -e DB_DATABASE=:memory: dx-php-beta php artisan test --filter=ClientNormalizationTest
 ```
