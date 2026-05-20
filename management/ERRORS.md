@@ -8,7 +8,7 @@
 
 | 🔴 Críticos (P1) | 🟠 Importantes (P2) | 🟢 Menores (P3) | ✅ Resueltos |
 | :---: | :---: | :---: | :---: |
-| 0 | 1 | 0 | 20 |
+| 0 | 0 | 0 | 21 |
 
 ---
 
@@ -27,7 +27,6 @@
 
 | ID | Incidencia | Módulo | Prioridad | Estado | Detectado |
 |---:|---|---|:---:|:---:|:---:|
-| [#020] Mensajes de confirmación sin feedback visual destacado (toasts) | UI/UX | 🟠 P2 | 🔍 En análisis | 2026-05-19 |
 
 ---
 
@@ -35,6 +34,7 @@
 
 | ID | Incidencia | Módulo | Prioridad | Detectado | Resuelto |
 |---:|---|---|:---:|:---:|:---:|
+| [#020] Mensajes de confirmación sin feedback visual destacado (toasts) | UI/UX | 🟠 P2 | 2026-05-19 | 2026-05-20 |
 | [#017] Barra de búsqueda sin estilos en Gestión de Usuarios | UI/UX | 🟢 P3 | 2026-05-19 | 2026-05-20 |
 | [#021] Inputs sin estilos en Generador COD (herramientas/cod) | UI/UX | 🟠 P2 | 2026-05-20 | 2026-05-20 |
 | [#019] Campo "Copia Interna (Emails)" ilegible por fondo oscuro | UI/UX | 🟢 P3 | 2026-05-19 | 2026-05-20 |
@@ -74,28 +74,27 @@
 
 ---
 
+
+### Resueltos
+
+---
+
 #### #020 — Mensajes de confirmación sin feedback visual destacado
 
 | Campo | Valor |
 |---|---|
 | **Módulo** | UI/UX — Global |
 | **Prioridad** | 🟠 P2 |
-| **Estado** | 🔍 En análisis |
+| **Estado** | ✅ Resuelto |
 | **Detectado** | 2026-05-19 |
+| **Resuelto** | 2026-05-20 |
 
 - **Síntoma**: Los mensajes de éxito como *"El reporte semanal se ha generado y enviado a los contactos suscritos"* aparecen en una posición poco visible, sin destacar suficientemente la acción completada.
-- **Causa probable**: Implementación inicial de alertas inline estáticas sin un sistema de notificaciones centralizado.
-- **Impacto**: El usuario puede no percibir el feedback de acciones completadas, generando dudas sobre si la operación se ejecutó correctamente, con riesgo de repetir acciones por error.
-- **Acción**:
-  - Implementar un sistema de **toast/snackbar flotante** (esquina inferior o superior derecha) para todos los mensajes de confirmación, éxito, error y advertencia.
-  - Estandarizar el componente para que sea reutilizable en todos los módulos y sustituya las alertas inline actuales.
-  - Definir duración de auto-cierre (ej. 4s para éxito, persistente para error) y soporte para cierre manual.
-- **Módulos afectados**: Reportes, Alertas y Notificaciones, Gestión de Usuarios, Importación, Dashboard.
-
----
-
-
-### Resueltos
+- **Causa**: Implementación inicial de alertas inline estáticas que causaban duplicidad e inconsistencia visual.
+- **Resolución**:
+  - Implementado un motor de toasts reactivo y flotante con **Alpine.js** en [layouts/partials/toasts.blade.php](file:///y:/DX-License-Manager/backend/resources/views/layouts/partials/toasts.blade.php) que incluye autocierre, soporte rico en HTML (`x-html`) y helper global `window.dxToast()`.
+  - Diseñada la hoja de estilos [shared/dx-v2-toast.css](file:///y:/DX-License-Manager/backend/public/assets/css/shared/dx-v2-toast.css) con soporte HSL y glassmorphism adaptativo claro/oscuro.
+  - Eliminados todos los banners de alertas inline de los módulos principales (Usuarios, Alertas, Importación, Repositorio, Logs, Perfil, Normalización) delegando todo el feedback en el sistema unificado de toasts.
 
 ---
 
