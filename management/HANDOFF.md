@@ -1,13 +1,13 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-20 15:05  
+> Última actualización: 2026-05-20 15:15  
 > Sesión en: Proxmox Beta Environment  
-> Rama activa: dev  
+> Rama activa: feature/audit-details-ui  
 
 ---
 
 ## Estado General
 
-**Fase actual:** Fase 23.6 — Normalización Tabs, Filtro de Descriptores Léxicos, Caché & Modal Teatral ✅ COMPLETADA  
+**Fase actual:** Fase 23.7 — Rediseño de Historial y Detalle de Auditorías Premium (NOC Pro) ✅ COMPLETADA  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,43 +15,44 @@
 
 ## Qué se hizo en esta sesión
 
-1. **Resolución de Bugs en Similitud Léxica**:
-   * **Bug #1 Resuelto**: Patrón `$genericPattern` expandido con más de 50 descriptores industriales y sectoriales españoles ("mecanicos", "metalicas", "quimicas", "logistica", etc.) eliminando de raíz falsos positivos de sector (ej: "Codesal vs Peña").
-   * **Bug #2 Resuelto**: Cálculo del porcentaje de similitud con `similar_text` sobre las cadenas `$ultra` depuradas en lugar de `$clean`, garantizando un filtrado léxico estricto y preciso.
-   * **Bug de Encoding Resuelto**: Integrado el helper de transliteración ASCII `transliterate()` en `detectDuplicates()` para evitar que tildes y diacríticos (como la `á` de *Mecánicos*) rompan los tokens y causen colisiones complejas (ej: *Codesal* vs *Oregi*).
+1. **Rediseño del Historial de Archivos de Licencia Originales**:
+   * Reemplazado el `<details>` rústico nativo por un acordeón interactivo y animado con Alpine.js (`historyOpen: false`) en [resources/views/clients/show.blade.php].
+   * Incorporado un banner explicativo claro que detalla la función técnica de esta sección como "Fuente de Verdad Histórica (Solo Lectura)".
+   * Rediseñada la tabla en alta densidad, incluyendo badges dinámicos por ecosistema (`SIEMENS` vs `MOLDEX3D`), visualización de fecha de subida, servidor de hosting y el botón de ojo "Ver Auditoría" estilizado.
 
-2. **Escaneo Productivo Real**:
-   * Removido el delay artificial `setInterval` de `2.8` segundos en Alpine.js. El modal se muestra de inmediato, realiza el envío real del formulario del backend y se sincroniza con el ciclo de vida HTTP de forma transparente.
+2. **Rediseño del Detalle de Auditoría Siemens / Moldex3D (Modal)**:
+   * Implementado un título dinámico que se adapta a Siemens o Moldex3D según el daemon del archivo.
+   * Diseñado un banner superior de inmutabilidad y seguridad con icono de candado (`fa-lock`) explicando el propósito técnico inmutable del respaldo de licencia física.
+   * Creado un Bento Grid integrado para los metadatos clave del servidor (Hostname, Composite/MAC, Sold-To y Daemon).
+   * Refactorizada la tabla de productos originales a una consola inmutable en alta resolución con scrollbars integrados y colorización selectiva de caducidad.
+   * Removidos elementos inertes que inducían a errores en el usuario (ej: papelera deshabilitada en registros inmutables).
+   * Integrado el botón rápido "Copiar Metadatos JSON" en la barra de herramientas del modal de detalles.
 
-3. **Centrado Geométrico del Modal**:
-   * Modificados los estilos del modal en `index.blade.php` para centrarlo vertical y horizontalmente de forma absoluta en el viewport (`position: absolute`, `top: 50%`, `left: 50%`, `transform: translate(-50%, -50%)`), garantizando inmunidad frente a estilos heredados del layout del portal.
-
-4. **Reporte Técnico de Arquitectura**:
-   * Creado y reubicado el reporte completo en [NORMALIZATION_REPORT.md](file:///z:/DX-License-Manager/docs/technical/NORMALIZATION_REPORT.md) para el equipo técnico.
+3. **Verificación de Logs y Caché**:
+   * Logs de php en Beta verificados al 100% libres de errores.
+   * Ejecutada la purga de caché de vistas en Beta (`view:clear`) para compilar de forma limpia el Blade optimizado.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-1. **Definición de Nuevos Objetivos**:
-   * En espera de que Oskar defina y valide la siguiente fase del BACKLOG o nuevas incidencias a resolver sobre el entorno Beta/Prod.
-
-### Tareas siguientes
-1. Monitoreo del comportamiento del nuevo motor léxico con las próximas importaciones semanales del CSV de facturación para garantizar la ausencia total de falsos sospechosos.
+1. **Revisión y Aprobación de Rama**:
+   * Oskar revisará visualmente en Beta la correcta interactividad del nuevo acordeón en la ficha del cliente y el look de consola NOC Pro del modal de detalles.
+   * Fusionar la rama `feature/audit-details-ui` sobre `dev` tras recibir su confirmación explícita.
 
 ---
 
 ## Contexto técnico importante
 
-* El helper `transliterate()` usa `iconv` para mapear acentos a sus equivalentes ASCII planos antes de cualquier regex, asegurando estabilidad total.
-* La suite de tests unitarios de normalización (`ClientNormalizationTest`) se ejecuta limpia al 100%.
+* El modal de detalles utiliza de forma dinámica `x-text` en Alpine.js para adaptarse dinámicamente tanto al daemon analizado por el motor Siemens como por el de Moldex3D.
+* La copia de metadatos JSON al portapapeles se realiza directamente en cliente con `navigator.clipboard.writeText()` para máxima velocidad de respuesta sin llamadas redundantes al servidor.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-* Ninguno. El motor de normalización léxica y por IA está 100% estabilizado y operando con total precisión de producción.
+* Ninguno. Todo el sistema está operando con total estabilidad técnica y visual.
 
 ---
 
@@ -70,10 +71,10 @@
 
 ```bash
 # Cambiar a la rama activa
-git checkout dev
+git checkout feature/audit-details-ui
 
 # Ver logs de PHP en Beta
-docker compose --project-directory . -f infra/docker-compose.beta.yml logs --tail=50 dx-php-beta
+docker logs --tail=50 dx-php-beta
 
 # Limpiar caché de vistas para forzar compilación Blade limpia
 docker exec dx-php-beta php artisan view:clear
