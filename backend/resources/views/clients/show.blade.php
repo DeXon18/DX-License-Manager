@@ -276,36 +276,29 @@
             @endforelse
 
             @if($client->auditResults->count() > 0)
-                <div class="dx-v2-clients-history-card" style="margin-top: 24px; border: 1px solid var(--border); border-radius: 8px; background: rgba(16, 18, 30, 0.45); backdrop-filter: blur(8px); overflow: hidden; transition: all 0.3s ease;">
+                <div class="dx-v2-clients-history-wrapper" style="margin-top: 40px;">
                     <!-- Acordeón Header Toggle -->
-                    <div class="dx-v2-clients-history-header-toggle" 
-                         @click="historyOpen = !historyOpen" 
-                         style="padding: 16px 20px; display: flex !important; justify-content: space-between !important; align-items: center !important; cursor: pointer; user-select: none; background: rgba(255,255,255,0.02); transition: background 0.2s; width: 100% !important;"
-                         :style="historyOpen ? 'border-bottom: 1px solid var(--border) !important; background: rgba(255,255,255,0.04);' : ''"
-                         @mouseenter="$el.style.background = 'rgba(255,255,255,0.05)'"
-                         @mouseleave="$el.style.background = historyOpen ? 'rgba(255,255,255,0.04)' : 'rgba(255,255,255,0.02)'">
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <div style="width: 32px; height: 32px; border-radius: 6px; background: rgba(167, 139, 250, 0.1); border: 1px solid rgba(167, 139, 250, 0.2); display: flex; align-items: center; justify-content: center; color: #a78bfa; flex-shrink: 0;">
-                                <i class="fa-solid fa-clock-rotate-left" style="font-size: 14px;"></i>
-                            </div>
+                    <div class="dx-v2-clients-history-toggle" 
+                         @click="historyOpen = !historyOpen"
+                         :style="historyOpen ? 'border-bottom-left-radius: 0; border-bottom-right-radius: 0; margin-top: 0;' : 'margin-top: 0;'">
+                        <div class="dx-v2-clients-history-toggle-left">
+                            <i class="fa-solid fa-clock-rotate-left dx-v2-clients-history-toggle-icon" style="font-size: 16px;"></i>
                             <div style="text-align: left;">
                                 <span style="display: block; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #fff; line-height: 1.2;">Historial de Archivos de Licencia Originales</span>
                                 <span style="display: block; font-size: 10px; color: var(--muted); margin-top: 2px;">{{ $client->auditResults->count() }} archivos subidos en este cliente</span>
                             </div>
                         </div>
-                        <div style="display: flex; align-items: center; justify-content: center; width: 24px; height: 24px; color: var(--muted); flex-shrink: 0;">
-                            <i class="fa-solid fa-chevron-down" style="font-size: 12px; transition: transform 0.3s ease; display: inline-block;" :style="historyOpen ? 'transform: rotate(180deg); color: #a78bfa;' : ''"></i>
-                        </div>
+                        <i class="fa-solid fa-chevron-down dx-v2-clients-history-toggle-arrow" style="transition: transform 0.3s ease; font-size: 12px;" :style="historyOpen ? 'transform: rotate(180deg); color: var(--dx-v2-accent-base);' : ''"></i>
                     </div>
 
                     <!-- Contenido con Animación Alpine.js -->
-                    <div x-show="historyOpen" x-cloak x-transition style="display: none;">
-                        <div style="padding: 20px;">
+                    <div class="dx-v2-clients-history-content" x-show="historyOpen" x-cloak x-transition style="display: none;">
+                        <div>
                             <!-- Banner Explicativo de Propósito -->
-                            <div style="background: rgba(167, 139, 250, 0.04); border: 1px solid rgba(167, 139, 250, 0.15); border-radius: 6px; padding: 12px 16px; margin-bottom: 20px; display: flex; gap: 12px; align-items: flex-start;">
-                                <i class="fa-solid fa-circle-info" style="color: #a78bfa; font-size: 14px; margin-top: 2px;"></i>
+                            <div style="background: rgba(56, 139, 253, 0.04); border: 1px solid rgba(56, 139, 253, 0.15); border-radius: 6px; padding: 12px 16px; margin-bottom: 20px; display: flex; gap: 12px; align-items: flex-start;">
+                                <i class="fa-solid fa-circle-info" style="color: #388bfd; font-size: 14px; margin-top: 2px;"></i>
                                 <div>
-                                    <h5 style="font-size: 11px; font-weight: 800; color: #a78bfa; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 4px 0;">Fuente de Verdad Histórica (Solo Lectura)</h5>
+                                    <h5 style="font-size: 11px; font-weight: 800; color: #388bfd; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 4px 0;">Fuente de Verdad Histórica (Solo Lectura)</h5>
                                     <p style="font-size: 11px; color: var(--muted); line-height: 1.5; margin: 0;">
                                         Estos registros representan los archivos físicos originales (`.lic` o `.mac`) que se cargaron en el sistema. Los datos extraídos fueron validados e importados al inventario activo actual del cliente. Úsalos como respaldo técnico de auditoría.
                                     </p>
@@ -313,59 +306,55 @@
                             </div>
 
                             <!-- Tabla de Auditorías de Alta Densidad -->
-                            <div style="border: 1px solid var(--border); border-radius: 6px; background: rgba(0,0,0,0.25); overflow: hidden; width: 100%;">
-                                <table style="margin: 0; width: 100%; table-layout: fixed; border-collapse: collapse;">
-                                    <thead>
-                                        <tr style="background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border);">
-                                            <th style="font-size: 9px; padding: 12px 16px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; width: 28%; text-align: left;">Ecosistema / Daemon</th>
-                                            <th style="font-size: 9px; padding: 12px 16px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; width: 20%; text-align: left;">Cuenta / Sold-To</th>
-                                            <th style="font-size: 9px; padding: 12px 16px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; width: 22%; text-align: left;">Fecha de Subida</th>
-                                            <th style="font-size: 9px; padding: 12px 16px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; width: 15%; text-align: left;">Servidor / Hostname</th>
-                                            <th style="font-size: 9px; padding: 12px 16px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 800; width: 15%; text-align: right;">Inspección</th>
+                            <table class="dx-v2-clients-inv-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 28%; font-size: 9px; padding: 10px 24px;">Ecosistema / Daemon</th>
+                                        <th style="width: 20%; font-size: 9px; padding: 10px 24px;">Cuenta / Sold-To</th>
+                                        <th style="width: 22%; font-size: 9px; padding: 10px 24px;">Fecha de Subida</th>
+                                        <th style="width: 15%; font-size: 9px; padding: 10px 24px;">Servidor / Hostname</th>
+                                        <th style="width: 15%; font-size: 9px; padding: 10px 24px; text-align: right;">Inspección</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($client->auditResults as $result)
+                                        @php
+                                            $daemonVal = $result->results['vendor_daemon'] ?? ($result->results['daemon'] ?? 'Desconocido');
+                                            $isMoldex = str_contains(strtolower($daemonVal), 'moldex') || !isset($result->results['vendor_daemon']);
+                                            $hostName = $result->results['hostname'] ?? 'N/A';
+                                        @endphp
+                                        <tr>
+                                            <td style="padding: 12px 24px;">
+                                                <div style="display: flex; align-items: center; gap: 8px;">
+                                                    <span class="dx-v2-clients-vendor-badge {{ $isMoldex ? 'moldex' : 'siemens' }}" style="font-size: 8px; font-weight: 900; padding: 2px 6px; border-radius: 4px; width: auto; display: inline-block;">
+                                                        {{ $isMoldex ? 'MOLDEX3D' : 'SIEMENS' }}
+                                                    </span>
+                                                    <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #a78bfa;">{{ $daemonVal }}</span>
+                                                </div>
+                                            </td>
+                                            <td style="padding: 12px 24px;">
+                                                <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #fff;">{{ $result->sold_to ?? 'N/A' }}</span>
+                                            </td>
+                                            <td style="padding: 12px 24px; font-size: 11px; color: var(--muted); white-space: nowrap;">
+                                                <i class="fa-solid fa-calendar-days" style="color: var(--muted); opacity: 0.4; margin-right: 6px;"></i>
+                                                {{ $result->created_at->format('d/m/Y H:i') }}
+                                            </td>
+                                            <td style="padding: 12px 24px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                <span style="font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-transform: uppercase;">{{ $hostName }}</span>
+                                            </td>
+                                            <td style="padding: 12px 24px; text-align: right;">
+                                                <button class="dx-v2-ui-btn dx-v2-ui-btn-secondary" 
+                                                        @click="auditDetail = @js($result); $dispatch('open-audit-modal')"
+                                                        style="padding: 4px 10px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; cursor: pointer;"
+                                                        title="Inspeccionar archivo de licencia original">
+                                                    <i class="fa-solid fa-eye" style="font-size: 10px;"></i>
+                                                    Ver Auditoría
+                                                </button>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($client->auditResults as $result)
-                                            @php
-                                                $daemonVal = $result->results['vendor_daemon'] ?? ($result->results['daemon'] ?? 'Desconocido');
-                                                $isMoldex = str_contains(strtolower($daemonVal), 'moldex') || !isset($result->results['vendor_daemon']);
-                                                $hostName = $result->results['hostname'] ?? 'N/A';
-                                            @endphp
-                                            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.03); transition: background 0.15s;" @mouseenter="$el.style.background = 'rgba(255,255,255,0.015)'" @mouseleave="$el.style.background = 'transparent'">
-                                                <td style="padding: 12px 16px; vertical-align: middle; text-align: left;">
-                                                    <div style="display: flex; align-items: center; gap: 8px;">
-                                                        <span style="display: inline-block; font-size: 8px; font-weight: 900; padding: 2px 6px; border-radius: 4px; background: {{ $isMoldex ? 'rgba(0, 102, 204, 0.15)' : 'rgba(16, 185, 129, 0.15)' }}; color: {{ $isMoldex ? '#38bdf8' : '#10b981' }}; border: 1px solid {{ $isMoldex ? 'rgba(0, 102, 204, 0.3)' : 'rgba(16, 185, 129, 0.3)' }}; text-transform: uppercase; letter-spacing: 0.05em;">
-                                                            {{ $isMoldex ? 'MOLDEX3D' : 'SIEMENS' }}
-                                                        </span>
-                                                        <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #a78bfa;">{{ $daemonVal }}</span>
-                                                    </div>
-                                                </td>
-                                                <td style="padding: 12px 16px; vertical-align: middle; text-align: left;">
-                                                    <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #fff;">{{ $result->sold_to ?? 'N/A' }}</span>
-                                                </td>
-                                                <td style="padding: 12px 16px; vertical-align: middle; font-size: 11px; color: var(--muted); white-space: nowrap; text-align: left;">
-                                                    <i class="fa-solid fa-calendar-days" style="color: var(--muted); opacity: 0.4; margin-right: 6px;"></i>
-                                                    {{ $result->created_at->format('d/m/Y H:i') }}
-                                                </td>
-                                                <td style="padding: 12px 16px; vertical-align: middle; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-align: left;">
-                                                    <span style="font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-transform: uppercase;">{{ $hostName }}</span>
-                                                </td>
-                                                <td style="padding: 12px 16px; vertical-align: middle; text-align: right;">
-                                                    <button class="dx-v2-clients-btn-action" 
-                                                            @click="auditDetail = @js($result); $dispatch('open-audit-modal')"
-                                                            style="padding: 6px 12px; border-radius: 4px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap; cursor: pointer;"
-                                                            @mouseenter="$el.style.background = 'rgba(167, 139, 250, 0.1)'; $el.style.borderColor = 'rgba(167, 139, 250, 0.3)'"
-                                                            @mouseleave="$el.style.background = 'rgba(255,255,255,0.05)'; $el.style.borderColor = 'var(--border)'"
-                                                            title="Inspeccionar archivo de licencia original">
-                                                        <i class="fa-solid fa-eye" style="font-size: 10px;"></i>
-                                                        <span style="font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Ver Auditoría</span>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
