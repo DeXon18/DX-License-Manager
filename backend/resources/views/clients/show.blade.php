@@ -276,11 +276,12 @@
             @endforelse
 
             @if($client->auditResults->count() > 0)
-                <div class="dx-v2-clients-history-wrapper" style="margin-top: 40px;">
+                <div class="dx-v2-clients-history-wrapper" style="margin-top: -12px !important;">
                     <!-- Acordeón Header Toggle -->
                     <div class="dx-v2-clients-history-toggle" 
                          @click="historyOpen = !historyOpen"
-                         :style="historyOpen ? 'border-bottom-left-radius: 0; border-bottom-right-radius: 0; margin-top: 0;' : 'margin-top: 0;'">
+                         style="margin-top: 0;"
+                         :style="historyOpen ? 'border-bottom-left-radius: 0; border-bottom-right-radius: 0;' : ''">
                         <div class="dx-v2-clients-history-toggle-left">
                             <i class="fa-solid fa-clock-rotate-left dx-v2-clients-history-toggle-icon" style="font-size: 16px;"></i>
                             <div style="text-align: left;">
