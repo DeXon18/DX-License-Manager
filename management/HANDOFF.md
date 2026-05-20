@@ -47,6 +47,10 @@
    * Diseñar un endpoint en Laravel `/api/bot/query` para recibir solicitudes y responder datos estructurados del portal.
    * Conectar con n8n usando triggers de Telegram/Teams para capturar comandos como `/cliente [Nombre]`, `/expiraciones` o `/soldto [ID]` y devolver resúmenes premium con la información al chat del técnico.
 
+2. **Chatbot de Asistencia IA Web Integrado**:
+   * Implementar un widget de chat premium flotante en la interfaz web del portal (esquina inferior derecha) animado con Alpine.js (`chatOpen: false`).
+   * Conectar el chat de la web al mismo motor inteligente para que los técnicos puedan realizar consultas de clientes, composite, MACs o licencias en lenguaje natural directamente desde la aplicación sin depender de apps externas.
+
 ---
 
 ## Contexto técnico importante
