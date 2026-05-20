@@ -11,11 +11,6 @@
 </div>
 
 <div style="max-width: 650px;">
-    @if(session('success'))
-        <div class="badge badge-success mb-4 w-100 p-3" style="justify-content: flex-start;">
-            <i class="fas fa-check-circle me-2"></i> {{ session('success') }}
-        </div>
-    @endif
 
     <div class="card dx-v2-profile-card" style="--accent: var(--accent);">
         <div class="card-header">

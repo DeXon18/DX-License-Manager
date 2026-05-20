@@ -1,0 +1,31 @@
+/**
+ * @module    dx-v2-grid
+ * @fase      19.18
+ * @desc      Define la rejilla principal de dos columnas (panel principal + panel lateral) utilizada en Gestión de Importación y todas las vistas de herramientas y recursos.
+ */
+
+.grid-main {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: var(--dx-v2-space-6, 24px);
+  margin-top: var(--dx-v2-space-6, 24px);
+  align-items: start;
+}
+
+.main-panel {
+  min-width: 0; /* Previene el desbordamiento de elementos hijos flex/grid */
+}
+
+.sidebar-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dx-v2-space-5, 20px);
+}
+
+/* Responsividad para pantallas medianas/pequeñas */
+@media (max-width: 1024px) {
+  .grid-main {
+    grid-template-columns: 1fr;
+    gap: var(--dx-v2-space-6, 24px);
+  }
+}

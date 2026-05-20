@@ -18,22 +18,7 @@
                 <span class="card-title">Carga de Datos (CSV/TXT)</span>
                 <span class="badge badge-ai">PROCESO AUTOMÁTICO</span>
             </div>
-            
             <div class="dx-v2-import-metadata-container">
-                @if(session('success'))
-                    <div class="dx-v2-import-success-alert">
-                        <div class="dx-v2-import-success-alert-left">
-                            <svg class="dx-v2-import-success-alert-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                            {{ session('success') }}
-                        </div>
-                        @if(session('log_id'))
-                            <a href="{{ route('admin.import.logs.show', session('log_id')) }}" class="dx-v2-import-success-alert-btn">
-                                VER DETALLES
-                            </a>
-                        @endif
-                    </div>
-                @endif
-
                 <form action="{{ route('admin.import.store') }}" method="POST" enctype="multipart/form-data" id="import-form">
                     @csrf
                     <div class="dropzone dx-v2-import-dropzone" id="dropzone" onclick="document.getElementById('file-input').click()">

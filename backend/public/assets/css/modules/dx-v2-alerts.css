@@ -242,6 +242,8 @@
   font-size: 12px !important;
   padding: 12px !important;
   background: var(--dx-v2-bg) !important;
+  color: var(--dx-v2-primary) !important;
+  border: 1px solid var(--dx-v2-border) !important;
   border-radius: 8px !important;
 }
 
