@@ -8,10 +8,12 @@
 - **Diseño Bento Modular CSS**: Creado el archivo de estilos modulares [modules/dx-v2-normalization.css] e importado en [dx-v2-main.css], implementando el diseño Bento premium para tarjetas de duplicados de alta fidelidad.
 - **Caché Inteligente de Base de Datos**: Cacheado del resultado de escaneo léxico en base de datos (`dx_scanned_duplicates`) por 24 horas usando la fachada `Cache` de Laravel, acelerando las cargas de página de la bandeja de normalización.
 - **Botón y Acción "Escanear Ahora"**: Endpoint `/admin/normalization/force-scan` y acción `forceScan()` para invalidar la caché del escáner y recalcular las similitudes bajo demanda con refresco automático de vista y feedback por Toasts.
-- **Modal de Escaneo Teatral Animado**: Ventana modal interactiva fija y centrada con desenfoque de cristal translúcido y progreso animado paso a paso en JavaScript, emulando la rigurosa secuencia de análisis de clientes para una experiencia de usuario sobresaliente.
+- **Modal de Escaneo Productivo Real**: Ventana modal interactiva fija y centrada con desenfoque de cristal translúcido que realiza un envío de formulario inmediato al backend, mostrando el progreso de forma real y eliminando cualquier simulación artificial de retardo.
 
 ### Changed
-- **Optimización de Similitud Léxica**: Mejorado el método `detectDuplicates()` para ignorar prefijos de descriptores de negocios corporativos comunes (como "talleres", "industrias", "grupo", etc.) al realizar la comparación rápida de caracteres, previniendo falsos positivos del motor como "Talleres Criado" y "Talleres Doval".
+- **Resolución de Bugs en Similitud Léxica**:
+  - **Bug #1 Resuelto**: Patrón `$genericPattern` expandido con más de 50 descriptores industriales y sectoriales españoles ("mecanicos", "metalicas", "quimicas", "logistica", etc.) eliminando de raíz falsos positivos de sector (ej: "Codesal vs Peña").
+  - **Bug #2 Resuelto**: Cálculo del porcentaje de similitud con `similar_text` sobre las cadenas `$ultra` depuradas en lugar de `$clean`, garantizando un filtrado léxico estricto y preciso.
 - **Limpieza Automática de Caché**: Las acciones de `unify()` y `dismiss()` limpian de forma transparente la caché de duplicados garantizando datos siempre sincronizados tras resolver advertencias.
 
 ---
