@@ -51,6 +51,14 @@
    * Implementar un widget de chat premium flotante en la interfaz web del portal (esquina inferior derecha) animado con Alpine.js (`chatOpen: false`).
    * Conectar el chat de la web al mismo motor inteligente para que los técnicos puedan realizar consultas de clientes, composite, MACs o licencias en lenguaje natural directamente desde la aplicación sin depender de apps externas.
 
+3. **Reporte Físico de Auditoría de Licencias para Clientes (PDF / Enviar)**:
+   * Diseñar una plantilla de reporte técnico premium de auditoría en PDF usando Dompdf que resuma el ecosistema del cliente (Hostname, Composite, daemons, semáforo de vencimiento a color, y recomendaciones).
+   * Crear un botón interactivo **`[📄 Reporte Auditoría]`** en la ficha del cliente para descargarlo al instante o enviarlo por email directo al cliente.
+   * Integrar comando `/auditoria [Cliente]` en el Bot de Telegram para recuperar el reporte en el móvil.
+
+4. **Comandos de Voz Interactivos por Telegram (IA)**:
+   * Configurar un transcriptor rápido de notas de voz en n8n conectado a Gemini para poder realizar consultas al bot por Telegram hablando en vez de teclear (ej: *"¿Cuándo expira la licencia de Andaltec?"*).
+
 ---
 
 ## Contexto técnico importante
