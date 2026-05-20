@@ -43,8 +43,9 @@
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-1. **Definición de Nuevos Objetivos**:
-   * En espera de la definición de nuevas prioridades o roadmap operativo por parte de Oskar.
+1. **Canal Interactivo de Consulta (Bot de Telegram / Teams)**:
+   * Diseñar un endpoint en Laravel `/api/bot/query` para recibir solicitudes y responder datos estructurados del portal.
+   * Conectar con n8n usando triggers de Telegram/Teams para capturar comandos como `/cliente [Nombre]`, `/expiraciones` o `/soldto [ID]` y devolver resúmenes premium con la información al chat del técnico.
 
 ---
 
