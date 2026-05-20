@@ -1145,6 +1145,34 @@ Todas las tareas de extracción y consolidación se commitearon y etiquetaron en
 
 ---
 
+# FASE 23 — NORMALIZACIÓN DE IDENTIDADES CON IA ✅ COMPLETADA
+
+Integración de un flujo cognitivo híbrido en la Bandeja de Normalización para resolver duplicados de identidades (como `Uro Vehiculos Especiales Sa (Urovesa)` vs `Urovesa`) utilizando pre-filtrado tokenizado local y validación cognitiva con LLMs comerciales de alta precisión en cadena de fallback (Gemini, DeepSeek, OpenRouter).
+
+## 🔷 SUBFASES DE LA FASE 23
+
+- [x] **Subfase 23.1** — **Diseño del Engine y Tokenización Local** ✅ COMPLETADA
+    - [x] Creación de `ClientAiNormalizationService.php` para pre-seleccionar candidatos del mismo cliente mediante queries SQL `LIKE` tokenizadas y limpias de ruidos corporativos (S.A., S.L., etc.).
+    - [x] Implementación de un parseador JSON tolerante a fallos y sanitizador de markdown.
+
+- [x] **Subfase 23.2** — **Cadena de Fallback Multi-API** ✅ COMPLETADA
+    - [x] Integración de llamadas HTTP secuenciales robustas sobre Gemini, DeepSeek y OpenRouter.
+    - [x] Configuración de timeouts cortos (10-12s) para no retrasar la bandeja y logs de errores controlados.
+
+- [x] **Subfase 23.3** — **Desvío Inteligente en el Normalizador** ✅ COMPLETADA
+    - [x] Modificación de `ClientNormalizationService.php` para desviar coincidencias del Levenshtein de baja similitud (< 85%) hacia la evaluación IA.
+    - [x] Retorno de estado `suspicion` si la confianza es alta (>= 80%) con la propuesta del cliente sugerido e ID de base de datos.
+
+- [x] **Subfase 23.4** — **Rediseño Visual de la UI (Bandeja Normalización)** ✅ COMPLETADA
+    - [x] Enriquecimiento visual de `admin/normalization/index.blade.php` con badges dinámicos NOC Pro AI y explicaciones técnicas de la IA.
+    - [x] Estricto cumplimiento de `DESIGN.md`: cero CSS inline ni incrostado en Blade, integrando estilos modulares al final de `modules/dx-v2-import.css`.
+
+- [x] **Subfase 23.5** — **Hardening y Tests Unitarios** ✅ COMPLETADA
+    - [x] Creación de tests unitarios y mock en `ClientNormalizationTest.php` probando resiliencia en SQLite en memoria.
+    - [x] Generación de tags de checkpoint (`v1.23.0-rc1`, `v1.23.0-rc2`) y commit final de cierre.
+
+---
+
 ## Stack Tecnológico
 
 | Capa           | Tecnología                     |
