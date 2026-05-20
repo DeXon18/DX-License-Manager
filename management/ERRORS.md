@@ -8,7 +8,7 @@
 
 | 🔴 Críticos (P1) | 🟠 Importantes (P2) | 🟢 Menores (P3) | ✅ Resueltos |
 | :---: | :---: | :---: | :---: |
-| 0 | 1 | 3 | 16 |
+| 0 | 1 | 2 | 17 |
 
 ---
 
@@ -29,7 +29,6 @@
 |---:|---|---|:---:|:---:|:---:|
 | [#020] Mensajes de confirmación sin feedback visual destacado (toasts) | UI/UX | 🟠 P2 | 🔍 En análisis | 2026-05-19 |
 | [#017] Barra de búsqueda sin estilos en Gestión de Usuarios | UI/UX | 🟢 P3 | 🔍 En análisis | 2026-05-19 |
-| [#018] Bloque derecho rompe layout en Gestión de Importación | UI/UX | 🟢 P3 | 🔍 En análisis | 2026-05-19 |
 | [#019] Campo "Copia Interna (Emails)" ilegible por fondo oscuro | UI/UX | 🟢 P3 | 🔍 En análisis | 2026-05-19 |
 
 ---
@@ -38,6 +37,7 @@
 
 | ID | Incidencia | Módulo | Prioridad | Detectado | Resuelto |
 |---:|---|---|:---:|:---:|:---:|
+| [#018] Bloque derecho rompe layout en Gestión de Importación | UI/UX | 🟢 P3 | 2026-05-19 | 2026-05-20 |
 | [#016] Filtro "Sin estado" no filtra en Planificador de Renovaciones | Renovaciones | 🟠 P2 | 2026-05-19 | 2026-05-20 |
 | [#008] Unificación de estilos CSS en archivo central | UI/UX | 🟢 P3 | 2026-05-14 | 2026-05-19 |
 | [#015] Fallo en vista previa COD (nesting HTML roto) | Herramientas | 🔴 P1 | 2026-05-16 | 2026-05-16 |
@@ -109,22 +109,6 @@
 
 ---
 
-#### #018 — Bloque derecho rompe layout en Gestión de Importación
-
-| Campo | Valor |
-|---|---|
-| **Módulo** | UI/UX |
-| **Prioridad** | 🟢 P3 |
-| **Estado** | 🔍 En análisis |
-| **Detectado** | 2026-05-19 |
-
-- **Síntoma**: En la vista de Gestión de Importación, el bloque derecho (panel lateral) se renderiza por debajo del bloque central en lugar de aparecer a su derecha en un layout de columnas.
-- **Causa probable**: Fallo en la rejilla CSS (grid/flex) del layout de dos columnas, posiblemente por clases faltantes o conflicto tras la refactorización CSS del [#008](#008--unificación-de-estilos-css-en-archivo-central).
-- **Impacto**: Layout roto que obliga al usuario a hacer scroll innecesario y dificulta la usabilidad.
-- **Acción**: Revisar la estructura Blade y las clases de layout de la vista de Importación para restaurar la disposición en columnas.
-
----
-
 #### #019 — Campo "Copia Interna (Emails)" ilegible por fondo oscuro
 
 | Campo | Valor |
@@ -142,6 +126,22 @@
 ---
 
 ### Resueltos
+
+---
+
+#### #018 — Bloque derecho rompe layout en Gestión de Importación
+
+| Campo | Valor |
+|---|---|
+| **Módulo** | UI/UX |
+| **Prioridad** | 🟢 P3 |
+| **Estado** | ✅ Resuelto |
+| **Detectado** | 2026-05-19 |
+| **Resuelto** | 2026-05-20 |
+
+- **Síntoma**: El bloque derecho (panel lateral) se renderiza por debajo del bloque central en la vista de Gestión de Importación, y en todas las vistas de herramientas y recursos (`nx-suite`, `star-ccm`, `heeds`, `moldex3d`, `resources`).
+- **Causa**: La clase de rejilla `.grid-main` y las clases `.main-panel` y `.sidebar-panel` fueron completamente omitidas/borradas durante la modularización del CSS legacy.
+- **Resolución**: Se creó el archivo de rejilla estructural `layout/dx-v2-grid.css` con la definición moderna de CSS Grid de dos columnas (`1fr 320px`), gaps alineados al sistema de diseño e integración de responsive stacking a `1024px` para pantallas móviles y tablets. Se importó correctamente en `dx-v2-main.css`.
 
 ---
 
