@@ -691,22 +691,22 @@
                             </div>
 
                             <!-- Bento Grid de Metadatos del Servidor -->
-                            <div class="grid grid-cols-4 gap-4" style="margin-bottom: 28px;">
-                                <div style="background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px;">
-                                    <span style="display: block; font-size: 9px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">ID Cuenta / Sold-To</span>
-                                    <span style="font-family: var(--font-mono); font-size: 14px; font-weight: 800; color: #fff;" x-text="auditDetail?.sold_to || 'N/A'"></span>
+                            <div class="dx-v2-clients-audit-header-grid" style="margin-bottom: 28px;">
+                                <div class="dx-v2-clients-audit-info-card">
+                                    <span class="label">ID Cuenta / Sold-To</span>
+                                    <span class="value" x-text="auditDetail?.sold_to || 'N/A'"></span>
                                 </div>
-                                <div style="background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px;">
-                                    <span style="display: block; font-size: 9px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Ecosistema / Daemon</span>
+                                <div class="dx-v2-clients-audit-info-card">
+                                    <span class="label">Ecosistema / Daemon</span>
                                     <div style="display: flex; align-items: center; gap: 8px;">
-                                        <span style="font-family: var(--font-mono); font-size: 14px; font-weight: 800; color: #a78bfa;" x-text="auditDetail?.results?.vendor_daemon || auditDetail?.results?.daemon || 'ugslmd'"></span>
-                                        <span class="badge badge-accent sm" style="font-size: 7px; padding: 1px 4px; font-weight: 800;" x-text="(auditDetail?.results?.vendor_daemon || auditDetail?.results?.daemon || '').toLowerCase().includes('moldex') ? 'MOLDEX3D' : 'SIEMENS'">SIEMENS</span>
+                                        <span class="value daemon" x-text="auditDetail?.results?.vendor_daemon || auditDetail?.results?.daemon || 'ugslmd'"></span>
+                                        <span class="dx-v2-clients-vendor-badge {{ $isMoldex ? 'moldex' : 'siemens' }}" :class="(auditDetail?.results?.vendor_daemon || auditDetail?.results?.daemon || '').toLowerCase().includes('moldex') ? 'moldex' : 'siemens'" style="font-size: 7px; padding: 2px 6px; font-weight: 800; width: auto; display: inline-block;" x-text="(auditDetail?.results?.vendor_daemon || auditDetail?.results?.daemon || '').toLowerCase().includes('moldex') ? 'MOLDEX3D' : 'SIEMENS'">SIEMENS</span>
                                     </div>
                                 </div>
-                                <div class="col-span-2" style="background: rgba(255,255,255,0.015); border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px;">
-                                    <span style="display: block; font-size: 9px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Servidor / Hostname</span>
+                                <div class="dx-v2-clients-audit-info-card span-2">
+                                    <span class="label">Servidor / Hostname</span>
                                     <div style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;">
-                                        <span style="font-family: var(--font-mono); font-size: 14px; font-weight: 800; color: #fff; text-transform: uppercase;" x-text="auditDetail?.results?.hostname || 'PENDIENTE'"></span>
+                                        <span class="value hostname" x-text="auditDetail?.results?.hostname || 'PENDIENTE'"></span>
                                         <span style="font-family: var(--font-mono); font-size: 10px; color: var(--muted);" x-text="auditDetail?.results?.composite ? '(COMPOSITE: ' + auditDetail.results.composite + ')' : (auditDetail?.results?.mac ? '(MACHINE ID: ' + auditDetail.results.mac + ')' : '')"></span>
                                     </div>
                                 </div>
