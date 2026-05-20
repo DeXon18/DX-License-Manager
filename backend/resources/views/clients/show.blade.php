@@ -653,20 +653,20 @@
             x-cloak
         >
             <div class="dx-v2-ui-modal-content wide" @click.outside="open = false" style="background: #0d0f19; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.65);">
-                <div class="dx-v2-ui-modal-header no-border no-padding-bottom" style="padding: 24px 32px 12px 32px;">
-                    <div class="flex items-center gap-4">
-                        <div class="dx-v2-clients-audit-icon-box" style="background: rgba(167, 139, 250, 0.1); border: 1px solid rgba(167, 139, 250, 0.2); width: 44px; height: 44px; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #a78bfa;">
+                <div class="dx-v2-ui-modal-header no-border no-padding-bottom" style="padding: 24px 32px 12px 32px; display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100% !important; box-sizing: border-box !important;">
+                    <div style="display: flex !important; align-items: center !important; gap: 16px !important;">
+                        <div class="dx-v2-clients-audit-icon-box" style="background: rgba(167, 139, 250, 0.1); border: 1px solid rgba(167, 139, 250, 0.2); width: 44px; height: 44px; border-radius: 8px; display: flex !important; align-items: center !important; justify-content: center !important; color: #a78bfa; flex-shrink: 0 !important;">
                             <i class="fa-solid fa-file-invoice" style="font-size: 18px;"></i>
                         </div>
-                        <div>
-                            <h3 class="dx-v2-ui-modal-title text-white" style="margin-bottom: 4px !important;" 
+                        <div style="text-align: left !important;">
+                            <h3 class="dx-v2-ui-modal-title text-white" style="margin: 0 0 4px 0 !important; line-height: 1.2 !important;" 
                                 x-text="(auditDetail?.results?.vendor_daemon || auditDetail?.results?.daemon || '').toLowerCase().includes('moldex') ? 'Detalle de Auditoría Moldex3D' : 'Detalle de Auditoría Siemens'">
                                 Detalle de Auditoría
                             </h3>
-                            <span class="text-xs muted uppercase tracking-widest font-bold" style="font-size: 9px;">Inspección del Respaldo Físico Original</span>
+                            <span style="font-size: 9px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; display: block;">Inspección del Respaldo Físico Original</span>
                         </div>
                     </div>
-                    <button type="button" @click="open = false" class="dx-v2-ui-modal-close" style="font-size: 24px; color: var(--muted); hover: color: #fff;">&times;</button>
+                    <button type="button" @click="open = false" class="dx-v2-ui-modal-close" style="font-size: 28px !important; color: var(--muted) !important; background: transparent !important; border: none !important; cursor: pointer !important; padding: 0 !important; margin: 0 !important; width: 32px !important; height: 32px !important; display: flex !important; align-items: center !important; justify-content: center !important; align-self: center !important; line-height: 1 !important; transition: color 0.2s;" @mouseenter="$el.style.color = '#fff'" @mouseleave="$el.style.color = 'var(--muted)'">&times;</button>
                 </div>
 
                 <div class="dx-v2-ui-modal-body p-8" style="padding: 12px 32px 32px 32px;">
