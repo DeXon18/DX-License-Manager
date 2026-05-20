@@ -117,6 +117,7 @@ Estas skills están aparcadas hasta Fase 3. No cargar antes.
 | `/switch` | `.agent/workflows/switch-task.md`   | Al cambiar de tarea/rama |
 | `/merge`  | `.agent/workflows/merge-feature.md` | Al terminar una feature  |
 | `/end`    | `.agent/workflows/end-session.md`   | Al cerrar la sesión      |
+| —         | `.agent/workflows/git-strategy.md`  | Estrategia Git y commits |
 
 ---
 
