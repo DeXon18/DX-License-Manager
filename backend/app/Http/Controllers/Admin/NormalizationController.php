@@ -52,7 +52,9 @@ class NormalizationController extends Controller
             return $b['date'] <=> $a['date'];
         });
 
-        return view('admin.normalization.index', compact('findings'));
+        $allClients = Client::orderBy('name', 'asc')->get(['id', 'name']);
+
+        return view('admin.normalization.index', compact('findings', 'allClients'));
     }
 
     /**

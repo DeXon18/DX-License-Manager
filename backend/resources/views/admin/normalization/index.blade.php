@@ -142,7 +142,23 @@
                                     </form>
                                 </div>
                             @else
-                                <span class="muted" style="font-size: 10px; font-weight: 700; text-transform: uppercase; opacity: 0.5;">Automatizado</span>
+                                <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+                                    <span class="muted" style="font-size: 9px; font-weight: 700; text-transform: uppercase; opacity: 0.5;">Automatizado (Nuevo)</span>
+                                    
+                                    <form action="{{ route('admin.normalization.unify') }}" method="POST" style="display: flex; align-items: center; gap: 6px;">
+                                        @csrf
+                                        <input type="hidden" name="detected_name" value="{{ $finding['detected_name'] }}">
+                                        <input type="text" 
+                                               name="suggested_name" 
+                                               list="all-clients-list" 
+                                               placeholder="Unificar con..." 
+                                               required 
+                                               style="padding: 4px 8px; font-size: 11px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; color: var(--primary); width: 160px; outline: none;">
+                                        <button type="submit" class="btn-primary" style="padding: 4px 8px; font-size: 10px; font-weight: 800; border-radius: 4px; background: linear-gradient(135deg, #007aff 0%, #0056b3 100%); border: 1px solid rgba(0,122,255,0.4); text-transform: uppercase;">
+                                            FORZAR
+                                        </button>
+                                    </form>
+                                </div>
                             @endif
                         </td>
                     </tr>
@@ -174,4 +190,10 @@
         </ul>
     </div>
 </div>
+
+<datalist id="all-clients-list">
+    @foreach($allClients as $client)
+        <option value="{{ $client->name }}">
+    @endforeach
+</datalist>
 @endsection
