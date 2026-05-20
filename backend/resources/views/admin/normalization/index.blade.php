@@ -3,6 +3,7 @@
 @section('title', 'Bandeja de Normalización — DX License Manager')
 
 @section('content')
+
 @if($errors->any())
     <div class="badge badge-danger" style="width: 100%; padding: 12px; margin-bottom: 24px; text-transform: none; border-radius: 4px; flex-direction: column; align-items: flex-start; gap: 8px;">
         <div style="display: flex; align-items: center;">
@@ -60,10 +61,28 @@
             </thead>
             <tbody>
                 @foreach($findings as $finding)
+                    @php
+                        $isAi = false;
+                        $provider = 'IA';
+                        $confidence = null;
+                        $reason = null;
+
+                        if (preg_match('/se parece un ([\d.]+)%\s*\((\w+)\) a/i', $finding['full_message'], $matches)) {
+                            $isAi = true;
+                            $confidence = $matches[1];
+                            $provider = $matches[2];
+                        }
+                        
+                        if (preg_match('/Razón:\s*(.*?)\s*Se ha creado/i', $finding['full_message'], $matches)) {
+                            $reason = $matches[1];
+                        }
+                    @endphp
                     <tr>
                         <td>
                             <div style="font-weight: 700; color: var(--primary);">{{ $finding['detected_name'] }}</div>
-                            @if($finding['type'] === 'suspicion')
+                            @if($isAi)
+                                <span class="dx-v2-normalization-badge-ai">🤖 SUGERENCIA {{ $provider }} ({{ $confidence }}%)</span>
+                            @elseif($finding['type'] === 'suspicion')
                                 <span class="badge badge-warn" style="font-size: 8px; padding: 2px 4px; margin-top: 4px;">SOSPECHA DUPLICADO</span>
                             @else
                                 <span class="badge badge-success" style="font-size: 8px; padding: 2px 4px; margin-top: 4px;">NUEVA IDENTIDAD</span>
@@ -75,9 +94,16 @@
                                     <i class="fa-solid fa-arrow-right-long opacity-30"></i>
                                     <span style="font-weight: 700; color: var(--accent); font-size: 14px;">{{ $finding['suggested_name'] }}</span>
                                 </div>
-                                <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">
-                                    El motor sugiere unificar bajo este cliente existente.
-                                </div>
+                                @if($isAi)
+                                    <div class="dx-v2-normalization-reason-box">
+                                        <span class="dx-v2-normalization-provider-pill">{{ $provider }}</span>
+                                        <span><strong>Explicación:</strong> {{ $reason ?? 'Identificado semánticamente.' }}</span>
+                                    </div>
+                                @else
+                                    <div style="font-size: 11px; color: var(--muted); margin-top: 4px;">
+                                        El motor sugiere unificar bajo este cliente existente.
+                                    </div>
+                                @endif
                             @else
                                 <div style="font-size: 11px; color: var(--muted);">
                                     Cliente desconocido hasta ahora. Se ha creado una ficha nueva.

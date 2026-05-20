@@ -356,3 +356,47 @@
   opacity: 0.8;
   line-height: 1.4;
 }
+
+/* Normalización Inteligente (AI Engine) */
+.dx-v2-normalization-badge-ai {
+  background: linear-gradient(135deg, rgba(145, 113, 255, 0.15) 0%, rgba(0, 122, 255, 0.15) 100%);
+  color: #a78bfa !important;
+  border: 1px solid rgba(145, 113, 255, 0.3) !important;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  box-shadow: 0 0 10px rgba(145, 113, 255, 0.1);
+  text-shadow: 0 0 5px rgba(145, 113, 255, 0.2);
+  font-size: 8px;
+  padding: 2px 6px;
+  margin-top: 4px;
+  display: inline-block;
+  border-radius: var(--dx-v2-rounded-sm);
+  font-family: var(--dx-v2-font-sans);
+  text-transform: uppercase;
+}
+
+.dx-v2-normalization-reason-box {
+  background: rgba(145, 113, 255, 0.03);
+  border: 1px dashed rgba(145, 113, 255, 0.15);
+  border-radius: var(--dx-v2-rounded-sm);
+  padding: 5px 8px;
+  font-size: 10px;
+  color: #c084fc;
+  margin-top: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  line-height: 1.4;
+}
+
+.dx-v2-normalization-provider-pill {
+  background: rgba(145, 113, 255, 0.2);
+  color: #e9d5ff;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 8px;
+  font-weight: 700;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
