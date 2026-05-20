@@ -81,6 +81,7 @@ Route::middleware(['auth.jwt'])->group(function () {
         Route::post('/normalization/unify', [\App\Http\Controllers\Admin\NormalizationController::class, 'unify'])->name('normalization.unify');
         Route::post('/normalization/dismiss', [\App\Http\Controllers\Admin\NormalizationController::class, 'dismiss'])->name('normalization.dismiss');
         Route::post('/normalization/analyze-ai', [\App\Http\Controllers\Admin\NormalizationController::class, 'analyzeAi'])->name('normalization.analyze-ai');
+        Route::post('/normalization/force-scan', [\App\Http\Controllers\Admin\NormalizationController::class, 'forceScan'])->name('normalization.force-scan');
 
         Route::get('/system', [SystemDashboardController::class, 'index'])->name('system.index');
         Route::get('/system/docker', [SystemDashboardController::class, 'docker'])->name('system.docker');

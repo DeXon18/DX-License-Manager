@@ -227,11 +227,18 @@
     <!-- Pestaña 2: Escáner de Duplicados (IA) -->
     <div x-show="tab === 'scanner'" x-cloak x-transition>
         <div class="card">
-            <div class="card-header" style="border-bottom: 1px solid var(--border); padding-bottom: 16px;">
+            <div class="card-header" style="border-bottom: 1px solid var(--border); padding-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
                 <div>
                     <span class="card-title">Análisis de Similitud en Base de Datos</span>
                     <p style="font-size: 11px; color: var(--muted); margin-top: 4px;">Comparación léxica de todos los clientes activos. Ordenados de forma descendente por coincidencia porcentual.</p>
                 </div>
+                <form action="{{ route('admin.normalization.force-scan') }}" method="POST" style="margin: 0;">
+                    @csrf
+                    <button type="submit" class="btn-primary" style="padding: 8px 16px; font-size: 11px; display: flex; align-items: center; gap: 8px; border: none; cursor: pointer; border-radius: 4px;">
+                        <i class="fa-solid fa-arrows-rotate"></i>
+                        Escanear Ahora
+                    </button>
+                </form>
             </div>
             
             @if(count($scannedDuplicates) > 0)
