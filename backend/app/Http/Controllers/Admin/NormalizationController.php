@@ -250,70 +250,86 @@ class NormalizationController extends Controller
             ->pluck('detected_name')
             ->toArray();
 
-        $genericPattern = '/\b(talleres|industrias|tecnologias|sistemas|construcciones|grupo|cooperativa|asociacion|fundacion|servicios|ingenieria|consulting|desarrollos|promociones|distribuciones|comercial|manufacturas)\b/i';
+        // FIX BUG #1 — Patrón expandido con todos los prefijos sectoriales relevantes
+        $genericPattern = '/\b('
+            // Metalmecánica
+            . 'talleres|taller|mecanizados|mecanizaciones|mecanicos|mecanica'
+            . '|metalicas|metalurgica|metalurgicas|metalmecanica'
+            . '|fundicion|fundiciones|forjas|estampaciones|laminados|matriceria|troqueleria'
+            // Industria general
+            . '|industrias|industria|industrial|industriales'
+            . '|fabricacion|produccion|instalaciones|manufacturas'
+            // Tecnología / ingeniería
+            . '|tecnologias|tecnologia|sistemas|ingenieria|engineering'
+            . '|electronica|electronico|automatizacion'
+            . '|soluciones|solucions|consulting|consultores|desarrollos'
+            // Química / plásticos
+            . '|quimicas|quimica|plasticos|plastico|polimeros'
+            // Logística / transporte
+            . '|logistica|transporte|transportes|distribuciones'
+            // Educación / investigación
+            . '|universidad|escuela|tecnica|superior|politecnica|politecnico|laboral'
+            . '|instituto|centro|facultad|fundacion|asociacion|cooperativa'
+            // Genéricos de empresa
+            . '|comercial|promociones|construcciones|construccion'
+            . '|servicios|services|grupo|group|internacional|nacional'
+            . ')\b/i';
+
+        // Sufijos societarios a eliminar
+        $suffixPattern = '/\b(sl|sa|slu|sll|s\.l|s\.a|s\.l\.u|scoop|sau'
+            . '|limitada|limited|ltd|gmbh|co|corp|inc'
+            . '|solutions|espanola|espana|spain'
+            . ')\b/i';
 
         $count = count($clients);
         for ($i = 0; $i < $count; $i++) {
             $c1 = $clients[$i];
-
             if (in_array($c1->name, $ignoredNames)) continue;
 
-            $n1 = strtolower(trim(preg_replace('/\s+/', ' ', preg_replace('/[^a-z0-9 ]/i', ' ', $c1->name))));
+            $n1     = strtolower(trim(preg_replace('/\s+/', ' ', preg_replace('/[^a-z0-9 ]/i', ' ', $c1->name))));
+            $clean1 = trim(preg_replace('/\s+/', ' ', preg_replace($suffixPattern, '', $n1)));
+            $ultra1 = trim(preg_replace('/\s+/', ' ', preg_replace($genericPattern, '', $clean1)));
 
-            // Strip common suffixes for cleaner comparison
-            $clean1 = trim(preg_replace('/\b(sl|sa|slu|s\s*l|s\s*a|s\s*l\s*u|limitada|limited|ltd|gmbh|co|corp|inc|group|grupo|solutions|servicios|services|espanola|espana|spain)\b/i', '', $n1));
-            if (empty($clean1)) continue;
-
-            $ultraClean1 = trim(preg_replace('/\s+/', ' ', preg_replace($genericPattern, '', $clean1)));
-            if (empty($ultraClean1)) {
-                $ultraClean1 = $clean1;
-            }
+            // Guard: si ultraClean queda vacío tras depurar, usar clean como fallback
+            if (strlen($ultra1) < 3) $ultra1 = $clean1;
+            if (strlen($ultra1) < 3) continue;
 
             for ($j = $i + 1; $j < $count; $j++) {
                 $c2 = $clients[$j];
-
                 if (in_array($c2->name, $ignoredNames)) continue;
 
-                $n2 = strtolower(trim(preg_replace('/\s+/', ' ', preg_replace('/[^a-z0-9 ]/i', ' ', $c2->name))));
-                $clean2 = trim(preg_replace('/\b(sl|sa|slu|s\s*l|s\s*a|s\s*l\s*u|limitada|limited|ltd|gmbh|co|corp|inc|group|grupo|solutions|servicios|services|espanola|espana|spain)\b/i', '', $n2));
-                if (empty($clean2)) continue;
+                $n2     = strtolower(trim(preg_replace('/\s+/', ' ', preg_replace('/[^a-z0-9 ]/i', ' ', $c2->name))));
+                $clean2 = trim(preg_replace('/\s+/', ' ', preg_replace($suffixPattern, '', $n2)));
+                $ultra2 = trim(preg_replace('/\s+/', ' ', preg_replace($genericPattern, '', $clean2)));
 
-                $ultraClean2 = trim(preg_replace('/\s+/', ' ', preg_replace($genericPattern, '', $clean2)));
-                if (empty($ultraClean2)) {
-                    $ultraClean2 = $clean2;
+                // Guard para $ultra2
+                if (strlen($ultra2) < 3) $ultra2 = $clean2;
+                if (strlen($ultra2) < 3) continue;
+
+                // Filtro rápido: primeros 4 chars del nombre distintivo deben coincidir
+                $compareLen = min(4, min(strlen($ultra1), strlen($ultra2)));
+                if (substr($ultra1, 0, $compareLen) !== substr($ultra2, 0, $compareLen)) {
+                    continue;
                 }
 
-                // Fast check: check if first 5 characters match exactly, ignoring generic terms
-                $prefixMatch = false;
-                $minLen = min(strlen($ultraClean1), strlen($ultraClean2));
-                if ($minLen >= 3) {
-                    $compareLen = min($minLen, 5);
-                    if (substr($ultraClean1, 0, $compareLen) === substr($ultraClean2, 0, $compareLen)) {
-                        $prefixMatch = true;
-                    }
-                }
+                // FIX BUG #2 — similar_text sobre las cadenas depuradas (ultraClean)
+                similar_text($ultra1, $ultra2, $percent);
 
-                if ($prefixMatch) {
-                    similar_text($clean1, $clean2, $percent);
+                if ($percent >= 70) {
+                    $older = $c1->id < $c2->id ? $c1 : $c2;
+                    $newer = $c1->id < $c2->id ? $c2 : $c1;
 
-                    if ($percent >= 70) {
-                        // Suggest keeping the older one (smaller ID)
-                        $older = $c1->id < $c2->id ? $c1 : $c2;
-                        $newer = $c1->id < $c2->id ? $c2 : $c1;
-
-                        $suspicions[] = [
-                            'duplicate' => $newer,
-                            'target' => $older,
-                            'similarity' => round($percent),
-                            'reason' => "Similitud del " . round($percent) . "% ('$clean1' vs '$clean2')"
-                        ];
-                    }
+                    $suspicions[] = [
+                        'duplicate'  => $newer,
+                        'target'     => $older,
+                        'similarity' => round($percent),
+                        'reason'     => "Similitud del " . round($percent) . "% ('$ultra1' vs '$ultra2')",
+                    ];
                 }
             }
         }
-        usort($suspicions, function($a, $b) {
-            return $b['similarity'] <=> $a['similarity'];
-        });
+
+        usort($suspicions, fn($a, $b) => $b['similarity'] <=> $a['similarity']);
         return $suspicions;
     }
 }
