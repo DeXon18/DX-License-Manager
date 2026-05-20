@@ -44,6 +44,51 @@
     </div>
 </div>
 
+<div class="card" style="margin-top: 24px; border-left: 4px solid var(--accent);">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border);">
+        <span class="card-title" style="display: flex; align-items: center; gap: 8px;">
+            <i class="fa-solid fa-compress" style="color: var(--accent); font-size: 14px;"></i>
+            Unificación Manual Libre
+        </span>
+        <span class="badge badge-neutral" style="font-size: 9px; font-weight: 700; text-transform: uppercase; padding: 2px 6px;">Herramienta Avanzada</span>
+    </div>
+    <div style="padding: 20px;">
+        <p style="font-size: 12px; color: var(--muted); margin-bottom: 16px; line-height: 1.5;">
+            Permite fusionar manualmente dos clientes existentes de la base de datos que no hayan sido vinculados por el motor automático (ej: <em>Tag Automotive</em>).
+        </p>
+        <form action="{{ route('admin.normalization.unify') }}" method="POST" style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end;">
+            @csrf
+            <div style="flex: 1; min-width: 240px;">
+                <label style="display: block; font-size: 10px; font-weight: 700; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">Cliente Duplicado (Origen / Se eliminará)</label>
+                <input type="text" 
+                       name="detected_name" 
+                       list="all-clients-list" 
+                       placeholder="Ej: Tag Automotive(Nifco...)" 
+                       required 
+                       style="width: 100%; padding: 8px 12px; font-size: 12px; background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 6px; color: var(--primary); outline: none; transition: border-color 0.2s;">
+            </div>
+            <div style="display: flex; align-items: center; justify-content: center; height: 38px; padding-bottom: 8px;">
+                <i class="fa-solid fa-right-long opacity-40" style="font-size: 14px; color: var(--muted);"></i>
+            </div>
+            <div style="flex: 1; min-width: 240px;">
+                <label style="display: block; font-size: 10px; font-weight: 700; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em;">Cliente Real (Destino / Se conservará)</label>
+                <input type="text" 
+                       name="suggested_name" 
+                       list="all-clients-list" 
+                       placeholder="Ej: Tag Automotive S.l." 
+                       required 
+                       style="width: 100%; padding: 8px 12px; font-size: 12px; background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 6px; color: var(--primary); outline: none; transition: border-color 0.2s;">
+            </div>
+            <div>
+                <button type="submit" class="btn-primary" style="padding: 9px 20px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; border-radius: 6px; height: 38px; display: flex; align-items: center; gap: 8px; cursor: pointer; border: none;">
+                    <i class="fa-solid fa-compress"></i>
+                    Unificar Atómicamente
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div class="card" style="margin-top: 24px;">
     <div class="card-header">
         <span class="card-title">Análisis de Identidades</span>
@@ -193,7 +238,7 @@
 
 <datalist id="all-clients-list">
     @foreach($allClients as $client)
-        <option value="{{ $client->name }}">
+        <option value="{{ $client->name }} (ID: {{ $client->id }})">
     @endforeach
 </datalist>
 @endsection

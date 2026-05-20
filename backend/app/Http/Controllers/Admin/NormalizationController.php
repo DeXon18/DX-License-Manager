@@ -108,20 +108,43 @@ class NormalizationController extends Controller
             'suggested_name' => 'required|string',
         ]);
 
-        $detectedName = $request->detected_name;
-        $suggestedName = $request->suggested_name;
+        $detectedInput = trim($request->detected_name);
+        $suggestedInput = trim($request->suggested_name);
+
+        // 1. Find the "real" client
+        $realClient = null;
+        if (preg_match('/\(ID:\s*(\d+)\)/i', $suggestedInput, $matches)) {
+            $realClient = Client::find($matches[1]);
+        }
+        if (!$realClient) {
+            $suggestedNameClean = preg_replace('/\s*\(ID:\s*\d+\)/i', '', $suggestedInput);
+            $realClient = Client::where('name', trim($suggestedNameClean))->first();
+        }
+
+        if (!$realClient) {
+            return redirect()->back()->with('error', "El cliente sugerido '$suggestedInput' no existe.");
+        }
+
+        // 2. Find the "duplicate" client (if created)
+        $duplicateClient = null;
+        if (preg_match('/\(ID:\s*(\d+)\)/i', $detectedInput, $matches)) {
+            $duplicateClient = Client::find($matches[1]);
+        }
+        if (!$duplicateClient) {
+            $detectedNameClean = preg_replace('/\s*\(ID:\s*\d+\)/i', '', $detectedInput);
+            $duplicateClient = Client::where('name', trim($detectedNameClean))->first();
+        }
+
+        // Clean names for alias creation
+        $detectedName = $duplicateClient ? $duplicateClient->name : trim(preg_replace('/\s*\(ID:\s*\d+\)/i', '', $detectedInput));
+        $suggestedName = $realClient->name;
+
+        if (($duplicateClient && $realClient->id === $duplicateClient->id) || $detectedName === $suggestedName) {
+            return redirect()->back()->with('error', "No se puede unificar un cliente consigo mismo.");
+        }
 
         DB::beginTransaction();
         try {
-            // 1. Find the "real" client
-            $realClient = Client::where('name', $suggestedName)->first();
-            if (!$realClient) {
-                throw new \Exception("El cliente sugerido '$suggestedName' no existe.");
-            }
-
-            // 2. Find the "duplicate" client (if created)
-            $duplicateClient = Client::where('name', $detectedName)->first();
-
             // 3. Create Alias
             ClientAlias::updateOrCreate(
                 ['name' => $detectedName],
