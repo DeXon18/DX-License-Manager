@@ -32,6 +32,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Fase 23.8 — Semáforo de Expiración en Ficha de Clientes Premium ✅
+- **Completada:** 2026-05-20
+- **Rama:** `feature/expiration-highlight-ui`
+- **Resumen:** Implementación completa del semáforo visual estándar de tráfico (rojo/amarillo/verde) para la expiración de productos de licencias en la ficha del cliente. Incorporada lógica de Carbon en show.blade.php para calcular los días restantes y asignar iconos de FontAwesome dinámicos por estado. Diseñados badges técnicos con paddings, bordes finos y fondos translúcidos en dx-v2-clients.css, e implementada la carga con cache-busting dinámico mediante push para garantizar la recarga inmediata en producción.
+- **PR:** #026 — merged a dev
+
 ### Fase 23.7 — Rediseño de Historial y Detalle de Auditorías Premium (NOC Pro) ✅
 - **Completada:** 2026-05-20
 - **Rama:** `feature/audit-details-ui`
