@@ -435,9 +435,9 @@
     <!-- Modal de Carga de Escaneo Completo -->
     <div x-show="scanning" 
          x-cloak 
-         style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(10, 11, 18, 0.95) !important; backdrop-filter: blur(12px) !important; display: flex !important; align-items: center !important; justify-content: center !important; z-index: 999999 !important; animation: dxFadeIn 0.3s ease-out;"
+         style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(10, 11, 18, 0.95) !important; backdrop-filter: blur(12px) !important; z-index: 999999 !important; animation: dxFadeIn 0.3s ease-out;"
          class="dx-scan-modal-overlay">
-        <div style="background: #111320; border: 1px solid rgba(145, 113, 255, 0.2); border-radius: 12px; padding: 40px; text-align: center; width: 100%; max-width: 450px; box-shadow: 0 20px 50px rgba(0,0,0,0.85);"
+        <div style="position: absolute !important; top: 50% !important; left: 50% !important; transform: translate(-50%, -50%) !important; background: #111320; border: 1px solid rgba(145, 113, 255, 0.2); border-radius: 12px; padding: 40px; text-align: center; width: 90%; max-width: 450px; box-shadow: 0 20px 50px rgba(0,0,0,0.85);"
              class="dx-scan-modal-content">
             <div style="position: relative; width: 80px; height: 80px; margin: 0 auto 24px auto;">
                 <!-- Glowing loader -->
