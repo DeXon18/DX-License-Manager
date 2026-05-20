@@ -47,9 +47,34 @@
 
 <div x-data="{ 
     tab: localStorage.getItem('activeNormTab') || 'warnings',
+    scanning: false,
+    scanningText: 'Iniciando escáner de base de datos...',
     setTab(name) {
         this.tab = name;
         localStorage.setItem('activeNormTab', name);
+    },
+    triggerScan() {
+        this.scanning = true;
+        let steps = [
+            'Conectando con el motor de base de datos...',
+            'Filtrando sufijos y palabras corporativas (SL/SA)...',
+            'Analizando concordancias de primeros caracteres...',
+            'Calculando porcentajes de coincidencia léxica...',
+            'Comprobando reglas de nombres ignorados...',
+            'Reconstruyendo caché de normalización...',
+            'Finalizando escaneo de identidades...'
+        ];
+        let idx = 0;
+        let interval = setInterval(() => {
+            if (idx < steps.length - 1) {
+                idx++;
+                this.scanningText = steps[idx];
+            } else {
+                clearInterval(interval);
+                // Submit form programmatically
+                document.getElementById('dx-force-scan-form').submit();
+            }
+        }, 400); // 400ms per step = ~2.8 seconds total theatrical experience!
     }
 }">
     <!-- Selector de Pestañas Premium -->
@@ -232,9 +257,9 @@
                     <span class="card-title">Análisis de Similitud en Base de Datos</span>
                     <p style="font-size: 11px; color: var(--muted); margin-top: 4px;">Comparación léxica de todos los clientes activos. Ordenados de forma descendente por coincidencia porcentual.</p>
                 </div>
-                <form action="{{ route('admin.normalization.force-scan') }}" method="POST" style="margin: 0;">
+                <form id="dx-force-scan-form" action="{{ route('admin.normalization.force-scan') }}" method="POST" style="margin: 0;">
                     @csrf
-                    <button type="submit" class="btn-primary" style="padding: 8px 16px; font-size: 11px; display: flex; align-items: center; gap: 8px; border: none; cursor: pointer; border-radius: 4px;">
+                    <button type="button" @click="triggerScan()" class="btn-primary" style="padding: 8px 16px; font-size: 11px; display: flex; align-items: center; gap: 8px; border: none; cursor: pointer; border-radius: 4px;">
                         <i class="fa-solid fa-arrows-rotate"></i>
                         Escanear Ahora
                     </button>
@@ -422,6 +447,27 @@
                         </button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Carga de Escaneo Completo -->
+    <div x-show="scanning" 
+         x-cloak 
+         style="position: fixed !important; top: 0 !important; left: 0 !important; width: 100vw !important; height: 100vh !important; background: rgba(10, 11, 18, 0.95) !important; backdrop-filter: blur(12px) !important; display: flex !important; align-items: center !important; justify-content: center !important; z-index: 999999 !important; animation: dxFadeIn 0.3s ease-out;"
+         class="dx-scan-modal-overlay">
+        <div style="background: #111320; border: 1px solid rgba(145, 113, 255, 0.2); border-radius: 12px; padding: 40px; text-align: center; width: 100%; max-width: 450px; box-shadow: 0 20px 50px rgba(0,0,0,0.85);"
+             class="dx-scan-modal-content">
+            <div style="position: relative; width: 80px; height: 80px; margin: 0 auto 24px auto;">
+                <!-- Glowing loader -->
+                <div style="position: absolute; inset: 0; border: 4px solid rgba(145, 113, 255, 0.1); border-top-color: #a78bfa; border-radius: 50%; animation: dxSpin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;"></div>
+                <i class="fa-solid fa-brain" style="font-size: 32px; color: #a78bfa; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);"></i>
+            </div>
+            <h3 style="font-size: 16px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Escaneo de Base de Datos</h3>
+            <p style="font-size: 12px; color: var(--dx-v2-text-muted); opacity: 0.8; margin-bottom: 24px;">Analizando la base de clientes en tiempo real...</p>
+            
+            <div style="background: rgba(0,0,0,0.3); border: 1px solid var(--dx-v2-border-base); border-radius: 8px; padding: 14px 16px; min-height: 48px; display: flex; align-items: center; justify-content: center;">
+                <span x-text="scanningText" style="font-family: var(--font-mono); font-size: 11px; color: #a78bfa; text-align: center; line-height: 1.4;"></span>
             </div>
         </div>
     </div>
