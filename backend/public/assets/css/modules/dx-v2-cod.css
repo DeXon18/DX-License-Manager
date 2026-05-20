@@ -105,6 +105,31 @@
   position: relative;
 }
 
+.dx-v2-cod-input-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.dx-v2-cod-input-wrap i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--dx-v2-muted);
+  font-size: 13px;
+  z-index: 10;
+  pointer-events: none;
+  transition: color 0.2s ease-in-out;
+}
+
+.dx-v2-cod-input-wrap .dx-v2-form-input {
+  padding-left: 38px !important;
+}
+
+.dx-v2-cod-input-wrap:focus-within i {
+  color: var(--dx-v2-accent-base, #388bfd) !important;
+}
+
 .dx-v2-cod-columns-2 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

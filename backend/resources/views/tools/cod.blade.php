@@ -35,33 +35,33 @@
                 <div class="dx-v2-cod-fields-container">
                     <!-- Fila 1: Sold To (Ancho completo) -->
                     <div class="dx-v2-cod-field-row">
-                        <div class="input-wrap">
+                        <div class="dx-v2-cod-input-wrap">
                             <i class="fa-solid fa-shield-halved"></i>
-                            <input type="text" x-model="formData.Data_SoldTo" class="gui-input" placeholder="Número de licencia (Sold To)" required maxlength="10">
+                            <input type="text" x-model="formData.Data_SoldTo" class="dx-v2-form-input" placeholder="Número de licencia (Sold To)" required maxlength="10">
                         </div>
                     </div>
 
                     <!-- Fila 2: Solicitante y Empresa (50/50) -->
                     <div class="dx-v2-cod-columns-2 mt-4">
                         <div class="dx-v2-cod-field-row">
-                            <div class="input-wrap">
+                            <div class="dx-v2-cod-input-wrap">
                                 <i class="fa-solid fa-user"></i>
                                 <input type="text" 
                                        x-model="formData.Data_Solicitante" 
                                        @input="formData.Data_Solicitante = formData.Data_Solicitante.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '')"
-                                       class="gui-input" 
+                                       class="dx-v2-form-input" 
                                        placeholder="Solicitante" 
                                        required>
                             </div>
                         </div>
                         <div class="dx-v2-cod-field-row" x-data="{ showSuggestions: false }" @click.away="showSuggestions = false">
-                            <div class="input-wrap">
+                            <div class="dx-v2-cod-input-wrap">
                                 <i class="fa-solid fa-globe"></i>
                                 <input type="text" 
                                        x-model="formData.Data_Empresa" 
                                        @input="showSuggestions = true; formData.client_id = null"
                                        @focus="showSuggestions = true"
-                                       class="gui-input" 
+                                       class="dx-v2-form-input" 
                                        placeholder="Empresa" 
                                        required 
                                        autocomplete="off">
@@ -143,24 +143,24 @@
                     </div>
                     <div class="dx-v2-cod-fields-stack">
                         <div class="dx-v2-cod-field-row">
-                            <div class="input-wrap">
+                            <div class="dx-v2-cod-input-wrap">
                                 <i class="fa-solid fa-terminal"></i>
                                 <input type="text" 
                                        x-model="formData.Hostname_Old" 
                                        @input="formData.Hostname_Old = formData.Hostname_Old.replace(/[^a-zA-Z0-9-]/g, '')"
-                                       class="gui-input" 
+                                       class="dx-v2-form-input" 
                                        placeholder="Hostname" 
                                        :required="formData.docType !== 'Change_NodeLocked'" 
                                        :disabled="formData.docType === 'Change_NodeLocked'">
                             </div>
                         </div>
                         <div class="dx-v2-cod-field-row">
-                            <div class="input-wrap">
+                            <div class="dx-v2-cod-input-wrap">
                                 <i class="fa-solid fa-code"></i>
                                 <input type="text" 
                                        x-model="formData.Composite_Old" 
                                        @input="formData.Composite_Old = formData.Composite_Old.replace(/[^a-zA-Z0-9]/g, '')"
-                                       class="gui-input" 
+                                       class="dx-v2-form-input" 
                                        placeholder="Composite" 
                                        :required="formData.docType !== 'Change_NodeLocked'" 
                                        :disabled="formData.docType === 'Change_NodeLocked'" 
@@ -168,12 +168,12 @@
                             </div>
                         </div>
                         <div class="dx-v2-cod-field-row">
-                            <div class="input-wrap">
+                            <div class="dx-v2-cod-input-wrap">
                                 <i class="fa-solid fa-id-card"></i>
                                 <input type="text" 
                                        x-model="formData.MAC_Old" 
                                        @input="formData.MAC_Old = formData.MAC_Old.replace(/[^a-zA-Z0-9]/g, '')"
-                                       class="gui-input" 
+                                       class="dx-v2-form-input" 
                                        placeholder="HostID (MAC sin guiones)" 
                                        :required="formData.docType !== 'Change_Composite'" 
                                        :disabled="formData.docType === 'Change_Composite'" 
@@ -184,12 +184,12 @@
                         <!-- MACs Adicionales -->
                         <template x-for="(mac, index) in formData.MAC_Old_Extra" :key="index">
                             <div class="dx-v2-cod-field-row">
-                                <div class="input-wrap">
+                                <div class="dx-v2-cod-input-wrap">
                                     <i class="fa-solid fa-id-card opacity-50"></i>
                                     <input type="text" 
                                            x-model="formData.MAC_Old_Extra[index]" 
                                            @input="formData.MAC_Old_Extra[index] = formData.MAC_Old_Extra[index].replace(/[^a-zA-Z0-9]/g, '')"
-                                           class="gui-input" 
+                                           class="dx-v2-form-input" 
                                            placeholder="MAC Extra (sin guiones)" 
                                            maxlength="12">
                                     <button type="button" class="dx-v2-cod-remove-btn" @click="removeMacPair(index)">&times;</button>
@@ -217,24 +217,24 @@
                     </div>
                     <div class="dx-v2-cod-fields-stack">
                         <div class="dx-v2-cod-field-row">
-                            <div class="input-wrap">
+                            <div class="dx-v2-cod-input-wrap">
                                 <i class="fa-solid fa-terminal"></i>
                                 <input type="text" 
                                        x-model="formData.Hostname_New" 
                                        @input="formData.Hostname_New = formData.Hostname_New.replace(/[^a-zA-Z0-9-]/g, '')"
-                                       class="gui-input" 
+                                       class="dx-v2-form-input" 
                                        placeholder="Hostname" 
                                        :required="formData.docType !== 'Change_NodeLocked'" 
                                        :disabled="formData.docType === 'Change_NodeLocked'">
                             </div>
                         </div>
                         <div class="dx-v2-cod-field-row">
-                            <div class="input-wrap">
+                            <div class="dx-v2-cod-input-wrap">
                                 <i class="fa-solid fa-code"></i>
                                 <input type="text" 
                                        x-model="formData.Composite_New" 
                                        @input="formData.Composite_New = formData.Composite_New.replace(/[^a-zA-Z0-9]/g, '')"
-                                       class="gui-input" 
+                                       class="dx-v2-form-input" 
                                        placeholder="Composite" 
                                        :required="formData.docType !== 'Change_NodeLocked'" 
                                        :disabled="formData.docType === 'Change_NodeLocked'" 
@@ -242,12 +242,12 @@
                             </div>
                         </div>
                         <div class="dx-v2-cod-field-row">
-                            <div class="input-wrap">
+                            <div class="dx-v2-cod-input-wrap">
                                 <i class="fa-solid fa-id-card"></i>
                                 <input type="text" 
                                        x-model="formData.MAC_New" 
                                        @input="formData.MAC_New = formData.MAC_New.replace(/[^a-zA-Z0-9]/g, '')"
-                                       class="gui-input" 
+                                       class="dx-v2-form-input" 
                                        placeholder="HostID (MAC sin guiones)" 
                                        :required="formData.docType !== 'Change_Composite'" 
                                        :disabled="formData.docType === 'Change_Composite'" 
@@ -258,12 +258,12 @@
                         <!-- MACs Adicionales -->
                         <template x-for="(mac, index) in formData.MAC_New_Extra" :key="index">
                             <div class="dx-v2-cod-field-row">
-                                <div class="input-wrap">
+                                <div class="dx-v2-cod-input-wrap">
                                     <i class="fa-solid fa-id-card opacity-50"></i>
                                     <input type="text" 
                                            x-model="formData.MAC_New_Extra[index]" 
                                            @input="formData.MAC_New_Extra[index] = formData.MAC_New_Extra[index].replace(/[^a-zA-Z0-9]/g, '')"
-                                           class="gui-input" 
+                                           class="dx-v2-form-input" 
                                            placeholder="Nueva MAC Extra (sin guiones)" 
                                            maxlength="12">
                                 </div>

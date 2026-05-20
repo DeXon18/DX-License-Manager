@@ -8,7 +8,7 @@
 
 | 🔴 Críticos (P1) | 🟠 Importantes (P2) | 🟢 Menores (P3) | ✅ Resueltos |
 | :---: | :---: | :---: | :---: |
-| 0 | 1 | 2 | 17 |
+| 0 | 1 | 1 | 19 |
 
 ---
 
@@ -29,7 +29,6 @@
 |---:|---|---|:---:|:---:|:---:|
 | [#020] Mensajes de confirmación sin feedback visual destacado (toasts) | UI/UX | 🟠 P2 | 🔍 En análisis | 2026-05-19 |
 | [#017] Barra de búsqueda sin estilos en Gestión de Usuarios | UI/UX | 🟢 P3 | 🔍 En análisis | 2026-05-19 |
-| [#019] Campo "Copia Interna (Emails)" ilegible por fondo oscuro | UI/UX | 🟢 P3 | 🔍 En análisis | 2026-05-19 |
 
 ---
 
@@ -37,6 +36,8 @@
 
 | ID | Incidencia | Módulo | Prioridad | Detectado | Resuelto |
 |---:|---|---|:---:|:---:|:---:|
+| [#021] Inputs sin estilos en Generador COD (herramientas/cod) | UI/UX | 🟠 P2 | 2026-05-20 | 2026-05-20 |
+| [#019] Campo "Copia Interna (Emails)" ilegible por fondo oscuro | UI/UX | 🟢 P3 | 2026-05-19 | 2026-05-20 |
 | [#018] Bloque derecho rompe layout en Gestión de Importación | UI/UX | 🟢 P3 | 2026-05-19 | 2026-05-20 |
 | [#016] Filtro "Sin estado" no filtra en Planificador de Renovaciones | Renovaciones | 🟠 P2 | 2026-05-19 | 2026-05-20 |
 | [#008] Unificación de estilos CSS en archivo central | UI/UX | 🟢 P3 | 2026-05-14 | 2026-05-19 |
@@ -109,23 +110,44 @@
 
 ---
 
+
+### Resueltos
+
+---
+
+#### #021 — Inputs sin estilos en Generador COD (herramientas/cod)
+
+| Campo | Valor |
+|---|---|
+| **Módulo** | UI/UX |
+| **Prioridad** | 🟠 P2 |
+| **Estado** | ✅ Resuelto |
+| **Detectado** | 2026-05-20 |
+| **Resuelto** | 2026-05-20 |
+
+- **Síntoma**: En la vista de Generador COD, los campos del formulario de solicitud (Sold-To, Solicitante, Empresa, Hostname, Composite, MAC) aparecen sin estilos visuales (cajas nativas del navegador blancas con texto negro ilegible en modo oscuro).
+- **Causa**: Estos inputs siguen utilizando la clase obsoleta `.gui-input`, la cual fue eliminada del disco en el commit [#008] al purgar el CSS legacy `dx-styles.css`.
+- **Resolución**:
+  - Migradas todas las 11 referencias de `.gui-input` a la clase semántica unificada `.dx-v2-form-input` en `backend/resources/views/tools/cod.blade.php`.
+  - Purgadas las cachés en el servidor beta y verificado el contraste dinámico correcto en modo oscuro.
+
+---
+
 #### #019 — Campo "Copia Interna (Emails)" ilegible por fondo oscuro
 
 | Campo | Valor |
 |---|---|
 | **Módulo** | UI/UX |
 | **Prioridad** | 🟢 P3 |
-| **Estado** | 🔍 En análisis |
+| **Estado** | ✅ Resuelto |
 | **Detectado** | 2026-05-19 |
+| **Resuelto** | 2026-05-20 |
 
 - **Síntoma**: En Alertas y Notificaciones, el campo "Copia Interna (Emails)" presenta un fondo oscuro que hace que los emails introducidos sean invisibles o muy difíciles de leer.
-- **Causa probable**: Conflicto de variables CSS entre el tema del formulario y los estilos heredados del campo — posible `background-color` o `color` hardcodeado que no respeta las variables del sistema de diseño.
-- **Impacto**: El usuario no puede verificar los emails introducidos, con riesgo de errores en la configuración de notificaciones.
-- **Acción**: Corregir el color de texto y/o fondo usando las variables CSS del sistema (`dx-v2-main.css`) para garantizar el contraste adecuado.
-
----
-
-### Resueltos
+- **Causa**: Conflicto de variables CSS entre el tema del formulario y los estilos heredados del campo — posible `background-color` o `color` heredado que no respeta las variables del sistema de diseño.
+- **Resolución**:
+  - Migrado el componente textarea de la clase obsoleta `.gui-input` a la clase unificada `.dx-v2-form-textarea` en `index.blade.php`.
+  - Corregida la definición de la clase `.dx-v2-alerts-copy-textarea` en `dx-v2-alerts.css` vinculando el color de texto directamente a la variable global `--dx-v2-primary` para soportar contraste dinámico impecable.
 
 ---
 

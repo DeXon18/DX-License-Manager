@@ -13,7 +13,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
                 <input type="text" name="search" value="{{ request('search') }}" 
-                    placeholder="Buscar clientes por nombre o identificador..." class="gui-input dx-v2-clients-search-input" 
+                    placeholder="Buscar clientes por nombre o identificador..." class="dx-v2-form-input dx-v2-clients-search-input" 
                     x-on:input.debounce.500ms="$el.closest('form').submit()">
             </form>
 
