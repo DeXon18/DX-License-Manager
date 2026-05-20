@@ -11,6 +11,7 @@ use App\Models\AiAuditResult;
 use App\Models\NormalizationDecision;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class NormalizationController extends Controller
 {
@@ -53,7 +54,9 @@ class NormalizationController extends Controller
         });
 
         $allClients = Client::orderBy('name', 'asc')->get(['id', 'name']);
-        $scannedDuplicates = $this->detectDuplicates();
+        $scannedDuplicates = Cache::remember('dx_scanned_duplicates', 86400, function() {
+            return $this->detectDuplicates();
+        });
  
         return view('admin.normalization.index', compact('findings', 'allClients', 'scannedDuplicates'));
     }
@@ -177,6 +180,7 @@ class NormalizationController extends Controller
             }
 
             DB::commit();
+            Cache::forget('dx_scanned_duplicates');
             return redirect()->back()->with('success', "Cliente '$detectedName' unificado con éxito bajo '$suggestedName'.");
 
         } catch (\Exception $e) {
@@ -199,6 +203,8 @@ class NormalizationController extends Controller
             ['decision' => 'ignore']
         );
 
+        Cache::forget('dx_scanned_duplicates');
+
         return redirect()->back()->with('info', "El cliente '{$request->detected_name}' ha sido descartado y no volverá a aparecer en la bandeja.");
     }
 
@@ -216,6 +222,20 @@ class NormalizationController extends Controller
         $result = $service->evaluateDuplicatePair($request->client1, $request->client2);
 
         return response()->json($result);
+    }
+
+    /**
+     * Clear client duplicates cache and force a complete database scan.
+     */
+    public function forceScan()
+    {
+        Cache::forget('dx_scanned_duplicates');
+
+        // Warm cache by immediately running the detection
+        $this->detectDuplicates();
+
+        return redirect()->route('admin.normalization.index')
+            ->with('success', 'El escáner de duplicados de la base de datos se ha completado y guardado en caché con éxito.');
     }
 
     /**
