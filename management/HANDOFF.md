@@ -1,13 +1,13 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-20 11:25  
+> Última actualización: 2026-05-20 14:15  
 > Sesión en: Proxmox Beta Environment  
-> Rama activa: feature/ai-normalization-force
+> Rama activa: feature/manual-normalization
 
 ---
 
 ## Estado General
 
-**Fase actual:** Fase 23 — Normalización de Identidades con IA  
+**Fase actual:** Fase 23.6 — Normalización Tabs, Filtro de Descriptores Léxicos, Caché & Modal Teatral  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,47 +15,46 @@
 
 ## Qué se hizo en esta sesión
 
-1. **Flujo de Normalización Cognitivo (IA)**:
-   * Diseñado e implementado `ClientAiNormalizationService.php` con pre-filtrado local por tokens (`LIKE`) y llamadas de validación cognitiva en cadena de fallback: **Gemini -> DeepSeek -> OpenRouter**.
-   * Integrado el fallback en `ClientNormalizationService.php` como Nivel 3.5 para desviar sospechas de similitud media/baja (< 85%) con confianza >= 80% al estado `suspicion`.
-   * Enriquecida la interfaz de la Bandeja de Normalización con badges de IA NOC Pro, indicación del proveedor utilizado y razones explicativas del modelo.
+1. **Restauración de UI con Alpine.js**:
+   * Re-implementación completa de la estructura de 3 pestañas dinámicas ("Sospechas de Importación", "Escáner de Duplicados (IA)" y "Unificación Manual Libre") en [resources/views/admin/normalization/index.blade.php] con persistencia de estado en `localStorage`.
 
-2. **Unificación Forzada Manual (Incidencia Urovesa)**:
-   * Desarrollada una característica de unificación forzada para entradas de tipo `NUEVA IDENTIDAD`.
-   * Implementado un buscador autocomplete predictivo nativo `<datalist>` HTML5 que renderiza dinámicamente todos los clientes del sistema en orden alfabético.
-   * Añadido el botón de acción **FORZAR** que unifica atómicamente contratos, licencias, demonios, contactos y auditorías, asocia el alias y elimina el duplicado de la base de datos de manera limpia.
+2. **Refinamiento de Similitud Léxica sin Ruidos**:
+   * Optimización del método `detectDuplicates()` en `NormalizationController.php` para ignorar prefijos genéricos corporativos comunes (como "talleres", "grupo", "industrias", etc.) al realizar la pre-clasificación por caracteres.
+   * Evita emparejamientos incorrectos entre diferentes compañías con el mismo descriptor de negocio inicial (ej: *"Talleres Criado Sl"* vs *"Talleres Doval Sl"*).
 
-3. **Pruebas y Hardening**:
-   * Creados tests robustos y mocks para simular llamadas IA exitosas, de baja confianza y fallos en `ClientNormalizationTest.php`.
-   * Limpieza total de estilos locales Blade y migración al archivo modular unificado `modules/dx-v2-import.css` conforme a `DESIGN.md`.
-   * Git Checkpoints A, B, C, D, E completados con tags `v1.23.0-rc1`, `v1.23.0-rc2` y release final `v1.23.0`.
+3. **Caché Inteligente de Base de Datos**:
+   * Introducido almacenamiento en caché de los resultados léxicos (`dx_scanned_duplicates`) por 24 horas usando la fachada `Cache` de Laravel para evitar llamadas lentas y repetitivas O(N^2) sobre 500+ clientes en cada carga de página.
+   * La caché se invalida y recrea de manera transparente y automática tras ejecutar acciones de unificación (`unify`) y descarte (`dismiss`).
+
+4. **Botón de Fuerza de Escaneo & Modal Teatral**:
+   * Registrada la ruta `/admin/normalization/force-scan` para permitir al administrador regenerar manualmente la caché léxica.
+   * Diseñado un modal de carga teatral con progreso simulado paso a paso (duración ~2.8 segundos) y centrado absoluto e infalible (`z-index: 999999 !important` y desenfoque `backdrop-filter`) para proveer una experiencia interactiva espectacular al re-escanear.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-1. **Aprobar Pull Request y Merge**:
-   * Revisar los cambios de la rama `feature/ai-normalization-force` en GitHub.
-   * Fusionala sobre la rama `dev` tras la revisión visual interactiva de Oskar.
+1. **Revisión y Aprobación de Rama**:
+   * Oskar revisará visualmente en Beta la correcta visualización de las pestañas restauradas, el comportamiento del botón "Escanear Ahora" y el modal animado de carga.
+   * Fusionar la rama `feature/manual-normalization` sobre `dev` tras recibir su confirmación explícita.
 
 ### Tareas siguientes
-1. Realizar pruebas con importaciones reales de archivos `.lic` y ficheros CSV semanales.
-2. Continuar con el backlog de mantenimiento visual y técnico del panel administrativo.
+1. Realizar pruebas de importación y verificar que las sospechas de duplicados no colisionen con los nuevos descriptores.
 
 ---
 
 ## Contexto técnico importante
 
-* Las API keys para Gemini, DeepSeek y OpenRouter están configuradas de forma segura en `backend/.env`.
-* Las llamadas a la IA tienen un timeout de 10-12 segundos y están envueltas en `try-catch` con degradación natural a `new client` en caso de fallo, garantizando alta tolerancia a caídas de red o fallos de tokens.
-* Los estilos de normalización de la IA se encuentran al final del archivo `modules/dx-v2-import.css` respetando el estándar modular de diseño del proyecto.
+* El modal de carga se ha posicionado fuera de los contenedores relativos del layout y utiliza propiedades CSS absolutas para asegurar un centrado global sin fricciones.
+* La animación de entrada del modal se apoya en `@keyframes dxFadeIn` inyectado limpiamente en [modules/dx-v2-normalization.css].
+* La caché de duplicados se actualiza automáticamente al unificar o descartar registros para que la interfaz siempre refleje el estado real de la base de datos.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-* Ninguno. Todos los tests de normalización en SQLite corren y pasan al 100%.
+* Ninguno. Todo el sistema de normalización e interactividad se encuentra estable y verificado.
 
 ---
 
@@ -73,12 +72,12 @@
 ## Comandos útiles para la próxima sesión
 
 ```bash
-# Cambiar a la rama de la funcionalidad
-git checkout feature/ai-normalization-force
+# Cambiar a la rama activa
+git checkout feature/manual-normalization
 
-# Entrar al contenedor PHP de Beta
-docker exec -it dx-php-beta sh
+# Ver logs de PHP en Beta
+docker compose --project-directory . -f infra/docker-compose.beta.yml logs --tail=50 dx-php-beta
 
-# Ejecutar tests forzando SQLite en memoria
-docker exec -e DB_CONNECTION=sqlite -e DB_DATABASE=:memory: dx-php-beta php artisan test --filter=ClientNormalizationTest
+# Limpiar caché de vistas para forzar compilación Blade limpia
+docker exec dx-php-beta php artisan view:clear
 ```
