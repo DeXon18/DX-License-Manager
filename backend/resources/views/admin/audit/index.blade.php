@@ -10,17 +10,6 @@
     </div>
 </div>
 
-@if(session('success'))
-    <div class="dx-v2-audit-banner-success">
-        <i class="fa-solid fa-circle-check"></i> {{ session('success') }}
-    </div>
-@endif
-
-@if(session('error'))
-    <div class="dx-v2-audit-banner-error">
-        <i class="fa-solid fa-circle-exclamation"></i> {{ session('error') }}
-    </div>
-@endif
 
 {{-- Tabs de Navegación --}}
 <div class="dx-v2-audit-tabs-container">

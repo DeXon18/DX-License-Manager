@@ -32,6 +32,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Resolución de Incidencia #020 y #017 — Sistema de Toasts & Estilos en Búsqueda de Usuarios ✅
+- **Completada:** 2026-05-20
+- **Rama:** `fix/clientes-search-style`
+- **Resumen:** Implementación de un motor reactivo de notificaciones premium (Toasts) con Alpine.js y glassmorphism adaptativo claro/oscuro en `dx-v2-toast.css`. Reemplazadas todas las alertas inline obsoletas en las 7 vistas principales del portal. Corregida la barra de búsqueda y selector de roles sin estilos en Gestión de Usuarios.
+- **PR:** Pendiente — merged a dev
+
 ### Fase 19 y 21 — Modularización CSS & Limpieza UI (DX-V2) ✅
 - **Iniciada:** 2026-05-16
 - **Completada:** 2026-05-19

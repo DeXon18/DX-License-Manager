@@ -147,6 +147,7 @@
     </div>
 
     @include('layouts.partials.footer')
+    @include('layouts.partials.toasts')
 
     @stack('scripts')
     <script>
