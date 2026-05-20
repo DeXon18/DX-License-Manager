@@ -27,6 +27,7 @@
 
 | ID | Incidencia | Módulo | Prioridad | Estado | Detectado |
 |---:|---|---|:---:|:---:|:---:|
+| [#022] | Clientes duplicados ya persistidos no aparecen en la Bandeja de Normalización | Normalización | 🟠 P2 | ⏳ Pendiente | 2026-05-20 |
 
 ---
 
@@ -71,6 +72,22 @@
 ## 🔍 Detalle de incidencias
 
 ### Pendientes
+
+#### #022 — Clientes duplicados ya persistidos no aparecen en la Bandeja de Normalización
+
+| Campo | Valor |
+|---|---|
+| **Módulo** | Normalización / UI |
+| **Prioridad** | 🟠 P2 |
+| **Estado** | ⏳ Pendiente |
+| **Detectado** | 2026-05-20 |
+
+- **Síntoma**: Clientes que ya han sido guardados como registros separados e independientes en la base de datos (por ejemplo, `Tag Automotive S.l.` y `Tag Automotive(Nifco Products Espana,S.l.u.)`) no generan advertencias ni sospechas de duplicidad en las importaciones subsiguientes porque el motor encuentra coincidencias exactas para ambos. Por tanto, no aparecen en la Bandeja de Normalización y no hay forma de unificarlos desde allí.
+- **Causa**: La Bandeja de Normalización solo se alimenta de advertencias o sospechas generadas durante el flujo de importación (cuando entra un nombre desconocido). Si los dos duplicados ya existen en la BD, la importación mapea cada uno con su correspondiente cliente ID sin emitir alertas.
+- **Resolución propuesta**:
+  - Habilitar una sección o pestaña de **"Unificación Manual Libre"** directamente en la cabecera de la Bandeja de Normalización.
+  - Diseñar un formulario simple que permita elegir cualquier **"Cliente Origen"** y cualquier **"Cliente Destino"** usando dos buscadores autocompletables con `<datalist>`.
+  - Al pulsar "Unificar", reutilizar el backend atómico de `unify()` para migrar todos los contratos, licencias y alias, y borrar el duplicado de forma inmediata.
 
 ---
 
