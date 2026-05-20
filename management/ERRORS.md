@@ -8,7 +8,7 @@
 
 | 🔴 Críticos (P1) | 🟠 Importantes (P2) | 🟢 Menores (P3) | ✅ Resueltos |
 | :---: | :---: | :---: | :---: |
-| 0 | 1 | 1 | 19 |
+| 0 | 1 | 0 | 20 |
 
 ---
 
@@ -28,7 +28,6 @@
 | ID | Incidencia | Módulo | Prioridad | Estado | Detectado |
 |---:|---|---|:---:|:---:|:---:|
 | [#020] Mensajes de confirmación sin feedback visual destacado (toasts) | UI/UX | 🟠 P2 | 🔍 En análisis | 2026-05-19 |
-| [#017] Barra de búsqueda sin estilos en Gestión de Usuarios | UI/UX | 🟢 P3 | 🔍 En análisis | 2026-05-19 |
 
 ---
 
@@ -36,6 +35,7 @@
 
 | ID | Incidencia | Módulo | Prioridad | Detectado | Resuelto |
 |---:|---|---|:---:|:---:|:---:|
+| [#017] Barra de búsqueda sin estilos en Gestión de Usuarios | UI/UX | 🟢 P3 | 2026-05-19 | 2026-05-20 |
 | [#021] Inputs sin estilos en Generador COD (herramientas/cod) | UI/UX | 🟠 P2 | 2026-05-20 | 2026-05-20 |
 | [#019] Campo "Copia Interna (Emails)" ilegible por fondo oscuro | UI/UX | 🟢 P3 | 2026-05-19 | 2026-05-20 |
 | [#018] Bloque derecho rompe layout en Gestión de Importación | UI/UX | 🟢 P3 | 2026-05-19 | 2026-05-20 |
@@ -94,24 +94,26 @@
 
 ---
 
+
+### Resueltos
+
+---
+
 #### #017 — Barra de búsqueda sin estilos en Gestión de Usuarios
 
 | Campo | Valor |
 |---|---|
 | **Módulo** | UI/UX |
 | **Prioridad** | 🟢 P3 |
-| **Estado** | 🔍 En análisis |
+| **Estado** | ✅ Resuelto |
 | **Detectado** | 2026-05-19 |
+| **Resuelto** | 2026-05-20 |
 
 - **Síntoma**: El campo de búsqueda de la vista de Gestión de Usuarios aparece sin estilos aplicados (input nativo del navegador, sin integración visual con el sistema de diseño DX).
-- **Causa probable**: El componente no hereda las clases del sistema de diseño centralizado o quedó fuera de la migración CSS del [#008](#008--unificación-de-estilos-css-en-archivo-central).
-- **Impacto**: Inconsistencia visual, degradación de la experiencia de usuario.
-- **Acción**: Aplicar las clases de `dx-v2-main.css` al input de búsqueda de esta vista.
-
----
-
-
-### Resueltos
+- **Causa**: El componente no heredaba las clases del sistema de diseño centralizado al utilizar la clase legacy obsoleta `.gui-input`.
+- **Resolución**:
+  - Reemplazadas todas las referencias de `.gui-input` por `.dx-v2-form-input` y `.dx-v2-form-select` en `backend/resources/views/admin/users/index.blade.php`.
+  - Enriquecida la clase `.dx-v2-users-filter-select` en `dx-v2-users.css` agregando la flecha premium SVG interactiva y configurando la caché.
 
 ---
 
