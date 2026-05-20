@@ -1,21 +1,7 @@
 @extends('layouts.app')
 
 @section('title', 'Configuración de Alertas')
-
 @section('content')
-@if(session('success'))
-<div class="dx-v2-alerts-alert-banner success">
-    <i class="fa-solid fa-circle-check"></i>
-    <span>{{ session('success') }}</span>
-</div>
-@endif
-
-@if(session('error'))
-<div class="dx-v2-alerts-alert-banner danger">
-    <i class="fa-solid fa-circle-xmark"></i>
-    <span>{{ session('error') }}</span>
-</div>
-@endif
 
 <div class="page-header dx-v2-alerts-header-row">
     <div>

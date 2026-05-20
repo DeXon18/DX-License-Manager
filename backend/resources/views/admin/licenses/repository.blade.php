@@ -34,23 +34,7 @@
             </div>
             
             <div class="dx-v2-lic-repo-body">
-                @if(session('success'))
-                    <div class="dx-v2-lic-repo-alert success">
-                        <i class="fa-solid fa-check-circle mr-2"></i> {{ session('success') }}
-                    </div>
-                @endif
 
-                @if(session('info'))
-                    <div class="dx-v2-lic-repo-alert info">
-                        <i class="fa-solid fa-info-circle mr-2"></i> {{ session('info') }}
-                    </div>
-                @endif
-
-                @if(session('error'))
-                    <div class="dx-v2-lic-repo-alert danger">
-                        <i class="fa-solid fa-exclamation-triangle mr-2"></i> {{ session('error') }}
-                    </div>
-                @endif
 
                 <div class="table-responsive">
                     <table class="table">
