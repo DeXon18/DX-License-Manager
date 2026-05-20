@@ -21,7 +21,21 @@ class RenewalPlannerController extends Controller
             ->whereMonth('end_date', $month);
 
         if (!empty($selectedStatuses)) {
-            $query->whereIn('status', $selectedStatuses);
+            $query->where(function ($q) use ($selectedStatuses) {
+                $hasEmpty = in_array('', $selectedStatuses, true) || in_array(null, $selectedStatuses, true);
+                $nonEmptyStatuses = array_filter($selectedStatuses, function($val) {
+                    return $val !== '' && $val !== null;
+                });
+                
+                if (!empty($nonEmptyStatuses)) {
+                    $q->whereIn('status', $nonEmptyStatuses);
+                    if ($hasEmpty) {
+                        $q->orWhereNull('status')->orWhere('status', '');
+                    }
+                } elseif ($hasEmpty) {
+                    $q->whereNull('status')->orWhere('status', '');
+                }
+            });
         }
 
         $pendingRenewals = $query->get()->groupBy('client_id');
@@ -32,10 +46,13 @@ class RenewalPlannerController extends Controller
             ->pluck('client_id')
             ->toArray();
 
-        // Lista de estados para el filtro
-        $availableStatuses = Contract::whereNotNull('status')
-            ->distinct()
+        // Lista de estados para el filtro (incluyendo vacíos/null como "")
+        $availableStatuses = Contract::distinct()
             ->pluck('status')
+            ->map(function ($status) {
+                return $status === null ? '' : trim($status);
+            })
+            ->unique()
             ->sort()
             ->values();
 
