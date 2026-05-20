@@ -970,9 +970,9 @@
   border: 1px solid rgba(0, 166, 214, 0.2) !important;
 }
 .dx-v2-clients-expiry-status.default {
-  color: var(--dx-v2-muted, #8b949e) !important;
-  background: rgba(139, 148, 158, 0.05) !important;
-  border: 1px solid rgba(139, 148, 158, 0.15) !important;
+  color: var(--dx-v2-success, #3fb950) !important;
+  background: var(--dx-v2-success-bg, rgba(63, 185, 80, 0.12)) !important;
+  border: 1px solid var(--dx-v2-success-border, rgba(63, 185, 80, 0.25)) !important;
 }
 .dx-v2-clients-history-date {
   color: var(--dx-v2-muted);
