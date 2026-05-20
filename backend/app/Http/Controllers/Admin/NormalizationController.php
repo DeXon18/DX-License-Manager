@@ -286,7 +286,7 @@ class NormalizationController extends Controller
             $c1 = $clients[$i];
             if (in_array($c1->name, $ignoredNames)) continue;
 
-            $n1     = strtolower(trim(preg_replace('/\s+/', ' ', preg_replace('/[^a-z0-9 ]/i', ' ', $c1->name))));
+            $n1     = strtolower(trim(preg_replace('/\s+/', ' ', preg_replace('/[^a-z0-9 ]/i', ' ', $this->transliterate($c1->name)))));
             $clean1 = trim(preg_replace('/\s+/', ' ', preg_replace($suffixPattern, '', $n1)));
             $ultra1 = trim(preg_replace('/\s+/', ' ', preg_replace($genericPattern, '', $clean1)));
 
@@ -298,7 +298,7 @@ class NormalizationController extends Controller
                 $c2 = $clients[$j];
                 if (in_array($c2->name, $ignoredNames)) continue;
 
-                $n2     = strtolower(trim(preg_replace('/\s+/', ' ', preg_replace('/[^a-z0-9 ]/i', ' ', $c2->name))));
+                $n2     = strtolower(trim(preg_replace('/\s+/', ' ', preg_replace('/[^a-z0-9 ]/i', ' ', $this->transliterate($c2->name)))));
                 $clean2 = trim(preg_replace('/\s+/', ' ', preg_replace($suffixPattern, '', $n2)));
                 $ultra2 = trim(preg_replace('/\s+/', ' ', preg_replace($genericPattern, '', $clean2)));
 
@@ -331,5 +331,14 @@ class NormalizationController extends Controller
 
         usort($suspicions, fn($a, $b) => $b['similarity'] <=> $a['similarity']);
         return $suspicions;
+    }
+
+    /**
+     * Normaliza caracteres acentuados a su equivalente ASCII antes del procesamiento léxico.
+     * Sin esto, 'á' → ' ', rompiendo tokens como 'mecanicos' en 'mec nicos'.
+     */
+    private function transliterate(string $str): string
+    {
+        return iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $str) ?? $str;
     }
 }
