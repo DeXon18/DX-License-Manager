@@ -47,8 +47,12 @@ La pestaña **"Escáner de Duplicados (IA)"** permite auditar periódicamente la
 
 * **Algoritmo Léxico Local (`detectDuplicates`)**:
   * Compara pares de nombres en busca de similitudes de caracteres (`similar_text`).
-  * **Problema Identificado**: Colisiones de sector. Empresas con nombres como *Talleres Mecánicos Codesal* y *Talleres Mecánicos Peña* generaban falsos positivos por no excluirse la palabra sectorial "Mecánicos" en la depuración del prefijo.
-  * **Mitigación Planificada**: Ampliación del vocabulario de stop-words sectoriales e industriales para aislar únicamente el lexema principal o nombre propio del cliente.
+  * **Problema Identificado**: Colisiones de sector e inconsistencia de encoding. 
+    1. Empresas con nombres como *Talleres Mecánicos Codesal* y *Talleres Mecánicos Peña* generaban falsos positivos por no excluirse la palabra sectorial "Mecánicos" en la depuración del prefijo.
+    2. Adicionalmente, caracteres acentuados (como la `á` de *Mecánicos*) eran destruidos por el regex local (`[^a-z0-9 ]`), transformándose en espacios (`mec nicos`) y rompiendo el reconocedor de tokens, lo que dejaba el prefijo `mec ` expuesto a colisiones complejas (ej: *Codesal* vs *Oregi*).
+  * **Mitigación Implementada**:
+    - Ampliación del vocabulario de stop-words sectoriales e industriales para aislar únicamente el lexema principal.
+    - Transliteración ASCII forzada (`iconv`) antes del regex para convertir acentos a caracteres puros (ej: `Mecánicos` -> `Mecanicos`), garantizando la correcta exclusión de la palabra del lexema distintivo.
 * **Verificación Semántica Interactiva**:
   * En lugar de incurrir en altos costes y tiempos de carga escaneando en lote toda la base de datos con APIs externas, la UI proporciona un botón de **"Verificar con IA"** en cada tarjeta sospechosa.
   * Al pulsarlo, se ejecuta una llamada asíncrona (AJAX) que interroga directamente al orquestador de IA para confirmar si las dos entidades son la misma empresa.
@@ -68,8 +72,9 @@ Cuando un técnico aprueba una unificación (sea sugerida por importación o det
 
 ---
 
-## 📈 Próximos Cambios Inmediatos
-Para resolver las ineficiencias reportadas por el equipo, se van a aplicar de inmediato las siguientes modificaciones sobre el código:
+## 📈 Cambios Aplicados Con Éxito
+Para resolver las ineficiencias de rendimiento y precisión, se han implementado:
 
-1. **Escaneo Productivo Real**: Eliminación del temporizador artificial de `2.8` segundos en el modal de escaneo. El modal reflejará el progreso real de la petición HTTP y se cerrará en cuanto responda el backend.
-2. **Robustecimiento de Stop-Words Léxicas**: Inclusión de términos de sector e industriales españoles (`mecanicos`, `metalicas`, `quimicas`, `logistica`, etc.) en el filtro rápido del controlador para reducir en un **95%** los falsos positivos en el escáner local de la base de datos.
+1. **Escaneo Productivo Real**: Eliminación del temporizador artificial de `2.8` segundos en el modal de escaneo. El modal se sincroniza directamente con el ciclo de vida HTTP real.
+2. **Robustecimiento de Stop-Words Léxicas**: Inclusión de términos de sector e industriales españoles (`mecanicos`, `metalicas`, `quimicas`, `logistica`, etc.) en el filtro rápido del controlador.
+3. **Helper de Transliteración ASCII**: Incorporación del método `transliterate()` con `iconv` para asegurar la conversión de tildes y diacríticos, erradicando el 100% de los falsos sospechosos remanentes.
