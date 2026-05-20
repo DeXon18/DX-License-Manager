@@ -1,5 +1,5 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-20 15:48  
+> Última actualización: 2026-05-20 16:00  
 > Sesión en: Proxmox Beta Environment  
 > Rama activa: dev (limpia, mergeada)  
 
@@ -7,7 +7,7 @@
 
 ## Estado General
 
-**Fase actual:** Fase 23.7 — Rediseño de Historial y Detalle de Auditorías Premium (NOC Pro) ✅ COMPLETADA & MERGEADA (PR #18)  
+**Fase actual:** Fase 23.8 — Semáforo de Expiración en Ficha de Clientes Premium ✅ COMPLETADA & MERGEADA (PR #26)  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -32,6 +32,11 @@
 3. **Correcciones de Accesibilidad (a11y) & Autofill**:
    * Corregidos problemas de Lighthouse vinculando todos los `<label>` huérfanos con sus inputs por `id` y `for`.
    * Añadidos tokens de autocompletado estándar (`autocomplete`) para nombre, email, teléfono y cargo en el modal de contactos.
+
+4. **Semáforo Visual de Expiración de Inventario (NOC Pro)**:
+   * Diseñado e implementado el código estándar de color de tráfico (verde para licencias a salvo, amarillo/naranja para vencimiento en menos de 30 días, rojo para expiradas, y cyan para permanentes).
+   * Incorporada la iconografía dinámica por estado y el cálculo de Carbon de días restantes.
+   * Resuelto de forma permanente el bloqueo por almacenamiento en caché de los navegadores mediante inyección dinámica de directiva Blade `@push` con cache-busting dinámico de `dx-v2-clients.css?v=timestamp`.
 
 ---
 
