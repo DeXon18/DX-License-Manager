@@ -1,6 +1,17 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-20 15:15] — Audit History & Detail UI Redesign (NOC Pro) ✅
+
+### Added
+- **Acordeón Interactivo de Historial de Licencias**: Reemplazado el `<details>` rústico nativo por un acordeón interactivo y animado con Alpine.js (`historyOpen`) con banners explicativos de "Fuente de Verdad Histórica".
+- **Banner de Inmutabilidad Técnica**: Añadida una sección explicativa con badge de seguridad e icono de bloqueo (`fa-lock`) aclarando que las auditorías históricas son registros de solo lectura (inmutables) de respaldo.
+- **Bento Grid de Metadatos del Servidor**: Panel de visualización premium de alta gama para metadatos clave (Sold-To, Hostname, Composite y Daemons).
+- **Consola Técnica de Líneas de Producto**: Diseñada una tabla de alta densidad con scrollbars integrados, hover interactivo, colorización selectiva de expiración de licencias y remoción de acciones deshabilitadas (ej: papelera ficticia) que causaban confusión al usuario.
+- **Copiar Metadatos JSON**: Botón rápido en la barra de herramientas del modal de detalles que copia de forma directa el JSON parseado de auditoría al portapapeles.
+
+---
+
 ## [2026-05-20 14:15] — Normalization UI Tabs, Duplicate Similarity Stripping, Caching & Scanning Loader ✅
 
 ### Added
