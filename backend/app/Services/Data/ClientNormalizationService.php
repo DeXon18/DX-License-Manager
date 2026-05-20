@@ -63,6 +63,38 @@ class ClientNormalizationService
             ];
         }
 
+        // 3.5. Fallback a Inteligencia Artificial (Gemini/DeepSeek/OpenRouter)
+        try {
+            $aiService = app(\App\Services\AI\ClientAiNormalizationService::class);
+            $aiResult = $aiService->evaluate($titleName);
+            
+            if ($aiResult['matched'] && $aiResult['confidence'] >= 0.8 && $aiResult['matched_id']) {
+                $suggestedClient = Client::find($aiResult['matched_id']);
+                if ($suggestedClient) {
+                    $providerName = strtoupper($aiResult['provider'] ?? 'IA');
+                    $confidencePct = round($aiResult['confidence'] * 100, 2);
+                    $reason = $aiResult['reason'] ?? 'Coincidencia por inteligencia artificial.';
+                    
+                    // Formato compatible con el parseador regex: /El cliente \'(.*)\' se parece un .* a \'(.*)\'/i
+                    $warning = "El cliente '{$titleName}' se parece un {$confidencePct}% ({$providerName}) a '{$suggestedClient->name}'. Razón: {$reason} Se ha creado un nuevo cliente por precaución, revisar posibles duplicados.";
+                    
+                    $newClient = Client::create(['name' => $titleName]);
+                    
+                    return [
+                        'id' => $newClient->id,
+                        'status' => 'suspicion',
+                        'name' => $newClient->name,
+                        'suggested_id' => $suggestedClient->id,
+                        'suggested_name' => $suggestedClient->name,
+                        'similarity' => $confidencePct,
+                        'warning' => $warning
+                    ];
+                }
+            }
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("ClientNormalizationService AI fallback error: " . $e->getMessage());
+        }
+
         // 4. Totally New (No similarity or very low)
         $newClient = Client::create(['name' => $titleName]);
         $warning = "Nuevo cliente registrado: {$titleName}";
