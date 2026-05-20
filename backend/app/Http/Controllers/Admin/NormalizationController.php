@@ -230,6 +230,8 @@ class NormalizationController extends Controller
             ->pluck('detected_name')
             ->toArray();
 
+        $genericPattern = '/\b(talleres|industrias|tecnologias|sistemas|construcciones|grupo|cooperativa|asociacion|fundacion|servicios|ingenieria|consulting|desarrollos|promociones|distribuciones|comercial|manufacturas)\b/i';
+
         $count = count($clients);
         for ($i = 0; $i < $count; $i++) {
             $c1 = $clients[$i];
@@ -242,6 +244,11 @@ class NormalizationController extends Controller
             $clean1 = trim(preg_replace('/\b(sl|sa|slu|s\s*l|s\s*a|s\s*l\s*u|limitada|limited|ltd|gmbh|co|corp|inc|group|grupo|solutions|servicios|services|espanola|espana|spain)\b/i', '', $n1));
             if (empty($clean1)) continue;
 
+            $ultraClean1 = trim(preg_replace('/\s+/', ' ', preg_replace($genericPattern, '', $clean1)));
+            if (empty($ultraClean1)) {
+                $ultraClean1 = $clean1;
+            }
+
             for ($j = $i + 1; $j < $count; $j++) {
                 $c2 = $clients[$j];
 
@@ -251,10 +258,17 @@ class NormalizationController extends Controller
                 $clean2 = trim(preg_replace('/\b(sl|sa|slu|s\s*l|s\s*a|s\s*l\s*u|limitada|limited|ltd|gmbh|co|corp|inc|group|grupo|solutions|servicios|services|espanola|espana|spain)\b/i', '', $n2));
                 if (empty($clean2)) continue;
 
-                // Fast check: check if first 5 characters match exactly
+                $ultraClean2 = trim(preg_replace('/\s+/', ' ', preg_replace($genericPattern, '', $clean2)));
+                if (empty($ultraClean2)) {
+                    $ultraClean2 = $clean2;
+                }
+
+                // Fast check: check if first 5 characters match exactly, ignoring generic terms
                 $prefixMatch = false;
-                if (strlen($clean1) >= 5 && strlen($clean2) >= 5) {
-                    if (substr($clean1, 0, 5) === substr($clean2, 0, 5)) {
+                $minLen = min(strlen($ultraClean1), strlen($ultraClean2));
+                if ($minLen >= 3) {
+                    $compareLen = min($minLen, 5);
+                    if (substr($ultraClean1, 0, $compareLen) === substr($ultraClean2, 0, $compareLen)) {
                         $prefixMatch = true;
                     }
                 }
