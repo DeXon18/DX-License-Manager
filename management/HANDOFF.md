@@ -1,13 +1,13 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-20 15:15  
+> Última actualización: 2026-05-20 15:48  
 > Sesión en: Proxmox Beta Environment  
-> Rama activa: feature/audit-details-ui  
+> Rama activa: dev (limpia, mergeada)  
 
 ---
 
 ## Estado General
 
-**Fase actual:** Fase 23.7 — Rediseño de Historial y Detalle de Auditorías Premium (NOC Pro) ✅ COMPLETADA  
+**Fase actual:** Fase 23.7 — Rediseño de Historial y Detalle de Auditorías Premium (NOC Pro) ✅ COMPLETADA & MERGEADA (PR #18)  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -19,6 +19,7 @@
    * Reemplazado el `<details>` rústico nativo por un acordeón interactivo y animado con Alpine.js (`historyOpen: false`) en [resources/views/clients/show.blade.php].
    * Incorporado un banner explicativo claro que detalla la función técnica de esta sección como "Fuente de Verdad Histórica (Solo Lectura)".
    * Rediseñada la tabla en alta densidad, incluyendo badges dinámicos por ecosistema (`SIEMENS` vs `MOLDEX3D`), visualización de fecha de subida, servidor de hosting y el botón de ojo "Ver Auditoría" estilizado.
+   * Optimización del espaciado vertical compactado a 24px sin solapamientos utilizando márgenes dinámicos condicionales en el bucle Blade de Sold-To.
 
 2. **Rediseño del Detalle de Auditoría Siemens / Moldex3D (Modal)**:
    * Implementado un título dinámico que se adapta a Siemens o Moldex3D según el daemon del archivo.
@@ -26,20 +27,19 @@
    * Creado un Bento Grid integrado para los metadatos clave del servidor (Hostname, Composite/MAC, Sold-To y Daemon).
    * Refactorizada la tabla de productos originales a una consola inmutable en alta resolución con scrollbars integrados y colorización selectiva de caducidad.
    * Removidos elementos inertes que inducían a errores en el usuario (ej: papelera deshabilitada en registros inmutables).
-   * Integrado el botón rápido "Copiar Metadatos JSON" en la barra de herramientas del modal de detalles.
+   * Integrado el botón rápido "Copiar Metadatos JSON" en la barra de herramientas del modal de detalles con retroalimentación interactiva.
 
-3. **Verificación de Logs y Caché**:
-   * Logs de php en Beta verificados al 100% libres de errores.
-   * Ejecutada la purga de caché de vistas en Beta (`view:clear`) para compilar de forma limpia el Blade optimizado.
+3. **Correcciones de Accesibilidad (a11y) & Autofill**:
+   * Corregidos problemas de Lighthouse vinculando todos los `<label>` huérfanos con sus inputs por `id` y `for`.
+   * Añadidos tokens de autocompletado estándar (`autocomplete`) para nombre, email, teléfono y cargo en el modal de contactos.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-1. **Revisión y Aprobación de Rama**:
-   * Oskar revisará visualmente en Beta la correcta interactividad del nuevo acordeón en la ficha del cliente y el look de consola NOC Pro del modal de detalles.
-   * Fusionar la rama `feature/audit-details-ui` sobre `dev` tras recibir su confirmación explícita.
+1. **Definición de Nuevos Objetivos**:
+   * En espera de la definición de nuevas prioridades o roadmap operativo por parte de Oskar.
 
 ---
 
