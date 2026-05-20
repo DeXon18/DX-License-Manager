@@ -36,7 +36,7 @@ El desarrollador inicia. El agente espera.
 - **Completada:** 2026-05-20
 - **Rama:** `feature/audit-details-ui`
 - **Resumen:** Rediseño completo de la interfaz de auditorías inmutables en la ficha del cliente (`clients/show.blade.php`). Reemplazado el `<details>` rústico nativo por un acordeón interactivo y animado con Alpine.js (`historyOpen`) con banners explicativos de "Fuente de Verdad Histórica". Rediseñado el modal de detalle de auditorías con un Bento Grid para metadatos del servidor, una consola inmutable de alta densidad de productos, y remoción de acciones inactivas que causaban confusión al usuario.
-- **PR:** Pendiente — merged a dev
+- **PR:** #025 — merged a dev
 
 ### Fase 23.6 — Normalización Tabs, Filtro de Descriptores Léxicos, Caché & Modal Teatral ✅
 - **Completada:** 2026-05-20
