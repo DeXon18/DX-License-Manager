@@ -1,6 +1,21 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-20 14:15] — Normalization UI Tabs, Duplicate Similarity Stripping, Caching & Scanning Loader ✅
+
+### Added
+- **Mapeo de 3 Pestañas en Alpine.js**: Restauración de la estructura de 3 pestañas ("Sospechas de Importación", "Escáner de Duplicados (IA)" y "Unificación Manual Libre") en [resources/views/admin/normalization/index.blade.php] con Alpine.js y persistencia en `localStorage`.
+- **Diseño Bento Modular CSS**: Creado el archivo de estilos modulares [modules/dx-v2-normalization.css] e importado en [dx-v2-main.css], implementando el diseño Bento premium para tarjetas de duplicados de alta fidelidad.
+- **Caché Inteligente de Base de Datos**: Cacheado del resultado de escaneo léxico en base de datos (`dx_scanned_duplicates`) por 24 horas usando la fachada `Cache` de Laravel, acelerando las cargas de página de la bandeja de normalización.
+- **Botón y Acción "Escanear Ahora"**: Endpoint `/admin/normalization/force-scan` y acción `forceScan()` para invalidar la caché del escáner y recalcular las similitudes bajo demanda con refresco automático de vista y feedback por Toasts.
+- **Modal de Escaneo Teatral Animado**: Ventana modal interactiva fija y centrada con desenfoque de cristal translúcido y progreso animado paso a paso en JavaScript, emulando la rigurosa secuencia de análisis de clientes para una experiencia de usuario sobresaliente.
+
+### Changed
+- **Optimización de Similitud Léxica**: Mejorado el método `detectDuplicates()` para ignorar prefijos de descriptores de negocios corporativos comunes (como "talleres", "industrias", "grupo", etc.) al realizar la comparación rápida de caracteres, previniendo falsos positivos del motor como "Talleres Criado" y "Talleres Doval".
+- **Limpieza Automática de Caché**: Las acciones de `unify()` y `dismiss()` limpian de forma transparente la caché de duplicados garantizando datos siempre sincronizados tras resolver advertencias.
+
+---
+
 ## [2026-05-20 11:00] — AI Normalization Engine: Fase 23 CERRADA ✅
 
 ### Added

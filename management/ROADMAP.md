@@ -1171,6 +1171,12 @@ Integración de un flujo cognitivo híbrido en la Bandeja de Normalización para
     - [x] Creación de tests unitarios y mock en `ClientNormalizationTest.php` probando resiliencia en SQLite en memoria.
     - [x] Generación de tags de checkpoint (`v1.23.0-rc1`, `v1.23.0-rc2`) y commit final de cierre.
 
+- [x] **Subfase 23.6** — **Pestañas, Caché, Omitir Descriptores y Modal Teatral** ✅ COMPLETADA
+    - [x] Restauración de 3 pestañas dinámicas con persistencia Alpine.js (`localStorage`) en index.blade.php.
+    - [x] Limpieza en detección de duplicados omitiendo descriptores corporativos comunes (evitando choque de coincidencia de prefijos como "Talleres Criado" vs "Talleres Doval").
+    - [x] Caché de resultados léxicos en base de datos (`dx_scanned_duplicates`) e invalidación automática en unificaciones y descartes.
+    - [x] Botón "Escanear Ahora" y modal teatral animado de progreso paso a paso.
+
 ---
 
 ## Stack Tecnológico
