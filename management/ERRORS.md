@@ -8,7 +8,7 @@
 
 | 🔴 Críticos (P1) | 🟠 Importantes (P2) | 🟢 Menores (P3) | ✅ Resueltos |
 | :---: | :---: | :---: | :---: |
-| 0 | 0 | 0 | 21 |
+| 0 | 0 | 0 | 22 |
 
 ---
 
@@ -25,9 +25,7 @@
 
 ## ⏳ Pendientes
 
-| ID | Incidencia | Módulo | Prioridad | Estado | Detectado |
-|---:|---|---|:---:|:---:|:---:|
-| [#022] | Clientes duplicados ya persistidos no aparecen en la Bandeja de Normalización | Normalización | 🟠 P2 | ⏳ Pendiente | 2026-05-20 |
+*No hay incidencias activas pendientes. ¡El portal está 100% libre de errores!*
 
 ---
 
@@ -35,6 +33,7 @@
 
 | ID | Incidencia | Módulo | Prioridad | Detectado | Resuelto |
 |---:|---|---|:---:|:---:|:---:|
+| [#022] | Clientes duplicados ya persistidos no aparecen en la Bandeja de Normalización | Normalización | 🟠 P2 | 2026-05-20 | 2026-05-20 |
 | [#020] Mensajes de confirmación sin feedback visual destacado (toasts) | UI/UX | 🟠 P2 | 2026-05-19 | 2026-05-20 |
 | [#017] Barra de búsqueda sin estilos en Gestión de Usuarios | UI/UX | 🟢 P3 | 2026-05-19 | 2026-05-20 |
 | [#021] Inputs sin estilos en Generador COD (herramientas/cod) | UI/UX | 🟠 P2 | 2026-05-20 | 2026-05-20 |
@@ -73,26 +72,34 @@
 
 ### Pendientes
 
+*No hay incidencias pendientes.*
+
+---
+
+### Resueltos
+
+---
+
 #### #022 — Clientes duplicados ya persistidos no aparecen en la Bandeja de Normalización
 
 | Campo | Valor |
 |---|---|
 | **Módulo** | Normalización / UI |
 | **Prioridad** | 🟠 P2 |
-| **Estado** | ⏳ Pendiente |
+| **Estado** | ✅ Resuelto |
 | **Detectado** | 2026-05-20 |
+| **Resuelto** | 2026-05-20 |
 
 - **Síntoma**: Clientes que ya han sido guardados como registros separados e independientes en la base de datos (por ejemplo, `Tag Automotive S.l.` y `Tag Automotive(Nifco Products Espana,S.l.u.)`) no generan advertencias ni sospechas de duplicidad en las importaciones subsiguientes porque el motor encuentra coincidencias exactas para ambos. Por tanto, no aparecen en la Bandeja de Normalización y no hay forma de unificarlos desde allí.
 - **Causa**: La Bandeja de Normalización solo se alimenta de advertencias o sospechas generadas durante el flujo de importación (cuando entra un nombre desconocido). Si los dos duplicados ya existen en la BD, la importación mapea cada uno con su correspondiente cliente ID sin emitir alertas.
-- **Resolución propuesta**:
-  - Habilitar una sección o pestaña de **"Unificación Manual Libre"** directamente en la cabecera de la Bandeja de Normalización.
-  - Diseñar un formulario simple que permita elegir cualquier **"Cliente Origen"** y cualquier **"Cliente Destino"** usando dos buscadores autocompletables con `<datalist>`.
-  - Al pulsar "Unificar", reutilizar el backend atómico de `unify()` para migrar todos los contratos, licencias y alias, y borrar el duplicado de forma inmediata.
+- **Resolución**:
+  - Habilitada una **vista de pestañas premium** organizada en Alpine.js: "Sospechas de Importación", "Escáner de Duplicados" y "Unificación Manual Libre".
+  - Desarrollada la pestaña **Escáner de Duplicados** que ejecuta un algoritmo de similitud ortográfica en backend (Levenshtein y similar_text a nivel base) detectando duplicados latentes en BD.
+  - Implementada **verificación semántica por IA interactiva** vía AJAX: un botón que consulta a Gemini sobre la similitud de la pareja de clientes en vivo.
+  - Enriquecidas las opciones con el **ID del cliente** para permitir comparar visualmente qué ficha es más antigua/histórica.
+  - Blindada la ruta de unificación atómica para extraer y parsear IDs con expresiones regulares, verificando e impidiendo auto-unificación.
 
 ---
-
-
-### Resueltos
 
 ---
 
