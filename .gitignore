@@ -47,5 +47,7 @@ desktop.ini
 *.suo
 *.user
 
-# --- Backups temporales ---
+# --- Backups temporales y tareas ---
 backup_pre_normalization.sql
+task.md
+management/task.md
