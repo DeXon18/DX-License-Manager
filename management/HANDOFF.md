@@ -52,7 +52,8 @@
    * Conectar el chat de la web al mismo motor inteligente para que los técnicos puedan realizar consultas de clientes, composite, MACs o licencias en lenguaje natural directamente desde la aplicación sin depender de apps externas.
 
 3. **Reporte Físico de Auditoría de Licencias para Clientes (PDF / Enviar)**:
-   * Diseñar una plantilla de reporte técnico premium de auditoría en PDF usando Dompdf que resuma el ecosistema del cliente (Hostname, Composite, daemons, semáforo de vencimiento a color, y recomendaciones).
+   * Diseñar una plantilla de reporte técnico premium de auditoría en PDF usando Dompdf que resuma el ecosistema completo del cliente.
+   * **Análisis Multi-Archivo por IA**: El usuario puede subir un lote con 1, 4 o las licencias físicas que sean del cliente. La IA las procesará de forma conjunta, consolidando toda la información en un único reporte unificado (Hostname, composites, semáforo de vencimiento a color por cada archivo y recomendaciones globales de renovación).
    * Crear un botón interactivo **`[📄 Reporte Auditoría]`** en la ficha del cliente para descargarlo al instante o enviarlo por email directo al cliente.
    * Integrar comando `/auditoria [Cliente]` en el Bot de Telegram para recuperar el reporte en el móvil.
 
