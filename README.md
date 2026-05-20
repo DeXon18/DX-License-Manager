@@ -19,7 +19,7 @@
 
 ## 📖 Visión General
 
-**DX License Manager** es un **Centro de Operaciones de Red (NOC)** de nivel empresarial diseñado para la gestión técnica, auditoría y control de licencias industriales **Siemens PLM** y **Moldex3D**. 
+**DX License Manager** es un **Centro de Operaciones de Red (NOC)** de nivel empresarial diseñado para la gestión técnica, auditoría y control de licencias industriales **Siemens PLM** y **Moldex3D**.
 
 A través de una interfaz industrial de alta densidad visual y un motor de inteligencia artificial robusto, el portal unifica la gobernanza de activos, predice ciclos de renovación, automatiza auditorías complejas y monitoriza la infraestructura crítica en tiempo real.
 
@@ -27,11 +27,11 @@ A través de una interfaz industrial de alta densidad visual y un motor de intel
 
 ## 🏛️ Pilares Tecnológicos & Arquitectura
 
-*   **Núcleo de Aplicación:** Laravel 11.x (PHP 8.3) estructurado bajo buenas prácticas defensivas y optimización de consultas.
-*   **Inteligencia Artificial (AI Agent):** Pipeline con cortocircuito inteligente de tokens. Conexión nativa con **Google Gemini (Flash 3.1 & Lite)** para composite matching y **n8n Workflow Engine** con fallback dinámico (DeepSeek R1 / OpenRouter) para análisis contractuales y auditorías de FlexLM.
-*   **Reactividad Ligera:** **Alpine.js** inyectado en vistas Blade para evitar la carga de pesadas dependencias de Javascript, manteniendo la interacción fluida.
-*   **Mensajería y Cola de Trabajo:** **Redis** integrado para invalidación instantánea de tokens revocados (ZSET blacklist) y procesamiento asíncrono de telemetría de auditorías.
-*   **Base de Datos Relacional:** **MariaDB** con almacenamiento normalizado de aliases de clientes, Sold-Tos y Machine IDs.
+- **Núcleo de Aplicación:** Laravel 11.x (PHP 8.3) estructurado bajo buenas prácticas defensivas y optimización de consultas.
+- **Inteligencia Artificial (AI Agent):** Pipeline con cortocircuito inteligente de tokens. Conexión nativa con **Google Gemini (Flash 3.1 & Lite)** para composite matching y **n8n Workflow Engine** con fallback dinámico (DeepSeek R1 / OpenRouter) para análisis contractuales y auditorías de FlexLM.
+- **Reactividad Ligera:** **Alpine.js** inyectado en vistas Blade para evitar la carga de pesadas dependencias de Javascript, manteniendo la interacción fluida.
+- **Mensajería y Cola de Trabajo:** **Redis** integrado para invalidación instantánea de tokens revocados (ZSET blacklist) y procesamiento asíncrono de telemetría de auditorías.
+- **Base de Datos Relacional:** **MariaDB** con almacenamiento normalizado de aliases de clientes, Sold-Tos y Machine IDs.
 
 ---
 
@@ -52,36 +52,44 @@ Capa 6: Special Pages    ───► Vistas independientes (page-herramientas.c
 
 El portal adapta dinámicamente sus acentos de color de manera ergonómica según el fabricante seleccionado:
 
-| Vendor | Primary Color | Hover State | CSS Class | Propósito Principal |
-| :--- | :--- | :--- | :--- | :--- |
-| **Siemens PLM** | `#009999` (Teal) | `#007A7A` | `.theme-teal` / `.accent` | Entornos NX Suite, STAR-CCM+, HEEDS, COD |
-| **Moldex3D** | `#ED1C24` (Red) | `#C41520` | `.theme-red` / `.danger` | Auditoría de licencias Moldex3D (`.mac`) |
+| Vendor          | Primary Color    | Hover State | CSS Class                 | Propósito Principal                      |
+| :-------------- | :--------------- | :---------- | :------------------------ | :--------------------------------------- |
+| **Siemens PLM** | `#009999` (Teal) | `#007A7A`   | `.theme-teal` / `.accent` | Entornos NX Suite, STAR-CCM+, HEEDS, COD |
+| **Moldex3D**    | `#ED1C24` (Red)  | `#C41520`   | `.theme-red` / `.danger`  | Auditoría de licencias Moldex3D (`.mac`) |
 
 ---
 
 ## 🚀 Módulos Funcionales
 
 ### 1. AI License Auditor
+
 Auditoría y extracción automatizada de metadatos en archivos de licencia FlexLM (`.lic`) y Moldex (`.mac`).
-*   **Normalización Estricta:** Detección de Hostnames, COMPOSITE, Machine IDs, deamons (`ugslmd`, `cdlmd`, `RCTECH`, `saltd`) e incrementos de asientos.
-*   **Cortocircuito Temporal:** Ahorro proactivo de tokens bloqueando la llamada a la IA en licencias temporales de 7 días (aquellas con *ANY* o *YourHostname*).
-*   **Gobernanza de Privacidad:** Los archivos `.lic` subidos por los clientes **nunca** se guardan físicamente en el servidor (`file_path` = `NULL` en base de datos). Solo se persisten los metadatos de auditoría estructurados.
+
+- **Normalización Estricta:** Detección de Hostnames, COMPOSITE, Machine IDs, deamons (`ugslmd`, `cdlmd`, `RCTECH`, `saltd`) e incrementos de asientos.
+- **Cortocircuito Temporal:** Ahorro proactivo de tokens bloqueando la llamada a la IA en licencias temporales de 7 días (aquellas con _ANY_ o _YourHostname_).
+- **Gobernanza de Privacidad:** Los archivos `.lic` subidos por los clientes **nunca** se guardan físicamente en el servidor (`file_path` = `NULL` en base de datos). Solo se persisten los metadatos de auditoría estructurados.
 
 ### 2. Generador de Certificados de Cese (COD)
+
 Asistente avanzado para el cese y migración de servidores de licencias de clientes.
-*   **Composite Analyzer (AI):** Drag & Drop del fichero `Composite.txt` analizado en vivo mediante Gemini. Identifica interfaces físicas (Ethernet) descartando adaptadores virtuales y VPNs de forma automática.
-*   **Preview & PDF Engine:** Generación fluida con previsualización HTML interactiva y motor de compilación PDF hermético con fuentes autohospedadas.
+
+- **Composite Analyzer (AI):** Drag & Drop del fichero `Composite.txt` analizado en vivo mediante Gemini. Identifica interfaces físicas (Ethernet) descartando adaptadores virtuales y VPNs de forma automática.
+- **Preview & PDF Engine:** Generación fluida con previsualización HTML interactiva y motor de compilación PDF hermético con fuentes autohospedadas.
 
 ### 3. Planificador de Renovaciones (Predictive Planner)
+
 Ecosistema administrativo que sincroniza las licencias instaladas reales (Inventario) con los contratos contractuales activos (CSV).
-*   **Filtros Multistate:** Segmentación rápida por estado contractual (Ofertado, Aceptado, Procesado) mapeados a `identities.json`.
-*   **Historial AJAX & Undo:** Capacidad para deshacer y revertir renovaciones marcadas por error sin recargar la página.
+
+- **Filtros Multistate:** Segmentación rápida por estado contractual (Ofertado, Aceptado, Procesado) mapeados a `identities.json`.
+- **Historial AJAX & Undo:** Capacidad para deshacer y revertir renovaciones marcadas por error sin recargar la página.
 
 ### 4. System NOC Dashboard & Fleet Monitor
+
 Centro de telemetría e infraestructura para administradores de sistemas.
-*   **Docker Fleet Monitor:** Monitorización en vivo de CPU (Gauges circulares), memoria RAM e interactores de reinicio con validación segura de prefijos de contenedor (`dx-`).
-*   **AI Health & Latency:** Latido en vivo con visualización de estado (Online/Offline) para Gemini, DeepSeek, OpenRouter, n8n y Telegram.
-*   **Centro de Logs Unificado:** Visor y parser regex estructurado para `laravel.log` (con stack traces colapsables Alpine.js) y log de auditoría de correos salientes (SMTP Mailtrap).
+
+- **Docker Fleet Monitor:** Monitorización en vivo de CPU (Gauges circulares), memoria RAM e interactores de reinicio con validación segura de prefijos de contenedor (`dx-`).
+- **AI Health & Latency:** Latido en vivo con visualización de estado (Online/Offline) para Gemini, DeepSeek, OpenRouter, n8n y Telegram.
+- **Centro de Logs Unificado:** Visor y parser regex estructurado para `laravel.log` (con stack traces colapsables Alpine.js) y log de auditoría de correos salientes (SMTP Mailtrap).
 
 ---
 
@@ -109,6 +117,7 @@ Centro de telemetría e infraestructura para administradores de sistemas.
 El portal está completamente empaquetado mediante Docker para asegurar la paridad de entornos.
 
 ### Configuración Inicial
+
 1. Clonar el repositorio y acceder a la carpeta del proyecto.
 2. Sincronizar las variables de entorno:
    ```bash
@@ -117,6 +126,7 @@ El portal está completamente empaquetado mediante Docker para asegurar la parid
    ```
 
 ### Despliegue del Stack Docker
+
 ```bash
 # Levantar el entorno Beta
 docker compose --project-directory . -f infra/docker-compose.beta.yml up -d
@@ -135,12 +145,14 @@ php artisan db:seed --class=AdminUserSeeder
 ## 🛡️ Protocolo de Desarrollo & Seguridad (AGENTS.md)
 
 Para mantener la calidad y blindaje del código, cualquier interacción de desarrollo sigue directrices estrictas:
-*   **Modo Estricto:** Prohibido realizar cambios o ejecutar scripts sin plan previo aprobado explícitamente por Oskar.
-*   **Blindaje de Descargas:** Las licencias se recuperan de `storage/licenses/` mediante IDs abstractos de base de datos (`/licenses/download?id=[UUID]`). Nunca se pasan rutas directas en las URLs.
-*   **Validación de Cambios:** Revisión obligatoria de los logs de los contenedores PHP (`docker compose logs dx-php-beta`) antes de realizar cualquier commit.
-*   **Gobernanza Git:** El desarrollo se realiza en ramas de funcionalidad (`feature/`, `fix/`) que nacen y regresan exclusivamente a la rama `dev`.
+
+- **Modo Estricto:** Prohibido realizar cambios o ejecutar scripts sin plan previo aprobado explícitamente por Oskar.
+- **Blindaje de Descargas:** Las licencias se recuperan de `storage/licenses/` mediante IDs abstractos de base de datos (`/licenses/download?id=[UUID]`). Nunca se pasan rutas directas en las URLs.
+- **Validación de Cambios:** Revisión obligatoria de los logs de los contenedores PHP (`docker compose logs dx-php-beta`) antes de realizar cualquier commit.
+- **Gobernanza Git:** El desarrollo se realiza en ramas de funcionalidad (`feature/`, `fix/`) que nacen y regresan exclusivamente a la rama `dev`.
 
 ---
+
 <p align="center">
   <em>Desarrollado con máxima robustez industrial y coherencia visual por el equipo de DX Management.</em>
 </p>
