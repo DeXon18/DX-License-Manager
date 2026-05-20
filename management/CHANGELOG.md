@@ -1,6 +1,16 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-20 15:58] — Active Inventory Expiration Traffic Light (NOC Pro) ✅
+
+### Added
+- **Semáforo Visual Semántico**: Implementación completa del código de color estándar de tráfico (rojo/amarillo/verde) para diagnosticar de forma inmediata la expiración de licencias activas en la ficha de cliente.
+- **Badges Técnicos Bento**: Diseñados badges premium con fuentes monoespaciadas, fondos translúcidos estilo glassmorphism, y bordes delgados HSL para los estados `.expired` (rojo), `.warning` (ámbar para vencimiento en menos de 30 días), `.default` (verde éxito para saludables) y `.permanent` (cyan corporativo).
+- **Iconografía Dinámica**: Integrados iconos semánticos dinámicos (`fa-circle-xmark`, `fa-triangle-exclamation`, `fa-calendar-check`, `fa-infinity`) por estado mediante lógica Carbon en show.blade.php.
+- **Cache-Busting Directo**: Forzado el refresco inmediato de dx-v2-clients.css mediante push y timestamp (`?v={{ time() }}`) en Blade, solucionando bloqueos por caché estática de los @import del navegador.
+
+---
+
 ## [2026-05-20 15:15] — Audit History & Detail UI Redesign (NOC Pro) ✅
 
 ### Added
