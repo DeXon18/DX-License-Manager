@@ -1,43 +1,36 @@
 ---
 project: DX License Manager
 repo: github.com/DeXon18/DX-License-Manager
-status: Phase 19 - Unificación CSS | In Progress
-last_sync: 2026-05-18
+status: Phase 22 - Unificación CSS Completa | In Progress
+last_sync: 2026-05-20
 current_agent: Antigravity (DX Agent) 🦾
 ---
 
 # 🧠 Contexto de Sesión Activa
 
 ## 🎯 Objetivo Actual
-Avanzar en la **Fase 19 (Unificación CSS & Limpieza UI)**. Unificar y extraer todos los estilos inline y bloques incrustados locales de la herramientas y paneles administrativos a clases modulares `.dx-v2-*` dentro de `dx-styles.css`.
+Avanzar en las tareas post-unificación CSS. Resolver problemas estéticos y funcionales (Incidencias #017 y #020 cerradas exitosamente).
 
 ## Estado de la Tarea Actual
-- **Incidencia:** #008 — Unificación CSS
-- **Estado:** 🔜 Subfase 19.25 (Logs y Auditoría) Completada, listos para Subfase 19.26 (Páginas de Error)
-- **Rama:** `feature/css-tokens`
+- **Incidencia:** #017 (Estilos Usuarios) y #020 (Toasts Globales)
+- **Estado:** ✅ Completadas, integradas y mergeadas a `dev` por Oskar.
+- **Rama:** `dev` (limpia, sin ramas de feature activas local/remoto)
 - **Cambios clave:** 
-  - Purga absoluta del 100% de declaraciones style y eventos inline en las tres pestañas de visualización de Logs y Auditoría. Eliminada la hoja de estilos local <style> de más de 80 líneas.
-  - Diseñado e inyectado el namespace `.dx-v2-audit-*` cubriendo banners, pestañas, contadores en vivo, tablas de alta densidad y visor de logs estilo consola de terminal compactado a 5px de padding y 12px de texto para densidad NOC Pro óptima.
+  - Diseñado e implementado el sistema global de notificaciones Toasts Premium con Alpine.js en [layouts/partials/toasts.blade.php](file:///y:/DX-License-Manager/backend/resources/views/layouts/partials/toasts.blade.php) y su correspondiente archivo modular CSS de diseño premium glassmorphic en [shared/dx-v2-toast.css](file:///y:/DX-License-Manager/backend/public/assets/css/shared/dx-v2-toast.css).
+  - Unificados los banners estáticos y purgadas las alertas redundantes de las 7 vistas principales del panel administrativo.
+  - Corregidos los inputs de búsqueda, filtros de roles y estados en el listado de usuarios que colisionaban con el modo oscuro.
 
 ## Próximos Pasos
-- [x] Subfases 19.0 a 19.15: Vistas principales, Dashboard, Herramientas, NX, STAR-CCM+, HEEDS, COD y Siemens Recursos ✅
-- [x] Subfase 19.16: Moldex3D (Parser .mac + Sincronización) ✅
-- [x] Subfase 19.17: Moldex3D: Recursos & enlaces (Unificado con 19.15) ✅
-- [x] Subfase 19.18: Dashboard del Sistema (NOC Pro + Brand Icons) ✅
-- [x] Subfase 19.18.1: Dashboard de Docker / Docker Monitor ✅
-- [x] Subfase 19.19: Usuarios y acceso (listado, crear/editar, roles y permisos) ✅
-- [x] Subfase 19.20: Datos e importación (importar CSV, historial, logs y detalles) ✅
-- [x] Subfase 19.21: Repositorio de licencias (archivo semanal, historial) ✅
-- [x] Subfase 19.22: Alertas y notificaciones (caducidad, umbrales, destinatarios, historial, SMTP) ✅
-- [x] Subfase 19.23: Backups (manual, historial, configuración automática) ✅
-- [x] Subfase 19.24: Integraciones IA (Gemini, Deepseek, OpenRouter, Telegram Bot, estado de conexión) ✅
-- [x] Subfase 19.25: Logs y auditoría (actividad, errores, auditoría IA) ✅
+- [x] Subfases 19.0 a 19.25: Vistas principales, Dashboard, Herramientas, NX, STAR-CCM+, HEEDS, COD y Siemens Recursos ✅
+- [x] Subfase 19.26: Páginas de Error (`errors/`: 403, 404, 419, 500, 503) ✅
+- [x] Incidencia #020: Implementar Toasts Premium y resolver feedbacks AJAX ✅
+- [x] Incidencia #017: Estilar buscador de usuarios en modo oscuro ✅
+- [ ] Avanzar en el backlog general según prioridades indicadas por Oskar 🔜
 
 ## 🛠️ Tareas en curso
-- [x] Subfase 19.25: Logs y auditoría (actividad, errores, auditoría IA) ✅
-- [ ] Subfase 19.26: Páginas de Error (`errors/`: 403, 404, 419, 500, 503) 🔜
+- [ ] Pendiente de nuevas prioridades o incidencias a abordar.
 
-- Fase del ROADMAP: Fase 19 (En curso)
+- Fase del ROADMAP: Fase 21/22 (CSS Unification completado con éxito)
 
 ## 💡 Decisiones Técnicas Activas (no olvidar)
 

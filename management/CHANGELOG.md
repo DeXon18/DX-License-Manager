@@ -1,6 +1,21 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-20 09:50] — DX Toasts & Estilos Usuarios: Incidencias #020 y #017 CERRADAS ✅
+
+### Added
+- **Sistema de Toasts Premium**: Implementación de un motor reactivo de notificaciones flotantes con Alpine.js en [layouts/partials/toasts.blade.php]. Soporta auto-cierre, cierre manual, cola reactiva de eventos y visualización rica de HTML (`x-html`).
+- **Diseño Glassmorphism Adaptativo**: Creación de la hoja de estilos [shared/dx-v2-toast.css] con diseño de glassmorphism de alta gama, variables HSL adaptativas y aceleración por hardware para las transiciones.
+- **Acceso HTML Rico para Telemetría**: Integrado soporte en Toasts para extraer variables adicionales como `log_id` y renderizar enlaces seguros interactivos directos a los detalles de logs de importación sin fugas de seguridad.
+
+### Changed
+- **Purga de Banners de Alertas Inline**: Eliminados todos los bloques de alertas inline estáticos y duplicados en las 7 vistas principales del portal (Gestión de Usuarios, Alertas, Importación, Repositorio, Normalización, Logs, Perfil) unificando todo el feedback bajo el motor reactivo global.
+
+### Fixed
+- **Estilos en Gestión de Usuarios (#017)**: Corregidos los estilos de la barra de búsqueda rápida, inputs y selectores de roles y estado que colisionaban con el tema oscuro del portal.
+
+---
+
 ## [2026-05-19 15:20] — DX CSS Unification: Fase 21 CERRADA ✅
 
 ### Added
