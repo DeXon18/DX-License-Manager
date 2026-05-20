@@ -28,10 +28,10 @@
         <form action="{{ route('admin.users.index') }}" method="GET" class="dx-v2-users-filter-bar">
             <div class="dx-v2-users-search-wrapper">
                 <i class="fas fa-search dx-v2-users-search-icon"></i>
-                <input type="text" name="search" class="gui-input dx-v2-users-search-input" 
+                <input type="text" name="search" class="dx-v2-form-input dx-v2-users-search-input" 
                        placeholder="Buscar por nombre o email..." value="{{ request('search') }}">
             </div>
-            <select name="role" class="gui-input dx-v2-users-filter-select" onchange="this.form.submit()">
+            <select name="role" class="dx-v2-form-select dx-v2-users-filter-select" onchange="this.form.submit()">
                 <option value="">Todos los roles</option>
                 @foreach($roles as $role)
                     <option value="{{ $role->slug }}" {{ request('role') == $role->slug ? 'selected' : '' }}>
