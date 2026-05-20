@@ -55,26 +55,7 @@
     },
     triggerScan() {
         this.scanning = true;
-        let steps = [
-            'Conectando con el motor de base de datos...',
-            'Filtrando sufijos y palabras corporativas (SL/SA)...',
-            'Analizando concordancias de primeros caracteres...',
-            'Calculando porcentajes de coincidencia léxica...',
-            'Comprobando reglas de nombres ignorados...',
-            'Reconstruyendo caché de normalización...',
-            'Finalizando escaneo de identidades...'
-        ];
-        let idx = 0;
-        let interval = setInterval(() => {
-            if (idx < steps.length - 1) {
-                idx++;
-                this.scanningText = steps[idx];
-            } else {
-                clearInterval(interval);
-                // Submit form programmatically
-                document.getElementById('dx-force-scan-form').submit();
-            }
-        }, 400); // 400ms per step = ~2.8 seconds total theatrical experience!
+        document.getElementById('dx-force-scan-form').submit();
     }
 }">
     <!-- Selector de Pestañas Premium -->
