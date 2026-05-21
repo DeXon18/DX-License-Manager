@@ -1,4 +1,5 @@
 <!-- Chatbot de Asistencia IA Web (Fase 25) -->
+<link rel="stylesheet" href="{{ asset('assets/css/modules/dx-v2-chatbot.css?v=' . time()) }}">
 <div x-data="dxChatbot()" x-init="init()" class="dx-chatbot-container">
     
     <!-- Botón Disparador Flotante -->
