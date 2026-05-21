@@ -348,6 +348,128 @@ class ChatbotService
         throw new \Exception("Bucle de function calling superó el límite de llamadas simultáneas.");
     }
 
+    /**
+     * Herramientas en formato OpenAI (para DeepSeek, OpenRouter, Groq).
+     */
+    private function getOpenAIToolsDefinition(): array
+    {
+        return [
+            ['type' => 'function', 'function' => ['name' => 'search_clients', 'description' => 'Buscar clientes existentes por nombre, alias o dirección Sold-To.', 'parameters' => ['type' => 'object', 'properties' => ['query' => ['type' => 'string', 'description' => 'Término de búsqueda fuzzy (ej: andaltec, 10303508)']], 'required' => ['query']]]],
+            ['type' => 'function', 'function' => ['name' => 'get_client_details', 'description' => 'Obtener la ficha completa de un cliente por su ID: servidores, productos, contactos y contratos.', 'parameters' => ['type' => 'object', 'properties' => ['client_id' => ['type' => 'integer', 'description' => 'ID numérico único del cliente']], 'required' => ['client_id']]]],
+            ['type' => 'function', 'function' => ['name' => 'get_expirations', 'description' => 'Diagnosticar qué licencias o productos vencen dentro de un umbral de días.', 'parameters' => ['type' => 'object', 'properties' => ['days_threshold' => ['type' => 'integer', 'description' => 'Días límite para la expiración (ej: 30)']], 'required' => ['days_threshold']]]],
+            ['type' => 'function', 'function' => ['name' => 'search_servers_by_hardware', 'description' => 'Buscar servidores de licencias activos por composite, MAC address o hostname.', 'parameters' => ['type' => 'object', 'properties' => ['hw_query' => ['type' => 'string', 'description' => 'Composite, MAC o hostname a buscar']], 'required' => ['hw_query']]]],
+            ['type' => 'function', 'function' => ['name' => 'create_contact', 'description' => 'Crear un nuevo contacto técnico para un cliente.', 'parameters' => ['type' => 'object', 'properties' => ['client_id' => ['type' => 'integer'], 'name' => ['type' => 'string'], 'email' => ['type' => 'string'], 'role' => ['type' => 'string'], 'phone' => ['type' => 'string']], 'required' => ['client_id', 'name', 'email']]]],
+            ['type' => 'function', 'function' => ['name' => 'get_resource_links', 'description' => 'Obtener enlaces a recursos técnicos y documentación del portal.', 'parameters' => ['type' => 'object', 'properties' => (object)[]]]],
+            ['type' => 'function', 'function' => ['name' => 'get_contract_details', 'description' => 'Obtener el detalle completo de un contrato específico por su número o ID.', 'parameters' => ['type' => 'object', 'properties' => ['contract_id' => ['type' => 'string', 'description' => 'Número de contrato (ej: CONH1006420) o ID numérico']], 'required' => ['contract_id']]]],
+            ['type' => 'function', 'function' => ['name' => 'search_contacts', 'description' => 'Buscar un contacto por email o nombre entre todos los clientes.', 'parameters' => ['type' => 'object', 'properties' => ['query' => ['type' => 'string', 'description' => 'Email o nombre del contacto']], 'required' => ['query']]]],
+            ['type' => 'function', 'function' => ['name' => 'update_contact', 'description' => 'Editar rol, teléfono o email de un contacto existente.', 'parameters' => ['type' => 'object', 'properties' => ['contact_id' => ['type' => 'integer'], 'role' => ['type' => 'string'], 'phone' => ['type' => 'string'], 'email' => ['type' => 'string']], 'required' => ['contact_id']]]],
+            ['type' => 'function', 'function' => ['name' => 'get_dashboard_summary', 'description' => 'Obtener un resumen ejecutivo del sistema (total clientes, licencias críticas, contratos por vencer).', 'parameters' => ['type' => 'object', 'properties' => (object)[]]]],
+            ['type' => 'function', 'function' => ['name' => 'list_clients_without_contacts', 'description' => 'Listar clientes sin ningún contacto registrado.', 'parameters' => ['type' => 'object', 'properties' => (object)[]]]],
+        ];
+    }
+
+    /**
+     * Loop de function calling reutilizable para cualquier API OpenAI-compatible
+     * (DeepSeek, OpenRouter, Groq, etc.). Devuelve el mismo contrato que el loop de Gemini.
+     */
+    private function executeOpenAIFunctionCallingLoop(
+        string $endpoint,
+        string $apiKey,
+        string $model,
+        array  $chatHistory,
+        array  $extraHeaders = [],
+        string $providerName = 'openai-compatible'
+    ): array {
+        $systemPrompt = "Eres Antigravity Chatbot, el asistente de soporte técnico IA de élite para el portal de gestión de licencias DX-License-Manager.\n" .
+                        "Tu audiencia son ingenieros y administradores de sistemas. Sé técnico, preciso y profesional.\n" .
+                        "Reglas:\n" .
+                        "1. Para info de clientes, licencias o hardware, usa SIEMPRE las herramientas disponibles. NUNCA inventes datos.\n" .
+                        "2. Datos técnicos (Composite, MAC, fechas, IDs) en formato monoespaciado Markdown.\n" .
+                        "3. Semáforo: Vencido (rojo), <= 30 días (amarillo), Saludable (verde).\n" .
+                        "4. Listas de productos en tablas Markdown compactas.";
+
+        $messages = [['role' => 'system', 'content' => $systemPrompt]];
+        foreach ($chatHistory as $msg) {
+            $messages[] = [
+                'role'    => $msg['role'] === 'assistant' ? 'assistant' : 'user',
+                'content' => $msg['content'] ?? ($msg['parts'][0]['text'] ?? '')
+            ];
+        }
+
+        $tools      = $this->getOpenAIToolsDefinition();
+        $maxLoops   = 5;
+        $loopCount  = 0;
+        $toolResults = [];
+
+        while ($loopCount < $maxLoops) {
+            $headers = array_merge(
+                ['Authorization' => "Bearer {$apiKey}", 'Content-Type' => 'application/json'],
+                $extraHeaders
+            );
+
+            $response = Http::timeout(30)
+                ->withHeaders($headers)
+                ->post($endpoint, [
+                    'model'       => $model,
+                    'messages'    => $messages,
+                    'tools'       => $tools,
+                    'temperature' => 0.1,
+                ]);
+
+            if (!$response->successful()) {
+                throw new \Exception("Fallo en API {$providerName}: (Status " . $response->status() . ") " . $response->body());
+            }
+
+            $resData   = $response->json();
+            $message   = $resData['choices'][0]['message'] ?? null;
+
+            if (!$message) {
+                throw new \Exception("{$providerName} no retornó mensaje válido.");
+            }
+
+            $toolCalls = $message['tool_calls'] ?? [];
+
+            if (!empty($toolCalls)) {
+                // Añadir turno del asistente con las llamadas a herramientas
+                $messages[] = $message;
+
+                foreach ($toolCalls as $tc) {
+                    $funcName   = $tc['function']['name'];
+                    $args       = json_decode($tc['function']['arguments'], true) ?? [];
+                    $toolCallId = $tc['id'];
+
+                    Log::info("ChatbotService: [{$providerName}] ejecutando función '{$funcName}' con args: " . json_encode($args));
+
+                    try {
+                        $result = $this->callTool($funcName, $args);
+                        $toolResults[$funcName] = $result;
+                    } catch (\Exception $e) {
+                        $result = ['error' => $e->getMessage(), 'success' => false];
+                        $toolResults[$funcName] = $result;
+                    }
+
+                    $messages[] = [
+                        'role'         => 'tool',
+                        'tool_call_id' => $toolCallId,
+                        'content'      => json_encode($result)
+                    ];
+                }
+                $loopCount++;
+            } else {
+                $finalText = $message['content'] ?? 'No he podido procesar una respuesta.';
+                return [
+                    'message'        => $finalText,
+                    'provider'       => $providerName,
+                    'success'        => true,
+                    'usage_metadata' => null,
+                    'data'           => $toolResults
+                ];
+            }
+        }
+
+        throw new \Exception("Bucle OpenAI [{$providerName}] superó el límite de iteraciones.");
+    }
+
     private function checkAndIncrementMutationLimit(): bool
     {
         $session = request()->hasSession() ? request()->session() : null;
@@ -798,116 +920,75 @@ class ChatbotService
     }
 
     // ==========================================
-    // PLAN DE FALLBACK ALTERNATIVO (TEXT-ONLY)
+    // CADENA DE FALLBACK CON FUNCTION CALLING
     // ==========================================
 
     /**
-     * Si Gemini o Function Calling fallan, cae en un modelo puramente textual en DeepSeek o OpenRouter.
+     * Si Gemini falla, reintenta con DeepSeek → OpenRouter → Groq,
+     * todos con function calling (acceso completo a la base de datos).
      */
     private function fallbackToTextChain(array $chatHistory, string $originalError): array
     {
-        Log::warning("ChatbotService: Entrando en cadena de Fallback de Texto debido a: " . $originalError);
+        Log::warning("ChatbotService: Entrando en cadena de Fallback debido a: " . $originalError);
 
-        // Intentar DeepSeek Text-only
+        // Fallback 1: DeepSeek (OpenAI-compatible, soporta function calling)
         $deepseekKey = config('ai.deepseek_key');
         if ($deepseekKey) {
             try {
-                $messages = [];
-                // Formatear historial
-                foreach ($chatHistory as $msg) {
-                    $messages[] = [
-                        'role' => $msg['role'] === 'assistant' ? 'assistant' : 'user',
-                        'content' => $msg['content'] ?? ($msg['parts'][0]['text'] ?? '')
-                    ];
-                }
-
-                // Insertar directiva del sistema
-                array_unshift($messages, [
-                    'role' => 'system',
-                    'content' => "Eres un asistente de soporte técnico para DX-License-Manager. El motor inteligente de base de datos está temporalmente indisponible, por lo que debes responder conversacionalmente y avisar de forma amable que en este momento solo dispones de respuestas basadas en conocimiento estático."
-                ]);
-
-                $response = Http::timeout(15)
-                    ->withHeaders([
-                        'Authorization' => "Bearer {$deepseekKey}",
-                        'Content-Type' => 'application/json'
-                    ])
-                    ->post('https://api.deepseek.com/chat/completions', [
-                        'model' => 'deepseek-chat',
-                        'messages' => $messages,
-                        'temperature' => 0.5
-                    ]);
-
-                if ($response->successful()) {
-                    $resData = $response->json();
-                    $text = $resData['choices'][0]['message']['content'] ?? '';
-                    return [
-                        'message' => $text,
-                        'provider' => 'deepseek-fallback',
-                        'success' => true,
-                        'usage_metadata' => null,
-                        'data' => []
-                    ];
-                } else {
-                    Log::error("ChatbotService: Fallo HTTP en Fallback DeepSeek: (Status " . $response->status() . ") " . $response->body());
-                }
+                return $this->executeOpenAIFunctionCallingLoop(
+                    'https://api.deepseek.com/chat/completions',
+                    $deepseekKey,
+                    'deepseek-chat',
+                    $chatHistory,
+                    [],
+                    'deepseek'
+                );
             } catch (\Exception $e) {
                 Log::error("ChatbotService: Fallo en Fallback DeepSeek: " . $e->getMessage());
             }
         }
 
-        // Intentar Groq como 3er fallback (llama-3.3-70b, free tier directo)
+        // Fallback 2: OpenRouter con modelo free que soporta function calling
+        $openrouterKey = config('ai.openrouter_key');
+        if ($openrouterKey) {
+            try {
+                return $this->executeOpenAIFunctionCallingLoop(
+                    'https://openrouter.ai/api/v1/chat/completions',
+                    $openrouterKey,
+                    'mistralai/mistral-small-3.1-24b-instruct:free',
+                    $chatHistory,
+                    ['HTTP-Referer' => 'https://beta.dxpro.es', 'X-Title' => 'DX License Manager'],
+                    'openrouter'
+                );
+            } catch (\Exception $e) {
+                Log::error("ChatbotService: Fallo en Fallback OpenRouter: " . $e->getMessage());
+            }
+        }
+
+        // Fallback 3: Groq (llama-3.3-70b-versatile, soporta function calling)
         $groqKey = config('ai.groq_key');
         if ($groqKey) {
             try {
-                $messages = [];
-                foreach ($chatHistory as $msg) {
-                    $messages[] = [
-                        'role'    => $msg['role'] === 'assistant' ? 'assistant' : 'user',
-                        'content' => $msg['content'] ?? ($msg['parts'][0]['text'] ?? '')
-                    ];
-                }
-                array_unshift($messages, [
-                    'role'    => 'system',
-                    'content' => 'Eres un asistente de soporte técnico para DX-License-Manager. Responde de forma conversacional e indica que las herramientas de base de datos no están disponibles en este momento.'
-                ]);
-
-                $response = Http::timeout(20)
-                    ->withHeaders([
-                        'Authorization' => "Bearer {$groqKey}",
-                        'Content-Type'  => 'application/json'
-                    ])
-                    ->post('https://api.groq.com/openai/v1/chat/completions', [
-                        'model'       => 'llama-3.3-70b-versatile',
-                        'messages'    => $messages,
-                        'temperature' => 0.5
-                    ]);
-
-                if ($response->successful()) {
-                    $resData = $response->json();
-                    $text = $resData['choices'][0]['message']['content'] ?? '';
-                    return [
-                        'message'        => $text,
-                        'provider'       => 'groq-fallback',
-                        'success'        => true,
-                        'usage_metadata' => null,
-                        'data'           => []
-                    ];
-                } else {
-                    Log::error("ChatbotService: Fallo HTTP en Fallback Groq: (Status " . $response->status() . ") " . $response->body());
-                }
+                return $this->executeOpenAIFunctionCallingLoop(
+                    'https://api.groq.com/openai/v1/chat/completions',
+                    $groqKey,
+                    'llama-3.3-70b-versatile',
+                    $chatHistory,
+                    [],
+                    'groq'
+                );
             } catch (\Exception $e) {
                 Log::error("ChatbotService: Fallo en Fallback Groq: " . $e->getMessage());
             }
         }
 
-        // Si todo falla, respuesta local estática muy descriptiva
+        // Último recurso: mensaje estático
         return [
-            'message' => "⚠️ **Servicio IA Temporalmente Indisponible**\n\nNo he podido establecer conexión con los proveedores de Inteligencia Artificial de la cadena de fallback (Gemini/DeepSeek).\n\nPor favor, verifica el estado de la conexión a internet en el servidor LXC o reintenta la consulta en unos instantes.",
-            'provider' => 'local-fallback',
-            'success' => false,
+            'message'        => "⚠️ **Servicio IA Temporalmente Indisponible**\n\nNo he podido establecer conexión con ningún proveedor de IA (Gemini/DeepSeek/OpenRouter/Groq).\n\nPor favor, reintenta en unos instantes.",
+            'provider'       => 'local-fallback',
+            'success'        => false,
             'usage_metadata' => null,
-            'data' => []
+            'data'           => []
         ];
     }
 }
