@@ -563,64 +563,76 @@ class BotQueryController extends Controller
                 return $msg;
 
             case 'expiraciones':
-                $expiredLicenses = $data['expired_licenses'] ?? [];
-                $expiringLicenses = $data['expiring_licenses'] ?? [];
+                $expiredLicenses = $this->consolidateLicenses($data['expired_licenses'] ?? []);
+                $expiringLicenses = $this->consolidateLicenses($data['expiring_licenses'] ?? []);
                 $expiredContracts = $data['expired_contracts'] ?? [];
                 $expiringContracts = $data['expiring_contracts'] ?? [];
 
                 $msg = "⚠️ *Alerta de Expiraciones Portal DX*\n\n";
+                $hasCritical = false;
 
                 if (!empty($expiredLicenses)) {
-                    $msg .= "🔴 *Licencias Caducadas (Top 15):*\n";
-                    foreach (array_slice($expiredLicenses, 0, 15) as $l) {
+                    $hasCritical = true;
+                    $msg .= "🔴 *Licencias/Sold-To Caducados:*\n";
+                    foreach ($expiredLicenses as $l) {
                         $client = $l['client'] ?? '';
-                        $code = $l['code'] ?? '';
+                        $soldTo = $l['sold_to'] ?? '';
+                        $daemon = strtoupper($l['daemon'] ?? '');
                         $exp = $l['expiration'] ?? '';
                         $days = abs(round($l['days_left'] ?? 0));
-                        $msg .= "• *{$client}* - `{$code}` (`{$exp}`, vencido hace {$days} días)\n";
+                        $prodCount = count($l['products']);
+                        
+                        $msg .= "• *{$client}* (Sold-To: `{$soldTo}` / {$daemon}) - Vencido el `{$exp}` (hace {$days} días) [{$prodCount} prod]\n";
                     }
                     $msg .= "\n";
                 }
 
                 if (!empty($expiringLicenses)) {
-                    $msg .= "🟡 *Licencias Próximas a Caducar (≤30 días, Top 15):*\n";
-                    foreach (array_slice($expiringLicenses, 0, 15) as $l) {
+                    $hasCritical = true;
+                    $msg .= "🟡 *Licencias/Sold-To Próximas a Caducar (≤30 días):*\n";
+                    foreach ($expiringLicenses as $l) {
                         $client = $l['client'] ?? '';
-                        $code = $l['code'] ?? '';
+                        $soldTo = $l['sold_to'] ?? '';
+                        $daemon = strtoupper($l['daemon'] ?? '');
                         $exp = $l['expiration'] ?? '';
                         $days = round($l['days_left'] ?? 0);
-                        $msg .= "• *{$client}* - `{$code}` (`{$exp}`, expira en {$days} días)\n";
+                        $prodCount = count($l['products']);
+                        
+                        $msg .= "• *{$client}* (Sold-To: `{$soldTo}` / {$daemon}) - Expira el `{$exp}` (en {$days} días) [{$prodCount} prod]\n";
                     }
                     $msg .= "\n";
                 }
 
                 if (!empty($expiredContracts)) {
-                    $msg .= "🔴 *Contratos Caducados (Top 15):*\n";
-                    foreach (array_slice($expiredContracts, 0, 15) as $c) {
+                    $hasCritical = true;
+                    $msg .= "🔴 *Contratos Caducados:*\n";
+                    foreach ($expiredContracts as $c) {
                         $client = $c['client'] ?? '';
                         $num = $c['number'] ?? '';
                         $vendor = $c['vendor'] ?? 'Siemens';
                         $prod = $c['product'] ?? '';
                         $exp = $c['expiration'] ?? '';
-                        $msg .= "• *{$client}* - *{$num}* [{$vendor}] - {$prod} (`{$exp}`)\n";
+                        $msg .= "• *{$client}* - `{$num}` [{$vendor}] ({$prod}) - Vencido el `{$exp}`\n";
                     }
                     $msg .= "\n";
                 }
 
                 if (!empty($expiringContracts)) {
-                    $msg .= "🟡 *Contratos Próximos a Caducar (≤30 días, Top 15):*\n";
-                    foreach (array_slice($expiringContracts, 0, 15) as $c) {
+                    $hasCritical = true;
+                    $msg .= "🟡 *Contratos Próximos a Caducar (≤30 días):*\n";
+                    foreach ($expiringContracts as $c) {
                         $client = $c['client'] ?? '';
                         $num = $c['number'] ?? '';
                         $vendor = $c['vendor'] ?? 'Siemens';
                         $prod = $c['product'] ?? '';
                         $exp = $c['expiration'] ?? '';
                         $days = round($c['days_left'] ?? 0);
-                        $msg .= "• *{$client}* - *{$num}* [{$vendor}] - {$prod} (`{$exp}`, expira en {$days} días)\n";
+                        $msg .= "• *{$client}* - `{$num}` [{$vendor}] ({$prod}) - Expira el `{$exp}` (en {$days} días)\n";
                     }
+                    $msg .= "\n";
                 }
 
-                if (empty($expiredLicenses) && empty($expiringLicenses) && empty($expiredContracts) && empty($expiringContracts)) {
+                if (!$hasCritical) {
                     $msg .= "🟢 *¡Todo en orden! No hay licencias ni contratos caducados o próximos a caducar en los siguientes 30 días.*\n";
                 }
 
@@ -628,5 +640,39 @@ class BotQueryController extends Controller
         }
 
         return "⚠️ *Comando procesado correctamente.*";
+    }
+
+    /**
+     * Group and deduplicate license list by Client + Sold-To + Daemon + Expiration.
+     */
+    protected function consolidateLicenses(array $licenses): array
+    {
+        $grouped = [];
+        foreach ($licenses as $l) {
+            $client = $l['client'] ?? '';
+            $soldTo = $l['sold_to'] ?? '';
+            $daemon = $l['daemon'] ?? '';
+            $exp = $l['expiration'] ?? '';
+            
+            $key = $client . '_' . $soldTo . '_' . $daemon . '_' . $exp;
+            
+            if (!isset($grouped[$key])) {
+                $grouped[$key] = [
+                    'client' => $client,
+                    'sold_to' => $soldTo,
+                    'daemon' => $daemon,
+                    'expiration' => $exp,
+                    'days_left' => $l['days_left'] ?? 0,
+                    'products' => [$l['code'] ?? '']
+                ];
+            } else {
+                $code = $l['code'] ?? '';
+                if ($code && !in_array($code, $grouped[$key]['products'], true)) {
+                    $grouped[$key]['products'][] = $code;
+                }
+            }
+        }
+        
+        return array_values($grouped);
     }
 }
