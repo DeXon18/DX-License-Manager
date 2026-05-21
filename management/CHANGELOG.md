@@ -1,6 +1,22 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-21 09:17] — Telegram Bot Integration & Deep Refactoring (NOC Pro) ✅
+
+### Added
+- **Integración Nativa de Webhook de Telegram**: Implementación directa del webhook oficial de Telegram en el endpoint `/api/bot/query` de Laravel, evitando dependencias externas de n8n para flujos estándar de Telegram.
+- **Autocompletado de Comandos en Telegram**: Registro formal de los comandos `/cliente`, `/expiraciones` y `/soldto` en los servidores centrales de Telegram mediante la API `/setMyCommands` para habilitar el autocompletado en el teclado móvil del usuario.
+- **Mensajes de Ayuda Interactivos**: Lógica ergonómica integrada en `BotQueryController.php` para interceptar llamadas sin argumentos en `/cliente` o `/soldto` y retornar un formateo instructivo interactivo en Markdown que indica cómo usar la sintaxis junto a un ejemplo práctico.
+
+### Changed
+- **Optimizaciones de Rendimiento de Base de Datos**:
+  - Migradas todas las queries de filtrado de expiración de colecciones en memoria de PHP a queries de base de datos directas en Eloquent usando fechas relativas.
+  - La búsqueda por Sold-To secundario ahora utiliza la directiva de base de datos `orWhereJsonContains` para buscar dentro de columnas JSON directamente en MariaDB.
+- **Normalización de Cadenas Multibyte**: Refactorizado el cálculo de similitud `calculateSimilarity()` mediante transliteración ASCII nativa en PHP (`iconv`) para asegurar que acentos, tildes y eñes (ñ) no alteren el porcentaje de confianza de Levenshtein.
+- **Modularización del Controlador de Consultas**: Separada la lógica de extracción de tokens a `extractToken()` y el mapeo/estado semántico de productos del inventario a `mapProduct()`, eliminando código inalcanzable y silenciando warnings estáticos de IDE.
+
+---
+
 ## [2026-05-20 15:58] — Active Inventory Expiration Traffic Light (NOC Pro) ✅
 
 ### Added
