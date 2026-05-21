@@ -245,6 +245,9 @@ class ChatbotService
         $maxLoops = 5;
         $loopCount = 0;
 
+        $toolResults = [];
+        $usageMetadata = null;
+
         while ($loopCount < $maxLoops) {
             $payload = [
                 'contents' => $contents,
@@ -275,6 +278,10 @@ class ChatbotService
                 Log::info("ChatbotService: Gemini candidate finishReason: " . $candidate['finishReason']);
             }
 
+            if (isset($resData['usageMetadata'])) {
+                $usageMetadata = $resData['usageMetadata'];
+            }
+
             $parts = $candidate['content']['parts'] ?? [];
             $functionCalls = [];
 
@@ -303,9 +310,11 @@ class ChatbotService
 
                     try {
                         $result = $this->callTool($funcName, $args);
+                        $toolResults[$funcName] = $result;
                     } catch (\Exception $e) {
                         Log::error("ChatbotService: Error ejecutando función '{$funcName}': " . $e->getMessage());
                         $result = ['error' => $e->getMessage(), 'success' => false];
+                        $toolResults[$funcName] = $result;
                     }
 
                     $functionResponsesParts[] = [
@@ -329,12 +338,27 @@ class ChatbotService
                 return [
                     'message' => $finalText,
                     'provider' => 'gemini-flash',
-                    'success' => true
+                    'success' => true,
+                    'usage_metadata' => $usageMetadata,
+                    'data' => $toolResults
                 ];
             }
         }
 
         throw new \Exception("Bucle de function calling superó el límite de llamadas simultáneas.");
+    }
+
+    private function checkAndIncrementMutationLimit(): bool
+    {
+        $session = request()->hasSession() ? request()->session() : null;
+        if ($session) {
+            $count = $session->get('chatbot_mutations_count', 0);
+            if ($count >= 5) {
+                return false;
+            }
+            $session->put('chatbot_mutations_count', $count + 1);
+        }
+        return true;
     }
 
     /**
@@ -352,6 +376,9 @@ class ChatbotService
             case 'search_servers_by_hardware':
                 return $this->toolSearchServersByHardware($args['hw_query'] ?? '');
             case 'create_contact':
+                if (!$this->checkAndIncrementMutationLimit()) {
+                    return ['success' => false, 'error' => 'Límite de mutaciones de contacto por sesión superado (máximo 5). Por favor, contacta con un administrador.'];
+                }
                 return $this->toolCreateContact(
                     (int) ($args['client_id'] ?? 0),
                     $args['name'] ?? '',
@@ -366,6 +393,9 @@ class ChatbotService
             case 'search_contacts':
                 return $this->toolSearchContacts($args['query'] ?? '');
             case 'update_contact':
+                if (!$this->checkAndIncrementMutationLimit()) {
+                    return ['success' => false, 'error' => 'Límite de mutaciones de contacto por sesión superado (máximo 5). Por favor, contacta con un administrador.'];
+                }
                 return $this->toolUpdateContact(
                     (int) ($args['contact_id'] ?? 0),
                     $args['role'] ?? null,
@@ -814,7 +844,9 @@ class ChatbotService
                     return [
                         'message' => $text,
                         'provider' => 'deepseek-fallback',
-                        'success' => true
+                        'success' => true,
+                        'usage_metadata' => null,
+                        'data' => []
                     ];
                 }
             } catch (\Exception $e) {
@@ -826,7 +858,9 @@ class ChatbotService
         return [
             'message' => "⚠️ **Servicio IA Temporalmente Indisponible**\n\nNo he podido establecer conexión con los proveedores de Inteligencia Artificial de la cadena de fallback (Gemini/DeepSeek).\n\nPor favor, verifica el estado de la conexión a internet en el servidor LXC o reintenta la consulta en unos instantes.",
             'provider' => 'local-fallback',
-            'success' => false
+            'success' => false,
+            'usage_metadata' => null,
+            'data' => []
         ];
     }
 }
