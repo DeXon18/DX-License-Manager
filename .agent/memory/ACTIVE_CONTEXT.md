@@ -1,7 +1,7 @@
 ---
 project: DX License Manager
 repo: github.com/DeXon18/DX-License-Manager
-status: Phase 24 - Bot de Telegram / Teams Laravel API | COMPLETADO ✅
+status: Phase 25 - Chatbot de Asistencia IA Web (Extensión) | EN CURSO 🔜
 last_sync: 2026-05-21
 current_agent: Antigravity (DX Agent) 🦾
 ---
@@ -9,26 +9,29 @@ current_agent: Antigravity (DX Agent) 🦾
 # 🧠 Contexto de Sesión Activa
 
 ## 🎯 Objetivo Actual
-Implementar la Fase 24 del Roadmap: Canal Interactivo de Consulta (Bot de Telegram / Teams) mediante endpoint estructurado en Laravel `/api/bot/query`.
+Ampliar las capacidades del chatbot asistido por IA en el portal `DX-License-Manager` incorporando nuevas herramientas operativas, llamadas paralelas a funciones, telemetría y una Consola Técnica Bento expandible.
 
 ## Estado de la Tarea Actual
-- **Rama:** `feature/telegram-bot-api`
-- **Estado:** ✅ Completado al 100% y enlazado en vivo.
+- **Rama:** `feature/chatbot-web-assist`
+- **Estado:** ✅ Completado (Todos los pasos finalizados con éxito).
 - **Cambios clave:**
-  - Registrado token `TELEGRAM_BOT_TOKEN` y configurada la ruta `/api/bot/query`.
-  - Refactorizado [BotQueryController.php](file:///z:/DX-License-Manager/backend/app/Http/Controllers/Api/BotQueryController.php) con soporte nativo de Webhooks (eliminando dependencias de n8n para Telegram), consultas SQL hiper-optimizadas directa en base de datos, normalización de strings compatible con multibyte (tildes/ñ) para Levenshtein, y constantes centralizadas.
-  - Registrados los comandos del bot nativamente en la interfaz de Telegram (`/setMyCommands`) arrojando éxito.
-  - Implementado validador amigable con el usuario: si se ejecuta `/cliente` o `/soldto` sin argumentos, el bot responde de forma interactiva sugiriendo el uso correcto y un ejemplo práctico en Markdown.
-  - Pruebas extremo a extremo validadas exitosamente y confirmadas con commits atómicos en la rama.
+  - Desarrollado e integrado el soporte para **Function Calling Paralelo** en `ChatbotService.php` para resolver múltiples llamadas a herramientas en un único turno.
+  - Implementadas las 5 nuevas herramientas operativas: `get_contract_details`, `search_contacts`, `update_contact`, `get_dashboard_summary` y `list_clients_without_contacts`.
+  - Integrada la sanitización de inputs fuzzy, validación estricta de variables y telemetría `finishReason`.
+  - Implementado **Caché Inteligente de Herramientas** de 5 minutos (`Cache::remember`) para `get_resource_links` y `get_expirations`.
+  - Actualizado `ChatbotController.php` para inyectar telemetría de tokens, límites de mutaciones por sesión (máximo 5) y soporte de respuestas enriquecidas (`data` dict).
+  - Diseñado y acoplado el sistema de estilos premium responsive para la **Consola Bento Split-Screen** expandible (`dx-v2-chatbot.css`).
+  - Refactorizada e implementada la reactividad Alpine.js en la plantilla `chatbot.blade.php`, dotándola de persistencia en `sessionStorage` para telemetría, límites de mutaciones y widgets visuales de herramientas Bento interactivos.
+  - Creados e implementados los tests unitarios y de integración de robustez en `ChatbotTest.php`, logrando un 100% de aserciones exitosas y cobertura completa.
+  - Logs de contenedores en Beta verificados libres de errores.
 
 ## Próximos Pasos
-- [ ] Fusionar rama `feature/telegram-bot-api` en `dev` tras validación final por parte de Oskar.
-- [ ] Iniciar la Fase 25: Implementar el Chatbot de Asistencia IA Web Integrado en la UI del portal (Alpine.js y chat flotante).
+- [ ] Revisión del PR final y autorización para mergear a `dev`.
 
 ---
 
 ## 🛠️ Tareas en curso
-- A la espera del merge a `dev` e inicio del Widget de Asistencia IA Web.
+- Implementación de la Fase 25 - Extensión (100% Completada y Verificada). Listo para revisión.
 
 ---
 
