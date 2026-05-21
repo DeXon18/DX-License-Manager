@@ -30,6 +30,11 @@ El desarrollador inicia. El agente espera.
 
 *Actualmente en espera de la definición de nuevos objetivos y prioridades por parte de Oskar.*
 
+### 💡 Ideas Pendientes (UI / UX / Soporte)
+- **Guías del Portal**: Crear nueva sección documental para usuarios.
+- **Contactar Soporte IT**: Crear formulario en la web conectado con el bot de Telegram (para recibir notificaciones directas).
+- **FAQ / Ayuda**: Crear nueva sección de preguntas frecuentes y asistencia.
+
 ## ✅ Completado
 
 ### Fase 25 — Consola de Diagnósticos y Generador COD ✅
