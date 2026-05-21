@@ -880,7 +880,7 @@ class ChatbotService
                         'X-Title'        => 'DX License Manager'
                     ])
                     ->post('https://openrouter.ai/api/v1/chat/completions', [
-                        'model'       => 'google/gemini-2.0-flash-exp:free',
+                        'model'       => 'meta-llama/llama-3.1-8b-instruct:free',
                         'messages'    => $messages,
                         'temperature' => 0.5
                     ]);
