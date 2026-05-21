@@ -1,6 +1,19 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-21 15:10] — Despliegue v2.0 en Producción & Alineación de Infraestructura ✅
+
+### Added
+- **Despliegue Limpio de Producción**: Lanzamiento oficial de la v2.0 del portal en `portal.dxpro.es` partiendo de una base de datos limpia (`migrate:fresh --seed`) e inyección de datos semilla (AdminUserSeeder, RoleSeeder, FeatureFlagSeeder).
+- **Alineación de Infraestructura Prod/Beta**: Igualadas las capacidades de Docker Compose en producción respecto a beta (añadido contenedor `node-prod`, montajes de `.git` y `/var/run/docker.sock` para `php-fpm-prod`) anticipando la futura desactivación del entorno Beta.
+- **Reconstrucción de Imágenes (Hotfix)**: Reconstrucción de la imagen Docker de `php-fpm-prod` en el servidor de producción para incluir la CLI de `docker` internamente, restaurando la telemetría en el Dashboard de Servicios Docker (`/admin/system/docker`).
+
+### Changed
+- **Directivas de Storage Seguras**: Refactorización de `docker-compose.prod.yml` para utilizar el path seguro y estándar `./backend/storage` nativo de Laravel en lugar de la carpeta `./storage` en la raíz. Eliminado el directorio residual del host.
+- **Refactorización de Footer (UI)**: Eliminados los bloques obsoletos de "Stack Técnico" e "Infraestructura" en el pie de página. Reemplazados por secciones utilitarias de **Soporte Interno** y **Portales Oficiales** de fabricantes (Siemens, Moldex3D), junto con la insignia "AI-Powered Productivity".
+
+---
+
 ## [2026-05-21 09:17] — Telegram Bot Integration & Deep Refactoring (NOC Pro) ✅
 
 ### Added

@@ -1179,6 +1179,18 @@ Integración de un flujo cognitivo híbrido en la Bandeja de Normalización para
 
 ---
 
+# FASE 24 — CANAL INTERACTIVO DE CONSULTA (TELEGRAM) ✅ COMPLETADA
+
+Integración de un webhook oficial de Telegram directamente en Laravel (`/api/bot/query`) para consultas móviles de licencias, expiraciones e identidades. Sustituye la automatización externa por una comunicación segura end-to-end con el sistema.
+
+---
+
+# FASE 25 — CONSOLA DE DIAGNÓSTICOS, IA WEB Y DESPLIEGUE PRODUCCIÓN V2.0 ✅ COMPLETADA
+
+Estabilización del portal, actualización del Asistente de IA web (rediseño NOC Pro), y el **hito crítico de despliegue oficial de la versión 2.0 en Producción (`portal.dxpro.es`)**, asegurando paridad de infraestructura Docker entre el entorno Beta y el de Producción.
+
+---
+
 ## Stack Tecnológico
 
 | Capa           | Tecnología                     |
