@@ -32,6 +32,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Fase 24 — Canal Interactivo de Consulta (Bot de Telegram / Teams Laravel API) ✅
+- **Completada:** 2026-05-21
+- **Rama:** `feature/telegram-bot-api`
+- **Resumen:** Implementación del endpoint seguro `/api/bot/query` en Laravel para control de comandos interactivos (`/cliente`, `/expiraciones`, `/soldto`) con soporte nativo de webhooks en vivo, optimización SQL en base de datos (`orWhereJsonContains` y filtros de fecha directos), normalización de strings compatible con multibyte (tildes/ñ) para Levenshtein, registro nativo en Telegram (`/setMyCommands`) y mensajes interactivos de ayuda.
+- **PR:** #027 — merged a dev
+
 ### Fase 23.8 — Semáforo de Expiración en Ficha de Clientes Premium ✅
 - **Completada:** 2026-05-20
 - **Rama:** `feature/expiration-highlight-ui`
