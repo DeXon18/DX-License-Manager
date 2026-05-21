@@ -1,5 +1,5 @@
 ---
-description:
+description: 
 ---
 
 # Workflow: Inicio de Sesión
@@ -34,7 +34,9 @@ Sin este paso, el agente trabaja con contexto desactualizado.
 
 ---
 
-Notas: Este checklist se consulta al inicio de cada sesión para garantizar que la memoria y el flujo de inicio sean consistentes y trazables. No se debe ejecutar ninguna acción durante Plan Mode. Para consultar el checklist consolidado, ver management/CHECKLIST.md.
+> ⚠️ Este checklist se ejecuta al inicio de cada sesión para garantizar que la memoria y el flujo de inicio sean consistentes y trazables. **No ejecutar ninguna acción durante este paso.** Para el checklist consolidado de entrega, ver `management/CHECKLIST.md`.
+
+---
 
 ## Pasos — Seguir en orden estricto
 
@@ -45,11 +47,15 @@ Leer en este orden exacto. **No saltarse ningún archivo.**
 1. `.agent/last_brain` — párrafo técnico denso del estado mental del agente anterior. Leer primero — da el contexto inmediato en segundos.
 2. `.agent/memory/ACTIVE_CONTEXT.md` — estado activo, decisiones técnicas, handover.
 3. `.agent/INDEX.md` — mapa de skills y reglas disponibles.
-4. `.agent/secrets/identities.json` — infraestructura y URLs
-5. `management/HANDOFF.md` — qué se hizo en la última sesión y qué queda pendiente
-6. `management/ROADMAP.md` — fase actual y siguientes pasos
-7. `management/BACKLOG.md` — tareas en progreso
-8. **`DESIGN.md` — OBLIGATORIO.** Sistema de diseño del proyecto. Cualquier vista, componente o elemento visual debe seguir este documento. No crear nada visual sin haberlo leído.
+4. `.agent/secrets/identities.json` — infraestructura y URLs.
+5. `management/HANDOFF.md` — qué se hizo en la última sesión y qué queda pendiente.
+6. `management/ROADMAP.md` — fase actual y siguientes pasos.
+7. `management/BACKLOG.md` — tareas en progreso.
+8. `DESIGN.md` — **OBLIGATORIO.** Sistema de diseño del proyecto. Cualquier vista, componente o elemento visual debe seguir este documento. No crear nada visual sin haberlo leído.
+9. `AGENTS.md` — reglas de operación activas. Confirmar que la Regla Cero está activa.
+10. `.agent/lessons.md` — lecciones aprendidas de sesiones anteriores. Aplicar desde el primer momento.
+
+---
 
 ### 2. Verificar el entorno Git
 
@@ -67,6 +73,8 @@ Confirmar:
 
 ⚠️ **Si hay cambios sin commitear → PARAR.** Preguntar al desarrollador qué hacer con ellos antes de continuar. No asumir, no descartar, no commitear sin preguntar.
 
+---
+
 ### 3. Verificar los stacks Docker (solo si se va a trabajar con backend)
 
 Ejecutar via SSH MCP en el LXC 600:
@@ -79,12 +87,26 @@ docker compose --project-directory . -f infra/docker-compose.prod.yml ps
 
 ⚠️ **Si algún stack está caído → PARAR.** Informar al desarrollador antes de continuar. No intentar levantar contenedores sin autorización explícita.
 
+---
+
 ### 4. Generar resumen de inicio
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-🟢 SESIÓN INICIADA — DX Management Portal
+🟢 SESIÓN INICIADA — DX License Manager
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📖 Lectura completada:
+[x] last_brain          — contexto anterior cargado
+[x] ACTIVE_CONTEXT.md   — estado activo recuperado
+[x] INDEX.md            — routing de skills cargado
+[x] identities.json     — infraestructura cargada
+[x] HANDOFF.md          — handover leído
+[x] ROADMAP.md          — fase actual identificada
+[x] BACKLOG.md          — tareas en progreso revisadas
+[x] DESIGN.md           — sistema de diseño activo
+[x] AGENTS.md           — reglas de operación activas
+[x] lessons.md          — [N lecciones aplicadas / "sin entradas aún"]
 
 📍 Rama activa:       [nombre de la rama]
 📦 Fase actual:       [fase X — nombre]
@@ -95,9 +117,12 @@ docker compose --project-directory . -f infra/docker-compose.prod.yml ps
 
 Stack beta:  [✅ running / ❌ down / ⚠️ sin verificar]
 Stack prod:  [✅ running / ❌ down / ⚠️ sin verificar]
-DESIGN.md:   ✅ leído
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🔒 Modo estricto activo. No ejecuto sin confirmación explícita.
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
+
+---
 
 ### 5. Esperar instrucción del desarrollador
 
@@ -121,7 +146,9 @@ Señales de que el contexto está al límite:
 3. Cerrar la sesión
 4. Abrir sesión nueva → `/start`
 
+```bash
 # Verificar logs de beta
 ssh root@192.168.50.60 -p 22 "docker compose --project-directory /opt/web-projects/DX-License-Manager -f /opt/web-projects/DX-License-Manager/infra/docker-compose.beta.yml logs -f"
+```
 
 El HANDOFF y el CHANGELOG garantizan que no se pierde nada.

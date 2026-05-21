@@ -1,0 +1,29 @@
+/**
+ * @module    dx-v2-base
+ * @fase      21.1
+ * @desc      Reglas base para body y utilidades CSS genéricas y minimalistas del portal.
+ * @afecta    [Global App Portal]
+ * @version   2.21.0
+ */
+
+/* 4. BASE */
+body {
+  font-family: var(--dx-v2-font-sans); background:var(--dx-v2-bg); color:var(--dx-v2-primary);
+  min-height:100vh; display:flex; flex-direction:column;
+  transition:background 0.2s,color 0.2s;
+  overflow-y: scroll;
+}
+
+/* UTILIDADES */
+.text-center { text-align: center !important; }
+.text-right { text-align: right !important; }
+.font-bold { font-weight: 600 !important; }
+.font-mono { font-family: var(--dx-v2-font-mono) !important; }
+.muted { color: var(--dx-v2-muted) !important; }
+.body-sm { font-size: 13px !important; }
+.text-xs { font-size: 11px !important; }
+.mb-4 { margin-bottom: 16px !important; }
+.mt-4 { margin-top: 16px !important; }
+.mt-6 { margin-top: 24px !important; }
+
+/* body.login-page removed to avoid grid conflict */

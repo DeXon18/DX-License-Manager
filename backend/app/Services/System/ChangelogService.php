@@ -34,8 +34,8 @@ class ChangelogService
                 continue;
             }
 
-            // Detect Date Headers: ## [2026-05-08] — Title
-            if (preg_match('/^##\s*\[(\d{4}-\d{2}-\d{2})\]\s*—\s*(.*)/', $line, $matches)) {
+            // Detect Date Headers: ## [2026-05-08 12:00] — Title
+            if (preg_match('/^##\s*\[(\d{4}-\d{2}-\d{2}(?:\s\d{2}:\d{2})?)\]\s*—\s*(.*)/', $line, $matches)) {
                 if ($currentEntry) {
                     $entries[] = $currentEntry;
                 }

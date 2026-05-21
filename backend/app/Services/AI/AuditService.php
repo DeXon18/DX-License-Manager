@@ -13,11 +13,27 @@ class AuditService
     /**
      * Envía una solicitud de auditoría al motor n8n.
      */
-    public function requestAudit(int $userId, string $licenseText, array $detectedHostIds, string $vendor = 'siemens')
+    public function requestAudit(int $userId, string $licenseText, array $detectedHostIds, string $vendor = 'siemens', bool $isTemporal = false)
     {
         $uuid = (string) Str::uuid();
 
-        // Crear registro en estado procesamiento
+        // 1. Si es una licencia temporal (7 días), registramos pero saltamos la IA
+        if ($isTemporal) {
+            return AiAuditResult::create([
+                'uuid' => $uuid,
+                'user_id' => $userId,
+                'vendor' => $vendor,
+                'status' => 'skipped',
+                'customer_name' => 'TEMPORARY LICENSE (7 DAYS)',
+                'results' => [
+                    'message' => 'Audit skipped: Temporary 7-day license lacks hardware identifiers.',
+                    'vendor_daemon' => 'SKIPPED',
+                    'status' => 'skipped'
+                ]
+            ]);
+        }
+
+        // 2. Crear registro en estado procesamiento para auditoría normal
         $audit = AiAuditResult::create([
             'uuid' => $uuid,
             'user_id' => $userId,
@@ -94,6 +110,17 @@ class AuditService
             'results' => $data, // Guardamos todo el JSON para la UI
             'status' => 'completed',
         ]);
+
+        // Sincronizar Mapeos Adicionales (Unificada)
+        if ($clientId && !empty($data['additional_sold_tos']) && is_array($data['additional_sold_tos'])) {
+            foreach ($data['additional_sold_tos'] as $extraSoldTo) {
+                ClientMapping::firstOrCreate([
+                    'client_id' => $clientId,
+                    'sold_to' => $extraSoldTo,
+                    'vendor' => $audit->vendor,
+                ]);
+            }
+        }
 
         // Sincronizar Inventario Activo
         try {

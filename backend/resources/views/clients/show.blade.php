@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@push('styles')
+    <link rel="stylesheet" href="{{ asset('assets/css/modules/dx-v2-clients.css?v=' . time()) }}">
+@endpush
+
 @section('content')
 <div class="page-header">
     <div class="breadcrumb">
@@ -7,108 +11,130 @@
         <span class="muted">/</span>
         <span class="current">{{ $client->name }}</span>
     </div>
-    <h1 class="page-title">{{ $client->name }}</h1>
-    <p class="page-sub">Perfil de cuenta y gestión de activos del ecosistema.</p>
+    <div class="dx-v2-clients-header-split">
+        <div>
+            <h1 class="page-title">{{ $client->name }}</h1>
+            <p class="page-sub">Perfil de cuenta y gestión de activos del ecosistema.</p>
+        </div>
+        <div class="dx-v2-clients-badge-container">
+            @if($client->siemens_daemons_count > 0)
+                <div class="badge dx-v2-clients-header-badge siemens">
+                    <span class="dx-v2-clients-header-badge-value">{{ $client->siemens_daemons_count }}</span>
+                    <span class="dx-v2-clients-header-badge-label">Siemens</span>
+                </div>
+            @endif
+            @if($client->moldex_daemons_count > 0)
+                <div class="badge dx-v2-clients-header-badge moldex">
+                    <span class="dx-v2-clients-header-badge-value">{{ $client->moldex_daemons_count }}</span>
+                    <span class="dx-v2-clients-header-badge-label">Moldex3D</span>
+                </div>
+            @endif
+        </div>
+    </div>
 </div>
 
 <div x-data="{ 
     tab: localStorage.getItem('activeTab') || '{{ request('tab', 'contracts') }}',
     auditDetail: null,
+    historyOpen: false,
     setTab(name) {
         this.tab = name;
         localStorage.setItem('activeTab', name);
     }
 }" class="client-profile">
-    <div class="tabs">
-        <button class="tab-link" :class="{ 'active': tab === 'contracts' }" @click="setTab('contracts')">Contratos</button>
-        <button class="tab-link" :class="{ 'active': tab === 'licenses' }" @click="setTab('licenses')">Licencias</button>
-        <button class="tab-link" :class="{ 'active': tab === 'contacts' }" @click="setTab('contacts')">Contactos</button>
-        <button class="tab-link" :class="{ 'active': tab === 'certificates' }" @click="setTab('certificates')">Certificados</button>
+    <div class="dx-v2-clients-tabs">
+        <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'contracts' }" @click="setTab('contracts')">Contratos</button>
+        <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'licenses' }" @click="setTab('licenses')">Licencias</button>
+        <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'contacts' }" @click="setTab('contacts')">Contactos</button>
+        <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'certificates' }" @click="setTab('certificates')">Certificados</button>
+        <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'renewals' }" @click="setTab('renewals')">Renovaciones</button>
     </div>
 
     <!-- Contratos Tab -->
     <div x-show="tab === 'contracts'" class="tab-content">
         <div class="card">
-            <table class="table text-sm">
-                <thead>
-                    <tr>
-                        <th>ContraHeader</th>
-                        <th>Vendor</th>
-                        <th>Producto</th>
-                        <th>Fin Contrato</th>
-                        <th>Estado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($client->contracts as $contract)
-                    <tr>
-                        <td class="font-bold">{{ $contract->contract_number }}</td>
-                        <td class="font-bold">
-                            @if($contract->vendor->name == 'Siemens')
-                                <span class="vendor-chip"><span class="vendor-dot" style="background:var(--siemens)"></span> Siemens</span>
-                            @elseif($contract->vendor->name == 'Moldex3D')
-                                <span class="vendor-chip"><span class="vendor-dot" style="background:var(--moldex)"></span> Moldex3D</span>
-                            @else
-                                {{ $contract->vendor->name }}
-                            @endif
-                        </td>
-                        <td class="font-bold">{{ $contract->type_product }}</td>
-                        <td class="font-bold">{{ $contract->end_date ? $contract->end_date->format('d/m/Y') : '—' }}</td>
-                        <td>
-                            @php
-                                $status = trim($contract->status ?: 'vacio');
-                                $statusMap = [
-                                    'vacio' => ['label' => 'Sin estado', 'class' => 'badge-muted', 'icon' => 'fa-regular fa-circle-question'],
-                                    'Ofertado' => ['label' => 'Ofertado', 'class' => 'badge-info', 'icon' => 'fa-solid fa-file-signature'],
-                                    'En negociación' => ['label' => 'En negociación', 'class' => 'badge-primary', 'icon' => 'fa-solid fa-handshake'],
-                                    'Aceptado por el cliente' => ['label' => 'Aceptado', 'class' => 'badge-accent', 'icon' => 'fa-solid fa-circle-check'],
-                                    'Procesado (M) - Pte fact.' => ['label' => 'Procesado', 'class' => 'badge-warn', 'icon' => 'fa-solid fa-gears'],
-                                    'Facturado - Pte proc. (M)' => ['label' => 'Facturado', 'class' => 'badge-warning', 'icon' => 'fa-solid fa-file-invoice-dollar'],
-                                    'Cerrado' => ['label' => 'Cerrado', 'class' => 'badge-success', 'icon' => 'fa-solid fa-lock'],
-                                    'Baja' => ['label' => 'Baja', 'class' => 'badge-danger', 'icon' => 'fa-solid fa-circle-xmark'],
-                                ];
-                                $data = $statusMap[$status] ?? $statusMap['vacio'];
-                            @endphp
-                            <span class="badge {{ $data['class'] }}">
-                                <i class="{{ $data['icon'] }}" style="margin-right: 6px; font-size: 10px; opacity: 0.8;"></i>
-                                {{ $data['label'] }}
-                            </span>
-                        </td>
-                    </tr>
-                    @empty
-                    <tr>
-                        <td colspan="5" class="text-center py-12 muted">No hay contratos registrados para este cliente.</td>
-                    </tr>
-                    @endforelse
-                </tbody>
-            </table>
+            <div class="dx-v2-ui-table-wrapper">
+                <table class="dx-v2-ui-table">
+                    <thead>
+                        <tr>
+                            <th>ContraHeader</th>
+                            <th>Vendor</th>
+                            <th>Producto</th>
+                            <th>Fin Contrato</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($client->contracts as $contract)
+                        <tr>
+                            <td class="font-bold">{{ $contract->contract_number }}</td>
+                            <td class="font-bold">
+                                @if($contract->vendor->name == 'Siemens')
+                                    <span class="vendor-chip"><span class="dx-v2-clients-vendor-dot siemens"></span> Siemens</span>
+                                @elseif($contract->vendor->name == 'Moldex3D')
+                                    <span class="vendor-chip"><span class="dx-v2-clients-vendor-dot moldex"></span> Moldex3D</span>
+                                @else
+                                    {{ $contract->vendor->name }}
+                                @endif
+                            </td>
+                            <td class="font-bold">{{ $contract->type_product }}</td>
+                            <td class="font-bold">{{ $contract->end_date ? $contract->end_date->format('d/m/Y') : '—' }}</td>
+                            <td>
+                                @php
+                                    $status = trim($contract->status ?: 'vacio');
+                                    $statusMap = [
+                                        'vacio' => ['label' => 'Sin estado', 'class' => 'badge-muted', 'icon' => 'fa-regular fa-circle-question'],
+                                        'Ofertado' => ['label' => 'Ofertado', 'class' => 'badge-info', 'icon' => 'fa-solid fa-file-signature'],
+                                        'En negociación' => ['label' => 'En negociación', 'class' => 'badge-primary', 'icon' => 'fa-solid fa-handshake'],
+                                        'Aceptado por el cliente' => ['label' => 'Aceptado', 'class' => 'badge-accent', 'icon' => 'fa-solid fa-circle-check'],
+                                        'Procesado (M) - Pte fact.' => ['label' => 'Procesado', 'class' => 'badge-warn', 'icon' => 'fa-solid fa-gears'],
+                                        'Facturado - Pte proc. (M)' => ['label' => 'Facturado', 'class' => 'badge-warning', 'icon' => 'fa-solid fa-file-invoice-dollar'],
+                                        'Cerrado' => ['label' => 'Cerrado', 'class' => 'badge-success', 'icon' => 'fa-solid fa-lock'],
+                                        'Baja' => ['label' => 'Baja', 'class' => 'badge-danger', 'icon' => 'fa-solid fa-circle-xmark'],
+                                    ];
+                                    $data = $statusMap[$status] ?? $statusMap['vacio'];
+                                @endphp
+                                <span class="badge {{ $data['class'] }}">
+                                    <i class="{{ $data['icon'] }} dx-v2-clients-status-icon"></i>
+                                    {{ $data['label'] }}
+                                </span>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="5" class="text-center py-12 muted">No hay contratos registrados para este cliente.</td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
 
             <!-- Card Footer Legend -->
-            <div class="card-footer-legend">
-                <div class="legend-header">
+            <div class="dx-v2-clients-legend-wrapper">
+                <div class="dx-v2-clients-legend-header">
                     <i class="fa-solid fa-circle-info"></i>
-                    <span>Leyenda de Estados del Ecosistema</span>
+                    <span class="dx-v2-clients-legend-header-title">Leyenda de Estados del Ecosistema</span>
                 </div>
-                <div class="legend-grid">
-                    <div class="legend-item">
+                <div class="dx-v2-clients-legend-grid">
+                    <div class="dx-v2-clients-legend-item">
                         <span class="badge badge-info"><i class="fa-solid fa-file-signature"></i> Ofertado</span>
                     </div>
-                    <div class="legend-item">
+                    <div class="dx-v2-clients-legend-item">
                         <span class="badge badge-primary"><i class="fa-solid fa-handshake"></i> Negociación</span>
                     </div>
-                    <div class="legend-item">
+                    <div class="dx-v2-clients-legend-item">
                         <span class="badge badge-accent"><i class="fa-solid fa-circle-check"></i> Aceptado</span>
                     </div>
-                    <div class="legend-item">
+                    <div class="dx-v2-clients-legend-item">
                         <span class="badge badge-warn"><i class="fa-solid fa-gears"></i> Procesado</span>
                     </div>
-                    <div class="legend-item">
+                    <div class="dx-v2-clients-legend-item">
                         <span class="badge badge-warning"><i class="fa-solid fa-file-invoice-dollar"></i> Facturado</span>
                     </div>
-                    <div class="legend-item">
+                    <div class="dx-v2-clients-legend-item">
                         <span class="badge badge-success"><i class="fa-solid fa-lock"></i> Cerrado</span>
                     </div>
-                    <div class="legend-item">
+                    <div class="dx-v2-clients-legend-item">
                         <span class="badge badge-danger"><i class="fa-solid fa-circle-xmark"></i> Baja</span>
                     </div>
                 </div>
@@ -117,103 +143,142 @@
     </div>
 
     <!-- Licencias Tab (Inventario Activo) -->
-    <div x-show="tab === 'licenses'" style="display: none;">
-        <div class="inv-container">
+    <div x-show="tab === 'licenses'" x-cloak>
+        <div class="dx-v2-clients-inv-container">
             @forelse($inventoryBySoldTo as $soldTo => $daemons)
-                <div class="sold-to-block">
-                    <div class="sold-to-header">
-                        <div class="sold-to-badge-wrapper">
-                            <div class="sold-to-icon"><i class="fa-solid fa-id-card"></i></div>
+                <div class="dx-v2-clients-soldto-block" style="{{ $loop->last ? 'margin-bottom: 20px !important;' : '' }}">
+                    <div class="dx-v2-clients-soldto-header">
+                        <div class="dx-v2-clients-soldto-badge-wrapper">
+                            <div class="dx-v2-clients-soldto-icon"><i class="fa-solid fa-id-card"></i></div>
                             <div>
                                 <span class="tech-label">{{ $daemons->first()->vendor === 'moldex' ? 'Customer ID' : 'Sold-To Account' }}</span>
-                                <div class="sold-to-id">{{ $soldTo }}</div>
+                                <div class="dx-v2-clients-soldto-id">{{ $soldTo }}</div>
                             </div>
                         </div>
-                        <div class="tech-label" style="opacity: 0.3; letter-spacing: 0.4em;">Active Inventory</div>
+                        <div class="tech-label dx-v2-clients-soldto-header-right">Active Inventory</div>
                     </div>
 
                     @foreach($daemons as $daemon)
-                        <div class="daemon-card {{ $daemon->vendor }}">
-                            <div class="daemon-header">
-                                <div class="header-col">
+                        <div class="dx-v2-clients-daemon-card {{ $daemon->vendor }} {{ !empty($daemon->additional_sold_tos) ? 'unified-card' : '' }}">
+                            @if(!empty($daemon->additional_sold_tos))
+                                <div class="dx-v2-clients-daemon-watermark">
+                                    <i class="fa-solid fa-network-wired"></i>
+                                </div>
+                            @endif
+                            <div class="dx-v2-clients-daemon-header">
+                                <div class="dx-v2-clients-daemon-header-col">
                                     <span class="tech-label">{{ $daemon->vendor === 'moldex' ? 'Plataforma' : 'Daemon' }}</span>
-                                    <div style="display: flex; align-items: center;">
+                                    <div class="dx-v2-clients-daemon-logo-wrap">
                                         @if($daemon->vendor === 'moldex')
-                                            <span class="tech-value daemon-name moldex-logo">Moldex<span class="accent">3D</span></span>
+                                            <span class="tech-value dx-v2-clients-daemon-name moldex-logo">Moldex<span class="accent">3D</span></span>
                                         @else
-                                            <span class="tech-value daemon-name">{{ $daemon->daemon }}</span>
-                                            <span class="inv-badge badge-{{ $daemon->vendor }}">{{ ucfirst($daemon->vendor) }}</span>
+                                            <span class="tech-value dx-v2-clients-daemon-name">{{ $daemon->daemon }}</span>
+                                            <span class="dx-v2-clients-daemon-badge {{ $daemon->vendor }}">{{ ucfirst($daemon->vendor) }}</span>
                                         @endif
+
+                                </div>
+                            </div>
+
+                            @if(!empty($daemon->additional_sold_tos))
+                                <div class="dx-v2-clients-daemon-unified-row">
+                                    <div class="dx-v2-clients-unified-list">
+                                        @foreach($daemon->additional_sold_tos as $extraSt)
+                                            <span class="dx-v2-clients-unified-item">
+                                                <i class="fa-solid fa-link"></i>
+                                                {{ $extraSt }}
+                                            </span>
+                                        @endforeach
                                     </div>
                                 </div>
+                            @endif
 
-                                <div class="header-col grow">
+                                <div class="dx-v2-clients-daemon-header-col grow">
                                     @if($daemon->type === 'dongle')
                                         <span class="tech-label">Hardware Key / Dongle</span>
-                                        <div style="display: flex; align-items: center; gap: 8px;">
-                                            <i class="fa-solid fa-key" style="font-size: 12px; opacity: 0.3;"></i>
+                                        <div class="dx-v2-clients-hardware-id-wrap">
+                                            <i class="fa-solid fa-key dx-v2-clients-hardware-icon"></i>
                                             <span class="tech-value">{{ $daemon->hardware_id }}</span>
                                         </div>
                                     @elseif($daemon->vendor === 'moldex')
                                         <span class="tech-label">Servidor / Hostname</span>
                                         <span class="tech-value uppercase">{{ $daemon->hostname ?? 'N/A' }}</span>
-                                        <span class="tech-label" style="font-size: 8px; opacity: 0.4; margin-top: 2px;">Machine ID: {{ $daemon->hardware_id }}</span>
+                                        <span class="tech-label dx-v2-clients-sub-label">Machine ID: {{ $daemon->hardware_id }}</span>
                                     @else
                                         <span class="tech-label">Server Hostname</span>
                                         <span class="tech-value uppercase">{{ $daemon->hostname ?? 'N/A' }}</span>
-                                        <span class="tech-label" style="font-size: 8px; opacity: 0.4; margin-top: 2px;">ID: {{ $daemon->composite ?? '—' }}</span>
+                                        <span class="tech-label dx-v2-clients-sub-label">ID: {{ $daemon->composite ?? '—' }}</span>
                                     @endif
                                 </div>
 
-                                <div class="header-col" style="min-width: 120px;">
+                                <div class="dx-v2-clients-daemon-header-col width-120">
                                     <span class="tech-label">Configuración</span>
-                                    <div style="display: flex; align-items: center; gap: 6px;">
-                                        <span class="inv-badge badge-type">{{ $daemon->type }}</span>
+                                    <div class="dx-v2-clients-daemon-logo-wrap">
+                                        <span class="dx-v2-clients-daemon-badge type">{{ $daemon->type }}</span>
                                         @if($daemon->version)
-                                            <span class="inv-badge" style="background: var(--bg); color: var(--primary); border: 1px solid var(--border);">v{{ $daemon->version }}</span>
+                                            <span class="dx-v2-clients-daemon-badge version">v{{ $daemon->version }}</span>
                                         @endif
                                     </div>
                                 </div>
 
-                                <div class="header-col">
+                                <div class="dx-v2-clients-daemon-header-col">
                                     <form action="{{ route('inventory.daemon.destroy', $daemon) }}" method="POST" onsubmit="return confirm('¿Eliminar bloque?')">
                                         @csrf @method('DELETE')
-                                        <button type="submit" class="btn-action"><i class="fa-solid fa-trash-can"></i></button>
+                                        <button type="submit" class="dx-v2-clients-btn-action"><i class="fa-solid fa-trash-can"></i></button>
                                     </form>
                                 </div>
                             </div>
 
-                            <table class="inv-table">
+                            <table class="dx-v2-clients-inv-table">
                                 <thead>
                                     <tr>
                                         <th>Producto</th>
                                         <th>Descripción Técnica</th>
                                         <th>Host ID (MAC)</th>
-                                        <th style="text-align: center;">Cant.</th>
+                                        <th class="text-center">Cant.</th>
                                         <th>Expiración</th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($daemon->products as $product)
-                                        <tr style="{{ $product->status !== 'active' ? 'opacity: 0.3;' : '' }}">
-                                            <td class="product-code">{{ $product->product_code }}</td>
+                                        <tr class="dx-v2-clients-product-row {{ $product->status !== 'active' ? 'inactive' : '' }}">
+                                            <td class="dx-v2-clients-product-code">{{ $product->product_code }}</td>
                                             <td>{{ $product->description }}</td>
-                                            <td class="host-id-mono">{{ $product->node_locked_host_id ?? '—' }}</td>
-                                            <td style="text-align: center;"><div class="qty-badge">{{ $product->quantity }}</div></td>
+                                            <td class="dx-v2-clients-host-mono">{{ $product->node_locked_host_id ?? '—' }}</td>
+                                            <td class="text-center">
+                                                <div class="dx-v2-clients-qty-badge">{{ $product->quantity }}</div>
+                                            </td>
                                             <td>
                                                 @php
-                                                    $isExpired = $product->expiration_date?->isPast();
-                                                    $color = $isExpired ? 'var(--danger)' : (!$product->expiration_date ? 'var(--siemens)' : 'var(--muted)');
+                                                    $expiration = $product->expiration_date;
+                                                    $isExpired = $expiration?->isPast();
+                                                    $diffInDays = $expiration ? now()->diffInDays($expiration, false) : null;
+                                                    
+                                                    if ($isExpired) {
+                                                        $statusClass = 'expired';
+                                                        $icon = 'fa-solid fa-circle-xmark';
+                                                    } elseif ($diffInDays !== null && $diffInDays >= 0 && $diffInDays <= 30) {
+                                                        $statusClass = 'warning';
+                                                        $icon = 'fa-solid fa-triangle-exclamation';
+                                                    } elseif (!$expiration) {
+                                                        $statusClass = 'permanent';
+                                                        $icon = 'fa-solid fa-infinity';
+                                                    } else {
+                                                        $statusClass = 'default';
+                                                        $icon = 'fa-solid fa-calendar-check';
+                                                    }
                                                 @endphp
-                                                <span style="font-family: var(--font-mono); font-weight: 700; color: {{ $color }};">
-                                                    {{ $product->expiration_date ? $product->expiration_date->format('d/m/Y') : 'PERMANENTE' }}
+                                                <span class="dx-v2-clients-expiry-status {{ $statusClass }}">
+                                                    <i class="{{ $icon }}"></i>
+                                                    {{ $expiration ? $expiration->format('d/m/Y') : 'PERMANENTE' }}
                                                 </span>
                                             </td>
-                                            <td style="text-align: right;">
+                                            <td class="text-right">
                                                 <form action="{{ route('inventory.product.destroy', $product) }}" method="POST">
                                                     @csrf @method('DELETE')
-                                                    <button type="submit" class="btn-action" style="border:none; width:20px; height:20px;"><i class="fa-solid fa-trash" style="font-size: 9px;"></i></button>
+                                                    <button type="submit" class="dx-v2-clients-btn-action delete-action">
+                                                        <i class="fa-solid fa-trash"></i>
+                                                    </button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -224,46 +289,102 @@
                     @endforeach
                 </div>
             @empty
-                <div style="text-align: center; padding: 60px; border: 2px dashed #30363d; border-radius: 12px; opacity: 0.5;">
-                    <i class="fa-solid fa-microchip" style="font-size: 40px; margin-bottom: 20px; color: #388bfd;"></i>
-                    <div class="tech-label" style="font-size: 12px;">Sin datos de inventario</div>
+                <div class="dx-v2-clients-empty-box">
+                    <i class="fa-solid fa-microchip"></i>
+                    <div class="tech-label dx-v2-clients-empty-text">Sin datos de inventario</div>
                 </div>
             @endforelse
 
             @if($client->auditResults->count() > 0)
-                <details>
-                    <summary class="history-toggle">
-                        <div style="display: flex; align-items: center; gap: 12px;">
-                            <i class="fa-solid fa-clock-rotate-left" style="opacity: 0.4;"></i>
-                            <span class="tech-label">Historial de archivos originales</span>
+                <div class="dx-v2-clients-history-wrapper" style="margin-top: 8px !important;">
+                    <!-- Acordeón Header Toggle -->
+                    <div class="dx-v2-clients-history-toggle" 
+                         @click="historyOpen = !historyOpen"
+                         style="margin-top: 0;"
+                         :style="historyOpen ? 'border-bottom-left-radius: 0; border-bottom-right-radius: 0;' : ''">
+                        <div class="dx-v2-clients-history-toggle-left">
+                            <i class="fa-solid fa-clock-rotate-left dx-v2-clients-history-toggle-icon" style="font-size: 16px;"></i>
+                            <div style="text-align: left;">
+                                <span style="display: block; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #fff; line-height: 1.2;">Historial de Archivos de Licencia Originales</span>
+                                <span style="display: block; font-size: 10px; color: var(--muted); margin-top: 2px;">{{ $client->auditResults->count() }} archivos subidos en este cliente</span>
+                            </div>
                         </div>
-                        <i class="fa-solid fa-chevron-down" style="opacity: 0.3;"></i>
-                    </summary>
-                    <div style="padding: 20px; background: rgba(0,0,0,0.1); border: 1px solid #30363d; border-top: none; border-radius: 0 0 12px 12px;">
-                        <table class="inv-table">
-                            <tbody>
-                                @foreach($client->auditResults as $result)
-                                    <tr>
-                                        <td class="product-code" style="color: #fff;">{{ $result->sold_to ?? 'N/A' }}</td>
-                                        <td style="opacity: 0.5;">{{ $result->created_at->format('d/m/Y H:i') }}</td>
-                                        <td class="tech-label" style="color: #009999;">{{ $result->results['vendor_daemon'] ?? '—' }}</td>
-                                        <td style="text-align: right;">
-                                            <button class="btn-action" @click="auditDetail = @js($result); $dispatch('open-audit-modal')">
-                                                <i class="fa-solid fa-eye" style="font-size: 10px;"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                        <i class="fa-solid fa-chevron-down dx-v2-clients-history-toggle-arrow" style="transition: transform 0.3s ease; font-size: 12px;" :style="historyOpen ? 'transform: rotate(180deg); color: var(--dx-v2-accent-base);' : ''"></i>
                     </div>
-                </details>
+
+                    <!-- Contenido con Animación Alpine.js -->
+                    <div class="dx-v2-clients-history-content" x-show="historyOpen" x-cloak x-transition style="display: none;">
+                        <div>
+                            <!-- Banner Explicativo de Propósito -->
+                            <div style="background: rgba(56, 139, 253, 0.04); border: 1px solid rgba(56, 139, 253, 0.15); border-radius: 6px; padding: 12px 16px; margin-bottom: 20px; display: flex; gap: 12px; align-items: flex-start;">
+                                <i class="fa-solid fa-circle-info" style="color: #388bfd; font-size: 14px; margin-top: 2px;"></i>
+                                <div>
+                                    <h5 style="font-size: 11px; font-weight: 800; color: #388bfd; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 4px 0;">Fuente de Verdad Histórica (Solo Lectura)</h5>
+                                    <p style="font-size: 11px; color: var(--muted); line-height: 1.5; margin: 0;">
+                                        Estos registros representan los archivos físicos originales (`.lic` o `.mac`) que se cargaron en el sistema. Los datos extraídos fueron validados e importados al inventario activo actual del cliente. Úsalos como respaldo técnico de auditoría.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- Tabla de Auditorías de Alta Densidad -->
+                            <table class="dx-v2-clients-inv-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 28%; font-size: 9px; padding: 10px 24px;">Ecosistema / Daemon</th>
+                                        <th style="width: 20%; font-size: 9px; padding: 10px 24px;">Cuenta / Sold-To</th>
+                                        <th style="width: 22%; font-size: 9px; padding: 10px 24px;">Fecha de Subida</th>
+                                        <th style="width: 15%; font-size: 9px; padding: 10px 24px;">Servidor / Hostname</th>
+                                        <th style="width: 15%; font-size: 9px; padding: 10px 24px; text-align: right;">Inspección</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($client->auditResults as $result)
+                                        @php
+                                            $daemonVal = $result->results['vendor_daemon'] ?? ($result->results['daemon'] ?? 'Desconocido');
+                                            $isMoldex = str_contains(strtolower($daemonVal), 'moldex') || !isset($result->results['vendor_daemon']);
+                                            $hostName = $result->results['hostname'] ?? 'N/A';
+                                        @endphp
+                                        <tr>
+                                            <td style="padding: 12px 24px;">
+                                                <div style="display: flex; align-items: center; gap: 8px;">
+                                                    <span class="dx-v2-clients-vendor-badge {{ $isMoldex ? 'moldex' : 'siemens' }}" style="font-size: 8px; font-weight: 900; padding: 2px 6px; border-radius: 4px; width: auto; display: inline-block;">
+                                                        {{ $isMoldex ? 'MOLDEX3D' : 'SIEMENS' }}
+                                                    </span>
+                                                    <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #a78bfa;">{{ $daemonVal }}</span>
+                                                </div>
+                                            </td>
+                                            <td style="padding: 12px 24px;">
+                                                <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #fff;">{{ $result->sold_to ?? 'N/A' }}</span>
+                                            </td>
+                                            <td style="padding: 12px 24px; font-size: 11px; color: var(--muted); white-space: nowrap;">
+                                                <i class="fa-solid fa-calendar-days" style="color: var(--muted); opacity: 0.4; margin-right: 6px;"></i>
+                                                {{ $result->created_at->format('d/m/Y H:i') }}
+                                            </td>
+                                            <td style="padding: 12px 24px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                <span style="font-family: var(--font-mono); font-size: 11px; color: var(--muted); text-transform: uppercase;">{{ $hostName }}</span>
+                                            </td>
+                                            <td style="padding: 12px 24px; text-align: right;">
+                                                <button class="dx-v2-ui-btn dx-v2-ui-btn-secondary" 
+                                                        @click="auditDetail = @js($result); $dispatch('open-audit-modal')"
+                                                        style="padding: 4px 10px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; cursor: pointer;"
+                                                        title="Inspeccionar archivo de licencia original">
+                                                    <i class="fa-solid fa-eye" style="font-size: 10px;"></i>
+                                                    Ver Auditoría
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             @endif
         </div>
     </div>
 
     <!-- Certificados Tab (Fase 8.4) -->
-    <div x-show="tab === 'certificates'" class="tab-content" style="display: none;">
+    <div x-show="tab === 'certificates'" class="tab-content" x-cloak>
         <div class="card p-0">
             <div class="card-header flex justify-between items-center px-5 py-4">
                 <h3 class="text-sm font-bold uppercase tracking-wider">Certificados de Cese (COD)</h3>
@@ -271,7 +392,8 @@
                     <i class="fa-solid fa-plus mr-2"></i> Nuevo COD
                 </a>
             </div>
-            <table class="table text-sm">
+            <div class="dx-v2-ui-table-wrapper">
+                <table class="dx-v2-ui-table">
                 <thead>
                     <tr>
                         <th>Fecha</th>
@@ -304,31 +426,31 @@
                                 <span class="badge badge-success">Firmado</span>
                             @endif
                         </td>
-                        <td class="text-right" style="width: 140px; white-space: nowrap;">
-                            <div class="inline-flex items-center gap-1.5 flex-nowrap">
-                                <a href="{{ route('tools.cod.download', ['uuid' => $cod->uuid]) }}" class="btn-action-tool" title="Original">
-                                    <i class="fa-solid fa-file-pdf text-red-500/80"></i>
+                        <td class="text-right">
+                            <div class="dx-v2-clients-contacts-actions">
+                                <a href="{{ route('tools.cod.download', ['uuid' => $cod->uuid]) }}" class="dx-v2-clients-btn-action-tool" title="Original">
+                                    <i class="fa-solid fa-file-pdf dx-v2-clients-pdf-icon"></i>
                                 </a>
                                 
                                 @if($cod->signed_file_path)
-                                    <a href="{{ route('tools.cod.download-signed', ['uuid' => $cod->uuid]) }}" class="btn-action-tool signed" title="Firmado">
-                                        <i class="fa-solid fa-file-signature"></i>
+                                    <a href="{{ route('tools.cod.download-signed', ['uuid' => $cod->uuid]) }}" class="dx-v2-clients-btn-action-tool signed" title="Firmado">
+                                        <i class="fa-solid fa-file-signature text-accent"></i>
                                     </a>
                                 @else
-                                    <form action="{{ url('/herramientas/cod/' . $cod->uuid . '/upload-signed') }}" method="POST" enctype="multipart/form-data" style="display: contents;">
+                                    <form action="{{ url('/herramientas/cod/' . $cod->uuid . '/upload-signed') }}" method="POST" enctype="multipart/form-data" class="display-contents">
                                         @csrf
-                                        <label class="btn-action-tool upload cursor-pointer" title="Subir Firmado">
-                                            <i class="fa-solid fa-cloud-upload"></i>
+                                        <label class="dx-v2-clients-btn-action-tool upload" title="Subir Firmado">
+                                            <i class="fa-solid fa-cloud-upload text-blue"></i>
                                             <input type="file" name="signed_file" class="hidden" accept=".pdf" onchange="this.form.submit()">
                                         </label>
                                     </form>
                                 @endif
-
-                                <form action="{{ route('tools.cod.destroy', ['uuid' => $cod->uuid]) }}" method="POST" onsubmit="return confirm('¿Eliminar permanente?')" style="display: contents;">
+ 
+                                <form action="{{ route('tools.cod.destroy', ['uuid' => $cod->uuid]) }}" method="POST" onsubmit="return confirm('¿Eliminar permanente?')" class="display-contents">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn-action-tool delete" title="Eliminar">
-                                        <i class="fa-solid fa-trash-can"></i>
+                                    <button type="submit" class="dx-v2-clients-btn-action-tool delete" title="Eliminar">
+                                        <i class="fa-solid fa-trash-can text-danger"></i>
                                     </button>
                                 </form>
                             </div>
@@ -343,24 +465,27 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 
     <!-- Contactos Tab -->
-    <div x-show="tab === 'contacts'" class="tab-content" style="display: none;">
+    <div x-show="tab === 'contacts'" class="tab-content" x-cloak>
         <div class="card p-0">
             <div class="card-header flex justify-between items-center px-5 py-4">
                 <h3 class="text-sm font-bold uppercase tracking-wider">Personas de Contacto</h3>
-                <button class="btn-primary sm" @click="$dispatch('open-contact-modal')">
+                <button class="dx-v2-ui-btn dx-v2-ui-btn-primary" @click="$dispatch('open-contact-modal')">
                     <i class="fa-solid fa-plus mr-2"></i> Nuevo Contacto
                 </button>
             </div>
-            <table class="table text-sm">
+            <div class="dx-v2-ui-table-wrapper">
+                <table class="dx-v2-ui-table">
                 <thead>
                     <tr>
                         <th>Nombre</th>
                         <th>Email</th>
                         <th>Cargo</th>
+                        <th class="text-center">Alertas</th>
                         <th class="text-right">Acciones</th>
                     </tr>
                 </thead>
@@ -376,23 +501,33 @@
                                 <span class="muted">—</span>
                             @endif
                         </td>
-                        <td class="text-right" style="width: 100px;">
-                            <div style="display: flex; justify-content: flex-end; align-items: center; gap: 4px; white-space: nowrap;">
-                                <button class="btn-icon" 
+                        <td class="text-center">
+                            @if($contact->receives_alerts)
+                                <span class="badge badge-success sm" title="Recibe reporte semanal">
+                                    <i class="fa-solid fa-bell mr-1"></i> Sí
+                                </span>
+                            @else
+                                <span class="badge badge-muted sm opacity-50">No</span>
+                            @endif
+                        </td>
+                        <td class="text-right max-w-100">
+                            <div class="dx-v2-clients-contacts-actions">
+                                <button class="dx-v2-clients-btn-action-tool" 
                                     @click="$dispatch('open-contact-modal', { 
                                         id: {{ $contact->id }}, 
                                         name: '{{ $contact->name }}', 
                                         email: '{{ $contact->email }}', 
                                         position: '{{ $contact->position }}',
-                                        phone: '{{ $contact->phone }}'
+                                        phone: '{{ $contact->phone }}',
+                                        receives_alerts: {{ $contact->receives_alerts ? 'true' : 'false' }}
                                     })">
                                     <i class="fa-solid fa-pen"></i>
                                 </button>
-                                <form action="{{ route('contacts.destroy', [$client, $contact]) }}" method="POST" onsubmit="return confirm('¿Eliminar este contacto?')" style="display: inline-block; margin: 0;">
+                                <form action="{{ route('contacts.destroy', [$client, $contact]) }}" method="POST" onsubmit="return confirm('¿Eliminar este contacto?')" class="display-inline-block">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn-icon text-danger">
-                                        <i class="fa-solid fa-trash-can"></i>
+                                    <button type="submit" class="dx-v2-clients-btn-action-tool delete">
+                                        <i class="fa-solid fa-trash-can text-danger"></i>
                                     </button>
                                 </form>
                             </div>
@@ -407,6 +542,55 @@
                     @endforelse
                 </tbody>
             </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Renovaciones Tab (Fase 14) -->
+    <div x-show="tab === 'renewals'" class="tab-content" x-cloak>
+        <div class="card p-0">
+            <div class="card-header flex justify-between items-center px-5 py-4">
+                <h3 class="text-sm font-bold uppercase tracking-wider">Historial de Renovaciones Mensuales</h3>
+            </div>
+            <div class="dx-v2-ui-table-wrapper">
+                <table class="dx-v2-ui-table">
+                <thead>
+                    <tr>
+                        <th>Mes / Ciclo</th>
+                        <th>Fecha de Envío</th>
+                        <th>Responsable</th>
+                        <th class="text-right">Notas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($client->renewalLogs()->orderBy('year', 'desc')->orderBy('month', 'desc')->get() as $log)
+                    <tr>
+                        <td class="font-bold">
+                            {{ Carbon\Carbon::create(2024, $log->month, 1)->translatedFormat('F') }} {{ $log->year }}
+                        </td>
+                        <td class="muted">{{ $log->sent_at ? $log->sent_at->format('d/m/Y H:i') : '—' }}</td>
+                        <td>
+                            <div class="flex items-center gap-2">
+                                <div class="dx-v2-clients-avatar-xs">
+                                    {{ substr($log->user->name ?? 'U', 0, 1) }}
+                                </div>
+                                <span>{{ $log->user->name ?? 'Sistema' }}</span>
+                            </div>
+                        </td>
+                        <td class="text-right">
+                            <span class="muted text-xs">{{ $log->notes ?: '—' }}</span>
+                        </td>
+                    </tr>
+@empty
+                    <tr>
+                        <td colspan="4" class="text-center py-12 muted">
+                            No se han registrado renovaciones enviadas para este cliente.
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+            </div>
         </div>
     </div>
 
@@ -416,7 +600,7 @@
                 open: false, 
                 editMode: false,
                 action: '{{ route('contacts.store', $client) }}',
-                form: { id: '', name: '', email: '', position: '', phone: '' }
+                form: { id: '', name: '', email: '', position: '', phone: '', receives_alerts: false }
             }"
             x-show="open"
             @open-contact-modal.window="
@@ -428,16 +612,16 @@
                 } else {
                     editMode = false;
                     action = '{{ route('contacts.store', $client) }}';
-                    form = { id: '', name: '', email: '', position: '', phone: '' };
+                    form = { id: '', name: '', email: '', position: '', phone: '', receives_alerts: false };
                 }
             "
-            class="modal-overlay"
-            style="display: none;"
+            class="dx-v2-ui-modal-overlay"
+            x-cloak
         >
-            <div class="modal-content" @click.outside="open = false">
-                <div class="modal-header">
-                    <h3 x-text="editMode ? 'Editar Contacto' : 'Nuevo Contacto'"></h3>
-                    <button @click="open = false" class="close-btn">&times;</button>
+            <div class="dx-v2-ui-modal-content" @click.outside="open = false">
+                <div class="dx-v2-ui-modal-header">
+                    <h3 class="dx-v2-ui-modal-title" x-text="editMode ? 'Editar Contacto' : 'Nuevo Contacto'"></h3>
+                    <button type="button" @click="open = false" class="dx-v2-ui-modal-close">&times;</button>
                 </div>
                 <form :action="action" method="POST">
                     @csrf
@@ -445,141 +629,171 @@
                         <input type="hidden" name="_method" value="PUT">
                     </template>
                     
-                    <div class="modal-body space-y-5">
+                    <div class="dx-v2-ui-modal-body space-y-5">
                         <div class="grid grid-cols-2 gap-6">
-                            <div class="input-group">
-                                <label>Nombre Completo</label>
-                                <input type="text" name="name" x-model="form.name" required class="gui-input w-full" placeholder="Ej. Juan Pérez">
+                            <div class="dx-v2-form-group" style="margin-bottom: 0;">
+                                <label class="dx-v2-form-label" for="contact_name">Nombre Completo</label>
+                                <input type="text" id="contact_name" name="name" x-model="form.name" required autocomplete="name" class="dx-v2-form-input w-full" placeholder="Ej. Juan Pérez">
                             </div>
-                            <div class="input-group">
-                                <label>Email Corporativo</label>
-                                <input type="email" name="email" x-model="form.email" required class="gui-input w-full" placeholder="email@empresa.com">
+                            <div class="dx-v2-form-group" style="margin-bottom: 0;">
+                                <label class="dx-v2-form-label" for="contact_email">Email Corporativo</label>
+                                <input type="email" id="contact_email" name="email" x-model="form.email" required autocomplete="email" class="dx-v2-form-input w-full" placeholder="email@empresa.com">
                             </div>
                         </div>
-                        <div class="input-group">
-                            <label>Cargo / Departamento</label>
-                            <input type="text" name="position" x-model="form.position" class="gui-input w-full" placeholder="Ej. IT Manager">
+                        <div class="dx-v2-form-group" style="margin-bottom: 0;">
+                            <label class="dx-v2-form-label" for="contact_position">Cargo / Departamento</label>
+                            <input type="text" id="contact_position" name="position" x-model="form.position" autocomplete="organization-title" class="dx-v2-form-input w-full" placeholder="Ej. IT Manager">
                         </div>
-                        <div class="input-group">
-                            <label>Teléfono (Opcional)</label>
-                            <input type="text" name="phone" x-model="form.phone" class="gui-input w-full" placeholder="+34 ...">
+                        <div class="dx-v2-form-group" style="margin-bottom: 0;">
+                            <label class="dx-v2-form-label" for="contact_phone">Teléfono (Opcional)</label>
+                            <input type="text" id="contact_phone" name="phone" x-model="form.phone" autocomplete="tel" class="dx-v2-form-input w-full" placeholder="+34 ...">
+                        </div>
+                        <div class="dx-v2-form-group" style="margin-bottom: 0; padding-top: 8px;">
+                            <label class="dx-v2-form-checkbox-wrapper" for="contact_receives_alerts">
+                                <input type="checkbox" id="contact_receives_alerts" name="receives_alerts" value="1" x-model="form.receives_alerts" class="dx-v2-form-checkbox">
+                                <span class="dx-v2-form-label" style="text-transform: none; font-size: 13px; color: var(--dx-v2-primary) !important; cursor: pointer;">Recibir reportes semanales de caducidad</span>
+                            </label>
                         </div>
                     </div>
                     
-                    <div class="modal-footer">
-                        <button type="button" @click="open = false" class="btn-secondary">Cancelar</button>
-                        <button type="submit" class="btn-primary" x-text="editMode ? 'Guardar Cambios' : 'Crear Contacto'"></button>
+                    <div class="dx-v2-ui-modal-footer">
+                        <button type="button" @click="open = false" class="dx-v2-ui-btn dx-v2-ui-btn-secondary">Cancelar</button>
+                        <button type="submit" class="dx-v2-ui-btn dx-v2-ui-btn-primary" x-text="editMode ? 'Guardar Cambios' : 'Crear Contacto'"></button>
                     </div>
                 </form>
             </div>
         </div>
     </template>
 
-    <!-- Audit Detail Modal -->
+    <!-- Audit Detail Modal (NOC Pro Inmutable Console) -->
     <template x-teleport="body">
         <div x-data="{ open: false }"
             x-show="open"
             @open-audit-modal.window="open = true"
-            class="modal-overlay"
-            style="z-index: 1100;"
+            class="dx-v2-ui-modal-overlay high-z-index"
             x-cloak
         >
-            <div class="modal-content audit-modal" @click.outside="open = false" style="max-width: 900px; background: #0f111a; border-color: #1e2235;">
-                <div class="modal-header" style="border-bottom: none; padding-bottom: 0;">
-                    <div class="flex items-center gap-4">
-                        <div class="audit-icon-box">
-                            <i class="fa-solid fa-shield-halved"></i>
+            <div class="dx-v2-ui-modal-content wide" @click.outside="open = false" style="background: #0d0f19; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.65);">
+                <div class="dx-v2-ui-modal-header no-border no-padding-bottom" style="padding: 24px 32px 12px 32px; display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100% !important; box-sizing: border-box !important;">
+                    <div style="display: flex !important; align-items: center !important; gap: 16px !important;">
+                        <div class="dx-v2-clients-audit-icon-box" style="background: rgba(167, 139, 250, 0.1); border: 1px solid rgba(167, 139, 250, 0.2); width: 44px; height: 44px; border-radius: 8px; display: flex !important; align-items: center !important; justify-content: center !important; color: #a78bfa; flex-shrink: 0 !important;">
+                            <i class="fa-solid fa-file-invoice" style="font-size: 18px;"></i>
                         </div>
-                        <div>
-                            <h3 style="margin-bottom: 4px; color: #fff;">Detalle de Auditoría Siemens</h3>
-                            <span class="text-xs muted uppercase tracking-widest font-bold">Analizado por Motor FallbackChain v2.1</span>
+                        <div style="text-align: left !important;">
+                            <h3 class="dx-v2-ui-modal-title text-white" style="margin: 0 0 4px 0 !important; line-height: 1.2 !important;" 
+                                x-text="(auditDetail?.results?.vendor_daemon || auditDetail?.results?.daemon || '').toLowerCase().includes('moldex') ? 'Detalle de Auditoría Moldex3D' : 'Detalle de Auditoría Siemens'">
+                                Detalle de Auditoría
+                            </h3>
+                            <span style="font-size: 9px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; display: block;">Inspección del Respaldo Físico Original</span>
                         </div>
                     </div>
-                    <button @click="open = false" class="close-btn">&times;</button>
+                    <button type="button" @click="open = false" class="dx-v2-ui-modal-close" style="font-size: 28px !important; color: var(--muted) !important; background: transparent !important; border: none !important; cursor: pointer !important; padding: 0 !important; margin: 0 !important; width: 32px !important; height: 32px !important; display: flex !important; align-items: center !important; justify-content: center !important; align-self: center !important; line-height: 1 !important; transition: color 0.2s;" @mouseenter="$el.style.color = '#fff'" @mouseleave="$el.style.color = 'var(--muted)'">&times;</button>
                 </div>
 
-                <div class="modal-body p-8" x-show="auditDetail">
-                    <!-- Top Info Cards -->
-                    <div class="audit-header-grid">
-                        <div class="audit-info-card">
-                            <span class="label">Account / Sold-To</span>
-                            <span class="value" x-text="auditDetail.sold_to || 'N/A'"></span>
-                        </div>
-                        <div class="audit-info-card">
-                            <span class="label">Ecosistema / Daemon</span>
-                            <div class="flex items-center gap-2">
-                                <span class="value daemon" x-text="auditDetail.results?.daemon || 'ugslmd'"></span>
-                                <span class="badge badge-accent sm">SIEMENS</span>
+                <div class="dx-v2-ui-modal-body p-8" style="padding: 12px 32px 32px 32px;">
+                    <template x-if="auditDetail">
+                        <div>
+                            <!-- Banner de Inmutabilidad Técnica -->
+                            <div style="background: rgba(16, 185, 129, 0.04); border: 1px solid rgba(16, 185, 129, 0.15); border-radius: 6px; padding: 12px 16px; margin-bottom: 24px; display: flex; gap: 12px; align-items: center;">
+                                <div style="width: 20px; height: 20px; border-radius: 50%; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); display: flex; align-items: center; justify-content: center; color: #10b981; flex-shrink: 0;">
+                                    <i class="fa-solid fa-lock" style="font-size: 10px;"></i>
+                                </div>
+                                <div style="flex-grow: 1;">
+                                    <span style="font-size: 11px; font-weight: 800; color: #10b981; text-transform: uppercase; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 6px;">
+                                        Archivo de Licencia Inmutable 
+                                        <span style="font-size: 8px; font-weight: 900; background: rgba(16, 185, 129, 0.15); color: #10b981; padding: 1px 4px; border-radius: 3px;">RESPALDO TÉCNICO</span>
+                                    </span>
+                                    <p style="font-size: 11px; color: var(--muted); margin: 2px 0 0 0; line-height: 1.4;">
+                                        Este registro es una copia exacta e inmutable del archivo subido el 
+                                        <span class="text-white font-bold" x-text="auditDetail ? new Date(auditDetail.created_at).toLocaleDateString('es-ES', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit'}) : ''"></span>. 
+                                        Para modificar el inventario activo de producción actual, edita los bloques de licencias en la pestaña principal.
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="audit-info-card" style="grid-column: span 2;">
-                            <span class="label">Servidor / Hostname</span>
-                            <div class="flex items-baseline gap-3">
-                                <span class="value hostname" x-text="auditDetail.results?.hostname || 'PENDIENTE'"></span>
-                                <span class="text-xs font-mono" style="color: var(--accent)" x-text="auditDetail.results?.composite ? 'Composite: ' + auditDetail.results.composite : ''"></span>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Unified Sold-Tos -->
-                    <div class="unified-box mt-6" x-show="auditDetail.results?.unified_sold_tos?.length">
-                        <div class="flex items-center gap-3">
-                            <i class="fa-solid fa-link text-warn" style="font-size: 10px;"></i>
-                            <span class="label">Sold-Tos Unificados:</span>
-                            <div class="flex flex-wrap gap-2">
-                                <template x-for="st in auditDetail.results?.unified_sold_tos">
-                                    <span class="badge badge-muted sm" x-text="st"></span>
-                                </template>
+                            <!-- Bento Grid de Metadatos del Servidor -->
+                            <div class="dx-v2-clients-audit-header-grid" style="margin-bottom: 28px;">
+                                <div class="dx-v2-clients-audit-info-card">
+                                    <span class="label">ID Cuenta / Sold-To</span>
+                                    <span class="value" x-text="auditDetail?.sold_to || 'N/A'"></span>
+                                </div>
+                                <div class="dx-v2-clients-audit-info-card">
+                                    <span class="label">Ecosistema / Daemon</span>
+                                    <div style="display: flex; align-items: center; gap: 8px;">
+                                        <span class="value daemon" x-text="auditDetail?.results?.vendor_daemon || auditDetail?.results?.daemon || 'ugslmd'"></span>
+                                        <span class="dx-v2-clients-vendor-badge {{ $isMoldex ? 'moldex' : 'siemens' }}" :class="(auditDetail?.results?.vendor_daemon || auditDetail?.results?.daemon || '').toLowerCase().includes('moldex') ? 'moldex' : 'siemens'" style="font-size: 7px; padding: 2px 6px; font-weight: 800; width: auto; display: inline-block;" x-text="(auditDetail?.results?.vendor_daemon || auditDetail?.results?.daemon || '').toLowerCase().includes('moldex') ? 'MOLDEX3D' : 'SIEMENS'">SIEMENS</span>
+                                    </div>
+                                </div>
+                                <div class="dx-v2-clients-audit-info-card span-2">
+                                    <span class="label">Servidor / Hostname</span>
+                                    <div style="display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;">
+                                        <span class="value hostname" x-text="auditDetail?.results?.hostname || 'PENDIENTE'"></span>
+                                        <span style="font-family: var(--font-mono); font-size: 10px; color: var(--muted);" x-text="auditDetail?.results?.composite ? '(COMPOSITE: ' + auditDetail.results.composite + ')' : (auditDetail?.results?.mac ? '(MACHINE ID: ' + auditDetail.results.mac + ')' : '')"></span>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <!-- Products Table -->
-                    <div class="mt-10">
-                        <h4 class="section-title">Desglose de Productos y Expiración</h4>
-                        <div class="audit-table-wrapper mt-4">
-                            <table class="audit-table">
-                                <thead>
-                                    <tr>
-                                        <th>Producto</th>
-                                        <th>Descripción</th>
-                                        <th class="text-center">Cant.</th>
-                                        <th>Expiración</th>
-                                        <th style="width: 40px;"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <template x-for="product in (auditDetail.results?.products || [])">
-                                        <tr>
-                                            <td class="font-bold font-mono text-sm" x-text="product.product_code || product.name" style="color: #fff;"></td>
-                                            <td class="muted text-xs" x-text="product.description || '—'"></td>
-                                            <td class="text-center">
-                                                <span class="qty-badge" x-text="product.quantity || product.qty"></span>
-                                            </td>
-                                            <td>
-                                                <span :class="{
-                                                    'expiry-badge': true,
-                                                    'upcoming': (product.expiration_date || product.expiry || '').includes('2026')
-                                                }">
-                                                    <span x-text="product.expiration_date || product.expiry || 'Permanent'"></span>
-                                                    <template x-if="(product.expiration_date || product.expiry || '').includes('2026')">
-                                                        <span class="text-[9px] uppercase font-bold ml-1">(Próxima)</span>
-                                                    </template>
-                                                </span>
-                                            </td>
-                                            <td><i class="fa-solid fa-trash-can text-xs opacity-20"></i></td>
-                                        </tr>
+        
+                            <!-- Unified Sold-Tos -->
+                            <div class="dx-v2-clients-unified-box" x-show="auditDetail?.results?.additional_sold_tos?.length" style="background: rgba(245, 158, 11, 0.03); border: 1px solid rgba(245, 158, 11, 0.1); border-radius: 6px; padding: 12px 16px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px;">
+                                <i class="fa-solid fa-link text-warn" style="font-size: 12px;"></i>
+                                <span style="font-size: 10px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em;">Sold-Tos Unificados en esta Licencia:</span>
+                                <div class="flex flex-wrap gap-2">
+                                    <template x-for="st in auditDetail?.results?.additional_sold_tos">
+                                        <span class="badge badge-muted" style="font-size: 9px; font-family: var(--font-mono); font-weight: 700; background: rgba(255,255,255,0.05); color: #fff; border: 1px solid var(--border);" x-text="st"></span>
                                     </template>
-                                </tbody>
-                            </table>
+                                </div>
+                            </div>
+        
+                            <!-- Products Table -->
+                            <div>
+                                <div class="flex justify-between items-center" style="margin-bottom: 12px;">
+                                    <h4 style="font-size: 11px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.05em; margin: 0;">Desglose de Líneas de Producto Originales</h4>
+                                    <span style="font-size: 10px; color: var(--muted);" x-text="(auditDetail?.results?.products || []).length + ' productos en archivo'"></span>
+                                </div>
+                                <div class="dx-v2-ui-table-wrapper" style="border: 1px solid var(--border); border-radius: 6px; background: rgba(0,0,0,0.2); max-height: 280px; overflow-y: auto;">
+                                    <table class="dx-v2-ui-table" style="margin: 0;">
+                                        <thead>
+                                            <tr>
+                                                <th style="font-size: 9px; padding: 10px 16px;">Código de Producto</th>
+                                                <th style="font-size: 9px; padding: 10px 16px;">Descripción Técnica del Módulo</th>
+                                                <th style="font-size: 9px; padding: 10px 16px; text-align: center;">Asientos</th>
+                                                <th style="font-size: 9px; padding: 10px 16px;">Fecha Expiración</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template x-for="product in (auditDetail?.results?.products || [])">
+                                                <tr style="transition: background 0.15s;">
+                                                    <td style="padding: 10px 16px; vertical-align: middle; font-family: var(--font-mono); font-size: 12px; font-weight: 800; color: #fff;" x-text="product.product_code || product.name"></td>
+                                                    <td style="padding: 10px 16px; vertical-align: middle; font-size: 11px; color: var(--muted);" x-text="product.description || '—'"></td>
+                                                    <td style="padding: 10px 16px; vertical-align: middle; text-align: center;">
+                                                        <span class="dx-v2-clients-qty-badge" style="font-size: 10px; font-family: var(--font-mono); font-weight: 700; background: rgba(255,255,255,0.08); padding: 2px 8px; border-radius: 4px; color: #fff;" x-text="product.quantity || product.qty"></span>
+                                                    </td>
+                                                    <td style="padding: 10px 16px; vertical-align: middle;">
+                                                        <span :class="{
+                                                            'dx-v2-clients-expiry-status': true,
+                                                            'expired': (product.expiration_date || product.expiry || '').toLowerCase().includes('expired') || (product.expiration_date || product.expiry || '').includes('2024') || (product.expiration_date || product.expiry || '').includes('2025'),
+                                                            'permanent': (product.expiration_date || product.expiry || '').toLowerCase().includes('permanent') || (product.expiration_date || product.expiry || '') === '',
+                                                            'default': !(product.expiration_date || product.expiry || '').toLowerCase().includes('expired') && !(product.expiration_date || product.expiry || '').toLowerCase().includes('permanent')
+                                                        }" style="font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px;">
+                                                            <span x-text="product.expiration_date || product.expiry || 'PERMANENTE'"></span>
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </template>
                 </div>
                 
-                <div class="modal-footer" style="background: transparent; border: none; padding-top: 0;">
-                    <button type="button" @click="open = false" class="btn-secondary">Cerrar Detalle</button>
-                    <button type="button" class="btn-primary">
-                        <i class="fa-solid fa-file-export mr-2"></i> Exportar Reporte
+                <div class="dx-v2-ui-modal-footer transparent no-border no-padding-top" style="padding: 12px 32px 24px 32px; display: flex; justify-content: flex-end; gap: 12px; background: rgba(0,0,0,0.15);">
+                    <button type="button" @click="open = false" class="dx-v2-ui-btn dx-v2-ui-btn-secondary" style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Cerrar Detalle</button>
+                    <button type="button" class="dx-v2-ui-btn dx-v2-ui-btn-primary" 
+                            @click="navigator.clipboard.writeText(JSON.stringify(auditDetail?.results, null, 4)); alert('Metadatos JSON copiados al portapapeles')"
+                            style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 6px;">
+                        <i class="fa-solid fa-copy"></i> Copiar Metadatos JSON
                     </button>
                 </div>
             </div>
@@ -590,279 +804,4 @@
 </div>
 @endsection
 
-@push('styles')
-<style>
-    /* DX INVENTORY SYSTEM — ROBUST RECONSTRUCTION */
-    /* ORIGINAL STYLES RESTORED */
-    .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 32px; gap: 8px; }
-    .tab-link { 
-        padding: 12px 20px; border: none; background: none; cursor: pointer;
-        color: var(--muted); font-size: 13px; font-weight: 600; border-bottom: 2px solid transparent;
-        transition: all 0.2s;
-    }
-    .tab-link:hover { color: var(--secondary); }
-    .tab-link.active { color: var(--accent); border-bottom-color: var(--accent); }
-    
-    .client-profile .card { padding: 0; }
-    .client-profile .card.p-5 { padding: 20px; }
 
-    .table.text-sm td { padding: 8px 20px; vertical-align: middle; }
-    .badge-muted { 
-        background: rgba(255, 255, 255, 0.05); 
-        color: var(--muted); 
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        font-size: 9px;
-        padding: 2px 8px;
-    }
-
-    .btn-icon {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid var(--border);
-        color: var(--muted);
-        width: 32px;
-        height: 32px;
-        display: flex; align-items: center; justify-content: center;
-        border-radius: 4px; cursor: pointer; transition: all 0.2s;
-    }
-    .btn-icon:hover { background: var(--border); color: var(--text); }
-    .btn-icon.text-danger:hover {
-        background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.2);
-    }
-
-    /* Tool Action Buttons (Compact & Premium) */
-    .btn-action-tool {
-        width: 28px;
-        height: 28px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 6px;
-        color: var(--muted);
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        cursor: pointer;
-        font-size: 11px;
-    }
-    .btn-action-tool:hover {
-        background: rgba(255, 255, 255, 0.08);
-        border-color: rgba(255, 255, 255, 0.2);
-        color: #fff;
-        transform: translateY(-1px);
-    }
-    .btn-action-tool.signed { color: var(--accent); border-color: rgba(0, 153, 153, 0.2); }
-    .btn-action-tool.signed:hover { background: rgba(0, 153, 153, 0.1); border-color: var(--accent); }
-    
-    .btn-action-tool.upload { color: #388bfd; }
-    .btn-action-tool.upload:hover { background: rgba(56, 139, 253, 0.1); border-color: #388bfd; }
-
-    .btn-action-tool.delete:hover {
-        background: rgba(239, 68, 68, 0.1);
-        border-color: #ef4444;
-        color: #ef4444;
-    }
-    
-    .text-red-500\/80 { color: rgba(239, 68, 68, 0.8); }
-
-    /* Legend Styles */
-    .card-footer-legend {
-        background: var(--bg);
-        border-top: 1px solid var(--border);
-        padding: 16px 20px;
-    }
-    .legend-header {
-        display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--muted);
-    }
-    .legend-header i { font-size: 10px; }
-    .legend-header span {
-        font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em;
-    }
-    .legend-grid { display: flex; flex-wrap: wrap; gap: 12px 24px; }
-    .legend-item { display: flex; align-items: center; gap: 8px; }
-
-    /* Upload Zone Styles */
-    .upload-zone {
-        border: 2px dashed var(--border);
-        background: rgba(255, 255, 255, 0.02);
-        border-radius: 12px;
-        padding: 40px 20px;
-        text-align: center;
-        cursor: pointer;
-        transition: all 0.2s;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-    .upload-zone:hover {
-        background: rgba(255, 255, 255, 0.05);
-        border-color: var(--accent);
-    }
-    .upload-zone i { font-size: 40px; margin-bottom: 16px; color: var(--accent); opacity: 0.5; }
-    .hidden { display: none; }
-    .legend-item .badge { font-size: 9px; padding: 1px 6px; }
-    .legend-label {
-        font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted);
-    }
-
-    /* Modal Styles */
-    .modal-overlay {
-        position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75);
-        backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center;
-        z-index: 1000; padding: 20px;
-    }
-    .modal-content {
-        background: var(--card-bg); border: 1px solid var(--border);
-        border-radius: 8px; width: 100%; max-width: 550px;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); overflow: hidden;
-    }
-    .modal-header {
-        padding: 16px 20px; border-bottom: 1px solid var(--border);
-        display: flex; justify-content: space-between; align-items: center;
-        background: rgba(255, 255, 255, 0.02);
-    }
-    .modal-header h3 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
-    .close-btn { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; padding: 4px; line-height: 1; }
-    .close-btn:hover { color: var(--text); }
-    .modal-body { padding: 24px; }
-    .input-group { margin-bottom: 20px; }
-    .input-group label { display: block; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-bottom: 8px; }
-    .modal-footer {
-        padding: 16px 24px; border-top: 1px solid var(--border);
-        display: flex; justify-content: end; gap: 12px;
-        background: rgba(255, 255, 255, 0.02);
-    }
-
-    .cod-upload-overlay {
-        position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85);
-        backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center;
-        z-index: 9999; padding: 20px;
-    }
-
-    /* Product Chips & Badges */
-    .product-chip {
-        display: inline-flex; align-items: center; background: rgba(var(--accent-rgb, 0, 122, 255), 0.05);
-        color: var(--accent); border: 1px solid rgba(var(--accent-rgb, 0, 122, 255), 0.1);
-        padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 600; white-space: nowrap;
-    }
-    .product-chip.muted { background: rgba(255, 255, 255, 0.03); color: var(--muted); border-color: var(--border); }
-    
-    .expiry-badge { background: rgba(255,255,255,0.03); padding: 6px 12px; border-radius: 6px; font-size: 11px; font-weight: 600; color: var(--text); }
-    .expiry-badge.upcoming { background: rgba(245, 158, 11, 0.1); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.2); }
-    
-    .badge-siemens { background: var(--siemens); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
-    .badge-moldex { background: var(--moldex); color: #fff; border: 1px solid rgba(255,255,255,0.1); }
-    .badge-info { background: var(--accent-muted); color: var(--accent); border: 1px solid var(--accent-border); }
-    .badge-warn { background: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning-border); }
-
-    /* Audit Detail Modal Styles */
-    .audit-modal { box-shadow: 0 0 50px rgba(0,0,0,0.3), 0 0 0 1px var(--border); }
-    .audit-icon-box {
-        width: 48px; height: 48px; background: linear-gradient(135deg, var(--accent), var(--primary));
-        border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px;
-    }
-    .audit-header-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
-    .audit-info-card {
-        background: var(--bg); border: 1px solid var(--border);
-        padding: 16px 20px; border-radius: 12px; display: flex; flex-direction: column; gap: 6px;
-    }
-    .audit-info-card .label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
-    .audit-info-card .value { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; color: var(--primary); }
-    .audit-info-card .value.daemon { color: var(--accent); font-family: var(--font-mono); font-size: 16px; }
-    .audit-info-card .value.hostname { color: var(--primary); font-family: var(--font-mono); }
-    
-    .unified-box { background: rgba(245, 158, 11, 0.03); border: 1px dashed rgba(245, 158, 11, 0.2); padding: 12px 20px; border-radius: 10px; }
-    .unified-box .label { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #f59e0b; margin-right: 8px; }
-    
-    .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); display: flex; align-items: center; gap: 10px; }
-    .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-
-    .audit-table { width: 100%; border-collapse: separate; border-spacing: 0 4px; }
-    .audit-table th { text-align: left; padding: 12px 16px; font-size: 10px; text-transform: uppercase; color: var(--muted); font-weight: 700; }
-    .audit-table td { padding: 14px 16px; background: var(--bg); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle); }
-    .audit-table td:first-child { border-left: 1px solid var(--border-subtle); border-radius: 8px 0 0 8px; }
-    .audit-table td:last-child { border-right: 1px solid var(--border-subtle); border-radius: 0 8px 8px 0; }
-
-    /* DX INVENTORY SYSTEM — ROBUST RECONSTRUCTION */
-    .inv-container { display: flex; flex-direction: column; gap: 32px; margin-top: 16px; }
-    
-    .sold-to-block { margin-bottom: 40px; animation: fadeIn 0.4s ease-out; }
-    
-    .sold-to-header {
-        display: flex; align-items: center; justify-content: space-between;
-        padding-bottom: 12px; border-bottom: 1px solid var(--border); margin-bottom: 20px;
-    }
-
-    .sold-to-badge-wrapper { display: flex; align-items: center; gap: 16px; }
-    
-    .sold-to-icon {
-        width: 44px; height: 44px; background: rgba(56, 139, 253, 0.1); border: 1px solid rgba(56, 139, 253, 0.2);
-        border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #388bfd; font-size: 18px;
-    }
-
-    .sold-to-id { font-family: var(--font-mono); font-size: 22px; font-weight: 800; color: var(--primary); letter-spacing: -0.01em; }
-
-    .daemon-card {
-        background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden;
-        margin-bottom: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-    }
-    
-    .daemon-card.siemens { border-left: 4px solid var(--siemens); }
-    .daemon-card.moldex { border-left: 4px solid var(--moldex); }
-
-    /* Header Layout */
-    .daemon-header {
-        display: flex; flex-direction: row; align-items: center; padding: 20px 24px;
-        background: linear-gradient(to right, var(--bg), transparent);
-        border-bottom: 1px solid var(--border-subtle); gap: 40px;
-    }
-
-    .header-col { display: flex; flex-direction: column; gap: 4px; }
-    .header-col.grow { flex-grow: 1; }
-
-    .tech-label { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); display: block; }
-    .tech-value { font-family: var(--font-mono); font-size: 16px; font-weight: 700; color: var(--primary); line-height: 1.2; }
-    .daemon-name { color: var(--siemens); font-size: 20px; }
-    
-    .moldex-logo { color: var(--moldex) !important; font-weight: 800; }
-    .moldex-logo .accent { color: #f58220 !important; }
-
-    .inv-badge { display: inline-flex; padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 900; text-transform: uppercase; }
-    .badge-siemens { background: var(--siemens); color: #fff; margin-left: 8px; }
-    .badge-type { background: var(--accent-muted); color: var(--accent); border: 1px solid var(--accent-border); }
-
-    /* Table System */
-    .inv-table { width: 100%; border-collapse: collapse; }
-    .inv-table th {
-        background: var(--bg); padding: 10px 24px; text-align: left; font-size: 9px; font-weight: 800;
-        text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--border);
-    }
-    .inv-table td { padding: 12px 24px; border-bottom: 1px solid var(--border-subtle); font-size: 13px; vertical-align: middle; color: var(--secondary); }
-    .inv-table tr:hover td { background: var(--bg); }
-
-    .product-code { font-family: var(--font-mono); font-weight: 700; color: var(--accent); }
-    .host-id-mono { font-family: var(--font-mono); font-size: 11px; color: var(--muted); opacity: 0.6; }
-    
-    .qty-badge {
-        display: inline-flex; align-items: center; justify-content: center;
-        width: 28px; height: 22px; background: var(--bg);
-        border: 1px solid var(--border-subtle); border-radius: 4px;
-        font-size: 11px; font-weight: 800; color: var(--primary);
-    }
-
-    .btn-action {
-        width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border);
-        background: transparent; color: var(--muted); cursor: pointer;
-        display: flex; align-items: center; justify-content: center; transition: all 0.2s;
-    }
-    .btn-action:hover { background: var(--danger-bg); color: var(--danger); border-color: var(--danger-border); }
-
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-    .history-toggle {
-        display: flex; align-items: center; justify-content: space-between;
-        padding: 14px 20px; background: var(--surface); border: 1px solid var(--border);
-        border-radius: 8px; cursor: pointer; margin-top: 40px;
-    }
-    .history-toggle:hover { border-color: #444; }
-</style>
-@endpush

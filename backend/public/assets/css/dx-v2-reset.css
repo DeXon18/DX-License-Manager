@@ -1,0 +1,10 @@
+/**
+ * @module    dx-v2-reset
+ * @fase      21.1
+ * @desc      Reset global básico de selectores y elementos en el portal.
+ * @afecta    [Global App Portal]
+ * @version   2.21.0
+ */
+
+/* 2. RESET */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

@@ -14,12 +14,17 @@ class LicenseInventoryDaemon extends Model
         'uuid',
         'client_id',
         'sold_to',
+        'additional_sold_tos',
         'daemon',
         'hostname',
         'composite',
         'hardware_id',
         'version',
         'type',
+    ];
+
+    protected $casts = [
+        'additional_sold_tos' => 'array',
     ];
 
     protected static function booted()

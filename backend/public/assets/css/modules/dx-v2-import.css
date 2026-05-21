@@ -1,0 +1,402 @@
+/**
+ * @module    dx-v2-import
+ * @fase      21.4
+ * @desc      Estilos específicos del módulo de Importación (CSV Semanales Siemens / Licencias), incluyendo dropzone con hover dinámico, mapeo de campos, registro de historial de subida e integración del auditor IA.
+ * @afecta    [import/index.blade.php, import/show.blade.php]
+ * @version   2.21.0
+ */
+
+.dx-v2-import-card-mb {
+  margin-bottom: 24px;
+}
+
+.dx-v2-import-success-alert {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+  text-transform: none;
+  border-radius: var(--dx-v2-rounded-sm);
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.dx-v2-import-success-alert-left {
+  display: flex;
+  align-items: center;
+}
+
+.dx-v2-import-success-alert-svg {
+  margin-right: 8px;
+}
+
+.dx-v2-import-success-alert-btn {
+  padding: 4px 12px;
+  font-size: 11px;
+  margin-left: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--dx-v2-rounded-sm);
+  color: #fff;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.dx-v2-import-success-alert-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.dx-v2-import-dropzone {
+  height: 160px;
+  border: 1px dashed var(--dx-v2-border-base);
+  border-radius: var(--dx-v2-rounded-md);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background: rgba(255, 255, 255, 0.01);
+}
+.dx-v2-import-dropzone:hover {
+  border-color: var(--dx-v2-accent-base);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.dx-v2-import-dropzone-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.dx-v2-import-dropzone-title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--dx-v2-primary-base);
+}
+
+.dx-v2-import-dropzone-subtext {
+  font-size: 11px;
+  color: var(--dx-v2-muted);
+  opacity: 0.6;
+}
+
+.dx-v2-import-submit-row {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dx-v2-import-btn-submit {
+  padding: 10px 24px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.dx-v2-import-mapping-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.dx-v2-import-mapping-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dx-v2-import-mapping-item {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--dx-v2-border-base);
+  padding-bottom: 8px;
+}
+
+.dx-v2-import-mapping-code {
+  min-width: 40px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--dx-v2-accent-base);
+}
+
+.dx-v2-import-mapping-content {
+  flex: 1;
+}
+
+.dx-v2-import-mapping-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--dx-v2-primary-base);
+}
+
+.dx-v2-import-mapping-desc {
+  font-size: 10px;
+  color: var(--dx-v2-muted);
+}
+
+.dx-v2-import-info-box {
+  background: rgba(245, 158, 11, 0.05);
+  border: 1px solid rgba(245, 158, 11, 0.15);
+  padding: 16px;
+  border-radius: var(--dx-v2-rounded-md);
+  margin-bottom: 12px;
+}
+
+.dx-v2-import-info-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: #f59e0b;
+}
+
+.dx-v2-import-info-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.dx-v2-import-info-text {
+  font-size: 12px;
+  color: var(--dx-v2-primary-base);
+  opacity: 0.8;
+  line-height: 1.6;
+}
+
+.dx-v2-import-info-text-danger {
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.dx-v2-import-sidebar-links {
+  margin-top: 12px;
+}
+
+.dx-v2-import-sidebar-btn {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dx-v2-import-req-box {
+  margin-top: 16px;
+  padding: 16px;
+  border: 1px solid var(--dx-v2-border-base);
+  border-radius: var(--dx-v2-rounded-md);
+  background: var(--dx-v2-raised);
+}
+
+.dx-v2-import-req-text {
+  font-size: 11px;
+  color: var(--dx-v2-muted);
+  line-height: 1.5;
+}
+
+/* Historial de Logs */
+.dx-v2-import-badge-warn {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.dx-v2-import-btn-icon-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.dx-v2-import-btn-icon {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--dx-v2-border-base);
+  color: var(--dx-v2-muted);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--dx-v2-rounded-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.dx-v2-import-btn-icon:hover {
+  background: var(--dx-v2-border-base);
+  color: var(--dx-v2-primary-base);
+}
+.dx-v2-import-btn-icon.text-danger:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+/* Detalle de Importación */
+.dx-v2-import-breadcrumb-row {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.dx-v2-import-breadcrumb-link {
+  color: var(--dx-v2-accent-base);
+  text-decoration: none;
+}
+
+.dx-v2-import-breadcrumb-separator {
+  margin: 0 8px;
+  opacity: 0.3;
+}
+
+.dx-v2-import-breadcrumb-current {
+  opacity: 0.5;
+}
+
+.dx-v2-import-stat-value-accent {
+  color: var(--dx-v2-accent-base) !important;
+}
+
+.dx-v2-import-table-col-width-80 {
+  width: 80px;
+}
+
+.dx-v2-import-table-text-right {
+  text-align: right;
+}
+
+.dx-v2-import-table-code-cell {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.dx-v2-import-table-code-cell.danger {
+  color: #ef4444;
+}
+
+.dx-v2-import-empty-box {
+  padding: 40px;
+  text-align: center;
+}
+
+.dx-v2-import-empty-icon {
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+
+.dx-v2-import-empty-title {
+  font-weight: 600;
+  color: var(--dx-v2-primary-base);
+}
+
+.dx-v2-import-empty-desc {
+  font-size: 12px;
+  color: var(--dx-v2-muted);
+  margin-top: 4px;
+}
+
+.dx-v2-import-metadata-container {
+  padding: 20px;
+}
+
+.dx-v2-import-metadata-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dx-v2-import-metadata-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--dx-v2-border-base);
+  padding-bottom: 8px;
+}
+.dx-v2-import-metadata-row.no-border {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.dx-v2-import-metadata-label {
+  font-size: 12px;
+  color: var(--dx-v2-muted);
+}
+
+.dx-v2-import-metadata-value {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+.dx-v2-import-metadata-value.success {
+  color: #10b981;
+}
+
+.dx-v2-import-ia-box {
+  margin-top: 24px;
+  padding: 12px;
+  background: rgba(99, 102, 241, 0.05);
+  border-radius: var(--dx-v2-rounded-sm);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+}
+
+.dx-v2-import-ia-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--dx-v2-accent-base);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.dx-v2-import-ia-text {
+  font-size: 11px;
+  color: var(--dx-v2-primary-base);
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+/* Normalización Inteligente (AI Engine) */
+.dx-v2-normalization-badge-ai {
+  background: linear-gradient(135deg, rgba(145, 113, 255, 0.15) 0%, rgba(0, 122, 255, 0.15) 100%);
+  color: #a78bfa !important;
+  border: 1px solid rgba(145, 113, 255, 0.3) !important;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  box-shadow: 0 0 10px rgba(145, 113, 255, 0.1);
+  text-shadow: 0 0 5px rgba(145, 113, 255, 0.2);
+  font-size: 8px;
+  padding: 2px 6px;
+  margin-top: 4px;
+  display: inline-block;
+  border-radius: var(--dx-v2-rounded-sm);
+  font-family: var(--dx-v2-font-sans);
+  text-transform: uppercase;
+}
+
+.dx-v2-normalization-reason-box {
+  background: rgba(145, 113, 255, 0.03);
+  border: 1px dashed rgba(145, 113, 255, 0.15);
+  border-radius: var(--dx-v2-rounded-sm);
+  padding: 5px 8px;
+  font-size: 10px;
+  color: #c084fc;
+  margin-top: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  line-height: 1.4;
+}
+
+.dx-v2-normalization-provider-pill {
+  background: rgba(145, 113, 255, 0.2);
+  color: #e9d5ff;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 8px;
+  font-weight: 700;
+  font-family: 'IBM Plex Mono', monospace;
+}
+

@@ -93,6 +93,7 @@ class SystemActionController extends Controller
             ]);
 
             if ($response->successful()) {
+                Log::info('Telegram test successful');
                 $this->logAction('telegram_test', 'Manual telegram notification test sent');
                 return response()->json(['success' => true, 'message' => 'Notificación de prueba enviada.']);
             }
@@ -139,6 +140,39 @@ class SystemActionController extends Controller
             }
 
             return response()->json(['success' => false, 'message' => 'Archivo no encontrado.'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function sendWeeklyAlerts()
+    {
+        try {
+            Log::info('Manual license alerts triggered by user: ' . auth()->id());
+            Artisan::call('dx:send-weekly-alerts');
+            $this->logAction('manual_alert_send', 'Manual license expiration alerts triggered');
+            return back()->with('success', 'El reporte semanal se ha generado y enviado a los contactos suscritos.');
+        } catch (\Exception $e) {
+            Log::error('Error triggering manual alerts: ' . $e->getMessage());
+            return back()->with('error', 'Error al iniciar alertas: ' . $e->getMessage());
+        }
+    }
+
+    public function restartContainer(Request $request)
+    {
+        $name = $request->input('name');
+
+        if (!$name || !str_starts_with($name, 'dx-')) {
+            return response()->json(['success' => false, 'message' => 'Contenedor no válido.'], 400);
+        }
+
+        try {
+            // Ejecutar docker restart de forma asíncrona (no bloqueante)
+            Process::run("docker restart {$name}");
+            
+            $this->logAction('docker_restart', "Container restarted: {$name}");
+
+            return response()->json(['success' => true, 'message' => "Contenedor {$name} reiniciado con éxito."]);
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Error: ' . $e->getMessage()], 500);
         }

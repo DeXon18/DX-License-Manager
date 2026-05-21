@@ -1,0 +1,504 @@
+/**
+ * @module    dx-v2-tools-moldex
+ * @fase      21.5
+ * @desc      Estilos unificados y clases semánticas para el auditor Moldex3D. Contiene los layouts de cabecera con el color semántico de warning naranja de la marca, las tarjetas estructuradas para el panel de resultados, dropzones con pseudo-clases dragging, tablas de especificaciones y propiedades en bloque monoespaciado, grids de los módulos de la licencia, y la barra lateral de ayuda y validación.
+ * @afecta    [tools/moldex3d.blade.php]
+ * @version   2.19.0
+ */
+
+/* ─── Moldex3D Header ───────────────────────────────── */
+.dx-v2-tools-moldex-header-layout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.dx-v2-tools-moldex-header-icon {
+  background: var(--warning-bg) !important;
+  color: var(--warning) !important;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--warning-border) !important;
+  flex-shrink: 0;
+}
+
+.dx-v2-tools-moldex-header-title {
+  margin: 0 !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  display: flex;
+  align-items: center;
+}
+
+.dx-v2-tools-moldex-vendor-label {
+  font-size: 10px !important;
+  padding: 2px 6px !important;
+  margin-left: 8px;
+  background: var(--warning-bg) !important;
+  color: var(--warning) !important;
+  border: 1px solid var(--warning-border) !important;
+  border-radius: 4px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.dx-v2-tools-moldex-header-sub {
+  margin: 0 !important;
+  font-size: 13px !important;
+  color: var(--dx-v2-muted) !important;
+}
+
+/* ─── Card Structure ────────────────────────────────── */
+.dx-v2-tools-moldex-card {
+  margin-bottom: 24px !important;
+}
+
+.dx-v2-tools-moldex-card-header {
+  display: flex;
+  justify-content: space-between !important;
+  align-items: center;
+}
+
+.dx-v2-tools-moldex-badge {
+  background: var(--warning-bg) !important;
+  color: var(--warning) !important;
+  border: 1px solid var(--warning-border) !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+  text-transform: uppercase;
+}
+
+.dx-v2-tools-moldex-card-body {
+  padding: 24px !important;
+}
+
+.dx-v2-tools-moldex-error-alert {
+  margin-bottom: 16px !important;
+  padding: 12px 16px !important;
+  background: rgba(211, 47, 47, 0.1) !important;
+  border-left: 4px solid var(--dx-v2-danger, #D32F2F) !important;
+  color: var(--dx-v2-danger, #D32F2F) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  border-radius: 4px !important;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ─── Dropzone ──────────────────────────────────────── */
+.dx-v2-tools-moldex-dropzone {
+  height: 180px;
+  border: 1px dashed var(--dx-v2-border) !important;
+  border-radius: 8px !important;
+  margin-bottom: 20px !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  background: var(--dx-v2-surface) !important;
+}
+
+.dx-v2-tools-moldex-dropzone-inner {
+  width: 100%;
+  text-align: center;
+}
+
+.dx-v2-tools-moldex-dropzone-icon-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--warning-bg) !important;
+  width: 48px;
+  height: 48px;
+  border-radius: 50% !important;
+  color: var(--warning) !important;
+  margin: 0 auto 16px;
+  border: 1px solid var(--warning-border) !important;
+}
+
+.dx-v2-tools-moldex-dropzone-text-primary {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: var(--dx-v2-primary-base) !important;
+}
+
+.dx-v2-tools-moldex-dropzone-text-selected {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  color: var(--warning) !important;
+}
+
+.dx-v2-tools-moldex-dropzone-text-secondary {
+  font-size: 12px !important;
+  color: var(--dx-v2-muted) !important;
+  margin-top: 4px;
+}
+
+.dx-v2-tools-moldex-btn-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.dx-v2-tools-moldex-btn-submit {
+  background: var(--warning) !important;
+  border-color: var(--warning-border) !important;
+  color: #fff !important;
+  padding: 10px 24px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px !important;
+  display: flex;
+  align-items: center;
+  border-radius: 6px !important;
+  border: 1px solid transparent !important;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.dx-v2-tools-moldex-btn-submit:hover {
+  opacity: 0.9 !important;
+}
+
+.dx-v2-tools-moldex-btn-submit:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+}
+
+/* ─── Results Panel ─────────────────────────────────── */
+.dx-v2-tools-moldex-results-wrapper {
+  margin-top: 12px !important;
+}
+
+.dx-v2-tools-moldex-results-card {
+  background: var(--dx-v2-surface) !important;
+  border: 1px solid var(--dx-v2-border) !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.dx-v2-tools-moldex-results-header {
+  padding: 16px 24px !important;
+  border-bottom: 1px solid var(--dx-v2-border) !important;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--dx-v2-raised) !important;
+}
+
+.dx-v2-tools-moldex-results-header-icon {
+  background: var(--dx-v2-success, #2da44e) !important;
+  color: white !important;
+  width: 22px;
+  height: 22px;
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dx-v2-tools-moldex-results-header-text {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: var(--dx-v2-primary-base) !important;
+  letter-spacing: 0.3px;
+}
+
+.dx-v2-tools-moldex-property-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.dx-v2-tools-moldex-property-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 0 !important;
+  border-bottom: 1px solid var(--dx-v2-border) !important;
+}
+
+.dx-v2-tools-moldex-property-row:last-child {
+  border-bottom: none !important;
+}
+
+.dx-v2-tools-moldex-property-label {
+  color: var(--dx-v2-muted) !important;
+  font-size: 13px !important;
+  min-width: 150px;
+}
+
+.dx-v2-tools-moldex-property-val-mono {
+  color: var(--dx-v2-primary-base) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  font-family: var(--font-mono) !important;
+  text-align: right;
+  max-width: 400px;
+  word-break: break-all;
+}
+
+.dx-v2-tools-moldex-property-val-mono-bold {
+  color: var(--dx-v2-primary-base) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  font-family: var(--font-mono) !important;
+}
+
+.dx-v2-tools-moldex-property-val-bold {
+  color: var(--dx-v2-primary-base) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  text-align: right;
+}
+
+.dx-v2-tools-moldex-version-chip {
+  background: var(--dx-v2-raised) !important;
+  color: var(--dx-v2-primary-base) !important;
+  border: 1px solid var(--dx-v2-border) !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  padding: 2px 8px !important;
+  border-radius: 4px !important;
+  letter-spacing: 0.5px;
+}
+
+.dx-v2-tools-moldex-sync-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.dx-v2-tools-moldex-sync-status-ok {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--dx-v2-success, #2da44e) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+
+.dx-v2-tools-moldex-sync-status-pending {
+  color: var(--dx-v2-danger, #cf222e) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+}
+
+.dx-v2-tools-moldex-sync-subtitle {
+  font-size: 10px !important;
+  color: var(--dx-v2-muted) !important;
+  margin-top: 2px;
+}
+
+.dx-v2-tools-moldex-sync-error {
+  font-size: 10px !important;
+  color: var(--dx-v2-danger, #cf222e) !important;
+  margin-top: 2px;
+}
+
+/* ─── Modules Grid ──────────────────────────────────── */
+.dx-v2-tools-moldex-modules-section {
+  margin-top: 24px !important;
+  margin-bottom: 12px !important;
+}
+
+.dx-v2-tools-moldex-modules-title {
+  color: var(--dx-v2-muted) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px !important;
+}
+
+.dx-v2-tools-moldex-modules-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dx-v2-tools-moldex-module-item {
+  background: var(--dx-v2-raised) !important;
+  border: 1px solid var(--dx-v2-border) !important;
+  border-radius: 8px !important;
+  padding: 12px 16px !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dx-v2-tools-moldex-module-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dx-v2-tools-moldex-module-bullet {
+  width: 18px;
+  height: 18px;
+  border-radius: 4px !important;
+  background: var(--danger-bg) !important;
+  border: 1px solid var(--danger-border) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--danger) !important;
+  flex-shrink: 0;
+}
+
+.dx-v2-tools-moldex-module-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.dx-v2-tools-moldex-module-name {
+  color: var(--dx-v2-primary-base) !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+}
+
+.dx-v2-tools-moldex-module-code {
+  color: var(--dx-v2-muted) !important;
+  font-size: 10px !important;
+  font-family: var(--font-mono) !important;
+}
+
+.dx-v2-tools-moldex-module-seats {
+  background: var(--danger-bg) !important;
+  color: var(--danger) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  padding: 2px 8px !important;
+  border-radius: 12px !important;
+  border: 1px solid var(--danger-border) !important;
+}
+
+/* ─── Success Banner ────────────────────────────────── */
+.dx-v2-tools-moldex-success-banner {
+  margin-top: 16px !important;
+  background: var(--success-bg) !important;
+  border: 1px solid var(--success-border) !important;
+  padding: 16px !important;
+  border-radius: 8px !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dx-v2-tools-moldex-success-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dx-v2-tools-moldex-success-banner-icon {
+  background: var(--dx-v2-success, #2da44e) !important;
+  color: white !important;
+  width: 24px;
+  height: 24px;
+  border-radius: 50% !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dx-v2-tools-moldex-success-banner-text {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--dx-v2-success, #2da44e) !important;
+}
+
+/* ─── Sidebar Panels ────────────────────────────────── */
+.dx-v2-tools-moldex-sidebar-card {
+  background: var(--dx-v2-surface) !important;
+  border: 1px solid var(--dx-v2-border) !important;
+  padding: 20px !important;
+  border-radius: 10px !important;
+  margin-bottom: 16px !important;
+}
+
+.dx-v2-tools-moldex-sidebar-title {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: var(--dx-v2-muted) !important;
+  text-transform: uppercase;
+  margin-bottom: 16px !important;
+  letter-spacing: 0.05em;
+}
+
+.dx-v2-tools-moldex-sidebar-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dx-v2-tools-moldex-sidebar-code-box {
+  background: var(--dx-v2-raised) !important;
+  padding: 10px !important;
+  border-radius: 6px !important;
+  font-family: var(--font-mono) !important;
+  font-size: 11px !important;
+  color: var(--dx-v2-secondary-base) !important;
+  border-left: 3px solid var(--warning) !important;
+}
+
+.dx-v2-tools-moldex-sidebar-desc {
+  font-size: 11px !important;
+  color: var(--dx-v2-muted) !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+}
+
+.dx-v2-tools-moldex-sidebar-warning {
+  background: var(--warning-bg) !important;
+  border: 1px solid var(--warning-border) !important;
+  padding: 16px !important;
+  border-radius: 10px !important;
+}
+
+.dx-v2-tools-moldex-sidebar-warning-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px !important;
+  color: var(--warning) !important;
+}
+
+.dx-v2-tools-moldex-sidebar-warning-title {
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase;
+}
+
+.dx-v2-tools-moldex-sidebar-warning-text {
+  font-size: 12px !important;
+  color: var(--warning) !important;
+  opacity: 0.9 !important;
+  line-height: 1.6 !important;
+  margin: 0 !important;
+}
+
+.dx-v2-tools-moldex-sidebar-info {
+  margin-top: 16px !important;
+  padding: 16px !important;
+  border: 1px solid var(--dx-v2-border) !important;
+  border-radius: 10px !important;
+  background: var(--dx-v2-surface) !important;
+}
+
+.dx-v2-tools-moldex-sidebar-info-text {
+  font-size: 11px !important;
+  color: var(--dx-v2-muted) !important;
+  line-height: 1.6 !important;
+}

@@ -1,0 +1,212 @@
+/**
+ * @module    dx-v2-pagination
+ * @fase      21.3
+ * @desc      Estilos comunes para banner de mantenimiento, controles y links de paginación numérica, y selectores JUMP.
+ * @afecta    [Global App Portal]
+ * @version   2.21.0
+ */
+
+/* Banner de Mantenimiento */
+.dx-v2-maintenance-banner {
+    background: #f59e0b;
+    color: #000;
+    padding: 8px 20px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    position: sticky;
+    top: 0;
+    z-index: var(--dx-v2-z-toast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.dx-v2-maintenance-banner span {
+    font-size: 16px;
+}
+.dx-v2-maintenance-banner a {
+    color: #000;
+    text-decoration: underline;
+    margin-left: 10px;
+    font-weight: 700;
+    transition: opacity 0.2s;
+}
+.dx-v2-maintenance-banner a:hover {
+    opacity: 0.8;
+}
+
+.dx-v2-maintenance-header {
+    top: 35px !important;
+}
+
+/* Paginación Contenedor */
+.dx-v2-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    font-family: var(--font-sans);
+}
+.dx-v2-pagination-info {
+    font-size: 11px;
+    color: var(--dx-v2-text-muted);
+    font-weight: 500;
+}
+.dx-v2-pagination-highlight {
+    color: var(--dx-v2-primary-base);
+    font-weight: 700;
+}
+.dx-v2-pagination-links {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+/* Enlaces de Paginación Numéricos y de Control */
+.dx-v2-page-link {
+    min-width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--dx-v2-text-muted);
+    text-decoration: none;
+    font-size: 11px;
+    border-radius: var(--dx-v2-rounded-md);
+    transition: all 0.2s ease;
+    font-weight: 500;
+    background: transparent;
+    padding: 0 4px;
+    box-sizing: border-box;
+}
+.dx-v2-page-link:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--dx-v2-primary-base);
+}
+[data-theme="light"] .dx-v2-page-link:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+/* Enlaces de Paginación Control (Anterior/Siguiente) */
+.dx-v2-page-control {
+    padding: 4px 8px;
+    color: var(--dx-v2-primary-base);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s ease;
+}
+.dx-v2-page-control:hover {
+    color: var(--dx-v2-accent-base);
+}
+
+/* Estados Especiales */
+.dx-v2-page-link-active {
+    min-width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--dx-v2-accent-base);
+    color: #ffffff;
+    border-radius: var(--dx-v2-rounded-md);
+    font-size: 11px;
+    font-weight: 800;
+    box-shadow: var(--dx-v2-shadow-sm);
+}
+.dx-v2-page-link-disabled {
+    padding: 4px 8px;
+    color: var(--dx-v2-text-muted);
+    opacity: 0.3;
+    font-size: 14px;
+    cursor: not-allowed;
+}
+.dx-v2-page-link-dots {
+    padding: 0 4px;
+    color: var(--dx-v2-text-muted);
+    font-size: 11px;
+    opacity: 0.5;
+}
+
+/* Componente Paginación JUMP */
+.dx-v2-pagination-jump {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-family: var(--font-sans);
+    margin-top: 20px;
+}
+.dx-v2-pagination-btn {
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--dx-v2-border-base);
+    border-radius: var(--dx-v2-rounded-md);
+    color: var(--dx-v2-primary-base);
+    font-size: 11px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+.dx-v2-pagination-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+[data-theme="light"] .dx-v2-pagination-btn {
+    background: rgba(0, 0, 0, 0.02);
+}
+[data-theme="light"] .dx-v2-pagination-btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+.dx-v2-pagination-btn-disabled {
+    padding: 6px 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--dx-v2-border-base);
+    border-radius: var(--dx-v2-rounded-md);
+    color: var(--dx-v2-text-muted);
+    font-size: 11px;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+[data-theme="light"] .dx-v2-pagination-btn-disabled {
+    background: rgba(0, 0, 0, 0.01);
+}
+
+/* Selector de Paginación JUMP */
+.dx-v2-pagination-select-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.dx-v2-pagination-select {
+    appearance: none;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--dx-v2-border-base);
+    border-radius: var(--dx-v2-rounded-md);
+    padding: 6px 30px 6px 12px;
+    color: var(--dx-v2-primary-base);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+.dx-v2-pagination-select:hover {
+    border-color: var(--dx-v2-accent-base);
+}
+[data-theme="light"] .dx-v2-pagination-select {
+    background: rgba(0, 0, 0, 0.02);
+}
+.dx-v2-pagination-select-icon {
+    position: absolute;
+    right: 10px;
+    pointer-events: none;
+    opacity: 0.5;
+    display: flex;
+    align-items: center;
+}
+
+/* Corazón del Footer */
+.dx-v2-heart {
+    color: #ef4444;
+}

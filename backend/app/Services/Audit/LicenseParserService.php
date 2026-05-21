@@ -18,58 +18,53 @@ class LicenseParserService
      */
     public function clean(string $content): string
     {
-        // 0. Extraer el Resumen Comercial ANTES de cualquier transformación
-        // (está al final del archivo como comentarios #)
+        // 1. Normalizar saltos de línea sin crear arrays masivos todavía
+        $content = str_replace(["\r\n", "\r"], "\n", $content);
+
+        // 2. Extraer Resumen Comercial de forma eficiente (buscando desde el final)
         $summaryTable = '';
-        $rawLines = preg_split("/\r?\n/", $content);
-        $foundSummary = false;
-        foreach ($rawLines as $line) {
-            if (str_contains(strtoupper($line), 'LICENSE PRODUCT')) {
-                $foundSummary = true;
-            }
-            if ($foundSummary && str_starts_with(trim($line), '#')) {
-                $summaryTable .= trim($line) . "\n";
+        $lastHashPos = strrpos($content, 'LICENSE PRODUCT');
+        if ($lastHashPos !== false) {
+            $summaryPart = substr($content, $lastHashPos);
+            $lines = explode("\n", $summaryPart);
+            foreach ($lines as $line) {
+                if (str_starts_with(trim($line), '#')) {
+                    $summaryTable .= trim($line) . "\n";
+                }
             }
         }
 
-        // 1. Normalizar saltos de línea a LF simple
-        $content = str_replace("\r\n", "\n", $content);
-        $content = str_replace("\r", "\n", $content);
-
-        // 2. Unificar líneas de continuación FlexLM (barra invertida al final)
-        // Patrón: backslash \ seguido de newline y espacios opcionales → un espacio
-        $content = preg_replace('/\\\\\n\s*/u', ' ', $content);
-
-        // 3. Eliminar firmas digitales (SIGN="...") — pueden ser muy largas
-        $content = preg_replace('/SIGN\s*=\s*"[^"]*"/s', '', $content);
-        $content = preg_replace('/SIGN\s*=\s*"[^"]*$/m', '', $content);
-
-        // 4. Filtrar el cuerpo manteniendo solo líneas críticas
-        $lines = explode("\n", $content);
-        $header = array_slice($lines, 0, 60);
-        $body   = array_slice($lines, 60);
-
-        $filteredBody = array_filter($body, function($line) {
-            $line = trim($line);
-            if (empty($line)) return false;
-            if (str_starts_with($line, '#')) return false;
-
-            $keywords = ['SERVER', 'VENDOR', 'INCREMENT', 'PACKAGE', 'FEATURE'];
-            foreach ($keywords as $kw) {
-                if (str_starts_with(strtoupper($line), $kw)) return true;
+        // 3. Limpieza de firmas y continuaciones con límites de repetición para evitar backtracking
+        // Usamos una aproximación más sencilla: eliminar bloques SIGN hasta el final de la comilla
+        $content = preg_replace('/SIGN\s*=\s*"[^"]*"/s', 'SIGN="..."', $content);
+        
+        // 4. Filtrar el cuerpo manteniendo solo líneas críticas (Procesamiento por líneas)
+        $allLines = explode("\n", $content);
+        $totalLines = count($allLines);
+        
+        // Mantener las primeras 100 líneas (Header completo)
+        $headerLines = array_slice($allLines, 0, min(100, $totalLines));
+        
+        // Filtrar el resto (solo palabras clave)
+        $filteredBody = [];
+        for ($i = 100; $i < $totalLines; $i++) {
+            $line = trim($allLines[$i]);
+            if (empty($line) || str_starts_with($line, '#')) continue;
+            
+            $upperLine = strtoupper($line);
+            if (str_starts_with($upperLine, 'SERVER') || 
+                str_starts_with($upperLine, 'VENDOR') || 
+                str_starts_with($upperLine, 'INCREMENT') || 
+                str_starts_with($upperLine, 'PACKAGE')) {
+                $filteredBody[] = $line;
             }
-            return false;
-        });
+        }
 
-        // 5. Re-ensamblar con el resumen comercial al final
-        $result = implode("\n", $header) . "\n"
+        // 5. Re-ensamblar
+        $result = implode("\n", $headerLines) . "\n"
                 . implode("\n", $filteredBody) . "\n"
-                . "### RESUMEN COMERCIAL DETECTADO AL FINAL DEL ARCHIVO ###\n"
+                . "### RESUMEN COMERCIAL DETECTADO ###\n"
                 . $summaryTable;
-
-        // 6. Limpieza final
-        $result = preg_replace("/[ \t]+/", " ", $result);
-        $result = preg_replace("/\n\s*\n+/", "\n", $result);
 
         return trim($result);
     }

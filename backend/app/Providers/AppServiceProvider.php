@@ -22,11 +22,5 @@ class AppServiceProvider extends ServiceProvider
         if (str_starts_with(config('app.url'), 'https://')) {
             \Illuminate\Support\Facades\URL::forceScheme('https');
         }
-
-        // Trazabilidad de Emails
-        \Illuminate\Support\Facades\Event::listen(
-            \Illuminate\Mail\Events\MessageSent::class,
-            \App\Listeners\EmailLoggerListener::class
-        );
     }
 }

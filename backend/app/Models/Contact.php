@@ -16,6 +16,7 @@ class Contact extends Model
         'email',
         'position',
         'phone',
+        'receives_alerts',
     ];
 
     /**

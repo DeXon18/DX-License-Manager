@@ -51,5 +51,10 @@ class Client extends Model
     {
         return $this->hasMany(LicenseInventoryDaemon::class);
     }
+
+    public function renewalLogs(): HasMany
+    {
+        return $this->hasMany(RenewalLog::class);
+    }
 }
 

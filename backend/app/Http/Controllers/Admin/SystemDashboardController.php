@@ -52,17 +52,26 @@ class SystemDashboardController extends Controller
             ],
             'security' => [
                 'active_sessions' => $this->getActiveSessionsCount(),
-                'blacklist_count' => Redis::scard('jwt_blacklist') ?? 0,
+                'blacklist_count' => (int) Redis::zcount('jwt_blacklist', time(), '+inf'),
                 'failed_logins_24h' => Schema::hasTable('audit_logs') 
                     ? DB::table('audit_logs')->where('action', 'login_failed')->where('created_at', '>', now()->subDay())->count() 
                     : 0,
             ],
             'errors_24h' => Schema::hasTable('audit_logs') 
-                ? DB::table('audit_logs')->where('level', 'error')->where('created_at', '>', now()->subDay())->count() 
+                ? DB::table('audit_logs')->whereIn('level', ['error', 'critical'])->where('created_at', '>', now()->subDay())->count() 
                 : 0,
         ];
 
         return view('admin.system.dashboard', compact('metrics'));
+    }
+
+    /**
+     * Display the dedicated docker monitor page.
+     */
+    public function docker(\App\Services\DockerMonitorService $dockerMonitor)
+    {
+        $containers = $dockerMonitor->getContainers();
+        return view('admin.system.docker', compact('containers'));
     }
 
     private function getUptime()

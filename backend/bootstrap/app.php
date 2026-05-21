@@ -23,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withSchedule(function (\Illuminate\Console\Scheduling\Schedule $schedule) {
         $schedule->command('licenses:archive-weekly')->mondays()->at('07:00');
+        $schedule->command('auth:jwt-cleanup')->daily();
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

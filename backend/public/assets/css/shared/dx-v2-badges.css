@@ -1,0 +1,34 @@
+/**
+ * @module    dx-v2-badges
+ * @fase      21.3
+ * @desc      Estilos comunes para badges, chips de fabricantes, estatus, dots de red y fechas formateadas.
+ * @afecta    [Global App Portal]
+ * @version   2.21.0
+ */
+
+/* 14. BADGES */
+.badge {
+  display:inline-flex; align-items:center; gap:4px; padding:2px 8px; border-radius: var(--dx-v2-rounded-sm);
+  font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; font-family: var(--dx-v2-font-sans);
+}
+.badge-success { background:rgba(46,160,67,0.15); color:#3fb950; border:1px solid rgba(46,160,67,0.3); }
+.badge-danger { background:rgba(248,81,73,0.15); color:#f85149; border:1px solid rgba(248,81,73,0.3); }
+.badge-warn { background:rgba(210,153,34,0.15); color:#d29922; border:1px solid rgba(210,153,34,0.3); }
+.badge-info { background:rgba(56,139,253,0.15); color:#58a6ff; border:1px solid rgba(56,139,253,0.3); }
+.badge-primary { background:rgba(31,111,235,0.15); color:#58a6ff; border:1px solid rgba(31,111,235,0.3); }
+.badge-accent { background:rgba(188,113,248,0.15); color:#bc71f8; border:1px solid rgba(188,113,248,0.3); }
+.badge-warning { background:rgba(219,109,40,0.15); color:#db6d28; border:1px solid rgba(219,109,40,0.3); }
+.badge-muted { background:rgba(139,148,158,0.15); color:#8b949e; border:1px solid rgba(139,148,158,0.3); }
+.badge-ai      { background:var(--accent-bg); color:var(--dx-v2-accent); border:1px solid rgba(2,132,199,0.2); font-size:10px; padding:2px 7px; letter-spacing:0.05em; }
+.badge-doc     { background:#f5f3ff; color:#6d28d9; border:1px solid #ddd6fe; font-size:10px; padding:2px 7px; }
+[data-theme="dark"] .badge-doc { background:rgba(139,92,246,0.1); color:#a78bfa; border-color:rgba(139,92,246,0.2); }
+
+/* 17. CHIPS / INDICADORES */
+.vendor-chip { display:inline-flex; align-items:center; gap:5px; font-size:11px; font-weight:600; font-family:'IBM Plex Mono',monospace; }
+.vendor-dot  { width:7px; height:7px; border-radius: var(--dx-v2-rounded-full); }
+.dot         { width:8px; height:8px; border-radius: var(--dx-v2-rounded-full); display:inline-block; }
+.dot.online  { background:var(--dx-v2-success); box-shadow:0 0 10px var(--dx-v2-success); }
+.date-main   { font-size:12px; font-family:'IBM Plex Mono',monospace; }
+.date-sub    { font-size:11px; color:var(--dx-v2-danger); }
+.date-sub.warn  { color:var(--dx-v2-warning); }
+.date-sub.muted { color:var(--dx-v2-muted); }
