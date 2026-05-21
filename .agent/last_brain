@@ -1,6 +1,6 @@
-Rama activa: dev. Fase 23.8 — Semáforo de Expiración en Ficha de Clientes Premium.
-Último trabajo: Finalizado el merge limpio de feature/audit-details-ui y feature/expiration-highlight-ui en dev. Rediseñada la columna de expiración del inventario activo de clientes incorporando un semáforo de tráfico visual semántico premium a color (Verde/Amarillo/Rojo/Cyan) con iconos dinámicos mediante Carbon e inyección de cache-busting (?v=timestamp) para evitar bloqueos del navegador. Removido el enlace inerte de Auditoría IA del menú lateral para mantener la UI limpia.
-Estado: 100% estable y verificado en Beta.
-Próximo paso inmediato: Implementación de la Fase 24 (Bot Interactivo de Telegram/Teams en n8n + Chatbot Web de Asistencia IA Integrado + Reporte PDF Multilicencia Consolidado por IA para Clientes).
+Rama activa: feature/telegram-bot-api. Fase 24 — Bot de Telegram / Teams Laravel API.
+Último trabajo: Creado y configurado el endpoint '/api/bot/query' en 'api.php' y 'ai.php'. Implementado 'BotQueryController.php' con soporte multi-token, control defensivo de CRLF/espacios mediante trim() y lógica de comandos para '/cliente' (fuzzy match levenshtein >= 0.75), '/expiraciones' y '/soldto' (filtrado de arrays JSON en sold_to primario y adicionales).
+Estado: Totalmente probado y verificado con curl dentro del contenedor Beta (cero errores PHP en logs, respuestas JSON instantáneas).
+Próximo paso inmediato: Ayudar a Oskar 🤟 (@DeXon, Id: 2795962) a conectar el webhook en n8n o iniciar la fase del Chatbot de Asistencia IA Web Integrado.
 Bloqueos: Ninguno.
 Stack beta: running. Stack prod: running.
