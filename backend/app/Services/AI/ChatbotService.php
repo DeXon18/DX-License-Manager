@@ -139,6 +139,76 @@ class ChatbotService
                             'type' => 'OBJECT',
                             'properties' => (object) []
                         ]
+                    ],
+                    [
+                        'name' => 'get_contract_details',
+                        'description' => 'Obtener el detalle técnico completo de un contrato específico por su ID o número (ej: CONH1006420).',
+                        'parameters' => [
+                            'type' => 'OBJECT',
+                            'properties' => [
+                                'contract_id' => [
+                                    'type' => 'STRING',
+                                    'description' => 'Número de contrato o ID (ej: CONH1006420)'
+                                ]
+                            ],
+                            'required' => ['contract_id']
+                        ]
+                    ],
+                    [
+                        'name' => 'search_contacts',
+                        'description' => 'Buscar personas de contacto por nombre o correo electrónico en toda la base de datos.',
+                        'parameters' => [
+                            'type' => 'OBJECT',
+                            'properties' => [
+                                'query' => [
+                                    'type' => 'STRING',
+                                    'description' => 'Nombre, apellido o correo electrónico del contacto'
+                                ]
+                            ],
+                            'required' => ['query']
+                        ]
+                    ],
+                    [
+                        'name' => 'update_contact',
+                        'description' => 'Actualizar los datos (rol/puesto, teléfono, email) de un contacto existente.',
+                        'parameters' => [
+                            'type' => 'OBJECT',
+                            'properties' => [
+                                'contact_id' => [
+                                    'type' => 'INTEGER',
+                                    'description' => 'ID numérico único del contacto en la base de datos'
+                                ],
+                                'role' => [
+                                    'type' => 'STRING',
+                                    'description' => 'Puesto o rol asignado (ej: Responsable de IT, Técnico de Diseño) (opcional)'
+                                ],
+                                'phone' => [
+                                    'type' => 'STRING',
+                                    'description' => 'Nuevo teléfono de contacto (opcional)'
+                                ],
+                                'email' => [
+                                    'type' => 'STRING',
+                                    'description' => 'Nuevo correo electrónico del contacto (opcional)'
+                                ]
+                            ],
+                            'required' => ['contact_id']
+                        ]
+                    ],
+                    [
+                        'name' => 'get_dashboard_summary',
+                        'description' => 'Obtener un resumen ejecutivo del sistema (total clientes, licencias críticas <= 30 días, contratos por vencer en el trimestre, clientes sin contacto).',
+                        'parameters' => [
+                            'type' => 'OBJECT',
+                            'properties' => (object) []
+                        ]
+                    ],
+                    [
+                        'name' => 'list_clients_without_contacts',
+                        'description' => 'Listar los clientes que se encuentran huérfanos de información (sin ningún contacto registrado).',
+                        'parameters' => [
+                            'type' => 'OBJECT',
+                            'properties' => (object) []
+                        ]
                     ]
                 ]
             ]
@@ -201,49 +271,50 @@ class ChatbotService
             }
 
             $parts = $candidate['content']['parts'] ?? [];
-            $hasFunctionCall = false;
-            $functionCallData = null;
+            $functionCalls = [];
 
-            // Revisar si la IA quiere llamar a alguna función
+            // Extraer todas las llamadas a funciones paralelas
             foreach ($parts as $part) {
                 if (isset($part['functionCall'])) {
-                    $hasFunctionCall = true;
-                    $functionCallData = $part['functionCall'];
-                    break;
+                    $functionCalls[] = $part['functionCall'];
                 }
             }
 
-            if ($hasFunctionCall && $functionCallData) {
-                // Registrar el llamado en el historial de contenidos para enviar en el próximo turno de la IA
+            if (!empty($functionCalls)) {
+                // Registrar el llamado completo retornado por la IA en el historial
                 $contents[] = [
                     'role' => 'model',
-                    'parts' => [$parts[0]] // El functionCall retornado por la IA
+                    'parts' => $parts // Enviamos todas las partes de este turno (que contienen los functionCalls)
                 ];
 
-                // Ejecutar localmente la herramienta solicitada
-                $funcName = $functionCallData['name'];
-                $args = $functionCallData['args'] ?? [];
-                
-                Log::info("ChatbotService: IA ejecutando llamada a función '{$funcName}' con argumentos: " . json_encode($args));
+                // Preparar el bloque de respuestas de función
+                $functionResponsesParts = [];
 
-                try {
-                    $result = $this->callTool($funcName, $args);
-                } catch (\Exception $e) {
-                    Log::error("ChatbotService: Error ejecutando función '{$funcName}': " . $e->getMessage());
-                    $result = ['error' => $e->getMessage(), 'success' => false];
+                foreach ($functionCalls as $fc) {
+                    $funcName = $fc['name'];
+                    $args = $fc['args'] ?? [];
+                    
+                    Log::info("ChatbotService: IA ejecutando llamada paralela a función '{$funcName}' con argumentos: " . json_encode($args));
+
+                    try {
+                        $result = $this->callTool($funcName, $args);
+                    } catch (\Exception $e) {
+                        Log::error("ChatbotService: Error ejecutando función '{$funcName}': " . $e->getMessage());
+                        $result = ['error' => $e->getMessage(), 'success' => false];
+                    }
+
+                    $functionResponsesParts[] = [
+                        'functionResponse' => [
+                            'name' => $funcName,
+                            'response' => ['output' => $result]
+                        ]
+                    ];
                 }
 
-                // Registrar el resultado de la función en el historial de contenidos
+                // Registrar las respuestas en el historial para el próximo turno de Gemini
                 $contents[] = [
                     'role' => 'function',
-                    'parts' => [
-                        [
-                            'functionResponse' => [
-                                'name' => $funcName,
-                                'response' => ['output' => $result]
-                            ]
-                        ]
-                    ]
+                    'parts' => $functionResponsesParts
                 ];
 
                 $loopCount++;
@@ -285,6 +356,21 @@ class ChatbotService
                 );
             case 'get_resource_links':
                 return $this->toolGetResourceLinks();
+            case 'get_contract_details':
+                return $this->toolGetContractDetails($args['contract_id'] ?? '');
+            case 'search_contacts':
+                return $this->toolSearchContacts($args['query'] ?? '');
+            case 'update_contact':
+                return $this->toolUpdateContact(
+                    (int) ($args['contact_id'] ?? 0),
+                    $args['role'] ?? null,
+                    $args['phone'] ?? null,
+                    $args['email'] ?? null
+                );
+            case 'get_dashboard_summary':
+                return $this->toolGetDashboardSummary();
+            case 'list_clients_without_contacts':
+                return $this->toolListClientsWithoutContacts();
             default:
                 throw new \Exception("Herramienta '{$name}' no está registrada en el sistema.");
         }
@@ -528,6 +614,139 @@ class ChatbotService
         return ResourceLink::orderBy('category')
             ->get(['title', 'url', 'category', 'description'])
             ->toArray();
+    }
+
+    private function toolGetContractDetails(string $contractId): array
+    {
+        $contractId = trim($contractId);
+        if (empty($contractId)) {
+            return ['error' => 'El número de contrato es obligatorio.'];
+        }
+
+        $contract = Contract::with(['client'])->where('contract_number', $contractId)->first();
+        if (!$contract) {
+            // Intento de búsqueda parcial si no hay coincidencia exacta
+            $contract = Contract::with(['client'])->where('contract_number', 'LIKE', "%{$contractId}%")->first();
+        }
+
+        if (!$contract) {
+            return ['error' => "No se encontró ningún contrato con el número o ID '{$contractId}'."];
+        }
+
+        // Recuperar daemons de inventario asociados a este cliente para dar contexto adicional
+        $daemons = LicenseInventoryDaemon::where('client_id', $contract->client_id)->get(['id', 'sold_to', 'daemon', 'hostname']);
+
+        return [
+            'id' => $contract->id,
+            'contract_number' => $contract->contract_number,
+            'client_name' => $contract->client->name ?? 'Desconocido',
+            'client_id' => $contract->client_id,
+            'vendor' => $contract->vendor,
+            'start_date' => $contract->start_date ? $contract->start_date->format('Y-m-d') : null,
+            'end_date' => $contract->end_date ? $contract->end_date->format('Y-m-d') : null,
+            'cost_center' => $contract->cost_center,
+            'active_daemons' => $daemons->toArray()
+        ];
+    }
+
+    private function toolSearchContacts(string $query): array
+    {
+        $query = trim($query);
+        if (empty($query)) {
+            return [];
+        }
+
+        $contacts = Contact::with(['client'])
+            ->where('name', 'LIKE', "%{$query}%")
+            ->orWhere('email', 'LIKE', "%{$query}%")
+            ->limit(15)
+            ->get();
+
+        return $contacts->map(function ($c) {
+            return [
+                'id' => $c->id,
+                'name' => $c->name,
+                'email' => $c->email,
+                'position' => $c->position,
+                'phone' => $c->phone,
+                'client_name' => $c->client->name ?? 'Desconocido',
+                'client_id' => $c->client_id
+            ];
+        })->toArray();
+    }
+
+    private function toolUpdateContact(int $contactId, ?string $role, ?string $phone, ?string $email): array
+    {
+        $contact = Contact::with(['client'])->find($contactId);
+        if (!$contact) {
+            return ['success' => false, 'error' => "El contacto con ID {$contactId} no existe."];
+        }
+
+        $updates = [];
+        if ($role !== null) {
+            $updates['position'] = trim($role);
+        }
+        if ($phone !== null) {
+            $updates['phone'] = trim($phone);
+        }
+        if ($email !== null) {
+            $updates['email'] = strtolower(trim($email));
+        }
+
+        if (empty($updates)) {
+            return ['success' => false, 'error' => 'No se especificaron campos para actualizar.'];
+        }
+
+        $contact->update($updates);
+
+        $clientName = $contact->client->name ?? 'Desconocido';
+
+        return [
+            'success' => true,
+            'contact_id' => $contact->id,
+            'message' => "Contacto '{$contact->name}' actualizado con éxito para el cliente '{$clientName}'.",
+            'updated_fields' => $updates
+        ];
+    }
+
+    private function toolGetDashboardSummary(): array
+    {
+        $today = Carbon::today();
+        $limitDate = Carbon::today()->addDays(30);
+
+        $totalClients = Client::count();
+        
+        $criticalLicenses = LicenseInventoryProduct::whereNotNull('expiration_date')
+            ->whereBetween('expiration_date', [$today, $limitDate])
+            ->count();
+
+        $expiredLicenses = LicenseInventoryProduct::whereNotNull('expiration_date')
+            ->where('expiration_date', '<', $today)
+            ->count();
+
+        // Contratos venciendo en este trimestre
+        $startOfQuarter = Carbon::today()->startOfQuarter();
+        $endOfQuarter = Carbon::today()->endOfQuarter();
+        $expiringContracts = Contract::whereBetween('end_date', [$startOfQuarter, $endOfQuarter])->count();
+
+        $orphanClients = Client::doesntHave('contacts')->count();
+
+        return [
+            'total_clients' => $totalClients,
+            'critical_licenses_30_days' => $criticalLicenses,
+            'expired_licenses' => $expiredLicenses,
+            'contracts_expiring_current_quarter' => $expiringContracts,
+            'clients_without_contacts' => $orphanClients
+        ];
+    }
+
+    private function toolListClientsWithoutContacts(): array
+    {
+        $clients = Client::doesntHave('contacts')
+            ->limit(20)
+            ->get(['id', 'name']);
+
+        return $clients->toArray();
     }
 
     // ==========================================
