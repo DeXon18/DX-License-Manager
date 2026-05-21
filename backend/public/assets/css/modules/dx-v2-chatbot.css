@@ -87,6 +87,17 @@
     }
 }
 
+/* Estado Maximizado */
+.dx-chatbot-window.dx-chatbot-window-maximized {
+    bottom: 0 !important;
+    right: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
+    border: none !important;
+    z-index: 9999 !important;
+}
+
 /* ─── CABECERA DEL CHAT ─── */
 .dx-chatbot-header {
     padding: var(--dx-v2-spacing-3) var(--dx-v2-spacing-4);
