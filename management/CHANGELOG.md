@@ -1180,6 +1180,16 @@ _Firmado por: **Antigravity (DX Agent)** 🦾_
 
 - Estandarización de etiquetas (### Added, ### Fixed, ### Changed) en el historial de sesiones.
 
+## [2026-05-21] — Fase 25: Consola de Diagnósticos y Generador COD
+
+### Added
+- **Chatbot UI**: Refactorización de la interfaz del asistente IA. Ventana ampliada (460x640) y eliminación del panel lateral Bento para reducir el ruido visual y mejorar la legibilidad.
+- **Resiliencia IA**: Implementada cadena completa de Fallback (Gemini -> DeepSeek -> OpenRouter -> Groq) con soporte de Function Calling en todos los niveles para acceso ininterrumpido a BD.
+
+### Fixed
+- **Generador COD**: Solucionado error 500 crítico al generar certificados de cese (COD) para empresas no registradas en la base de datos (`client_id` nullable).
+- **Manejo de Errores UI**: Mejorado el parseo de respuestas HTTP 422 en peticiones `fetch` del frontend (se añadió `Accept: application/json` para evitar parseos erróneos de HTML).
+
 ## [2026-05-06] — Sincronización y Lecciones (Fase 8.1)
 
 ### Changed
