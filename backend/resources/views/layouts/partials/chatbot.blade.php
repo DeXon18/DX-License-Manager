@@ -433,72 +433,149 @@
             parseMarkdown(text) {
                 if (!text) return '';
 
-                // Escapar HTML básico
-                let html = text
-                    .replace(/&/g, "&amp;")
-                    .replace(/</g, "&lt;")
-                    .replace(/>/g, "&gt;");
+                // Helper: aplica formato inline (bold, italic, code)
+                const applyInline = (str) => {
+                    return str
+                        .replace(/`([^`]+)`/g, '<code>$1</code>')
+                        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+                        .replace(/_(.+?)_/g, '<em>$1</em>');
+                };
 
-                // Negritas: **texto**
-                html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                // Escapar HTML (excepto lo que generemos nosotros)
+                const esc = (s) => s
+                    .replace(/&/g, '&amp;')
+                    .replace(/</g, '&lt;')
+                    .replace(/>/g, '&gt;');
 
-                // Código mono: `texto`
-                html = html.replace(/`(.*?)`/g, '<code>$1</code>');
+                let lines  = text.split('\n');
+                let result = [];
 
-                // Tablas Markdown
-                let lines = html.split('\n');
-                let inTable = false;
-                let tableHtml = '';
-                let resultLines = [];
+                let inTable    = false, tableHtml = '', tableHasBody = false;
+                let inList     = false, listHtml  = '', listType     = '';
+
+                const flushTable = () => {
+                    if (!inTable) return;
+                    tableHtml += '</tbody></table></div>';
+                    result.push(tableHtml);
+                    tableHtml = ''; inTable = false; tableHasBody = false;
+                };
+
+                const flushList = () => {
+                    if (!inList) return;
+                    listHtml += `</${listType}>`;
+                    result.push(listHtml);
+                    listHtml = ''; inList = false; listType = '';
+                };
 
                 for (let i = 0; i < lines.length; i++) {
-                    let line = lines[i].trim();
-                    if (line.startsWith('|') && line.endsWith('|')) {
-                        // Es línea de tabla
+                    const raw     = lines[i];
+                    const trimmed = raw.trim();
+
+                    // ── TABLA ──
+                    if (trimmed.startsWith('|') && trimmed.endsWith('|')) {
+                        flushList();
+                        const cells = trimmed.split('|')
+                            .map(c => c.trim())
+                            .filter((_, idx, arr) => idx > 0 && idx < arr.length - 1);
+
+                        // Fila separadora :---|:---:
+                        if (cells.every(c => /^:?-+:?$/.test(c))) {
+                            if (inTable && !tableHasBody) {
+                                tableHtml += '</thead><tbody>';
+                                tableHasBody = true;
+                            }
+                            continue;
+                        }
+
                         if (!inTable) {
                             inTable = true;
-                            tableHtml = '<table><thead>';
-                        }
-                        
-                        let cells = line.split('|').map(c => c.trim()).filter((c, idx, arr) => idx > 0 && idx < arr.length - 1);
-                        
-                        // Si es separador de cabecera: |---|---|
-                        if (cells.every(c => c.match(/^:-*-?:*$/) || c.match(/^-+$/))) {
-                            tableHtml = tableHtml.replace('</thead>', '<tbody>');
+                            tableHasBody = false;
+                            tableHtml = '<div class="dx-chat-table-wrap"><table class="dx-chat-table"><thead><tr>';
+                            for (const cell of cells) {
+                                tableHtml += `<th>${applyInline(esc(cell))}</th>`;
+                            }
+                            tableHtml += '</tr>';
                             continue;
                         }
 
                         tableHtml += '<tr>';
-                        for (let cell of cells) {
-                            if (tableHtml.includes('<tbody>')) {
-                                tableHtml += `<td>${cell}</td>`;
-                            } else {
-                                tableHtml += `<th>${cell}</th>`;
-                            }
+                        for (const cell of cells) {
+                            tableHtml += `<td>${applyInline(esc(cell))}</td>`;
                         }
                         tableHtml += '</tr>';
+                        continue;
                     } else {
-                        if (inTable) {
-                            inTable = false;
-                            tableHtml += '</tbody></table>';
-                            resultLines.push(tableHtml);
-                            tableHtml = '';
-                        }
-                        resultLines.push(line);
+                        flushTable();
                     }
-                }
-                if (inTable) {
-                    tableHtml += '</tbody></table>';
-                    resultLines.push(tableHtml);
+
+                    // ── ENCABEZADOS ──
+                    const hMatch = trimmed.match(/^(#{1,4})\s+(.*)/);
+                    if (hMatch) {
+                        flushList();
+                        const lvl  = hMatch[1].length;
+                        const htxt = applyInline(esc(hMatch[2]));
+                        result.push(`<div class="dx-chat-h${lvl}">${htxt}</div>`);
+                        continue;
+                    }
+
+                    // ── LISTA BULLET ──
+                    const ulMatch = trimmed.match(/^[-*]\s+(.*)/);
+                    if (ulMatch) {
+                        if (!inList || listType !== 'ul') {
+                            flushList();
+                            inList = true; listType = 'ul';
+                            listHtml = '<ul class="dx-chat-list">';
+                        }
+                        listHtml += `<li>${applyInline(esc(ulMatch[1]))}</li>`;
+                        continue;
+                    }
+
+                    // ── LISTA NUMERADA ──
+                    const olMatch = trimmed.match(/^\d+\.\s+(.*)/);
+                    if (olMatch) {
+                        if (!inList || listType !== 'ol') {
+                            flushList();
+                            inList = true; listType = 'ol';
+                            listHtml = '<ol class="dx-chat-list">';
+                        }
+                        listHtml += `<li>${applyInline(esc(olMatch[1]))}</li>`;
+                        continue;
+                    }
+
+                    // ── SEPARADOR HORIZONTAL ──
+                    if (/^[-*_]{3,}$/.test(trimmed)) {
+                        flushList();
+                        result.push('<hr class="dx-chat-hr">');
+                        continue;
+                    }
+
+                    // ── LÍNEA VACÍA ──
+                    if (trimmed === '') {
+                        flushList();
+                        result.push('__BLANK__');
+                        continue;
+                    }
+
+                    // ── TEXTO NORMAL ──
+                    flushList();
+                    result.push(applyInline(esc(trimmed)));
                 }
 
-                // Unir líneas con br, respetando etiquetas de tablas
-                return resultLines.map(line => {
-                    if (line.startsWith('<table') || line.endsWith('</table>') || line.startsWith('<tr>') || line.startsWith('<th>') || line.startsWith('<td>') || line.startsWith('<thead>') || line.startsWith('<tbody>')) {
+                flushTable();
+                flushList();
+
+                // Unir todo
+                return result.map((line, idx) => {
+                    if (line === '__BLANK__') return '<br>';
+                    if (line.startsWith('<div class="dx-chat-h') ||
+                        line.startsWith('<div class="dx-chat-table-wrap') ||
+                        line.startsWith('<ul') || line.startsWith('<ol') ||
+                        line.startsWith('<hr')) {
                         return line;
                     }
                     return line + '<br>';
-                }).join('').replace(/(<br>)+$/g, '');
+                }).join('').replace(/(<br>)+$/, '');
             }
         };
     }
