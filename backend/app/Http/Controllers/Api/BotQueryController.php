@@ -10,6 +10,7 @@ use App\Models\LicenseInventoryDaemon;
 use App\Models\LicenseInventoryProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 
 class BotQueryController extends Controller
 {
@@ -25,7 +26,7 @@ class BotQueryController extends Controller
         if ($authHeader && preg_match('/Bearer\s+(.*)$/i', $authHeader, $matches)) {
             $token = trim($matches[1]);
         } else {
-            $token = trim($request->header('X-Bot-Token') ?: $request->input('token') ?: '');
+            $token = trim($request->header('X-Bot-Token') ?: $request->header('X-Telegram-Bot-Api-Secret-Token') ?: $request->input('token') ?: '');
         }
 
         $allowedTokens = array_map('trim', array_filter([
@@ -44,24 +45,70 @@ class BotQueryController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        // 2. Validate Parameters
-        $validated = $request->validate([
-            'command' => 'required|string|in:cliente,expiraciones,soldto',
-            'argument' => 'nullable|string',
-        ]);
+        // 2. Detect & Parse Telegram Webhook
+        $isTelegramWebhook = $request->has('message.text');
+        $chatId = null;
+        $command = null;
+        $argument = '';
 
-        $command = $validated['command'];
-        $argument = trim($validated['argument'] ?? '');
+        if ($isTelegramWebhook) {
+            $chatId = $request->input('message.chat.id');
+            $text = trim($request->input('message.text') ?? '');
+
+            if (preg_match('/^\/([a-zA-Z0-9_]+)(?:\s+(.*))?$/', $text, $matches)) {
+                $rawCommand = strtolower($matches[1]);
+                $argument = trim($matches[2] ?? '');
+
+                if ($rawCommand === 'cliente') {
+                    $command = 'cliente';
+                } elseif ($rawCommand === 'expiraciones') {
+                    $command = 'expiraciones';
+                } elseif ($rawCommand === 'soldto') {
+                    $command = 'soldto';
+                }
+
+                if (!$command) {
+                    $this->sendTelegramMessage($chatId, "⚠️ *Comando no reconocido.*\n\nComandos disponibles:\n• `/cliente [Nombre]` - Consultar ficha de cliente\n• `/expiraciones` - Diagnóstico de vencimientos ≤30 días\n• `/soldto [ID]` - Buscar por Sold-To");
+                    return response()->json(['status' => 'ignored', 'message' => 'Unknown Telegram command']);
+                }
+            } else {
+                $this->sendTelegramMessage($chatId, "💡 *Portal DX* — Envía un comando válido para interactuar. Ejemplo: `/cliente Gurutzpe` o `/expiraciones`.");
+                return response()->json(['status' => 'ignored', 'message' => 'No command found']);
+            }
+        } else {
+            // Standard JSON Request
+            $validated = $request->validate([
+                'command' => 'required|string|in:cliente,expiraciones,soldto',
+                'argument' => 'nullable|string',
+            ]);
+
+            $command = $validated['command'];
+            $argument = trim($validated['argument'] ?? '');
+        }
 
         // 3. Process Commands
+        $jsonResponse = null;
         switch ($command) {
             case 'cliente':
-                return $this->handleCliente($argument);
+                $jsonResponse = $this->handleCliente($argument);
+                break;
             case 'expiraciones':
-                return $this->handleExpiraciones();
+                $jsonResponse = $this->handleExpiraciones();
+                break;
             case 'soldto':
-                return $this->handleSoldTo($argument);
+                $jsonResponse = $this->handleSoldTo($argument);
+                break;
         }
+
+        // 4. Return Output
+        if ($isTelegramWebhook && $jsonResponse) {
+            $responseData = $jsonResponse->getData(true);
+            $formattedMessage = $this->formatResponseForTelegram($command, $responseData);
+            $this->sendTelegramMessage($chatId, $formattedMessage);
+            return response()->json(['status' => 'success', 'message' => 'Message sent to Telegram']);
+        }
+
+        return $jsonResponse;
 
         return response()->json(['error' => 'Command not implemented'], 501);
     }
@@ -352,5 +399,234 @@ class BotQueryController extends Controller
 
         $distance = levenshtein($str1, $str2);
         return 1 - ($distance / $maxLen);
+    }
+
+    /**
+     * Send Markdown message to Telegram chat.
+     */
+    protected function sendTelegramMessage($chatId, string $message)
+    {
+        $botToken = config('services.telegram-bot-api.token') ?: config('ai.telegram_bot_token');
+        if (!$botToken) {
+            Log::error("Cannot send Telegram message: Token not configured.");
+            return;
+        }
+
+        $url = "https://api.telegram.org/bot{$botToken}/sendMessage";
+        
+        try {
+            $response = Http::timeout(10)->post($url, [
+                'chat_id' => $chatId,
+                'text' => $message,
+                'parse_mode' => 'Markdown',
+            ]);
+
+            if (!$response->successful()) {
+                Log::error("Telegram API error: " . $response->body());
+            }
+        } catch (\Exception $e) {
+            Log::error("Failed to send Telegram message: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Format raw response data into elegant Markdown for Telegram.
+     */
+    protected function formatResponseForTelegram(string $command, array $response): string
+    {
+        if (($response['status'] ?? '') !== 'success') {
+            return "⚠️ *" . ($response['message'] ?? 'Error desconocido al procesar la solicitud.') . "*";
+        }
+
+        $data = $response['data'] ?? [];
+
+        switch ($command) {
+            case 'cliente':
+                $name = $data['client_name'] ?? 'Cliente';
+                $daemons = $data['daemons'] ?? [];
+                $contracts = $data['contracts'] ?? [];
+
+                $msg = "🏢 *Ficha de Cliente:*\n*{$name}*\n\n";
+
+                if (!empty($daemons)) {
+                    $msg .= "🔐 *Inventario de Licencias:*\n";
+                    foreach ($daemons as $d) {
+                        $daemonName = strtoupper($d['daemon'] ?? 'Desconocido');
+                        $vendor = $d['vendor'] ?? 'Siemens';
+                        $soldTo = $d['sold_to'] ?? '';
+                        $hostname = $d['hostname'] ?? '';
+                        $composite = $d['composite'] ?? '';
+                        $prodCount = $d['products_count'] ?? 0;
+
+                        $msg .= "• *{$daemonName}* ({$vendor})\n";
+                        $msg .= "  Sold-To: `{$soldTo}`\n";
+                        if ($hostname) $msg .= "  Host: `{$hostname}`\n";
+                        if ($composite) $msg .= "  Hardware ID / Composite: `{$composite}`\n";
+                        $msg .= "  Productos registrados ({$prodCount}):\n";
+
+                        if (!empty($d['products'])) {
+                            $products = array_slice($d['products'], 0, 15);
+                            foreach ($products as $p) {
+                                $code = $p['code'] ?? '';
+                                $qty = $p['qty'] ?? 1;
+                                $exp = $p['expiration'] ?? 'permanent';
+                                $status = $p['status'] ?? 'healthy';
+
+                                $statusEmoji = '🟢';
+                                if ($status === 'expired') $statusEmoji = '🔴';
+                                if ($status === 'warning') $statusEmoji = '🟡';
+                                if ($status === 'permanent') $statusEmoji = '🔵';
+
+                                $msg .= "  └ `{$code}` x{$qty} ({$exp}) {$statusEmoji}\n";
+                            }
+                            if (count($d['products']) > 15) {
+                                $msg .= "  └ ... y " . (count($d['products']) - 15) . " productos más.\n";
+                            }
+                        } else {
+                            $msg .= "  └ (Sin productos activos)\n";
+                        }
+                        $msg .= "\n";
+                    }
+                } else {
+                    $msg .= "🔐 *Inventario de Licencias:* (Ninguno registrado)\n\n";
+                }
+
+                if (!empty($contracts)) {
+                    $msg .= "💼 *Contratos Activos:*\n";
+                    foreach ($contracts as $c) {
+                        $num = $c['number'] ?? '';
+                        $vendor = $c['vendor'] ?? 'Siemens';
+                        $prod = $c['product'] ?? '';
+                        $sub = $c['sub_product'] ?? '';
+                        $exp = $c['expiration'] ?? '';
+                        $days = $c['days_left'] !== null ? round($c['days_left']) : null;
+                        $status = $c['status'] ?? 'active';
+
+                        $statusEmoji = '🟢';
+                        if ($status === 'expired') $statusEmoji = '🔴';
+                        if ($status === 'expiring') $statusEmoji = '🟡';
+
+                        $daysStr = $days !== null ? " ({$days} días restantes)" : "";
+                        $msg .= "• *{$num}* [{$vendor}] - {$prod} / {$sub}\n";
+                        $msg .= "  Expira: `{$exp}`{$daysStr} {$statusEmoji}\n";
+                    }
+                } else {
+                    $msg .= "💼 *Contratos Activos:* (Ninguno activo)\n";
+                }
+
+                return $msg;
+
+            case 'soldto':
+                $soldTo = $data['sold_to'] ?? '';
+                $results = $data['results'] ?? [];
+
+                $msg = "🔍 *Resultado Sold-To: `{$soldTo}`*\n\n";
+
+                foreach ($results as $d) {
+                    $clientName = $d['client_name'] ?? 'Cliente';
+                    $daemonName = strtoupper($d['daemon'] ?? 'Desconocido');
+                    $vendor = $d['vendor'] ?? 'Siemens';
+                    $hostname = $d['hostname'] ?? '';
+                    $composite = $d['composite'] ?? '';
+                    $prodCount = $d['products_count'] ?? 0;
+
+                    $msg .= "🏢 *Cliente:* *{$clientName}*\n";
+                    $msg .= "🔐 *Daemon:* *{$daemonName}* ({$vendor})\n";
+                    if ($hostname) $msg .= "  Host: `{$hostname}`\n";
+                    if ($composite) $msg .= "  Hardware ID / Composite: `{$composite}`\n";
+                    $msg .= "  Productos registrados ({$prodCount}):\n";
+
+                    if (!empty($d['products'])) {
+                        $products = array_slice($d['products'], 0, 15);
+                        foreach ($products as $p) {
+                            $code = $p['code'] ?? '';
+                            $qty = $p['qty'] ?? 1;
+                            $exp = $p['expiration'] ?? 'permanent';
+                            $status = $p['status'] ?? 'healthy';
+
+                            $statusEmoji = '🟢';
+                            if ($status === 'expired') $statusEmoji = '🔴';
+                            if ($status === 'warning') $statusEmoji = '🟡';
+                            if ($status === 'permanent') $statusEmoji = '🔵';
+
+                            $msg .= "  └ `{$code}` x{$qty} ({$exp}) {$statusEmoji}\n";
+                        }
+                        if (count($d['products']) > 15) {
+                            $msg .= "  └ ... y " . (count($d['products']) - 15) . " productos más.\n";
+                        }
+                    } else {
+                        $msg .= "  └ (Sin productos activos)\n";
+                    }
+                    $msg .= "\n";
+                }
+
+                return $msg;
+
+            case 'expiraciones':
+                $expiredLicenses = $data['expired_licenses'] ?? [];
+                $expiringLicenses = $data['expiring_licenses'] ?? [];
+                $expiredContracts = $data['expired_contracts'] ?? [];
+                $expiringContracts = $data['expiring_contracts'] ?? [];
+
+                $msg = "⚠️ *Alerta de Expiraciones Portal DX*\n\n";
+
+                if (!empty($expiredLicenses)) {
+                    $msg .= "🔴 *Licencias Caducadas (Top 15):*\n";
+                    foreach (array_slice($expiredLicenses, 0, 15) as $l) {
+                        $client = $l['client'] ?? '';
+                        $code = $l['code'] ?? '';
+                        $exp = $l['expiration'] ?? '';
+                        $days = abs(round($l['days_left'] ?? 0));
+                        $msg .= "• *{$client}* - `{$code}` (`{$exp}`, vencido hace {$days} días)\n";
+                    }
+                    $msg .= "\n";
+                }
+
+                if (!empty($expiringLicenses)) {
+                    $msg .= "🟡 *Licencias Próximas a Caducar (≤30 días, Top 15):*\n";
+                    foreach (array_slice($expiringLicenses, 0, 15) as $l) {
+                        $client = $l['client'] ?? '';
+                        $code = $l['code'] ?? '';
+                        $exp = $l['expiration'] ?? '';
+                        $days = round($l['days_left'] ?? 0);
+                        $msg .= "• *{$client}* - `{$code}` (`{$exp}`, expira en {$days} días)\n";
+                    }
+                    $msg .= "\n";
+                }
+
+                if (!empty($expiredContracts)) {
+                    $msg .= "🔴 *Contratos Caducados (Top 15):*\n";
+                    foreach (array_slice($expiredContracts, 0, 15) as $c) {
+                        $client = $c['client'] ?? '';
+                        $num = $c['number'] ?? '';
+                        $vendor = $c['vendor'] ?? 'Siemens';
+                        $prod = $c['product'] ?? '';
+                        $exp = $c['expiration'] ?? '';
+                        $msg .= "• *{$client}* - *{$num}* [{$vendor}] - {$prod} (`{$exp}`)\n";
+                    }
+                    $msg .= "\n";
+                }
+
+                if (!empty($expiringContracts)) {
+                    $msg .= "🟡 *Contratos Próximos a Caducar (≤30 días, Top 15):*\n";
+                    foreach (array_slice($expiringContracts, 0, 15) as $c) {
+                        $client = $c['client'] ?? '';
+                        $num = $c['number'] ?? '';
+                        $vendor = $c['vendor'] ?? 'Siemens';
+                        $prod = $c['product'] ?? '';
+                        $exp = $c['expiration'] ?? '';
+                        $days = round($c['days_left'] ?? 0);
+                        $msg .= "• *{$client}* - *{$num}* [{$vendor}] - {$prod} (`{$exp}`, expira en {$days} días)\n";
+                    }
+                }
+
+                if (empty($expiredLicenses) && empty($expiringLicenses) && empty($expiredContracts) && empty($expiringContracts)) {
+                    $msg .= "🟢 *¡Todo en orden! No hay licencias ni contratos caducados o próximos a caducar en los siguientes 30 días.*\n";
+                }
+
+                return $msg;
+        }
+
+        return "⚠️ *Comando procesado correctamente.*";
     }
 }
