@@ -32,6 +32,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Fase 25 — Consola de Diagnósticos y Generador COD ✅
+- **Completada:** 2026-05-21
+- **Rama:** `feature/chatbot-web-assist`
+- **Resumen:** Refactorización de la interfaz del asistente IA (eliminación Bento, aumento de ventana). Reparado el error 500 en generación COD para clientes no registrados (client_id nullable) y mejorado parseo de respuestas HTTP 422 en JS.
+- **PR:** pendiente — a mergear en dev
+
 ### Fase 24 — Canal Interactivo de Consulta (Bot de Telegram / Teams Laravel API) ✅
 - **Completada:** 2026-05-21
 - **Rama:** `feature/telegram-bot-api`
