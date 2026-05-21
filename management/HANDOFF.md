@@ -1,5 +1,5 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-20 16:00  
+> Última actualización: 2026-05-21 09:20  
 > Sesión en: Proxmox Beta Environment  
 > Rama activa: dev (limpia, mergeada)  
 
@@ -7,7 +7,7 @@
 
 ## Estado General
 
-**Fase actual:** Fase 23.8 — Semáforo de Expiración en Ficha de Clientes Premium ✅ COMPLETADA & MERGEADA (PR #26)  
+**Fase actual:** Fase 24 — Canal Interactivo de Consulta (Bot de Telegram / Teams Laravel API) ✅ COMPLETADA & MERGEADA  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,63 +15,52 @@
 
 ## Qué se hizo en esta sesión
 
-1. **Rediseño del Historial de Archivos de Licencia Originales**:
-   * Reemplazado el `<details>` rústico nativo por un acordeón interactivo y animado con Alpine.js (`historyOpen: false`) en [resources/views/clients/show.blade.php].
-   * Incorporado un banner explicativo claro que detalla la función técnica de esta sección como "Fuente de Verdad Histórica (Solo Lectura)".
-   * Rediseñada la tabla en alta densidad, incluyendo badges dinámicos por ecosistema (`SIEMENS` vs `MOLDEX3D`), visualización de fecha de subida, servidor de hosting y el botón de ojo "Ver Auditoría" estilizado.
-   * Optimización del espaciado vertical compactado a 24px sin solapamientos utilizando márgenes dinámicos condicionales en el bucle Blade de Sold-To.
+1. **Integración Nativa de Webhook de Telegram**:
+   * Implementado de forma directa el webhook oficial en `/api/bot/query` de Laravel. El backend detecta de forma automática los mensajes recibidos del webhook y despacha la respuesta con peticiones POST asíncronas a la API oficial de Telegram, eliminando cualquier intermediario.
 
-2. **Rediseño del Detalle de Auditoría Siemens / Moldex3D (Modal)**:
-   * Implementado un título dinámico que se adapta a Siemens o Moldex3D según el daemon del archivo.
-   * Diseñado un banner superior de inmutabilidad y seguridad con icono de candado (`fa-lock`) explicando el propósito técnico inmutable del respaldo de licencia física.
-   * Creado un Bento Grid integrado para los metadatos clave del servidor (Hostname, Composite/MAC, Sold-To y Daemon).
-   * Refactorizada la tabla de productos originales a una consola inmutable en alta resolución con scrollbars integrados y colorización selectiva de caducidad.
-   * Removidos elementos inertes que inducían a errores en el usuario (ej: papelera deshabilitada en registros inmutables).
-   * Integrado el botón rápido "Copiar Metadatos JSON" en la barra de herramientas del modal de detalles con retroalimentación interactiva.
+2. **Autocompletado de Comandos en Telegram**:
+   * Registrado el menú de sugerencias con los comandos `/cliente`, `/expiraciones` y `/soldto` directamente en los servidores de Telegram mediante la API `/setMyCommands` para facilitar la escritura a los técnicos.
 
-3. **Correcciones de Accesibilidad (a11y) & Autofill**:
-   * Corregidos problemas de Lighthouse vinculando todos los `<label>` huérfanos con sus inputs por `id` y `for`.
-   * Añadidos tokens de autocompletado estándar (`autocomplete`) para nombre, email, teléfono y cargo en el modal de contactos.
+3. **Mensajes de Ayuda Interactivos**:
+   * Implementado validador ergonómico que intercepta si el técnico envía `/cliente` o `/soldto` sin argumentos, respondiendo con una guía visual del uso correcto y un ejemplo práctico en Markdown.
 
-4. **Semáforo Visual de Expiración de Inventario (NOC Pro)**:
-   * Diseñado e implementado el código estándar de color de tráfico (verde para licencias a salvo, amarillo/naranja para vencimiento en menos de 30 días, rojo para expiradas, y cyan para permanentes).
-   * Incorporada la iconografía dinámica por estado y el cálculo de Carbon de días restantes.
-   * Resuelto de forma permanente el bloqueo por almacenamiento en caché de los navegadores mediante inyección dinámica de directiva Blade `@push` con cache-busting dinámico de `dx-v2-clients.css?v=timestamp`.
+4. **Optimizaciones del Rendimiento de Base de Datos**:
+   * Migradas todas las queries de filtrado de expiración de colecciones en memoria de PHP a queries de base de datos directas en Eloquent usando fechas relativas.
+   * La búsqueda por Sold-To secundario ahora utiliza la directiva de base de datos `orWhereJsonContains` para buscar dentro de columnas JSON directamente en MariaDB.
+
+5. **Normalización de Cadenas Multibyte**:
+   * Refactorizado el cálculo de similitud `calculateSimilarity()` mediante transliteración ASCII nativa en PHP (`iconv`) para asegurar que acentos, tildes y eñes (ñ) no alteren el porcentaje de confianza de Levenshtein al buscar clientes de forma fuzzy.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-1. **Canal Interactivo de Consulta (Bot de Telegram / Teams)**:
-   * Diseñar un endpoint en Laravel `/api/bot/query` para recibir solicitudes y responder datos estructurados del portal.
-   * Conectar con n8n usando triggers de Telegram/Teams para capturar comandos como `/cliente [Nombre]`, `/expiraciones` o `/soldto [ID]` y devolver resúmenes premium con la información al chat del técnico.
-
-2. **Chatbot de Asistencia IA Web Integrado**:
+1. **Chatbot de Asistencia IA Web Integrado (Fase 25)**:
    * Implementar un widget de chat premium flotante en la interfaz web del portal (esquina inferior derecha) animado con Alpine.js (`chatOpen: false`).
    * Conectar el chat de la web al mismo motor inteligente para que los técnicos puedan realizar consultas de clientes, composite, MACs o licencias en lenguaje natural directamente desde la aplicación sin depender de apps externas.
 
-3. **Reporte Físico de Auditoría de Licencias para Clientes (PDF / Enviar)**:
+2. **Reporte Físico de Auditoría de Licencias para Clientes (PDF / Enviar)**:
    * Diseñar una plantilla de reporte técnico premium de auditoría en PDF usando Dompdf que resuma el ecosistema completo del cliente.
    * **Análisis Multi-Archivo por IA**: El usuario puede subir un lote con 1, 4 o las licencias físicas que sean del cliente. La IA las procesará de forma conjunta, consolidando toda la información en un único reporte unificado (Hostname, composites, semáforo de vencimiento a color por cada archivo y recomendaciones globales de renovación).
    * Crear un botón interactivo **`[📄 Reporte Auditoría]`** en la ficha del cliente para descargarlo al instante o enviarlo por email directo al cliente.
    * Integrar comando `/auditoria [Cliente]` en el Bot de Telegram para recuperar el reporte en el móvil.
 
-4. **Comandos de Voz Interactivos por Telegram (IA)**:
+3. **Comandos de Voz Interactivos por Telegram (IA)**:
    * Configurar un transcriptor rápido de notas de voz en n8n conectado a Gemini para poder realizar consultas al bot por Telegram hablando en vez de teclear (ej: *"¿Cuándo expira la licencia de Andaltec?"*).
 
 ---
 
 ## Contexto técnico importante
 
-* El modal de detalles utiliza de forma dinámica `x-text` en Alpine.js para adaptarse dinámicamente tanto al daemon analizado por el motor Siemens como por el de Moldex3D.
-* La copia de metadatos JSON al portapapeles se realiza directamente en cliente con `navigator.clipboard.writeText()` para máxima velocidad de respuesta sin llamadas redundantes al servidor.
+* El webhook oficial de Telegram ha quedado apuntado en vivo y en directo a la URL segura: `https://beta.dxpro.es/api/bot/query?token=***REMOVED***`
+* Las llamadas a `/api/bot/query` son completamente fluidas, seguras y optimizadas contra sobrecargas de RAM de PHP.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-* Ninguno. Todo el sistema está operando con total estabilidad técnica y visual.
+* Ninguno. Todo el sistema está operando con total estabilidad técnica, velocidad y seguridad.
 
 ---
 
@@ -89,10 +78,11 @@
 ## Comandos útiles para la próxima sesión
 
 ```bash
-# Cambiar a la rama activa
-git checkout feature/audit-details-ui
+# Sincronizar ramas locales y asegurar dev actualizada
+git checkout dev
+git pull origin dev
 
-# Ver logs de PHP en Beta
+# Ver logs de PHP en Beta tras pruebas de interacción
 docker logs --tail=50 dx-php-beta
 
 # Limpiar caché de vistas para forzar compilación Blade limpia
