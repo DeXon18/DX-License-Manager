@@ -145,6 +145,7 @@
 
     @include('layouts.partials.footer')
     @include('layouts.partials.toasts')
+    @include('layouts.partials.chatbot')
 
     @stack('scripts')
     <script>

@@ -24,6 +24,9 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::get('/clientes', [ClientController::class, 'index'])->name('clients.index');
     Route::get('/clientes/{client}', [ClientController::class, 'show'])->name('clients.show');
     
+    // Chatbot de Asistencia IA Web (Fase 25)
+    Route::post('/chatbot/query', [\App\Http\Controllers\Api\ChatbotController::class, 'query'])->name('chatbot.query');
+    
     // Perfil de Usuario
     Route::get('/perfil', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('/perfil', [ProfileController::class, 'update'])->name('profile.update');
