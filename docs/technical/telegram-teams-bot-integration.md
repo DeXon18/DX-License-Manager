@@ -1,172 +1,89 @@
 # Integración de Canal Interactivo (Telegram / Teams Bot)
 
-Este documento detalla la arquitectura técnica y el funcionamiento del canal interactivo de consulta para técnicos a través de bots de mensajería (Telegram y Teams).
+Este documento detalla la arquitectura técnica, el funcionamiento del canal interactivo de consulta para técnicos a través de bots de mensajería (Telegram y Teams), y las optimizaciones a nivel de base de datos implementadas.
 
 ---
 
-## 1. Arquitectura General
+## 1. Arquitectura General y Canales de Comunicación
 
-La comunicación entre los clientes de mensajería y el portal se organiza en tres capas:
+La comunicación entre los clientes de mensajería y el portal Laravel está diseñada de forma híbrida y desacoplada, soportando dos modos de funcionamiento:
+
+### A. Procesamiento Nativo vía Webhooks (Telegram Directo)
+El portal Laravel actúa directamente como el procesador del Webhook de Telegram. Cuando se configura el Webhook del bot de Telegram apuntando a la URL del portal, el flujo de ejecución es directo y óptimo:
 
 ```
-[ Técnico ] <---> [ Bot (Telegram / Teams) ] <---> [ n8n Workflow ] <---> [ Laravel API ]
+[ Técnico (Telegram) ] ──(HTTPS POST Webhook)──> [ Laravel API: /api/bot/query ]
+                                                              │ (Procesamiento SQL)
+[ Técnico (Telegram) ] <──(HTTPS POST API Message)─────── [ Laravel Backend ]
 ```
 
-1. **Cliente (Técnico)**: Envía comandos (`/cliente`, `/expiraciones`, `/soldto`) desde la aplicación de mensajería.
-2. **Bot / Webhook**: Telegram/Teams notifican el evento al webhook de **n8n**.
-3. **Orquestador (n8n)**: Captura el mensaje, extrae los parámetros y realiza una llamada HTTP POST segura al portal Laravel.
-4. **Backend (Laravel)**: Procesa la consulta en `/api/bot/query`, realiza búsquedas complejas (fuzzy matches, cruzado de Sold-Tos, Carbon del inventario) y responde con un JSON estructurado de alta fidelidad.
-5. **n8n (Respuesta)**: Recibe el JSON, formatea la información en Markdown elegante (utilizando emojis e identación profesional) y responde al chat del técnico.
+1. **Recepción Directa**: El webhook de Telegram golpea `/api/bot/query`.
+2. **Detección Automática**: El backend identifica que la petición proviene de un webhook de Telegram al evaluar el campo `message.text`.
+3. **Procesamiento y Formateo Nativo**: Ejecuta la consulta SQL optimizada, consolida los resultados en un formato Markdown ultra-denso adaptado para móviles, y realiza una llamada POST asíncrona a la API de Telegram (`https://api.telegram.org/bot<token>/sendMessage`).
+4. **Respuesta Rápida**: Retorna inmediatamente un HTTP `200 OK` con `{"status":"success"}` a los servidores de Telegram para liberar la cola de entrega.
+
+### B. Integración vía Orquestadores (n8n / Teams)
+Para canales externos como Microsoft Teams u automatizaciones complejas, el backend mantiene compatibilidad con llamadas JSON estándar:
+
+```
+[ Técnico ] <---> [ Bot (Teams) ] <---> [ Orquestador n8n ] <---> [ Laravel API ]
+```
 
 ---
 
 ## 2. Endpoint de Laravel: `/api/bot/query`
 
-El portal expone un endpoint seguro y optimizado para el bot:
 * **Método**: `POST`
 * **Ruta**: `/api/bot/query`
 * **Controlador**: `App\Http\Controllers\Api\BotQueryController`
 
 ### Seguridad y Autenticación
-El acceso al endpoint está blindado mediante autenticación por token en la cabecera HTTP. Soporta de manera nativa y tolerante (limpieza defensiva de CRLF y espacios `trim()`):
-1. **Bearer Token**: `Authorization: Bearer <TELEGRAM_BOT_TOKEN>`
-2. **Custom Header**: `X-Bot-Token: <TELEGRAM_BOT_TOKEN>`
+El acceso al endpoint está estrictamente protegido mediante autenticación de tokens. Soporta tres vías de detección (sanitizadas con `trim()` defensivo contra espacios o CRLFs):
+1. **Bearer Token**: Cabecera `Authorization: Bearer <BOT_TOKEN>`
+2. **Custom Header**: Cabeceras `X-Bot-Token` o `X-Telegram-Bot-Api-Secret-Token` (enviado por Telegram).
+3. **Query Parameter**: Parámetro de URL `?token=<BOT_TOKEN>`.
 
-Los tokens autorizados se configuran en el entorno a través de las variables:
-* `BOT_API_TOKEN`
-* `TELEGRAM_BOT_TOKEN`
-* `N8N_WEBHOOK_SECRET` (como fallback seguro de integración)
+Los tokens autorizados se configuran en el entorno a través de las variables de entorno `BOT_API_TOKEN`, `TELEGRAM_BOT_TOKEN`, y `N8N_WEBHOOK_SECRET`.
 
 ---
 
-## 3. Comandos Soportados y Formatos
+## 3. Optimizaciones Técnicas Clave en el Backend
 
-Las peticiones HTTP POST enviadas al endpoint deben incluir un cuerpo JSON con la estructura:
+### ⚡ 1. Consultas SQL Nativas en Eloquent
+Para evitar la degradación de rendimiento provocada por la hidratación y el filtrado de colecciones enteras en memoria RAM de PHP, todos los filtros de negocio se han migrado a la capa de base de datos (Eloquent / MariaDB):
+* **Filtro de Sold-To en JSON**: En `/soldto`, la búsqueda evalúa campos planos y elementos embebidos en el campo JSON `additional_sold_tos` de forma nativa en la base de datos usando `where('sold_to', ...)->orWhereJsonContains('additional_sold_tos', ...)`.
+* **Filtro de Expiraciones Directo en SQL**: En `/expiraciones`, los productos y contratos se pre-filtran en base de datos evaluando solo aquellos cuya fecha sea menor o igual al umbral crítico (`expiration_date <= NOW() + 30 días`), reduciendo el throughput de red y el consumo de CPU.
 
-```json
-{
-  "command": "nombre_comando",
-  "argument": "parámetro_opcional"
-}
+### 🧠 2. Similitud Multibyte UTF-8 para Búsqueda Fuzzy (Levenshtein)
+La función nativa de PHP `levenshtein()` trabaja a nivel de bytes simples y distorsiona la distancia en nombres que contienen acentos (tildes) o eñes (ñ). Implementamos una normalización de cadenas mediante `iconv()` para asegurar búsquedas precisas:
+
+```php
+$normalize = fn($s) => mb_strtolower(trim(
+    iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $s)
+));
+```
+Esto permite mapear clientes como `"Gurutzpe"` o `"Andaltec"` de forma óptima a pesar de variaciones ortográficas del técnico. El umbral de aceptación está definido por la constante de clase `FUZZY_MATCH_THRESHOLD = 0.75`.
+
+### 📱 3. Consolidación de Salida y Formato Ultra-Compacto para Móviles
+El formato del mensaje retornado se ha compactado estratégicamente para priorizar la legibilidad en pantallas pequeñas:
+* **Sin Ruido de Contratos**: La salida de `/expiraciones` en Telegram omite bloques de contratos innecesarios y se enfoca exclusivamente en la monitorización de vencimientos inminentes de licencias físicas.
+* **Consolidación por Daemon**: Evita duplicaciones repetitivas de productos agrupando a nivel de `Sold-To` + `Daemon`, logrando listados densos ideales para una rápida auditoría técnica desde el teléfono.
+
+---
+
+## 4. Registro y Configuración de Comandos en Telegram (`/setMyCommands`)
+
+Para registrar los comandos directamente en la interfaz de usuario de Telegram y permitir la autocompletación interactiva de los técnicos, se realizó un registro en los servidores centrales usando la API `setMyCommands`:
+
+```bash
+curl -s -X POST \
+     -H "Content-Type: application/json" \
+     -d '{"commands": [
+       {"command": "cliente", "description": "Consultar ficha de cliente"},
+       {"command": "expiraciones", "description": "Diagnóstico de vencimientos ≤30 días"},
+       {"command": "soldto", "description": "Buscar por Sold-To"}
+     ]}' \
+     "https://api.telegram.org/bot<TELEGRAM_BOT_TOKEN>/setMyCommands"
 ```
 
-### A. `/cliente [Nombre]`
-* **Propósito**: Recupera la ficha completa de inventarios, Sold-To y contratos de un cliente.
-* **Inteligencia de Búsqueda**:
-  1. Coincidencia exacta de nombre.
-  2. Búsqueda por alias registrado en la tabla `client_aliases`.
-  3. Algoritmo de similitud Levenshtein fuzzy match con umbral de coincidencia de confianza del **75%** (sin crear registros huérfanos).
-* **Payload de entrada**:
-  ```json
-  {
-    "command": "cliente",
-    "argument": "Andaltec"
-  }
-  ```
-* **Respuesta exitosa (JSON)**:
-  ```json
-  {
-    "status": "success",
-    "type": "client_info",
-    "data": {
-      "client_id": 142,
-      "client_name": "Fundacion Andaltec I+D+I",
-      "daemons": [
-        {
-          "daemon": "moldex3d",
-          "sold_to": "1005998",
-          "additional_sold_tos": [],
-          "hostname": "AOOBRBDHVMRAE",
-          "composite": "00-50-56-B3-E5-40",
-          "vendor": "moldex",
-          "products_count": 15,
-          "products": [
-            {
-              "code": "STUDIO-2025",
-              "qty": 3,
-              "expiration": "2027-01-14",
-              "days_left": 237,
-              "status": "healthy"
-            }
-          ]
-        }
-      ],
-      "contracts": []
-    }
-  }
-  ```
-
----
-
-### B. `/expiraciones`
-* **Propósito**: Diagnóstico rápido de licencias y contratos que requieren renovación inmediata.
-* **Cálculo Semántico**:
-  * **Expirados**: Días restantes menores a 0.
-  * **Críticos**: Días restantes entre 0 y 30 días.
-* **Payload de entrada**:
-  ```json
-  {
-    "command": "expiraciones"
-  }
-  ```
-* **Respuesta exitosa (JSON)**:
-  ```json
-  {
-    "status": "success",
-    "type": "expirations",
-    "data": {
-      "expired_licenses": [
-        {
-          "client": "Akaba Sa",
-          "daemon": "ugslmd",
-          "sold_to": "1429810",
-          "code": "NX11100",
-          "expiration": "2026-05-18",
-          "days_left": -3
-        }
-      ],
-      "expiring_licenses": [],
-      "expired_contracts": [],
-      "expiring_contracts": []
-    }
-  }
-  ```
-
----
-
-### C. `/soldto [ID]`
-* **Propósito**: Mapea un identificador Siemens PLM de facturación ("Sold-To") con el cliente dueño en el portal.
-* **Búsqueda Bidireccional**:
-  * Evalúa el Sold-To primario en la tabla de inventario.
-  * Busca dentro de los arrays JSON de Sold-Tos adicionales (`additional_sold_tos`) indexando coincidencias consolidadas.
-* **Payload de entrada**:
-  ```json
-  {
-    "command": "soldto",
-    "argument": "1005998"
-  }
-  ```
-* **Respuesta exitosa (JSON)**:
-  Retorna la misma estructura que `/cliente` filtrada específicamente por el daemon e inventario que coincida con el identificador buscado.
-
----
-
-## 4. Guía de Configuración en n8n
-
-Para implementar el flujo visual en n8n:
-
-1. **Webhook Trigger (Telegram)**: Configurar trigger para escuchar comandos en el bot corporativo.
-2. **Switch/Routing**: Enrutar según el comando `/cliente`, `/expiraciones` o `/soldto`.
-3. **HTTP Request**:
-   * **URL**: `https://beta.dxpro.es/api/bot/query` (o producción `https://portal.dxpro.es/api/bot/query`)
-   * **Método**: `POST`
-   * **Headers**:
-     * `Accept: application/json`
-     * `Content-Type: application/json`
-     * `Authorization: Bearer {{ $env.TELEGRAM_BOT_TOKEN }}`
-   * **Body**: JSON dinámico capturando el texto enviado por el técnico.
-4. **Formatting (Markdown)**: Mapear la respuesta JSON y formatearla utilizando bloques como:
-   * 🟢 **Verde** para licencias seguras (`status: healthy` / permanent).
-   * 🟡 **Amarillo** para alertas de expiración ≤ 30 días (`status: warning`).
-   * 🔴 **Rojo** para licencias caducadas (`status: expired`).
-5. **Send Message**: Retornar el texto enriquecido de forma interactiva al técnico que originó la petición.
+Esto habilita el botón nativo de comandos `/` en el cliente móvil o desktop de los usuarios del bot.
