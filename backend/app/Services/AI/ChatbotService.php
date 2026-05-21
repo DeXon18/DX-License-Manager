@@ -259,7 +259,7 @@ class ChatbotService
             ];
 
             $response = Http::timeout(30)->post(
-                "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={$apiKey}",
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}",
                 $payload
             );
 
@@ -856,9 +856,9 @@ class ChatbotService
             }
         }
 
-        // Intentar OpenRouter como 3er fallback
-        $openrouterKey = config('ai.openrouter_key');
-        if ($openrouterKey) {
+        // Intentar Groq como 3er fallback (llama-3.3-70b, free tier directo)
+        $groqKey = config('ai.groq_key');
+        if ($groqKey) {
             try {
                 $messages = [];
                 foreach ($chatHistory as $msg) {
@@ -874,13 +874,11 @@ class ChatbotService
 
                 $response = Http::timeout(20)
                     ->withHeaders([
-                        'Authorization'  => "Bearer {$openrouterKey}",
-                        'Content-Type'   => 'application/json',
-                        'HTTP-Referer'   => 'https://beta.dxpro.es',
-                        'X-Title'        => 'DX License Manager'
+                        'Authorization' => "Bearer {$groqKey}",
+                        'Content-Type'  => 'application/json'
                     ])
-                    ->post('https://openrouter.ai/api/v1/chat/completions', [
-                        'model'       => 'meta-llama/llama-3.1-8b-instruct:free',
+                    ->post('https://api.groq.com/openai/v1/chat/completions', [
+                        'model'       => 'llama-3.3-70b-versatile',
                         'messages'    => $messages,
                         'temperature' => 0.5
                     ]);
@@ -890,16 +888,16 @@ class ChatbotService
                     $text = $resData['choices'][0]['message']['content'] ?? '';
                     return [
                         'message'        => $text,
-                        'provider'       => 'openrouter-fallback',
+                        'provider'       => 'groq-fallback',
                         'success'        => true,
                         'usage_metadata' => null,
                         'data'           => []
                     ];
                 } else {
-                    Log::error("ChatbotService: Fallo HTTP en Fallback OpenRouter: (Status " . $response->status() . ") " . $response->body());
+                    Log::error("ChatbotService: Fallo HTTP en Fallback Groq: (Status " . $response->status() . ") " . $response->body());
                 }
             } catch (\Exception $e) {
-                Log::error("ChatbotService: Fallo en Fallback OpenRouter: " . $e->getMessage());
+                Log::error("ChatbotService: Fallo en Fallback Groq: " . $e->getMessage());
             }
         }
 
