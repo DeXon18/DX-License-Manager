@@ -55,8 +55,9 @@ class NXSuiteController extends Controller
      */
     public function process(Request $request)
     {
+        ini_set('memory_limit', '256M');
         $request->validate([
-            'license_file' => 'required|file|max:10240|mimetypes:text/plain,application/octet-stream',
+            'license_file' => 'required|file|max:10240',
             'motor'        => 'required|in:legacy,salt',
         ]);
 
@@ -64,72 +65,87 @@ class NXSuiteController extends Controller
         
         // Validación extra de extensión
         $extension = strtolower($file->getClientOriginalExtension());
-        if (!in_array($extension, ['lic', 'txt'])) {
-            return back()->withErrors(['license_file' => 'Solo se permiten archivos .lic o .txt.']);
+        if (!in_array($extension, ['lic', 'txt', 'dat', 'cid'])) {
+            return back()->withErrors(['license_file' => 'Solo se permiten archivos .lic, .txt, .dat o .cid.']);
         }
 
-        $content = file_get_contents($file->getRealPath());
-        $motor   = $request->input('motor');
+        try {
+            $content = file_get_contents($file->getRealPath());
+            $motor   = $request->input('motor');
 
-        // Extraer metadatos para nomenclatura y almacenamiento
-        $metadata = $this->nxService->extractMetadata($content);
+            // Extraer metadatos para nomenclatura y almacenamiento
+            $metadata = $this->nxService->extractMetadata($content);
+            $isTemporal = ($metadata['type'] === 'Temporal');
 
-        // --- INICIO AUDITORÍA IA ---
-        // 1. Limpiar contenido para la IA (ahorro de tokens)
-        $cleanContent = $this->parserService->clean($content);
-        $detectedHostIds = $this->parserService->detectHostIds($content);
+            // --- INICIO AUDITORÍA IA ---
+            try {
+                $cleanContent = $this->parserService->clean($content);
+                $detectedHostIds = $this->parserService->detectHostIds($content);
 
-        // 2. Solicitar auditoría asíncrona
-        $audit = $this->auditService->requestAudit(
-            auth()->id(), 
-            $cleanContent,
-            $detectedHostIds
-        );
-        // --- FIN AUDITORÍA IA ---
-        
-        // Transformar contenido para el usuario
-        $isTemporal7Days = ($metadata['type'] === 'Temporal');
-        $transformedContent = $this->nxService->transform($content, $motor, $isTemporal7Days);
-
-        // Generar nombre de archivo
-        $filename = $this->nxService->generateFilename($metadata);
-
-        // Lógica de Almacenamiento (Solo si NO es temporal)
-        if ($metadata['type'] !== 'Temporal') {
-            $clientFolder = $this->normalizationService->normalizeName($metadata['client']);
-            $dateFolder = date('m-Y');
-            
-            // Nueva ruta solicitada: licenses/siemens/{cliente}/{fecha}/
-            $storagePath = "licenses/siemens/{$clientFolder}/{$dateFolder}";
-            $fullPath = "{$storagePath}/{$filename}";
-
-            // Manejo de duplicados (_1, _2, etc.)
-            $counter = 1;
-            $finalFilename = $filename;
-            $nameOnly = str_replace(['.lic', '.txt'], '', $filename);
-            $extension = str_contains($filename, '.txt') ? '.txt' : '.lic';
-
-            while (Storage::disk('local')->exists("{$storagePath}/{$finalFilename}")) {
-                $finalFilename = "{$nameOnly}_{$counter}{$extension}";
-                $counter++;
+                $audit = $this->auditService->requestAudit(
+                    auth()->id(), 
+                    $cleanContent,
+                    $detectedHostIds,
+                    'siemens',
+                    $isTemporal
+                );
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::warning("NXSuite: IA Audit failed but continuing process: " . $e->getMessage());
+                $audit = null;
             }
+            // --- FIN AUDITORÍA IA ---
             
-            Storage::disk('local')->put("{$storagePath}/{$finalFilename}", $transformedContent);
-            
-            $filename = $finalFilename;
-        }
+            // Transformar contenido para el usuario
+            $transformedContent = $this->nxService->transform($content, $motor, $isTemporal);
 
-        // Si es una petición AJAX, podemos devolver el UUID de la auditoría
-        if ($request->ajax()) {
-            return response()->json([
-                'uuid' => $audit->uuid,
-                'status' => 'processing'
-            ]);
-        }
+            // Generar nombre de archivo
+            $filename = $this->nxService->generateFilename($metadata);
 
-        // Devolver para descarga inmediata
-        return response($transformedContent)
-            ->header('Content-Type', 'text/plain')
-            ->header('Content-Disposition', "attachment; filename=\"{$filename}\"");
+            // Lógica de Almacenamiento (Solo si NO es temporal)
+            if ($metadata['type'] !== 'Temporal') {
+                try {
+                    $clientFolder = $this->normalizationService->normalizeName($metadata['client']);
+                    $dateFolder = date('m-Y');
+                    
+                    $storagePath = "licenses/siemens/{$clientFolder}/{$dateFolder}";
+                    $finalFilename = $filename;
+                    
+                    // Manejo de duplicados
+                    $counter = 1;
+                    $nameOnly = str_replace(['.lic', '.txt'], '', $filename);
+                    $ext = str_contains($filename, '.txt') ? '.txt' : '.lic';
+
+                    while (Storage::disk('local')->exists("{$storagePath}/{$finalFilename}")) {
+                        $finalFilename = "{$nameOnly}_{$counter}{$ext}";
+                        $counter++;
+                    }
+                    
+                    Storage::disk('local')->put("{$storagePath}/{$finalFilename}", $transformedContent);
+                    $filename = $finalFilename;
+                    
+                } catch (\Exception $e) {
+                    \Illuminate\Support\Facades\Log::error("NXSuite: Storage failed: " . $e->getMessage());
+                    // Continuamos para permitir al menos la descarga
+                }
+            }
+
+            // Si es una petición que espera JSON (AJAX con cabecera Accept: application/json)
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'uuid' => $audit ? $audit->uuid : null,
+                    'status' => $audit ? 'processing' : 'skipped_error',
+                    'filename' => $filename
+                ]);
+            }
+
+            // Devolver para descarga inmediata
+            return response($transformedContent)
+                ->header('Content-Type', 'text/plain')
+                ->header('Content-Disposition', "attachment; filename=\"{$filename}\"");
+
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error("NXSuite: Critical failure: " . $e->getMessage());
+            return back()->withErrors(['license_file' => 'Error crítico al procesar la licencia. Consulte los logs del sistema.']);
+        }
     }
 }

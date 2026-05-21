@@ -75,13 +75,26 @@ class CodService
     }
 
     /**
-     * Gets the coherent storage path for a client's COD.
+     * Obtiene la ruta de almacenamiento para el COD de un cliente.
+     * Se usa el nombre real en MAYÚSCULAS para mayor legibilidad en el explorador de archivos.
      * 
-     * @param string $clientSlug
+     * @param string $clientName
      * @return string
      */
-    public function getStoragePath(string $clientSlug): string
+    public function getStoragePath(string $clientName): string
     {
-        return "licenses/siemens/{$clientSlug}/COD";
+        // 1. Eliminar caracteres no deseados (mantener letras, números y espacios)
+        $safeName = preg_replace('/[^A-Za-z0-9 ]/', ' ', $clientName);
+        
+        // 2. Normalizar espacios (eliminar dobles espacios y trim)
+        $safeName = preg_replace('/\s+/', ' ', $safeName);
+        $safeName = trim(strtoupper($safeName));
+        
+        // 3. Fallback si el nombre queda vacío
+        if (empty($safeName)) {
+            $safeName = 'UNKNOWN_CLIENT';
+        }
+        
+        return "licenses/siemens/{$safeName}/COD";
     }
 }

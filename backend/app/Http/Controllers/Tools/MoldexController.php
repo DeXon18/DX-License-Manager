@@ -60,7 +60,7 @@ class MoldexController extends Controller
     public function process(Request $request)
     {
         $request->validate([
-            'license_file' => 'required|file|max:10240|mimetypes:text/plain,application/octet-stream',
+            'license_file' => 'required|file|max:10240',
         ]);
 
         // Extra: validate extension explicitly (defense in depth)
@@ -104,6 +104,13 @@ class MoldexController extends Controller
 
         // 5. Si es AJAX, devolver JSON con la data para la UI (Bento Grid)
         if ($request->ajax()) {
+            if (!$syncResult['synced']) {
+                return response()->json([
+                    'success' => false,
+                    'error'   => $syncResult['error'] ?? 'Fallo de sincronización desconocido.'
+                ], 422);
+            }
+
             return response()->json([
                 'success'   => true,
                 'metadata'  => $parsedData,
@@ -111,6 +118,10 @@ class MoldexController extends Controller
                 'path'      => $fullPath,
                 'inventory' => $syncResult
             ]);
+        }
+
+        if (!$syncResult['synced']) {
+            return back()->withErrors(['license_file' => $syncResult['error'] ?? 'Error de sincronización.']);
         }
 
         // Devolver éxito (la descarga no es necesaria según feedback)

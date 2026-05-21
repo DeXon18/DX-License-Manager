@@ -29,7 +29,23 @@ class JwtAuth
             return redirect('/login');
         }
 
-        $decoded = $this->jwtService->decode($token);
+        // Check if token is blacklisted
+        $graceTime = \Illuminate\Support\Facades\Redis::zscore('jwt_blacklist', $token);
+        
+        if ($graceTime) {
+            if ($graceTime < time()) {
+                \Illuminate\Support\Facades\Log::warning("JWT: Sesión revocada por gracia expirada", [
+                    'token_prefix' => substr($token, 0, 10),
+                    'grace_time' => $graceTime,
+                    'current_time' => time(),
+                    'diff' => time() - $graceTime
+                ]);
+                return redirect('/login')->withErrors(['session' => 'Sesión revocada o expirada. Por favor, inicie sesión de nuevo.']);
+            }
+            $decoded = $this->jwtService->decode($token);
+        } else {
+            $decoded = $this->jwtService->decode($token);
+        }
 
         if (!$decoded || !isset($decoded['sub'])) {
             return redirect('/login')->withErrors(['session' => 'Sesión inválida o expirada.']);
@@ -41,12 +57,32 @@ class JwtAuth
             return redirect('/login')->withErrors(['session' => 'Usuario no encontrado o inactivo.']);
         }
 
-        // Authenticate user for the current request
+        // Authenticate user
         Auth::login($user);
 
         // Track active user in Redis (15 min TTL)
         \Illuminate\Support\Facades\Redis::set("user:active:{$user->id}", now()->toIso8601String(), 'EX', 900);
 
-        return $next($request);
+        $response = $next($request);
+
+        // SMART ROTATION: Solo rotar si el token tiene más de 5 minutos (evitar spam de tokens)
+        $iat = $decoded['iat'] ?? 0;
+        $shouldRotate = (time() - $iat) > 300; // 5 minutos
+
+        if (!$graceTime && $shouldRotate) {
+            $newToken = $this->jwtService->generate([
+                'sub' => $user->id,
+                'name' => $user->name,
+                'role' => $decoded['role'] ?? 'viewer',
+            ]);
+
+            // Blacklistar el viejo con ventana de 120s (más permisivo)
+            \Illuminate\Support\Facades\Redis::zadd('jwt_blacklist', time() + 120, $token);
+
+            // Adjuntar nueva cookie (60 min ahora)
+            $response->withCookie(cookie('jwt_token', $newToken, 60, null, null, true, true, false, 'Strict'));
+        }
+
+        return $response;
     }
 }

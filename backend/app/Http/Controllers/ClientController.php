@@ -12,7 +12,28 @@ class ClientController extends Controller
      */
     public function index(Request $request)
     {
-        $clients = Client::withCount('contracts')
+        // Gestión de filtros de inventario
+        if ($request->has('has_inventory')) {
+            session(['client_has_inventory' => true]);
+            session(['client_inventory_vendor' => $request->vendor_filter ?? 'all']);
+        } elseif ($request->has('clear_inventory')) {
+            session()->forget('client_has_inventory');
+            session()->forget('client_inventory_vendor');
+        }
+
+        $hasInventory = session('client_has_inventory', false);
+        $vendorFilter = session('client_inventory_vendor', 'all');
+
+        $clients = Client::withCount([
+            'contracts',
+            'inventoryDaemons',
+            'inventoryDaemons as siemens_daemons_count' => function($query) {
+                $query->where('daemon', 'not like', '%moldex%');
+            },
+            'inventoryDaemons as moldex_daemons_count' => function($query) {
+                $query->where('daemon', 'like', '%moldex%');
+            }
+        ])
             ->when($request->search, function($query) use ($request) {
                 $search = $request->search;
                 $query->where(function($q) use ($search) {
@@ -23,8 +44,18 @@ class ClientController extends Controller
                       });
                 });
             })
+            ->when($hasInventory, function($query) use ($vendorFilter) {
+                $query->whereHas('inventoryDaemons', function($q) use ($vendorFilter) {
+                    if ($vendorFilter === 'siemens') {
+                        $q->where('daemon', 'not like', '%moldex%');
+                    } elseif ($vendorFilter === 'moldex') {
+                        $q->where('daemon', 'like', '%moldex%');
+                    }
+                });
+            })
             ->orderBy('name')
             ->paginate(20);
+
 
         return view('clients.index', compact('clients'));
     }
@@ -34,6 +65,16 @@ class ClientController extends Controller
      */
     public function show(Client $client)
     {
+        $client->loadCount([
+            'contracts',
+            'inventoryDaemons as siemens_daemons_count' => function($query) {
+                $query->where('daemon', 'not like', '%moldex%');
+            },
+            'inventoryDaemons as moldex_daemons_count' => function($query) {
+                $query->where('daemon', 'like', '%moldex%');
+            }
+        ]);
+
         $client->load(['contracts', 'contacts', 'certificates', 'auditResults' => function($query) {
             $query->orderBy('created_at', 'desc');
         }, 'codCertificates' => function($query) {

@@ -55,7 +55,7 @@ class CodController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'client_id' => 'required|exists:clients,id',
+            'client_id' => 'nullable|exists:clients,id',
             'docType' => 'required|string',
             'Language' => 'required|string',
             'Data_SoldTo' => 'required|string',
@@ -64,19 +64,24 @@ class CodController extends Controller
             'os' => 'required|string',
         ]);
 
-        $client = Client::findOrFail($request->client_id);
-        $clientSlug = Str::slug($client->name);
+        $clientName = $request->Data_Empresa;
+        if ($request->client_id) {
+            $client = Client::find($request->client_id);
+            if ($client) {
+                $clientName = $client->name;
+            }
+        }
         
         $pdf = $this->codService->generatePdf($request->all(), $request->Language);
-        
         $fileName = 'COD_' . strtoupper($request->docType) . '_' . date('Ymd_His') . '.pdf';
-        $directory = $this->codService->getStoragePath($clientSlug);
+        
+        $directory = $this->codService->getStoragePath($clientName);
         $filePath = $directory . '/' . $fileName;
 
         Storage::disk('private')->put($filePath, $pdf->output());
 
         $certificate = CodCertificate::create([
-            'client_id' => $client->id,
+            'client_id' => $request->client_id,
             'sold_to' => $request->Data_SoldTo,
             'type' => strtoupper($request->docType),
             'os' => strtoupper($request->os),
@@ -121,7 +126,7 @@ class CodController extends Controller
         $certificate = CodCertificate::where('uuid', $uuid)->firstOrFail();
         $client = $certificate->client;
 
-        $directory = 'licenses/siemens/' . Str::slug($client->name) . '/COD';
+        $directory = $this->codService->getStoragePath($client->name);
         $fileName = 'COD_SIGNED_' . $certificate->type . '_' . now()->format('Ymd_His') . '.pdf';
         
         // Uso de putFileAs para mayor seguridad y manejo de streams
@@ -161,19 +166,37 @@ class CodController extends Controller
     public function destroy($uuid)
     {
         $certificate = CodCertificate::where('uuid', $uuid)->firstOrFail();
+        $results = [];
 
-        // Delete files from private storage
-        if (Storage::disk('private')->exists($certificate->file_path)) {
-            Storage::disk('private')->delete($certificate->file_path);
+        Log::info('COD Deletion started', ['uuid' => $uuid, 'path' => $certificate->file_path]);
+
+        // 1. Borrar archivo original
+        if ($certificate->file_path) {
+            if (Storage::disk('private')->exists($certificate->file_path)) {
+                $deleted = Storage::disk('private')->delete($certificate->file_path);
+                $results['original'] = $deleted ? 'deleted' : 'fail';
+            } else {
+                $results['original'] = 'not_found';
+                Log::warning('COD original file not found during deletion', ['path' => $certificate->file_path]);
+            }
         }
 
-        if ($certificate->signed_file_path && Storage::disk('private')->exists($certificate->signed_file_path)) {
-            Storage::disk('private')->delete($certificate->signed_file_path);
+        // 2. Borrar archivo firmado
+        if ($certificate->signed_file_path) {
+            if (Storage::disk('private')->exists($certificate->signed_file_path)) {
+                $deleted = Storage::disk('private')->delete($certificate->signed_file_path);
+                $results['signed'] = $deleted ? 'deleted' : 'fail';
+            } else {
+                $results['signed'] = 'not_found';
+                Log::warning('COD signed file not found during deletion', ['path' => $certificate->signed_file_path]);
+            }
         }
+
+        Log::info('COD Deletion results', ['uuid' => $uuid, 'results' => $results]);
 
         $certificate->delete();
 
-        return back()->with('success', 'Certificado eliminado correctamente.');
+        return back()->with('success', 'Certificado eliminado correctamente del inventario.');
     }
 
     /**

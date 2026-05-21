@@ -11,49 +11,53 @@
 </div>
 <div class="dashboard-container" x-data="backupManager()">
     <div class="card">
-        <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-            <div style="display: flex; align-items: center; gap: 15px;">
+        <div class="card-header dx-v2-backups-card-header">
+            <div class="dx-v2-backups-header-left">
                 <span class="card-title">Historial de Copias</span>
-                <span style="font-size: 0.6rem; color: var(--muted); border: 1px solid var(--border-subtle); padding: 2px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em;">Retención: 30 Días</span>
+                <span class="dx-v2-backups-header-badge">Retención: 30 Días</span>
             </div>
-            <div style="display: flex; gap: 15px; align-items: center;">
-                <div style="display: flex; flex-direction: column; align-items: flex-end; padding-right: 15px; border-right: 1px solid var(--border-subtle);">
-                    <span style="font-size: 9px; color: var(--muted); text-transform: uppercase; font-weight: 700;">Espacio Ocupado</span>
-                    <span style="font-size: 14px; font-weight: 700; color: var(--primary);">{{ $totalSize }}</span>
+            <div class="dx-v2-backups-header-right">
+                <div class="dx-v2-backups-storage-panel">
+                    <span class="dx-v2-backups-storage-label">Espacio Ocupado</span>
+                    <span class="dx-v2-backups-storage-value">{{ $totalSize }}</span>
                 </div>
-                <button onclick="executeBackup()" class="btn btn-primary" id="btn-backup" style="height: 32px; font-size: 11px; padding: 0 12px;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                <button onclick="executeBackup()" class="btn btn-primary dx-v2-backups-btn-run" id="btn-backup">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="dx-v2-backups-btn-icon"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                     Generar Copia
                 </button>
             </div>
         </div>
-        <div style="padding: 0; overflow: hidden;">
-            <table style="width: 100%; border-collapse: collapse;">
-                <thead style="background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border);">
+        <div class="dx-v2-backups-table-container">
+            <table class="dx-v2-backups-table">
+                <thead class="dx-v2-backups-table-thead">
                     <tr>
-                        <th style="padding: 12px 20px; text-align: left; color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase;">Fecha de Creación</th>
-                        <th style="padding: 12px 20px; text-align: left; color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase;">Entorno</th>
-                        <th style="padding: 12px 20px; text-align: left; color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase;">Tamaño</th>
-                        <th style="padding: 12px 20px; text-align: left; color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase;">Nombre de Archivo</th>
-                        <th style="padding: 12px 20px; text-align: right; color: var(--muted); font-size: 11px; font-weight: 700; text-transform: uppercase;">Acciones</th>
+                        <th class="dx-v2-backups-table-th">Fecha de Creación</th>
+                        <th class="dx-v2-backups-table-th">Origen</th>
+                        <th class="dx-v2-backups-table-th">Entorno</th>
+                        <th class="dx-v2-backups-table-th">Tamaño</th>
+                        <th class="dx-v2-backups-table-th">Nombre de Archivo</th>
+                        <th class="dx-v2-backups-table-th-right">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse($backups as $backup)
-                        <tr style="border-bottom: 1px solid var(--border-subtle); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.01)'" onmouseout="this.style.background='transparent'">
-                            <td style="padding: 14px 20px;">
-                                <div style="display: flex; flex-direction: column;">
-                                    <span style="color: var(--primary); font-weight: 600; font-size: 13px;">{{ \Carbon\Carbon::parse($backup['date'])->format('d M, Y') }}</span>
-                                    <span style="color: var(--muted); font-size: 10px; font-family: 'IBM Plex Mono';">{{ \Carbon\Carbon::parse($backup['date'])->format('H:i:s') }}</span>
+                        <tr class="dx-v2-backups-table-tr">
+                            <td class="dx-v2-backups-table-td">
+                                <div class="dx-v2-backups-date-group">
+                                    <span class="dx-v2-backups-date-primary">{{ \Carbon\Carbon::parse($backup['date'])->format('d M, Y') }}</span>
+                                    <span class="dx-v2-backups-date-secondary">{{ \Carbon\Carbon::parse($backup['date'])->format('H:i:s') }}</span>
                                 </div>
                             </td>
-                            <td style="padding: 14px 20px;">
-                                <span style="padding: 3px 8px; border-radius: 4px; background: {{ $backup['env'] === 'PROD' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(67, 97, 238, 0.1)' }}; color: {{ $backup['env'] === 'PROD' ? 'var(--success)' : 'var(--accent)' }}; font-size: 9px; font-weight: 800; letter-spacing: 0.05em;">{{ $backup['env'] }}</span>
+                            <td class="dx-v2-backups-table-td">
+                                <span class="dx-v2-backups-badge-type {{ $backup['type'] === 'SISTEMA' ? 'system' : 'manual' }}">{{ $backup['type'] }}</span>
                             </td>
-                            <td style="padding: 14px 20px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--primary);">{{ $backup['size'] }}</td>
-                            <td style="padding: 14px 20px; color: var(--muted); font-size: 11px;">{{ $backup['name'] }}</td>
-                            <td style="padding: 14px 20px; text-align: right;">
-                                <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                            <td class="dx-v2-backups-table-td">
+                                <span class="dx-v2-backups-badge-env {{ $backup['env'] === 'PROD' ? 'prod' : 'beta' }}">{{ $backup['env'] }}</span>
+                            </td>
+                            <td class="dx-v2-backups-table-td dx-v2-backups-file-size">{{ $backup['size'] }}</td>
+                            <td class="dx-v2-backups-table-td dx-v2-backups-file-name">{{ $backup['name'] }}</td>
+                            <td class="dx-v2-backups-table-td-right">
+                                <div class="dx-v2-backups-actions-group">
                                     <button @click="confirmRestore('{{ $backup['name'] }}')" class="btn-action warning" title="Restaurar base de datos">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
                                     </button>
@@ -68,11 +72,11 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" style="padding: 40px; text-align: center;">
-                                <div style="opacity: 0.3; margin-bottom: 12px;">
+                            <td colspan="6" class="dx-v2-backups-empty-td">
+                                <div class="dx-v2-backups-empty-icon">
                                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                                 </div>
-                                <span style="color: var(--muted);">No se han detectado archivos de backup en el servidor.</span>
+                                <span class="dx-v2-backups-empty-text">No se han detectado archivos de backup en el servidor.</span>
                             </td>
                         </tr>
                     @endforelse
@@ -81,21 +85,21 @@
         </div>
     </div>
 
-    <div class="card" style="margin-top: 24px;">
+    <div class="card dx-v2-backups-scheduling-card">
         <div class="card-header">
             <span class="card-title">Configuración de Programación</span>
         </div>
-        <div style="padding: 24px;">
-            <div style="display: flex; align-items: flex-start; gap: 20px;">
-                <div style="padding: 15px; border-radius: 10px; background: rgba(67, 97, 238, 0.05); border: 1px solid rgba(67, 97, 238, 0.2); color: var(--accent); flex: 1;">
-                    <h4 style="margin: 0 0 8px 0; font-size: 14px; font-weight: 700;">Cron Job Activo</h4>
-                    <p style="margin: 0; font-size: 12px; line-height: 1.6; opacity: 0.9;">El sistema realiza una copia de seguridad completa automáticamente cada día a las <b>03:00 AM</b>. Los archivos se rotan tras 30 días para optimizar el espacio.</p>
+        <div class="dx-v2-backups-scheduling-body">
+            <div class="dx-v2-backups-scheduling-layout">
+                <div class="dx-v2-backups-scheduling-box">
+                    <h4 class="dx-v2-backups-scheduling-title">Cron Job Activo</h4>
+                    <p class="dx-v2-backups-scheduling-desc">El sistema realiza una copia de seguridad completa automáticamente cada día a las <b>03:00 AM</b>. Los archivos se rotan tras 30 días para optimizar el espacio.</p>
                 </div>
-                <div style="width: 280px; display: flex; flex-direction: column; gap: 10px;">
-                    <div style="font-size: 11px; color: var(--muted); text-transform: uppercase; font-weight: 700; letter-spacing: 0.05em;">Próxima ejecución</div>
-                    <div style="font-size: 18px; font-weight: 700; color: var(--primary);" x-text="timeRemaining">Calculando...</div>
-                    <div style="height: 4px; background: var(--border-subtle); border-radius: 2px; margin-top: 4px; overflow: hidden;">
-                        <div :style="{ width: progressPercent + '%' }" style="height: 100%; background: var(--accent); transition: width 1s ease-in-out;"></div>
+                <div class="dx-v2-backups-countdown-container">
+                    <div class="dx-v2-backups-countdown-label">Próxima ejecución</div>
+                    <div class="dx-v2-backups-countdown-value" x-text="timeRemaining">Calculando...</div>
+                    <div class="dx-v2-backups-progress-bar">
+                        <div :style="{ width: progressPercent + '%' }" class="dx-v2-backups-progress-fill"></div>
                     </div>
                 </div>
             </div>
@@ -104,33 +108,32 @@
 
     <!-- Modal de Restauración -->
     <template x-if="showRestoreModal">
-        <div style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); z-index: 1000; display: flex; align-items: center; justify-content: center; padding: 20px;">
-            <div class="card" style="max-width: 450px; width: 100%; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);">
-                <div class="card-header" style="background: rgba(239, 68, 68, 0.05); border-bottom: 1px solid rgba(239, 68, 68, 0.1);">
-                    <span class="card-title" style="color: var(--danger);"><i class="fas fa-exclamation-triangle me-2"></i> Restaurar Base de Datos</span>
+        <div class="dx-v2-backups-modal-overlay">
+            <div class="card dx-v2-backups-modal-card">
+                <div class="card-header dx-v2-backups-modal-header">
+                    <span class="card-title dx-v2-backups-modal-title"><i class="fas fa-exclamation-triangle me-2"></i> Restaurar Base de Datos</span>
                 </div>
-                <div style="padding: 24px;">
-                    <p style="color: var(--primary); font-size: 14px; margin-bottom: 16px;">
+                <div class="dx-v2-backups-modal-body">
+                    <p class="dx-v2-backups-modal-msg">
                         Estás a punto de restaurar la base de datos usando el archivo:
-                        <br><b class="font-mono" style="color: var(--accent); display: block; margin-top: 8px;" x-text="selectedFile"></b>
+                        <br><b class="font-mono dx-v2-backups-modal-file" x-text="selectedFile"></b>
                     </p>
-                    <div style="background: rgba(239, 68, 68, 0.05); border-left: 3px solid var(--danger); padding: 12px; border-radius: 4px; margin-bottom: 24px;">
-                        <p style="color: var(--danger); font-size: 11px; font-weight: 600; margin: 0;">
+                    <div class="dx-v2-backups-modal-warning-box">
+                        <p class="dx-v2-backups-modal-warning-text">
                             ⚠️ ATENCIÓN: Esta acción sobrescribirá TODOS los datos actuales de forma permanente. No se puede deshacer.
                         </p>
                     </div>
                     
                     <div class="form-group">
-                        <label style="font-size: 10px; color: var(--muted); margin-bottom: 8px;">ESCRIBE "RESTAURAR" PARA CONFIRMAR</label>
-                        <input type="text" x-model="confirmText" class="font-mono" placeholder="RESTAURAR" style="width: 100%; text-align: center; letter-spacing: 0.1em;">
+                        <label class="dx-v2-backups-modal-label">ESCRIBE "RESTAURAR" PARA CONFIRMAR</label>
+                        <input type="text" x-model="confirmText" class="font-mono dx-v2-backups-modal-input" placeholder="RESTAURAR">
                     </div>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 24px;">
-                        <button @click="showRestoreModal = false" class="btn-secondary" style="padding: 10px;">Cancelar</button>
+                    <div class="dx-v2-backups-modal-actions">
+                        <button @click="showRestoreModal = false" class="btn-secondary dx-v2-backups-modal-btn">Cancelar</button>
                         <button @click="executeRestore" 
-                                class="btn-danger" 
-                                :disabled="confirmText !== 'RESTAURAR' || restoring"
-                                style="padding: 10px;">
+                                class="btn-danger dx-v2-backups-modal-btn" 
+                                :disabled="confirmText !== 'RESTAURAR' || restoring">
                             <span x-show="!restoring">Iniciar Restauración</span>
                             <span x-show="restoring"><i class="fas fa-spinner fa-spin"></i> Procesando...</span>
                         </button>
@@ -232,8 +235,8 @@
                 
                 this.timeRemaining = `en ${hours}h ${minutes}m`;
                 
-                // Progreso: 03:00 a 03:00 son 24h. 
-                // Calculamos cuánto ha pasado desde las 03:00 anteriores.
+                // Progreso: 08:00 a 08:00 son 24h. 
+                // Calculamos cuánto ha pasado desde las 08:00 anteriores.
                 const last = new Date(next);
                 last.setDate(last.getDate() - 1);
                 const total = next - last;

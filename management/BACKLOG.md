@@ -10,19 +10,287 @@
 **Ninguna fase puede iniciarse sin validación explícita de Oskar.**
 El agente no avanza hasta recibir "aprobado", "adelante" o similar de forma explícita.
 
+**Lo que NO es confirmación válida — nunca ejecutar por:**
+- Creación de un artefacto o archivo
+- Mensaje del sistema o del IDE
+- Silencio o ausencia de respuesta
+- El propio agente diciendo "Aprobación recibida"
+- Cualquier señal que no sea texto explícito de Oskar
+**Lo que SÍ es confirmación válida:**
+- Oskar escribe: "adelante", "ok", "sí", "procede", "empieza", "dale", "go"
+**Después del plan → NO preguntar "¿Empiezo?". Presentar y CALLAR.**
+El desarrollador inicia. El agente espera.
+ 
+⛔ "Aprobación recibida. Empiezo ejecución." → FRASE PROHIBIDA. Nunca escribirla.
+
 ---
 
+
 ## 🟢 En Progreso
+
+*Actualmente en espera de la definición de nuevos objetivos y prioridades por parte de Oskar.*
+
+## ✅ Completado
+
+### Fase 25 — Consola de Diagnósticos y Generador COD ✅
+- **Completada:** 2026-05-21
+- **Rama:** `feature/chatbot-web-assist`
+- **Resumen:** Refactorización de la interfaz del asistente IA (eliminación Bento, aumento de ventana). Reparado el error 500 en generación COD para clientes no registrados (client_id nullable) y mejorado parseo de respuestas HTTP 422 en JS.
+- **PR:** pendiente — a mergear en dev
+
+### Fase 24 — Canal Interactivo de Consulta (Bot de Telegram / Teams Laravel API) ✅
+- **Completada:** 2026-05-21
+- **Rama:** `feature/telegram-bot-api`
+- **Resumen:** Implementación del endpoint seguro `/api/bot/query` en Laravel para control de comandos interactivos (`/cliente`, `/expiraciones`, `/soldto`) con soporte nativo de webhooks en vivo, optimización SQL en base de datos (`orWhereJsonContains` y filtros de fecha directos), normalización de strings compatible con multibyte (tildes/ñ) para Levenshtein, registro nativo en Telegram (`/setMyCommands`) y mensajes interactivos de ayuda.
+- **PR:** #027 — merged a dev
+
+### Fase 23.8 — Semáforo de Expiración en Ficha de Clientes Premium ✅
+- **Completada:** 2026-05-20
+- **Rama:** `feature/expiration-highlight-ui`
+- **Resumen:** Implementación completa del semáforo visual estándar de tráfico (rojo/amarillo/verde) para la expiración de productos de licencias en la ficha del cliente. Incorporada lógica de Carbon en show.blade.php para calcular los días restantes y asignar iconos de FontAwesome dinámicos por estado. Diseñados badges técnicos con paddings, bordes finos y fondos translúcidos en dx-v2-clients.css, e implementada la carga con cache-busting dinámico mediante push para garantizar la recarga inmediata en producción.
+- **PR:** #026 — merged a dev
+
+### Fase 23.7 — Rediseño de Historial y Detalle de Auditorías Premium (NOC Pro) ✅
+- **Completada:** 2026-05-20
+- **Rama:** `feature/audit-details-ui`
+- **Resumen:** Rediseño completo de la interfaz de auditorías inmutables en la ficha del cliente (`clients/show.blade.php`). Reemplazado el `<details>` rústico nativo por un acordeón interactivo y animado con Alpine.js (`historyOpen`) con banners explicativos de "Fuente de Verdad Histórica". Rediseñado el modal de detalle de auditorías con un Bento Grid para metadatos del servidor, una consola inmutable de alta densidad de productos, y remoción de acciones inactivas que causaban confusión al usuario.
+- **PR:** #025 — merged a dev
+
+### Fase 23.6 — Normalización Tabs, Filtro de Descriptores Léxicos, Caché & Modal Teatral ✅
+- **Completada:** 2026-05-20
+- **Rama:** `feature/manual-normalization`
+- **Resumen:** Restauración del diseño de 3 pestañas dinámicas con persistencia Alpine.js (`localStorage`). Optimización del motor léxico para omitir descriptores corporativos de prefijo, eliminando falsos positivos. Implementada transliteración ASCII (`iconv`) para evitar que acentos rompan los tokens léxicos (ej: *Codesal* vs *Oregi*). Cacheado del escáner e invalidación automática. Centrado geométrico absoluto del modal de escaneo en la UI y remoción de retardo simulado en Alpine.js.
+- **PR:** #024 — merged a dev
+
+### Fase 23 — Normalización de Identidades con IA & Unificación Forzada ✅
+- **Completada:** 2026-05-20
+- **Rama:** `feature/ai-normalization-force`
+- **Resumen:** Implementación completa del motor de normalización inteligente por IA (Gemini -> DeepSeek -> OpenRouter con fallback chain automático) y desarrollo de la unificación manual forzada mediante un buscador predictivo `<datalist>` HTML5 que migra de forma atómica contratos, licencias, deamonios, contactos y auditorías al cliente real, asocia el alias y destruye el duplicado.
+- **PR:** #023 — merged a dev
+
+### Resolución de Incidencia #020 y #017 — Sistema de Toasts & Estilos en Búsqueda de Usuarios ✅
+- **Completada:** 2026-05-20
+- **Rama:** `fix/clientes-search-style`
+- **Resumen:** Implementación de un motor reactivo de notificaciones premium (Toasts) con Alpine.js y glassmorphism adaptativo claro/oscuro en `dx-v2-toast.css`. Reemplazadas todas las alertas inline obsoletas en las 7 vistas principales del portal. Corregida la barra de búsqueda y selector de roles sin estilos en Gestión de Usuarios.
+- **PR:** Pendiente — merged a dev
+
+### Fase 19 y 21 — Modularización CSS & Limpieza UI (DX-V2) ✅
+- **Iniciada:** 2026-05-16
+- **Completada:** 2026-05-19
+- **Rama:** `feature/css-tokens`
+- **Resumen:** Refactorización CSS ultra-granular y modularización del monolito legacy de 10k líneas en 35 hojas estructuradas en 6 capas jerárquicas y unificadas en `dx-v2-main.css`. Erradicación de `style=` inline, inyección de namespaces `.dx-v2-`, variables HSL y soporte completo light/dark mode.
+- [x] Subfase 19.4 (Dashboard Centralization)
+- [x] Subfase 19.5 (Clientes Listado)
+- [x] Subfase 19.6 (Clientes Licencias)
+- [x] Subfase 19.7 (Clientes Contratos / Importación CSV)
+- [x] Subfase 19.8 (Clientes Contactos / Certificados COD)
+- [x] #017 (P3): Unificación CSS — Subfases 19.1 a 19.29 (Ejecución & Hardening).
+- [x] Fase 21: Modularización CSS en 35 archivos e invalidación robusta de caché en login.
+
+### Resolución de Incidencia #016 — Fix COD File Deletion ✅
+- **Completada:** 2026-05-16
+- **Rama:** fix/cod-delete-file-fail
+- **Resumen:** Corregido el fallo por el cual los archivos PDF de los CODs permanecían en el disco tras ser borrados de la UI. Se implementó una normalización agresiva de rutas y se añadieron logs de telemetría en el borrado físico.
+- [x] Fix: Normalización de espacios y caracteres en `CodService`.
+- [x] Refuerzo: Logs de éxito/fallo y borrado atómico en `CodController`.
+- [x] Telemetría: Registro detallado de rutas en `laravel.log`.
+
+### Resolución de Incidencia #015 — Fix Preview COD & UI Optimization ✅
+- **Completada:** 2026-05-16
+- **Rama:** fix/cod-preview-fail
+- **Resumen:** Reparado el fallo de anidamiento HTML que impedía abrir la vista previa de CODs. Se reubicó el asistente IA de Composite a una posición contextual en "Nueva Máquina" y se refactorizó la lógica de almacenamiento para usar nombres reales en MAYÚSCULAS.
+- [x] Fix: Eliminado bloque HTML duplicado e incompleto en `cod.blade.php`.
+- [x] UI: Reubicado botón "Analizar Composite.txt" a cabecera de sección.
+- [x] Storage: Refactor de `CodService` para carpetas en MAYÚSCULAS.
+- [x] Limpieza: Eliminada carpeta residual `storage/private`.
+
+
+### Resolución de Incidencia #004 — UI Multi-Sold-To (NOC Pro v2) ✅
+- **Completada:** 2026-05-15
+- **Rama:** feature/multi-soldto-ui
+- **Resumen:** Rediseño estético de alta fidelidad para licencias unificadas. Se implementó una marca de agua técnica sutil (Watermark) y una franja minimalista para Sold-Tos adicionales con resaltado en amarillo claro (#fde68a), eliminando el ruido visual en el header del daemon.
+- [x] UI: Implementada marca de agua `fa-network-wired` (Opacidad 0.04).
+- [x] UI: Nueva franja técnica transparente con IDs en amarillo suave.
+- [x] Limpieza: Eliminado badge "UNIFICADA" y popover experimental para un look más industrial.
+
+### Resolución de Incidencia #013 — Sincronización Moldex3D ✅
+- **Completada:** 2026-05-15
+- **Rama:** feature/fix-client-license-filter
+- **Resumen:** Solucionada la invisibilidad de licencias Moldex3D integrando `ClientNormalizationService` para evitar bloqueos por nombres distintos y manejando correctamente los errores de sincronización en `MoldexController`.
+- **PR:** #013 — merged a dev
+
+
+### Resolución de Incidencia #003 — Filtros Clientes (Siemens/Moldex) ✅
+- **Completada:** 2026-05-15
+- **Rama:** chore/error-tracking
+- **Resumen:** Implementación de filtros dinámicos en inventario para separar licencias Siemens y Moldex3D, permitiendo un conteo preciso por tecnología.
+- [x] Backend: Lógica de filtrado en el repositorio de licencias.
+- [x] UI: Switch de selección en la vista de inventario.
+- [x] Verificación: Conteo correcto en entornos de prueba.
+
+### Resolución de Incidencia #005 — Lector de Logs Profesional ✅
+- **Completada:** 2026-05-15
+- **Rama:** fix/system-log-reader
+- **Resumen:** Transformación del lector de logs de sistema de texto plano a una herramienta de diagnóstico profesional. Incluye parser Regex para estructurar `laravel.log`, UI interactiva con Alpine.js (trazas colapsables) y sincronización de telemetría de alertas (DB + Fichero).
+- [x] Backend: Implementado parser estructurado con niveles de severidad.
+- [x] UI: Rediseño con Alpine.js y resaltado de código propio vs vendor.
+- [x] Telemetría: Sincronización del contador de "Alertas" en tiempo real.
+- [x] Robustez: Blindaje contra tablas inexistentes en el módulo de auditoría.
+
+### Resolución de Incidencia #012 — Hotfix Persistencia Redis ✅
+- **Completada:** 2026-05-15
+- **Rama:** fix/redis-persistence-error
+- **Resumen:** Resolución de error crítico `MISCONF` en Redis. Se restauró la persistencia RDB mediante corrección de permisos en caliente y se securizó la infraestructura con volúmenes nombrados en Docker Compose.
+- [x] Diagnóstico: Identificado conflicto de permisos (`root` vs `redis`) en `/data`.
+- [x] Hotfix: Aplicado `chown redis:redis` en el contenedor Beta.
+- [x] Infraestructura: Implementados volúmenes nombrados en `docker-compose.beta.yml` y `docker-compose.prod.yml`.
+- [x] Verificación: Confirmado `BGSAVE` exitoso y restauración de políticas de escritura.
+
+### Resolución de Incidencia #011 — Estabilización Global de Herramientas ✅
+- **Completada:** 2026-05-15
+- **Rama:** fix/nx-ui-validation
+- **Resumen:** Resolución integral de fallos en el pipeline de licencias Siemens y Moldex3D. Se ha implementado validación de extensiones en el cliente (Alpine.js), blindaje de memoria (256MB) y gestión de errores avanzada (try-catch) con degradación elegante para asegurar la descarga de archivos incluso ante fallos de servicios secundarios.
+- [x] UI: Validación Alpine.js en NX, StarCCM+, HEEDS y Moldex3D con mensajes de error temporales.
+- [x] Soporte: Ampliación de extensiones permitidas a `.dat` y `.cid` en todas las herramientas Siemens.
+- [x] Backend: Implementación de `ini_set('memory_limit', '256M')` y `try-catch` global en controladores.
+- [x] Robustez: Garantizada la descarga del archivo transformado aunque falle la auditoría IA o el almacenamiento.
+- [x] Parser: Optimización del `LicenseParserService` para procesar archivos grandes línea a línea.
+- [x] Regex: Soporte para múltiples daemons Siemens (`saltd`, `cdlmd`, `RCTECH`) en la extracción de metadatos.
  
-- [x] **Fase 10**: Dashboard del Sistema y Modularización (Completada 2026-05-11).
-- [x] **Fase 16**: Centro de Logs Unificado y Auditoría Pro (Completada 2026-05-12).
-- [ ] **Fase 13**: Configuración SMTP Producción (En curso).
+### Soporte Multi-Sold-To (Licencias Unificadas) ✅
+- **Completada:** 2026-05-14
+- **Rama:** feature/multi-sold-to
+- **Resumen:** Implementada la capacidad de procesar licencias Siemens que contienen múltiples IDs de cliente (Other Installs). El sistema ahora extrae todos los Sold-Tos mediante IA (n8n v2.1), crea mapeos automáticos y los visualiza en el inventario activo.
+- [x] n8n: Actualización del flujo de auditoría IA v2.1 para detección de IDs unificados.
+- [x] DB: Migración para añadir `additional_sold_tos` (JSON) en `license_inventory_daemons`.
+- [x] Backend: Lógica de persistencia en `InventorySyncService` y auto-mapeo en `AuditService`.
+- [x] UI: Badges de Sold-To adicionales en el perfil de cliente (Blade) y modal de auditoría (Alpine).
+- [x] Verificación: Validado mediante simulación de callback con datos reales de Gurutzpe.
+
+### Estabilización de Sesión JWT (Fix #014) ✅
+- **Completada:** 2026-05-15
+- **Rama:** fix/jwt-premature-expiration
+- **Resumen:** Implementación de rotación atómica de tokens con ventana de gracia de 30s en Redis para evitar expulsiones en peticiones concurrentes. Sincronización de TTL a 15 min y fix de desincronización de secretos en `.env`.
+- [x] Backend: Implementada rotación en `JwtAuth.php`.
+- [x] Infra: Configurado periodo de gracia en Redis.
+- [x] Config: Sincronización de `JWT_SECRET` en `infra/.env.beta`.
+- [x] Mantenimiento: Purga automática de blacklist.
+- [x] Emergencia: Restauración de tablas maestras tras vaciado accidental.
+
+- **Completada:** 2026-05-14
+- **Rama:** chore/error-tracking
+- **Resumen:** Creación del archivo `management/ERRORS.md` con estética industrial para el registro y triaje de errores detectados por el desarrollador.
+- [x] Gestión: Creación de `ERRORS.md` con tabla de incidencias y protocolo de resolución.
+- [x] Workflow: Implementación de la rama de mantenimiento.
+
+### Resolución de Incidencia #002 — Scripts de Backup ✅
+- **Completada:** 2026-05-15
+- **Rama:** dev (directo tras cirugía Git)
+- **Resumen:** Reparado el script `backup-db.sh` convirtiéndolo a formato Unix (LF), corrigiendo errores de sintaxis en bloques `if` y blindando variables de entorno. Se añadió mejora de naming dinámico (`beta_manual_...`) para distinguir origen en la UI.
+- [x] Fix: Conversión CRLF -> LF.
+- [x] Syntax: Blindaje de variables y corrección de bloques `if`.
+- [x] Mejora: Naming con etiqueta manual/system.
+- [x] UI: Nueva columna "Origen" en la gestión de backups.
+
+### Soporte Multi-Sold-To (Licencias Unificadas) ✅
+- **Completada:** 2026-05-14
+- **Rama:** feature/multi-sold-to
+- **Resumen:** Implementación del soporte para licencias Siemens que contienen múltiples IDs de cliente (Sold-To). Incluye auto-mapeo en el inventario y rediseño visual de badges industriales.
+- [x] Base de Datos: Columna `additional_sold_tos` (JSON) en `license_inventory_daemons`.
+- [x] Backend: Lógica de auto-mapeo en `AuditService` y `InventorySyncService`.
+- [x] UI: Rediseño de badges `fa-link` con alta densidad técnica.
+- [x] n8n: Actualización del motor de extracción IA.
+
+### Optimización: Salto de Auditoría IA para Temporales ✅
+- **Completada:** 2026-05-14
+- **Rama:** fix/skip-ai-audit-temporary-licenses
+- **Resumen:** Eliminación del consumo innecesario de tokens de IA para licencias temporales de 7 días. El sistema ahora detecta automáticamente estas licencias en NX, Star-CCM+ y HEEDS, marcándolas como `skipped` sin realizar llamadas externas.
+- [x] Backend: Modificación de `AuditService` para interceptar peticiones temporales.
+- [x] Controladores: Actualización de `NXSuiteController`, `StarCcmController` y `HeedsController` con detección de tipo.
+- [x] Trazabilidad: Registro en BD con estado `skipped` y mensaje informativo para el usuario.
+- [x] Verificación: Validación de sintaxis y logs mediante SSH/Docker en el servidor.
+
+### Fix: Validación MIME en Herramientas (Moldex3D) ✅
+- **Completada:** 2026-05-14
+- **Rama:** fix/moldex-mime-type-validation
+- **Resumen:** Corregido error que impedía subir archivos `.mac` en algunos entornos debido a la detección inconsistente de tipos MIME por parte del navegador.
+- [x] Backend: Eliminada restricción de `mimetypes` en `MoldexController`.
+- [x] Preventivo: Aplicada la misma mejora en controladores de Siemens (NX, StarCCM, Heeds) para mayor robustez.
+- [x] Verificación: Sintaxis validada en el servidor.
+### Optimización Visual Dashboard ✅
+- **Completada:** 2026-05-14
+- **Rama:** feature/dashboard-ui-optimization
+- **Resumen:** Transformación de las tarjetas de métricas del Dashboard a estilo premium (línea de acento superior de 3px), unificación de colores corporativos (verde para activas) e integración de iconos de fondo NOC Pro (Lucide SVGs).
+- [x] UI: Implementación de pseudo-elementos `::before` para líneas de acento.
+- [x] Identidad: Cambio de color de "Licencias Activas" a verde (`success`).
+- [x] Estética: Integración de iconos de fondo con opacidad `0.08` y rotación `-15deg`.
+- [x] UX: Sombreado dinámico en hover y unificación de `border-radius`.
+
+### Fase 14 — Planificador de Renovaciones (Motor & UI) ✅
+- **Completada:** 2026-05-14
+- **Rama:** feature/renewal-planner
+- **Resumen:** Implementación completa del módulo operativo para el seguimiento mensual de renovaciones. Incluye motor de filtrado cíclico, soporte para múltiples archivos adjuntos por acción y visualización de historial en la ficha del cliente. Optimización final con diseño NOC Pro y sincronización de identidad corporativa.
+- [x] Infraestructura: Tablas `renewal_logs` y `renewal_log_files`.
+- [x] Backend: Lógica de filtrado por mes y gestión de subidas múltiples.
+- [x] UI NOC Pro: Rediseño de alta densidad con selector de mes Alpine.js y layout espejo de Clientes.
+- [x] Identidad: Sincronización total de colores de estados con `identities.json`.
+- [x] Lógica: Sistema de reversión de logs (Undo) y limpieza rápida de filtros.
+- [x] Historial: Pestaña dedicada en Perfil de Cliente con descarga de archivos.
+- [x] Seguridad: Blindaje de dashboard administrativo para no-admins.
+
+### Dashboard: Enfoque en Licencias ✅
+- **Completada:** 2026-05-13
+- **Rama:** feature/dashboard-license-focus (merged to dev)
+- **Resumen:** Cambio de fuente de datos en la portada: de Contratos CSV a Licencias del Inventario.
+- [x] Backend: Agrupación por `daemon_id` y fecha mínima de expiración.
+- [x] UI: Rediseño de tabla (una sola línea VENDOR · SOLD-TO).
+- [x] UX: Enlaces directos a fichas de cliente desde la tabla.
+
+### Rediseño Visual de Alertas ✅
+- **Completada:** 2026-05-13
+- **Rama:** feature/alerts-ui-redesign (merged to dev)
+- **Resumen:** Rediseño integral de la configuración de umbrales en el panel de alertas. Layout vertical de alta densidad con iconos semánticos y campos técnicos optimizados.
+- [x] UI: Migración de Grid horizontal a Lista vertical.
+- [x] Layout: Ajuste de grid principal 1fr:1.5fr.
+- [x] UX: Labels de rango dinámicos y mayor espacio para inputs.
+
+### Estandarización de Nomenclatura y Transformación ✅
+- **Completada:** 2026-05-13
+- **Rama:** feature/license-naming-standard (merged to dev)
+- **Resumen:** Implementación del estándar profesional de nombres para todos los productos Siemens (NX, StarCCM, Heeds). Incluye corrección de bug en la transformación de vendor y forzado de localhost en temporales.
+- [x] Backend: Refactor de `NXSuiteService`, `StarCcmService` y `HeedsService`.
+- [x] Naming: Formato `[ID]_[HOST]_[CLIENTE]_V[VER]_Valida_[FECHA].lic`.
+- [x] Unificada: Soporte para múltiples Sold-To concatenados.
+- [x] Fix: Regex estricta para línea `VENDOR` (evita corrupción de INCREMENT).
+- [x] Fix: SERVER `localhost` para licencias temporales.
+
+### Gestión de Clientes — Identificador de Licencias e Inventario ✅
+- **Completada:** 2026-05-13
+- **Rama:** feature/client-license-filter + fix/alpine-audit-null-errors (merged)
+- **Resumen:** Implementación de filtrado y señalización visual de clientes con licencias activas. Incluye Switch Técnico Industrial (diseño cuadrado 6px, look profesional sin glow), unificación de badges de inventario y blindaje preventivo contra errores de nulos en Alpine.js (`x-if` + optional chaining) en todo el portal.
+- [x] Backend: Query optimizada con `withCount(['contracts', 'inventoryDaemons'])`.
+- [x] Filtro Persistente: Implementación de lógica de Sesión en `ClientController`.
+- [x] UI Industrial: Switch de alta precisión con bordes técnicos de 6px y knob físico.
+- [x] Estabilidad Alpine: Blindaje total en modales de auditoría y herramientas (COD, Moldex).
+- [x] Unificación: Badges de Sold-To alineados al sistema de diseño oficial.
+
+---
+
+
+### Fase 10.5 — Docker Monitor NOC Pro ✅
+- **Completada:** 2026-05-13
+- **Rama:** feature/docker-monitor
+- **Resumen:** Implementación de monitorización de contenedores Docker en tiempo real. Incluye telemetría de CPU/RAM con indicadores circulares, gestión segura de reinicios desde el panel y optimización de rendimiento mediante desacoplamiento del dashboard principal.
+- [x] Instalación de `docker-cli` y mapeo de socket en infraestructura.
+- [x] Implementación de `DockerMonitorService` (telemetría por entorno).
+- [x] Vista dedicada `/admin/system/docker` con diseño "Bento/NOC Pro".
+- [x] Iconografía oficial (FontAwesome 6) y colores corporativos por servicio.
+- [x] Acción de reinicio segura con confirmación de sistema.
 
 ---
 
 ## ⏸️ Pausado / En Espera
 
-- [ ] **Fix Bug Modal Auditoría**: El botón de ojo no abre el modal en Beta.
 - [ ] **Integración n8n v2.2+**: Evolución del flujo lineal a ramificado por Vendor/Tipo Licencia.
 
 
@@ -37,7 +305,19 @@ En planificación — se detallan una por una tras validación de la fase anteri
  
 ---
  
-## ✅ Completado
+
+### Fase 13 — Alertas y Notificaciones ✅
+- **Completada:** 2026-05-13
+- **Rama:** feature/expiration-alerts-system
+- **Resumen:** Implementación del sistema de alertas de caducidad de licencias con reporte global interno. Incluye lógica de filtrado de inventario, mailable bilingüe consolidado, historial de envíos automático y panel administrativo de control.
+- [x] Implementación de `GlobalLicenseExpirationReport`.
+- [x] Lógica de filtrado en `LicenseExpirationService` (0, 7, 15, 30 días).
+- [x] Integración con `EmailLoggerListener` (trazabilidad única).
+- [x] Panel Administrativo `/admin/alerts` (Bento UI).
+- [x] Fix de permisos y duplicidad de logs.
+
+### UI/UX — Fixes Menores ✅
+- [x] **Fix Bug Modal Auditoría**: El botón de ojo no abre el modal en Beta (Arreglado anteriormente).
 
 ### Fase 8.5/9.2 — Módulo de Recursos y Enlaces Standalone ✅
 - **Completada:** 2026-05-12
@@ -171,6 +451,7 @@ _Firmado por: **Antigravity (DX Agent)** 🦾_
 - [x] Soporte para múltiples **Sold-To** agrupados por cliente.
 - [x] Identificación de hardware (**MAC/Dongle**) en la UI.
 - [x] Optimización de Prompt IA v2.2 (Soporte Dongle e IDs Numéricos) ⏳ (Pte. Verificar).
+- [x] **Fix**: Validación MIME en Herramientas (Moldex3D, Siemens).
 
 ### Fase 8.1 (Parte 1) — Siemens NX Suite (Mecanismo)
 - **Completada:** 2026-05-07
@@ -256,5 +537,5 @@ _Firmado por: **Antigravity (DX Agent)** 🦾_
 
 ## ?? Ideas Futuras / QoL
 
-- [ ] **AI Hardware Assistant**: Sistema de análisis de archivos `composite.txt` mediante IA para recomendar el ID más estable (Ethernet físico) a personal no técnico. Evita errores en trámites de licencia.
+(Vacío)
 

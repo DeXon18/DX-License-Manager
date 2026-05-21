@@ -22,12 +22,14 @@ class EmailLoggerListener
             return $address->getAddress();
         }, $message->getTo());
 
-        DB::table('email_logs')->insert([
-            'recipient' => implode(', ', $recipients),
-            'subject' => $message->getSubject(),
-            'mailable_class' => $event->data['mailable'] ?? null,
-            'status' => 'sent',
-            'created_at' => now(),
-        ]);
+        if (\Illuminate\Support\Facades\Schema::hasTable('email_logs')) {
+            DB::table('email_logs')->insert([
+                'recipient' => implode(', ', $recipients),
+                'subject' => $message->getSubject(),
+                'mailable_class' => $event->data['mailable'] ?? null,
+                'status' => 'sent',
+                'created_at' => now(),
+            ]);
+        }
     }
 }

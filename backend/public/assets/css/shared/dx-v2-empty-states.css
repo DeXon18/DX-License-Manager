@@ -1,0 +1,29 @@
+/**
+ * @module    dx-v2-empty-states
+ * @fase      21.3
+ * @desc      Estilos transversales compartidos para contenedores y cajas de estados vacíos (empty states) en listados y dashboards.
+ * @afecta    [Global App Portal]
+ * @version   2.21.0
+ */
+
+/* ============================================================
+   SHARED EMPTY STATES (.dx-v2-empty-state)
+   ============================================================ */
+.dx-v2-resources-empty-state {
+  text-align: center;
+  padding: 40px !important;
+  border: 1px dashed var(--dx-v2-border) !important;
+  border-radius: 8px !important;
+  background: rgba(255, 255, 255, 0.002) !important;
+}
+
+.dx-v2-resources-empty-state-icon {
+  stroke: var(--dx-v2-muted) !important;
+  margin-bottom: 12px;
+  opacity: 0.5;
+}
+
+.dx-v2-resources-empty-state-text {
+  font-size: 13px !important;
+  color: var(--dx-v2-muted) !important;
+}

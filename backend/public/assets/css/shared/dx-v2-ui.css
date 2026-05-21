@@ -1,0 +1,316 @@
+/**
+ * @module    dx-v2-ui
+ * @fase      21.3
+ * @desc      Clases y utilidades comunes de UI premium bajo el namespace global `.dx-v2-ui-*` (modales, tablas NOC, badges, botones y alertas).
+ * @afecta    [Global App Portal]
+ * @version   2.21.0
+ */
+
+/* 1. Modales Premium (Glassmorphism & High-Fidelity Blur) */
+.dx-v2-ui-modal-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(10, 12, 16, 0.7) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  display: flex;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 9999 !important;
+  padding: 20px !important;
+  animation: dxFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+}
+
+.dx-v2-ui-modal-content {
+  background: var(--dx-v2-surface, #161b22) !important;
+  border: 1px solid var(--dx-v2-border, #30363d) !important;
+  border-radius: 16px !important;
+  width: 100% !important;
+  max-width: 600px !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  max-height: 90vh !important;
+  animation: dxScaleIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
+  overflow: hidden !important;
+}
+
+.dx-v2-ui-modal-content.wide {
+  max-width: 800px !important;
+}
+
+.dx-v2-ui-modal-header {
+  padding: 20px 24px !important;
+  border-bottom: 1px solid var(--dx-v2-border, #30363d) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.dx-v2-ui-modal-title {
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 600 !important;
+  color: var(--dx-v2-primary, #e6edf3) !important;
+  margin: 0 !important;
+}
+
+.dx-v2-ui-modal-close {
+  background: transparent !important;
+  border: none !important;
+  color: var(--dx-v2-muted, #8b949e) !important;
+  font-size: 24px !important;
+  cursor: pointer !important;
+  transition: color 0.15s ease !important;
+  padding: 4px !important;
+  line-height: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.dx-v2-ui-modal-close:hover {
+  color: var(--dx-v2-primary, #e6edf3) !important;
+}
+
+.dx-v2-ui-modal-body {
+  padding: 24px !important;
+  overflow-y: auto !important;
+  flex-grow: 1 !important;
+}
+
+.dx-v2-ui-modal-footer {
+  padding: 16px 24px !important;
+  border-top: 1px solid var(--dx-v2-border, #30363d) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 12px !important;
+  background: var(--dx-v2-raised, #21262d) !important;
+}
+
+/* 2. Tablas Industriales de Alta Densidad (NOC Style) */
+.dx-v2-ui-table-wrapper {
+  width: 100% !important;
+  overflow-x: auto !important;
+}
+
+.dx-v2-ui-table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  text-align: left !important;
+  font-size: 13px !important;
+}
+
+.dx-v2-ui-table th {
+  background: var(--dx-v2-raised, #21262d) !important;
+  color: var(--dx-v2-muted, #8b949e) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  font-size: 11px !important;
+  letter-spacing: 0.05em !important;
+  padding: 12px 16px !important;
+  border-bottom: 1px solid var(--dx-v2-border, #30363d) !important;
+  font-family: 'Outfit', sans-serif !important;
+}
+
+.dx-v2-ui-table td {
+  padding: 14px 16px !important;
+  border-bottom: 1px solid var(--dx-v2-border, #30363d) !important;
+  color: var(--dx-v2-primary, #e6edf3) !important;
+  vertical-align: middle !important;
+}
+
+.dx-v2-ui-table tbody tr {
+  transition: background-color 0.15s ease !important;
+}
+
+.dx-v2-ui-table tbody tr:hover {
+  background: rgba(56, 139, 253, 0.03) !important;
+}
+
+/* 3. Badges de Estado Compactos */
+.dx-v2-ui-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  padding: 3px 8px !important;
+  border-radius: 4px !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.03em !important;
+  white-space: nowrap !important;
+  border: 1px solid transparent !important;
+}
+
+.dx-v2-ui-badge-dot {
+  width: 6px !important;
+  height: 6px !important;
+  border-radius: 50% !important;
+  display: inline-block !important;
+}
+
+.dx-v2-ui-badge-success {
+  background: rgba(46, 160, 67, 0.1) !important;
+  color: #3fb950 !important;
+  border-color: rgba(46, 160, 67, 0.2) !important;
+}
+.dx-v2-ui-badge-success .dx-v2-ui-badge-dot { background: #3fb950 !important; }
+
+.dx-v2-ui-badge-danger {
+  background: rgba(248, 81, 73, 0.1) !important;
+  color: #f85149 !important;
+  border-color: rgba(248, 81, 73, 0.2) !important;
+}
+.dx-v2-ui-badge-danger .dx-v2-ui-badge-dot { background: #f85149 !important; }
+
+.dx-v2-ui-badge-warn {
+  background: rgba(210, 153, 34, 0.1) !important;
+  color: #d29922 !important;
+  border-color: rgba(210, 153, 34, 0.2) !important;
+}
+.dx-v2-ui-badge-warn .dx-v2-ui-badge-dot { background: #d29922 !important; }
+
+.dx-v2-ui-badge-info {
+  background: rgba(56, 139, 253, 0.1) !important;
+  color: #58a6ff !important;
+  border-color: rgba(56, 139, 253, 0.2) !important;
+}
+.dx-v2-ui-badge-info .dx-v2-ui-badge-dot { background: #58a6ff !important; }
+
+.dx-v2-ui-badge-primary {
+  background: rgba(31, 111, 235, 0.15) !important;
+  color: #58a6ff !important;
+  border-color: rgba(31, 111, 235, 0.3) !important;
+}
+.dx-v2-ui-badge-primary .dx-v2-ui-badge-dot { background: #58a6ff !important; }
+
+.dx-v2-ui-badge-accent {
+  background: rgba(188, 113, 248, 0.1) !important;
+  color: #bc71f8 !important;
+  border-color: rgba(188, 113, 248, 0.2) !important;
+}
+.dx-v2-ui-badge-accent .dx-v2-ui-badge-dot { background: #bc71f8 !important; }
+
+.dx-v2-ui-badge-warning {
+  background: rgba(219, 109, 40, 0.1) !important;
+  color: #db6d28 !important;
+  border-color: rgba(219, 109, 40, 0.2) !important;
+}
+.dx-v2-ui-badge-warning .dx-v2-ui-badge-dot { background: #db6d28 !important; }
+
+.dx-v2-ui-badge-muted {
+  background: rgba(139, 148, 158, 0.1) !important;
+  color: #8b949e !important;
+  border-color: rgba(139, 148, 158, 0.2) !important;
+}
+.dx-v2-ui-badge-muted .dx-v2-ui-badge-dot { background: #8b949e !important; }
+
+/* 4. Botones con Hover Transicional */
+.dx-v2-ui-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  font-family: 'Outfit', sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  padding: 8px 16px !important;
+  border-radius: 6px !important;
+  border: 1px solid transparent !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  text-decoration: none !important;
+  user-select: none !important;
+  white-space: nowrap !important;
+}
+
+.dx-v2-ui-btn-primary {
+  background: var(--dx-v2-accent-base, #388bfd) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15) !important;
+}
+
+.dx-v2-ui-btn-primary:hover {
+  opacity: 0.9 !important;
+  box-shadow: 0 4px 12px rgba(56, 139, 253, 0.2) !important;
+}
+
+.dx-v2-ui-btn-secondary {
+  background: var(--dx-v2-raised, #21262d) !important;
+  color: var(--dx-v2-primary, #e6edf3) !important;
+  border-color: var(--dx-v2-border, #30363d) !important;
+}
+
+.dx-v2-ui-btn-secondary:hover {
+  background: var(--dx-v2-surface, #161b22) !important;
+  border-color: var(--dx-v2-accent-base, #388bfd) !important;
+  color: var(--dx-v2-primary, #e6edf3) !important;
+}
+
+.dx-v2-ui-btn-danger {
+  background: rgba(248, 81, 73, 0.1) !important;
+  color: #f85149 !important;
+  border-color: rgba(248, 81, 73, 0.2) !important;
+}
+
+.dx-v2-ui-btn-danger:hover {
+  background: #f85149 !important;
+  color: #ffffff !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 12px rgba(248, 81, 73, 0.2) !important;
+}
+
+/* 5. Toasts e Indicadores de Alerta */
+.dx-v2-ui-alert {
+  padding: 14px 18px !important;
+  border-radius: 8px !important;
+  border: 1px solid transparent !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 12px !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.dx-v2-ui-alert-success {
+  background: rgba(46, 160, 67, 0.08) !important;
+  color: #3fb950 !important;
+  border-color: rgba(46, 160, 67, 0.2) !important;
+}
+
+.dx-v2-ui-alert-danger {
+  background: rgba(248, 81, 73, 0.08) !important;
+  color: #f85149 !important;
+  border-color: rgba(248, 81, 73, 0.2) !important;
+}
+
+.dx-v2-ui-alert-warn {
+  background: rgba(210, 153, 34, 0.08) !important;
+  color: #d29922 !important;
+  border-color: rgba(210, 153, 34, 0.2) !important;
+}
+
+.dx-v2-ui-alert-info {
+  background: rgba(56, 139, 253, 0.08) !important;
+  color: #58a6ff !important;
+  border-color: rgba(56, 139, 253, 0.2) !important;
+}
+
+/* Animaciones */
+@keyframes dxFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes dxScaleIn {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}

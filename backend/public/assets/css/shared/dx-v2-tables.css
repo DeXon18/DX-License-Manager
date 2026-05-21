@@ -1,0 +1,37 @@
+/**
+ * @module    dx-v2-tables
+ * @fase      21.3
+ * @desc      Estilos comunes para tablas, th, td, alineación nowrap y utilidades de color contextual de texto.
+ * @afecta    [Global App Portal]
+ * @version   2.21.0
+ */
+
+/* 13. TABLAS */
+table { width:100%; border-collapse:collapse; }
+th {
+  font-size:11px; text-transform:uppercase; letter-spacing:0.07em; color:var(--dx-v2-muted);
+  font-weight:500; padding:10px 20px; text-align:left; border-bottom:1px solid var(--dx-v2-border); background:var(--dx-v2-bg);
+}
+.card table th { padding:12px 20px; }
+td { padding:11px 20px; font-size:13px; border-bottom:1px solid var(--dx-v2-border); vertical-align:middle; }
+.card table td { padding:14px 20px; font-size:14px; }
+tr:last-child td { border-bottom:none; }
+tr:hover td { background:var(--dx-v2-bg); }
+
+.dx-v2-table-nowrap {
+  white-space: nowrap !important;
+}
+.dx-v2-link-inherit {
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+/* Utilidades de color de Contratos */
+.dx-v2-color-azul-claro { color: var(--dx-v2-accent); }
+.dx-v2-color-azul-intenso { color: #1d6ae8; }
+.dx-v2-color-morado { color: #a855f7; }
+.dx-v2-color-amarillo { color: var(--dx-v2-warning); }
+.dx-v2-color-naranja { color: #f97316; }
+.dx-v2-color-verde { color: var(--dx-v2-success); }
+.dx-v2-color-rojo-apagado { color: var(--dx-v2-danger); }
+.dx-v2-color-gris { color: var(--dx-v2-muted); }

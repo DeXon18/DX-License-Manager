@@ -24,9 +24,18 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::get('/clientes', [ClientController::class, 'index'])->name('clients.index');
     Route::get('/clientes/{client}', [ClientController::class, 'show'])->name('clients.show');
     
+    // Chatbot de Asistencia IA Web (Fase 25)
+    Route::post('/chatbot/query', [\App\Http\Controllers\Api\ChatbotController::class, 'query'])->name('chatbot.query');
+    
     // Perfil de Usuario
     Route::get('/perfil', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('/perfil', [ProfileController::class, 'update'])->name('profile.update');
+
+    // Planificador de Renovaciones (Fase 14)
+    Route::get('/planificador', [\App\Http\Controllers\RenewalPlannerController::class, 'index'])->name('renewal-planner.index');
+    Route::post('/planificador', [\App\Http\Controllers\RenewalPlannerController::class, 'store'])->name('renewal-planner.store');
+    Route::delete('/planificador', [\App\Http\Controllers\RenewalPlannerController::class, 'destroy'])->name('renewal-planner.destroy');
+    Route::get('/planificador/download/{file}', [\App\Http\Controllers\RenewalPlannerController::class, 'downloadFile'])->name('renewal-planner.download-file');
     
     Route::get('/changelog', [SystemController::class, 'changelog'])->name('system.changelog');
     
@@ -74,8 +83,11 @@ Route::middleware(['auth.jwt'])->group(function () {
         Route::get('/normalization', [\App\Http\Controllers\Admin\NormalizationController::class, 'index'])->name('normalization.index');
         Route::post('/normalization/unify', [\App\Http\Controllers\Admin\NormalizationController::class, 'unify'])->name('normalization.unify');
         Route::post('/normalization/dismiss', [\App\Http\Controllers\Admin\NormalizationController::class, 'dismiss'])->name('normalization.dismiss');
+        Route::post('/normalization/analyze-ai', [\App\Http\Controllers\Admin\NormalizationController::class, 'analyzeAi'])->name('normalization.analyze-ai');
+        Route::post('/normalization/force-scan', [\App\Http\Controllers\Admin\NormalizationController::class, 'forceScan'])->name('normalization.force-scan');
 
         Route::get('/system', [SystemDashboardController::class, 'index'])->name('system.index');
+        Route::get('/system/docker', [SystemDashboardController::class, 'docker'])->name('system.docker');
         
         Route::prefix('system/actions')->name('system.')->group(function () {
             Route::post('/clear-cache', [SystemActionController::class, 'clearCache'])->name('clear-cache');
@@ -83,6 +95,8 @@ Route::middleware(['auth.jwt'])->group(function () {
             Route::post('/backup-db', [SystemActionController::class, 'backupDatabase'])->name('backup-db');
             Route::post('/toggle-maintenance', [SystemActionController::class, 'toggleMaintenance'])->name('toggle-maintenance');
             Route::post('/test-telegram', [SystemActionController::class, 'testTelegram'])->name('test-telegram');
+            Route::post('/send-weekly-alerts', [SystemActionController::class, 'sendWeeklyAlerts'])->name('send-weekly-alerts');
+            Route::post('/restart-container', [SystemActionController::class, 'restartContainer'])->name('restart-container');
             Route::get('/download-backup/{filename}', [SystemActionController::class, 'downloadBackup'])->name('download-backup');
             Route::delete('/delete-backup/{filename}', [SystemActionController::class, 'deleteBackup'])->name('delete-backup');
         });
@@ -117,5 +131,10 @@ Route::middleware(['auth.jwt'])->group(function () {
             Route::put('/resources/{resource}', [\App\Http\Controllers\Admin\ResourceController::class, 'update'])->name('resources.update');
             Route::delete('/resources/{resource}', [\App\Http\Controllers\Admin\ResourceController::class, 'destroy'])->name('resources.destroy');
         });
+
+        // Fase 13: Gestión de Alertas y Notificaciones
+        Route::get('/alerts', [\App\Http\Controllers\Admin\AlertController::class, 'index'])->name('alerts.index');
+        Route::post('/alerts/update', [\App\Http\Controllers\Admin\AlertController::class, 'update'])->name('alerts.update');
+        Route::post('/alerts/toggle', [\App\Http\Controllers\Admin\AlertController::class, 'toggle'])->name('alerts.toggle');
     });
 });

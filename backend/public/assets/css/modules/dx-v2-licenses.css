@@ -1,0 +1,196 @@
+/**
+ * @module    dx-v2-licenses
+ * @fase      21.4
+ * @desc      Estilos para el Repositorio de Licencias Semanal. Contiene la vista de archivos adjuntos subidos, alertas de estado (success, info, danger), visualizador de archivos con iconos semánticos, breadcrumbs, contenedores vacíos, y paneles informativos de la barra lateral.
+ * @afecta    [admin/licenses/repository.blade.php]
+ * @version   2.21.0
+ */
+
+.dx-v2-lic-repo-card-mb {
+  margin-bottom: 24px !important;
+}
+
+.dx-v2-lic-repo-header-row {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+.dx-v2-lic-repo-btn-group {
+  display: flex !important;
+  gap: 8px !important;
+  align-items: center !important;
+}
+
+.dx-v2-lic-repo-btn-sm {
+  padding: 6px 14px !important;
+  font-size: 11px !important;
+  font-family: var(--font-sans) !important;
+  font-weight: 600 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+.dx-v2-lic-repo-body {
+  padding: 24px !important;
+}
+
+/* ─── State Alerts ────────────────────────────────────── */
+.dx-v2-lic-repo-alert {
+  width: 100% !important;
+  padding: 12px 16px !important;
+  margin-bottom: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+}
+
+.dx-v2-lic-repo-alert.success {
+  background: var(--dx-v2-success-dim, rgba(45, 164, 78, 0.1)) !important;
+  border: 1px solid var(--dx-v2-success, #2da44e) !important;
+  color: var(--dx-v2-success, #2da44e) !important;
+}
+
+.dx-v2-lic-repo-alert.info {
+  background: var(--dx-v2-accent-dim, rgba(56, 139, 253, 0.1)) !important;
+  border: 1px solid var(--dx-v2-accent, #388bfd) !important;
+  color: var(--dx-v2-accent, #388bfd) !important;
+}
+
+.dx-v2-lic-repo-alert.danger {
+  background: var(--dx-v2-danger-dim, rgba(207, 34, 46, 0.1)) !important;
+  border: 1px solid var(--dx-v2-danger, #cf222e) !important;
+  color: var(--dx-v2-danger, #cf222e) !important;
+}
+
+/* ─── File & Meta Rows ────────────────────────────────── */
+.dx-v2-lic-repo-year-label {
+  font-family: var(--font-mono) !important;
+  font-size: 11px !important;
+  color: var(--dx-v2-muted) !important;
+  margin-left: 6px !important;
+}
+
+.dx-v2-lic-repo-file-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.dx-v2-lic-repo-file-icon {
+  color: var(--dx-v2-warning, #d29922) !important;
+  font-size: 14px !important;
+}
+
+.dx-v2-lic-repo-file-name {
+  font-family: var(--font-mono) !important;
+  font-weight: 600 !important;
+  color: var(--dx-v2-primary-base) !important;
+}
+
+.dx-v2-lic-repo-summary-text {
+  color: var(--dx-v2-muted) !important;
+  font-size: 12px !important;
+}
+
+.dx-v2-lic-repo-date {
+  font-family: var(--font-mono) !important;
+  font-size: 12px !important;
+  color: var(--dx-v2-muted) !important;
+}
+
+.dx-v2-lic-repo-actions-row {
+  display: flex !important;
+  justify-content: flex-end !important;
+  gap: 8px !important;
+}
+
+.dx-v2-lic-repo-btn-action {
+  padding: 6px 10px !important;
+  height: 28px !important;
+  width: 32px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s !important;
+}
+
+.dx-v2-lic-repo-btn-action.danger {
+  color: var(--dx-v2-danger, #cf222e) !important;
+}
+
+.dx-v2-lic-repo-btn-action.danger:hover {
+  background: var(--dx-v2-danger-dim, rgba(207, 34, 46, 0.1)) !important;
+  border-color: var(--dx-v2-danger, #cf222e) !important;
+}
+
+/* ─── Empty State ─────────────────────────────────────── */
+.dx-v2-lic-repo-empty-container {
+  padding: 60px 0 !important;
+  text-align: center !important;
+}
+
+.dx-v2-lic-repo-empty-inner {
+  opacity: 0.5 !important;
+  transition: opacity 0.2s !important;
+}
+
+.dx-v2-lic-repo-empty-inner:hover {
+  opacity: 0.8 !important;
+}
+
+.dx-v2-lic-repo-empty-icon {
+  font-size: 32px !important;
+  margin-bottom: 12px !important;
+}
+
+.dx-v2-lic-repo-empty-title {
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  color: var(--dx-v2-primary-base) !important;
+}
+
+.dx-v2-lic-repo-empty-desc {
+  font-size: 12px !important;
+  color: var(--dx-v2-muted) !important;
+  margin-top: 4px !important;
+}
+
+/* ─── Sidebar Info Card ────────────────────────────────── */
+.dx-v2-lic-repo-sidebar-card {
+  padding: 20px !important;
+}
+
+.dx-v2-lic-repo-sidebar-header {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin-bottom: 12px !important;
+  color: var(--dx-v2-accent-base) !important;
+}
+
+.dx-v2-lic-repo-sidebar-title {
+  font-family: var(--font-sans) !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+.dx-v2-lic-repo-sidebar-text {
+  font-size: 12px !important;
+  color: var(--dx-v2-secondary) !important;
+  line-height: 1.6 !important;
+}
+
+.dx-v2-lic-repo-sidebar-footer {
+  margin-top: 16px !important;
+  padding-top: 16px !important;
+  border-top: 1px solid var(--dx-v2-border) !important;
+  font-size: 11px !important;
+  color: var(--dx-v2-muted) !important;
+  line-height: 1.5 !important;
+}

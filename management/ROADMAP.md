@@ -45,7 +45,8 @@ DX License Manager
 │   ├── Licencias ✅ (Inventario unificado)
 │   ├── ContraHeaders / Contratos ✅ (Importación CSV)
 │   ├── Contactos de envío ✅ (Gestión por cliente)
-│   └── Certificados de cese firmados ✅ (Gestión de CODs)
+│   ├── Certificados de cese firmados ✅ (Gestión de CODs)
+│   └── Planificador de Renovaciones ✅ (Fase 14)
 ├── 6. Herramientas ✅
 ├── 7. Páginas de herramientas & recursos
 │   ├── SIEMENS | Automatización industrial y digitalización
@@ -53,10 +54,10 @@ DX License Manager
 │   │   ├── STAR-CCM+ ✅ (cdlmd)
 │   │   ├── HEEDS ✅ (RCTECH)
 │   │   ├── COD ✅ (Generador + Asistente IA)
-│   │   └── Recursos & enlaces 📋
+│   │   └── Recursos & enlaces ✅
 │   └── Moldex3D | Software de simulación de moldeo por inyección de plástico
 │       ├── Moldex3D ✅ (Parser .mac + Sincronización)
-│       └── Recursos & enlaces 📋
+│       └── Recursos & enlaces ✅
 └── 8. Sistema y configuración ✅
     ├── Dashboard del sistema ✅ (NOC Pro + Brand Icons)
     ├── Usuarios y acceso ✅
@@ -70,11 +71,11 @@ DX License Manager
     ├── Repositorio de licencias ✅
     │   ├── Archivo semanal ✅
     │   └── Historial de archivos ✅
-    ├── Alertas y notificaciones 🔜
-    │   ├── Alertas de caducidad 📋
-    │   │   ├── Configuración de umbrales 📋
-    │   │   ├── Destinatarios 📋
-    │   │   └── Historial de envíos 📋
+    ├── Alertas y notificaciones ✅
+    │   ├── Alertas de caducidad ✅
+    │   ├── Configuración de umbrales ✅
+    │   ├── Destinatarios ✅
+    │   ├── Historial de envíos ✅
     │   └── Configuración SMTP ✅ (Producción activa)
     ├── Backups ✅
     │   ├── Backup manual ✅
@@ -278,7 +279,8 @@ DX License Manager
 - [x] Transformación automática a SALT (29000/29001) e identificador HEEDS
 - [x] Almacenamiento jerárquico por Cliente/Mes-Año
 - [x] Auditoría IA via n8n FallbackChain
-- [x] **Validación:** ✅ Motor y UI unificada OK.
+- [x] **Nomenclatura Estándar (Refinamiento)**: Unificación de formatos para NX, StarCCM y HEEDS ✅
+- [x] **Validación:** ✅ Motor y UI unificada OK (2026-05-13).
 
 #### 8.4 — COD (`siemens_cod`) ✅
 **Estado:** COMPLETADA
@@ -356,6 +358,17 @@ DX License Manager
 
 ---
 
+### ✅ Fase 10.5 — Docker Monitor NOC Pro ✅ COMPLETADA
+
+**Estado:** COMPLETADA
+**Prerequisito:** ✅ Fase 10.4 estable
+**Validación:** ✅ Verificado por Oskar el 2026-05-13. Telemetría y reinicios funcionales.
+- [x] UI de monitorización de recursos (CPU/RAM/Uptime).
+- [x] Acciones de reinicio de contenedores desde el portal.
+
+
+---
+
 ### ✅ Fase 11 — Usuarios y Acceso ✅ COMPLETADA
 
 **Estado:** COMPLETADA
@@ -382,32 +395,37 @@ DX License Manager
 
 ---
 
-### 📋 Fase 13 — Alertas y Notificaciones 🔜 EN CURSO
-
-**Estado:** EN CURSO (Infraestructura SMTP OK)
+### ✅ Fase 13 — Alertas y Notificaciones
+ 
+**Estado:** COMPLETADA
 **Prerequisito:** ✅ Fase 12 validada por Oskar
-**Validación requerida antes de Fase 14:** Alerta de caducidad enviada correctamente a destinatario de prueba.
-
-- [ ] Configuración de umbrales de caducidad
-- [ ] Gestión de destinatarios por cliente
-- [ ] Historial de envíos
-- [ ] Configuración SMTP
-
----
-
-### ✅ Fase 14 — Gestión de Backups ✅ COMPLETADA
-
-- [x] Historial de backups en disco -> OK
-- [x] Generación manual y automatizada (Cron) -> OK
-- [x] Descarga y borrado de archivos -> OK
-- [x] Sistema de restauración con seguridad crítica -> OK
-- [x] UI con cuenta atrás dinámica y estados -> OK
+**Validación:** ✅ Verificado por Oskar el 2026-05-13. Reporte global enviado correctamente a soporte.
+ 
+- [x] Configuración de umbrales de caducidad (0, 7, 15, 30 días)
+- [x] Reporte Global Consolidado (Interno Soporte)
+- [x] Historial de envíos unificado
+- [x] Configuración SMTP (Producción activa)
 
 ---
 
-### 📋 Fase 15 — Integraciones IA
+### ✅ Fase 14 — Planificador de Renovaciones ✅ COMPLETADA
 
-**Estado:** En planificación
+**Estado:** COMPLETADA
+**Validación:** ✅ Implementación técnica finalizada el 2026-05-13.
+**Descripción:** Herramienta operativa para el seguimiento mensual de renovaciones con soporte multi-archivo.
+
+- [x] **Motor de Seguimiento**: Filtrado cíclico por `MONTH(end_date)` para identificar tareas mensuales.
+- [x] **Registro de Acciones**: Tabla `renewal_logs` para trazabilidad de quién y cuándo envió licencias.
+- [x] **Soporte Multi-archivo**: Capacidad para adjuntar múltiples archivos `.lic` (NX, Star, Heeds) simultáneamente.
+- [x] **Repositorio de Renovaciones**: Almacenamiento seguro y estructurado por cliente.
+- [x] **UI Alta Densidad**: Vista de planificador estilo NOC Pro con contadores de progreso.
+- [x] **Integración Perfil Cliente**: Nueva pestaña de historial con acceso a descargas históricas.
+
+---
+
+### 📋 Fase 15 — Integraciones IA & Readiness
+
+**Estado:** PAUSADA
 **Prerequisito:** ✅ Fase 14 validada por Oskar
 **Validación requerida antes de Fase 16:** Todos los proveedores IA respondiendo y FallbackChain verificado.
 
@@ -417,6 +435,18 @@ DX License Manager
 - [ ] Configuración Telegram Bot + test de notificación
 - [ ] Estado de conexión en tiempo real
 - [ ] FallbackChain verificado extremo a extremo
+
+---
+
+### ✅ Fase 15.5 — Inventario Granular y UI
+
+**Estado:** COMPLETADA
+**Validación:** ✅ Verificado por Oskar el 2026-05-15.
+**Descripción:** Refinamiento de filtros de inventario y estandarización UI.
+
+- [x] Filtro segmentado de 4 estados (OFF, ALL, Siemens, Moldex3D).
+- [x] Rediseño premium de la barra de búsqueda (600px, glassmorphism).
+- [x] Persistencia de filtros multi-vendor por sesión.
 
 ---
 
@@ -433,14 +463,719 @@ DX License Manager
 
 ---
 
-### 📋 Fase 17 — Consolidación y Limpieza UI
+### ✅ Fase 18 — Estabilización de Sesión JWT
+ 
+**Estado:** COMPLETADA
+**Validación:** ✅ Verificado por Oskar el 2026-05-15. Sesión estable con rotación atómica y ventana de gracia.
+ 
+- [x] Implementación de **Rotación Atómica** de tokens.
+- [x] Ventana de gracia de 30s en Redis para peticiones concurrentes.
+- [x] Sincronización de TTL a 15 min (Cookies + Backend).
+- [x] Desacoplamiento de `JWT_SECRET` de la `APP_KEY`.
+- [x] Comando de limpieza automática de blacklist en Redis.
 
-**Estado:** Planificado (Fase Final de Bloque 8.1)
+---
 
-- [ ] Auditoría de estilos redundantes en vistas Blade
-- [ ] Migración de componentes CSS de `show.blade.php` a `dx-styles.css`
-- [ ] Optimización de selectores y reducción de especificidad innecesaria
-- [ ] Verificación de consistencia visual en Mobile/Responsive tras la consolidación
+# 📋 Fase 19 — Unificación CSS & Limpieza UI
+
+**Estado:** INICIADA
+**Prerequisito:** ✅ Auditoría Forense CSS (#008) finalizada
+**Validación requerida:** Consistencia visual total. Cero `style=` inline en vistas (excl. emails/pdf).
+
+---
+
+## 🔷 GIT — ESTRATEGIA DE RAMAS & COMMITS
+
+**Rama única de trabajo:** `dev`
+
+### Convención de commits
+
+Usar prefijo `css:` para todos los commits de esta fase:
+
+```
+css(19.0): design tokens -- namespace --dx-v2-* y limpieza huérfanas
+css(19.2): layouts -- extracción sidebar/footer a .dx-v2-
+css(19.5): clientes -- limpieza style= inline en show.blade.php
+css(19.28): componentes -- modales y tablas refactor namespace
+css(19-hardening): eliminación !important sin justificación
+css(19-docs): style guide interno + README fase
+```
+
+### Checkpoints de commit en `dev`
+
+No acumular trabajo sin commitear. Puntos de commit recomendados:
+
+- [x] **Checkpoint A** — tras 19.0 + 19.1 + 19.2 *(tokens + css base + layouts)*
+- [ ] **Checkpoint B** — tras 19.3 → 19.9 *(auth + dashboard + clientes completo)*
+- [ ] **Checkpoint C** — tras 19.10 → 19.17 *(herramientas + siemens + moldex3d)*
+- [ ] **Checkpoint D** — tras 19.18 → 19.25 *(sistema & configuración completo)*
+- [ ] **Checkpoint E** — tras 19.26 → 19.29 *(especiales + componentes + exclusiones)*
+- [ ] **Commit final** — tras hardening + documentación
+
+### Backup de seguridad antes de iniciar
+
+- [x] Tag git en estado actual: `git tag backup/pre-fase-19`
+- [x] Push del tag al remoto: `git push origin backup/pre-fase-19`
+
+---
+
+## 🔷 RELEASES (tags en `dev`)
+
+- [ ] **Tag v2.19.0-rc1** — tras Checkpoint C *(parcial, herramientas limpias)*
+    - [ ] `git tag v2.19.0-rc1 && git push origin v2.19.0-rc1`
+- [ ] **Tag v2.19.0-rc2** — tras Checkpoint E *(completo, previo a hardening)*
+    - [ ] `git tag v2.19.0-rc2 && git push origin v2.19.0-rc2`
+- [ ] **Tag v2.19.0** — tras commit final + verificación de criterios de aceptación
+    - [ ] `git tag v2.19.0 && git push origin v2.19.0`
+    - [ ] CHANGELOG actualizado con lista de subfases completadas.
+    - [ ] Nota de release: consistencia visual total, zero `style=` inline, namespace `.dx-v2-`.
+
+---
+
+## 🔷 AGRUPACIÓN DE ESTILOS COMUNES & PROBLEMÁTICOS
+
+### Estructura CSS Modular Real (Capa 3: Atoms UI Compartidos)
+
+Se ha implementado una arquitectura modular robusta y jerárquica en 6 capas, donde los componentes y patrones visuales repetidos se extrajeron y centralizaron bajo **Capa 3 (Atoms UI Compartidos)** y carpetas de herramientas específicas:
+
+- [x] **`shared/dx-v2-badges.css`** — badges de estado, severidad e indicadores (activo, caducado, niveles de log).
+    > Implementado y en uso en: Clientes, Licencias, Planificador, Alertas, Usuarios, Logs, Importaciones.
+
+- [x] **`shared/dx-v2-tables.css`** — tablas industriales de alta densidad con filas translúcidas en hover y cabeceras monoespaciadas.
+    > Implementado y en uso en: Clientes, Licencias, Contratos, Usuarios, Importaciones, Repositorio, Logs, Backups.
+
+- [x] **`shared/dx-v2-cards.css`** — envolturas de tarjetas raised con elevación 3D, bordes premium y layouts bento.
+    > Implementado y en uso en: Dashboard, Inicio, Sistema, Clientes, Herramientas, Alertas.
+
+- [x] **`shared/dx-v2-buttons.css`** — botones simétricos y de acciones rápidas con transiciones fluidas.
+    > Implementado y en uso en: toda la plataforma.
+
+- [x] **`shared/dx-v2-modals.css`** — ventanas flotantes con glassmorphism de alta fidelidad, animaciones fluidas y filtros blur.
+    > Implementado y en uso en: Clientes, COD, Recursos, Backups, Auditorías.
+
+- [x] **`shared/dx-v2-forms.css`** — inputs, selectores de opciones, checkboxes y zonas de subida interactiva con reseteo de spinners nativos.
+    > Implementado y en uso en: formularios de perfiles, alta de usuarios, modales de contacto, parámetros de alertas.
+
+- [x] **`shared/dx-v2-empty-states.css`** — estados vacíos unificados con iconos translúcidos y textos técnicos de baja opacidad.
+    > Implementado y en uso en: Licencias, Logs, Repositorio, Backups, Importación, Planificador.
+
+- [x] **`shared/dx-v2-toast.css`** — sistema de notificaciones Toasts Premium flotante con efecto glassmorphic y soporte reactivo Alpine.js.
+    > Implementado e inyectado en el layout principal del portal.
+
+- [x] **`shared/dx-v2-pagination.css`** — paginación industrial `dx-jump` con botones direccionales y saltador numérico dropdown.
+    > Implementado en listados densos de clientes y logs de auditoría.
+
+- [x] **`shared/dx-v2-brand.css`** — logotipo lockup premium `.dx-lockup` con tipografías y destello interactivo scan-line.
+    > Integrado en Navbar, Login y Footer global.
+
+### Estilos problemáticos a vigilar durante el refactor
+
+- [ ] Selectores de ID (`#id { }`) → reemplazar por clase `.dx-v2-`.
+- [ ] Valores hardcodeados de `color`, `background`, `font-size` (hex/px) → reemplazar por tokens `--dx-v2-*`.
+- [ ] `z-index` sin escala definida → centralizar tabla de z-index en el archivo de tokens.
+- [ ] `transition` y `animation` duplicados entre componentes → centralizar en `dx-v2-motion.css`.
+
+---
+
+## 🔷 PRE-TRABAJO
+
+- [x] **Subfase 19.0** — Design Tokens & Variables CSS *(obligatorio antes de 19.1)*
+    - [x] Inventario completo de `--variables` en uso.
+    - [x] Eliminación de variables huérfanas o duplicadas.
+    - [x] Namespace unificado: `--dx-v2-*` (colores, espaciados, tipografía, radios, sombras).
+    - [x] Centralizar tabla de `z-index`.
+    - [x] Documentar mapa de tokens final.
+
+---
+
+## 🔷 [1–2] CSS GLOBAL & LAYOUTS
+
+- [x] **Subfase 19.1** — CSS Base & Assets (`resources/css/`, `resources/js/`, `public/`)
+    - [x] Consolidar hojas sueltas / imports redundantes (Optimizada cabecera de `app.blade.php` y `login.blade.php` eliminando llamadas externas).
+    - [x] Verificar que el build (Vite/Mix) no purgue clases `.dx-v2-` usadas dinámicamente (JS/Alpine) (Confirmada inmunidad frente a purgas automáticas).
+    - [x] Limpieza de `!important` sin justificación (Confirmados utilitarios legítimos y anulación de estilos en botones).
+    > **Impacto visual:** Afecta a la tipografía de **todo el portal global y la pantalla de acceso**, migrando a fuentes locales offline para rendimiento ultra-rápido y privacidad.
+
+- [x] **Subfase 19.2** — Layouts Blade (app layout, sidebar, topbar, footer, paginación `vendor/pagination/`) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [app.blade.php](file:///z:/DX-License-Manager/backend/resources/views/layouts/app.blade.php) - Modificados contenedores globales, header y el banner superior de advertencia por mantenimiento.
+    > - [footer.blade.php](file:///z:/DX-License-Manager/backend/resources/views/layouts/partials/footer.blade.php) - Limpieza de colores inline de elementos dinámicos (ícono del corazón).
+    > - [SelectiveMaintenance.php](file:///z:/DX-License-Manager/backend/app/Http/Middleware/SelectiveMaintenance.php) - Blindaje del middleware de mantenimiento para accesibilidad infalible de administradores.
+    > - [dx.blade.php](file:///z:/DX-License-Manager/backend/resources/views/vendor/pagination/dx.blade.php), [dx-modern.blade.php](file:///z:/DX-License-Manager/backend/resources/views/vendor/pagination/dx-modern.blade.php), [dx-simple.blade.php](file:///z:/DX-License-Manager/backend/resources/views/vendor/pagination/dx-simple.blade.php), [dx-jump.blade.php](file:///z:/DX-License-Manager/backend/resources/views/vendor/pagination/dx-jump.blade.php) - Limpieza total de estilos inline y Javascript events en las 4 plantillas de paginación del portal.
+    >
+    > **Área Visual Afectada:**
+    > - Envoltura global de la app, banner de mantenimiento persistente en la cabecera, pie de página del portal y controles interactivos de paginación en todas las listas de datos (Siemens, Moldex3D, Logs, Clientes, Usuarios, etc.).
+
+---
+
+## 🔷 [3] AUTH
+
+- [x] **Subfase 19.3** — Login & Auth (login, forgot-password, reset, 2FA) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Refactorizadas clases de login bajo el namespace unificado `.dx-v2-login-*` y añadida la clase de alerta de error `.dx-v2-login-error` con design tokens.
+    > - [login.blade.php](file:///z:/DX-License-Manager/backend/resources/views/auth/login.blade.php) - Migración a clases namespaced y eliminación total del bloque de estilos inline de la alerta.
+    >
+    > **Área Visual Afectada:**
+    > - Interfaz completa de la pantalla de inicio de sesión (diseño corporativo responsive, envoltura del formulario, campos de entrada, botones de acción, selector del interruptor del tema claro/oscuro y banner de visualización de errores del portal).
+
+---
+
+## 🔷 [4] INICIO / DASHBOARD
+
+- [x] **Subfase 19.4** — Inicio & Dashboard (home, métricas, stats, widgets) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Añadidas clases namespaced `.dx-v2-dashboard-*` y utilidades de color `.dx-v2-color-*` mapeando colores contractuales.
+    > - [dashboard.blade.php](file:///z:/DX-License-Manager/backend/resources/views/dashboard.blade.php) - Limpieza total de estilos inline y JavaScript inline events (`onfocus`/`onblur`), integrando clases namespaced y selectores `:focus` nativos.
+    >
+    > **Área Visual Afectada:**
+    > - Tarjetas de estadísticas de la cabecera (con íconos rotados traslúcidos), Buscador Global Express interactivo, tabla de vencimientos próximos de licencias y listado dinámico de contratos del panel lateral.
+
+---
+
+## 🔷 [5] CLIENTES
+
+- [x] **Subfase 19.5** — Clientes: Vista principal (`index`, `show`) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Añadidas utilidades globales `.text-xs` y clases de componentes semánticas `.dx-v2-clients-db-icon` y `.dx-v2-clients-empty-state`.
+    > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/clients/index.blade.php) - Limpieza total de estilos locales, clases de utilidad obsoletas y corrección del bug estructural de colspan de la celda de la tabla de clientes.
+    >
+    > **Área Visual Afectada:**
+    > - Listado de clientes, envoltura del estado vacío cuando no hay resultados (ahora centrado y expandido a lo largo de las 5 columnas simétricamente), ícono de la advertencia de base de datos de licencias y subtítulo de la página principal.
+
+- [x] **Subfase 19.6** — Clientes: Licencias (inventario unificado) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Corregidas variables CSS rotas (`--dx-v2-surface-raised` y `--dx-v2-text-muted`) por sus equivalentes unificados, y añadida directiva `[x-cloak]` global.
+    > - [show.blade.php](file:///z:/DX-License-Manager/backend/resources/views/clients/show.blade.php) - Limpieza total de estilos inline locales `style="display: none;"` en tabs Alpine y modal, migrándolos al estándar `x-cloak`.
+    >
+    > **Área Visual Afectada:**
+    > - Pestaña de Inventario Activo (Licencias) en la ficha detallada del cliente, pestañas secundarias (Certificados, Contactos, Renovaciones) y modal interactivo de gestión de contactos corporativos.
+
+- [x] **Subfase 19.7** — Clientes: Contratos / ContraHeaders (importación CSV) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Añadido el namespace `.dx-v2-import-*` para cubrir Dropzones, protocolo de mapeo, alertas de éxito y componentes de logs.
+    > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/import/index.blade.php) - Limpieza total de estilos inline y mapeo a clases del namespace.
+    > - [logs/index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/import/logs/index.blade.php) - Eliminación del bloque de estilos local `<style>` incrustado e inline styles de botones.
+    > - [logs/show.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/import/logs/show.blade.php) - Eliminación del 100% de los estilos inline locales del breadcrumb, tarjetas de estadísticas y tablas de metadatos.
+    >
+    > **Área Visual Afectada:**
+    > - Panel principal de Importación de Datos, historial de importaciones (logs) y detalle detallado del log de auditoría del sistema de contratos.
+
+
+- [x] **Subfase 19.8** — Clientes: Contactos de envío & Certificados de cese (CODs) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Añadido el namespace `.dx-v2-cod-*` para cubrir el generador de COD, el cargador y previsualizador de certificados de cese firmados y el asistente inteligente de análisis de hardware.
+    > - [cod.blade.php](file:///z:/DX-License-Manager/backend/resources/views/tools/cod.blade.php) - Eliminación total del bloque de estilos local `<style>` incrustado (más de 850 líneas de CSS duplicado) e inline styles del formulario y del asistente IA, migrando todo al namespace.
+    > - [show.blade.php](file:///z:/DX-License-Manager/backend/resources/views/clients/show.blade.php) - Auditoría y verificación de las pestañas de contactos y certificados COD, confirmando la ausencia de estilos locales y unificación bajo el estándar visual.
+    >
+    > **Área Visual Afectada:**
+    > - Generador de Certificados de Cese (COD), asistente de Composite por IA, envoltura interactiva para arrastrar ficheros y listados de contactos corporativos.
+
+
+- [x] **Subfase 19.9** — Planificador de Renovaciones ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline y eventos mouseover/mouseout locales.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Incorporado el namespace `.dx-v2-planner-*` con clases estructurales y decorativas completas para el planificador, cabecera flexible, dropdown de mes custom, chips interactivos de estado y cuadrícula de alta densidad.
+    > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/renewal-planner/index.blade.php) - Refactorización íntegra purgando más de 60 atributos de estilos inline, eliminando controladores `onmouseover` / `onmouseout` e implementando variables de entorno dinámicas CSS.
+    >
+    > **Área Visual Afectada:**
+    > - Planificador de Renovaciones, selector interactivo de meses, chips segmentados de filtrado y tabla de contratos activos.
+
+---
+
+## 🔷 [6] HERRAMIENTAS
+
+- [x] **Subfase 19.10** — Herramientas: Vista general / índice ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline y remoción del bloque style local.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Incorporado el namespace `.dx-v2-tools-*` cubriendo tarjetas de herramientas, layouts responsivos, estados bloqueados, placeholders e iconos dinámicos.
+    > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/tools/index.blade.php) - Refactorización completa purgando el bloque `<style>` incrustado y todos los estilos inline redundantes, delegando la interactividad y colores a variables CSS y clases globales.
+    >
+    > **Área Visual Afectada:**
+    > - Hub de Herramientas, tarjetas de tecnologías (Siemens PLM, Moldex3D y Documentación), estados bloqueados y hover tridimensional.
+
+---
+
+## 🔷 [7] PÁGINAS DE HERRAMIENTAS & RECURSOS
+
+- [x] **Subfase 19.11** — Siemens: NX Suite (ugslmd, saltd) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Incorporado el namespace `.dx-v2-tools-nx-*` cubriendo tarjetas de motor, dropzone de arrastre, grids de especificaciones y paneles laterales.
+    > - [nx-suite.blade.php](file:///z:/DX-License-Manager/backend/resources/views/tools/nx-suite.blade.php) - Refactorización completa purgando el 100% de los estilos inline locales, delegando la interactividad y colores a variables CSS y clases globales.
+    >
+    > **Área Visual Afectada:**
+    > - Vista individual de herramienta NX Suite, selector de motor (Legacy vs SALT), dropzone de arrastre e información técnica del vendor.
+
+- [x] **Subfase 19.12** — Siemens: STAR-CCM+ (cdlmd) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Incorporado el namespace `.dx-v2-tools-star-*` cubriendo cabeceras de página, tarjetas de proceso, dropzone de arrastre, grids de especificaciones y avisos laterales.
+    > - [star-ccm.blade.php](file:///z:/DX-License-Manager/backend/resources/views/tools/star-ccm.blade.php) - Refactorización completa purgando el 100% de los estilos inline locales, delegando la interactividad y alineaciones a clases globales y variables CSS.
+    >
+    > **Área Visual Afectada:**
+    > - Vista individual de la herramienta STAR-CCM+, dropzone de arrastre de archivos, tablas de auditoría y nomenclatura de licencias, y aviso de almacenamiento lateral.
+
+- [x] **Subfase 19.13** — Siemens: HEEDS (RCTECH) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Incorporado el namespace `.dx-v2-tools-heeds-*` cubriendo cabeceras de página, tarjetas de proceso, dropzone de arrastre, grids de especificaciones y avisos laterales.
+    > - [heeds.blade.php](file:///z:/DX-License-Manager/backend/resources/views/tools/heeds.blade.php) - Refactorización completa purgando el 100% de los estilos inline locales, delegando la interactividad y alineaciones a clases globales y variables CSS.
+    >
+    > **Área Visual Afectada:**
+    > - Vista individual de la herramienta HEEDS, dropzone de arrastre de archivos, tablas de auditoría y nomenclatura de licencias, y aviso de almacenamiento lateral.
+
+- [x] **Subfase 19.14** — Siemens: COD (Generador + Asistente IA) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+- [x] **Subfase 19.15** — Siemens: Recursos & enlaces ✅ COMPLETADA
+    - [x] Definir estructura de vista antes de aplicar namespace.
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Incorporados los selectores de rejilla unificada `.dx-v2-resources-card-list`, las tarjetas de recursos y su respectiva versión modal `.dx-v2-resources-modal-*` con padding y márgenes optimizados de forma nativa.
+    > - [_resources.blade.php](file:///z:/DX-License-Manager/backend/resources/views/tools/partials/_resources.blade.php) - Limpieza integral de estilos inline tanto en el listado de recursos como en el modal interactivo de creación/edición de enlaces.
+    >
+    > **Área Visual Afectada:**
+    > - Vista de Recursos de Siemens PLM y Moldex3D, y su ventana modal de adición/edición de enlaces.
+
+- [x] **Subfase 19.16** — Moldex3D (Parser .mac + Sincronización) ✅
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Namespace de estilos global `.dx-v2-tools-moldex-*` definido e integrado con 500+ líneas.
+    > - [moldex3d.blade.php](file:///z:/DX-License-Manager/backend/resources/views/tools/moldex3d.blade.php) - Purga completa de estilos inline locales y del bloque `<style>` incrustado local.
+    >
+    > **Área Visual Afectada:**
+    > - Herramienta individual del Auditor Moldex3D (dropzone de subida, tarjeta de metadatos de auditoría y módulos detectados, paneles laterales).
+
+- [x] **Subfase 19.17** — Moldex3D: Recursos & enlaces ✅ COMPLETADA
+    - [x] Definir estructura de vista antes de aplicar namespace.
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+
+    > **Archivos Afectados:**
+    > - Completado de forma unificada en la [Subfase 19.15](file:///z:/DX-License-Manager/management/ROADMAP.md#L769) junto a Siemens, compartiendo las mismas vistas [resources.blade.php](file:///z:/DX-License-Manager/backend/resources/views/tools/resources.blade.php) y su parcial [_resources.blade.php](file:///z:/DX-License-Manager/backend/resources/views/tools/partials/_resources.blade.php).
+
+---
+
+## 🔷 [8] SISTEMA & CONFIGURACIÓN
+
+- [x] **Subfase 19.18** — Dashboard del Sistema (NOC Pro + Brand Icons) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-`.
+    - [x] Limpieza de `style=` inline.
+    - [x] Verificación visual (Light/Dark) y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Namespace de estilos global `.dx-v2-sys-dash-*` definido e integrado con 670+ líneas para maquetar el control técnico.
+    > - [dashboard.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/system/dashboard.blade.php) - Purga completa de estilos inline locales y del bloque `<style>` incrustado de más de 100 líneas.
+    >
+    > **Área Visual Afectada:**
+    > - Centro de control de administración del sistema (NOC Pro), incluyendo métricas OS, RAM, CPU, disco, tráfico de red, latido del túnel en vivo, matriz de microservicios e integraciones IA, accesos rápidos y panel lateral.
+
+- [x] **Subfase 19.18.1** — Docker Fleet Monitor (NOC Pro + Empty State) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-sys-docker-*`.
+    - [x] Limpieza de `style=` inline y bloques locales `<style>`.
+    - [x] Inyección de Empty State dinámico e interactivo si no hay conexión con el socket.
+    - [x] Verificación visual y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Añadido el namespace del monitor de Docker `.dx-v2-sys-docker-*` con todas las clases de grid, tarjetas de telemetría y CPU gauges.
+    > - [docker.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/system/docker.blade.php) - Purga completa de estilos inline y del bloque local `<style>`.
+
+
+- [x] **Subfase 19.19** — Usuarios y acceso (listado, crear/editar, roles y permisos) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-users-*` definido e integrado en dx-styles.css.
+    - [x] Limpieza del 100% de `style=` inline y locales en el CRUD de usuarios.
+    - [x] Verificación visual y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Añadido el namespace `.dx-v2-users-*` con más de 340 líneas de estilos ergonómicos para listado, avatares, estados online y formularios.
+    > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/users/index.blade.php) - Purga completa de estilos inline locales y tablas.
+    > - [create.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/users/create.blade.php) - Purga de estilos inline y grid del formulario.
+    > - [edit.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/users/edit.blade.php) - Purga de inline styles de perfil, seguridad y switch de estado.
+    >
+    > **Área Visual Afectada:**
+    > - Módulo de Gestión de Usuarios y Accesos, incluyendo listado de usuarios con badges de rol, switches de estado activo, avatares con iniciales, telemetría de última conexión en vivo (ONLINE/OFFLINE), y formularios de alta/edición de perfiles y seguridad de accesos.
+
+- [x] **Subfase 19.20** — Datos e importación (importar CSV, historial, errores) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-import-*` definido e integrado en dx-styles.css.
+    - [x] Limpieza del 100% de `style=` inline y locales en vistas de importación.
+    - [x] Verificación visual y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Namespace de estilos global `.dx-v2-import-*` integrado con 200+ líneas de código para el control total de importaciones y mapeo.
+    > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/import/index.blade.php) - Purga completa de estilos inline y maquetación responsiva.
+    > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/import/logs/index.blade.php) - Purga de inline styles de la tabla de historial de logs.
+    > - [show.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/import/logs/show.blade.php) - Purga de estilos inline y visualización de errores y metadatos.
+
+- [x] **Subfase 19.21** — Repositorio de licencias (archivo semanal, historial) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-lic-repo-*` definido e integrado en dx-styles.css.
+    - [x] Limpieza del 100% de `style=` inline y locales en la vista de repositorio.
+    - [x] Verificación visual y Responsive.
+
+    > **Archivos Afectados:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Namespace de estilos global `.dx-v2-lic-repo-*` integrado con 200+ líneas de código de maquetación limpia.
+    > - [repository.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/licenses/repository.blade.php) - Purga completa de los 26 estilos inline de tablas, alertas y paneles informativos.
+
+- [x] **Subfase 19.22** — Alertas y notificaciones (caducidad, umbrales, destinatarios, historial, SMTP) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-alerts-*` integrado en public/assets/css/dx-styles.css.
+    - [x] Limpieza completa del 100% de `style=` inline en `admin/alerts/index.blade.php`.
+    - [x] Verificación visual de alta resolución en Light/Dark, inputs aislados sin spinners nativos, y diseño adaptativo a una sola columna bajo `1200px`.
+    > **Evidencia:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Inyectado namespace `.dx-v2-alerts-*` con 360+ líneas de código de maquetación limpia.
+    > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/alerts/index.blade.php) - Purga absoluta de estilos inline de banners, rejillas, campos de umbrales y tablas.
+
+- [x] **Subfase 19.23** — Backups (manual, historial, configuración automática) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-backups-*` integrado en public/assets/css/dx-styles.css.
+    - [x] Limpieza completa del 100% de `style=` inline en `admin/backups/index.blade.php`.
+    - [x] Verificación visual de alta resolución en Light/Dark, modal destructivo aislado, e interfaces cron adaptativas bajo `768px`.
+    > **Evidencia:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Inyectado namespace `.dx-v2-backups-*` con 380+ líneas de código de maquetación limpia.
+    > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/backups/index.blade.php) - Purga absoluta de estilos inline de cabeceras, tablas, paneles de programación y modales.
+
+- [x] **Subfase 19.24** — Integraciones IA (Gemini, Deepseek, OpenRouter, Telegram Bot, estado de conexión) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-sys-dash-*` (degradados premium de IA) en dx-styles.css.
+    - [x] Limpieza completa del 100% de `style=` inline dinámicos PHP y estáticos en `dashboard.blade.php`.
+    - [x] Verificación visual de alta resolución en Light/Dark de los gradientes de marca e indicadores en vivo.
+    > **Evidencia:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Inyectado el namespace `.dx-v2-sys-dash-service-icon-box.online.[brand]` con los colores corporativos y sombras premium de Gemini, DeepSeek, OpenRouter, n8n y Telegram.
+    > - [dashboard.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/system/dashboard.blade.php) - Purga completa de 27 líneas de lógica PHP de estilos dinámicos, eliminando por completo el atributo `style` de la matriz de microservicios.
+
+- [x] **Subfase 19.25** — Logs y auditoría (actividad, errores, auditoría IA) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-audit-*` en dx-styles.css.
+    - [x] Limpieza completa del 100% de `style=` inline estáticos y dinámicos en `admin/audit/index.blade.php`.
+    - [x] Verificación visual de alta resolución en Light/Dark, eliminando eventos de hover JS por pseudo-clases nativas CSS.
+    > **Evidencia:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Inyectado el namespace `.dx-v2-audit-*` (500+ líneas) que define estilos unificados para banners, tabs de navegación, formularios de filtrado, contadores métricos, rejillas de datos de alta densidad, trazas del Stack Trace colapsables y estados de email.
+    > - [index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/audit/index.blade.php) - Purga absoluta de declaraciones `style` y eventos inline en las tres pestañas de visualización. Eliminada la hoja de estilos local `<style>` de más de 80 líneas.
+
+- [x] **Subfase 19.26** — Páginas de Error (`errors/`: 403, 404, 419, 500, 503) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-maint-*` (estilos unificados de mantenimiento) definido e integrado en dx-styles.css.
+    - [x] Limpieza completa de estilos inline locales y hoja de estilos `<style>` de más de 200 líneas en `errors/503.blade.php`.
+    - [x] Verificación visual de alta resolución en Light/Dark, preservando latido de estados en vivo y diseño NOC Pro.
+    > **Evidencia:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Inyectado el namespace `.dx-v2-maint-*` (190+ líneas) con clases desacopladas y variables semánticas HSL.
+    > - [503.blade.php](file:///z:/DX-License-Manager/backend/resources/views/errors/503.blade.php) - Purga absoluta de 218 líneas de estilos inline, vinculando la hoja global unificada y aplicando clases limpias.
+
+---
+
+## 🔷 COMPONENTES COMPARTIDOS
+
+- [x] **Subfase 19.27** — Componentes de Formulario (inputs, selects, textareas, checkboxes, radios, file uploads) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-form-*` (180+ líneas) consolidando estilos robustos con HSL en `dx-styles.css`.
+    - [x] Limpieza absoluta de estilos `style=` inline de inputs en las 5 vistas afectadas (`auth/login`, `admin/users/create`, `admin/users/edit`, `profile/index`, `clients/show`).
+    - [x] Verificación de estados reactivos (focus shadow, disabled backgrounds, errors, toggles/switches responsivos).
+    - [x] Verificación visual en el contenedor de pruebas Beta.
+    > **Evidencia:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Añadido el namespace `.dx-v2-form-*` con soporte para inputs text, select, textareas, custom checkbox, toggles de estado Alpine y wrappers de subida.
+    > - [login.blade.php](file:///z:/DX-License-Manager/backend/resources/views/auth/login.blade.php) - Campos email/password acoplados al namespace semántico.
+    > - [create.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/users/create.blade.php) & [edit.blade.php](file:///z:/DX-License-Manager/backend/resources/views/admin/users/edit.blade.php) - Limpieza de paddings inline, switches y selección de roles integrados al tema central.
+    > - [profile/index.blade.php](file:///z:/DX-License-Manager/backend/resources/views/profile/index.blade.php) - Eliminados paddings y grids manuales, enlazando variables CSS globales.
+    > - [clients/show.blade.php](file:///z:/DX-License-Manager/backend/resources/views/clients/show.blade.php) - Modal de contactos migrado de `.gui-input` a `.dx-v2-form-input` y `.dx-v2-form-checkbox-wrapper`.
+
+- [x] **Subfase 19.28** — Componentes UI (Modales, Tablas, Badges, Botones, Toasts/Alerts) ✅ COMPLETADA
+    - [x] Extracción y Namespace `.dx-v2-ui-*` para tablas industriales, modales glassmorphism, badges unificados de estado, botones transicionales y alertas semánticas.
+    - [x] Limpieza de `style=` inline de modales y tablas en vistas críticas.
+    - [x] Verificación visual (Light/Dark) y resolución de bug de display inline de Alpine.js en `.dx-v2-ui-modal-overlay`.
+    > **Evidencia:**
+    > - [dx-styles.css](file:///z:/DX-License-Manager/backend/public/assets/css/dx-styles.css) - Añadido el namespace `.dx-v2-ui-*` con 313 líneas de código CSS HSL unificando modales, tablas, botones, badges y toasts sin `!important` en displays reactivos.
+    > - [show.blade.php](file:///z:/DX-License-Manager/backend/resources/views/clients/show.blade.php) - Refactorizados modales de contactos y auditoría, y unificadas todas las tablas (contratos, licencias, certificados, contactos, renovaciones) bajo el wrapper de alta densidad.
+    > - [_resources.blade.php](file:///z:/DX-License-Manager/backend/resources/views/tools/partials/_resources.blade.php) - Modal de creación/edición de enlaces unificado al namespace de UI y formularios globales.
+
+---
+
+## 🔷 EXCLUSIONES DOCUMENTADAS
+
+- [x] **Subfase 19.29** — Revisión (no refactor) de Emails & PDFs ✅ COMPLETADA
+    - [x] Inventariar `style=` inline existente y justificar excepción.
+    - [x] Verificar que no hereden variables `--dx-v2-*` que se rompan en clientes de correo o generador PDF.
+    - [x] Registrar excepciones en CHANGELOG de la fase.
+    > **Evidencia:**
+    > - **Inventario de Exclusiones Justificadas**:
+    >   1. `emails/global-license-report.blade.php`: Estilos inline y tablas de maquetación tradicionales para compatibilidad absoluta con clientes de correo (Gmail, Outlook, iOS Mail).
+    >   2. `emails/weekly-license-alert.blade.php`: Hoja de estilos `<style>` local autocontenida y sin dependencias.
+    >   3. `emails/weekly-report.blade.php`: Bloque `<style>` minimalista de compatibilidad y variables de color plano estáticas.
+    >   4. `pdf/cod-template.blade.php`: Estilos inline y fuentes locales autohospedadas (Calibri) necesarias para la compilación hermética de Dompdf sin dependencias de red ni del compilador de assets.
+    > - **Aislamiento de Entorno**: Verificado que ninguno de estos archivos hereda variables dinámicas CSS `--dx-v2-*` ni enlaza hojas de estilos externas complejas, garantizando robustez y cero roturas visuales en destinatarios.
+
+---
+
+## 🔷 DOCUMENTACIÓN DE CÓDIGO
+
+### En los archivos CSS
+
+Header obligatorio en cada hoja nueva o refactorizada:
+
+```css
+/**
+ * @module    dx-v2-[nombre]
+ * @fase      19.[N]
+ * @desc      [Qué cubre este archivo]
+ * @afecta    [Vistas / componentes que lo consumen]
+ * @version   2.19.0
+ */
+```
+
+Comentario de sección para cada bloque temático:
+
+```css
+/* ─── Sidebar nav items ──────────────────────────────── */
+/* ─── Responsive breakpoints ────────────────────────── */
+/* ─── Dark mode overrides ───────────────────────────── */
+```
+
+Justificación obligatoria en cada `!important` que sobreviva al hardening:
+
+```css
+/* !important: sobrescribe librería vendor Bootstrap [componente X] */
+```
+
+### En los Blade components
+
+Comentario en componentes que usen clases `.dx-v2-` no obvias:
+
+```blade
+{{-- dx-v2-badge--expired: estado caducado, ver resources/css/badges.css --}}
+```
+
+---
+
+## 🔷 CIERRE & HARDENING
+
+- [x] Eliminación de `!important` sin comentario justificado.
+- [x] Eliminación de variables `--dx-v2-*` huérfanas post-refactor.
+- [x] Verificación Final: `grep -r 'style=' resources/views/` → cero resultados (excl. emails/pdf).
+- [x] Verificación build: clases dinámicas no purgadas por Vite.
+
+---
+
+## 🔷 DOCUMENTACIÓN FINAL
+
+- [x] Style guide interno: inventario de componentes `.dx-v2-` con ejemplos de uso (documentado en `DESIGN.md`).
+- [x] README de la fase: decisiones tomadas, excepciones justificadas, variables deprecadas (especificado en `DESIGN.md`).
+- [x] Actualizar CHANGELOG del proyecto.
+
+---
+
+# FASE 20 — IDENTIDAD VISUAL E INTEGRACIÓN DEL LOGOTIPO PREMIUM ✅ COMPLETADA
+
+Logotipo y marca premium para la cabecera de `beta.dxpro.es` y entornos de producción. Incorpora efectos interactivos dinámicos de destello "scan line" al hacer hover, compatibilidad nativa con modo claro/oscuro e implementaciones SVG standalone para favicons y exportaciones oficiales.
+
+## 🔷 SUBFASES DE LA FASE 20
+
+- [x] **Subfase 20.1** — **Registro y Estructuración** ✅ COMPLETADA
+    - [x] Agregar la Fase 20 al final de `ROADMAP.md` y planificar pasos atómicos.
+    - [x] Registrar la fase e inventario de objetivos en `CHANGELOG.md`.
+
+- [x] **Subfase 20.2** — **Estilos del Logotipo en `dx-styles.css`** ✅ COMPLETADA
+    - [x] Incorporar el namespace `.dx-lockup`, `.dx-mark` y `.dx-wordmark` con variables semánticas HSL y fuentes del sistema (`Inter`).
+    - [x] Desarrollar la animación dinámica `@keyframes dx-scan` con pseudo-elemento `::after` para el efecto **scan line** táctil al hacer hover.
+    - [x] Validar compatibilidad en clases oscuras (`.dark` y `[data-theme="dark"]`).
+
+- [x] **Subfase 20.3** — **Generación de Ficheros SVG Standalone & Favicon** ✅ COMPLETADA
+    - [x] Crear el fichero SVG para el lockup en modo claro `logo-light.svg` en `backend/public/assets/images/`.
+    - [x] Crear el fichero SVG para el lockup en modo oscuro `logo-dark.svg`.
+    - [x] Crear el fichero SVG para la marca sola `logo-mark.svg` y configurarlo como Favicon oficial del portal.
+
+- [x] **Subfase 20.4** — **Integración de Vistas en el Shell del Portal** ✅ COMPLETADA
+    - [x] Reemplazar la cabecera del Layout Principal (`layouts/app.blade.php`) por el lockup del logotipo interactivo HTML.
+    - [x] Integrar el logotipo en las vistas de Autenticación (`auth/login`, registro, etc.).
+    - [x] Validar la correcta visualización reactiva con Alpine.js.
+
+- [x] **Subfase 20.5** — **Control de Calidad, Hardening y Cierre** ✅ COMPLETADA
+    - [x] Verificar el efecto scan line al hacer hover a 36px y 192px en navegadores reales.
+    - [x] Confirmar adaptabilidad en anchos responsive (no colapsar por debajo de 24px de altura).
+    - [x] Registrar el cierre definitivo de la Fase 20 en el CHANGELOG del proyecto.
+
+
+---
+
+# FASE 21 — ESTRUCTURAR CSS — DX-V2 ✅ COMPLETADA
+
+Estructuración final, modularización y ordenamiento de la hoja de estilos global `dx-styles.css` en 35 archivos CSS especializados organizados por capas de responsabilidad bajo el directorio `backend/public/assets/css/`, consolidándose en un único archivo principal `dx-v2-main.css` que reúne todas las directivas `@import` en el orden correcto. Se erradicó la deuda técnica eliminando el monolito legacy y vinculando directamente las vistas.
+
+## 🔷 SUBFASES DE LA FASE 21
+
+- [x] **Subfase 21.1** — **Capa 1: Tokens y Base** ✅ COMPLETADA
+    - [x] Extraer `dx-v2-tokens.css` (Variables `:root` y override `[data-theme="dark"]`).
+    - [x] Extraer `dx-v2-reset.css` (Reset básico).
+    - [x] Extraer `dx-v2-base.css` (Body y utilidades globales).
+
+- [x] **Subfase 21.2** — **Capa 2: Layout Estructural** ✅ COMPLETADA
+    - [x] Extraer `layout/dx-v2-nav.css` (Cabecera, barra de navegación, toggle de tema y user button).
+    - [x] Extraer `layout/dx-v2-sidebar.css` (Sidebar, content area y contenedor `.main`).
+    - [x] Extraer `layout/dx-v2-breadcrumb.css` (Breadcrumb).
+    - [x] Extraer `layout/dx-v2-footer.css` (Footers simple y de secciones).
+
+- [x] **Subfase 21.3** — **Capa 3: Componentes Compartidos (Atoms UI)** ✅ COMPLETADA
+    - [x] Extraer `shared/dx-v2-cards.css`, `shared/dx-v2-tables.css` y `shared/dx-v2-badges.css`.
+    - [x] Extraer `shared/dx-v2-buttons.css`, `shared/dx-v2-modals.css` y `shared/dx-v2-pagination.css`.
+    - [x] Extraer `shared/dx-v2-forms.css`, `shared/dx-v2-empty-states.css`, `shared/dx-v2-ui.css` y `shared/dx-v2-brand.css`.
+
+- [x] **Subfase 21.4** — **Capa 4: Módulos de Aplicación** ✅ COMPLETADA
+    - [x] Extraer individualmente por namespace cada uno de los 13 módulos críticos (Login, Dashboard, Clients, Import, COD, Resources, Sys-dashboard, Docker, Users, Licenses, Alerts, Backups y Audit).
+
+- [x] **Subfase 21.5** — **Capa 5 y 6: Tools y Páginas Especiales** ✅ COMPLETADA
+    - [x] Extraer las utilidades de herramientas (Hub, NX, Star, Heeds, Moldex).
+    - [x] Extraer las páginas de herramientas (`pages/dx-v2-page-herramientas.css`), admin (`pages/dx-v2-page-admin.css`) y mantenimiento (`pages/dx-v2-page-maintenance.css`).
+
+- [x] **Subfase 21.6** — **Consolidación, Integración y Limpieza Legacy** ✅ COMPLETADA
+    - [x] Ensamblar `dx-v2-main.css` con todas las directivas `@import` ordenadas.
+    - [x] Reemplazar temporalmente `dx-styles.css` con redirección de importación.
+    - [x] Buscar y reemplazar referencias a `dx-styles.css` con `dx-v2-main.css` en las plantillas Blade del backend.
+    - [x] Eliminar definitivamente el monolito legacy `dx-styles.css` mediante `git rm`.
+    - [x] Resolver y asegurar la carga robusta del fondo del login usando rutas absolutas en `dx-v2-login.css`.
+
+---
+
+## Verificación de Control de Versiones (Git)
+
+Todas las tareas de extracción y consolidación se commitearon y etiquetaron en la rama de desarrollo `feature/css-tokens`:
+
+### Commits Realizados en Fase 19 (Anteriores):
+1. `style(planner): definir namespace .dx-v2-planner-* en css global`
+2. `style(planner): extraer estilos locales e inline de index.blade.php al namespace global`
+3. `docs(19.9): registrar subfase 19.9 completada en changelog y roadmap`
+4. `style(tools): definir namespace .dx-v2-tools-* en css global`
+5. `style(tools): extraer estilos locales de index.blade.php al namespace global`
+6. `docs(19.10): registrar subfase 19.10 completada en changelog y roadmap`
+7. `style(tools-nx): definir namespace .dx-v2-tools-nx-* en css global`
+8. `style(tools-nx): extraer estilos locales de nx-suite.blade.php al namespace global`
+9. `style(tools-nx): corregir padding de tarjetas, alineacion de cabecera y boton en nx-suite`
+10. `docs(19.11): registrar subfase 19.11 completada en changelog y roadmap`
+11. `style(tools-star): definir namespace .dx-v2-tools-star-* en css global`
+12. `style(tools-star): extraer estilos locales de star-ccm.blade.php al namespace global`
+13. `docs(19.12): registrar subfase 19.12 completada en changelog y roadmap`
+14. `style(tools-heeds): definir namespace .dx-v2-tools-heeds-* en css global`
+15. `style(tools-heeds): extraer estilos locales de heeds.blade.php al namespace global`
+16. `docs(19.13): registrar subfase 19.13 completada en changelog y roadmap`
+17. `style(tools-cod): extraer estilos locales de cod.blade.php al namespace global`
+18. `docs(19.14): registrar subfase 19.14 completada en changelog y roadmap`
+19. `feat(ui): unify css and remove inline styles in siemens resources module`
+20. `fix(ui): restore resources spacing and theme colors in grid layout`
+21. `fix(ui): add correct padding and row margins to add resource modal`
+22. `css(19.28): introduce .dx-v2-ui-* unifed UI namespace for modals, tables, badges and buttons, refactoring views`
+23. `docs(19.26-19.28): update CHANGELOG, ROADMAP and task tracking for Phase 19 subphases`
+24. `docs(19.29): inventory and document email and pdf local style exclusions`
+
+### Commits Realizados en Fase 21 (Actuales):
+1. `css(21.1): Capa 1 tokens and base structure extraction complete`
+2. `css(21.2): Capa 2 layout components extraction complete`
+3. `css(21.3): Capa 3 atoms and shared UI elements extraction complete`
+4. `css(21.4): Capa 4 modules component extraction complete`
+5. `css(21.5): Capa 5 tools Siemens/Moldex3D component extraction complete` (Commit `b7e1ff4`)
+6. `css(21.6): Capa 6 pages Herramientas component extraction complete` (Commit `97254b4`)
+7. `css(21.6): Capa 6 pages Admin component extraction complete` (Commit `8fe6376`)
+8. `css(21.6): Capa 6 pages Maintenance component extraction complete` (Commit `3fb3e16`)
+9. `css(21.7): Consolidation and integration of all modular imports in dx-v2-main.css complete` (Commit `9af6a1d`)
+10. `css(21.7): Link all major Blade layout views directly to new dx-v2-main.css and delete legacy dx-styles.css monolith` (Commit `00877ae`)
+11. `css(21.7): Fix login background path to absolute assets URL for robust browser rendering` (Commit `c5f73a7`)
+12. `css(21.8): Fase 21 Terminada — Punto de Restauración` (Commit `96f2e1e`)
+
+### Git Tag Creado:
+- `v21.0-css-modular-ok` (Punto de restauración estable).
+
+---
+
+## ✅ Criterios de Aceptación
+
+| Criterio | Check |
+|---|---|
+| Zero `style=` en `resources/views/` (excl. emails/pdf) | [x] |
+| Zero clases sin namespace `.dx-v2-` en hojas nuevas | [x] |
+| Zero variables huérfanas post-refactor | [x] |
+| Zero `!important` sin comentario justificado | [x] |
+| Verificación visual OK — Light & Dark mode | [x] |
+| Verificación Responsive OK (mobile / tablet / desktop) | [x] |
+| Eliminación física de `dx-styles.css` legacy | [x] |
+| Vinculación directa a `dx-v2-main.css` en layouts Blade | [x] |
+| Corrección del fondo del login en todas las plataformas | [x] |
+| Style guide interno entregado | [x] |
+| CHANGELOG actualizado | [x] |
+| Tag `v21.0-css-modular-ok` pusheado al remoto desde `dev` | [x] |
+
+---
+
+# FASE 23 — NORMALIZACIÓN DE IDENTIDADES CON IA ✅ COMPLETADA
+
+Integración de un flujo cognitivo híbrido en la Bandeja de Normalización para resolver duplicados de identidades (como `Uro Vehiculos Especiales Sa (Urovesa)` vs `Urovesa`) utilizando pre-filtrado tokenizado local y validación cognitiva con LLMs comerciales de alta precisión en cadena de fallback (Gemini, DeepSeek, OpenRouter).
+
+## 🔷 SUBFASES DE LA FASE 23
+
+- [x] **Subfase 23.1** — **Diseño del Engine y Tokenización Local** ✅ COMPLETADA
+    - [x] Creación de `ClientAiNormalizationService.php` para pre-seleccionar candidatos del mismo cliente mediante queries SQL `LIKE` tokenizadas y limpias de ruidos corporativos (S.A., S.L., etc.).
+    - [x] Implementación de un parseador JSON tolerante a fallos y sanitizador de markdown.
+
+- [x] **Subfase 23.2** — **Cadena de Fallback Multi-API** ✅ COMPLETADA
+    - [x] Integración de llamadas HTTP secuenciales robustas sobre Gemini, DeepSeek y OpenRouter.
+    - [x] Configuración de timeouts cortos (10-12s) para no retrasar la bandeja y logs de errores controlados.
+
+- [x] **Subfase 23.3** — **Desvío Inteligente en el Normalizador** ✅ COMPLETADA
+    - [x] Modificación de `ClientNormalizationService.php` para desviar coincidencias del Levenshtein de baja similitud (< 85%) hacia la evaluación IA.
+    - [x] Retorno de estado `suspicion` si la confianza es alta (>= 80%) con la propuesta del cliente sugerido e ID de base de datos.
+
+- [x] **Subfase 23.4** — **Rediseño Visual de la UI (Bandeja Normalización)** ✅ COMPLETADA
+    - [x] Enriquecimiento visual de `admin/normalization/index.blade.php` con badges dinámicos NOC Pro AI y explicaciones técnicas de la IA.
+    - [x] Estricto cumplimiento de `DESIGN.md`: cero CSS inline ni incrostado en Blade, integrando estilos modulares al final de `modules/dx-v2-import.css`.
+
+- [x] **Subfase 23.5** — **Hardening y Tests Unitarios** ✅ COMPLETADA
+    - [x] Creación de tests unitarios y mock en `ClientNormalizationTest.php` probando resiliencia en SQLite en memoria.
+    - [x] Generación de tags de checkpoint (`v1.23.0-rc1`, `v1.23.0-rc2`) y commit final de cierre.
+
+- [x] **Subfase 23.6** — **Pestañas, Caché, Omitir Descriptores y Modal Teatral** ✅ COMPLETADA
+    - [x] Restauración de 3 pestañas dinámicas con persistencia Alpine.js (`localStorage`) en index.blade.php.
+    - [x] Limpieza en detección de duplicados omitiendo descriptores corporativos comunes (evitando choque de coincidencia de prefijos como "Talleres Criado" vs "Talleres Doval").
+    - [x] Caché de resultados léxicos en base de datos (`dx_scanned_duplicates`) e invalidación automática en unificaciones y descartes.
+    - [x] Botón "Escanear Ahora" y modal teatral animado de progreso paso a paso.
 
 ---
 
@@ -456,10 +1191,8 @@ DX License Manager
 | Caché / Colas  | Redis 7.x                      |
 | Web server     | Nginx 1.25+                    |
 | Contenedores   | Docker 24+ / Compose V2        |
-| SSL            | Cloudflare       
-| 5 — Portal Principal          
-| ✅ COMPLETADA     
-| Inicio y Gestión de Clientes/Contratos         |        |
+| SSL            | Cloudflare                     |
+| Inicio y Gestión de Clientes/Contratos          |
 | Automatización | n8n                            |
 | Auditoría IA   | Gemini → DeepSeek → OpenRouter |
 | Notificaciones | Telegram                       |

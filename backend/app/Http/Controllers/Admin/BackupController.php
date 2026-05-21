@@ -31,8 +31,8 @@ class BackupController extends Controller
     public function backup()
     {
         try {
-            // Ejecutar script de backup
-            $process = \Illuminate\Support\Facades\Process::run('bash /var/www/html/scripts/backup-db.sh beta');
+            // Ejecutar script de backup con etiqueta manual
+            $process = \Illuminate\Support\Facades\Process::run('bash /var/www/html/scripts/backup-db.sh beta manual');
             
             if ($process->successful()) {
                 $this->logAction('db_backup', 'Manual database backup created via Backups module');
@@ -150,11 +150,23 @@ class BackupController extends Controller
             if ($file === '.' || $file === '..' || $file === '.gitignore') continue;
 
             $path = $backupDir . '/' . $file;
+            $parts = explode('_', $file);
+            $type = 'MANUAL'; // Default para archivos antiguos
+            
+            if (count($parts) >= 3) {
+                if ($parts[1] === 'system') {
+                    $type = 'SISTEMA';
+                } elseif ($parts[1] === 'manual') {
+                    $type = 'MANUAL';
+                }
+            }
+
             $backups[] = [
                 'name' => $file,
                 'size' => $this->formatBytes(filesize($path)),
                 'date' => date('Y-m-d H:i:s', filemtime($path)),
                 'env' => str_starts_with($file, 'prod') ? 'PROD' : 'BETA',
+                'type' => $type
             ];
         }
 

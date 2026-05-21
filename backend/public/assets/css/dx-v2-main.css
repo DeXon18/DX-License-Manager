@@ -1,0 +1,78 @@
+/**
+ * @module    dx-v2-main
+ * @fase      21.7
+ * @desc      Fichero CSS maestro de la arquitectura DX-V2 que agrupa mediante directivas @import ordenadas todas las capas del sistema de estilos, garantizando una carga en cascada limpia, modular, de bajo acoplamiento y alta mantenibilidad.
+ * @afecta    [layouts/app.blade.php, auth/login.blade.php]
+ * @version   2.21.0
+ */
+
+/* ==========================================================================
+   1. FUENTES DE SISTEMA (fonts.css)
+   ========================================================================== */
+@import 'fonts.css';
+
+/* ==========================================================================
+   2. CAPA 1: TOKENS & BASE
+   ========================================================================== */
+@import 'dx-v2-tokens.css';
+@import 'dx-v2-reset.css';
+@import 'dx-v2-base.css';
+
+/* ==========================================================================
+   3. CAPA 2: LAYOUT ESTRUCTURAL
+   ========================================================================== */
+@import 'layout/dx-v2-nav.css';
+@import 'layout/dx-v2-sidebar.css';
+@import 'layout/dx-v2-breadcrumb.css';
+@import 'layout/dx-v2-grid.css';
+@import 'layout/dx-v2-footer.css';
+
+/* ==========================================================================
+   4. CAPA 3: COMPONENTES COMPARTIDOS (UI / ATOMS)
+   ========================================================================== */
+@import 'shared/dx-v2-cards.css';
+@import 'shared/dx-v2-tables.css';
+@import 'shared/dx-v2-badges.css';
+@import 'shared/dx-v2-buttons.css';
+@import 'shared/dx-v2-modals.css';
+@import 'shared/dx-v2-pagination.css';
+@import 'shared/dx-v2-forms.css';
+@import 'shared/dx-v2-toast.css';
+@import 'shared/dx-v2-empty-states.css';
+@import 'shared/dx-v2-ui.css';
+@import 'shared/dx-v2-brand.css';
+
+/* ==========================================================================
+   5. CAPA 4: MÓDULOS DE APLICACIÓN
+   ========================================================================== */
+@import 'modules/dx-v2-login.css';
+@import 'modules/dx-v2-dashboard.css';
+@import 'modules/dx-v2-clients.css';
+@import 'modules/dx-v2-import.css';
+@import 'modules/dx-v2-normalization.css?v=2.21.2';
+@import 'modules/dx-v2-cod.css?v=2.21.1';
+@import 'modules/dx-v2-resources.css';
+@import 'modules/dx-v2-sys-dashboard.css';
+@import 'modules/dx-v2-docker.css';
+@import 'modules/dx-v2-users.css?v=2.21.1';
+@import 'modules/dx-v2-licenses.css';
+@import 'modules/dx-v2-alerts.css';
+@import 'modules/dx-v2-backups.css';
+@import 'modules/dx-v2-audit.css';
+@import 'modules/dx-v2-chatbot.css';
+
+/* ==========================================================================
+   6. CAPA 5: TOOLS (SIEMENS / MOLDEX3D)
+   ========================================================================== */
+@import 'tools/dx-v2-tools-hub.css';
+@import 'tools/dx-v2-tools-nx.css';
+@import 'tools/dx-v2-tools-star.css';
+@import 'tools/dx-v2-tools-heeds.css';
+@import 'tools/dx-v2-tools-moldex.css';
+
+/* ==========================================================================
+   7. CAPA 6: PÁGINAS ESPECIALES
+   ========================================================================== */
+@import 'pages/dx-v2-page-herramientas.css';
+@import 'pages/dx-v2-page-admin.css';
+@import 'pages/dx-v2-page-maintenance.css';

@@ -508,3 +508,113 @@ Especificación técnica para el Dashboard de alta densidad y paneles de monitor
 - **Primary Action (Max 1):** `bg-accent hover:bg-accent-hover text-on-accent rounded-[6px] text-[0.694rem] font-bold uppercase tracking-[0.06em]`
 - **Secondary Action:** `bg-raised border-border text-secondary hover:text-primary rounded-[6px]`
 - **Icon Accent Box:** `p-2 rounded-[6px] bg-accent-muted text-accent`
+
+---
+
+## 🔷 Arquitectura CSS DX-V2 (Estructura Modular & Jerarquía)
+
+El sistema de estilos de **DX License Manager** se rige por una arquitectura modular de **6 Capas de Responsabilidad** en cascada, agrupadas a través del importador maestro `dx-v2-main.css`. 
+
+Esta estructura modular existe por motivos críticos de ingeniería:
+1. **Aislamiento absoluto:** Evitar fugas de estilos globales (styles leakage) que rompan vistas adyacentes al modificar código de un módulo concreto.
+2. **Mantenibilidad técnica:** Erradicar el monolito heredado (`dx-styles.css`), facilitando a desarrolladores y agentes IA localizar y refactorizar componentes con riesgo cero.
+3. **Carga eficiente:** Separación clara entre tokens globales, estructuras del layout (shell del sistema) y vistas finales de negocio.
+
+> [!IMPORTANT]
+> **PROHIBICIÓN ABSOLUTA DE CSS INCROSTADO EN BLADE**
+> El uso de bloques `<style>` o estilos inline `style="..."` dentro de ficheros `.blade.php` está estrictamente prohibido (salvo en plantillas de emails o PDF). Cualquier estilo nuevo debe declararse obligatoriamente bajo su namespace modular correspondiente.
+
+### 🗺️ Mapa del Ecosistema CSS
+
+Toda la jerarquía de ficheros CSS reside en `backend/public/assets/css/` organizada bajo el siguiente mapa arquitectónico:
+
+```mermaid
+graph TD
+    Main[dx-v2-main.css] --> C1[Capa 1: Tokens & Base]
+    Main --> C2[Capa 2: Layout Shell]
+    Main --> C3[Capa 3: Atoms & UI]
+    Main --> C4[Capa 4: Modules]
+    Main --> C5[Capa 5: Tools]
+    Main --> C6[Capa 6: Pages]
+
+    C1 --> |Tokens e inicialización| T1[dx-v2-tokens.css]
+    C1 --> |Reset universal| T2[dx-v2-reset.css]
+    C1 --> |Base y scrollbars| T3[dx-v2-base.css]
+
+    C2 --> |Shell estructural| L1[layout/dx-v2-nav.css]
+    C2 --> |Menús laterales| L2[layout/dx-v2-sidebar.css]
+    C2 --> |Separadores y pie| L3[layout/dx-v2-footer.css]
+
+    C3 --> |Componentes compartidos| S1[shared/dx-v2-cards.css]
+    C3 --> |Tablas alta densidad| S2[shared/dx-v2-tables.css]
+    C3 --> |Formularios e Inputs| S3[shared/dx-v2-forms.css]
+
+    C4 --> |Vistas de negocio| M1[modules/dx-v2-cod.css]
+    C4 --> |Alertas y notifs| M2[modules/dx-v2-alerts.css]
+    C4 --> |Backups y logs| M3[modules/dx-v2-backups.css]
+```
+
+### 📂 Estructura Detallada de Archivos
+
+```
+y:\DX-License-Manager\backend\public\assets\css\
+├── dx-v2-main.css              # ── Fichero CSS Maestro (Consolidador de Imports)
+│
+├── 📂 layout/                  # ── CAPA 2: ESTRUCTURA Y NAVEGACIÓN GENERAL (SHELL)
+│   ├── dx-v2-nav.css           # Cabecera superior, selector de idioma, theme toggle
+│   ├── dx-v2-sidebar.css       # Barra lateral de navegación compacta y reactiva
+│   ├── dx-v2-breadcrumb.css    # Ruta de navegación en subpáginas
+│   ├── dx-v2-grid.css          # Estructuras de rejilla base y bento grids
+│   └── dx-v2-footer.css        # Pie de página y firmas de copyright
+│
+├── 📂 shared/                  # ── CAPA 3: ATOMOS DE INTERFAZ COMPARTIDOS (UI COMPONENTES)
+│   ├── dx-v2-cards.css         # Tarjetas premium, sombras y bordes de acento
+│   ├── dx-v2-tables.css        # Tablas de alta densidad con celdas compactas
+│   ├── dx-v2-badges.css        # Etiquetas de estados con contraste WCAG AA
+│   ├── dx-v2-buttons.css       # Botones primarios, secundarios, fantasma y destructivos
+│   ├── dx-v2-modals.css        # Ventanas emergentes y modales con overlays
+│   ├── dx-v2-pagination.css    # Controles de paginación de datos
+│   ├── dx-v2-forms.css         # Inputs, Selects, Textareas, Focus rings e inputs con iconos
+│   ├── dx-v2-empty-states.css  # Vistas de datos no encontrados y llamadas a la acción
+│   ├── dx-v2-ui.css            # Utilidades estéticas de jerarquía visual
+│   └── dx-v2-brand.css         # Identidades visuales (Siemens & Moldex3D)
+│
+├── 📂 modules/                 # ── CAPA 4: MÓDULOS DE NEGOCIO ESPECÍFICOS
+│   ├── dx-v2-login.css         # Pantalla de login de fondo animado ultra-wide
+│   ├── dx-v2-dashboard.css     # Métricas y widgets interactivos de la home
+│   ├── dx-v2-clients.css       # Fichas individuales, contactos y listas de clientes
+│   ├── dx-v2-import.css        # Pantalla de importación de CSV semanal y logs
+│   ├── dx-v2-cod.css           # Certificado de cese (Generador COD e inputs de máquina)
+│   ├── dx-v2-resources.css     # Centro de enlaces y recursos de Siemens
+│   ├── dx-v2-sys-dashboard.css # NOC monitor de telemetría del sistema
+│   ├── dx-v2-docker.css        # Monitor y widgets de contenedores Docker
+│   ├── dx-v2-users.css         # Panel de gestión de usuarios, roles y toggle AJAX
+│   ├── dx-v2-licenses.css      # Visor de inventario unificado de licencias
+│   ├── dx-v2-alerts.css        # Umbrales, destinatarios y logs de alertas de caducidad
+│   ├── dx-v2-backups.css       # Panel de backups y modal de restauración crítica
+│   └── dx-v2-audit.css         # Consolas estilo terminal para logs de Laravel y SMTP
+│
+├── 📂 tools/                   # ── CAPA 5: UTILIDADES Y HERRAMIENTAS INDEPENDIENTES
+│   ├── dx-v2-tools-hub.css     # Rejilla interactiva del Hub de utilidades
+│   ├── dx-v2-tools-nx.css      # Suite de herramientas para Siemens NX
+│   ├── dx-v2-tools-star.css    # Suite de herramientas para STAR-CCM+
+│   ├── dx-v2-tools-heeds.css   # Suite de herramientas para HEEDS
+│   └── dx-v2-tools-moldex.css  # Suite de herramientas para Moldex3D
+│
+└── 📂 pages/                   # ── CAPA 6: PÁGINAS ADMINISTRATIVAS Y MANTENIMIENTO
+    ├── dx-v2-page-herramientas.css # Pestañas del hub y layouts especiales
+    ├── dx-v2-page-admin.css        # Paneles generales de administración
+    └── dx-v2-page-maintenance.css # Pantalla de bloqueo del portal
+```
+
+### ⚡ Directrices para el Mantenimiento del Sistema de Estilos
+
+- **¿Dónde añado un estilo nuevo?**
+  1. Si es aplicable a todo el portal (inputs, tablas, botones), añádelo en la carpeta `shared/` (`dx-v2-forms.css`, `dx-v2-buttons.css`, etc.).
+  2. Si es para un módulo concreto de negocio, añádelo en su archivo respectivo dentro de `modules/` (ej. `modules/dx-v2-cod.css`).
+  
+- **El orden de cascada importa:**
+  Las capas se cargan jerárquicamente en `dx-v2-main.css`. Jamás alteres el orden del importador maestro para evitar conflictos de especificidad (los tokens y bases cargan primero; los módulos y páginas sobreescriben al final).
+
+- **Gestión de Caché en Cloudflare (Bypass de Desarrollo):**
+  Dado que Cloudflare está configurado detrás del LXC 600, los ficheros estáticos CSS se almacenan intensamente en la red CDN. Si realizas cambios en un fichero CSS y no los visualizas tras borrar la caché compilada de Laravel (`php artisan view:clear`), realiza un **Hard Reload (Ctrl + F5)** para forzar al navegador a solicitar el recurso directamente desde la máquina origen Beta.

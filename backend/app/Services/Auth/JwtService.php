@@ -18,11 +18,12 @@ class JwtService
      * Generate a JWT for a user.
      *
      * @param array $payload
-     * @param int $expiration Minutes
+     * @param int|null $expiration Minutes (null uses default 15)
      * @return string
      */
-    public function generate(array $payload, int $expiration = 60): string
+    public function generate(array $payload, ?int $expiration = null): string
     {
+        $expiration = $expiration ?? 60;
         $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
         
         $payload['exp'] = time() + ($expiration * 60);
@@ -61,6 +62,9 @@ class JwtService
         }
 
         $decodedPayload = json_decode($this->base64UrlDecode($payload), true);
+        if (!$decodedPayload) {
+            return null;
+        }
 
         // Check Expiration
         if (isset($decodedPayload['exp']) && $decodedPayload['exp'] < time()) {
