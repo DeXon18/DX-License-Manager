@@ -615,11 +615,18 @@ function codGenerator() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 body: JSON.stringify(this.formData)
             })
-            .then(response => response.blob())
+            .then(async response => {
+                if (!response.ok) {
+                    const err = await response.json();
+                    throw new Error(err.message || 'Error de validación');
+                }
+                return response.blob();
+            })
             .then(blob => {
                 if (this.previewUrl) URL.revokeObjectURL(this.previewUrl);
                 // Añadimos parámetros para ocultar toolbar y navpanes (thumbnails)
@@ -632,7 +639,7 @@ function codGenerator() {
                 console.error('Error rendering preview:', error);
                 this.showPreview = false;
                 this.isGenerating = false;
-                alert('Error al generar la vista previa. Revise los datos.');
+                alert('Error al generar la vista previa: ' + error.message);
             });
         },
 
@@ -643,11 +650,18 @@ function codGenerator() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 },
                 body: JSON.stringify(this.formData)
             })
-            .then(response => response.json())
+            .then(async response => {
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.message || 'Error de validación');
+                }
+                return data;
+            })
             .then(data => {
                 if (data.success) {
                     this.showPreview = false;
@@ -658,7 +672,7 @@ function codGenerator() {
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Error crítico en la comunicación con el servidor.');
+                alert('Error al procesar la solicitud: ' + error.message);
             })
             .finally(() => {
                 this.isSaving = false;
