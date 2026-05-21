@@ -374,7 +374,7 @@ class BotQueryController extends Controller
      */
     private function mapProduct(LicenseInventoryProduct $p): array
     {
-        $expDate = $p->expiration_date;
+        $expDate = $p->expiration_date ? \Carbon\Carbon::parse($p->expiration_date) : null;
         $days = $expDate ? now()->diffInDays($expDate, false) : null;
 
         $status = match(true) {
