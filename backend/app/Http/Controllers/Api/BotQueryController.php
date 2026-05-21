@@ -280,7 +280,7 @@ class BotQueryController extends Controller
                 'number' => $c->contract_number,
                 'vendor' => $c->vendor ? $c->vendor->name : 'Siemens',
                 'product' => $c->type_product,
-                'expiration' => $c->end_date->format('Y-m-d'),
+                'expiration' => \Carbon\Carbon::parse($c->end_date)->format('Y-m-d'),
                 'days_left' => $days
             ];
 
