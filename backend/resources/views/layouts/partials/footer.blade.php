@@ -34,42 +34,26 @@
                 </ul>
             </div>
 
-            <!-- Columna 3: Stack Técnico -->
+            <!-- Columna 3: Soporte AYS -->
             <div class="footer-col tech-col">
-                <h4 class="footer-title">Stack Técnico</h4>
-                <ul class="tech-list">
-                    <li><span class="tech-label">Core:</span> PHP 8.2 / Laravel 11</li>
-                    <li><span class="tech-label">DB:</span> MariaDB 10.11 LTS</li>
-                    <li><span class="tech-label">UI:</span> Blade + Vanilla CSS</li>
-                    <li><span class="tech-label">IA:</span> Gemini + DeepSeek</li>
+                <h4 class="footer-title">Soporte Interno</h4>
+                <ul class="footer-links">
+                    <li><a href="#"><i class="fa-solid fa-book-open"></i> Guías del Portal</a></li>
+                    <li><a href="#"><i class="fa-solid fa-envelope"></i> Contactar Soporte IT</a></li>
+                    <li><a href="#"><i class="fa-solid fa-key"></i> Solicitar Lic. Temporal</a></li>
+                    <li><a href="#"><i class="fa-solid fa-circle-question"></i> FAQ / Ayuda</a></li>
                 </ul>
             </div>
 
-            <!-- Columna 4: Infraestructura -->
+            <!-- Columna 4: Portales Oficiales -->
             <div class="footer-col infra-col">
-                <h4 class="footer-title">Infraestructura</h4>
-                <div class="infra-status">
-                    <div class="infra-item">
-                        <span class="status-dot online"></span>
-                        <span class="infra-label">Entorno:</span>
-                        <span class="infra-value">Beta Cluster</span>
-                    </div>
-                    <div class="infra-item">
-                        <i class="fa-solid fa-server"></i>
-                        <span class="infra-label">Nodo:</span>
-                        <span class="infra-value">LXC 600 (srv-dxportal)</span>
-                    </div>
-                    <div class="infra-item">
-                        <i class="fa-solid fa-network-wired"></i>
-                        <span class="infra-label">IP:</span>
-                        <span class="infra-value">192.168.50.60</span>
-                    </div>
-                    <div class="infra-item">
-                        <i class="fa-solid fa-code-branch"></i>
-                        <span class="infra-label">Versión:</span>
-                        <span class="infra-value">v2.7.4-stable</span>
-                    </div>
-                </div>
+                <h4 class="footer-title">Portales Oficiales</h4>
+                <ul class="footer-links">
+                    <li><a href="https://support.sw.siemens.com" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.85em;"></i> Siemens Support Center</a></li>
+                    <li><a href="https://account.sw.siemens.com" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.85em;"></i> Siemens WebKey</a></li>
+                    <li><a href="https://www.moldex3d.com/support/" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.85em;"></i> Moldex3D Support</a></li>
+                    <li><a href="https://community.sw.siemens.com" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.85em;"></i> Siemens Community</a></li>
+                </ul>
             </div>
         </div>
 
@@ -78,8 +62,11 @@
                 &copy; {{ date('Y') }} DX License Manager. Todos los derechos reservados.
             </div>
             <div class="footer-meta">
+                <span style="color: #059669; font-weight: 600; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 5px;">
+                    <i class="fa-solid fa-shield-halved" style="font-size: 0.85em;"></i> AI-Powered Productivity
+                </span>
+                <span style="margin: 0 4px; opacity: 0.5;">—</span>
                 <span>Desarrollado con <i class="fa-solid fa-heart dx-v2-heart"></i> por Antigravity (DX Agent)</span>
             </div>
-        </div>
     </div>
 </footer>
