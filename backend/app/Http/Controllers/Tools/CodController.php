@@ -55,7 +55,7 @@ class CodController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'client_id' => 'required|exists:clients,id',
+            'client_id' => 'nullable|exists:clients,id',
             'docType' => 'required|string',
             'Language' => 'required|string',
             'Data_SoldTo' => 'required|string',
@@ -64,18 +64,24 @@ class CodController extends Controller
             'os' => 'required|string',
         ]);
 
-        $client = Client::findOrFail($request->client_id);
+        $clientName = $request->Data_Empresa;
+        if ($request->client_id) {
+            $client = Client::find($request->client_id);
+            if ($client) {
+                $clientName = $client->name;
+            }
+        }
         
         $pdf = $this->codService->generatePdf($request->all(), $request->Language);
         $fileName = 'COD_' . strtoupper($request->docType) . '_' . date('Ymd_His') . '.pdf';
         
-        $directory = $this->codService->getStoragePath($client->name);
+        $directory = $this->codService->getStoragePath($clientName);
         $filePath = $directory . '/' . $fileName;
 
         Storage::disk('private')->put($filePath, $pdf->output());
 
         $certificate = CodCertificate::create([
-            'client_id' => $client->id,
+            'client_id' => $request->client_id,
             'sold_to' => $request->Data_SoldTo,
             'type' => strtoupper($request->docType),
             'os' => strtoupper($request->os),
