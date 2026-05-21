@@ -675,7 +675,7 @@ class ChatbotService
             // Buscar productos activos que expiren antes del límite
             $products = LicenseInventoryProduct::with(['daemon.client'])
                 ->whereNotNull('expiration_date')
-                ->whereBetween('expiration_date', [$today->copy()->subYear(5), $limitDate]) // Incluye vencidos recientes
+                ->whereBetween('expiration_date', [$today->copy()->subYears(5), $limitDate]) // Incluye vencidos recientes
                 ->orderBy('expiration_date', 'asc')
                 ->get();
 
@@ -812,8 +812,7 @@ class ChatbotService
             'client_name' => $contract->client->name ?? 'Desconocido',
             'client_id' => $contract->client_id,
             'vendor' => $contract->vendor,
-            'start_date' => $contract->start_date ? $contract->start_date->format('Y-m-d') : null,
-            'end_date' => $contract->end_date ? $contract->end_date->format('Y-m-d') : null,
+            'end_date' => $contract->end_date ? Carbon::parse($contract->end_date)->format('Y-m-d') : null,
             'cost_center' => $contract->cost_center,
             'active_daemons' => $daemons->toArray()
         ];
