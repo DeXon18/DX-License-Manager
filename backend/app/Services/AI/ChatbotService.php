@@ -259,7 +259,7 @@ class ChatbotService
             ];
 
             $response = Http::timeout(30)->post(
-                "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}",
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={$apiKey}",
                 $payload
             );
 
@@ -848,9 +848,58 @@ class ChatbotService
                         'usage_metadata' => null,
                         'data' => []
                     ];
+                } else {
+                    Log::error("ChatbotService: Fallo HTTP en Fallback DeepSeek: (Status " . $response->status() . ") " . $response->body());
                 }
             } catch (\Exception $e) {
                 Log::error("ChatbotService: Fallo en Fallback DeepSeek: " . $e->getMessage());
+            }
+        }
+
+        // Intentar OpenRouter como 3er fallback
+        $openrouterKey = config('ai.openrouter_key');
+        if ($openrouterKey) {
+            try {
+                $messages = [];
+                foreach ($chatHistory as $msg) {
+                    $messages[] = [
+                        'role'    => $msg['role'] === 'assistant' ? 'assistant' : 'user',
+                        'content' => $msg['content'] ?? ($msg['parts'][0]['text'] ?? '')
+                    ];
+                }
+                array_unshift($messages, [
+                    'role'    => 'system',
+                    'content' => 'Eres un asistente de soporte técnico para DX-License-Manager. Responde de forma conversacional e indica que las herramientas de base de datos no están disponibles en este momento.'
+                ]);
+
+                $response = Http::timeout(20)
+                    ->withHeaders([
+                        'Authorization'  => "Bearer {$openrouterKey}",
+                        'Content-Type'   => 'application/json',
+                        'HTTP-Referer'   => 'https://beta.dxpro.es',
+                        'X-Title'        => 'DX License Manager'
+                    ])
+                    ->post('https://openrouter.ai/api/v1/chat/completions', [
+                        'model'       => 'google/gemini-2.0-flash-exp:free',
+                        'messages'    => $messages,
+                        'temperature' => 0.5
+                    ]);
+
+                if ($response->successful()) {
+                    $resData = $response->json();
+                    $text = $resData['choices'][0]['message']['content'] ?? '';
+                    return [
+                        'message'        => $text,
+                        'provider'       => 'openrouter-fallback',
+                        'success'        => true,
+                        'usage_metadata' => null,
+                        'data'           => []
+                    ];
+                } else {
+                    Log::error("ChatbotService: Fallo HTTP en Fallback OpenRouter: (Status " . $response->status() . ") " . $response->body());
+                }
+            } catch (\Exception $e) {
+                Log::error("ChatbotService: Fallo en Fallback OpenRouter: " . $e->getMessage());
             }
         }
 
