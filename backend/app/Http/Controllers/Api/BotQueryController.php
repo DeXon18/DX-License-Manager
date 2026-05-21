@@ -134,7 +134,10 @@ class BotQueryController extends Controller
     protected function handleCliente(string $arg)
     {
         if (empty($arg)) {
-            return response()->json(['error' => 'Argument required for client command'], 422);
+            return response()->json([
+                'status' => 'error',
+                'message' => "Uso correcto: `/cliente [Nombre]`\n\n💡 _Ejemplo:_ `/cliente Gurutzpe`"
+            ], 400);
         }
 
         // Exact Match
@@ -308,7 +311,10 @@ class BotQueryController extends Controller
     protected function handleSoldTo(string $soldTo)
     {
         if (empty($soldTo)) {
-            return response()->json(['error' => 'Argument required for soldto command'], 422);
+            return response()->json([
+                'status' => 'error',
+                'message' => "Uso correcto: `/soldto [ID]`\n\n💡 _Ejemplo:_ `/soldto 10303508`"
+            ], 400);
         }
 
         $daemons = LicenseInventoryDaemon::with('client', 'products')
@@ -427,7 +433,7 @@ class BotQueryController extends Controller
     protected function formatResponseForTelegram(string $command, array $response): string
     {
         if (($response['status'] ?? '') !== 'success') {
-            return "⚠️ *" . ($response['message'] ?? 'Error desconocido al procesar la solicitud.') . "*";
+            return "⚠️ " . ($response['message'] ?? '*Error desconocido al procesar la solicitud.*');
         }
 
         $data = $response['data'] ?? [];
