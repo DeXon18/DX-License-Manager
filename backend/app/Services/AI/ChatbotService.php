@@ -9,6 +9,7 @@ use App\Models\Contract;
 use App\Models\LicenseInventoryDaemon;
 use App\Models\LicenseInventoryProduct;
 use App\Models\ResourceLink;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
@@ -270,6 +271,10 @@ class ChatbotService
                 throw new \Exception("Gemini no retornó candidatos.");
             }
 
+            if (isset($candidate['finishReason'])) {
+                Log::info("ChatbotService: Gemini candidate finishReason: " . $candidate['finishReason']);
+            }
+
             $parts = $candidate['content']['parts'] ?? [];
             $functionCalls = [];
 
@@ -383,6 +388,12 @@ class ChatbotService
     private function toolSearchClients(string $query): array
     {
         $query = trim($query);
+        if (empty($query)) {
+            return [];
+        }
+
+        // Sanitización fuzzy estricta contra inyección SQL
+        $query = preg_replace('/[^a-zA-Z0-9\s\-_]/', '', $query);
         if (empty($query)) {
             return [];
         }
@@ -502,36 +513,41 @@ class ChatbotService
 
     private function toolGetExpirations(int $daysThreshold): array
     {
-        $today = Carbon::today();
-        $limitDate = Carbon::today()->addDays($daysThreshold);
+        $daysThreshold = max(1, min(365, $daysThreshold));
+        $cacheKey = "chatbot_expirations_{$daysThreshold}";
 
-        // Buscar productos activos que expiren antes del límite
-        $products = LicenseInventoryProduct::with(['daemon.client'])
-            ->whereNotNull('expiration_date')
-            ->whereBetween('expiration_date', [$today->copy()->subYear(5), $limitDate]) // Incluye vencidos recientes
-            ->orderBy('expiration_date', 'asc')
-            ->get();
+        return Cache::remember($cacheKey, 300, function () use ($daysThreshold) {
+            $today = Carbon::today();
+            $limitDate = Carbon::today()->addDays($daysThreshold);
 
-        $expirations = [];
-        foreach ($products as $p) {
-            $clientName = $p->daemon->client->name ?? 'Desconocido';
-            $days = $today->diffInDays($p->expiration_date, false);
+            // Buscar productos activos que expiren antes del límite
+            $products = LicenseInventoryProduct::with(['daemon.client'])
+                ->whereNotNull('expiration_date')
+                ->whereBetween('expiration_date', [$today->copy()->subYear(5), $limitDate]) // Incluye vencidos recientes
+                ->orderBy('expiration_date', 'asc')
+                ->get();
 
-            $status = $days < 0 ? 'expired' : 'warning';
+            $expirations = [];
+            foreach ($products as $p) {
+                $clientName = $p->daemon->client->name ?? 'Desconocido';
+                $days = $today->diffInDays($p->expiration_date, false);
 
-            $expirations[] = [
-                'client_name' => $clientName,
-                'client_id' => $p->daemon->client_id ?? null,
-                'sold_to' => $p->daemon->sold_to ?? 'N/A',
-                'daemon' => $p->daemon->daemon ?? 'N/A',
-                'product_code' => $p->product_code,
-                'expiration_date' => $p->expiration_date->format('Y-m-d'),
-                'days_remaining' => $days,
-                'status' => $status
-            ];
-        }
+                $status = $days < 0 ? 'expired' : 'warning';
 
-        return $expirations;
+                $expirations[] = [
+                    'client_name' => $clientName,
+                    'client_id' => $p->daemon->client_id ?? null,
+                    'sold_to' => $p->daemon->sold_to ?? 'N/A',
+                    'daemon' => $p->daemon->daemon ?? 'N/A',
+                    'product_code' => $p->product_code,
+                    'expiration_date' => $p->expiration_date->format('Y-m-d'),
+                    'days_remaining' => $days,
+                    'status' => $status
+                ];
+            }
+
+            return $expirations;
+        });
     }
 
     private function toolSearchServersByHardware(string $hwQuery): array
@@ -611,9 +627,11 @@ class ChatbotService
 
     private function toolGetResourceLinks(): array
     {
-        return ResourceLink::orderBy('category')
-            ->get(['title', 'url', 'category', 'description'])
-            ->toArray();
+        return Cache::remember('chatbot_resource_links', 300, function () {
+            return ResourceLink::orderBy('category')
+                ->get(['title', 'url', 'category', 'description'])
+                ->toArray();
+        });
     }
 
     private function toolGetContractDetails(string $contractId): array
