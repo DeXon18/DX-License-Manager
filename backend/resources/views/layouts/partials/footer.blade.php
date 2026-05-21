@@ -78,8 +78,11 @@
                 &copy; {{ date('Y') }} DX License Manager. Todos los derechos reservados.
             </div>
             <div class="footer-meta">
+                <span style="color: #059669; font-weight: 600; letter-spacing: 0.5px; display: inline-flex; align-items: center; gap: 5px;">
+                    <i class="fa-solid fa-shield-halved" style="font-size: 0.85em;"></i> AI-Powered Productivity
+                </span>
+                <span style="margin: 0 4px; opacity: 0.5;">—</span>
                 <span>Desarrollado con <i class="fa-solid fa-heart dx-v2-heart"></i> por Antigravity (DX Agent)</span>
             </div>
-        </div>
     </div>
 </footer>
