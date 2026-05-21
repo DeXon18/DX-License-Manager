@@ -8,3 +8,4 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::post('/audit/callback', \App\Http\Controllers\Api\AuditCallbackController::class);
+Route::post('/bot/query', [\App\Http\Controllers\Api\BotQueryController::class, 'query']);
