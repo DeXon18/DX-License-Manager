@@ -14,20 +14,18 @@ use Illuminate\Support\Facades\Http;
 
 class BotQueryController extends Controller
 {
+    private const EXPIRATION_WARNING_DAYS  = 30;
+    private const FUZZY_MATCH_THRESHOLD    = 0.75;
+    private const MAX_PRODUCTS_PER_DAEMON  = 15;
+    private const MAX_ITEMS_PER_CATEGORY   = 50;
+
     /**
      * Handle Telegram/Teams queries.
      */
     public function query(Request $request)
     {
         // 1. Authenticate Request
-        $authHeader = $request->header('Authorization');
-        $token = null;
-
-        if ($authHeader && preg_match('/Bearer\s+(.*)$/i', $authHeader, $matches)) {
-            $token = trim($matches[1]);
-        } else {
-            $token = trim($request->header('X-Bot-Token') ?: $request->header('X-Telegram-Bot-Api-Secret-Token') ?: $request->input('token') ?: '');
-        }
+        $token = $this->extractToken($request);
 
         $allowedTokens = array_map('trim', array_filter([
             config('ai.bot_token'),
@@ -109,8 +107,25 @@ class BotQueryController extends Controller
         }
 
         return $jsonResponse;
+    }
 
-        return response()->json(['error' => 'Command not implemented'], 501);
+    /**
+     * Extract bot token from request header or query parameter.
+     */
+    private function extractToken(Request $request): string
+    {
+        $authHeader = $request->header('Authorization');
+
+        if ($authHeader && preg_match('/Bearer\s+(.*)$/i', $authHeader, $matches)) {
+            return trim($matches[1]);
+        }
+
+        return trim(
+            $request->header('X-Bot-Token')
+            ?: $request->header('X-Telegram-Bot-Api-Secret-Token')
+            ?: $request->input('token')
+            ?: ''
+        );
     }
 
     /**
@@ -147,7 +162,7 @@ class BotQueryController extends Controller
                 }
             }
 
-            if ($highestSimilarity >= 0.75) {
+            if ($highestSimilarity >= self::FUZZY_MATCH_THRESHOLD) {
                 $client = $bestMatch;
             }
         }
@@ -169,30 +184,7 @@ class BotQueryController extends Controller
                 'composite' => $d->composite ?: $d->hardware_id,
                 'vendor' => $d->vendor,
                 'products_count' => $d->products->count(),
-                'products' => $d->products->map(function ($p) {
-                    $expDate = $p->expiration_date;
-                    $days = null;
-                    $status = 'healthy';
-
-                    if ($expDate) {
-                        $days = now()->diffInDays($expDate, false);
-                        if ($days < 0) {
-                            $status = 'expired';
-                        } elseif ($days <= 30) {
-                            $status = 'warning';
-                        }
-                    } else {
-                        $status = 'permanent';
-                    }
-
-                    return [
-                        'code' => $p->product_code,
-                        'qty' => $p->quantity,
-                        'expiration' => $expDate ? $expDate->format('Y-m-d') : 'permanent',
-                        'days_left' => $days,
-                        'status' => $status
-                    ];
-                })
+                'products' => $d->products->map(fn($p) => $this->mapProduct($p))
             ];
         });
 
@@ -239,12 +231,15 @@ class BotQueryController extends Controller
      */
     protected function handleExpiraciones()
     {
-        $allProducts = LicenseInventoryProduct::with('daemon.client')->get();
+        $allProducts = LicenseInventoryProduct::with('daemon.client')
+            ->whereNotNull('expiration_date')
+            ->where('expiration_date', '<=', now()->addDays(self::EXPIRATION_WARNING_DAYS))
+            ->get();
         $expiredLicenses = [];
         $expiringLicenses = [];
 
         foreach ($allProducts as $p) {
-            if (!$p->expiration_date || !$p->daemon || !$p->daemon->client) {
+            if (!$p->daemon || !$p->daemon->client) {
                 continue;
             }
 
@@ -260,17 +255,21 @@ class BotQueryController extends Controller
 
             if ($days < 0) {
                 $expiredLicenses[] = $item;
-            } elseif ($days <= 30) {
+            } elseif ($days <= self::EXPIRATION_WARNING_DAYS) {
                 $expiringLicenses[] = $item;
             }
         }
 
-        $allContracts = Contract::with('client', 'vendor')->where('status', '!=', 'Baja')->get();
+        $allContracts = Contract::with('client', 'vendor')
+            ->where('status', '!=', 'Baja')
+            ->whereNotNull('end_date')
+            ->where('end_date', '<=', now()->addDays(self::EXPIRATION_WARNING_DAYS))
+            ->get();
         $expiredContracts = [];
         $expiringContracts = [];
 
         foreach ($allContracts as $c) {
-            if (!$c->end_date || !$c->client) {
+            if (!$c->client) {
                 continue;
             }
 
@@ -280,13 +279,13 @@ class BotQueryController extends Controller
                 'number' => $c->contract_number,
                 'vendor' => $c->vendor ? $c->vendor->name : 'Siemens',
                 'product' => $c->type_product,
-                'expiration' => \Carbon\Carbon::parse($c->end_date)->format('Y-m-d'),
+                'expiration' => $c->end_date->format('Y-m-d'),
                 'days_left' => $days
             ];
 
             if ($days < 0) {
                 $expiredContracts[] = $item;
-            } elseif ($days <= 30) {
+            } elseif ($days <= self::EXPIRATION_WARNING_DAYS) {
                 $expiringContracts[] = $item;
             }
         }
@@ -295,10 +294,10 @@ class BotQueryController extends Controller
             'status' => 'success',
             'type' => 'expirations',
             'data' => [
-                'expired_licenses' => array_slice($expiredLicenses, 0, 50),
-                'expiring_licenses' => array_slice($expiringLicenses, 0, 50),
-                'expired_contracts' => array_slice($expiredContracts, 0, 50),
-                'expiring_contracts' => array_slice($expiringContracts, 0, 50)
+                'expired_licenses' => array_slice($expiredLicenses, 0, self::MAX_ITEMS_PER_CATEGORY),
+                'expiring_licenses' => array_slice($expiringLicenses, 0, self::MAX_ITEMS_PER_CATEGORY),
+                'expired_contracts' => array_slice($expiredContracts, 0, self::MAX_ITEMS_PER_CATEGORY),
+                'expiring_contracts' => array_slice($expiringContracts, 0, self::MAX_ITEMS_PER_CATEGORY)
             ]
         ]);
     }
@@ -312,16 +311,12 @@ class BotQueryController extends Controller
             return response()->json(['error' => 'Argument required for soldto command'], 422);
         }
 
-        $daemons = LicenseInventoryDaemon::with('client', 'products')->get()
-            ->filter(function ($d) use ($soldTo) {
-                if ($d->sold_to === $soldTo) {
-                    return true;
-                }
-                if (is_array($d->additional_sold_tos) && in_array($soldTo, $d->additional_sold_tos, true)) {
-                    return true;
-                }
-                return false;
-            });
+        $daemons = LicenseInventoryDaemon::with('client', 'products')
+            ->where(function ($q) use ($soldTo) {
+                $q->where('sold_to', $soldTo)
+                  ->orWhereJsonContains('additional_sold_tos', $soldTo);
+            })
+            ->get();
 
         if ($daemons->isEmpty()) {
             return response()->json([
@@ -340,30 +335,7 @@ class BotQueryController extends Controller
                 'composite' => $d->composite ?: $d->hardware_id,
                 'vendor' => $d->vendor,
                 'products_count' => $d->products->count(),
-                'products' => $d->products->map(function ($p) {
-                    $expDate = $p->expiration_date;
-                    $days = null;
-                    $status = 'healthy';
-
-                    if ($expDate) {
-                        $days = now()->diffInDays($expDate, false);
-                        if ($days < 0) {
-                            $status = 'expired';
-                        } elseif ($days <= 30) {
-                            $status = 'warning';
-                        }
-                    } else {
-                        $status = 'permanent';
-                    }
-
-                    return [
-                        'code' => $p->product_code,
-                        'qty' => $p->quantity,
-                        'expiration' => $expDate ? $expDate->format('Y-m-d') : 'permanent',
-                        'days_left' => $days,
-                        'status' => $status
-                    ];
-                })
+                'products' => $d->products->map(fn($p) => $this->mapProduct($p))
             ];
         })->values();
 
@@ -382,23 +354,43 @@ class BotQueryController extends Controller
      */
     private function calculateSimilarity(string $str1, string $str2): float
     {
-        $str1 = mb_strtolower(trim($str1));
-        $str2 = mb_strtolower(trim($str2));
-        
-        if ($str1 === $str2) {
-            return 1.0;
-        }
+        $normalize = fn($s) => mb_strtolower(trim(
+            iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $s)
+        ));
 
-        $len1 = mb_strlen($str1);
-        $len2 = mb_strlen($str2);
-        $maxLen = max($len1, $len2);
+        $str1 = $normalize($str1);
+        $str2 = $normalize($str2);
 
-        if ($maxLen === 0) {
-            return 1.0;
-        }
+        if ($str1 === $str2) return 1.0;
 
-        $distance = levenshtein($str1, $str2);
-        return 1 - ($distance / $maxLen);
+        $maxLen = max(strlen($str1), strlen($str2));
+        if ($maxLen === 0) return 1.0;
+
+        return 1 - (levenshtein($str1, $str2) / $maxLen);
+    }
+
+    /**
+     * Map active products with formatted metrics and status tags.
+     */
+    private function mapProduct(LicenseInventoryProduct $p): array
+    {
+        $expDate = $p->expiration_date;
+        $days = $expDate ? now()->diffInDays($expDate, false) : null;
+
+        $status = match(true) {
+            $expDate === null                      => 'permanent',
+            $days < 0                              => 'expired',
+            $days <= self::EXPIRATION_WARNING_DAYS => 'warning',
+            default                                => 'healthy',
+        };
+
+        return [
+            'code'       => $p->product_code,
+            'qty'        => $p->quantity,
+            'expiration' => $expDate ? $expDate->format('Y-m-d') : 'permanent',
+            'days_left'  => $days,
+            'status'     => $status,
+        ];
     }
 
     /**
