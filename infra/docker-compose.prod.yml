@@ -18,7 +18,7 @@ services:
     container_name: dx-php-prod
     restart: always
     mem_limit: 768m
-    env_file: ./.env.prod
+    env_file: ./infra/.env.prod
     volumes:
       - ./backend:/var/www/html
       - ./infra/.env.prod:/var/www/html/.env
@@ -43,7 +43,7 @@ services:
     container_name: dx-mariadb-prod
     restart: always
     mem_limit: 768m
-    env_file: ./.env.prod
+    env_file: ./infra/.env.prod
     volumes:
       - mariadb_prod_data:/var/lib/mysql
       - ./infra/mariadb/my.cnf:/etc/mysql/conf.d/my.cnf
