@@ -38,7 +38,9 @@ class ChatbotController extends Controller
             return response()->json([
                 'success' => $result['success'],
                 'message' => $result['message'],
-                'provider' => $result['provider']
+                'provider' => $result['provider'],
+                'usage_metadata' => $result['usage_metadata'] ?? null,
+                'data' => $result['data'] ?? []
             ]);
         } catch (\Exception $e) {
             Log::error("ChatbotController: Error procesando chat: " . $e->getMessage());
