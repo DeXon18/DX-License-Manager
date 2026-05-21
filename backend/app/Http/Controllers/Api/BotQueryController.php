@@ -565,8 +565,6 @@ class BotQueryController extends Controller
             case 'expiraciones':
                 $expiredLicenses = $this->consolidateLicenses($data['expired_licenses'] ?? []);
                 $expiringLicenses = $this->consolidateLicenses($data['expiring_licenses'] ?? []);
-                $expiredContracts = $data['expired_contracts'] ?? [];
-                $expiringContracts = $data['expiring_contracts'] ?? [];
 
                 $msg = "⚠️ *Alerta de Expiraciones Portal DX*\n\n";
                 $hasCritical = false;
@@ -603,37 +601,8 @@ class BotQueryController extends Controller
                     $msg .= "\n";
                 }
 
-                if (!empty($expiredContracts)) {
-                    $hasCritical = true;
-                    $msg .= "🔴 *Contratos Caducados:*\n";
-                    foreach ($expiredContracts as $c) {
-                        $client = $c['client'] ?? '';
-                        $num = $c['number'] ?? '';
-                        $vendor = $c['vendor'] ?? 'Siemens';
-                        $prod = $c['product'] ?? '';
-                        $exp = $c['expiration'] ?? '';
-                        $msg .= "• *{$client}* - `{$num}` [{$vendor}] ({$prod}) - Vencido el `{$exp}`\n";
-                    }
-                    $msg .= "\n";
-                }
-
-                if (!empty($expiringContracts)) {
-                    $hasCritical = true;
-                    $msg .= "🟡 *Contratos Próximos a Caducar (≤30 días):*\n";
-                    foreach ($expiringContracts as $c) {
-                        $client = $c['client'] ?? '';
-                        $num = $c['number'] ?? '';
-                        $vendor = $c['vendor'] ?? 'Siemens';
-                        $prod = $c['product'] ?? '';
-                        $exp = $c['expiration'] ?? '';
-                        $days = round($c['days_left'] ?? 0);
-                        $msg .= "• *{$client}* - `{$num}` [{$vendor}] ({$prod}) - Expira el `{$exp}` (en {$days} días)\n";
-                    }
-                    $msg .= "\n";
-                }
-
                 if (!$hasCritical) {
-                    $msg .= "🟢 *¡Todo en orden! No hay licencias ni contratos caducados o próximos a caducar en los siguientes 30 días.*\n";
+                    $msg .= "🟢 *¡Todo en orden! No hay licencias caducadas o próximas a caducar en los siguientes 30 días.*\n";
                 }
 
                 return $msg;
