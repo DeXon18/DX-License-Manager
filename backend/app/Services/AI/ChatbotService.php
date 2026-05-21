@@ -310,7 +310,7 @@ class ChatbotService
         // Si hay pocos resultados, buscar por alias
         if (count($clients) < 5) {
             $aliasClients = Client::whereHas('aliases', function ($q) use ($query) {
-                $q->where('alias', 'LIKE', "%{$query}%");
+                $q->where('name', 'LIKE', "%{$query}%");
             })
             ->limit(10)
             ->get(['id', 'name'])
@@ -394,7 +394,7 @@ class ChatbotService
         return [
             'id' => $client->id,
             'name' => $client->name,
-            'aliases' => $client->aliases->pluck('alias')->toArray(),
+            'aliases' => $client->aliases->pluck('name')->toArray(),
             'contacts' => $client->contacts->map(function ($c) {
                 return [
                     'name' => $c->name,
