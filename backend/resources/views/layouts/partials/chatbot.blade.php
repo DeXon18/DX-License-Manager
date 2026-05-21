@@ -29,7 +29,7 @@
                 <!-- Cabecera -->
                 <div class="dx-chatbot-header">
                     <div class="dx-chatbot-title-container">
-                        <h4 class="dx-chatbot-title">Antigravity Support</h4>
+                        <h4 class="dx-chatbot-title">DX Agent Support</h4>
                         <div class="dx-chatbot-status">
                             <span class="dx-chatbot-status-dot"></span>
                             <span>IA Online</span>

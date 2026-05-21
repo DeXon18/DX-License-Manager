@@ -34,6 +34,7 @@ El desarrollador inicia. El agente espera.
 - **Guías del Portal**: Crear nueva sección documental para usuarios.
 - **Contactar Soporte IT**: Crear formulario en la web conectado con el bot de Telegram (para recibir notificaciones directas).
 - **FAQ / Ayuda**: Crear nueva sección de preguntas frecuentes y asistencia.
+- **Auditoría de Costes IA**: Crear sección para el control y monitorización de tokens gastados por los modelos de IA.
 
 ## ✅ Completado
 
