@@ -137,7 +137,7 @@ class ChatbotService
                         'description' => 'Obtener la lista de enlaces y recursos de Siemens o Moldex3D guardados en el sistema.',
                         'parameters' => [
                             'type' => 'OBJECT',
-                            'properties' => []
+                            'properties' => (object) []
                         ]
                     ]
                 ]
