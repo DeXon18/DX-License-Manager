@@ -7,4 +7,6 @@ return [
     'gemini_key' => env('GEMINI_API_KEY'),
     'deepseek_key' => env('DEEPSEEK_API_KEY'),
     'openrouter_key' => env('OPENROUTER_API_KEY'),
+    'bot_token' => env('BOT_API_TOKEN'),
+    'telegram_bot_token' => env('TELEGRAM_BOT_TOKEN'),
 ];
