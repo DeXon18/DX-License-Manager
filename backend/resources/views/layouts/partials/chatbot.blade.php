@@ -19,6 +19,7 @@
          x-transition:leave-start="opacity-100 scale-100 translate-y-0"
          x-transition:leave-end="opacity-0 scale-95 translate-y-10"
          class="dx-chatbot-window"
+         :class="{ 'dx-chatbot-window-maximized': isMaximized }"
          style="display: none;">
         
         <div class="dx-chatbot-inner-wrapper">
@@ -40,6 +41,18 @@
                         <button @click="clearChat()" class="dx-chatbot-close-btn" title="Limpiar Conversación" aria-label="Limpiar Conversación">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 14px; height: 14px;">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                        
+                        <!-- Botón de Maximizar / Restaurar -->
+                        <button @click="toggleMaximize()" class="dx-chatbot-close-btn" :title="isMaximized ? 'Restaurar Tamaño' : 'Maximizar Chat'" :aria-label="isMaximized ? 'Restaurar Tamaño' : 'Maximizar Chat'">
+                            <!-- Ícono Maximizar -->
+                            <svg x-show="!isMaximized" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 14px; height: 14px;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8V4m0 0h4M3 4l6 6m12-2v-4m0 0h-4m4 0l-6 6m-8 10v4m0 0h4m-4 0l6-6m12 2v4m0 0h-4m4 0l-6-6" />
+                            </svg>
+                            <!-- Ícono Restaurar -->
+                            <svg x-show="isMaximized" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 14px; height: 14px; display: none;">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 3v4M9 7H5m4 0L3 3m12 0v4m0 0h4m-4 0l6-6M9 21v-4m0 0H5m4 0l-6 6m12 0v-4m0 0h4m-4 0l6 6" />
                             </svg>
                         </button>
                         
@@ -99,6 +112,7 @@
     function dxChatbot() {
         return {
             open: false,
+            isMaximized: false,
             input: '',
             loading: false,
             messages: [],
@@ -129,6 +143,10 @@
 
             toggle() {
                 this.open = !this.open;
+            },
+
+            toggleMaximize() {
+                this.isMaximized = !this.isMaximized;
             },
 
             clearChat() {
