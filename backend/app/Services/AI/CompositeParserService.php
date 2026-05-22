@@ -66,6 +66,10 @@ EOT;
             $data = $response->json();
             $content = $data['candidates'][0]['content']['parts'][0]['text'] ?? '{}';
             
+            if (isset($data['usageMetadata'])) {
+                $this->logTokens('gemini', 'composite_parse', $data['usageMetadata']);
+            }
+            
             // Limpiar posibles bloques markdown si Gemini los incluye
             $content = preg_replace('/```json\s*|```/i', '', $content);
             
@@ -77,6 +81,25 @@ EOT;
                 'error' => true,
                 'message' => $e->getMessage()
             ];
+        }
+    }
+
+    /**
+     * Registra los tokens consumidos en la base de datos.
+     */
+    private function logTokens(string $provider, string $action, array $usageData): void
+    {
+        try {
+            \App\Models\AiTokenLog::create([
+                'provider' => $provider,
+                'action' => $action,
+                'prompt_tokens' => $usageData['promptTokenCount'] ?? 0,
+                'completion_tokens' => $usageData['candidatesTokenCount'] ?? 0,
+                'total_tokens' => $usageData['totalTokenCount'] ?? 0,
+                'user_id' => auth()->check() ? auth()->id() : null,
+            ]);
+        } catch (\Exception $e) {
+            Log::warning("CompositeParserService: No se pudo registrar tokens: " . $e->getMessage());
         }
     }
 }
