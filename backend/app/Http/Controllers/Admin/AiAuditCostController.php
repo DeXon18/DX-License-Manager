@@ -103,7 +103,64 @@ class AiAuditCostController extends Controller
             'stats' => $dailyUserStats
         ];
 
-        // 6. Historial reciente con paginación
+        // 6. Uso horario (Día Actual) agrupado por hora y proveedor
+        $today = Carbon::today();
+        $hourlyRecords = AiTokenLog::where('created_at', '>=', $today)
+            ->select(DB::raw('HOUR(created_at) as hour'), 'provider', DB::raw('SUM(total_tokens) as total'))
+            ->groupBy(DB::raw('HOUR(created_at)'), 'provider')
+            ->orderBy('hour')
+            ->get();
+
+        $hourlyStats = [];
+        $hourlyProvidersSet = [];
+        // Pre-fill hours 0 to 23
+        for ($i = 0; $i <= 23; $i++) {
+            $h = str_pad($i, 2, '0', STR_PAD_LEFT) . ':00';
+            $hourlyStats[$h] = [];
+        }
+
+        foreach ($hourlyRecords as $record) {
+            $h = str_pad($record->hour, 2, '0', STR_PAD_LEFT) . ':00';
+            $hourlyStats[$h][$record->provider] = $record->total;
+            $hourlyProvidersSet[$record->provider] = true;
+        }
+
+        $hourlyChartData = [
+            'hours' => array_keys($hourlyStats),
+            'providers' => array_keys($hourlyProvidersSet),
+            'stats' => $hourlyStats
+        ];
+
+        // 7. Uso horario (Día Actual) agrupado por hora y usuario
+        $hourlyUserRecords = AiTokenLog::with('user:id,name')
+            ->where('created_at', '>=', $today)
+            ->whereNotNull('user_id')
+            ->select(DB::raw('HOUR(created_at) as hour'), 'user_id', DB::raw('SUM(total_tokens) as total'))
+            ->groupBy(DB::raw('HOUR(created_at)'), 'user_id')
+            ->orderBy('hour')
+            ->get();
+
+        $hourlyUserStats = [];
+        $hourlyUsersSet = [];
+        for ($i = 0; $i <= 23; $i++) {
+            $h = str_pad($i, 2, '0', STR_PAD_LEFT) . ':00';
+            $hourlyUserStats[$h] = [];
+        }
+
+        foreach ($hourlyUserRecords as $record) {
+            $h = str_pad($record->hour, 2, '0', STR_PAD_LEFT) . ':00';
+            $userName = $record->user->name ?? 'Sistema';
+            $hourlyUserStats[$h][$userName] = $record->total;
+            $hourlyUsersSet[$userName] = true;
+        }
+
+        $hourlyUserChartData = [
+            'hours' => array_keys($hourlyUserStats),
+            'users' => array_keys($hourlyUsersSet),
+            'stats' => $hourlyUserStats
+        ];
+
+        // 8. Historial reciente con paginación
         $logs = AiTokenLog::with('user:id,name,email')
             ->orderByDesc('created_at')
             ->paginate(15);
@@ -120,6 +177,8 @@ class AiAuditCostController extends Controller
             'userStats',
             'chartData',
             'userChartData',
+            'hourlyChartData',
+            'hourlyUserChartData',
             'logs'
         ));
     }

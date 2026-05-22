@@ -211,7 +211,28 @@
                 </div>
             </div>
 
-            {{-- Gráficas de Consumo Diario --}}
+            {{-- Gráficas de Consumo Diario (Hoy) --}}
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Tendencia por Proveedor (Día)</span>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="hourlyTokensChart" height="120"></canvas>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Tendencia por Usuario (Día)</span>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="hourlyUserTokensChart" height="120"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Gráficas de Consumo Mensual --}}
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
                 <div class="card">
                     <div class="card-header">
@@ -362,6 +383,97 @@ document.addEventListener('DOMContentLoaded', function() {
         new Chart(ctxUser, {
             type: 'line',
             data: { labels: userChartData.dates, datasets: userDatasets },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true, labels: { color: '#8a94a6', font: { family: 'Outfit', size: 12 }, usePointStyle: true } },
+                    tooltip: { backgroundColor: '#1c1e26', titleColor: '#8a94a6', bodyColor: '#ffffff', borderColor: '#2b2e38', borderWidth: 1, padding: 10, mode: 'index', intersect: false }
+                },
+                interaction: { mode: 'nearest', axis: 'x', intersect: false },
+                scales: {
+                    x: { grid: { display: false, drawBorder: false }, ticks: { color: '#8a94a6', font: { family: 'Outfit', size: 11 } } },
+                    y: { grid: { color: '#2b2e38', drawBorder: false }, ticks: { color: '#8a94a6', font: { family: 'Outfit', size: 11 }, maxTicksLimit: 5 } }
+                }
+            }
+        });
+    }
+    // 3. Gráfica Horaria por Proveedor
+    const hourlyChartData = @json($hourlyChartData);
+    if (hourlyChartData && hourlyChartData.hours.length > 0) {
+        const ctxHourly = document.getElementById('hourlyTokensChart').getContext('2d');
+        const colors = {
+            'gemini': '#8e44ad',
+            'deepseek': '#4a90e2',
+            'openrouter': '#f39c12',
+            'n8n': '#2ecc71',
+            'default': '#e74c3c'
+        };
+
+        const hourlyDatasets = hourlyChartData.providers.map(provider => {
+            const color = colors[provider] || colors['default'];
+            const data = hourlyChartData.hours.map(hour => hourlyChartData.stats[hour][provider] || 0);
+
+            return {
+                label: provider.toUpperCase(),
+                data: data,
+                borderColor: color,
+                backgroundColor: color + '22',
+                borderWidth: 2,
+                pointBackgroundColor: '#1c1e26',
+                pointBorderColor: color,
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                fill: true,
+                tension: 0.4
+            };
+        });
+
+        new Chart(ctxHourly, {
+            type: 'line',
+            data: { labels: hourlyChartData.hours, datasets: hourlyDatasets },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true, labels: { color: '#8a94a6', font: { family: 'Outfit', size: 12 }, usePointStyle: true } },
+                    tooltip: { backgroundColor: '#1c1e26', titleColor: '#8a94a6', bodyColor: '#ffffff', borderColor: '#2b2e38', borderWidth: 1, padding: 10, mode: 'index', intersect: false }
+                },
+                interaction: { mode: 'nearest', axis: 'x', intersect: false },
+                scales: {
+                    x: { grid: { display: false, drawBorder: false }, ticks: { color: '#8a94a6', font: { family: 'Outfit', size: 11 } } },
+                    y: { grid: { color: '#2b2e38', drawBorder: false }, ticks: { color: '#8a94a6', font: { family: 'Outfit', size: 11 }, maxTicksLimit: 5 } }
+                }
+            }
+        });
+    }
+
+    // 4. Gráfica Horaria por Usuario
+    const hourlyUserChartData = @json($hourlyUserChartData);
+    if (hourlyUserChartData && hourlyUserChartData.hours.length > 0) {
+        const ctxUserHourly = document.getElementById('hourlyUserTokensChart').getContext('2d');
+        const userColors = ['#1abc9c', '#9b59b6', '#34495e', '#f1c40f', '#e67e22', '#e74c3c', '#95a5a6'];
+
+        const hourlyUserDatasets = hourlyUserChartData.users.map((user, index) => {
+            const color = userColors[index % userColors.length];
+            const data = hourlyUserChartData.hours.map(hour => hourlyUserChartData.stats[hour][user] || 0);
+
+            return {
+                label: user,
+                data: data,
+                borderColor: color,
+                backgroundColor: color + '22',
+                borderWidth: 2,
+                pointBackgroundColor: '#1c1e26',
+                pointBorderColor: color,
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                fill: true,
+                tension: 0.4
+            };
+        });
+
+        new Chart(ctxUserHourly, {
+            type: 'line',
+            data: { labels: hourlyUserChartData.hours, datasets: hourlyUserDatasets },
             options: {
                 responsive: true,
                 plugins: {
