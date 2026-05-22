@@ -35,6 +35,27 @@ class ChatbotController extends Controller
             $history = $request->input('messages');
             $result = $this->chatbotService->query($history);
 
+            // Registrar telemetría de tokens si el proveedor los reporta
+            if (!empty($result['usage_metadata'])) {
+                $usage = $result['usage_metadata'];
+                
+                // Formato Gemini
+                $promptTokens = $usage['promptTokenCount'] ?? ($usage['prompt_tokens'] ?? 0);
+                $completionTokens = $usage['candidatesTokenCount'] ?? ($usage['completion_tokens'] ?? 0);
+                $totalTokens = $usage['totalTokenCount'] ?? ($usage['total_tokens'] ?? 0);
+                
+                if ($totalTokens > 0) {
+                    \App\Models\AiTokenLog::create([
+                        'user_id' => auth()->id(), // null si el chatbot no requiere auth, pero usualmente en admin sí
+                        'action' => 'chatbot_query',
+                        'provider' => $result['provider'] ?? 'gemini-flash',
+                        'prompt_tokens' => $promptTokens,
+                        'completion_tokens' => $completionTokens,
+                        'total_tokens' => $totalTokens,
+                    ]);
+                }
+            }
+
             return response()->json([
                 'success' => $result['success'],
                 'message' => $result['message'],
