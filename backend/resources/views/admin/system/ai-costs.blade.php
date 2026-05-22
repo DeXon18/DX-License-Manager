@@ -34,14 +34,28 @@
             </div>
         </div>
 
-        {{-- Total Tokens (All Time) --}}
+        {{-- Coste Total (Mes) --}}
+        <div class="dx-v2-sys-dash-stat-card">
+            <div class="dx-v2-sys-dash-stat-card-watermark">
+                <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div class="dx-v2-sys-dash-stat-card-title">COSTE ESTIMADO (MES)</div>
+            <div class="dx-v2-sys-dash-stat-card-value success-color">
+                ${{ number_format($totalCostThisMonth, 4, ',', '.') }}
+            </div>
+            <div class="dx-v2-sys-dash-stat-card-meta-mono">
+                Facturación basada en tokens consumidos
+            </div>
+        </div>
+
+        {{-- Coste Histórico --}}
         <div class="dx-v2-sys-dash-stat-card">
             <div class="dx-v2-sys-dash-stat-card-watermark">
                 <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
             </div>
-            <div class="dx-v2-sys-dash-stat-card-title">TOTAL HISTÓRICO</div>
-            <div class="dx-v2-sys-dash-stat-card-value success-color">
-                {{ number_format($totalTokensAllTime, 0, ',', '.') }}
+            <div class="dx-v2-sys-dash-stat-card-title">COSTE HISTÓRICO</div>
+            <div class="dx-v2-sys-dash-stat-card-value success-color" style="opacity: 0.8;">
+                ${{ number_format($totalCostAllTime, 4, ',', '.') }}
             </div>
             <div class="dx-v2-sys-dash-stat-card-meta-mono">
                 Acumulado desde inicio del sistema
@@ -51,7 +65,7 @@
 
     <div class="dx-v2-sys-dash-main-layout" style="margin-top: 1.5rem;">
         <div class="dx-v2-sys-dash-main-col">
-            
+
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
                 {{-- Uso por Proveedor --}}
                 <div class="card">
@@ -106,6 +120,16 @@
                 </div>
             </div>
 
+            {{-- Gráfica de Consumo Diario --}}
+            <div class="card" style="margin-top: 1.5rem;">
+                <div class="card-header">
+                    <span class="card-title">Consumo de Tokens (Mes Actual)</span>
+                </div>
+                <div class="card-body">
+                    <canvas id="dailyTokensChart" height="80"></canvas>
+                </div>
+            </div>
+
             {{-- Historial Reciente --}}
             <div class="card" style="margin-top: 1.5rem;">
                 <div class="card-header">
@@ -121,6 +145,7 @@
                                 <th class="text-right">PROMPT</th>
                                 <th class="text-right">COMPLETION</th>
                                 <th class="text-right">TOTAL</th>
+                                <th class="text-right">COSTE EST.</th>
                                 <th>USUARIO</th>
                             </tr>
                         </thead>
@@ -133,11 +158,12 @@
                                     <td class="text-right">{{ number_format($log->prompt_tokens, 0, ',', '.') }}</td>
                                     <td class="text-right">{{ number_format($log->completion_tokens, 0, ',', '.') }}</td>
                                     <td class="text-right accent-color" style="font-family: 'Outfit', sans-serif; font-weight:600;">{{ number_format($log->total_tokens, 0, ',', '.') }}</td>
+                                    <td class="text-right text-success" style="font-family: 'Outfit', sans-serif;">${{ number_format($log->estimated_cost, 6, ',', '.') }}</td>
                                     <td>{{ $log->user->name ?? 'Sistema' }}</td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="text-center text-muted" style="padding: 2rem;">No hay registros de IA disponibles.</td>
+                                    <td colspan="8" class="text-center text-muted" style="padding: 2rem;">No hay registros de IA disponibles.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -153,4 +179,85 @@
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const chartData = @json($chartData);
+    
+    if (!chartData || chartData.dates.length === 0) return;
+
+    const ctx = document.getElementById('dailyTokensChart').getContext('2d');
+    
+    const colors = {
+        'gemini': '#8e44ad', // Morado
+        'deepseek': '#4a90e2', // Azul eléctrico
+        'openrouter': '#f39c12', // Naranja
+        'n8n': '#2ecc71', // Verde
+        'default': '#e74c3c'
+    };
+
+    const datasets = chartData.providers.map(provider => {
+        const color = colors[provider] || colors['default'];
+        
+        const data = chartData.dates.map(date => {
+            return chartData.stats[date][provider] || 0;
+        });
+
+        return {
+            label: provider.toUpperCase(),
+            data: data,
+            borderColor: color,
+            backgroundColor: color + '22', // Transparente
+            borderWidth: 2,
+            pointBackgroundColor: '#1c1e26',
+            pointBorderColor: color,
+            pointBorderWidth: 2,
+            pointRadius: 4,
+            fill: true,
+            tension: 0.4
+        };
+    });
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: chartData.dates,
+            datasets: datasets
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { 
+                    display: true,
+                    labels: { color: '#8a94a6', font: { family: 'Outfit', size: 12 }, usePointStyle: true }
+                },
+                tooltip: {
+                    backgroundColor: '#1c1e26',
+                    titleColor: '#8a94a6',
+                    bodyColor: '#ffffff',
+                    borderColor: '#2b2e38',
+                    borderWidth: 1,
+                    padding: 10,
+                    mode: 'index',
+                    intersect: false
+                }
+            },
+            interaction: { mode: 'nearest', axis: 'x', intersect: false },
+            scales: {
+                x: {
+                    grid: { display: false, drawBorder: false },
+                    ticks: { color: '#8a94a6', font: { family: 'Outfit', size: 11 } },
+                    stacked: false
+                },
+                y: {
+                    grid: { color: '#2b2e38', drawBorder: false },
+                    ticks: { color: '#8a94a6', font: { family: 'Outfit', size: 11 }, maxTicksLimit: 5 },
+                    stacked: false
+                }
+            }
+        }
+    });
+});
+</script>
 @endsection
