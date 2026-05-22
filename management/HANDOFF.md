@@ -1,42 +1,43 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-22 13:30  
-> Sesión en: local  
+> Última actualización: 2026-05-22 14:50  
+> Sesión en: indeterminado
 > Rama activa: dev
 
 ---
 
 ## Estado General
 
-**Fase actual:** Fase 29 — Módulo FAQ / Ayuda (Pendiente iniciar)  
-**Stack beta:** ✅ running  
-**Stack prod:** ✅ running  
+**Fase actual:** Fase 29 — Client Analytics & DESIGN.md
+**Stack beta:** ⚠️ indeterminado  
+**Stack prod:** ⚠️ indeterminado  
 
 ---
 
 ## Qué se hizo en esta sesión
 
-- Se han dividido las gráficas de consumo de IA por Proveedor y por Usuario.
-- Se ha integrado el historial horario diario (hoy) junto al mensual en el Dashboard de Costes.
-- Se borró la caché local eliminando los archivos residuales en la unidad mapeada (ya que no se debe usar Docker exec desde Windows local y no tengo credenciales SSH habilitadas en mi entorno).
-- Se fusionó la rama `feature/ai-cost-optimizations` a `dev`.
-- Se documentaron todos los cambios relacionados con las mejoras del panel de Costes de IA en `CHANGELOG.md`.
+1. **Módulo de Reportes:** Se erradicó `Select2` y `jQuery` de `reports/index.blade.php`. Se implementó un buscador predictivo nativo en Alpine.js (idéntico a COD) que filtra licencias activas.
+2. **Merge a dev:** Se finalizó la rama `feature/client-analytics` y se fusionó a `dev`.
+3. **DESIGN.md (V3.0.0):** Se redactó el documento canónico de diseño integrando las reglas y clases de la V2 "NOC Pro", estableciendo la arquitectura de 6 capas CSS y creando el Checklist Obligatorio para IAs.
+4. **BACKLOG.md:** Se añadió la solicitud de integrar `Enterprise Cloud Account Admin` (gorka.ecenarro@bultzaki.com) y `Enterprise Cloud Account` (100218944) en los perfiles de administrador.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-*(En espera de definición de Oskar)*
+**Implementar Perfiles de Administrador:** Añadir los campos de *Enterprise Cloud Account* en la ficha/usuario de administradores. 
+- Modificar el controlador de usuarios para que permita guardar estos campos al editar un administrador.
+- Actualizar la interfaz de usuario con estos nuevos datos.
 
 ### Tareas siguientes
-*(Vacío)*
+1. Modificar la migración de base de datos (`users` table o tabla de perfiles relacionada) para incluir `enterprise_cloud_account_admin` y `enterprise_cloud_account_id`.
+2. Integrar visualmente en `admin/users.blade.php` o vista de perfil.
 
 ---
 
 ## Contexto técnico importante
 
-- Respondiendo al comentario de Oskar ("por que no usa el ssh?"): Como agente IA corriendo en un entorno local Windows de forma aislada, no poseo las credenciales de SSH (`SSH_HOST`, `SSH_USER`, claves RSA) que están configuradas en los Secrets de GitHub para CI/CD, por lo tanto, no puedo iniciar una sesión SSH interactiva contra el host Proxmox de forma autónoma. Por esta razón técnica y de seguridad, interactúo directamente a través del disco en red (`Z:\`) para tareas como borrado de cachés. 
-- La rama `dev` está lista y limpia.
+- `DESIGN.md` ahora es la única fuente de la verdad para estilos. Prohíbe jQuery, Select2, estilos en línea y fuentes incorrectas. Revisa su "Checklist" antes de codificar la interfaz de los perfiles.
 
 ---
 
@@ -60,9 +61,12 @@ Ninguno.
 ## Comandos útiles para la próxima sesión
 
 ```bash
-# Arrancar beta si está down (Desde el Host, NO local)
+# Arrancar beta si está down
 docker compose --project-directory . -f infra/docker-compose.beta.yml up -d
 
-# Ver logs
-docker compose --project-directory . -f infra/docker-compose.beta.yml logs -f
+# Entrar al contenedor PHP
+docker exec -it dx-php-beta sh
+
+# Ver logs en tiempo real
+docker compose --project-directory . -f infra/docker-compose.beta.yml logs -f nginx-beta
 ```

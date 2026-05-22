@@ -437,26 +437,9 @@ Para búsquedas en listas largas (clientes, módulos), **este es el único patr�
 
 ---
 
-## 🗂️ 7. Referencia de Vistas (infra/html/)
 
-Los archivos en `infra/html/` son **prototipos de consulta permanente**. No se eliminan. Al implementar en Laravel, replicar el HTML en Blade sin improvisar.
 
-| Archivo | Vista de referencia |
-|---------|-------------------|
-| `index.html` | Página de mantenimiento / Fase 0 |
-| `01-login.html` | Vista de login |
-| `02-inicio.html` | Dashboard principal |
-| `03-herramientas.html` | Hub de herramientas |
-| `04-admin.html` | Centro de mando admin |
-| `tool-designcenter.html` | Herramienta Designcenter & TC |
-| `tool-heeds.html` | Herramienta HEEDS Suite |
-| `tool-moldex.html` | Herramienta Auditor Moldex3D |
-| `tool-solicitar-cambio.html` | Solicitar Cambio de Licencia |
-| `tool-starccm.html` | Herramienta STAR-CCM+ |
-
----
-
-## ⛔ 8. Reglas de Fuego — Do's and Don'ts
+## ⛔ 7. Reglas de Fuego — Do's and Don'ts
 
 ### ✅ Obligatorio
 
@@ -498,7 +481,7 @@ Los archivos en `infra/html/` son **prototipos de consulta permanente**. No se e
 
 ---
 
-## 📌 9. Resumen Rápido para Agentes IA
+## 📌 8. Resumen Rápido para Agentes IA
 
 Si solo vas a leer una sección, lee esta.
 
