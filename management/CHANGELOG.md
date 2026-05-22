@@ -1,6 +1,18 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-22 09:50] — COD Cloud Fields & PDF Refactor ✅
+
+### Added
+- **Campos Cloud AWS & Azure**: Integración de nuevos campos (`Cloud_AWS` y `Cloud_Azure`) en el formulario de generación de COD, incluyendo su persistencia en el payload y renderizado en PDF.
+- **Acordeón Interactivo de Ayuda (getcid.exe)**: Implementación de un acordeón interactivo con Alpine.js en la vista COD (`cod.blade.php`) que proporciona una guía detallada para obtener el Composite ID, ejemplos de comandos y un recuadro dedicado para descargar la utilidad oficial de Siemens, así como un espacio reservado para una herramienta personalizada ATS.
+
+### Changed
+- **Refactorización CSS del PDF Oficial**: Reescritura completa del CSS de la plantilla PDF de COD (`cod-template.blade.php`) utilizando medidas absolutas (pixels y pt), tipografía Calibri y ajustando márgenes y espaciados para lograr paridad total al 100% con la estética oficial de los documentos de Siemens.
+- **Alineación Modular**: Modificados los estilos inline de los recuadros de ayuda en la interfaz de usuario para que dependan estrictamente de los tokens HSL del diseño de sistema NOC Pro, garantizando adaptabilidad automática a modos claro/oscuro.
+
+---
+
 ## [2026-05-21 15:10] — Despliegue v2.0 en Producción & Alineación de Infraestructura ✅
 
 ### Added
