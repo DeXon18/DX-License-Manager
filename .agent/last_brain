@@ -1,1 +1,6 @@
-Rama activa: dev. Fase 27 — Módulo Costes IA (Terminada). Último trabajo: Se dividieron las métricas diarias en gráficas horarias (Proveedor y Usuario). Se borró la caché manualmente borrando archivos en Z:\. Merge de feature/ai-cost-optimizations a dev y documentado en CHANGELOG. Estado: Panel IA al 100%. Próximo paso inmediato: Módulo FAQ / Ayuda. Bloqueos: Ninguno. Stack beta: running. Stack prod: running.
+Rama activa: dev. Fase 29 — Client Analytics & DESIGN.md.
+Último trabajo: Fusión de la funcionalidad del buscador Alpine.js en Reportes. Redacción exhaustiva y consolidación de DESIGN.md v3.0.0 (Sistema de Diseño NOC Pro) con checklist estricto para IAs. Adición de tarea "Perfiles Admin" a BACKLOG.md.
+Estado: Backend limpio, Frontend estabilizado y sin dependencias obsoletas, documentación de diseño totalmente actualizada y vinculante.
+Próximo paso inmediato: Revisar BACKLOG para comenzar a integrar "Enterprise Cloud Account Admin" en perfiles de usuario.
+Bloqueos: ninguno.
+Stack beta: indeterminado. Stack prod: indeterminado.
