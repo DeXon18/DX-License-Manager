@@ -46,19 +46,19 @@ El desarrollador inicia. El agente espera.
 - **Completada:** 2026-05-22
 - **Rama:** `feature/ai-cost-audit`
 - **Resumen:** Módulo de monitorización financiera y telemetría de tokens consumidos por proveedores de Inteligencia Artificial (Gemini, DeepSeek, OpenRouter, n8n). Creación de tabla `AiTokenLog`, vistas "NOC Pro" Bento Grid y métricas históricas de facturación real basadas en uso de prompt y completion. Instrumentados el parser, scanner, fallback chain y el Chatbot interno.
-- **PR:** pendiente — a mergear en dev
+- **PR:** Fusionado en dev
 
 ### Fase 26 — Integración Campos Cloud en COD y Refactor Visual ✅
 - **Completada:** 2026-05-22
 - **Rama:** `feature/cod-cloud-fields`
 - **Resumen:** Integración de AWS y Azure cloud fields en la interfaz de generación de COD y refactorización completa del CSS de la plantilla PDF para alinearla al 100% con los estándares visuales de Siemens. Adición de la guía interactiva para `getcid.exe` con descargas directas y utilidad ATS personalizada.
-- **PR:** pendiente — a mergear en dev
+- **PR:** Fusionado en dev
 
 ### Fase 25 — Consola de Diagnósticos y Generador COD ✅
 - **Completada:** 2026-05-21
 - **Rama:** `feature/chatbot-web-assist`
 - **Resumen:** Refactorización de la interfaz del asistente IA (eliminación Bento, aumento de ventana). Reparado el error 500 en generación COD para clientes no registrados (client_id nullable) y mejorado parseo de respuestas HTTP 422 en JS.
-- **PR:** pendiente — a mergear en dev
+- **PR:** Fusionado en dev
 
 ### Fase 24 — Canal Interactivo de Consulta (Bot de Telegram / Teams Laravel API) ✅
 - **Completada:** 2026-05-21

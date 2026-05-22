@@ -1191,6 +1191,24 @@ Estabilización del portal, actualización del Asistente de IA web (rediseño NO
 
 ---
 
+# FASE 26 — INTEGRACIÓN CAMPOS CLOUD EN COD Y REFACTOR VISUAL PDF ✅ COMPLETADA
+
+Integración de AWS y Azure cloud fields en la interfaz de generación de COD y refactorización completa del CSS de la plantilla PDF para alinearla al 100% con los estándares visuales de Siemens. Adición de la guía interactiva para `getcid.exe` con descargas directas y utilidad ATS personalizada.
+
+---
+
+# FASE 27 — AUDITORÍA DE COSTES E IA (NOC PRO) ✅ COMPLETADA
+
+Módulo de monitorización financiera y telemetría de tokens consumidos por proveedores de Inteligencia Artificial (Gemini, DeepSeek, OpenRouter, n8n). Creación de tabla `AiTokenLog`, vistas "NOC Pro" Bento Grid y métricas históricas de facturación real basadas en uso de prompt y completion. Instrumentados el parser, scanner, fallback chain y el Chatbot interno.
+
+---
+
+# FASE 28 — CONTACTAR SOPORTE IT (FORMULARIO A TELEGRAM) ✅ COMPLETADA
+
+Creación de un formulario directo de soporte (`/soporte`) integrado con la API de Telegram para que los usuarios puedan reportar incidencias directamente a los administradores del sistema, integrado en el layout principal del portal.
+
+---
+
 ## Stack Tecnológico
 
 | Capa           | Tecnología                     |
