@@ -21,3 +21,6 @@ Artisan::command('dx:send-weekly-alerts', function () {
     SendWeeklyLicenseAlertsJob::dispatchSync();
     $this->info('Alertas procesadas y enviadas correctamente.');
 })->purpose('Enviar manualmente el reporte semanal de caducidad de licencias');
+
+// Comprobación diaria de presupuesto de tokens IA
+Schedule::command('ai:check-budget')->dailyAt('23:55');
