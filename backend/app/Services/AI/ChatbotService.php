@@ -41,8 +41,11 @@ class ChatbotService
             Log::error("ChatbotService: GEMINI_API_KEY no está configurada.");
             $response = $this->fallbackToTextChain($chatHistory, 'API Key faltante');
         } else {
+            // 2. Routing de Intención (Ahorro Masivo)
+            $needsDb = $this->isDatabaseQueryNeeded($chatHistory, $geminiKey);
+            
             try {
-                $response = $this->executeGeminiFunctionCallingLoop($chatHistory, $geminiKey);
+                $response = $this->executeGeminiFunctionCallingLoop($chatHistory, $geminiKey, $needsDb);
             } catch (\Exception $e) {
                 Log::error("ChatbotService: Excepción en el bucle principal de Gemini: " . $e->getMessage());
                 $response = $this->fallbackToTextChain($chatHistory, $e->getMessage());
@@ -58,9 +61,49 @@ class ChatbotService
     }
 
     /**
+     * Clasificador ultraligero para ahorrar tokens si la pregunta es teórica.
+     */
+    private function isDatabaseQueryNeeded(array $chatHistory, string $apiKey): bool
+    {
+        $lastMessage = end($chatHistory);
+        $userText = $lastMessage['parts'][0]['text'] ?? ($lastMessage['content'] ?? '');
+        if (empty($userText)) return true;
+
+        $payload = [
+            'contents' => [
+                ['role' => 'user', 'parts' => [['text' => "Pregunta del usuario: \"{$userText}\"\n\nClasifica la intención. Responde ÚNICAMENTE con 'DB' si la pregunta requiere buscar datos de clientes, licencias, contratos, fechas de expiración o contactos en la base de datos. Responde ÚNICAMENTE con 'GENERAL' si es una pregunta teórica, de soporte, saludos, o si no requiere buscar en la BD."]]]
+            ],
+            'generationConfig' => [
+                'temperature' => 0.0,
+                'maxOutputTokens' => 10,
+            ]
+        ];
+
+        try {
+            $response = \Illuminate\Support\Facades\Http::timeout(5)->post(
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}",
+                $payload
+            );
+            
+            if ($response->successful()) {
+                $resData = $response->json();
+                $text = trim($resData['candidates'][0]['content']['parts'][0]['text'] ?? 'DB');
+                if (strtoupper($text) === 'GENERAL') {
+                    \Illuminate\Support\Facades\Log::info("ChatbotService: Intención clasificada como GENERAL. Omitiendo herramientas.");
+                    return false;
+                }
+            }
+        } catch (\Exception $e) {
+            // Ignoramos error y asumimos BD por seguridad
+        }
+        
+        return true;
+    }
+
+    /**
      * Bucle de ejecución de Function Calling para Google Gemini v1beta.
      */
-    private function executeGeminiFunctionCallingLoop(array $chatHistory, string $apiKey): array
+    private function executeGeminiFunctionCallingLoop(array $chatHistory, string $apiKey, bool $useTools = true): array
     {
         // 1. Declarar las herramientas (tools) disponibles para la IA
         $tools = [
@@ -271,13 +314,16 @@ class ChatbotService
             $payload = [
                 'contents' => $contents,
                 'systemInstruction' => $systemInstruction,
-                'tools' => $tools,
                 'generationConfig' => [
                     'temperature' => 0.1,
                 ]
             ];
+            
+            if ($useTools) {
+                $payload['tools'] = $tools;
+            }
 
-            $response = Http::timeout(30)->post(
+            $response = \Illuminate\Support\Facades\Http::timeout(30)->post(
                 "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}",
                 $payload
             );
