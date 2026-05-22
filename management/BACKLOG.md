@@ -31,7 +31,7 @@ El desarrollador inicia. El agente espera.
 *Actualmente en espera de la definición de nuevos objetivos y prioridades por parte de Oskar.*
 
 ### 💡 Ideas Pendientes (UI / UX / Soporte)
-*(Vacío por ahora)*
+- [ ] **Perfiles de Administrador**: Añadir en los perfiles de usuario de los administradores los campos `Enterprise Cloud Account Admin` (ej. gorka.ecenarro@bultzaki.com) y `Enterprise Cloud Account` (ej. 100218944).
 
 ## ✅ Completado
 
