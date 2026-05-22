@@ -1,0 +1,43 @@
+/**
+ * @module    dx-v2-support
+ * @fase      28
+ * @desc      Estilos modulares para la vista de Contactar Soporte IT.
+ * @afecta    [support/contact.blade.php]
+ * @version   2.21.0
+ */
+
+.dx-v2-support-container {
+    max-width: 600px !important;
+    margin: 0 auto !important;
+    padding-top: 2rem !important;
+}
+
+.dx-v2-support-header {
+    margin-bottom: 2rem !important;
+}
+
+.dx-v2-support-card {
+    max-width: 600px !important;
+    margin: 0 auto !important;
+    margin-top: 2rem !important;
+}
+
+.dx-v2-support-actions {
+    margin-top: 1.5rem !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+}
+
+.dx-v2-support-icon {
+    margin-right: 8px !important;
+}
+
+.dx-v2-support-title-icon {
+    color: var(--dx-v2-accent-base, #388bfd) !important;
+}
+
+.dx-v2-support-error-text {
+    color: var(--dx-v2-danger, #e05252) !important;
+    font-size: 0.85rem !important;
+    margin-top: 0.25rem !important;
+}
