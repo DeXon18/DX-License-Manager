@@ -1,6 +1,19 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-22 12:15] — Mejoras UI/UX en Módulo de Costes IA ✅
+
+### Added
+- **Métricas Avanzadas de Coste**: Añadida tarjeta "Total Peticiones" al panel principal para cerrar el Grid de 4 columnas simétricamente.
+- **Promedio de Consumo por Petición (tk/req)**: Nueva métrica en la tabla de acciones que calcula matemáticamente el coste en tokens por cada petición para identificar servicios costosos.
+- **Nombres Amigables para Logs**: Integrado un mapeador en la vista de costes para mostrar los nombres de las funciones (ej. `normalization_search` → `Herramienta de Licencias (Normalización)`).
+
+### Fixed
+- **Excepción 500 de Variables no Definidas**: Corregido error en `AiAuditCostController` que omitía el envío de las variables `$totalCostThisMonth` a la vista.
+- **Grid Layout Roto**: Eliminada la clase CSS `dx-v2-sys-dash-main-layout` del contenedor de estadísticas que reservaba erróneamente un sidebar vacío de 340px causando desalineamiento a la derecha.
+
+---
+
 ## [2026-05-22 11:30] — Módulo de Contacto de Soporte IT (Fase 28) ✅
 
 ### Added
