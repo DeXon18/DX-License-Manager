@@ -61,6 +61,19 @@
                 Acumulado desde inicio del sistema
             </div>
         </div>
+        {{-- Total Peticiones (Mes) --}}
+        <div class="dx-v2-sys-dash-stat-card">
+            <div class="dx-v2-sys-dash-stat-card-watermark">
+                <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+            </div>
+            <div class="dx-v2-sys-dash-stat-card-title">TOTAL PETICIONES (MES)</div>
+            <div class="dx-v2-sys-dash-stat-card-value accent-color" style="color: var(--dx-v2-accent);">
+                {{ number_format($providerStats->sum('requests_count'), 0, ',', '.') }}
+            </div>
+            <div class="dx-v2-sys-dash-stat-card-meta-mono">
+                Llamadas a las APIs de IA
+            </div>
+        </div>
     </div>
 
     <div class="dx-v2-sys-dash-main-layout" style="margin-top: 1.5rem;">
