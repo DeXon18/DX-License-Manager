@@ -187,3 +187,65 @@
   background: var(--dx-v2-raised, #21262d) !important;
   color: var(--dx-v2-primary, #e6edf3) !important;
 }
+
+/* Select2 Dark Mode Global Styling */
+html[data-theme="dark"] .select2-container--default .select2-selection--single {
+  background-color: var(--dx-v2-surface, #161b22) !important;
+  border: 1px solid var(--dx-v2-border, #30363d) !important;
+  border-radius: var(--dx-v2-rounded-md, 6px) !important;
+  height: 42px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+html[data-theme="dark"] .select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: var(--dx-v2-primary, #e6edf3) !important;
+  line-height: 42px !important;
+  padding-left: 14px !important;
+  font-family: var(--dx-v2-font-sans, 'Inter'), sans-serif !important;
+  font-size: 0.875rem !important;
+}
+
+html[data-theme="dark"] .select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: 40px !important;
+  right: 8px !important;
+}
+
+html[data-theme="dark"] .select2-dropdown {
+  background-color: var(--dx-v2-surface, #161b22) !important;
+  border: 1px solid var(--dx-v2-border, #30363d) !important;
+  border-radius: var(--dx-v2-rounded-md, 6px) !important;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4) !important;
+}
+
+html[data-theme="dark"] .select2-search--dropdown .select2-search__field {
+  background-color: var(--dx-v2-raised, #21262d) !important;
+  border: 1px solid var(--dx-v2-border, #30363d) !important;
+  color: var(--dx-v2-primary, #e6edf3) !important;
+  border-radius: 4px !important;
+  padding: 8px !important;
+  outline: none !important;
+}
+
+html[data-theme="dark"] .select2-search--dropdown .select2-search__field:focus {
+  border-color: var(--dx-v2-accent-base, #388bfd) !important;
+}
+
+html[data-theme="dark"] .select2-container--default .select2-results__option {
+  color: var(--dx-v2-muted, #8b949e) !important;
+  font-family: var(--dx-v2-font-sans, 'Inter'), sans-serif !important;
+  font-size: 0.875rem !important;
+  padding: 8px 14px !important;
+}
+
+html[data-theme="dark"] .select2-container--default .select2-results__option--selected {
+  background-color: var(--dx-v2-raised, #21262d) !important;
+  color: var(--dx-v2-primary, #e6edf3) !important;
+}
+
+html[data-theme="dark"] .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+  background-color: var(--dx-v2-accent-base, #388bfd) !important;
+  color: #ffffff !important;
+}
+/ *   S e l e c t 2   D a r k   M o d e   G l o b a l   S t y l i n g   * /  
+ 

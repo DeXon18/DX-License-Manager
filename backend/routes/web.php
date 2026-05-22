@@ -76,6 +76,11 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::delete('/inventory/daemon/{daemon}', [\App\Http\Controllers\InventoryController::class, 'destroyDaemon'])->middleware('permission:technician')->name('inventory.daemon.destroy');
     Route::delete('/inventory/product/{product}', [\App\Http\Controllers\InventoryController::class, 'destroyProduct'])->middleware('permission:technician')->name('inventory.product.destroy');
 
+    Route::prefix('reports')->name('reports.')->middleware('permission:technician')->group(function () {
+        Route::get('/', [\App\Http\Controllers\ReportController::class, 'index'])->name('index');
+        Route::get('/client/{client}/download', [\App\Http\Controllers\ReportController::class, 'downloadClientReport'])->name('client.download');
+    });
+
     Route::prefix('admin')->name('admin.')->middleware('permission:admin')->group(function () {
         Route::get('/import', [ImportController::class, 'index'])->name('import.index');
         Route::post('/import', [ImportController::class, 'store'])->name('import.store');
