@@ -34,8 +34,15 @@ El desarrollador inicia. El agente espera.
 - **Guías del Portal**: Crear nueva sección documental para usuarios.
 - **Contactar Soporte IT**: Crear formulario en la web conectado con el bot de Telegram (para recibir notificaciones directas).
 - **FAQ / Ayuda**: Crear nueva sección de preguntas frecuentes y asistencia.
+- **Auditoría de Costes IA**: Crear sección para el control y monitorización de tokens gastados por los modelos de IA.
 
 ## ✅ Completado
+
+### Fase 26 — Integración Campos Cloud en COD y Refactor Visual ✅
+- **Completada:** 2026-05-22
+- **Rama:** `feature/cod-cloud-fields`
+- **Resumen:** Integración de AWS y Azure cloud fields en la interfaz de generación de COD y refactorización completa del CSS de la plantilla PDF para alinearla al 100% con los estándares visuales de Siemens. Adición de la guía interactiva para `getcid.exe` con descargas directas y utilidad ATS personalizada.
+- **PR:** pendiente — a mergear en dev
 
 ### Fase 25 — Consola de Diagnósticos y Generador COD ✅
 - **Completada:** 2026-05-21
