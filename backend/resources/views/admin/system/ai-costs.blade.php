@@ -114,12 +114,26 @@
                     <div class="card-body">
                         <div class="dx-v2-sys-dash-sec-box" style="margin:0; border:none; padding:0;">
                             <div class="dx-v2-sys-dash-sec-layout">
+                                @php
+                                    $actionNames = [
+                                        'normalization_search' => 'Herramienta de Licencias (Normalización)',
+                                        'license_audit' => 'Lector de Licencias (.lic)',
+                                        'chatbot' => 'Chat Asistente',
+                                        'cod_processor' => 'Procesador COD',
+                                        'cost_calculation' => 'Cálculo de Costes',
+                                    ];
+                                @endphp
                                 @forelse($actionStats as $stat)
                                     <div class="dx-v2-sys-dash-sec-row {{ $loop->last ? 'no-border' : '' }}">
-                                        <span class="dx-v2-sys-dash-sec-label">{{ $stat->action }}</span>
+                                        <span class="dx-v2-sys-dash-sec-label">
+                                            {{ $actionNames[$stat->action] ?? str_replace('_', ' ', Str::title($stat->action)) }}
+                                        </span>
                                         <div style="text-align: right;">
                                             <span class="dx-v2-sys-dash-sec-value">{{ number_format($stat->total_tokens, 0, ',', '.') }} tk</span>
-                                            <div class="dx-v2-sys-dash-sec-footer-code" style="font-size: 0.75rem; margin-top: 4px;">{{ $stat->requests_count }} reqs</div>
+                                            <div class="dx-v2-sys-dash-sec-footer-code" style="font-size: 0.75rem; margin-top: 4px;">
+                                                {{ $stat->requests_count }} reqs &nbsp;&middot;&nbsp; 
+                                                ~{{ number_format(round($stat->total_tokens / max(1, $stat->requests_count)), 0, ',', '.') }} tk/req
+                                            </div>
                                         </div>
                                     </div>
                                 @empty
