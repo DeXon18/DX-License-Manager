@@ -80,6 +80,15 @@
         <div class="dx-v2-sys-dash-main-col">
 
             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem;">
+                @php
+                    if (!function_exists('compact_number')) {
+                        function compact_number($num) {
+                            if ($num >= 1000000) return round($num / 1000000, 1) . 'M';
+                            if ($num >= 1000) return round($num / 1000, 1) . 'k';
+                            return number_format($num, 0, ',', '.');
+                        }
+                    }
+                @endphp
                 {{-- Uso por Proveedor --}}
                 <div class="card">
                     <div class="card-header">
@@ -92,13 +101,13 @@
                                     <div class="dx-v2-sys-dash-sec-row {{ $loop->last ? 'no-border' : '' }}">
                                         <span class="dx-v2-sys-dash-sec-label" style="text-transform: capitalize; font-weight: 600; color: var(--dx-v2-primary-base);">{{ $stat->provider }}</span>
                                         <div style="display: flex; align-items: center; gap: 16px; text-align: right;">
-                                            <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1;">{{ number_format($stat->total_tokens, 0, ',', '.') }}</span>
+                                            <div style="display: flex; flex-direction: column; align-items: flex-end; min-width: 50px;">
+                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1;">{{ compact_number($stat->total_tokens) }}</span>
                                                 <span style="font-size: 0.65rem; color: var(--dx-v2-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 4px;">Tokens</span>
                                             </div>
                                             <div style="width: 1px; height: 28px; background: var(--dx-v2-border-base); opacity: 0.6;"></div>
                                             <div style="display: flex; flex-direction: column; align-items: flex-end; min-width: 48px;">
-                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1; color: var(--dx-v2-text-secondary);">{{ $stat->requests_count }}</span>
+                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1; color: var(--dx-v2-text-secondary);">{{ compact_number($stat->requests_count) }}</span>
                                                 <span style="font-size: 0.65rem; color: var(--dx-v2-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 4px;">Reqs</span>
                                             </div>
                                         </div>
@@ -139,17 +148,17 @@
                                                 {{ $actionNames[$stat->action] ?? str_replace('_', ' ', Str::title($stat->action)) }}
                                             </span>
                                             <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--dx-v2-muted); margin-top: 4px;">
-                                                ~{{ number_format(round($stat->total_tokens / max(1, $stat->requests_count)), 0, ',', '.') }} tk/req
+                                                ~{{ compact_number(round($stat->total_tokens / max(1, $stat->requests_count))) }} tk/req
                                             </span>
                                         </div>
                                         <div style="display: flex; align-items: center; gap: 16px; text-align: right;">
-                                            <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1;">{{ number_format($stat->total_tokens, 0, ',', '.') }}</span>
+                                            <div style="display: flex; flex-direction: column; align-items: flex-end; min-width: 50px;">
+                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1;">{{ compact_number($stat->total_tokens) }}</span>
                                                 <span style="font-size: 0.65rem; color: var(--dx-v2-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 4px;">Tokens</span>
                                             </div>
                                             <div style="width: 1px; height: 28px; background: var(--dx-v2-border-base); opacity: 0.6;"></div>
                                             <div style="display: flex; flex-direction: column; align-items: flex-end; min-width: 48px;">
-                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1; color: var(--dx-v2-text-secondary);">{{ $stat->requests_count }}</span>
+                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1; color: var(--dx-v2-text-secondary);">{{ compact_number($stat->requests_count) }}</span>
                                                 <span style="font-size: 0.65rem; color: var(--dx-v2-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 4px;">Reqs</span>
                                             </div>
                                         </div>
@@ -180,13 +189,13 @@
                                             </span>
                                         </div>
                                         <div style="display: flex; align-items: center; gap: 16px; text-align: right;">
-                                            <div style="display: flex; flex-direction: column; align-items: flex-end;">
-                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1;">{{ number_format($stat->total_tokens, 0, ',', '.') }}</span>
+                                            <div style="display: flex; flex-direction: column; align-items: flex-end; min-width: 50px;">
+                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1;">{{ compact_number($stat->total_tokens) }}</span>
                                                 <span style="font-size: 0.65rem; color: var(--dx-v2-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 4px;">Tokens</span>
                                             </div>
                                             <div style="width: 1px; height: 28px; background: var(--dx-v2-border-base); opacity: 0.6;"></div>
                                             <div style="display: flex; flex-direction: column; align-items: flex-end; min-width: 48px;">
-                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1; color: var(--dx-v2-text-secondary);">{{ $stat->requests_count }}</span>
+                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1; color: var(--dx-v2-text-secondary);">{{ compact_number($stat->requests_count) }}</span>
                                                 <span style="font-size: 0.65rem; color: var(--dx-v2-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 4px;">Reqs</span>
                                             </div>
                                         </div>
