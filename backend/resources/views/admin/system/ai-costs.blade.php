@@ -178,9 +178,6 @@
                                             <span class="dx-v2-sys-dash-sec-label" style="font-weight: 600; color: var(--dx-v2-primary-base);">
                                                 {{ $stat->user->name ?? 'Sistema' }}
                                             </span>
-                                            <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--dx-v2-muted); margin-top: 4px;">
-                                                {{ $stat->user->email ?? 'N/A' }}
-                                            </span>
                                         </div>
                                         <div style="display: flex; align-items: center; gap: 16px; text-align: right;">
                                             <div style="display: flex; flex-direction: column; align-items: flex-end;">
