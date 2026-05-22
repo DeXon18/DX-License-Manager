@@ -39,7 +39,7 @@
                 <h4 class="footer-title">Soporte Interno</h4>
                 <ul class="footer-links">
                     <li><a href="#"><i class="fa-solid fa-book-open"></i> Guías del Portal</a></li>
-                    <li><a href="#"><i class="fa-solid fa-envelope"></i> Contactar Soporte IT</a></li>
+                    <li><a href="{{ route('support.contact') }}"><i class="fa-solid fa-envelope"></i> Contactar Soporte IT</a></li>
                     <li><a href="#"><i class="fa-solid fa-circle-question"></i> FAQ / Ayuda</a></li>
                 </ul>
             </div>

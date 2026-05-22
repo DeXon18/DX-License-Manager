@@ -109,6 +109,13 @@
                     <span class="sidebar-icon">🛠️</span> Hub de Utilidades
                 </a>
             </div>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-heading">Ayuda & Soporte</div>
+                <a class="sidebar-item {{ request()->routeIs('support.*') ? 'active' : '' }}" href="{{ route('support.contact') }}">
+                    <span class="sidebar-icon">💬</span> Contactar Soporte IT
+                </a>
+            </div>
 
             @if(Auth::user() && Auth::user()->hasRole('admin'))
             <div class="sidebar-section">
