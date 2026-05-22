@@ -88,6 +88,7 @@ Route::middleware(['auth.jwt'])->group(function () {
 
         Route::get('/system', [SystemDashboardController::class, 'index'])->name('system.index');
         Route::get('/system/docker', [SystemDashboardController::class, 'docker'])->name('system.docker');
+        Route::get('/system/ai-costs', [\App\Http\Controllers\Admin\AiAuditCostController::class, 'index'])->name('system.ai-costs');
         
         Route::prefix('system/actions')->name('system.')->group(function () {
             Route::post('/clear-cache', [SystemActionController::class, 'clearCache'])->name('clear-cache');

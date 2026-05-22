@@ -3,6 +3,7 @@
 namespace App\Services\AI;
 
 use App\Models\Client;
+use App\Models\AiTokenLog;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -78,6 +79,11 @@ EOT;
                 if ($response->successful()) {
                     $resData = $response->json();
                     $text = $resData['candidates'][0]['content']['parts'][0]['text'] ?? '{}';
+                    
+                    if (isset($resData['usageMetadata'])) {
+                        $this->logTokens('gemini', 'normalization_search', $resData['usageMetadata']);
+                    }
+
                     $parsed = $this->parseJsonAndValidate($text);
                     if ($parsed) {
                         $parsed['provider'] = 'gemini';
@@ -112,6 +118,11 @@ EOT;
                 if ($response->successful()) {
                     $resData = $response->json();
                     $text = $resData['choices'][0]['message']['content'] ?? '{}';
+                    
+                    if (isset($resData['usage'])) {
+                        $this->logTokens('deepseek', 'normalization_search', $resData['usage']);
+                    }
+
                     $parsed = $this->parseJsonAndValidate($text);
                     if ($parsed) {
                         $parsed['provider'] = 'deepseek';
@@ -147,6 +158,11 @@ EOT;
                 if ($response->successful()) {
                     $resData = $response->json();
                     $text = $resData['choices'][0]['message']['content'] ?? '{}';
+                    
+                    if (isset($resData['usage'])) {
+                        $this->logTokens('openrouter', 'normalization_search', $resData['usage']);
+                    }
+
                     $parsed = $this->parseJsonAndValidate($text);
                     if ($parsed) {
                         $parsed['provider'] = 'openrouter';
@@ -293,6 +309,11 @@ EOT;
                 if ($response->successful()) {
                     $resData = $response->json();
                     $text = $resData['candidates'][0]['content']['parts'][0]['text'] ?? '{}';
+                    
+                    if (isset($resData['usageMetadata'])) {
+                        $this->logTokens('gemini', 'normalization_pair', $resData['usageMetadata']);
+                    }
+
                     $decoded = $this->parseJsonAndValidateDuplicate($text);
                     if ($decoded) {
                         $decoded['provider'] = 'gemini';
@@ -320,6 +341,11 @@ EOT;
                 if ($response->successful()) {
                     $resData = $response->json();
                     $text = $resData['choices'][0]['message']['content'] ?? '{}';
+                    
+                    if (isset($resData['usage'])) {
+                        $this->logTokens('deepseek', 'normalization_pair', $resData['usage']);
+                    }
+
                     $decoded = $this->parseJsonAndValidateDuplicate($text);
                     if ($decoded) {
                         $decoded['provider'] = 'deepseek';
@@ -356,5 +382,39 @@ EOT;
             'confidence' => (float) ($decoded['confidence'] ?? 0.0),
             'reason' => (string) ($decoded['reason'] ?? 'Analizado semánticamente.'),
         ];
+    }
+
+    /**
+     * Registra los tokens consumidos en la base de datos.
+     */
+    private function logTokens(string $provider, string $action, array $usageData): void
+    {
+        try {
+            $promptTokens = 0;
+            $completionTokens = 0;
+            $totalTokens = 0;
+
+            if ($provider === 'gemini') {
+                $promptTokens = $usageData['promptTokenCount'] ?? 0;
+                $completionTokens = $usageData['candidatesTokenCount'] ?? 0;
+                $totalTokens = $usageData['totalTokenCount'] ?? 0;
+            } else {
+                // Formato OpenAI/DeepSeek/OpenRouter
+                $promptTokens = $usageData['prompt_tokens'] ?? 0;
+                $completionTokens = $usageData['completion_tokens'] ?? 0;
+                $totalTokens = $usageData['total_tokens'] ?? 0;
+            }
+
+            AiTokenLog::create([
+                'provider' => $provider,
+                'action' => $action,
+                'prompt_tokens' => $promptTokens,
+                'completion_tokens' => $completionTokens,
+                'total_tokens' => $totalTokens,
+                'user_id' => auth()->check() ? auth()->id() : null,
+            ]);
+        } catch (\Exception $e) {
+            Log::warning("ClientAiNormalizationService: No se pudo registrar tokens: " . $e->getMessage());
+        }
     }
 }

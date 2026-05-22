@@ -1,7 +1,16 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
-## [2026-05-22 09:50] — COD Cloud Fields & PDF Refactor ✅
+## [2026-05-22 11:00] — AI Cost Audit & Telemetry Dashboard ✅
+
+### Added
+- **Módulo de Costes y Telemetría IA**: Implementada la persistencia en base de datos (`AiTokenLog`) para realizar el seguimiento del consumo de tokens (prompt, completion y total) de todos los motores de Inteligencia Artificial (Gemini, DeepSeek, OpenRouter, n8n).
+- **Dashboard de Costes (NOC Pro)**: Nueva vista en `/admin/system/ai-costs` con diseño Bento Grid, contadores en tiempo real de tokens consumidos y gráficas interactivas con `Chart.js` comparando el uso por proveedor.
+- **Auditoría Financiera**: Cálculo automático de costes estimados basado en las tarifas de mercado actuales de cada proveedor. El cálculo se realiza por cada llamada y se resume mensualmente e históricamente.
+- **Instrumentación del Chatbot**: Integrada telemetría de tokens en el DX Agent Support (Chatbot) dentro de `ChatbotController.php` para registrar cada interacción y su respectivo consumo bajo la acción `chatbot_query`.
+- **Integraciones Previas Actualizadas**: Modificados `ClientAiNormalizationService`, `CompositeParserService` y `AuditService` para inyectar logs de consumo en cada paso del pipeline.
+
+---
 
 ### Added
 - **Campos Cloud AWS & Azure**: Integración de nuevos campos (`Cloud_AWS` y `Cloud_Azure`) en el formulario de generación de COD, incluyendo su persistencia en el payload y renderizado en PDF.

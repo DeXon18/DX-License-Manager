@@ -129,6 +129,22 @@ class AuditService
             Log::error("Error sincronizando inventario: " . $e->getMessage());
         }
 
+        // Registrar tokens de IA si el webhook de n8n los incluye
+        if (!empty($data['usage']) && is_array($data['usage'])) {
+            try {
+                \App\Models\AiTokenLog::create([
+                    'provider' => 'n8n',
+                    'action' => 'license_audit',
+                    'prompt_tokens' => $data['usage']['prompt_tokens'] ?? 0,
+                    'completion_tokens' => $data['usage']['completion_tokens'] ?? 0,
+                    'total_tokens' => $data['usage']['total_tokens'] ?? 0,
+                    'user_id' => $audit->user_id,
+                ]);
+            } catch (\Exception $e) {
+                Log::warning("AuditService: No se pudo registrar tokens de n8n: " . $e->getMessage());
+            }
+        }
+
         return true;
     }
 }
