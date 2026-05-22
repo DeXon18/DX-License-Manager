@@ -31,8 +31,7 @@ El desarrollador inicia. El agente espera.
 *Actualmente en espera de la definición de nuevos objetivos y prioridades por parte de Oskar.*
 
 ### 💡 Ideas Pendientes (UI / UX / Soporte)
-- **Guías del Portal**: Crear nueva sección documental para usuarios (Idea Descartada).
-- **FAQ / Ayuda**: Crear nueva sección de preguntas frecuentes y asistencia.
+*(Vacío por ahora)*
 
 ## ✅ Completado
 
@@ -559,5 +558,6 @@ _Firmado por: **Antigravity (DX Agent)** 🦾_
 
 ## ?? Ideas Futuras / QoL
 
-(Vacío)
+- ~~**FAQ / Ayuda**: Crear nueva sección de preguntas frecuentes y asistencia.~~ *(Descartada)*
+- ~~**Guías del Portal**: Crear nueva sección documental para usuarios.~~ *(Descartada)*
 
