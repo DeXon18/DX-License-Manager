@@ -211,13 +211,24 @@
                 </div>
             </div>
 
-            {{-- Gráfica de Consumo Diario --}}
-            <div class="card" style="margin-top: 1.5rem;">
-                <div class="card-header">
-                    <span class="card-title">Consumo de Tokens (Mes Actual)</span>
+            {{-- Gráficas de Consumo Diario --}}
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Tendencia por Proveedor (Mes)</span>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="dailyTokensChart" height="120"></canvas>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <canvas id="dailyTokensChart" height="80"></canvas>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Tendencia por Usuario (Mes)</span>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="dailyUserTokensChart" height="120"></canvas>
+                    </div>
                 </div>
             </div>
 
@@ -274,81 +285,97 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // 1. Gráfica por Proveedor
     const chartData = @json($chartData);
-    
-    if (!chartData || chartData.dates.length === 0) return;
+    if (chartData && chartData.dates.length > 0) {
+        const ctx = document.getElementById('dailyTokensChart').getContext('2d');
+        const colors = {
+            'gemini': '#8e44ad',
+            'deepseek': '#4a90e2',
+            'openrouter': '#f39c12',
+            'n8n': '#2ecc71',
+            'default': '#e74c3c'
+        };
 
-    const ctx = document.getElementById('dailyTokensChart').getContext('2d');
-    
-    const colors = {
-        'gemini': '#8e44ad', // Morado
-        'deepseek': '#4a90e2', // Azul eléctrico
-        'openrouter': '#f39c12', // Naranja
-        'n8n': '#2ecc71', // Verde
-        'default': '#e74c3c'
-    };
+        const datasets = chartData.providers.map(provider => {
+            const color = colors[provider] || colors['default'];
+            const data = chartData.dates.map(date => chartData.stats[date][provider] || 0);
 
-    const datasets = chartData.providers.map(provider => {
-        const color = colors[provider] || colors['default'];
-        
-        const data = chartData.dates.map(date => {
-            return chartData.stats[date][provider] || 0;
+            return {
+                label: provider.toUpperCase(),
+                data: data,
+                borderColor: color,
+                backgroundColor: color + '22',
+                borderWidth: 2,
+                pointBackgroundColor: '#1c1e26',
+                pointBorderColor: color,
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                fill: true,
+                tension: 0.4
+            };
         });
 
-        return {
-            label: provider.toUpperCase(),
-            data: data,
-            borderColor: color,
-            backgroundColor: color + '22', // Transparente
-            borderWidth: 2,
-            pointBackgroundColor: '#1c1e26',
-            pointBorderColor: color,
-            pointBorderWidth: 2,
-            pointRadius: 4,
-            fill: true,
-            tension: 0.4
-        };
-    });
-
-    new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: chartData.dates,
-            datasets: datasets
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { 
-                    display: true,
-                    labels: { color: '#8a94a6', font: { family: 'Outfit', size: 12 }, usePointStyle: true }
+        new Chart(ctx, {
+            type: 'line',
+            data: { labels: chartData.dates, datasets: datasets },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true, labels: { color: '#8a94a6', font: { family: 'Outfit', size: 12 }, usePointStyle: true } },
+                    tooltip: { backgroundColor: '#1c1e26', titleColor: '#8a94a6', bodyColor: '#ffffff', borderColor: '#2b2e38', borderWidth: 1, padding: 10, mode: 'index', intersect: false }
                 },
-                tooltip: {
-                    backgroundColor: '#1c1e26',
-                    titleColor: '#8a94a6',
-                    bodyColor: '#ffffff',
-                    borderColor: '#2b2e38',
-                    borderWidth: 1,
-                    padding: 10,
-                    mode: 'index',
-                    intersect: false
-                }
-            },
-            interaction: { mode: 'nearest', axis: 'x', intersect: false },
-            scales: {
-                x: {
-                    grid: { display: false, drawBorder: false },
-                    ticks: { color: '#8a94a6', font: { family: 'Outfit', size: 11 } },
-                    stacked: false
-                },
-                y: {
-                    grid: { color: '#2b2e38', drawBorder: false },
-                    ticks: { color: '#8a94a6', font: { family: 'Outfit', size: 11 }, maxTicksLimit: 5 },
-                    stacked: false
+                interaction: { mode: 'nearest', axis: 'x', intersect: false },
+                scales: {
+                    x: { grid: { display: false, drawBorder: false }, ticks: { color: '#8a94a6', font: { family: 'Outfit', size: 11 } } },
+                    y: { grid: { color: '#2b2e38', drawBorder: false }, ticks: { color: '#8a94a6', font: { family: 'Outfit', size: 11 }, maxTicksLimit: 5 } }
                 }
             }
-        }
-    });
+        });
+    }
+
+    // 2. Gráfica por Usuario
+    const userChartData = @json($userChartData);
+    if (userChartData && userChartData.dates.length > 0) {
+        const ctxUser = document.getElementById('dailyUserTokensChart').getContext('2d');
+        const userColors = ['#1abc9c', '#9b59b6', '#34495e', '#f1c40f', '#e67e22', '#e74c3c', '#95a5a6'];
+
+        const userDatasets = userChartData.users.map((user, index) => {
+            const color = userColors[index % userColors.length];
+            const data = userChartData.dates.map(date => userChartData.stats[date][user] || 0);
+
+            return {
+                label: user,
+                data: data,
+                borderColor: color,
+                backgroundColor: color + '22',
+                borderWidth: 2,
+                pointBackgroundColor: '#1c1e26',
+                pointBorderColor: color,
+                pointBorderWidth: 2,
+                pointRadius: 4,
+                fill: true,
+                tension: 0.4
+            };
+        });
+
+        new Chart(ctxUser, {
+            type: 'line',
+            data: { labels: userChartData.dates, datasets: userDatasets },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true, labels: { color: '#8a94a6', font: { family: 'Outfit', size: 12 }, usePointStyle: true } },
+                    tooltip: { backgroundColor: '#1c1e26', titleColor: '#8a94a6', bodyColor: '#ffffff', borderColor: '#2b2e38', borderWidth: 1, padding: 10, mode: 'index', intersect: false }
+                },
+                interaction: { mode: 'nearest', axis: 'x', intersect: false },
+                scales: {
+                    x: { grid: { display: false, drawBorder: false }, ticks: { color: '#8a94a6', font: { family: 'Outfit', size: 11 } } },
+                    y: { grid: { color: '#2b2e38', drawBorder: false }, ticks: { color: '#8a94a6', font: { family: 'Outfit', size: 11 }, maxTicksLimit: 5 } }
+                }
+            }
+        });
+    }
 });
 </script>
 @endsection
