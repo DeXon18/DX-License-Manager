@@ -38,6 +38,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Fase 26 — Integración Campos Cloud en COD y Refactor Visual ✅
+- **Completada:** 2026-05-22
+- **Rama:** `feature/cod-cloud-fields`
+- **Resumen:** Integración de AWS y Azure cloud fields en la interfaz de generación de COD y refactorización completa del CSS de la plantilla PDF para alinearla al 100% con los estándares visuales de Siemens. Adición de la guía interactiva para `getcid.exe` con descargas directas y utilidad ATS personalizada.
+- **PR:** pendiente — a mergear en dev
+
 ### Fase 25 — Consola de Diagnósticos y Generador COD ✅
 - **Completada:** 2026-05-21
 - **Rama:** `feature/chatbot-web-assist`
