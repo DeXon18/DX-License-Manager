@@ -12,6 +12,8 @@
 
 ---
 
+## [2026-05-22 09:50] — COD Cloud Fields & PDF Refactor ✅
+
 ### Added
 - **Campos Cloud AWS & Azure**: Integración de nuevos campos (`Cloud_AWS` y `Cloud_Azure`) en el formulario de generación de COD, incluyendo su persistencia en el payload y renderizado en PDF.
 - **Acordeón Interactivo de Ayuda (getcid.exe)**: Implementación de un acordeón interactivo con Alpine.js en la vista COD (`cod.blade.php`) que proporciona una guía detallada para obtener el Composite ID, ejemplos de comandos y un recuadro dedicado para descargar la utilidad oficial de Siemens, así como un espacio reservado para una herramienta personalizada ATS.
