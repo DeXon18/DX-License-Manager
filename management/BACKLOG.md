@@ -31,11 +31,16 @@ El desarrollador inicia. El agente espera.
 *Actualmente en espera de la definición de nuevos objetivos y prioridades por parte de Oskar.*
 
 ### 💡 Ideas Pendientes (UI / UX / Soporte)
-- **Guías del Portal**: Crear nueva sección documental para usuarios.
-- **Contactar Soporte IT**: Crear formulario en la web conectado con el bot de Telegram (para recibir notificaciones directas).
+- **Guías del Portal**: Crear nueva sección documental para usuarios (Idea Descartada).
 - **FAQ / Ayuda**: Crear nueva sección de preguntas frecuentes y asistencia.
 
 ## ✅ Completado
+
+### Fase 28 — Contactar Soporte IT (Formulario a Telegram) ✅
+- **Completada:** 2026-05-22
+- **Rama:** `feature/contact-it-support` (Fusionada en `dev`)
+- **Resumen:** Creación de un formulario directo de soporte (`/soporte`) integrado con la API de Telegram para que los usuarios puedan reportar incidencias directamente a Oskar.
+- **PR:** Fusionado en dev
 
 ### Fase 27 — Auditoría de Costes e IA ✅
 - **Completada:** 2026-05-22
