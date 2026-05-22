@@ -77,7 +77,33 @@ class AiAuditCostController extends Controller
             'stats' => $dailyStats
         ];
 
-        // 5. Historial reciente con paginación
+        // 5. Uso diario (Mes Actual) agrupado por fecha y usuario
+        $dailyUserRecords = AiTokenLog::with('user:id,name')
+            ->where('created_at', '>=', $currentMonth)
+            ->whereNotNull('user_id')
+            ->select(DB::raw('DATE(created_at) as date'), 'user_id', DB::raw('SUM(total_tokens) as total'))
+            ->groupBy(DB::raw('DATE(created_at)'), 'user_id')
+            ->orderBy('date')
+            ->get();
+
+        $dailyUserStats = [];
+        $usersSet = [];
+        foreach ($dailyUserRecords as $record) {
+            if (!isset($dailyUserStats[$record->date])) {
+                $dailyUserStats[$record->date] = [];
+            }
+            $userName = $record->user->name ?? 'Sistema';
+            $dailyUserStats[$record->date][$userName] = $record->total;
+            $usersSet[$userName] = true;
+        }
+
+        $userChartData = [
+            'dates' => array_keys($dailyUserStats),
+            'users' => array_keys($usersSet),
+            'stats' => $dailyUserStats
+        ];
+
+        // 6. Historial reciente con paginación
         $logs = AiTokenLog::with('user:id,name,email')
             ->orderByDesc('created_at')
             ->paginate(15);
@@ -93,6 +119,7 @@ class AiAuditCostController extends Controller
             'actionStats',
             'userStats',
             'chartData',
+            'userChartData',
             'logs'
         ));
     }
