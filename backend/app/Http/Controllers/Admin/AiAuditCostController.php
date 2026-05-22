@@ -23,6 +23,12 @@ class AiAuditCostController extends Controller
         $completionTokensThisMonth = AiTokenLog::where('created_at', '>=', $currentMonth)->sum('completion_tokens');
         
         $totalTokensAllTime = AiTokenLog::sum('total_tokens');
+        $totalPromptTokensAllTime = AiTokenLog::sum('prompt_tokens');
+        $totalCompletionTokensAllTime = AiTokenLog::sum('completion_tokens');
+
+        // Estimación de coste (Gemini Flash 1.5 aprox: $0.15/1M Prompt, $0.60/1M Completion)
+        $totalCostThisMonth = ($promptTokensThisMonth / 1000000 * 0.15) + ($completionTokensThisMonth / 1000000 * 0.60);
+        $totalCostAllTime = ($totalPromptTokensAllTime / 1000000 * 0.15) + ($totalCompletionTokensAllTime / 1000000 * 0.60);
 
         // 2. Uso por Proveedor (Mes Actual)
         $providerStats = AiTokenLog::where('created_at', '>=', $currentMonth)
@@ -72,6 +78,8 @@ class AiAuditCostController extends Controller
             'promptTokensThisMonth',
             'completionTokensThisMonth',
             'totalTokensAllTime',
+            'totalCostThisMonth',
+            'totalCostAllTime',
             'providerStats',
             'actionStats',
             'chartData',
