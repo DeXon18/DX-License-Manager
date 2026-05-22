@@ -127,7 +127,7 @@
                                         'normalization_pair'   => 'Normalización (Escáner de Duplicados)',
                                         'license_audit'        => 'Auditoría de Licencias (.lic)',
                                         'composite_parse'      => 'Análisis Composite.txt (COD)',
-                                        'chatbot'              => 'Chatbot Asistente',
+                                        'chatbot_query'        => 'Chatbot Asistente',
                                         'cost_calculation'     => 'Cálculo de Costes',
                                         'cod_processor'        => 'Procesador COD (Antiguo)',
                                     ];
