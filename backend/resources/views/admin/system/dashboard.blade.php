@@ -221,40 +221,43 @@
             {{-- Dedicated Modules Navigation --}}
             <div class="dx-v2-sys-dash-modules-grid">
                 <a href="{{ route('admin.system.docker') }}" class="dx-v2-sys-dash-module-card">
-                    <div class="dx-v2-sys-dash-module-icon-box docker-brand">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                    </div>
-                    <div class="dx-v2-sys-dash-module-text-box">
+                    <div class="dx-v2-sys-dash-module-header">
+                        <div class="dx-v2-sys-dash-module-icon-box docker-brand">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                        </div>
                         <span class="dx-v2-sys-dash-module-title">Docker Monitor</span>
-                        <p class="dx-v2-sys-dash-module-desc">Salud de contenedores, telemetría de CPU/RAM y gestión de servicios en tiempo real.</p>
                     </div>
+                    <p class="dx-v2-sys-dash-module-desc">Salud de contenedores, telemetría de CPU/RAM y gestión de servicios en tiempo real.</p>
                 </a>
+                
                 <a href="{{ route('admin.backups.index') }}" class="dx-v2-sys-dash-module-card">
-                    <div class="dx-v2-sys-dash-module-icon-box backups-brand">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                    </div>
-                    <div class="dx-v2-sys-dash-module-text-box">
+                    <div class="dx-v2-sys-dash-module-header">
+                        <div class="dx-v2-sys-dash-module-icon-box backups-brand">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                        </div>
                         <span class="dx-v2-sys-dash-module-title">Gestión de Backups</span>
-                        <p class="dx-v2-sys-dash-module-desc">Historial completo, descargas y gestión de espacio en disco para copias de seguridad.</p>
                     </div>
+                    <p class="dx-v2-sys-dash-module-desc">Historial completo, descargas y gestión de espacio en disco para copias de seguridad.</p>
                 </a>
+                
                 <a href="{{ route('admin.audit.index') }}" class="dx-v2-sys-dash-module-card">
-                    <div class="dx-v2-sys-dash-module-icon-box audit-brand">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                    </div>
-                    <div class="dx-v2-sys-dash-module-text-box">
+                    <div class="dx-v2-sys-dash-module-header">
+                        <div class="dx-v2-sys-dash-module-icon-box audit-brand">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                        </div>
                         <span class="dx-v2-sys-dash-module-title">Auditoría y Logs</span>
-                        <p class="dx-v2-sys-dash-module-desc">Trazabilidad total con filtros avanzados por usuario, acción, nivel e IP.</p>
                     </div>
+                    <p class="dx-v2-sys-dash-module-desc">Trazabilidad total con filtros avanzados por usuario, acción, nivel e IP.</p>
                 </a>
+                
                 <a href="{{ route('admin.system.ai-costs') }}" class="dx-v2-sys-dash-module-card">
-                    <div class="dx-v2-sys-dash-module-icon-box ai-brand" style="color: var(--dx-v2-accent);">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                    </div>
-                    <div class="dx-v2-sys-dash-module-text-box">
+                    <div class="dx-v2-sys-dash-module-header">
+                        <div class="dx-v2-sys-dash-module-icon-box ai-brand" style="color: var(--dx-v2-accent);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                        </div>
                         <span class="dx-v2-sys-dash-module-title">Costes IA</span>
-                        <p class="dx-v2-sys-dash-module-desc">Monitorización de tokens, telemetría y costes de motores IA (Gemini, DeepSeek).</p>
                     </div>
+                    <p class="dx-v2-sys-dash-module-desc">Monitorización de tokens, telemetría y costes de motores IA (Gemini, DeepSeek).</p>
                 </a>
             </div>
         </div>
