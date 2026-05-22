@@ -44,6 +44,15 @@ class AiAuditCostController extends Controller
             ->orderByDesc('total_tokens')
             ->get();
 
+        // 4. Uso por Usuario (Mes Actual)
+        $userStats = AiTokenLog::where('created_at', '>=', $currentMonth)
+            ->whereNotNull('user_id')
+            ->select('user_id', DB::raw('SUM(total_tokens) as total_tokens'), DB::raw('COUNT(*) as requests_count'))
+            ->groupBy('user_id')
+            ->with('user:id,name,email')
+            ->orderByDesc('total_tokens')
+            ->get();
+
         // 4. Uso diario (Mes Actual) para la gráfica, agrupado por fecha y proveedor
         $dailyRecords = AiTokenLog::where('created_at', '>=', $currentMonth)
             ->select(DB::raw('DATE(created_at) as date'), 'provider', DB::raw('SUM(total_tokens) as total'))
@@ -82,6 +91,7 @@ class AiAuditCostController extends Controller
             'totalCostAllTime',
             'providerStats',
             'actionStats',
+            'userStats',
             'chartData',
             'logs'
         ));
