@@ -32,24 +32,24 @@
         body {
             font-family: 'Calibri', sans-serif;
             font-size: 11px;
-            padding: 0 40px;
+            padding: 36px 51px 0 51px;
             color: #000;
         }
 
         .header-logo {
             text-align: right;
             margin-top: 0;
-            margin-bottom: 5px;
+            margin-bottom: 25px; /* 36 top + 45 logo + 25 margin = 106px para el address */
         }
 
         .header-logo img {
-            width: 200px;
+            width: 230px;
         }
 
         .siemens-address {
             font-weight: bold;
-            line-height: 1.0;
-            margin-bottom: 8px;
+            line-height: 1.3;
+            margin-bottom: 10px;
             font-size: 11px;
         }
 
@@ -57,20 +57,24 @@
             text-align: center;
             font-size: 14px;
             text-transform: uppercase;
-            margin: 12px 0 6px 0;
+            margin: 30px 0 20px 0;
         }
 
         p {
-            font-size: 13px;
-            line-height: 1.1;
+            font-size: 12px;
+            line-height: 1.5;
             text-align: justify;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         .data-row {
-            font-size: 13px;
+            font-size: 12px;
             margin-bottom: 0;
-            line-height: 1.0;
+            line-height: 1.3;
+        }
+
+        .sold-to-row {
+            margin-bottom: 15px;
         }
 
         .data-label {
@@ -78,14 +82,15 @@
         }
 
         .signature-section {
-            margin-top: 15px;
-            font-size: 13px;
+            margin-top: 30px;
+            font-size: 12px;
+            page-break-inside: avoid;
         }
 
         .signature-line {
-            margin-top: 25px;
+            margin-top: 36px;
             border-top: 1px solid #000;
-            width: 250px;
+            width: 171px;
         }
 
         /* Case sensitivity for Linux */
@@ -110,9 +115,9 @@
     <h1>{{ $texts['cessation_cert'] }}</h1>
 
     <p>{{ $texts['cessation_p1'] }}</p>
-    <p>{{ $texts['cessation_p2'] }}</p>
+    <p style="margin-bottom: 20px;">{{ $texts['cessation_p2'] }}</p>
 
-    <div class="data-row">
+    <div class="data-row sold-to-row">
         <span class="data-label">{{ $texts['sold_to'] }}:</span> {{ $data['Data_SoldTo'] }}
     </div>
 
@@ -132,6 +137,18 @@
             <span class="data-label">{{ $texts['hostname'] }}:</span> 
             <span class="case-sensitive">{{ $data['Hostname_Old'] ?? '' }}</span>
         </div>
+        @if(!empty($data['Cloud_AWS_Old']))
+            <div class="data-row">
+                <span class="data-label">{{ $texts['cloud_aws'] }}:</span> 
+                <span class="case-sensitive">{{ $data['Cloud_AWS_Old'] }}</span>
+            </div>
+        @endif
+        @if(!empty($data['Cloud_Azure_Old']))
+            <div class="data-row">
+                <span class="data-label">{{ $texts['cloud_azure'] }}:</span> 
+                <span class="case-sensitive">{{ $data['Cloud_Azure_Old'] }}</span>
+            </div>
+        @endif
     @endif
 
     @if(isset($data['MAC_Old_Extra']) && is_array($data['MAC_Old_Extra']))
@@ -147,7 +164,7 @@
 
     <h1>{{ $texts['company_cert'] }}</h1>
 
-    <p>{{ $texts['company_p1'] }}</p>
+    <p style="margin-bottom: 20px;">{{ $texts['company_p1'] }}</p>
 
     @if(($data['docType'] ?? '') === 'Change_Full' || ($data['docType'] ?? '') === 'Change_NodeLocked')
         <div class="data-row">
@@ -165,6 +182,18 @@
             <span class="data-label">{{ $texts['hostname'] }}:</span> 
             <span class="case-sensitive">{{ $data['Hostname_New'] ?? '' }}</span>
         </div>
+        @if(!empty($data['Cloud_AWS_New']))
+            <div class="data-row">
+                <span class="data-label">{{ $texts['cloud_aws'] }}:</span> 
+                <span class="case-sensitive">{{ $data['Cloud_AWS_New'] }}</span>
+            </div>
+        @endif
+        @if(!empty($data['Cloud_Azure_New']))
+            <div class="data-row">
+                <span class="data-label">{{ $texts['cloud_azure'] }}:</span> 
+                <span class="case-sensitive">{{ $data['Cloud_Azure_New'] }}</span>
+            </div>
+        @endif
     @endif
 
     @if(isset($data['MAC_New_Extra']) && is_array($data['MAC_New_Extra']))
@@ -189,7 +218,7 @@
             <span class="data-label">{{ $texts['date'] }}:</span> {{ $fecha }}
         </div>
 
-        <div style="margin-top: 30px;">
+        <div style="margin-top: 50px;">
             {{ $texts['signature'] }}
         </div>
         <div class="signature-line"></div>
