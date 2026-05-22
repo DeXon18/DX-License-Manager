@@ -79,7 +79,7 @@
     <div style="margin-top: 1.5rem;">
         <div class="dx-v2-sys-dash-main-col">
 
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem;">
                 {{-- Uso por Proveedor --}}
                 <div class="card">
                     <div class="card-header">
@@ -140,6 +140,46 @@
                                             </span>
                                             <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--dx-v2-muted); margin-top: 4px;">
                                                 ~{{ number_format(round($stat->total_tokens / max(1, $stat->requests_count)), 0, ',', '.') }} tk/req
+                                            </span>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 16px; text-align: right;">
+                                            <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1;">{{ number_format($stat->total_tokens, 0, ',', '.') }}</span>
+                                                <span style="font-size: 0.65rem; color: var(--dx-v2-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 4px;">Tokens</span>
+                                            </div>
+                                            <div style="width: 1px; height: 28px; background: var(--dx-v2-border-base); opacity: 0.6;"></div>
+                                            <div style="display: flex; flex-direction: column; align-items: flex-end; min-width: 48px;">
+                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1; color: var(--dx-v2-text-secondary);">{{ $stat->requests_count }}</span>
+                                                <span style="font-size: 0.65rem; color: var(--dx-v2-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 4px;">Reqs</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @empty
+                                    <div class="dx-v2-sys-dash-sec-row no-border">
+                                        <span class="dx-v2-sys-dash-sec-label text-muted">Sin datos este mes</span>
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Uso por Usuario --}}
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">Distribución por Usuario (Mes)</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="dx-v2-sys-dash-sec-box" style="margin:0; border:none; padding:0;">
+                            <div class="dx-v2-sys-dash-sec-layout">
+                                @forelse($userStats as $stat)
+                                    <div class="dx-v2-sys-dash-sec-row {{ $loop->last ? 'no-border' : '' }}" style="align-items: center;">
+                                        <div style="display: flex; flex-direction: column;">
+                                            <span class="dx-v2-sys-dash-sec-label" style="font-weight: 600; color: var(--dx-v2-primary-base);">
+                                                {{ $stat->user->name ?? 'Sistema' }}
+                                            </span>
+                                            <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--dx-v2-muted); margin-top: 4px;">
+                                                {{ $stat->user->email ?? 'N/A' }}
                                             </span>
                                         </div>
                                         <div style="display: flex; align-items: center; gap: 16px; text-align: right;">
