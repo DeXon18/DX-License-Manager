@@ -34,9 +34,14 @@ El desarrollador inicia. El agente espera.
 - **Guías del Portal**: Crear nueva sección documental para usuarios.
 - **Contactar Soporte IT**: Crear formulario en la web conectado con el bot de Telegram (para recibir notificaciones directas).
 - **FAQ / Ayuda**: Crear nueva sección de preguntas frecuentes y asistencia.
-- **Auditoría de Costes IA**: Crear sección para el control y monitorización de tokens gastados por los modelos de IA.
 
 ## ✅ Completado
+
+### Fase 27 — Auditoría de Costes e IA ✅
+- **Completada:** 2026-05-22
+- **Rama:** `feature/ai-cost-audit`
+- **Resumen:** Módulo de monitorización financiera y telemetría de tokens consumidos por proveedores de Inteligencia Artificial (Gemini, DeepSeek, OpenRouter, n8n). Creación de tabla `AiTokenLog`, vistas "NOC Pro" Bento Grid y métricas históricas de facturación real basadas en uso de prompt y completion. Instrumentados el parser, scanner, fallback chain y el Chatbot interno.
+- **PR:** pendiente — a mergear en dev
 
 ### Fase 26 — Integración Campos Cloud en COD y Refactor Visual ✅
 - **Completada:** 2026-05-22
