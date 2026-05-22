@@ -137,7 +137,7 @@
             <div class="dx-v2-cod-columns-2-spaced">
                 <!-- Máquina Actual -->
                 <div class="dx-v2-cod-form-section">
-                    <div class="dx-v2-cod-section-title">
+                    <div class="dx-v2-cod-section-title" style="min-height: 42px; display: flex; align-items: center;">
                         <i class="fa-solid fa-desktop"></i>
                         <span>Máquina Actual</span>
                     </div>
@@ -180,6 +180,26 @@
                                        maxlength="12">
                             </div>
                         </div>
+                        <div class="dx-v2-cod-field-row">
+                            <div class="dx-v2-cod-input-wrap">
+                                <i class="fa-brands fa-aws"></i>
+                                <input type="text" 
+                                       x-model="formData.Cloud_AWS_Old" 
+                                       class="dx-v2-form-input" 
+                                       placeholder="Cloud AWS (Opcional)" 
+                                       :disabled="formData.docType === 'Change_NodeLocked'">
+                            </div>
+                        </div>
+                        <div class="dx-v2-cod-field-row">
+                            <div class="dx-v2-cod-input-wrap">
+                                <i class="fa-brands fa-microsoft"></i>
+                                <input type="text" 
+                                       x-model="formData.Cloud_Azure_Old" 
+                                       class="dx-v2-form-input" 
+                                       placeholder="Cloud Azure (Opcional)" 
+                                       :disabled="formData.docType === 'Change_NodeLocked'">
+                            </div>
+                        </div>
                         
                         <!-- MACs Adicionales -->
                         <template x-for="(mac, index) in formData.MAC_Old_Extra" :key="index">
@@ -201,8 +221,8 @@
 
                 <!-- Nueva Máquina -->
                 <div class="dx-v2-cod-form-section">
-                    <div class="dx-v2-cod-section-title dx-v2-cod-section-title-wrapper">
-                        <div class="dx-v2-cod-title-inline">
+                    <div class="dx-v2-cod-section-title dx-v2-cod-section-title-wrapper" style="min-height: 42px; display: flex; align-items: center; justify-content: space-between;">
+                        <div class="dx-v2-cod-title-inline" style="display: flex; align-items: center; gap: 8px;">
                             <i class="fa-solid fa-tower-broadcast"></i>
                             <span>Nueva Máquina</span>
                         </div>
@@ -252,6 +272,26 @@
                                        :required="formData.docType !== 'Change_Composite'" 
                                        :disabled="formData.docType === 'Change_Composite'" 
                                        maxlength="12">
+                            </div>
+                        </div>
+                        <div class="dx-v2-cod-field-row">
+                            <div class="dx-v2-cod-input-wrap">
+                                <i class="fa-brands fa-aws"></i>
+                                <input type="text" 
+                                       x-model="formData.Cloud_AWS_New" 
+                                       class="dx-v2-form-input" 
+                                       placeholder="Nuevo Cloud AWS (Opcional)" 
+                                       :disabled="formData.docType === 'Change_NodeLocked'">
+                            </div>
+                        </div>
+                        <div class="dx-v2-cod-field-row">
+                            <div class="dx-v2-cod-input-wrap">
+                                <i class="fa-brands fa-microsoft"></i>
+                                <input type="text" 
+                                       x-model="formData.Cloud_Azure_New" 
+                                       class="dx-v2-form-input" 
+                                       placeholder="Nuevo Cloud Azure (Opcional)" 
+                                       :disabled="formData.docType === 'Change_NodeLocked'">
                             </div>
                         </div>
 
@@ -344,6 +384,87 @@
         </div>
     </div>
 
+    <!-- Guía getcid.exe (Acordeón) -->
+    <div x-data="{ open: false }" class="dx-v2-cod-card" style="margin-top: 24px; padding: 0; overflow: hidden; background-color: var(--surface, #161B22); border: 1px solid var(--border, #30363D); border-radius: 10px;">
+        <button type="button" @click="open = !open" style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 16px 24px; background: transparent; border: none; cursor: pointer; text-align: left; color: var(--primary, #E6EDF3);">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <i class="fa-solid fa-book-journal-whills" style="color: var(--accent, #388BFD); font-size: 16px;"></i>
+                <h3 style="margin: 0; font-size: 14px; font-weight: 600;">Guía: Obtención de Identificadores (getcid.exe)</h3>
+            </div>
+            <i class="fa-solid fa-chevron-down" style="color: var(--muted, #8B949E); transition: transform 0.3s;" :style="open ? 'transform: rotate(180deg);' : ''"></i>
+        </button>
+        <div x-show="open" x-collapse>
+            <div style="padding: 24px; border-top: 1px solid var(--border, #30363D);">
+                <p style="font-size: 13px; color: var(--secondary, #CDD9E5); margin-bottom: 16px; line-height: 1.6; margin-top: 0;">
+                    Para obtener el <strong>Composite ID</strong> correcto en versiones modernas, es necesario usar la utilidad <code style="background-color: var(--raised, #21262D); padding: 2px 6px; border-radius: 4px; font-family: monospace;">getcid.exe</code>.
+                </p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 24px;">
+                    <!-- Caja de Descarga Siemens -->
+                    <div style="background-color: var(--raised, #21262D); padding: 16px; border-radius: 6px; border: 1px solid var(--border, #30363D);">
+                        <div style="color: var(--primary, #E6EDF3); font-weight: 600; font-size: 13px; margin-bottom: 6px; display: flex; align-items: center;">
+                            <i class="fa-solid fa-building" style="width: 24px; color: var(--muted, #8B949E);"></i> Oficial Siemens (Support Center)
+                        </div>
+                        <div style="font-size: 12px; color: var(--secondary, #CDD9E5); margin-bottom: 10px;">
+                            Descarga la utilidad oficial desde el portal de soporte de Siemens.
+                        </div>
+                        <a href="https://support.sw.siemens.com/es-ES/product/1586485382/downloads" target="_blank" style="color: var(--accent, #388BFD); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; margin-bottom: 8px; font-size: 13px;">
+                            <i class="fa-solid fa-download" style="margin-right: 6px;"></i> Siemens License Server v5.2.0 (FNP 11.19.8.4)
+                        </a>
+                        <div style="font-size: 12px; color: var(--muted, #8B949E);">Busca el archivo: <code style="background-color: var(--surface, #161B22); padding: 2px 6px; border-radius: 4px; font-family: monospace; border: 1px solid var(--border, #30363D);">slsi_hostid_utils-v5.2.0.0.zip</code></div>
+                    </div>
+                    
+                    <!-- Placeholder ATS -->
+                    <div style="background-color: var(--surface, #161B22); padding: 16px; border-radius: 6px; border: 1px dashed var(--border, #30363D);">
+                        <div style="color: var(--primary, #E6EDF3); font-weight: 600; font-size: 13px; margin-bottom: 6px; display: flex; align-items: center;">
+                            <i class="fa-solid fa-screwdriver-wrench" style="width: 24px; color: var(--muted, #8B949E);"></i> Utilidad Personalizada (ATS)
+                        </div>
+                        <div style="font-size: 12px; color: var(--secondary, #CDD9E5); margin-bottom: 10px;">
+                            (Espacio reservado para añadir el enlace a la utilidad personalizada)
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+                    <!-- Caja 1 -->
+                    <div style="background-color: var(--raised, #21262D); padding: 16px; border-radius: 6px; border: 1px solid var(--border, #30363D);">
+                        <div style="color: var(--accent, #388BFD); font-weight: 600; font-size: 13px; margin-bottom: 8px; display: flex; align-items: center;">
+                            <i class="fa-solid fa-terminal" style="width: 24px;"></i> Todos los IDs (Recomendado)
+                        </div>
+                        <div style="font-family: monospace; font-size: 12px; color: var(--secondary, #CDD9E5); margin-bottom: 8px; opacity: 0.8; user-select: all;">.\getcid.exe -allcomposite</div>
+                        <div style="font-family: monospace; font-size: 12px; color: var(--success, #3FB950); line-height: 1.6;">COMPOSITE=37B5ED1AC61D<br>COMPOSITE=8AFD1291ABCD</div>
+                    </div>
+                    
+                    <!-- Caja 2 -->
+                    <div style="background-color: var(--raised, #21262D); padding: 16px; border-radius: 6px; border: 1px solid var(--border, #30363D);">
+                        <div style="color: var(--accent, #388BFD); font-weight: 600; font-size: 13px; margin-bottom: 8px; display: flex; align-items: center;">
+                            <i class="fa-brands fa-aws" style="width: 24px;"></i> Entorno Cloud (Auto)
+                        </div>
+                        <div style="font-family: monospace; font-size: 12px; color: var(--secondary, #CDD9E5); margin-bottom: 8px; opacity: 0.8; user-select: all;">.\getcid.exe -cloud</div>
+                        <div style="font-family: monospace; font-size: 12px; color: var(--success, #3FB950); line-height: 1.6;">CLOUD_PROVIDER=AWS<br>AMZN_ID=i-000143790d2c...<br>COMPOSITE=37B5ED1AC61D</div>
+                    </div>
+
+                    <!-- Caja 3 -->
+                    <div style="background-color: var(--raised, #21262D); padding: 16px; border-radius: 6px; border: 1px solid var(--border, #30363D);">
+                        <div style="color: var(--accent, #388BFD); font-weight: 600; font-size: 13px; margin-bottom: 8px; display: flex; align-items: center;">
+                            <i class="fa-brands fa-microsoft" style="width: 24px;"></i> Microsoft Azure
+                        </div>
+                        <div style="font-family: monospace; font-size: 12px; color: var(--secondary, #CDD9E5); margin-bottom: 8px; opacity: 0.8; user-select: all;">.\getcid.exe -azure</div>
+                        <div style="font-family: monospace; font-size: 12px; color: var(--success, #3FB950); line-height: 1.6;">AZURE_ID=7f3a1b8e9cdd...<br>COMPOSITE=8AFD1291ABCD</div>
+                    </div>
+
+                    <!-- Caja 4 -->
+                    <div style="background-color: var(--raised, #21262D); padding: 16px; border-radius: 6px; border: 1px solid var(--border, #30363D);">
+                        <div style="color: var(--accent, #388BFD); font-weight: 600; font-size: 13px; margin-bottom: 8px; display: flex; align-items: center;">
+                            <i class="fa-solid fa-server" style="width: 24px;"></i> VMware / Hyper-V
+                        </div>
+                        <div style="font-family: monospace; font-size: 12px; color: var(--secondary, #CDD9E5); margin-bottom: 8px; opacity: 0.8; user-select: all;">.\getcid.exe -vmware</div>
+                        <div style="font-family: monospace; font-size: 12px; color: var(--success, #3FB950); line-height: 1.6;">VMWARE_UUID=4201a8c0...<br>COMPOSITE=AA11BB22CC33</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Overlay de Previsualización Limpia -->
     <div class="dx-v2-cod-preview-overlay" x-show="showPreview" x-transition x-cloak>
@@ -546,9 +667,13 @@ function codGenerator() {
             Hostname_Old: '',
             Composite_Old: '',
             MAC_Old: '',
+            Cloud_AWS_Old: '',
+            Cloud_Azure_Old: '',
             Hostname_New: '',
             Composite_New: '',
             MAC_New: '',
+            Cloud_AWS_New: '',
+            Cloud_Azure_New: '',
             MAC_Old_Extra: [],
             MAC_New_Extra: []
         },
@@ -593,9 +718,13 @@ function codGenerator() {
                 Hostname_Old: '',
                 Composite_Old: '',
                 MAC_Old: '',
+                Cloud_AWS_Old: '',
+                Cloud_Azure_Old: '',
                 Hostname_New: '',
                 Composite_New: '',
                 MAC_New: '',
+                Cloud_AWS_New: '',
+                Cloud_Azure_New: '',
                 MAC_Old_Extra: [],
                 MAC_New_Extra: []
             };

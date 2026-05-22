@@ -25,6 +25,8 @@ class CodService
             'company' => "EMPRESA",
             'date' => "FECHA",
             'signature' => "Firma Solicitante y Sello Empresa",
+            'cloud_aws' => "CLOUD AWS",
+            'cloud_azure' => "CLOUD AZURE",
         ],
         'ENGLISH' => [
             'document_title' => "License Change Request",
@@ -42,6 +44,8 @@ class CodService
             'company' => "COMPANY",
             'date' => "DATE",
             'signature' => "Applicant's Signature and Company Seal",
+            'cloud_aws' => "CLOUD AWS",
+            'cloud_azure' => "CLOUD AZURE",
         ]
     ];
 
