@@ -76,7 +76,7 @@
         </div>
     </div>
 
-    <div class="dx-v2-sys-dash-main-layout" style="margin-top: 1.5rem; display: block;">
+    <div style="margin-top: 1.5rem;">
         <div class="dx-v2-sys-dash-main-col">
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
@@ -130,9 +130,9 @@
                                         </span>
                                         <div style="text-align: right;">
                                             <span class="dx-v2-sys-dash-sec-value">{{ number_format($stat->total_tokens, 0, ',', '.') }} tk</span>
-                                            <div class="dx-v2-sys-dash-sec-footer-code" style="font-size: 0.75rem; margin-top: 4px; white-space: nowrap;">
-                                                {{ $stat->requests_count }} reqs &nbsp;&middot;&nbsp; 
-                                                ~{{ number_format(round($stat->total_tokens / max(1, $stat->requests_count)), 0, ',', '.') }} tk/req
+                                            <div class="dx-v2-sys-dash-sec-footer-code" style="font-size: 0.75rem; margin-top: 4px; line-height: 1.4;">
+                                                <div>{{ $stat->requests_count }} reqs</div>
+                                                <div style="color: var(--dx-v2-text-muted);">~{{ number_format(round($stat->total_tokens / max(1, $stat->requests_count)), 0, ',', '.') }} tk/req</div>
                                             </div>
                                         </div>
                                     </div>
