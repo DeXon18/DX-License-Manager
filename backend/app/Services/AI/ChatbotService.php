@@ -461,7 +461,7 @@ class ChatbotService
                     'message'        => $finalText,
                     'provider'       => $providerName,
                     'success'        => true,
-                    'usage_metadata' => null,
+                    'usage_metadata' => $resData['usage'] ?? null,
                     'data'           => $toolResults
                 ];
             }
