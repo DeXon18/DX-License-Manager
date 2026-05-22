@@ -1,6 +1,16 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-22 11:30] — Módulo de Contacto de Soporte IT (Fase 28) ✅
+
+### Added
+- **Formulario de Soporte**: Creación de una nueva vista en `/soporte` para que los usuarios puedan enviar incidencias o consultas directamente al equipo de IT.
+- **Integración con Telegram**: El formulario utiliza la API del Bot de Telegram (reutilizando la infraestructura de notificaciones del sistema) para entregar los mensajes instantáneamente a los administradores.
+- **Navegación UI**: Añadidos accesos directos de "Ayuda & Soporte" tanto en el Sidebar principal (`app.blade.php`) como en el pie de página (`footer.blade.php`).
+- **Diseño NOC Pro**: Se ha implementado un diseño limpio utilizando clases modulares nativas del portal (`.page-header`, `.card-body`) alineando el formulario con el resto de pantallas operativas del sistema.
+
+---
+
 ## [2026-05-22 11:00] — AI Cost Audit & Telemetry Dashboard ✅
 
 ### Added
