@@ -1,5 +1,5 @@
-﻿# HANDOFF - DX License Manager
-> Última actualización: 2026-05-21 15:15
+# HANDOFF - DX License Manager
+> Última actualización: 2026-05-22 09:55
 > Sesión en: PC Principal
 > Rama activa: dev
 
@@ -7,20 +7,18 @@
 
 ## Estado General
 
-**Fase actual:** Despliegue v2.0 completado y Estabilización
+**Fase actual:** Fase 26 (Campos Cloud en COD) completada
 **Stack beta:** ✅ running
-**Stack prod:** ✅ running (v2.0.0 desplegada y estable)
+**Stack prod:** ✅ running
 
 ---
 
 ## Qué se hizo en esta sesión
 
-- **Despliegue v2.0:** Se fusionó dev a main y se levantó el stack de Producción desde cero en portal.dxpro.es. Migraciones limpias y seeders aplicados (AdminUserSeeder).
-- **Alineación de Infraestructura:** Se unificaron las capacidades de los contenedores entre Prod y Beta. Se añadió el contenedor \
-ode-prod\ y se conectó el socket Docker al \dx-php-prod\.
-- **Reconstrucción Imagen PHP (Hotfix):** Se reconstruyó \dx-php-prod\ en el servidor para incluir \docker-cli\, corrigiendo el error 500 en la vista de monitorización de servicios Docker.
-- **Refactorización del Footer:** Se eliminó la información técnica y de infraestructura, reemplazándola por enlaces directos a "Soporte Interno" y "Portales Oficiales" de fabricantes, además del branding de IA.
-- **Limpieza de Storage:** Se configuró Producción para usar \./backend/storage\ nativo de Laravel, eliminando el \storage/\ residual de la raíz.
+- **Generador de COD:** Integración de los campos `Cloud AWS` y `Cloud Azure`.
+- **Refactorización CSS PDF:** Ajuste milimétrico de la plantilla PDF de COD (`cod-template.blade.php`) usando Calibri y medidas absolutas para coincidir 100% con los estándares de Siemens (solucionado salto de página y espaciados).
+- **Guía Interactiva getcid.exe:** Implementación de un acordeón de ayuda en la UI (`cod.blade.php`) usando estilos inline con variables HSL para respetar `DESIGN.md`. Incluye recuadros de descarga para la utilidad de Siemens y ATS.
+- **Merge & Limpieza:** Merge de `feature/cod-cloud-fields` a `dev` completado exitosamente, y limpieza local/remota de ramas finalizada.
 
 ---
 
