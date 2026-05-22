@@ -90,10 +90,17 @@
                             <div class="dx-v2-sys-dash-sec-layout">
                                 @forelse($providerStats as $stat)
                                     <div class="dx-v2-sys-dash-sec-row {{ $loop->last ? 'no-border' : '' }}">
-                                        <span class="dx-v2-sys-dash-sec-label" style="text-transform: capitalize;">{{ $stat->provider }}</span>
-                                        <div style="text-align: right;">
-                                            <span class="dx-v2-sys-dash-sec-value">{{ number_format($stat->total_tokens, 0, ',', '.') }} tk</span>
-                                            <div class="dx-v2-sys-dash-sec-footer-code" style="font-size: 0.75rem; margin-top: 4px; white-space: nowrap;">{{ $stat->requests_count }} reqs</div>
+                                        <span class="dx-v2-sys-dash-sec-label" style="text-transform: capitalize; font-weight: 600; color: var(--dx-v2-primary-base);">{{ $stat->provider }}</span>
+                                        <div style="display: flex; align-items: center; gap: 16px; text-align: right;">
+                                            <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1;">{{ number_format($stat->total_tokens, 0, ',', '.') }}</span>
+                                                <span style="font-size: 0.65rem; color: var(--dx-v2-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 4px;">Tokens</span>
+                                            </div>
+                                            <div style="width: 1px; height: 28px; background: var(--dx-v2-border-base); opacity: 0.6;"></div>
+                                            <div style="display: flex; flex-direction: column; align-items: flex-end; min-width: 48px;">
+                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1; color: var(--dx-v2-text-secondary);">{{ $stat->requests_count }}</span>
+                                                <span style="font-size: 0.65rem; color: var(--dx-v2-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 4px;">Reqs</span>
+                                            </div>
                                         </div>
                                     </div>
                                 @empty
@@ -116,23 +123,34 @@
                             <div class="dx-v2-sys-dash-sec-layout">
                                 @php
                                     $actionNames = [
-                                        'normalization_search' => 'Herramienta de Licencias (Normalización)',
-                                        'license_audit' => 'Lector de Licencias (.lic)',
-                                        'chatbot' => 'Chat Asistente',
-                                        'cod_processor' => 'Procesador COD',
-                                        'cost_calculation' => 'Cálculo de Costes',
+                                        'normalization_search' => 'Normalización (Búsqueda)',
+                                        'normalization_pair'   => 'Normalización (Escáner de Duplicados)',
+                                        'license_audit'        => 'Auditoría de Licencias (.lic)',
+                                        'composite_parse'      => 'Análisis Composite.txt (COD)',
+                                        'chatbot'              => 'Chatbot Asistente',
+                                        'cost_calculation'     => 'Cálculo de Costes',
+                                        'cod_processor'        => 'Procesador COD (Antiguo)',
                                     ];
                                 @endphp
                                 @forelse($actionStats as $stat)
-                                    <div class="dx-v2-sys-dash-sec-row {{ $loop->last ? 'no-border' : '' }}">
-                                        <span class="dx-v2-sys-dash-sec-label">
-                                            {{ $actionNames[$stat->action] ?? str_replace('_', ' ', Str::title($stat->action)) }}
-                                        </span>
-                                        <div style="text-align: right;">
-                                            <span class="dx-v2-sys-dash-sec-value">{{ number_format($stat->total_tokens, 0, ',', '.') }} tk</span>
-                                            <div class="dx-v2-sys-dash-sec-footer-code" style="font-size: 0.75rem; margin-top: 4px; line-height: 1.4;">
-                                                <div>{{ $stat->requests_count }} reqs</div>
-                                                <div style="color: var(--dx-v2-text-muted);">~{{ number_format(round($stat->total_tokens / max(1, $stat->requests_count)), 0, ',', '.') }} tk/req</div>
+                                    <div class="dx-v2-sys-dash-sec-row {{ $loop->last ? 'no-border' : '' }}" style="align-items: center;">
+                                        <div style="display: flex; flex-direction: column;">
+                                            <span class="dx-v2-sys-dash-sec-label" style="font-weight: 600; color: var(--dx-v2-primary-base);">
+                                                {{ $actionNames[$stat->action] ?? str_replace('_', ' ', Str::title($stat->action)) }}
+                                            </span>
+                                            <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--dx-v2-muted); margin-top: 4px;">
+                                                ~{{ number_format(round($stat->total_tokens / max(1, $stat->requests_count)), 0, ',', '.') }} tk/req
+                                            </span>
+                                        </div>
+                                        <div style="display: flex; align-items: center; gap: 16px; text-align: right;">
+                                            <div style="display: flex; flex-direction: column; align-items: flex-end;">
+                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1;">{{ number_format($stat->total_tokens, 0, ',', '.') }}</span>
+                                                <span style="font-size: 0.65rem; color: var(--dx-v2-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 4px;">Tokens</span>
+                                            </div>
+                                            <div style="width: 1px; height: 28px; background: var(--dx-v2-border-base); opacity: 0.6;"></div>
+                                            <div style="display: flex; flex-direction: column; align-items: flex-end; min-width: 48px;">
+                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1; color: var(--dx-v2-text-secondary);">{{ $stat->requests_count }}</span>
+                                                <span style="font-size: 0.65rem; color: var(--dx-v2-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 4px;">Reqs</span>
                                             </div>
                                         </div>
                                     </div>
