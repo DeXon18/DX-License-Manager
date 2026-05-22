@@ -308,5 +308,4 @@ Formato obligatorio:
 Al iniciar sesión con `/start`: leer esta sección completa antes de empezar.
 
 - [2026-05-15] ERROR: La base de datos Beta se vació accidentalmente durante la ejecución de tests de integración debido a una mala configuración del entorno de test en el contenedor. → REGLA: Verificar SIEMPRE el aislamiento del entorno de test y realizar backup obligatorio de la DB (`./scripts/backup-db.sh beta`) antes de cualquier ejecución de tests en el servidor.
-
-_(sin entradas aún)_
+- [2026-05-22] ERROR: Intento fallido de ejecutar comandos `docker exec` desde el entorno local de Windows. → REGLA: GRABAR A FUEGO: NUNCA, y digo NUNCA, hay Docker en el entorno local (Windows). El servidor web se accede por SSH o se interactúa a través de los directorios mapeados en red (`Z:`). Los comandos de Docker documentados son exclusivamente para correr en el host Proxmox, no en local.
