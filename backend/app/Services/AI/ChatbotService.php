@@ -24,18 +24,37 @@ class ChatbotService
      */
     public function query(array $chatHistory): array
     {
+        // 1. Verificar Caché Semántica
+        $cacheKey = 'chatbot_query_' . md5(json_encode($chatHistory));
+        
+        if (Cache::has($cacheKey)) {
+            Log::info("ChatbotService: Sirviendo respuesta desde Caché Semántica (0 tokens consumidos).");
+            $cachedResponse = Cache::get($cacheKey);
+            // Evitar que el controlador registre tokens repetidos
+            $cachedResponse['usage_metadata'] = null; 
+            $cachedResponse['provider'] = 'redis-cache';
+            return $cachedResponse;
+        }
+
         $geminiKey = config('ai.gemini_key');
         if (empty($geminiKey)) {
             Log::error("ChatbotService: GEMINI_API_KEY no está configurada.");
-            return $this->fallbackToTextChain($chatHistory, 'API Key faltante');
+            $response = $this->fallbackToTextChain($chatHistory, 'API Key faltante');
+        } else {
+            try {
+                $response = $this->executeGeminiFunctionCallingLoop($chatHistory, $geminiKey);
+            } catch (\Exception $e) {
+                Log::error("ChatbotService: Excepción en el bucle principal de Gemini: " . $e->getMessage());
+                $response = $this->fallbackToTextChain($chatHistory, $e->getMessage());
+            }
         }
 
-        try {
-            return $this->executeGeminiFunctionCallingLoop($chatHistory, $geminiKey);
-        } catch (\Exception $e) {
-            Log::error("ChatbotService: Excepción en el bucle principal de Gemini: " . $e->getMessage());
-            return $this->fallbackToTextChain($chatHistory, $e->getMessage());
+        // 2. Guardar en caché si fue exitoso (TTL 12h)
+        if ($response['success']) {
+            Cache::put($cacheKey, $response, now()->addHours(12));
         }
+
+        return $response;
     }
 
     /**
