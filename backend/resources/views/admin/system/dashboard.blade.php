@@ -247,6 +247,15 @@
                         <p class="dx-v2-sys-dash-module-desc">Trazabilidad total con filtros avanzados por usuario, acción, nivel e IP.</p>
                     </div>
                 </a>
+                <a href="{{ route('admin.system.ai-costs') }}" class="dx-v2-sys-dash-module-card">
+                    <div class="dx-v2-sys-dash-module-icon-box ai-brand" style="color: var(--dx-v2-accent);">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    </div>
+                    <div class="dx-v2-sys-dash-module-text-box">
+                        <span class="dx-v2-sys-dash-module-title">Costes IA</span>
+                        <p class="dx-v2-sys-dash-module-desc">Monitorización de tokens, telemetría y costes de motores IA (Gemini, DeepSeek).</p>
+                    </div>
+                </a>
             </div>
         </div>
 
