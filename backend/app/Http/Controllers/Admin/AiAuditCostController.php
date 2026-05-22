@@ -38,7 +38,31 @@ class AiAuditCostController extends Controller
             ->orderByDesc('total_tokens')
             ->get();
 
-        // 4. Historial reciente con paginación
+        // 4. Uso diario (Mes Actual) para la gráfica, agrupado por fecha y proveedor
+        $dailyRecords = AiTokenLog::where('created_at', '>=', $currentMonth)
+            ->select(DB::raw('DATE(created_at) as date'), 'provider', DB::raw('SUM(total_tokens) as total'))
+            ->groupBy(DB::raw('DATE(created_at)'), 'provider')
+            ->orderBy('date')
+            ->get();
+
+        // Estructurar para el frontend: ['2026-05-22' => ['gemini' => 120, 'deepseek' => 40]]
+        $dailyStats = [];
+        $providersSet = [];
+        foreach ($dailyRecords as $record) {
+            if (!isset($dailyStats[$record->date])) {
+                $dailyStats[$record->date] = [];
+            }
+            $dailyStats[$record->date][$record->provider] = $record->total;
+            $providersSet[$record->provider] = true;
+        }
+
+        $chartData = [
+            'dates' => array_keys($dailyStats),
+            'providers' => array_keys($providersSet),
+            'stats' => $dailyStats
+        ];
+
+        // 5. Historial reciente con paginación
         $logs = AiTokenLog::with('user:id,name,email')
             ->orderByDesc('created_at')
             ->paginate(15);
@@ -50,6 +74,7 @@ class AiAuditCostController extends Controller
             'totalTokensAllTime',
             'providerStats',
             'actionStats',
+            'chartData',
             'logs'
         ));
     }
