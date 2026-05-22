@@ -26,11 +26,10 @@
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Preparar un plan de implementación para el **Módulo FAQ / Ayuda** (o lo que el desarrollador instruya).
+*(En espera de definición de Oskar)*
 
 ### Tareas siguientes
-1. Crear el sistema de FAQ.
-2. Refinamiento final de UI general si quedan detalles.
+*(Vacío)*
 
 ---
 
