@@ -1,12 +1,15 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
-## [2026-05-22 12:15] — Mejoras UI/UX en Módulo de Costes IA ✅
+## [2026-05-22 13:28] — Mejoras Avanzadas en Gráficas de Costes IA ✅
 
 ### Added
 - **Métricas Avanzadas de Coste**: Añadida tarjeta "Total Peticiones" al panel principal para cerrar el Grid de 4 columnas simétricamente.
 - **Promedio de Consumo por Petición (tk/req)**: Nueva métrica en la tabla de acciones que calcula matemáticamente el coste en tokens por cada petición para identificar servicios costosos.
 - **Nombres Amigables para Logs**: Integrado un mapeador en la vista de costes para mostrar los nombres de las funciones (ej. `normalization_search` → `Herramienta de Licencias (Normalización)`).
+- **Gráficas de Tendencia Diaria (Horarias)**: Implementadas dos nuevas gráficas que desglosan el consumo de tokens hora a hora en el día en curso (`Carbon::today()`), separadas por Proveedor y por Usuario.
+- **Gráfica de Tendencia por Usuario (Mes)**: Añadida gráfica de líneas lateral que muestra el consumo acumulado mensual desglosado por cada usuario del portal.
+- **Formato de Números Compacto**: Aplicada función `compact_number` a todas las métricas de volumen alto en el dashboard (ej. `145k`, `1.5M`) para mantener intacto el diseño flex-grid NOC Pro.
 
 ### Fixed
 - **Excepción 500 de Variables no Definidas**: Corregido error en `AiAuditCostController` que omitía el envío de las variables `$totalCostThisMonth` a la vista.
