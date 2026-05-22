@@ -442,7 +442,7 @@
 /* ─── Navegación de Módulos Dedicados ────────────────────── */
 .dx-v2-sys-dash-modules-grid {
   display: grid !important;
-  grid-template-columns: repeat(3, 1fr) !important;
+  grid-template-columns: repeat(2, 1fr) !important;
   gap: 20px !important;
   margin-top: 24px !important;
 }
@@ -450,61 +450,104 @@
 @media (max-width: 768px) {
   .dx-v2-sys-dash-modules-grid {
     grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    gap: 16px !important;
   }
 }
 
 .dx-v2-sys-dash-module-card {
   display: flex !important;
-  align-items: center !important;
-  gap: 16px !important;
-  padding: 20px !important;
-  background: var(--dx-v2-surface) !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  padding: 24px !important;
+  background: rgba(255, 255, 255, 0.02) !important;
   border: 1px solid var(--dx-v2-border) !important;
-  border-radius: 12px !important;
+  border-radius: 16px !important;
   text-decoration: none !important;
-  transition: all 0.3s ease !important;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.dx-v2-sys-dash-module-card::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
+  background: radial-gradient(circle at top right, rgba(255,255,255,0.03), transparent 60%) !important;
+  opacity: 0 !important;
+  transition: opacity 0.4s ease !important;
+  pointer-events: none !important;
 }
 
 .dx-v2-sys-dash-module-card:hover {
-  transform: translateY(-4px) !important;
-  border-color: var(--dx-v2-accent-base) !important;
-  box-shadow: var(--dx-v2-shadow-md) !important;
-  background: rgba(255, 255, 255, 0.02) !important;
+  transform: translateY(-5px) scale(1.02) !important;
+  background: rgba(255, 255, 255, 0.035) !important;
+  box-shadow: 0 12px 24px rgba(0,0,0,0.2) !important;
 }
 
+.dx-v2-sys-dash-module-card:hover::before {
+  opacity: 1 !important;
+}
+
+[data-theme="light"] .dx-v2-sys-dash-module-card {
+  background: rgba(0, 0, 0, 0.02) !important;
+}
 [data-theme="light"] .dx-v2-sys-dash-module-card:hover {
-  background: rgba(0, 0, 0, 0.01) !important;
+  background: rgba(0, 0, 0, 0.04) !important;
 }
 
 .dx-v2-sys-dash-module-icon-box {
-  width: 48px !important;
-  height: 48px !important;
+  width: 44px !important;
+  height: 44px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   border-radius: 12px !important;
-  flex-shrink: 0 !important;
+  margin-bottom: 16px !important;
+  transition: all 0.3s ease !important;
+}
+
+.dx-v2-sys-dash-module-card:hover .dx-v2-sys-dash-module-icon-box {
+  transform: scale(1.1) !important;
 }
 
 .dx-v2-sys-dash-module-text-box {
   flex: 1 !important;
+  width: 100% !important;
 }
 
 .dx-v2-sys-dash-module-title {
   display: block !important;
-  font-size: 15px !important;
+  font-size: 16px !important;
   font-weight: 700 !important;
   color: var(--dx-v2-primary-base) !important;
-  margin-bottom: 4px !important;
+  margin-bottom: 8px !important;
   font-family: 'Outfit', sans-serif !important;
+  letter-spacing: -0.01em !important;
 }
 
 .dx-v2-sys-dash-module-desc {
   margin: 0 !important;
-  font-size: 11px !important;
+  font-size: 13px !important;
   color: var(--dx-v2-muted) !important;
-  line-height: 1.4 !important;
+  line-height: 1.5 !important;
+}
+
+/* Colores dinámicos al hacer hover */
+.dx-v2-sys-dash-module-card:hover:has(.docker-brand) {
+  border-color: rgba(14, 165, 233, 0.4) !important;
+  box-shadow: 0 12px 24px rgba(14, 165, 233, 0.1) !important;
+}
+.dx-v2-sys-dash-module-card:hover:has(.backups-brand) {
+  border-color: rgba(67, 97, 238, 0.4) !important;
+  box-shadow: 0 12px 24px rgba(67, 97, 238, 0.1) !important;
+}
+.dx-v2-sys-dash-module-card:hover:has(.audit-brand) {
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  box-shadow: 0 12px 24px rgba(16, 185, 129, 0.1) !important;
+}
+.dx-v2-sys-dash-module-card:hover:has(.ai-brand) {
+  border-color: rgba(251, 146, 60, 0.4) !important;
+  box-shadow: 0 12px 24px rgba(251, 146, 60, 0.1) !important;
 }
 
 /* ─── Lateral de Sidebar ────────────────────────────────── */
