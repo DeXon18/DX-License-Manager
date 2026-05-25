@@ -56,5 +56,10 @@ class Client extends Model
     {
         return $this->hasMany(RenewalLog::class);
     }
+
+    public function enterpriseCloudAccounts(): HasMany
+    {
+        return $this->hasMany(EnterpriseCloudAccount::class);
+    }
 }
 
