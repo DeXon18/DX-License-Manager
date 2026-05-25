@@ -48,6 +48,7 @@
         <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'contacts' }" @click="setTab('contacts')">Contactos</button>
         <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'certificates' }" @click="setTab('certificates')">Certificados</button>
         <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'renewals' }" @click="setTab('renewals')">Renovaciones</button>
+        <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'enterprise_cloud' }" @click="setTab('enterprise_cloud')">Enterprise Cloud</button>
     </div>
 
     <!-- Contratos Tab -->
@@ -594,6 +595,65 @@
         </div>
     </div>
 
+    <!-- Enterprise Cloud Tab -->
+    <div x-show="tab === 'enterprise_cloud'" class="tab-content" x-cloak>
+        <div class="card p-0">
+            <div class="card-header flex justify-between items-center px-5 py-4">
+                <h3 class="text-sm font-bold uppercase tracking-wider">Cuentas Enterprise Cloud</h3>
+                <button class="dx-v2-ui-btn dx-v2-ui-btn-primary" @click="$dispatch('open-cloud-modal')">
+                    <i class="fa-solid fa-plus mr-2"></i> Añadir Cuenta
+                </button>
+            </div>
+            <div class="dx-v2-ui-table-wrapper">
+                <table class="dx-v2-ui-table">
+                <thead>
+                    <tr>
+                        <th>Sold-To Account</th>
+                        <th>Account ID</th>
+                        <th>Admin Email</th>
+                        <th class="text-right">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($client->enterpriseCloudAccounts as $cloudAccount)
+                    <tr>
+                        <td class="font-bold">{{ $cloudAccount->sold_to }}</td>
+                        <td class="font-mono text-xs">{{ $cloudAccount->account_id }}</td>
+                        <td>{{ $cloudAccount->admin_email }}</td>
+                        <td class="text-right max-w-100">
+                            <div class="dx-v2-clients-contacts-actions">
+                                <button class="dx-v2-clients-btn-action-tool" 
+                                    @click="$dispatch('open-cloud-modal', { 
+                                        id: {{ $cloudAccount->id }}, 
+                                        sold_to: '{{ $cloudAccount->sold_to }}', 
+                                        account_id: '{{ $cloudAccount->account_id }}', 
+                                        admin_email: '{{ $cloudAccount->admin_email }}'
+                                    })">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                                <form action="{{ route('enterprise-cloud-accounts.destroy', [$client, $cloudAccount]) }}" method="POST" onsubmit="return confirm('¿Eliminar esta cuenta?')" class="display-inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="dx-v2-clients-btn-action-tool delete">
+                                        <i class="fa-solid fa-trash-can text-danger"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="4" class="text-center py-12 muted">
+                            No hay cuentas Enterprise Cloud registradas para este cliente.
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+
     <!-- Contact Modal -->
     <template x-teleport="body">
         <div x-data="{ 
@@ -665,6 +725,67 @@
         </div>
     </template>
 
+    <!-- Enterprise Cloud Modal -->
+    <template x-teleport="body">
+        <div x-data="{ 
+                open: false, 
+                editMode: false,
+                action: '{{ route('enterprise-cloud-accounts.store', $client) }}',
+                form: { id: '', sold_to: '', account_id: '', admin_email: '' }
+            }"
+            x-show="open"
+            @open-cloud-modal.window="
+                open = true; 
+                if($event.detail && $event.detail.id) {
+                    editMode = true;
+                    action = '{{ url('/clientes/' . $client->id . '/enterprise-cloud-accounts') }}/' + $event.detail.id;
+                    form = $event.detail;
+                } else {
+                    editMode = false;
+                    action = '{{ route('enterprise-cloud-accounts.store', $client) }}';
+                    form = { id: '', sold_to: '', account_id: '', admin_email: '' };
+                }
+            "
+            class="dx-v2-ui-modal-overlay"
+            x-cloak
+        >
+            <div class="dx-v2-ui-modal-content" @click.outside="open = false">
+                <div class="dx-v2-ui-modal-header">
+                    <h3 class="dx-v2-ui-modal-title" x-text="editMode ? 'Editar Cuenta Cloud' : 'Nueva Cuenta Cloud'"></h3>
+                    <button type="button" @click="open = false" class="dx-v2-ui-modal-close">&times;</button>
+                </div>
+                <form :action="action" method="POST">
+                    @csrf
+                    <template x-if="editMode">
+                        <input type="hidden" name="_method" value="PUT">
+                    </template>
+                    
+                    <div class="dx-v2-ui-modal-body space-y-5">
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="dx-v2-form-group" style="margin-bottom: 0;">
+                                <label class="dx-v2-form-label" for="cloud_sold_to">Sold-To Account</label>
+                                <input type="text" id="cloud_sold_to" name="sold_to" x-model="form.sold_to" required class="dx-v2-form-input w-full" placeholder="Ej. 1644075">
+                            </div>
+                            <div class="dx-v2-form-group" style="margin-bottom: 0;">
+                                <label class="dx-v2-form-label" for="cloud_account_id">Enterprise Cloud Account</label>
+                                <input type="text" id="cloud_account_id" name="account_id" x-model="form.account_id" required class="dx-v2-form-input w-full" placeholder="Ej. 100302628">
+                            </div>
+                        </div>
+                        <div class="dx-v2-form-group" style="margin-bottom: 0;">
+                            <label class="dx-v2-form-label" for="cloud_admin_email">Enterprise Cloud Account Admin</label>
+                            <input type="email" id="cloud_admin_email" name="admin_email" x-model="form.admin_email" required class="dx-v2-form-input w-full" placeholder="admin@cliente.com">
+                        </div>
+                    </div>
+                    
+                    <div class="dx-v2-ui-modal-footer">
+                        <button type="button" @click="open = false" class="dx-v2-ui-btn dx-v2-ui-btn-secondary">Cancelar</button>
+                        <button type="submit" class="dx-v2-ui-btn dx-v2-ui-btn-primary" x-text="editMode ? 'Guardar Cambios' : 'Añadir Cuenta'"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </template>
+
     <!-- Audit Detail Modal (NOC Pro Inmutable Console) -->
     <template x-teleport="body">
         <div x-data="{ open: false }"
@@ -721,7 +842,7 @@
                                     <span class="label">Ecosistema / Daemon</span>
                                     <div style="display: flex; align-items: center; gap: 8px;">
                                         <span class="value daemon" x-text="auditDetail?.results?.vendor_daemon || auditDetail?.results?.daemon || 'ugslmd'"></span>
-                                        <span class="dx-v2-clients-vendor-badge {{ $isMoldex ? 'moldex' : 'siemens' }}" :class="(auditDetail?.results?.vendor_daemon || auditDetail?.results?.daemon || '').toLowerCase().includes('moldex') ? 'moldex' : 'siemens'" style="font-size: 7px; padding: 2px 6px; font-weight: 800; width: auto; display: inline-block;" x-text="(auditDetail?.results?.vendor_daemon || auditDetail?.results?.daemon || '').toLowerCase().includes('moldex') ? 'MOLDEX3D' : 'SIEMENS'">SIEMENS</span>
+                                        <span class="dx-v2-clients-vendor-badge" :class="(auditDetail?.results?.vendor_daemon || auditDetail?.results?.daemon || '').toLowerCase().includes('moldex') ? 'moldex' : 'siemens'" style="font-size: 7px; padding: 2px 6px; font-weight: 800; width: auto; display: inline-block;" x-text="(auditDetail?.results?.vendor_daemon || auditDetail?.results?.daemon || '').toLowerCase().includes('moldex') ? 'MOLDEX3D' : 'SIEMENS'"></span>
                                     </div>
                                 </div>
                                 <div class="dx-v2-clients-audit-info-card span-2">
