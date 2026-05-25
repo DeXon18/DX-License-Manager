@@ -2,12 +2,15 @@
 @section('title', 'Soporte IT')
 
 @section('content')
-<div class="page-header">
-    <div class="header-actions">
-        <div>
-            <h1 class="page-title"><i class="fa-solid fa-headset" style="color: var(--dx-v2-accent-base, #388bfd); margin-right: 12px;"></i> Contactar Soporte IT</h1>
-            <p class="page-sub">Envía un mensaje directo al equipo de soporte para resolver incidencias o reportar errores en el portal.</p>
+<div class="dx-v2-page-header">
+    <div>
+        <div class="breadcrumb">
+            <a href="{{ url('/soporte') }}">Portal</a>
+            <span class="separator">/</span>
+            <span class="current">Soporte</span>
         </div>
+        <h1 class="page-title">Contactar <span>Soporte IT</span></h1>
+        <p class="page-subtitle">Envía un mensaje directo al equipo de soporte para resolver incidencias o reportar errores en el portal.</p>
     </div>
 </div>
 

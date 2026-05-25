@@ -6,10 +6,15 @@
 @endpush
 
 @section('content')
-<div class="page-header">
+<div class="dx-v2-page-header">
     <div>
-        <h1 class="welcome">Analítica y <span>Reportes</span></h1>
-        <p class="welcome-sub">Distribución de software, caducidades y reportes por cliente</p>
+        <div class="breadcrumb">
+            <a href="{{ route('reports.index') }}">Operaciones</a>
+            <span class="separator">/</span>
+            <span class="current">Reportes</span>
+        </div>
+        <h1 class="page-title">Analítica y <span>Reportes</span></h1>
+        <p class="page-subtitle">Distribución de software, caducidades y reportes por cliente</p>
     </div>
 </div>
 

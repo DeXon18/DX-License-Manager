@@ -5,17 +5,17 @@
 @endpush
 
 @section('content')
-<div class="page-header">
-    <div class="breadcrumb">
-        <a href="{{ route('clients.index') }}">Clientes</a>
-        <span class="muted">/</span>
-        <span class="current">{{ $client->name }}</span>
-    </div>
-    <div class="dx-v2-clients-header-split">
-        <div>
-            <h1 class="page-title">{{ $client->name }}</h1>
-            <p class="page-sub">Perfil de cuenta y gestión de activos del ecosistema.</p>
+<div class="dx-v2-page-header">
+    <div>
+        <div class="breadcrumb">
+            <a href="{{ route('clients.index') }}">Inventario</a>
+            <span class="separator">/</span>
+            <span class="current">Perfil de Cliente</span>
         </div>
+        <h1 class="page-title">{{ $client->name }}</h1>
+        <p class="page-subtitle">Perfil de cuenta y gestión de activos del ecosistema.</p>
+    </div>
+    <div class="dx-v2-page-header-actions">
         <div class="dx-v2-clients-badge-container">
             @if($client->siemens_daemons_count > 0)
                 <div class="badge dx-v2-clients-header-badge siemens">

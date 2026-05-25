@@ -3,30 +3,25 @@
 @section('title', 'Docker Fleet Monitor')
 
 @section('content')
-<div class="dx-v2-sys-docker-page-header">
-    <div class="dx-v2-sys-docker-header-layout">
-        <div>
-            <div class="dx-v2-sys-docker-breadcrumb-wrapper">
-                <a href="{{ route('admin.system.index') }}" class="dx-v2-sys-docker-breadcrumb-link">
-                    <i class="fa-solid fa-chevron-left"></i>
-                </a>
-                <span class="dx-v2-sys-docker-breadcrumb-text">Infraestructura</span>
-            </div>
-            <h1 class="dx-v2-sys-docker-title">
-                <i class="fa-solid fa-layer-group dx-v2-sys-docker-title-icon"></i>Docker Fleet Monitor
-            </h1>
+<div class="dx-v2-page-header">
+    <div>
+        <div class="breadcrumb">
+            <a href="{{ route('admin.system.index') }}">Infraestructura</a>
+            <span class="separator">/</span>
+            <span class="current">Docker Monitor</span>
         </div>
-        
-        <div class="dx-v2-sys-docker-header-right">
-            <div class="dx-v2-sys-docker-env-badge">
-                <div class="dx-v2-sys-docker-dot-live"></div>
-                <span class="dx-v2-sys-docker-env-text">{{ config('app.env') === 'production' ? 'PROD_SYSTEM' : 'BETA_STAGING' }}</span>
-            </div>
-            <button onclick="window.location.reload()" class="dx-v2-sys-docker-btn-noc">
-                <i class="fa-solid fa-rotate"></i>
-                <span>Sincronizar</span>
-            </button>
+        <h1 class="page-title">Docker Fleet <span>Monitor</span></h1>
+        <p class="page-subtitle">Monitorización en tiempo real de los servicios y contenedores de la aplicación.</p>
+    </div>
+    <div class="dx-v2-page-header-actions" style="display: flex; align-items: center;">
+        <div class="dx-v2-sys-docker-env-badge" style="margin-right: 12px;">
+            <div class="dx-v2-sys-docker-dot-live"></div>
+            <span class="dx-v2-sys-docker-env-text">{{ config('app.env') === 'production' ? 'PROD_SYSTEM' : 'BETA_STAGING' }}</span>
         </div>
+        <button onclick="window.location.reload()" class="btn-primary sm" style="margin: 0; padding: 6px 14px; font-size: 13px;">
+            <i class="fa-solid fa-rotate"></i>
+            <span style="margin-left: 6px;">Sincronizar</span>
+        </button>
     </div>
 </div>
 
