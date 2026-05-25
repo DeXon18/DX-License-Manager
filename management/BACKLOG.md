@@ -40,6 +40,12 @@ El desarrollador inicia. El agente espera.
 - **Resumen:** Creación y despliegue corporativo de la página de Privacidad IA (`/privacidad-ia`) usando Bento Grid y estilo NOC Pro para garantizar Zero-Data Retention en DPA. Implementación del estado visual "Renovación Tardía" en contratos expirados bajo gracia.
 - **PR:** Pendiente de merge a `dev`
 
+### Mejoras Telemetría IA y Costes (Modelos Free & UI NOC Pro) ✅
+- **Completada:** 2026-05-25
+- **Rama:** `feature/ai-cost-openrouter-free`
+- **Resumen:** Refactorización del dashboard de costes IA adoptando el layout NOC Pro, alineación estricta de métricas y tarjetas de estadísticas, y soporte granular de modelos para coste 0 en peticiones `:free` de OpenRouter.
+- **PR:** Pendiente de merge a `dev`
+
 ### Fase 29 — Gestión de Enterprise Cloud Accounts ✅
 - **Completada:** 2026-05-25
 - **Rama:** `feature/enterprise-cloud-accounts`

@@ -134,6 +134,7 @@ class AuditService
             try {
                 \App\Models\AiTokenLog::create([
                     'provider' => 'n8n',
+                    'model' => 'n8n-deepseek',
                     'action' => 'license_audit',
                     'prompt_tokens' => $data['usage']['prompt_tokens'] ?? 0,
                     'completion_tokens' => $data['usage']['completion_tokens'] ?? 0,

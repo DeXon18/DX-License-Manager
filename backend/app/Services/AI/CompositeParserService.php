@@ -67,7 +67,7 @@ EOT;
             $content = $data['candidates'][0]['content']['parts'][0]['text'] ?? '{}';
             
             if (isset($data['usageMetadata'])) {
-                $this->logTokens('gemini', 'composite_parse', $data['usageMetadata']);
+                $this->logTokens('gemini', 'gemini-3.1-flash-lite', 'composite_parse', $data['usageMetadata']);
             }
             
             // Limpiar posibles bloques markdown si Gemini los incluye
@@ -87,11 +87,12 @@ EOT;
     /**
      * Registra los tokens consumidos en la base de datos.
      */
-    private function logTokens(string $provider, string $action, array $usageData): void
+    private function logTokens(string $provider, string $model, string $action, array $usageData): void
     {
         try {
             \App\Models\AiTokenLog::create([
                 'provider' => $provider,
+                'model' => $model,
                 'action' => $action,
                 'prompt_tokens' => $usageData['promptTokenCount'] ?? 0,
                 'completion_tokens' => $usageData['candidatesTokenCount'] ?? 0,

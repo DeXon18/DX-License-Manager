@@ -81,7 +81,7 @@ EOT;
                     $text = $resData['candidates'][0]['content']['parts'][0]['text'] ?? '{}';
                     
                     if (isset($resData['usageMetadata'])) {
-                        $this->logTokens('gemini', 'normalization_search', $resData['usageMetadata']);
+                        $this->logTokens('gemini', 'gemini-3.1-flash-lite', 'normalization_search', $resData['usageMetadata']);
                     }
 
                     $parsed = $this->parseJsonAndValidate($text);
@@ -120,7 +120,7 @@ EOT;
                     $text = $resData['choices'][0]['message']['content'] ?? '{}';
                     
                     if (isset($resData['usage'])) {
-                        $this->logTokens('deepseek', 'normalization_search', $resData['usage']);
+                        $this->logTokens('deepseek', 'deepseek-chat', 'normalization_search', $resData['usage']);
                     }
 
                     $parsed = $this->parseJsonAndValidate($text);
@@ -160,7 +160,7 @@ EOT;
                     $text = $resData['choices'][0]['message']['content'] ?? '{}';
                     
                     if (isset($resData['usage'])) {
-                        $this->logTokens('openrouter', 'normalization_search', $resData['usage']);
+                        $this->logTokens('openrouter', 'google/gemini-2.5-flash', 'normalization_search', $resData['usage']);
                     }
 
                     $parsed = $this->parseJsonAndValidate($text);
@@ -311,7 +311,7 @@ EOT;
                     $text = $resData['candidates'][0]['content']['parts'][0]['text'] ?? '{}';
                     
                     if (isset($resData['usageMetadata'])) {
-                        $this->logTokens('gemini', 'normalization_pair', $resData['usageMetadata']);
+                        $this->logTokens('gemini', 'gemini-3.1-flash-lite', 'normalization_pair', $resData['usageMetadata']);
                     }
 
                     $decoded = $this->parseJsonAndValidateDuplicate($text);
@@ -343,7 +343,7 @@ EOT;
                     $text = $resData['choices'][0]['message']['content'] ?? '{}';
                     
                     if (isset($resData['usage'])) {
-                        $this->logTokens('deepseek', 'normalization_pair', $resData['usage']);
+                        $this->logTokens('deepseek', 'deepseek-chat', 'normalization_pair', $resData['usage']);
                     }
 
                     $decoded = $this->parseJsonAndValidateDuplicate($text);
@@ -387,7 +387,7 @@ EOT;
     /**
      * Registra los tokens consumidos en la base de datos.
      */
-    private function logTokens(string $provider, string $action, array $usageData): void
+    private function logTokens(string $provider, string $model, string $action, array $usageData): void
     {
         try {
             $promptTokens = 0;
@@ -407,6 +407,7 @@ EOT;
 
             AiTokenLog::create([
                 'provider' => $provider,
+                'model' => $model,
                 'action' => $action,
                 'prompt_tokens' => $promptTokens,
                 'completion_tokens' => $completionTokens,
