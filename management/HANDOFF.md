@@ -1,38 +1,42 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-25 09:55  
-> Rama activa: dev
+> Última actualización: 2026-05-25 17:00
+> Sesión en: Indeterminado
+> Rama activa: feature/ai-routing-hub
 
 ---
 
 ## Estado General
 
-**Fase actual:** Mejoras Telemetría IA y Costes (Modelos Free & UI NOC Pro) Completada
-**Stack beta:** ✅ operativo
-**Stack prod:** ✅ operativo
+**Fase actual:** Fase 29 — Telemetría IA & Routing
+**Stack beta:** ✅ Indeterminado
+**Stack prod:** ✅ Indeterminado
 
 ---
 
 ## Qué se hizo en esta sesión
 
-1. **Tabla y Modelo**: Se añadió la columna `model` a la tabla `ai_token_logs` para permitir métricas por modelo y precios dinámicos según `config/ai.php` (especialmente coste $0 para los `:free` de OpenRouter).
-2. **UI NOC Pro**: Se refactorizó la vista `ai-costs.blade.php` migrando el panel de estadísticas al diseño industrial puro (`dx-v2-sys-dash-sec-layout`), resolviendo márgenes anidados, unificando tipografía y forzando asimetría matemática (`min-height`) en el bottom-layout para alinear perfectamente los listados.
-3. **Mantenimiento**: Se borró la rama `feature/ai-cost-openrouter-free` local y remotamente, además de purgar 12 ramas antiguas/huérfanas que habían quedado colgadas de sesiones pasadas.
-4. **Merge a dev**: Se completó el ciclo y se integró todo en `dev` tras documentar en `BACKLOG.md` y `CHANGELOG.md`.
+1. **AI Routing Hub**: Construido el panel de control centralizado (`admin/system/ai-routing`) para orquestar la IA.
+2. **Telemetría de Cuotas**: Añadido `weekly_tokens_limit` a la tabla `ai_models`. Actualizada la vista de costes para mostrar el límite dinámico en barras de progreso.
+3. **Catálogo Top Gratis**: Actualizado el seeder con los 11 mejores modelos gratuitos actuales (OpenRouter/Owl-Alpha, Nemotron, Laguna, DeepSeek V4).
+4. **Refactorización UI**: Eliminado el layout tipo sidebar en la vista de Routing para maximizar el ancho del catálogo; el formulario de "Añadir Modelo" ahora está en su propia pestaña. Unificación visual con NOC Pro de las métricas numéricas y estado "Ilimitado / ∞".
+5. **Migraciones & Seeder**: Ejecutados exitosamente a través de un endpoint temporal (ya eliminado).
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Consultar el `BACKLOG.md` o preguntar a Oskar por el siguiente requerimiento, dado que la fase actual ha quedado finalizada y documentada.
+1. **Evaluar Merge**: Revisar si la rama `feature/ai-routing-hub` está lista para ser fusionada hacia `dev` y realizar el Pull Request o Merge correspondiente, asegurando que no queden rutas temporales olvidadas.
+
+### Tareas siguientes
+1. Continuar con la Fase 29 integrando perfiles de administración o seguir documentando métricas.
 
 ---
 
 ## Contexto técnico importante
 
-- Los listados en la vista de costes de IA usan una arquitectura estricta en CSS (`dx-v2-sys-dash-sec-layout`). No volver a inyectar clases de tabla ni wrappers sin consultar la matriz de clases 6-layer.
-- Se ha hecho limpieza a fondo de ramas (`git branch` limpio).
-- Estamos en la rama `dev`.
+- Los límites de tokens ahora se formatean en Tera, Giga o Mega (T/B/M). Si un modelo no tiene un límite establecido, se muestra con un estado estético `∞` y una barra verde del 0%.
+- El seeder usa `updateOrCreate`, lo que significa que los modelos viejos pueden seguir existiendo en BD con límite "null". Todos ellos se renderizarán visualmente bien gracias a la corrección de diseño.
 
 ---
 
@@ -59,9 +63,6 @@ Ninguno.
 # Arrancar beta si está down
 docker compose --project-directory . -f infra/docker-compose.beta.yml up -d
 
-# Entrar al contenedor PHP
-docker exec -it dx-php-beta sh
-
 # Ver logs en tiempo real
-docker compose --project-directory . -f infra/docker-compose.beta.yml logs -f nginx-beta
+docker compose --project-directory . -f infra/docker-compose.beta.yml logs -f dx-php-beta
 ```
