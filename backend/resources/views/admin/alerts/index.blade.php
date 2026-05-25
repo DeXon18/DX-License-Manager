@@ -3,23 +3,28 @@
 @section('title', 'Configuración de Alertas')
 @section('content')
 
-<div class="page-header dx-v2-alerts-header-row">
+<div class="dx-v2-page-header">
     <div>
-        <h1 class="page-title">Alertas y Notificaciones</h1>
-        <p class="page-sub">Gestión de umbrales y reporte semanal de caducidad de licencias.</p>
+        <div class="breadcrumb">
+            <a href="{{ route('admin.alerts.index') }}">Administración</a>
+            <span class="separator">/</span>
+            <span class="current">Notificaciones</span>
+        </div>
+        <h1 class="page-title">Centro de <span>Alertas</span></h1>
+        <p class="page-subtitle">Gestión de umbrales y reporte semanal de caducidad de licencias.</p>
     </div>
-    <div class="dx-v2-alerts-btn-group">
-        <form action="{{ route('admin.alerts.toggle') }}" method="POST">
+    <div class="dx-v2-page-header-actions">
+        <form action="{{ route('admin.alerts.toggle') }}" method="POST" style="margin: 0;">
             @csrf
-            <button type="submit" class="btn {{ $settings->is_active ? 'badge-success' : 'badge-danger' }} dx-v2-alerts-toggle-btn">
-                <i class="fa-solid fa-power-off mr-2"></i>
+            <button type="submit" class="btn {{ $settings->is_active ? 'badge-success' : 'badge-danger' }} dx-v2-alerts-toggle-btn" style="height: 38px; display: flex; align-items: center; padding: 0 16px; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600;">
+                <i class="fa-solid fa-power-off" style="margin-right: 8px;"></i>
                 {{ $settings->is_active ? 'Sistema Activo' : 'Sistema Desactivado' }}
             </button>
         </form>
-        <form action="{{ route('admin.system.send-weekly-alerts') }}" method="POST">
+        <form action="{{ route('admin.system.send-weekly-alerts') }}" method="POST" style="margin: 0;">
             @csrf
-            <button type="submit" class="btn-primary">
-                <i class="fa-solid fa-paper-plane mr-2"></i>
+            <button type="submit" class="btn-primary" style="height: 38px; display: flex; align-items: center; padding: 0 16px;">
+                <i class="fa-solid fa-paper-plane" style="margin-right: 8px;"></i>
                 Test Envío Manual
             </button>
         </form>

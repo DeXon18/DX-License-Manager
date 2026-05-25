@@ -3,10 +3,15 @@
 @section('title', 'Importación de Datos')
 
 @section('content')
-<div class="page-header">
-    <div class="page-header-info">
-        <h1 class="page-title">Gestión de Importación</h1>
-        <p class="page-sub">Actualización masiva de contratos y sincronización de estados desde repositorio externo.</p>
+<div class="dx-v2-page-header">
+    <div>
+        <div class="breadcrumb">
+            <a href="{{ route('admin.import.index') }}">Administración</a>
+            <span class="separator">/</span>
+            <span class="current">Importador CSV</span>
+        </div>
+        <h1 class="page-title">Importación de <span>Inventario</span></h1>
+        <p class="page-subtitle">Actualización masiva de contratos y sincronización de estados desde repositorio externo.</p>
     </div>
 </div>
 

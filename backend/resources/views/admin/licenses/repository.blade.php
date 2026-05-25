@@ -3,11 +3,15 @@
 @section('title', 'Repositorio de Licencias')
 
 @section('content')
-<div class="page-header">
-    <div class="page-header-info">
-        <div class="breadcrumb">Administración / Licencias</div>
-        <h1 class="page-title">Repositorio Semanal</h1>
-        <p class="page-sub">Historial de archivos comprimidos y reporte de licencias procesadas.</p>
+<div class="dx-v2-page-header">
+    <div>
+        <div class="breadcrumb">
+            <a href="{{ route('admin.repository.index') }}">Administración</a>
+            <span class="separator">/</span>
+            <span class="current">File System</span>
+        </div>
+        <h1 class="page-title">Repositorio de <span>Licencias</span></h1>
+        <p class="page-subtitle">Historial de archivos comprimidos y reporte de licencias procesadas.</p>
     </div>
 </div>
 
