@@ -26,9 +26,39 @@ class AiAuditCostController extends Controller
         $totalPromptTokensAllTime = AiTokenLog::sum('prompt_tokens');
         $totalCompletionTokensAllTime = AiTokenLog::sum('completion_tokens');
 
-        // Estimación de coste (Gemini Flash 1.5 aprox: $0.15/1M Prompt, $0.60/1M Completion)
-        $totalCostThisMonth = ($promptTokensThisMonth / 1000000 * 0.15) + ($completionTokensThisMonth / 1000000 * 0.60);
-        $totalCostAllTime = ($totalPromptTokensAllTime / 1000000 * 0.15) + ($totalCompletionTokensAllTime / 1000000 * 0.60);
+        // Cálculo dinámico de coste por modelo
+        $pricingConfig = config('ai.pricing', []);
+        
+        $calculateCostByModel = function($query) use ($pricingConfig) {
+            $modelStats = $query->select('model', DB::raw('SUM(prompt_tokens) as prompt_tokens'), DB::raw('SUM(completion_tokens) as completion_tokens'))
+                ->groupBy('model')
+                ->get();
+            
+            $cost = 0;
+            foreach ($modelStats as $stat) {
+                $model = $stat->model ?? 'default';
+                $modelKey = 'default';
+                
+                if (isset($pricingConfig[$model])) {
+                    $modelKey = $model;
+                } elseif (str_contains(strtolower($model), 'free')) {
+                    $modelKey = 'default';
+                } elseif (str_contains(strtolower($model), 'gemini')) {
+                    $modelKey = 'gemini-1.5-flash'; // Fallback
+                } elseif (str_contains(strtolower($model), 'deepseek')) {
+                    $modelKey = 'deepseek-chat'; // Fallback
+                }
+
+                $promptPrice = $pricingConfig[$modelKey]['prompt'] ?? 0;
+                $completionPrice = $pricingConfig[$modelKey]['completion'] ?? 0;
+
+                $cost += ($stat->prompt_tokens / 1000000 * $promptPrice) + ($stat->completion_tokens / 1000000 * $completionPrice);
+            }
+            return $cost;
+        };
+
+        $totalCostThisMonth = $calculateCostByModel(AiTokenLog::where('created_at', '>=', $currentMonth));
+        $totalCostAllTime = $calculateCostByModel(AiTokenLog::query());
 
         // 2. Uso por Proveedor (Mes Actual)
         $providerStats = AiTokenLog::where('created_at', '>=', $currentMonth)
