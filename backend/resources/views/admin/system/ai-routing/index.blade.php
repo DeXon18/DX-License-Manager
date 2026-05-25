@@ -15,9 +15,9 @@
     </div>
 </div>
 
-<div class="grid-main" x-data="{ activeTab: 'router' }">
-    <!-- Panel Izquierdo: Contenido Principal con Pestañas -->
-    <div class="main-panel">
+<div x-data="{ activeTab: 'router' }">
+    <!-- Contenido Principal con Pestañas -->
+    <div>
         @if(session('success'))
             <div class="card" style="margin-bottom: 24px; border-color: var(--dx-v2-success-border); background: var(--dx-v2-success-bg);">
                 <div class="card-body" style="padding: 12px 16px !important; color: var(--dx-v2-success); font-weight: 500;">
@@ -39,6 +39,12 @@
                     :style="activeTab === 'catalog' ? 'background: var(--dx-v2-accent); color: #fff !important; border-color: var(--dx-v2-accent);' : 'border: none; background: transparent;'">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
                 Catálogo de Modelos IA
+            </button>
+            <button @click="activeTab = 'add'" 
+                    class="btn-secondary" 
+                    :style="activeTab === 'add' ? 'background: var(--dx-v2-accent); color: #fff !important; border-color: var(--dx-v2-accent);' : 'border: none; background: transparent;'">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                Añadir Modelo
             </button>
         </div>
 
@@ -188,49 +194,47 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- Panel Derecho: Modelos Disponibles -->
-    <div class="sidebar-panel">
-        <div class="card">
-            <div class="card-header">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="accent-color"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                    <span class="card-title">Añadir Modelo</span>
+        <!-- TAB: ADD -->
+        <div x-show="activeTab === 'add'" style="display: none; max-width: 600px;">
+            <div class="card">
+                <div class="card-header">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="accent-color"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        <span class="card-title">Añadir Modelo Manualmente</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form action="{{ route('admin.system.ai-routing.models.store') }}" method="POST">
+                        @csrf
+                        <div class="dx-v2-form-group">
+                            <label class="dx-v2-form-label">OpenRouter ID</label>
+                            <input type="text" name="openrouter_id" class="dx-v2-form-input" placeholder="Ej. deepseek/deepseek-v4-flash" required>
+                        </div>
+                        <div class="dx-v2-form-group">
+                            <label class="dx-v2-form-label">Nombre Amigable</label>
+                            <input type="text" name="name" class="dx-v2-form-input" placeholder="Ej. DeepSeek V4 Flash" required>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                            <div class="dx-v2-form-group">
+                                <label class="dx-v2-form-label">P. Prompt</label>
+                                <input type="number" step="0.000001" name="price_prompt" class="dx-v2-form-input" value="0" required>
+                            </div>
+                            <div class="dx-v2-form-group">
+                                <label class="dx-v2-form-label">P. Completion</label>
+                                <input type="number" step="0.000001" name="price_completion" class="dx-v2-form-input" value="0" required>
+                            </div>
+                        </div>
+                        <div class="dx-v2-form-group" style="margin-top: 8px;">
+                            <label class="dx-v2-form-checkbox-wrapper">
+                                <input type="checkbox" name="is_free" value="1" id="is_free" class="dx-v2-form-checkbox" checked>
+                                <span style="font-family: var(--dx-v2-font-sans); font-size: 13px; color: var(--dx-v2-secondary);">Es un modelo gratuito (:free)</span>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn-primary" style="margin-top: 16px;">Guardar Modelo</button>
+                    </form>
                 </div>
             </div>
-            <div class="card-body">
-                <form action="{{ route('admin.system.ai-routing.models.store') }}" method="POST">
-                    @csrf
-                    <div class="dx-v2-form-group">
-                        <label class="dx-v2-form-label">OpenRouter ID</label>
-                        <input type="text" name="openrouter_id" class="dx-v2-form-input" placeholder="Ej. deepseek/deepseek-v4-flash" required>
-                    </div>
-                    <div class="dx-v2-form-group">
-                        <label class="dx-v2-form-label">Nombre Amigable</label>
-                        <input type="text" name="name" class="dx-v2-form-input" placeholder="Ej. DeepSeek V4 Flash" required>
-                    </div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
-                        <div class="dx-v2-form-group">
-                            <label class="dx-v2-form-label">P. Prompt</label>
-                            <input type="number" step="0.000001" name="price_prompt" class="dx-v2-form-input" value="0" required>
-                        </div>
-                        <div class="dx-v2-form-group">
-                            <label class="dx-v2-form-label">P. Completion</label>
-                            <input type="number" step="0.000001" name="price_completion" class="dx-v2-form-input" value="0" required>
-                        </div>
-                    </div>
-                    <div class="dx-v2-form-group" style="margin-top: 8px;">
-                        <label class="dx-v2-form-checkbox-wrapper">
-                            <input type="checkbox" name="is_free" value="1" id="is_free" class="dx-v2-form-checkbox" checked>
-                            <span style="font-family: var(--dx-v2-font-sans); font-size: 13px; color: var(--dx-v2-secondary);">Es un modelo gratuito (:free)</span>
-                        </label>
-                    </div>
-                    <button type="submit" class="btn-primary" style="width: 100%; margin-top: 16px;">Guardar Modelo</button>
-                </form>
-            </div>
         </div>
-
     </div>
 </div>
 @endsection
