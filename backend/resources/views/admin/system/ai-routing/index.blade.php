@@ -116,6 +116,7 @@
                                 <th>Modelo</th>
                                 <th>OpenRouter ID</th>
                                 <th>Tipo</th>
+                                <th style="text-align: right;">Cuota Semanal</th>
                                 <th style="text-align: right;">P. Prompt / Comp.</th>
                             </tr>
                         </thead>
@@ -141,6 +142,37 @@
                                             <span style="background: var(--dx-v2-success-bg); color: var(--dx-v2-success); border: 1px solid var(--dx-v2-success-border); padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 700;">FREE</span>
                                         @else
                                             <span style="background: var(--dx-v2-warning-bg); color: var(--dx-v2-warning); border: 1px solid var(--dx-v2-warning-border); padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: 700;">PRO</span>
+                                        @endif
+                                    </td>
+                                    <td style="text-align: right;">
+                                        @if($m->weekly_tokens_limit)
+                                            @php
+                                                $limit = $m->weekly_tokens_limit;
+                                                $usage = $m->weekly_usage ?? 0;
+                                                $percent = $limit > 0 ? min(100, round(($usage / $limit) * 100)) : 0;
+                                                
+                                                // Formateo del límite
+                                                $limitStr = $limit >= 1000000000000 ? round($limit/1000000000000, 2) . 'T' : 
+                                                            ($limit >= 1000000000 ? round($limit/1000000000, 1) . 'B' : 
+                                                            round($limit/1000000, 1) . 'M');
+                                                
+                                                // Formateo del uso
+                                                $usageStr = $usage >= 1000000000000 ? round($usage/1000000000000, 2) . 'T' : 
+                                                            ($usage >= 1000000000 ? round($usage/1000000000, 1) . 'B' : 
+                                                            ($usage >= 1000000 ? round($usage/1000000, 1) . 'M' : number_format($usage, 0, ',', '.')));
+                                                            
+                                                $barColor = $percent > 90 ? 'var(--dx-v2-danger)' : ($percent > 75 ? 'var(--dx-v2-warning)' : 'var(--dx-v2-success)');
+                                            @endphp
+                                            <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+                                                <div style="font-size: 11px; font-family: var(--dx-v2-font-mono, monospace); color: var(--dx-v2-muted);">
+                                                    <strong style="color: var(--dx-v2-primary);">{{ $usageStr }}</strong> / {{ $limitStr }}
+                                                </div>
+                                                <div style="width: 100px; height: 4px; background: var(--dx-v2-border); border-radius: 2px; overflow: hidden;">
+                                                    <div style="width: {{ $percent }}%; height: 100%; background: {{ $barColor }};"></div>
+                                                </div>
+                                            </div>
+                                        @else
+                                            <span style="font-size: 11px; color: var(--dx-v2-muted);">Ilimitada</span>
                                         @endif
                                     </td>
                                     <td style="text-align: right; font-family: var(--dx-v2-font-mono, monospace); font-size: 12px; color: var(--dx-v2-muted);">

@@ -14,6 +14,21 @@ class AiModelController extends Controller
         $models = AiModel::orderBy('name')->get();
         $routes = AiRoute::with(['primaryModel', 'fallbackModel'])->get();
 
+        // Calculate weekly usage for models with a limit
+        $weekAgo = now()->subDays(7);
+        foreach ($models as $model) {
+            if ($model->weekly_tokens_limit) {
+                $shortName = explode('/', $model->openrouter_id)[1] ?? $model->openrouter_id;
+                
+                $model->weekly_usage = \App\Models\AiTokenLog::where('created_at', '>=', $weekAgo)
+                    ->where(function($q) use ($model, $shortName) {
+                        $q->where('model', $model->openrouter_id)
+                          ->orWhere('model', 'LIKE', '%' . $shortName . '%');
+                    })
+                    ->sum('total_tokens');
+            }
+        }
+
         return view('admin.system.ai-routing.index', compact('models', 'routes'));
     }
 
