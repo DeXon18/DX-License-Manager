@@ -31,9 +31,15 @@ El desarrollador inicia. El agente espera.
 *Actualmente en espera de la definición de nuevos objetivos y prioridades por parte de Oskar.*
 
 ### 💡 Ideas Pendientes (UI / UX / Soporte)
-- [ ] **Perfiles de Administrador**: Añadir en los perfiles de usuario de los administradores los campos `Enterprise Cloud Account Admin` (ej. gorka.ecenarro@bultzaki.com) y `Enterprise Cloud Account` (ej. 100218944).
 
 ## ✅ Completado
+
+### Fase 29 — Gestión de Enterprise Cloud Accounts ✅
+- **Completada:** 2026-05-25
+- **Rama:** `feature/enterprise-cloud-accounts`
+- **Resumen:** Implementación del módulo de gestión de cuentas Enterprise Cloud Accounts en el perfil del cliente. Arquitectura aislada del inventario de licencias con UI propia, tabla y modal. Integración completa como Skill conversacional en el Chatbot IA con búsqueda mejorada por dominio y validación estricta de campos.
+- **PR:** Pendiente
+
 
 ### Fase 28 — Contactar Soporte IT (Formulario a Telegram) ✅
 - **Completada:** 2026-05-22
