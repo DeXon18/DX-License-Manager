@@ -1,6 +1,14 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-25 14:40] — Telemetría IA: Costes Granulares por Modelo & UI NOC Pro ✅
+
+### Added
+- **Costes por Modelo & Facturación Dinámica**: Añadida columna `model` en `ai_token_logs`. El sistema ahora mapea los modelos específicos (ej. GPT, DeepSeek) y permite asignar reglas lógicas en `config/ai.php`, logrando coste $0 exacto para los modelos taggeados como `:free` en OpenRouter.
+- **Refactorización UI NOC Pro**: Migrado el panel completo de estadísticas a la arquitectura de interfaz industrial del sistema (`dx-v2-sys-dash-sec-layout`). Se eliminaron tablas densas sustituyéndolas por listados de precisión simétrica sin wrappers anidados.
+
+---
+
 ## [2026-05-25 13:17] — Security & Compliance Corporativo + Estado de Contratos ✅
 
 ### Added

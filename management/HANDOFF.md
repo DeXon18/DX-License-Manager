@@ -6,7 +6,7 @@
 
 ## Estado General
 
-**Fase actual:** Fase 29 — Gestión de Enterprise Cloud Accounts (ECA) Completada
+**Fase actual:** Mejoras Telemetría IA y Costes (Modelos Free & UI NOC Pro) Completada
 **Stack beta:** ✅ operativo
 **Stack prod:** ✅ operativo
 
@@ -14,11 +14,10 @@
 
 ## Qué se hizo en esta sesión
 
-1. **Tabla y Modelo:** Se creó la migración para `enterprise_cloud_accounts` y el modelo asociado para persistir el Sold-To, Account ID y Admin Email vinculados al Cliente.
-2. **UI (NOC Pro):** Se implementó una pestaña completa "Enterprise Cloud" en el perfil de cliente (`clients/show.blade.php`) que lista las cuentas e incluye un modal de alta.
-3. **Skill del Chatbot IA:** Se integró la función `create_enterprise_cloud_account` en `ChatbotService.php` para inyectar estos datos desde lenguaje natural, y se actualizó la búsqueda de clientes (`toolSearchClients`) para que también reconozca los dominios de los correos de contacto.
-4. **Merge a dev:** Se finalizó la rama `feature/enterprise-cloud-accounts`, se fusionó a `dev` manualmente, y se borró la rama tanto en local como en remoto siguiendo el workflow oficial.
-5. **Documentación:** Actualización completa de `BACKLOG.md` y `CHANGELOG.md`.
+1. **Tabla y Modelo**: Se añadió la columna `model` a la tabla `ai_token_logs` para permitir métricas por modelo y precios dinámicos según `config/ai.php` (especialmente coste $0 para los `:free` de OpenRouter).
+2. **UI NOC Pro**: Se refactorizó la vista `ai-costs.blade.php` migrando el panel de estadísticas al diseño industrial puro (`dx-v2-sys-dash-sec-layout`), resolviendo márgenes anidados, unificando tipografía y forzando asimetría matemática (`min-height`) en el bottom-layout para alinear perfectamente los listados.
+3. **Mantenimiento**: Se borró la rama `feature/ai-cost-openrouter-free` local y remotamente, además de purgar 12 ramas antiguas/huérfanas que habían quedado colgadas de sesiones pasadas.
+4. **Merge a dev**: Se completó el ciclo y se integró todo en `dev` tras documentar en `BACKLOG.md` y `CHANGELOG.md`.
 
 ---
 
@@ -31,8 +30,9 @@ Consultar el `BACKLOG.md` o preguntar a Oskar por el siguiente requerimiento, da
 
 ## Contexto técnico importante
 
-- El chatbot es estricto en la extracción de ECAs. Si no encuentra un único cliente basado en Sold-To o dominio de email, preguntará primero antes de añadir datos a ciegas.
-- La rama `feature/enterprise-cloud-accounts` está limpia y eliminada. Estamos en `dev`.
+- Los listados en la vista de costes de IA usan una arquitectura estricta en CSS (`dx-v2-sys-dash-sec-layout`). No volver a inyectar clases de tabla ni wrappers sin consultar la matriz de clases 6-layer.
+- Se ha hecho limpieza a fondo de ramas (`git branch` limpio).
+- Estamos en la rama `dev`.
 
 ---
 
