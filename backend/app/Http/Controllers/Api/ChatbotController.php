@@ -48,7 +48,8 @@ class ChatbotController extends Controller
                     \App\Models\AiTokenLog::create([
                         'user_id' => auth()->id(), // null si el chatbot no requiere auth, pero usualmente en admin sí
                         'action' => 'chatbot_query',
-                        'provider' => $result['provider'] ?? 'gemini-flash',
+                        'provider' => $result['provider'] ?? 'gemini',
+                        'model' => $result['model'] ?? 'gemini-1.5-flash',
                         'prompt_tokens' => $promptTokens,
                         'completion_tokens' => $completionTokens,
                         'total_tokens' => $totalTokens,
