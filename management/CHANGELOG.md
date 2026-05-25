@@ -1,6 +1,19 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-25 16:55] — Centralización de OpenRouter & Telemetría de Cuotas Semanales ✅
+
+### Added
+- **AI Routing Hub**: Nuevo panel de control `admin/system/ai-routing` centralizado mediante pestañas para organizar el Enrutador de Tareas (Fallbacks anti-429) y el Catálogo de Modelos IA.
+- **Telemetría de Cuotas Semanales (Weekly Tokens)**: Añadido soporte en base de datos (`ai_models`) para almacenar los límites de tokens gratuitos (1.26T, 669B, etc.) y mostrar una barra de progreso visual calculando dinámicamente el consumo de los últimos 7 días.
+- **Top Modelos Gratuitos**: Actualizado el seeder principal para inyectar y mapear de manera automática el Top 10 de modelos gratis de OpenRouter (Owl Alpha, Nemotron 3 Super, Laguna M.1, etc.).
+
+### Changed
+- **Refactorización de Interfaz NOC Pro**: Eliminado el layout de sidebar rígido en favor de una tercera pestaña "Añadir Modelo" en el hub de IA, logrando que el Catálogo utilice el ancho completo (full-width) de la pantalla.
+- **Diseño de Barras de Progreso**: Unificado el diseño de estado "Ilimitado / ∞" para modelos de pago sin cuotas artificiales.
+
+---
+
 ## [2026-05-25 14:40] — Telemetría IA: Costes Granulares por Modelo & UI NOC Pro ✅
 
 ### Added
