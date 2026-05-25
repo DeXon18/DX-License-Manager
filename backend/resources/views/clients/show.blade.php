@@ -92,6 +92,7 @@
                                         'Facturado - Pte proc. (M)' => ['label' => 'Facturado', 'class' => 'badge-warning', 'icon' => 'fa-solid fa-file-invoice-dollar'],
                                         'Cerrado' => ['label' => 'Cerrado', 'class' => 'badge-success', 'icon' => 'fa-solid fa-lock'],
                                         'Baja' => ['label' => 'Baja', 'class' => 'badge-danger', 'icon' => 'fa-solid fa-circle-xmark'],
+                                        'Renovación Tardía' => ['label' => 'Renov. Tardía', 'class' => 'badge-late', 'icon' => 'fa-solid fa-clock-rotate-left'],
                                     ];
                                     $data = $statusMap[$status] ?? $statusMap['vacio'];
                                 @endphp

@@ -49,6 +49,11 @@ return [
             'color' => 'rojo apagado',
             'icon' => 'fa-solid fa-circle-xmark'
         ],
+        'Renovación Tardía' => [
+            'label' => 'Renov. Tardía',
+            'color' => 'rojo oscuro',
+            'icon' => 'fa-solid fa-clock-rotate-left'
+        ],
         'vacio' => [
             'label' => 'Sin estado',
             'color' => 'gris',

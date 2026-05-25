@@ -1,0 +1,243 @@
+/* ==========================================================================
+   PAGE: AI PRIVACY (dx-v2-page-ai-privacy.css)
+   ========================================================================== */
+
+/* Bento Grid Principal */
+.dx-v2-privacy-bento-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+/* Tipografía especializada basada en NOC Pro */
+.dx-v2-privacy-header-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dx-v2-primary);
+    margin-bottom: 8px;
+}
+
+.dx-v2-privacy-header-subtitle {
+    font-family: 'Inter', sans-serif;
+    color: var(--dx-v2-secondary);
+    font-size: 15px;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.dx-v2-privacy-panel-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--dx-v2-primary);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: -0.01em;
+}
+
+/* Tarjetas y Paneles (Asignación de columnas) */
+.dx-v2-privacy-hero-panel {
+    grid-column: span 12;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+@media (min-width: 1024px) {
+    .dx-v2-privacy-hero-panel {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .dx-v2-privacy-hero-content {
+        flex: 1;
+        padding-right: 48px;
+        border-right: 1px solid var(--dx-v2-border);
+    }
+    
+    .dx-v2-privacy-hero-sla {
+        width: 380px;
+        padding-left: 24px;
+    }
+}
+
+.dx-v2-privacy-half-panel {
+    grid-column: span 12;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 768px) {
+    .dx-v2-privacy-half-panel {
+        grid-column: span 6;
+    }
+}
+
+.dx-v2-privacy-full-panel {
+    grid-column: span 12;
+    padding: 24px;
+}
+
+.dx-v2-privacy-third-panel {
+    grid-column: span 12;
+    padding: 24px;
+}
+
+@media (min-width: 1024px) {
+    .dx-v2-privacy-third-panel {
+        grid-column: span 4;
+    }
+}
+
+/* SLA Mini-Table */
+.dx-v2-privacy-sla-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.dx-v2-privacy-sla-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--dx-v2-border-subtle);
+}
+
+.dx-v2-privacy-sla-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.dx-v2-privacy-sla-label {
+    color: var(--dx-v2-secondary);
+    font-weight: 600;
+}
+
+.dx-v2-privacy-sla-value {
+    color: var(--dx-v2-primary);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+}
+
+/* Pipeline Diagram Styling (NOC Pro) */
+.dx-v2-pipeline-container {
+    background: var(--dx-v2-bg);
+    border: 1px solid var(--dx-v2-border);
+    border-radius: 8px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.dx-v2-pipeline-node {
+    background: var(--dx-v2-surface);
+    border: 1px solid var(--dx-v2-border);
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--dx-v2-primary);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.dx-v2-pipeline-node.dark {
+    background: var(--dx-v2-primary);
+    color: var(--dx-v2-bg);
+    border-color: transparent;
+}
+
+.dx-v2-pipeline-arrow {
+    color: var(--dx-v2-muted);
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.dx-v2-pipeline-arrow-label {
+    font-size: 11px;
+    font-family: 'Inter', sans-serif;
+    color: var(--dx-v2-secondary);
+    background: var(--dx-v2-bg);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--dx-v2-border-subtle);
+}
+
+/* Surface Feature Cards */
+.dx-v2-surface-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.dx-v2-surface-item {
+    font-size: 13px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
+}
+
+.dx-v2-surface-icon-ok {
+    color: var(--dx-v2-success);
+    margin-top: 2px;
+}
+
+.dx-v2-surface-icon-no {
+    color: var(--dx-v2-danger);
+    margin-top: 2px;
+}
+
+/* Compliance Banner */
+.dx-v2-privacy-compliance-banner {
+    grid-column: span 12;
+    padding: 24px;
+    background: var(--dx-v2-surface);
+    border: 1px solid var(--dx-v2-border);
+    border-radius: 8px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+
+.dx-v2-privacy-compliance-banner p {
+    margin: 0;
+    color: var(--dx-v2-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* Utilidades semánticas */
+.color-success { color: var(--dx-v2-success); }
+.color-accent { color: var(--dx-v2-accent-base); }
+.color-warning { color: var(--dx-v2-warning); }
+.color-danger { color: var(--dx-v2-danger); }
+.color-purple { color: var(--dx-v2-accent-hover); }
+.color-siemens { color: var(--dx-v2-vendor-siemens); }
+.color-muted { color: var(--dx-v2-muted); }
+
+.bg-danger-light { background: var(--dx-v2-danger-bg, rgba(224, 82, 82, 0.1)); }
+.bg-success-light { background: var(--dx-v2-success-bg, rgba(63, 185, 80, 0.1)); }

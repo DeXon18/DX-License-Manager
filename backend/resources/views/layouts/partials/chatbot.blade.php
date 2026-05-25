@@ -161,6 +161,20 @@
                 const text = this.input.trim();
                 if (!text || this.loading) return;
 
+                // Interceptor de Comandos Locales (sin consumir API)
+                if (text === '/menu' || text === '/ayuda') {
+                    this.messages.push({ role: 'user', content: text });
+                    this.messages.push({
+                        role: 'assistant',
+                        content: `**🤖 Menú Rápido de Antigravity**\n\nPuedes escribirme en lenguaje natural o usar estos comandos:\n- \`/contratos\` — Resumen de contratos activos y vencimientos\n- \`/estado\` — Resumen ejecutivo del sistema\n- \`/renovaciones\` — Lista de renovaciones en los próximos 30 días\n- \`/ayuda\` o \`/menu\` — Muestra esta lista`,
+                        provider: 'system'
+                    });
+                    this.input = '';
+                    sessionStorage.setItem('dx_chatbot_history', JSON.stringify(this.messages));
+                    this.$nextTick(() => this.scrollToBottom());
+                    return;
+                }
+
                 // Añadir mensaje del usuario al chat
                 this.messages.push({
                     role: 'user',
@@ -175,10 +189,19 @@
 
                 try {
                     // Mapear historial para la llamada API
-                    const apiMessages = this.messages.map(m => ({
-                        role: m.role,
-                        content: m.content
-                    }));
+                    const apiMessages = this.messages.map(m => {
+                        let mappedContent = m.content;
+                        // Si el mensaje es el último y es un comando, lo traducimos a prompt natural
+                        if (m === this.messages[this.messages.length - 1]) {
+                            if (mappedContent === '/contratos') mappedContent = "Hazme un resumen del estado general de todos los contratos.";
+                            else if (mappedContent === '/estado') mappedContent = "Dame el resumen ejecutivo del sistema con todas las métricas clave.";
+                            else if (mappedContent === '/renovaciones') mappedContent = "Utiliza tus herramientas para diagnosticar qué licencias o productos vencen en los próximos 30 días y hazme un resumen en tabla.";
+                        }
+                        return {
+                            role: m.role,
+                            content: mappedContent
+                        };
+                    });
 
                     const response = await fetch('{{ route("chatbot.query") }}', {
                         method: 'POST',

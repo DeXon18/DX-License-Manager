@@ -34,6 +34,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Fase 30 — Security & Compliance Corporativo + Renovar Contratos ✅
+- **Completada:** 2026-05-25
+- **Rama:** `feature/contracts-chatbot-updates`
+- **Resumen:** Creación y despliegue corporativo de la página de Privacidad IA (`/privacidad-ia`) usando Bento Grid y estilo NOC Pro para garantizar Zero-Data Retention en DPA. Implementación del estado visual "Renovación Tardía" en contratos expirados bajo gracia.
+- **PR:** Pendiente de merge a `dev`
+
 ### Fase 29 — Gestión de Enterprise Cloud Accounts ✅
 - **Completada:** 2026-05-25
 - **Rama:** `feature/enterprise-cloud-accounts`

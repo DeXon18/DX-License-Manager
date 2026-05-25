@@ -37,18 +37,22 @@ class ChatbotService
             return $cachedResponse;
         }
 
-        $geminiKey = config('ai.gemini_key');
-        if (empty($geminiKey)) {
-            Log::error("ChatbotService: GEMINI_API_KEY no está configurada.");
+        $openrouterKey = config('ai.openrouter_key');
+        if (empty($openrouterKey)) {
+            Log::error("ChatbotService: OPENROUTER_API_KEY no está configurada.");
             $response = $this->fallbackToTextChain($chatHistory, 'API Key faltante');
         } else {
-            // 2. Routing de Intención (Ahorro Masivo)
-            $needsDb = $this->isDatabaseQueryNeeded($chatHistory, $geminiKey);
-            
             try {
-                $response = $this->executeGeminiFunctionCallingLoop($chatHistory, $geminiKey, $needsDb);
+                $response = $this->executeOpenAIFunctionCallingLoop(
+                    'https://openrouter.ai/api/v1/chat/completions',
+                    $openrouterKey,
+                    'deepseek/deepseek-chat:free',
+                    $chatHistory,
+                    ['HTTP-Referer' => 'https://beta.dxpro.es', 'X-Title' => 'DX License Manager'],
+                    'openrouter'
+                );
             } catch (\Exception $e) {
-                Log::error("ChatbotService: Excepción en el bucle principal de Gemini: " . $e->getMessage());
+                Log::error("ChatbotService: Excepción en el bucle principal de OpenRouter: " . $e->getMessage());
                 $response = $this->fallbackToTextChain($chatHistory, $e->getMessage());
             }
         }
@@ -82,7 +86,7 @@ class ChatbotService
 
         try {
             $response = Http::timeout(5)->post(
-                "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}",
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={$apiKey}",
                 $payload
             );
             
@@ -314,7 +318,7 @@ class ChatbotService
                              "1. Si el usuario te pide información de clientes, licencias o hardware, debes decidir llamar a las herramientas correspondientes. NUNCA inventes IDs, composites o datos de clientes.\n" .
                              "2. Para datos técnicos (Composite, MAC, fechas ISO, file paths, IDs), usa formato monoespaciado en Markdown (ej: `COMPOSITE=123ABC`).\n" .
                              "3. Utiliza la escala del semáforo de expiración: Vencido (rojo), Próximo a expirar <= 30 días (amarillo), Saludable (verde).\n" .
-                             "4. Si te piden añadir contactos, utiliza la herramienta `create_contact` tras buscar el cliente correspondiente con `search_clients`. Ignora emails de ATS/Soporte interno de ATS-Global.\n" .
+                             "4. Si te piden añadir contactos, utiliza la herramienta `create_contact` tras buscar el cliente correspondiente con `search_clients`. Si la búsqueda devuelve varios clientes, PREGUNTA al usuario en cuál de ellos insertarlos antes de crear nada. Ignora emails de ATS/Soporte interno de ATS-Global.\n" .
                              "5. Sé conciso y estructurado. Si la respuesta contiene listas de productos, preséntalos en tablas Markdown compactas y profesionales.\n" .
                              "6. Si te piden añadir un Enterprise Cloud Account, PRIMERO busca el cliente por Sold-To o dominio (email) usando `search_clients`. Si la búsqueda no es concluyente, PREGUNTA al usuario a qué cliente se refiere antes de crear nada. Al confirmar, muestra SOLO: Cliente, Sold-To, Account ID y Admin Email. NO añades columnas como WebKey."
                 ]
@@ -352,7 +356,7 @@ class ChatbotService
             }
 
             $response = Http::timeout(30)->post(
-                "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}",
+                "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key={$apiKey}",
                 $payload
             );
 
@@ -480,8 +484,9 @@ class ChatbotService
                         "1. Para info de clientes, licencias o hardware, usa SIEMPRE las herramientas disponibles. NUNCA inventes datos.\n" .
                         "2. Datos técnicos (Composite, MAC, fechas, IDs) en formato monoespaciado Markdown.\n" .
                         "3. Semáforo: Vencido (rojo), <= 30 días (amarillo), Saludable (verde).\n" .
-                        "4. Listas de productos en tablas Markdown compactas.\n" .
-                        "5. Para añadir cuentas Cloud, busca PRIMERO el cliente. Si hay dudas, PREGUNTA. Al confirmar, muestra SOLO Cliente, Sold-To, Account ID y Admin Email. SIN WebKey.";
+                        "4. Si te piden añadir contactos, utiliza la herramienta `create_contact` tras buscar el cliente correspondiente con `search_clients`. Si la búsqueda devuelve varios clientes, PREGUNTA al usuario en cuál de ellos insertarlos antes de crear nada. Ignora emails de ATS/Soporte interno de ATS-Global.\n" .
+                        "5. Listas de productos en tablas Markdown compactas.\n" .
+                        "6. Para añadir cuentas Cloud, busca PRIMERO el cliente. Si hay dudas, PREGUNTA. Al confirmar, muestra SOLO Cliente, Sold-To, Account ID y Admin Email. SIN WebKey.";
 
         $messages = [['role' => 'system', 'content' => $systemPrompt]];
         foreach ($chatHistory as $msg) {
@@ -570,7 +575,7 @@ class ChatbotService
         $session = request()->hasSession() ? request()->session() : null;
         if ($session) {
             $count = $session->get('chatbot_mutations_count', 0);
-            if ($count >= 5) {
+            if ($count >= 50) {
                 return false;
             }
             $session->put('chatbot_mutations_count', $count + 1);
@@ -594,7 +599,7 @@ class ChatbotService
                 return $this->toolSearchServersByHardware($args['hw_query'] ?? '');
             case 'create_contact':
                 if (!$this->checkAndIncrementMutationLimit()) {
-                    return ['success' => false, 'error' => 'Límite de mutaciones de contacto por sesión superado (máximo 5). Por favor, contacta con un administrador.'];
+                    return ['success' => false, 'error' => 'Límite de mutaciones de contacto por sesión superado (máximo 50). Por favor, contacta con un administrador.'];
                 }
                 return $this->toolCreateContact(
                     (int) ($args['client_id'] ?? 0),
@@ -611,7 +616,7 @@ class ChatbotService
                 return $this->toolSearchContacts($args['query'] ?? '');
             case 'update_contact':
                 if (!$this->checkAndIncrementMutationLimit()) {
-                    return ['success' => false, 'error' => 'Límite de mutaciones de contacto por sesión superado (máximo 5). Por favor, contacta con un administrador.'];
+                    return ['success' => false, 'error' => 'Límite de mutaciones de contacto por sesión superado (máximo 50). Por favor, contacta con un administrador.'];
                 }
                 return $this->toolUpdateContact(
                     (int) ($args['contact_id'] ?? 0),
@@ -1081,7 +1086,7 @@ class ChatbotService
     {
         Log::warning("ChatbotService: Entrando en cadena de Fallback debido a: " . $originalError);
 
-        // Fallback 1: DeepSeek (OpenAI-compatible, soporta function calling)
+        // Fallback 1: API de pago directa de DeepSeek
         $deepseekKey = config('ai.deepseek_key');
         if ($deepseekKey) {
             try {
@@ -1094,47 +1099,13 @@ class ChatbotService
                     'deepseek'
                 );
             } catch (\Exception $e) {
-                Log::error("ChatbotService: Fallo en Fallback DeepSeek: " . $e->getMessage());
-            }
-        }
-
-        // Fallback 2: OpenRouter con modelo free que soporta function calling
-        $openrouterKey = config('ai.openrouter_key');
-        if ($openrouterKey) {
-            try {
-                return $this->executeOpenAIFunctionCallingLoop(
-                    'https://openrouter.ai/api/v1/chat/completions',
-                    $openrouterKey,
-                    'mistralai/mistral-small-3.1-24b-instruct:free',
-                    $chatHistory,
-                    ['HTTP-Referer' => 'https://beta.dxpro.es', 'X-Title' => 'DX License Manager'],
-                    'openrouter'
-                );
-            } catch (\Exception $e) {
-                Log::error("ChatbotService: Fallo en Fallback OpenRouter: " . $e->getMessage());
-            }
-        }
-
-        // Fallback 3: Groq (llama-3.3-70b-versatile, soporta function calling)
-        $groqKey = config('ai.groq_key');
-        if ($groqKey) {
-            try {
-                return $this->executeOpenAIFunctionCallingLoop(
-                    'https://api.groq.com/openai/v1/chat/completions',
-                    $groqKey,
-                    'llama-3.3-70b-versatile',
-                    $chatHistory,
-                    [],
-                    'groq'
-                );
-            } catch (\Exception $e) {
-                Log::error("ChatbotService: Fallo en Fallback Groq: " . $e->getMessage());
+                Log::error("ChatbotService: Fallo en Fallback DeepSeek de pago: " . $e->getMessage());
             }
         }
 
         // Último recurso: mensaje estático
         return [
-            'message'        => "⚠️ **Servicio IA Temporalmente Indisponible**\n\nNo he podido establecer conexión con ningún proveedor de IA (Gemini/DeepSeek/OpenRouter/Groq).\n\nPor favor, reintenta en unos instantes.",
+            'message'        => "⚠️ **Servicio IA Temporalmente Indisponible**\n\nNo he podido establecer conexión con ningún proveedor de IA de pago.\n\nPor favor, reintenta en unos instantes.",
             'provider'       => 'local-fallback',
             'success'        => false,
             'usage_metadata' => null,

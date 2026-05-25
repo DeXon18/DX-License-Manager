@@ -94,6 +94,7 @@
                             'Facturado - Pte proc. (M)' => '#db6d28',
                             'Cerrado' => '#3fb950',
                             'Baja' => '#e05252',
+                            'Renovación Tardía' => '#d73a49',
                             default => '#8b949e'
                         };
                     @endphp
@@ -188,6 +189,7 @@
                                             'Facturado - Pte proc. (M)' => ['label' => 'Facturado', 'color' => '#db6d28'],
                                             'Cerrado' => ['label' => 'Cerrado', 'color' => '#3fb950'],
                                             'Baja' => ['label' => 'Baja', 'color' => '#e05252'],
+                                            'Renovación Tardía' => ['label' => 'Renov. Tardía', 'color' => '#d73a49'],
                                             default => ['label' => $status ?: 'Sin estado', 'color' => '#8b949e'],
                                         };
                                     @endphp

@@ -34,4 +34,5 @@ tr:hover td { background:var(--dx-v2-bg); }
 .dx-v2-color-naranja { color: #f97316; }
 .dx-v2-color-verde { color: var(--dx-v2-success); }
 .dx-v2-color-rojo-apagado { color: var(--dx-v2-danger); }
+.dx-v2-color-rojo-oscuro { color: #d73a49; }
 .dx-v2-color-gris { color: var(--dx-v2-muted); }
