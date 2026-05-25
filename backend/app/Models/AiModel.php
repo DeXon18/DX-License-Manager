@@ -13,6 +13,7 @@ class AiModel extends Model
         'openrouter_id',
         'name',
         'is_free',
+        'weekly_tokens_limit',
         'price_prompt',
         'price_completion',
         'is_active',
@@ -20,6 +21,7 @@ class AiModel extends Model
 
     protected $casts = [
         'is_free' => 'boolean',
+        'weekly_tokens_limit' => 'integer',
         'is_active' => 'boolean',
         'price_prompt' => 'decimal:6',
         'price_completion' => 'decimal:6',
