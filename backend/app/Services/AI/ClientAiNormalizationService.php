@@ -54,129 +54,79 @@ Responde estrictamente en formato JSON con la siguiente estructura:
 }
 EOT;
 
-        // 3. Ejecutar Cadena de Fallback (Gemini -> DeepSeek -> OpenRouter)
-        
-        // --- 3.1 GOOGLE GEMINI ---
-        $geminiKey = config('ai.gemini_key');
-        if ($geminiKey) {
-            try {
-                $response = Http::timeout(10)->post(
-                    "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key={$geminiKey}",
-                    [
-                        'contents' => [
-                            [
-                                'parts' => [
-                                    ['text' => $prompt]
-                                ]
-                            ]
-                        ],
-                        'generationConfig' => [
-                            'response_mime_type' => 'application/json',
-                        ]
-                    ]
-                );
-
-                if ($response->successful()) {
-                    $resData = $response->json();
-                    $text = $resData['candidates'][0]['content']['parts'][0]['text'] ?? '{}';
-                    
-                    if (isset($resData['usageMetadata'])) {
-                        $this->logTokens('gemini', 'gemini-3.1-flash-lite', 'normalization_search', $resData['usageMetadata']);
-                    }
-
-                    $parsed = $this->parseJsonAndValidate($text);
-                    if ($parsed) {
-                        $parsed['provider'] = 'gemini';
-                        return $parsed;
-                    }
-                } else {
-                    Log::warning("ClientAiNormalizationService: Fallo en API Gemini (Status: " . $response->status() . "): " . $response->body());
-                }
-            } catch (\Exception $e) {
-                Log::warning("ClientAiNormalizationService: Excepción llamando a Gemini: " . $e->getMessage());
-            }
-        }
-
-        // --- 3.2 DEEPSEEK ---
-        $deepseekKey = config('ai.deepseek_key');
-        if ($deepseekKey) {
-            try {
-                $response = Http::timeout(10)
-                    ->withHeaders([
-                        'Authorization' => "Bearer {$deepseekKey}",
-                        'Content-Type' => 'application/json'
-                    ])
-                    ->post('https://api.deepseek.com/chat/completions', [
-                        'model' => 'deepseek-chat',
-                        'messages' => [
-                            ['role' => 'user', 'content' => $prompt]
-                        ],
-                        'response_format' => ['type' => 'json_object'],
-                        'temperature' => 0.1
-                    ]);
-
-                if ($response->successful()) {
-                    $resData = $response->json();
-                    $text = $resData['choices'][0]['message']['content'] ?? '{}';
-                    
-                    if (isset($resData['usage'])) {
-                        $this->logTokens('deepseek', 'deepseek-chat', 'normalization_search', $resData['usage']);
-                    }
-
-                    $parsed = $this->parseJsonAndValidate($text);
-                    if ($parsed) {
-                        $parsed['provider'] = 'deepseek';
-                        return $parsed;
-                    }
-                } else {
-                    Log::warning("ClientAiNormalizationService: Fallo en API DeepSeek (Status: " . $response->status() . "): " . $response->body());
-                }
-            } catch (\Exception $e) {
-                Log::warning("ClientAiNormalizationService: Excepción llamando a DeepSeek: " . $e->getMessage());
-            }
-        }
-
-        // --- 3.3 OPENROUTER ---
+        // 3. Centralización en OpenRouter Hub
         $openrouterKey = config('ai.openrouter_key');
-        if ($openrouterKey) {
-            try {
-                $response = Http::timeout(12)
-                    ->withHeaders([
-                        'Authorization' => "Bearer {$openrouterKey}",
-                        'Content-Type' => 'application/json',
-                        'HTTP-Referer' => 'https://beta.dxpro.es',
-                        'X-Title' => 'DX License Manager'
-                    ])
-                    ->post('https://openrouter.ai/api/v1/chat/completions', [
-                        'model' => 'google/gemini-2.5-flash',
-                        'messages' => [
-                            ['role' => 'user', 'content' => $prompt]
-                        ],
-                        'temperature' => 0.1
-                    ]);
+        if (empty($openrouterKey)) {
+            Log::error("ClientAiNormalizationService: OPENROUTER_API_KEY no está configurada.");
+            return $this->emptyResponse('API Key faltante.');
+        }
 
-                if ($response->successful()) {
-                    $resData = $response->json();
-                    $text = $resData['choices'][0]['message']['content'] ?? '{}';
-                    
-                    if (isset($resData['usage'])) {
-                        $this->logTokens('openrouter', 'google/gemini-2.5-flash', 'normalization_search', $resData['usage']);
-                    }
+        $route = \App\Models\AiRoute::with(['primaryModel', 'fallbackModel'])->find('normalizacion');
+        $modelId = $route && $route->primaryModel ? $route->primaryModel->openrouter_id : 'google/gemma-4-31b-it:free';
 
-                    $parsed = $this->parseJsonAndValidate($text);
-                    if ($parsed) {
-                        $parsed['provider'] = 'openrouter';
-                        return $parsed;
+        try {
+            $parsed = $this->callOpenRouterApi($openrouterKey, $modelId, $prompt);
+            if ($parsed) return $parsed;
+        } catch (\Exception $e) {
+            if ($e->getCode() == 429) {
+                if ($route && $route->fallbackModel) {
+                    Log::warning("ClientAiNormalizationService: 429 Rate Limit con {$modelId}, saltando a fallback {$route->fallbackModel->openrouter_id}");
+                    try {
+                        $parsed = $this->callOpenRouterApi($openrouterKey, $route->fallbackModel->openrouter_id, $prompt);
+                        if ($parsed) {
+                            $parsed['used_fallback'] = true;
+                            return $parsed;
+                        }
+                    } catch (\Exception $fallbackE) {
+                        Log::error("ClientAiNormalizationService: Fallback falló: " . $fallbackE->getMessage());
                     }
                 } else {
-                    Log::warning("ClientAiNormalizationService: Fallo en API OpenRouter (Status: " . $response->status() . "): " . $response->body());
+                    Log::error("ClientAiNormalizationService: 429 Rate Limit y no hay fallback configurado.");
                 }
-            } catch (\Exception $e) {
-                Log::warning("ClientAiNormalizationService: Excepción llamando a OpenRouter: " . $e->getMessage());
+            } else {
+                Log::error("ClientAiNormalizationService: Error llamando a OpenRouter: " . $e->getMessage());
             }
         }
 
-        return $this->emptyResponse('Todos los proveedores de IA de la cadena de fallback fallaron o las claves de API están ausentes.');
+        return $this->emptyResponse('El proveedor de IA falló o retornó un formato inválido.');
+    }
+
+    private function callOpenRouterApi(string $key, string $modelId, string $prompt): ?array
+    {
+        $response = Http::timeout(15)
+            ->withHeaders([
+                'Authorization' => "Bearer {$key}",
+                'Content-Type' => 'application/json',
+                'HTTP-Referer' => 'https://beta.dxpro.es',
+                'X-Title' => 'DX License Manager'
+            ])
+            ->post('https://openrouter.ai/api/v1/chat/completions', [
+                'model' => $modelId,
+                'messages' => [
+                    ['role' => 'user', 'content' => $prompt]
+                ],
+                'temperature' => 0.1
+            ]);
+
+        if (!$response->successful()) {
+            throw new \Exception("Status " . $response->status() . ": " . $response->body(), $response->status());
+        }
+
+        $resData = $response->json();
+        $text = $resData['choices'][0]['message']['content'] ?? '{}';
+        
+        if (isset($resData['usage'])) {
+            $this->logTokens('openrouter', $modelId, 'normalization_search', $resData['usage']);
+        }
+
+        $parsed = $this->parseJsonAndValidate($text);
+        if ($parsed) {
+            $parsed['provider'] = 'openrouter';
+            $parsed['model'] = $modelId;
+            return $parsed;
+        }
+        
+        return null;
     }
 
     /**

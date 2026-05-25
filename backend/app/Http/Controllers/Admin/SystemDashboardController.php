@@ -44,10 +44,9 @@ class SystemDashboardController extends Controller
                     'n8n' => $this->checkN8n(),
                     'telegram' => $this->checkTelegram(),
                 ],
-                'AI Intelligence' => [
-                    'gemini' => $this->checkGemini(),
-                    'deepseek' => $this->checkDeepseek(),
-                    'openrouter' => $this->checkOpenRouter(),
+                'OpenRouter Hub' => [
+                    'openrouter_core' => $this->checkOpenRouterCore(),
+                    'ai_routing' => $this->checkAiRouting(),
                 ],
             ],
             'security' => [
@@ -235,36 +234,46 @@ class SystemDashboardController extends Controller
         }
     }
 
-    private function checkGemini()
-    {
-        $key = config('ai.gemini_key');
-        if (!$key) return ['status' => 'degraded', 'icon' => 'gemini', 'label' => 'Gemini 3.1 Flash', 'message' => 'Clave Ausente'];
-        
-        $count = AiAuditResult::where('created_at', '>=', now()->startOfDay())
-            ->where('status', 'completed')
-            ->count();
-
-        return [
-            'status' => 'online', 
-            'icon' => 'gemini', 
-            'label' => 'Gemini 3.1 Flash', 
-            'message' => 'Conexión Activa',
-            'details' => "Uso hoy: {$count} auditorías"
-        ];
-    }
-
-    private function checkDeepseek()
-    {
-        $key = config('ai.deepseek_key');
-        if (!$key) return ['status' => 'degraded', 'icon' => 'deepseek', 'label' => 'DeepSeek', 'message' => 'Clave Ausente'];
-        return ['status' => 'online', 'icon' => 'deepseek', 'label' => 'DeepSeek', 'message' => 'Conexión Activa', 'details' => 'Respaldo Nivel 1'];
-    }
-
-    private function checkOpenRouter()
+    private function checkOpenRouterCore()
     {
         $key = config('ai.openrouter_key');
-        if (!$key) return ['status' => 'degraded', 'icon' => 'openrouter', 'label' => 'OpenRouter', 'message' => 'Clave Ausente'];
-        return ['status' => 'online', 'icon' => 'openrouter', 'label' => 'OpenRouter', 'message' => 'Conexión Activa', 'details' => 'Respaldo Nivel 2'];
+        if (!$key) return ['status' => 'degraded', 'icon' => 'cloud', 'label' => 'OpenRouter Core', 'message' => 'Clave Ausente'];
+        
+        $online = \Illuminate\Support\Facades\Cache::remember('ping_openrouter_core', 300, function () use ($key) {
+            try {
+                $response = Http::withToken($key)->timeout(3)->get('https://openrouter.ai/api/v1/auth/key');
+                if ($response->status() === 429) return 'rate_limit';
+                if ($response->serverError()) return 'server_error';
+                return $response->successful() ? 'online' : 'error';
+            } catch (\Exception $e) {
+                return 'offline';
+            }
+        });
+
+        if ($online === 'online') {
+            return ['status' => 'online', 'icon' => 'cloud', 'label' => 'OpenRouter Core', 'message' => 'API Activa', 'details' => 'Conexión Centralizada OK'];
+        } elseif ($online === 'rate_limit') {
+            return ['status' => 'warning', 'icon' => 'cloud', 'label' => 'OpenRouter Core', 'message' => 'Rate Limit', 'details' => 'Exceso de Peticiones (429)'];
+        } elseif ($online === 'server_error') {
+            return ['status' => 'danger', 'icon' => 'cloud', 'label' => 'OpenRouter Core', 'message' => 'Saturado', 'details' => 'Error 502/503 en Hub'];
+        }
+
+        return ['status' => 'danger', 'icon' => 'cloud', 'label' => 'OpenRouter Core', 'message' => 'API Caída', 'details' => 'Fallo de Red'];
+    }
+
+    private function checkAiRouting()
+    {
+        // En una implementación real más compleja se miraría la base de datos de auditoría
+        // para detectar si se ha usado un fallback recientemente.
+        try {
+            if (!\Illuminate\Support\Facades\Schema::hasTable('ai_routes')) {
+                return ['status' => 'degraded', 'icon' => 'route', 'label' => 'Routing IA', 'message' => 'Pendiente DB', 'details' => 'Falta migración'];
+            }
+            $routesCount = \App\Models\AiRoute::count();
+            return ['status' => 'online', 'icon' => 'route', 'label' => 'Routing IA', 'message' => 'Rutas Activas', 'details' => "{$routesCount} Tareas Mapeadas"];
+        } catch (\Exception $e) {
+            return ['status' => 'degraded', 'icon' => 'route', 'label' => 'Routing IA', 'message' => 'Error BD', 'details' => 'Fallo al leer rutas'];
+        }
     }
 
     private function getActiveSessionsCount()
