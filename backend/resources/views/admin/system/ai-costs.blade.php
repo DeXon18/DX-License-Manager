@@ -237,9 +237,10 @@
                 <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                     <span class="card-title">Log de Peticiones</span>
                     <div style="font-size: 0.75rem; color: var(--dx-v2-muted); display: flex; gap: 12px; font-family: 'Outfit', sans-serif;">
-                        <span><i class="fa-brands fa-google" style="color: #4285F4; margin-right: 4px;"></i> Gemini</span>
+                        <span><i class="fa-brands fa-google" style="color: #4285F4; margin-right: 4px;"></i> Google</span>
+                        <span><i class="fa-brands fa-meta" style="color: #0668E1; margin-right: 4px;"></i> Meta</span>
                         <span><i class="fa-solid fa-brain" style="color: #4A90E2; margin-right: 4px;"></i> DeepSeek</span>
-                        <span><i class="fa-solid fa-minus text-muted" style="margin-right: 4px;"></i> N/A</span>
+                        <span><i class="fa-solid fa-microchip text-muted" style="margin-right: 4px;"></i> Otros</span>
                     </div>
                 </div>
                 <div class="dx-v2-audit-table-wrapper">
@@ -268,9 +269,32 @@
                                             $modelLower = strtolower($log->model ?? '');
                                             $modelIcon = 'fa-solid fa-minus text-muted';
                                             $modelColor = '';
-                                            if (str_contains($modelLower, 'gemini')) {
+                                            $isFree = true; // default assume free or calculate
+                                            $matchedModel = null;
+
+                                            // Attempt to match with DB models
+                                            if (isset($modelsFromDb) && isset($modelsFromDb[$log->model])) {
+                                                $matchedModel = $modelsFromDb[$log->model];
+                                            } elseif (isset($modelsFromDb)) {
+                                                $matchedModel = $modelsFromDb->first(function($dbModel) use ($log) {
+                                                    $shortName = explode('/', $dbModel->openrouter_id)[1] ?? $dbModel->openrouter_id;
+                                                    return str_contains($dbModel->openrouter_id, $log->model) || str_contains($log->model, $shortName);
+                                                });
+                                            }
+
+                                            if ($matchedModel) {
+                                                $isFree = $matchedModel->is_free;
+                                                $calcCost = ($log->prompt_tokens / 1000000 * $matchedModel->price_prompt) + ($log->completion_tokens / 1000000 * $matchedModel->price_completion);
+                                            } else {
+                                                $calcCost = 0; // Legacy or unmatched
+                                            }
+
+                                            if (str_contains($modelLower, 'gemini') || str_contains($modelLower, 'gemma')) {
                                                 $modelIcon = 'fa-brands fa-google';
                                                 $modelColor = 'color: #4285F4;';
+                                            } elseif (str_contains($modelLower, 'llama')) {
+                                                $modelIcon = 'fa-brands fa-meta';
+                                                $modelColor = 'color: #0668E1;';
                                             } elseif (str_contains($modelLower, 'deepseek')) {
                                                 $modelIcon = 'fa-solid fa-brain';
                                                 $modelColor = 'color: #4A90E2;';
@@ -278,12 +302,21 @@
                                                 $modelIcon = 'fa-solid fa-microchip text-muted';
                                             }
                                         @endphp
-                                        <i class="{{ $modelIcon }}" style="font-size: 1rem; {{ $modelColor }}" title="{{ $log->model ?? 'N/A' }}"></i>
+                                        <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                            <i class="{{ $modelIcon }}" style="font-size: 1rem; {{ $modelColor }}" title="{{ $log->model ?? 'N/A' }}"></i>
+                                            @if($matchedModel)
+                                                @if($isFree)
+                                                    <span style="background: var(--dx-v2-success-bg); color: var(--dx-v2-success); border: 1px solid var(--dx-v2-success-border); padding: 1px 4px; border-radius: 4px; font-size: 9px; font-weight: 700;">FREE</span>
+                                                @else
+                                                    <span style="background: var(--dx-v2-warning-bg); color: var(--dx-v2-warning); border: 1px solid var(--dx-v2-warning-border); padding: 1px 4px; border-radius: 4px; font-size: 9px; font-weight: 700;">PRO</span>
+                                                @endif
+                                            @endif
+                                        </div>
                                     </td>
                                     <td class="dx-v2-audit-table-td text-right">{{ number_format($log->prompt_tokens, 0, ',', '.') }}</td>
                                     <td class="dx-v2-audit-table-td text-right">{{ number_format($log->completion_tokens, 0, ',', '.') }}</td>
                                     <td class="dx-v2-audit-table-td text-right accent-color" style="font-weight:600;">{{ number_format($log->total_tokens, 0, ',', '.') }}</td>
-                                    <td class="dx-v2-audit-table-td text-right text-success">${{ number_format($log->estimated_cost, 6, ',', '.') }}</td>
+                                    <td class="dx-v2-audit-table-td text-right text-success">${{ number_format($calcCost, 6, ',', '.') }}</td>
                                     <td class="dx-v2-audit-table-td">
                                         <div class="dx-v2-audit-user-badge" style="justify-content: flex-start;">
                                             <span class="dx-v2-audit-user-name">{{ $log->user->name ?? 'Sistema' }}</span>

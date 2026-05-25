@@ -43,17 +43,47 @@ class ChatbotService
             $response = $this->fallbackToTextChain($chatHistory, 'API Key faltante');
         } else {
             try {
+                // Leer modelo primario desde la base de datos de rutas (AiRoute)
+                $route = \App\Models\AiRoute::with(['primaryModel', 'fallbackModel'])->find('chatbot');
+                $modelId = $route && $route->primaryModel ? $route->primaryModel->openrouter_id : 'meta-llama/llama-4-maverick:free';
+
                 $response = $this->executeOpenAIFunctionCallingLoop(
                     'https://openrouter.ai/api/v1/chat/completions',
                     $openrouterKey,
-                    'deepseek/deepseek-chat:free',
+                    $modelId,
                     $chatHistory,
                     ['HTTP-Referer' => 'https://beta.dxpro.es', 'X-Title' => 'DX License Manager'],
                     'openrouter'
                 );
             } catch (\Exception $e) {
-                Log::error("ChatbotService: Excepción en el bucle principal de OpenRouter: " . $e->getMessage());
-                $response = $this->fallbackToTextChain($chatHistory, $e->getMessage());
+                // Si el error es 429 (Rate Limit agotado) o 404 (Modelo no encontrado / deprecado)
+                if (in_array($e->getCode(), [429, 404])) {
+                    $route = \App\Models\AiRoute::with(['fallbackModel'])->find('chatbot');
+                    if ($route && $route->fallbackModel) {
+                        Log::warning("ChatbotService: Error {$e->getCode()} en modelo primario ({$modelId}), saltando a fallback de pago: {$route->fallbackModel->openrouter_id}");
+                        try {
+                            $response = $this->executeOpenAIFunctionCallingLoop(
+                                'https://openrouter.ai/api/v1/chat/completions',
+                                $openrouterKey,
+                                $route->fallbackModel->openrouter_id,
+                                $chatHistory,
+                                ['HTTP-Referer' => 'https://beta.dxpro.es', 'X-Title' => 'DX License Manager'],
+                                'openrouter'
+                            );
+                            $response['used_fallback'] = true;
+                        } catch (\Exception $fallbackE) {
+                            Log::error("ChatbotService: Fallback falló: " . $fallbackE->getMessage());
+                            $response = $this->fallbackToTextChain($chatHistory, "Error {$e->getCode()} y Fallback falló: " . $fallbackE->getMessage());
+                        }
+                    } else {
+                        Log::error("ChatbotService: Error {$e->getCode()} y no hay fallback configurado.");
+                        $response = $this->fallbackToTextChain($chatHistory, "Servicio saturado o modelo no disponible sin respaldo configurado.");
+                    }
+                } else {
+                    Log::error("ChatbotService: Excepción en el bucle principal de OpenRouter: " . $e->getMessage());
+                    $errorMsg = $e->getCode() >= 500 ? "El servicio central de Inteligencia Artificial está temporalmente saturado o en mantenimiento. Por favor, inténtelo de nuevo en unos minutos." : $e->getMessage();
+                    $response = $this->fallbackToTextChain($chatHistory, $errorMsg);
+                }
             }
         }
 
@@ -518,7 +548,7 @@ class ChatbotService
                 ]);
 
             if (!$response->successful()) {
-                throw new \Exception("Fallo en API {$providerName}: (Status " . $response->status() . ") " . $response->body());
+                throw new \Exception("Fallo en API {$providerName}: (Status " . $response->status() . ") " . $response->body(), $response->status());
             }
 
             $resData   = $response->json();

@@ -178,11 +178,17 @@
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                                 <path d="M12 4.5V19.5M4.5 12H19.5M8 8L16 16M16 8L8 16" stroke-linecap="round" stroke-linejoin="round"/>
                                             </svg>
-                                        @elseif($info['icon'] === 'openrouter')
+                                        @elseif($info['icon'] === 'openrouter' || $info['icon'] === 'cloud')
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                                                 <circle cx="12" cy="12" r="9"/>
                                                 <path d="M3.6 9h16.8M3.6 15h16.8"/>
                                                 <path d="M11.5 3a17 17 0 0 0 0 18M12.5 3a17 17 0 0 1 0 18"/>
+                                            </svg>
+                                        @elseif($info['icon'] === 'route')
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                                <circle cx="6" cy="19" r="3"/>
+                                                <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/>
+                                                <circle cx="18" cy="5" r="3"/>
                                             </svg>
                                         @elseif($info['icon'] === 'n8n')
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -267,6 +273,20 @@
                         <span class="dx-v2-sys-dash-module-title">Costes IA</span>
                     </div>
                     <p class="dx-v2-sys-dash-module-desc">Monitorización de tokens, telemetría y costes de motores IA (Gemini, DeepSeek).</p>
+                </a>
+
+                <a href="{{ route('admin.system.ai-routing.index') }}" class="dx-v2-sys-dash-module-card">
+                    <div class="dx-v2-sys-dash-module-header">
+                        <div class="dx-v2-sys-dash-module-icon-box" style="color: #10B981; background: rgba(16,185,129,0.1);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="6" cy="19" r="3"/>
+                                <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/>
+                                <circle cx="18" cy="5" r="3"/>
+                            </svg>
+                        </div>
+                        <span class="dx-v2-sys-dash-module-title">AI Routing Hub</span>
+                    </div>
+                    <p class="dx-v2-sys-dash-module-desc">Gestor de OpenRouter: Enrutador de tareas, asignación primaria y sistema de fallback.</p>
                 </a>
             </div>
         </div>

@@ -57,10 +57,21 @@ class ChatbotController extends Controller
                 }
             }
 
+            $providerLabel = $result['provider'] ?? 'openrouter';
+            if (!empty($result['model'])) {
+                $modelRecord = \App\Models\AiModel::where('openrouter_id', $result['model'])->first();
+                if ($modelRecord) {
+                    $providerLabel = $modelRecord->name;
+                    if ($result['provider'] === 'redis-cache') {
+                        $providerLabel .= ' [Caché]';
+                    }
+                }
+            }
+
             return response()->json([
                 'success' => $result['success'],
                 'message' => $result['message'],
-                'provider' => $result['provider'],
+                'provider' => $providerLabel,
                 'usage_metadata' => $result['usage_metadata'] ?? null,
                 'data' => $result['data'] ?? []
             ]);

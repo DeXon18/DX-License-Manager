@@ -26,10 +26,10 @@ class AiAuditCostController extends Controller
         $totalPromptTokensAllTime = AiTokenLog::sum('prompt_tokens');
         $totalCompletionTokensAllTime = AiTokenLog::sum('completion_tokens');
 
-        // Cálculo dinámico de coste por modelo
-        $pricingConfig = config('ai.pricing', []);
+        // Cálculo dinámico de coste por modelo basado en BD (AiModel)
+        $modelsFromDb = \App\Models\AiModel::all()->keyBy('openrouter_id');
         
-        $calculateCostByModel = function($query) use ($pricingConfig) {
+        $calculateCostByModel = function($query) use ($modelsFromDb) {
             $modelStats = $query->select('model', DB::raw('SUM(prompt_tokens) as prompt_tokens'), DB::raw('SUM(completion_tokens) as completion_tokens'))
                 ->groupBy('model')
                 ->get();
@@ -37,20 +37,23 @@ class AiAuditCostController extends Controller
             $cost = 0;
             foreach ($modelStats as $stat) {
                 $model = $stat->model ?? 'default';
-                $modelKey = 'default';
+                $promptPrice = 0;
+                $completionPrice = 0;
                 
-                if (isset($pricingConfig[$model])) {
-                    $modelKey = $model;
-                } elseif (str_contains(strtolower($model), 'free')) {
-                    $modelKey = 'default';
-                } elseif (str_contains(strtolower($model), 'gemini')) {
-                    $modelKey = 'gemini-1.5-flash'; // Fallback
-                } elseif (str_contains(strtolower($model), 'deepseek')) {
-                    $modelKey = 'deepseek-chat'; // Fallback
+                if (isset($modelsFromDb[$model])) {
+                    $promptPrice = $modelsFromDb[$model]->price_prompt;
+                    $completionPrice = $modelsFromDb[$model]->price_completion;
+                } else {
+                    // Fallback para logs legacy (ej. "deepseek-chat", "gemini-3.1-flash-lite")
+                    $matched = $modelsFromDb->first(function($dbModel) use ($model) {
+                        $shortName = explode('/', $dbModel->openrouter_id)[1] ?? $dbModel->openrouter_id;
+                        return str_contains($dbModel->openrouter_id, $model) || str_contains($model, $shortName);
+                    });
+                    if ($matched) {
+                        $promptPrice = $matched->price_prompt;
+                        $completionPrice = $matched->price_completion;
+                    }
                 }
-
-                $promptPrice = $pricingConfig[$modelKey]['prompt'] ?? 0;
-                $completionPrice = $pricingConfig[$modelKey]['completion'] ?? 0;
 
                 $cost += ($stat->prompt_tokens / 1000000 * $promptPrice) + ($stat->completion_tokens / 1000000 * $completionPrice);
             }
@@ -209,7 +212,8 @@ class AiAuditCostController extends Controller
             'userChartData',
             'hourlyChartData',
             'hourlyUserChartData',
-            'logs'
+            'logs',
+            'modelsFromDb'
         ));
     }
 }
