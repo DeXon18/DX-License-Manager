@@ -1,43 +1,38 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-22 14:50  
-> Sesión en: indeterminado
+> Última actualización: 2026-05-25 09:55  
 > Rama activa: dev
 
 ---
 
 ## Estado General
 
-**Fase actual:** Fase 29 — Client Analytics & DESIGN.md
-**Stack beta:** ⚠️ indeterminado  
-**Stack prod:** ⚠️ indeterminado  
+**Fase actual:** Fase 29 — Gestión de Enterprise Cloud Accounts (ECA) Completada
+**Stack beta:** ✅ operativo
+**Stack prod:** ✅ operativo
 
 ---
 
 ## Qué se hizo en esta sesión
 
-1. **Módulo de Reportes:** Se erradicó `Select2` y `jQuery` de `reports/index.blade.php`. Se implementó un buscador predictivo nativo en Alpine.js (idéntico a COD) que filtra licencias activas.
-2. **Merge a dev:** Se finalizó la rama `feature/client-analytics` y se fusionó a `dev`.
-3. **DESIGN.md (V3.0.0):** Se redactó el documento canónico de diseño integrando las reglas y clases de la V2 "NOC Pro", estableciendo la arquitectura de 6 capas CSS y creando el Checklist Obligatorio para IAs.
-4. **BACKLOG.md:** Se añadió la solicitud de integrar `Enterprise Cloud Account Admin` (gorka.ecenarro@bultzaki.com) y `Enterprise Cloud Account` (100218944) en los perfiles de administrador.
+1. **Tabla y Modelo:** Se creó la migración para `enterprise_cloud_accounts` y el modelo asociado para persistir el Sold-To, Account ID y Admin Email vinculados al Cliente.
+2. **UI (NOC Pro):** Se implementó una pestaña completa "Enterprise Cloud" en el perfil de cliente (`clients/show.blade.php`) que lista las cuentas e incluye un modal de alta.
+3. **Skill del Chatbot IA:** Se integró la función `create_enterprise_cloud_account` en `ChatbotService.php` para inyectar estos datos desde lenguaje natural, y se actualizó la búsqueda de clientes (`toolSearchClients`) para que también reconozca los dominios de los correos de contacto.
+4. **Merge a dev:** Se finalizó la rama `feature/enterprise-cloud-accounts`, se fusionó a `dev` manualmente, y se borró la rama tanto en local como en remoto siguiendo el workflow oficial.
+5. **Documentación:** Actualización completa de `BACKLOG.md` y `CHANGELOG.md`.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-**Implementar Perfiles de Administrador:** Añadir los campos de *Enterprise Cloud Account* en la ficha/usuario de administradores. 
-- Modificar el controlador de usuarios para que permita guardar estos campos al editar un administrador.
-- Actualizar la interfaz de usuario con estos nuevos datos.
-
-### Tareas siguientes
-1. Modificar la migración de base de datos (`users` table o tabla de perfiles relacionada) para incluir `enterprise_cloud_account_admin` y `enterprise_cloud_account_id`.
-2. Integrar visualmente en `admin/users.blade.php` o vista de perfil.
+Consultar el `BACKLOG.md` o preguntar a Oskar por el siguiente requerimiento, dado que la fase actual ha quedado finalizada y documentada.
 
 ---
 
 ## Contexto técnico importante
 
-- `DESIGN.md` ahora es la única fuente de la verdad para estilos. Prohíbe jQuery, Select2, estilos en línea y fuentes incorrectas. Revisa su "Checklist" antes de codificar la interfaz de los perfiles.
+- El chatbot es estricto en la extracción de ECAs. Si no encuentra un único cliente basado en Sold-To o dominio de email, preguntará primero antes de añadir datos a ciegas.
+- La rama `feature/enterprise-cloud-accounts` está limpia y eliminada. Estamos en `dev`.
 
 ---
 
