@@ -6,6 +6,7 @@ use App\Models\Client;
 use App\Models\ClientAlias;
 use App\Models\Contact;
 use App\Models\Contract;
+use App\Models\EnterpriseCloudAccount;
 use App\Models\LicenseInventoryDaemon;
 use App\Models\LicenseInventoryProduct;
 use App\Models\ResourceLink;
@@ -80,7 +81,7 @@ class ChatbotService
         ];
 
         try {
-            $response = \Illuminate\Support\Facades\Http::timeout(5)->post(
+            $response = Http::timeout(5)->post(
                 "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}",
                 $payload
             );
@@ -89,7 +90,7 @@ class ChatbotService
                 $resData = $response->json();
                 $text = trim($resData['candidates'][0]['content']['parts'][0]['text'] ?? 'DB');
                 if (strtoupper($text) === 'GENERAL') {
-                    \Illuminate\Support\Facades\Log::info("ChatbotService: Intención clasificada como GENERAL. Omitiendo herramientas.");
+                    Log::info("ChatbotService: Intención clasificada como GENERAL. Omitiendo herramientas.");
                     return false;
                 }
             }
@@ -272,6 +273,32 @@ class ChatbotService
                             'type' => 'OBJECT',
                             'properties' => (object) []
                         ]
+                    ],
+                    [
+                        'name' => 'create_enterprise_cloud_account',
+                        'description' => 'Añadir o crear una cuenta Enterprise Cloud (asociando Sold-To y email del admin) a un cliente.',
+                        'parameters' => [
+                            'type' => 'OBJECT',
+                            'properties' => [
+                                'client_id' => [
+                                    'type' => 'INTEGER',
+                                    'description' => 'ID numérico único del cliente'
+                                ],
+                                'sold_to' => [
+                                    'type' => 'STRING',
+                                    'description' => 'Sold-To de la licencia asociado a esta cuenta'
+                                ],
+                                'account_id' => [
+                                    'type' => 'STRING',
+                                    'description' => 'ID de la cuenta Enterprise Cloud'
+                                ],
+                                'admin_email' => [
+                                    'type' => 'STRING',
+                                    'description' => 'Email del administrador de la cuenta'
+                                ]
+                            ],
+                            'required' => ['client_id', 'sold_to', 'account_id', 'admin_email']
+                        ]
                     ]
                 ]
             ]
@@ -288,7 +315,8 @@ class ChatbotService
                              "2. Para datos técnicos (Composite, MAC, fechas ISO, file paths, IDs), usa formato monoespaciado en Markdown (ej: `COMPOSITE=123ABC`).\n" .
                              "3. Utiliza la escala del semáforo de expiración: Vencido (rojo), Próximo a expirar <= 30 días (amarillo), Saludable (verde).\n" .
                              "4. Si te piden añadir contactos, utiliza la herramienta `create_contact` tras buscar el cliente correspondiente con `search_clients`. Ignora emails de ATS/Soporte interno de ATS-Global.\n" .
-                             "5. Sé conciso y estructurado. Si la respuesta contiene listas de productos, preséntalos en tablas Markdown compactas y profesionales."
+                             "5. Sé conciso y estructurado. Si la respuesta contiene listas de productos, preséntalos en tablas Markdown compactas y profesionales.\n" .
+                             "6. Si te piden añadir un Enterprise Cloud Account, PRIMERO busca el cliente por Sold-To o dominio (email) usando `search_clients`. Si la búsqueda no es concluyente, PREGUNTA al usuario a qué cliente se refiere antes de crear nada. Al confirmar, muestra SOLO: Cliente, Sold-To, Account ID y Admin Email. NO añades columnas como WebKey."
                 ]
             ]
         ];
@@ -323,7 +351,7 @@ class ChatbotService
                 $payload['tools'] = $tools;
             }
 
-            $response = \Illuminate\Support\Facades\Http::timeout(30)->post(
+            $response = Http::timeout(30)->post(
                 "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}",
                 $payload
             );
@@ -430,6 +458,7 @@ class ChatbotService
             ['type' => 'function', 'function' => ['name' => 'update_contact', 'description' => 'Editar rol, teléfono o email de un contacto existente.', 'parameters' => ['type' => 'object', 'properties' => ['contact_id' => ['type' => 'integer'], 'role' => ['type' => 'string'], 'phone' => ['type' => 'string'], 'email' => ['type' => 'string']], 'required' => ['contact_id']]]],
             ['type' => 'function', 'function' => ['name' => 'get_dashboard_summary', 'description' => 'Obtener un resumen ejecutivo del sistema (total clientes, licencias críticas, contratos por vencer).', 'parameters' => ['type' => 'object', 'properties' => (object)[]]]],
             ['type' => 'function', 'function' => ['name' => 'list_clients_without_contacts', 'description' => 'Listar clientes sin ningún contacto registrado.', 'parameters' => ['type' => 'object', 'properties' => (object)[]]]],
+            ['type' => 'function', 'function' => ['name' => 'create_enterprise_cloud_account', 'description' => 'Añadir cuenta Enterprise Cloud a un cliente.', 'parameters' => ['type' => 'object', 'properties' => ['client_id' => ['type' => 'integer'], 'sold_to' => ['type' => 'string'], 'account_id' => ['type' => 'string'], 'admin_email' => ['type' => 'string']], 'required' => ['client_id', 'sold_to', 'account_id', 'admin_email']]]],
         ];
     }
 
@@ -451,7 +480,8 @@ class ChatbotService
                         "1. Para info de clientes, licencias o hardware, usa SIEMPRE las herramientas disponibles. NUNCA inventes datos.\n" .
                         "2. Datos técnicos (Composite, MAC, fechas, IDs) en formato monoespaciado Markdown.\n" .
                         "3. Semáforo: Vencido (rojo), <= 30 días (amarillo), Saludable (verde).\n" .
-                        "4. Listas de productos en tablas Markdown compactas.";
+                        "4. Listas de productos en tablas Markdown compactas.\n" .
+                        "5. Para añadir cuentas Cloud, busca PRIMERO el cliente. Si hay dudas, PREGUNTA. Al confirmar, muestra SOLO Cliente, Sold-To, Account ID y Admin Email. SIN WebKey.";
 
         $messages = [['role' => 'system', 'content' => $systemPrompt]];
         foreach ($chatHistory as $msg) {
@@ -593,6 +623,16 @@ class ChatbotService
                 return $this->toolGetDashboardSummary();
             case 'list_clients_without_contacts':
                 return $this->toolListClientsWithoutContacts();
+            case 'create_enterprise_cloud_account':
+                if (!$this->checkAndIncrementMutationLimit()) {
+                    return ['success' => false, 'error' => 'Límite de mutaciones por sesión superado. Por favor, recarga la página.'];
+                }
+                return $this->toolCreateEnterpriseCloudAccount(
+                    (int) ($args['client_id'] ?? 0),
+                    $args['sold_to'] ?? '',
+                    $args['account_id'] ?? '',
+                    $args['admin_email'] ?? ''
+                );
             default:
                 throw new \Exception("Herramienta '{$name}' no está registrada en el sistema.");
         }
@@ -609,8 +649,8 @@ class ChatbotService
             return [];
         }
 
-        // Sanitización fuzzy estricta contra inyección SQL
-        $query = preg_replace('/[^a-zA-Z0-9\s\-_]/', '', $query);
+        // Sanitización fuzzy estricta (permitiendo @ y . para correos y dominios)
+        $query = preg_replace('/[^a-zA-Z0-9\s\-_@.]/', '', $query);
         if (empty($query)) {
             return [];
         }
@@ -644,6 +684,18 @@ class ChatbotService
             ->toArray();
 
             $clients = array_unique(array_merge($clients, $soldToClients), SORT_REGULAR);
+        }
+
+        // Buscar por email/dominio en contactos
+        if (count($clients) < 5) {
+            $contactClients = Client::whereHas('contacts', function ($q) use ($query) {
+                $q->where('email', 'LIKE', "%{$query}%");
+            })
+            ->limit(10)
+            ->get(['id', 'name'])
+            ->toArray();
+
+            $clients = array_unique(array_merge($clients, $contactClients), SORT_REGULAR);
         }
 
         return array_values($clients);
@@ -981,6 +1033,40 @@ class ChatbotService
             ->get(['id', 'name']);
 
         return $clients->toArray();
+    }
+
+    private function toolCreateEnterpriseCloudAccount(int $clientId, string $soldTo, string $accountId, string $adminEmail): array
+    {
+        $client = Client::find($clientId);
+        if (!$client) {
+            return ['success' => false, 'error' => "El cliente con ID {$clientId} no existe."];
+        }
+
+        try {
+            $account = EnterpriseCloudAccount::create([
+                'client_id' => $clientId,
+                'sold_to' => $soldTo,
+                'account_id' => $accountId,
+                'admin_email' => $adminEmail
+            ]);
+
+            return [
+                'success' => true,
+                'message' => "Cuenta Enterprise Cloud guardada correctamente.",
+                'account' => [
+                    'id' => $account->id,
+                    'sold_to' => $account->sold_to,
+                    'account_id' => $account->account_id,
+                    'admin_email' => $account->admin_email
+                ]
+            ];
+        } catch (\Exception $e) {
+            Log::error("ChatbotService: Error al crear Enterprise Cloud Account: " . $e->getMessage());
+            return [
+                'success' => false,
+                'error' => "Error al guardar en base de datos: " . $e->getMessage()
+            ];
+        }
     }
 
     // ==========================================

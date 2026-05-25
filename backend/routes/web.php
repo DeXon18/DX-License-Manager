@@ -73,6 +73,10 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::put('/clientes/{client}/contactos/{contact}', [ContactController::class, 'update'])->middleware('permission:technician')->name('contacts.update');
     Route::delete('/clientes/{client}/contactos/{contact}', [ContactController::class, 'destroy'])->middleware('permission:technician')->name('contacts.destroy');
 
+    Route::post('/clientes/{client}/enterprise-cloud-accounts', [\App\Http\Controllers\EnterpriseCloudAccountController::class, 'store'])->middleware('permission:technician')->name('enterprise-cloud-accounts.store');
+    Route::put('/clientes/{client}/enterprise-cloud-accounts/{enterpriseCloudAccount}', [\App\Http\Controllers\EnterpriseCloudAccountController::class, 'update'])->middleware('permission:technician')->name('enterprise-cloud-accounts.update');
+    Route::delete('/clientes/{client}/enterprise-cloud-accounts/{enterpriseCloudAccount}', [\App\Http\Controllers\EnterpriseCloudAccountController::class, 'destroy'])->middleware('permission:technician')->name('enterprise-cloud-accounts.destroy');
+
     Route::delete('/inventory/daemon/{daemon}', [\App\Http\Controllers\InventoryController::class, 'destroyDaemon'])->middleware('permission:technician')->name('inventory.daemon.destroy');
     Route::delete('/inventory/product/{product}', [\App\Http\Controllers\InventoryController::class, 'destroyProduct'])->middleware('permission:technician')->name('inventory.product.destroy');
 
