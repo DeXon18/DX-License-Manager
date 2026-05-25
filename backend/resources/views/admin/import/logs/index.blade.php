@@ -1,14 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="page-header">
-    <div class="breadcrumb">
-        <a href="{{ route('admin.import.index') }}">Importación</a>
-        <span class="muted">/</span>
-        <span class="current">Historial de Logs</span>
+<div class="dx-v2-page-header">
+    <div>
+        <div class="breadcrumb">
+            <a href="{{ route('admin.import.index') }}">Importación</a>
+            <span class="separator">/</span>
+            <span class="current">Logs</span>
+        </div>
+        <h1 class="page-title">Historial de <span>Sincronización</span></h1>
+        <p class="page-subtitle">Seguimiento de integridad de datos y avisos de normalización.</p>
     </div>
-    <h1 class="page-title">Historial de Importaciones</h1>
-    <p class="page-sub">Seguimiento de integridad de datos y avisos de normalización.</p>
 </div>
 
 <div class="card">

@@ -18,14 +18,16 @@
     </div>
 @endif
 
-<div class="page-header">
-    <div class="breadcrumb" style="margin-bottom: 8px;">
-        <a href="{{ route('admin.import.index') }}" style="color: var(--accent); text-decoration: none;">Importación</a>
-        <span style="margin: 0 8px; opacity: 0.3;">/</span>
-        <span style="opacity: 0.5;">Bandeja de Normalización</span>
+<div class="dx-v2-page-header">
+    <div>
+        <div class="breadcrumb">
+            <a href="{{ route('admin.import.index') }}">Importación</a>
+            <span class="separator">/</span>
+            <span class="current">Bandeja de Normalización</span>
+        </div>
+        <h1 class="page-title">Bandeja de <span>Normalización</span></h1>
+        <p class="page-subtitle">Gestión de identidades y duplicados detectados por el motor de sincronización</p>
     </div>
-    <h1 class="welcome">Bandeja de <span>Normalización</span></h1>
-    <p class="welcome-sub">Gestión de identidades y duplicados detectados por el motor de sincronización</p>
 </div>
 
 <div class="stats-row" style="margin-bottom: 24px;">

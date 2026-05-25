@@ -1,0 +1,50 @@
+/**
+ * @module    dx-v2-page-header
+ * @fase      29
+ * @desc      Estilos canónicos para la cabecera de las páginas de administración (estética 3 colores: blanco, azul, gris).
+ * @afecta    [Vistas admin/*]
+ */
+
+.dx-v2-page-header {
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end; /* Alinea los botones de la derecha con el fondo del título */
+}
+
+/* El título de 2 colores (Blanco + Azul) */
+.dx-v2-page-header h1.page-title {
+    font-family: var(--dx-v2-font-display, 'Outfit', sans-serif);
+    font-size: 1.602rem;
+    font-weight: 700;
+    color: var(--dx-v2-primary);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espacio para el icono si lo hay */
+}
+
+.dx-v2-page-header h1.page-title i {
+    color: var(--dx-v2-muted);
+    font-size: 1.2rem;
+}
+
+.dx-v2-page-header h1.page-title span {
+    color: var(--dx-v2-accent-base);
+}
+
+/* El subtítulo (Gris) */
+.dx-v2-page-header p.page-subtitle {
+    font-family: var(--dx-v2-font-sans, 'Inter', sans-serif);
+    color: var(--dx-v2-muted);
+    font-size: 13px;
+    margin: 0;
+}
+
+/* Acciones a la derecha (Botones) */
+.dx-v2-page-header-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}

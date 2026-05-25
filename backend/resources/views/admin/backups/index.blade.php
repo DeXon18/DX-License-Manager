@@ -3,10 +3,15 @@
 @section('title', 'Gestión de Backups')
 
 @section('content')
-<div class="page-header">
-    <div class="page-header-info">
-        <h1 class="page-title">Gestión de Backups</h1>
-        <p class="page-sub">Historial completo, descargas y gestión de espacio en disco para copias de seguridad.</p>
+<div class="dx-v2-page-header">
+    <div>
+        <div class="breadcrumb">
+            <a href="{{ route('admin.backups.index') }}">Administración</a>
+            <span class="separator">/</span>
+            <span class="current">Backups</span>
+        </div>
+        <h1 class="page-title">Copias de <span>Seguridad</span></h1>
+        <p class="page-subtitle">Historial completo, descargas y gestión de espacio en disco para copias de seguridad.</p>
     </div>
 </div>
 <div class="dashboard-container" x-data="backupManager()">

@@ -3,14 +3,17 @@
 @section('title', 'Gestión de Usuarios — DX License Manager')
 
 @section('content')
-<div class="page-header">
-    <div class="dx-v2-users-header-layout">
-        <div>
-            <h1 class="page-title">
-                <i class="fas fa-users dx-v2-users-title-icon"></i> Gestión de Usuarios
-            </h1>
-            <p class="dx-v2-users-subtitle">Administra el acceso y roles del personal del portal.</p>
+<div class="dx-v2-page-header">
+    <div>
+        <div class="breadcrumb">
+            <a href="{{ route('admin.users.index') }}">Administración</a>
+            <span class="separator">/</span>
+            <span class="current">Usuarios del Portal</span>
         </div>
+        <h1 class="page-title">Gestión de <span>Usuarios</span></h1>
+        <p class="page-subtitle">Administra el acceso y roles del personal del portal.</p>
+    </div>
+    <div class="dx-v2-page-header-actions">
         <a href="{{ route('admin.users.create') }}" class="btn-primary">
             <i class="fas fa-plus me-1"></i> Nuevo Usuario
         </a>

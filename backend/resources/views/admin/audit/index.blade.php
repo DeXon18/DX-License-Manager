@@ -3,10 +3,15 @@
 @section('title', 'Auditoría y Logs')
 
 @section('content')
-<div class="page-header">
-    <div class="page-header-info">
-        <h1 class="page-title">Auditoría y Logs</h1>
-        <p class="page-sub">Monitorización total del sistema: actividad, errores y comunicaciones.</p>
+<div class="dx-v2-page-header">
+    <div>
+        <div class="breadcrumb">
+            <a href="{{ route('admin.audit.index') }}">Administración</a>
+            <span class="separator">/</span>
+            <span class="current">Registro de Auditoría</span>
+        </div>
+        <h1 class="page-title">Auditoría del <span>Sistema</span></h1>
+        <p class="page-subtitle">Monitorización total del sistema: actividad, errores y comunicaciones.</p>
     </div>
 </div>
 
