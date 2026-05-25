@@ -81,7 +81,7 @@ class ChatbotService
         ];
 
         try {
-            $response = \Illuminate\Support\Facades\Http::timeout(5)->post(
+            $response = Http::timeout(5)->post(
                 "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}",
                 $payload
             );
@@ -90,7 +90,7 @@ class ChatbotService
                 $resData = $response->json();
                 $text = trim($resData['candidates'][0]['content']['parts'][0]['text'] ?? 'DB');
                 if (strtoupper($text) === 'GENERAL') {
-                    \Illuminate\Support\Facades\Log::info("ChatbotService: Intención clasificada como GENERAL. Omitiendo herramientas.");
+                    Log::info("ChatbotService: Intención clasificada como GENERAL. Omitiendo herramientas.");
                     return false;
                 }
             }
@@ -351,7 +351,7 @@ class ChatbotService
                 $payload['tools'] = $tools;
             }
 
-            $response = \Illuminate\Support\Facades\Http::timeout(30)->post(
+            $response = Http::timeout(30)->post(
                 "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}",
                 $payload
             );
