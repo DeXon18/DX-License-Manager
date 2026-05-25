@@ -316,7 +316,7 @@ class ChatbotService
                              "3. Utiliza la escala del semáforo de expiración: Vencido (rojo), Próximo a expirar <= 30 días (amarillo), Saludable (verde).\n" .
                              "4. Si te piden añadir contactos, utiliza la herramienta `create_contact` tras buscar el cliente correspondiente con `search_clients`. Ignora emails de ATS/Soporte interno de ATS-Global.\n" .
                              "5. Sé conciso y estructurado. Si la respuesta contiene listas de productos, preséntalos en tablas Markdown compactas y profesionales.\n" .
-                             "6. Si te piden añadir o crear un Enterprise Cloud Account, usa la herramienta `create_enterprise_cloud_account` tras buscar el ID del cliente con `search_clients`."
+                             "6. Si te piden añadir un Enterprise Cloud Account, PRIMERO busca el cliente por Sold-To o dominio (email) usando `search_clients`. Si la búsqueda no es concluyente, PREGUNTA al usuario a qué cliente se refiere antes de crear nada. Al confirmar, muestra SOLO: Cliente, Sold-To, Account ID y Admin Email. NO añades columnas como WebKey."
                 ]
             ]
         ];
@@ -481,7 +481,7 @@ class ChatbotService
                         "2. Datos técnicos (Composite, MAC, fechas, IDs) en formato monoespaciado Markdown.\n" .
                         "3. Semáforo: Vencido (rojo), <= 30 días (amarillo), Saludable (verde).\n" .
                         "4. Listas de productos en tablas Markdown compactas.\n" .
-                        "5. Usa create_enterprise_cloud_account para añadir cuentas Cloud.";
+                        "5. Para añadir cuentas Cloud, busca PRIMERO el cliente. Si hay dudas, PREGUNTA. Al confirmar, muestra SOLO Cliente, Sold-To, Account ID y Admin Email. SIN WebKey.";
 
         $messages = [['role' => 'system', 'content' => $systemPrompt]];
         foreach ($chatHistory as $msg) {
@@ -649,8 +649,8 @@ class ChatbotService
             return [];
         }
 
-        // Sanitización fuzzy estricta contra inyección SQL
-        $query = preg_replace('/[^a-zA-Z0-9\s\-_]/', '', $query);
+        // Sanitización fuzzy estricta (permitiendo @ y . para correos y dominios)
+        $query = preg_replace('/[^a-zA-Z0-9\s\-_@.]/', '', $query);
         if (empty($query)) {
             return [];
         }
@@ -684,6 +684,18 @@ class ChatbotService
             ->toArray();
 
             $clients = array_unique(array_merge($clients, $soldToClients), SORT_REGULAR);
+        }
+
+        // Buscar por email/dominio en contactos
+        if (count($clients) < 5) {
+            $contactClients = Client::whereHas('contacts', function ($q) use ($query) {
+                $q->where('email', 'LIKE', "%{$query}%");
+            })
+            ->limit(10)
+            ->get(['id', 'name'])
+            ->toArray();
+
+            $clients = array_unique(array_merge($clients, $contactClients), SORT_REGULAR);
         }
 
         return array_values($clients);
