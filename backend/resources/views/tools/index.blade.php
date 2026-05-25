@@ -3,10 +3,16 @@
 @section('title', 'Herramientas')
 
 @section('content')
-<div class="page-header">
-    <div class="breadcrumb">Portal › Herramientas</div>
-    <h1 class="page-title">Herramientas de Licencia</h1>
-    <p class="page-sub">Motores de transformación y utilidades avanzadas de licencias</p>
+<div class="dx-v2-page-header">
+    <div>
+        <div class="breadcrumb">
+            <a href="{{ route('tools.index') }}">Portal</a>
+            <span class="separator">/</span>
+            <span class="current">Herramientas</span>
+        </div>
+        <h1 class="page-title">Utilidades y <span>Herramientas</span></h1>
+        <p class="page-subtitle">Motores de transformación y utilidades avanzadas de licencias</p>
+    </div>
 </div>
 
 <!-- SIEMENS -->

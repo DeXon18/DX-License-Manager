@@ -1,13 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="page-header">
-    <div class="header-actions">
-        <div>
-            <h1 class="page-title">Gestión de Clientes</h1>
-            <p class="page-sub">Visualización y búsqueda de cuentas del ecosistema.</p>
+<div class="dx-v2-page-header">
+    <div>
+        <div class="breadcrumb">
+            <a href="{{ route('clients.index') }}">Inventario</a>
+            <span class="separator">/</span>
+            <span class="current">Directorio</span>
         </div>
-        <div class="search-box mt-4 dx-v2-clients-search-box">
+        <h1 class="page-title">Gestión de <span>Clientes</span></h1>
+        <p class="page-subtitle">Visualización y búsqueda de cuentas del ecosistema.</p>
+    </div>
+    <div class="dx-v2-page-header-actions" style="flex-direction: column; align-items: flex-end; gap: 8px;">
+        <div class="search-box dx-v2-clients-search-box" style="margin: 0;">
             <form action="{{ route('clients.index') }}" method="GET" class="dx-v2-clients-search-form">
                 <svg class="dx-v2-clients-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>

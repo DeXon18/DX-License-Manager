@@ -21,10 +21,15 @@
 @section('title', 'Planificador de Renovaciones — DX Portal')
 
 @section('content')
-<div class="page-header">
+<div class="dx-v2-page-header">
     <div>
-        <h1 class="welcome">Planificador de <span>Renovaciones</span></h1>
-        <p class="welcome-sub">Gestión cíclica de licencias · {{ Carbon\Carbon::create(2024, $month, 1)->translatedFormat('F') }}</p>
+        <div class="breadcrumb">
+            <a href="{{ route('renewal-planner.index') }}">Operaciones</a>
+            <span class="separator">/</span>
+            <span class="current">Planificador</span>
+        </div>
+        <h1 class="page-title">Planificador de <span>Renovaciones</span></h1>
+        <p class="page-subtitle">Gestión cíclica de licencias · {{ Carbon\Carbon::create(2024, $month, 1)->translatedFormat('F') }}</p>
     </div>
 </div>
 

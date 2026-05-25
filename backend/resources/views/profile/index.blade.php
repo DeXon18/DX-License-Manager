@@ -3,10 +3,15 @@
 @section('title', 'Mi Perfil — DX License Manager')
 
 @section('content')
-<div class="page-header">
+<div class="dx-v2-page-header">
     <div>
-        <h1 class="page-title">Configuración de Perfil</h1>
-        <p class="page-sub">Gestiona tus datos personales y credenciales de acceso.</p>
+        <div class="breadcrumb">
+            <a href="{{ route('profile.index') }}">Usuario</a>
+            <span class="separator">/</span>
+            <span class="current">Perfil</span>
+        </div>
+        <h1 class="page-title">Configuración de <span>Perfil</span></h1>
+        <p class="page-subtitle">Gestiona tus datos personales y credenciales de acceso.</p>
     </div>
 </div>
 

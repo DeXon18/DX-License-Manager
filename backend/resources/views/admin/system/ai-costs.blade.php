@@ -3,10 +3,19 @@
 @section('title', 'Costes y Telemetría de IA')
 
 @section('content')
-<div class="page-header">
-    <div class="dx-v2-sys-dash-header-meta">
+<div class="dx-v2-page-header">
+    <div>
+        <div class="breadcrumb">
+            <a href="{{ route('admin.system.index') }}">Infraestructura</a>
+            <span class="separator">/</span>
+            <span class="current">IA Telemetría</span>
+        </div>
+        <h1 class="page-title">Costes y Telemetría de <span>IA</span></h1>
+        <p class="page-subtitle">Monitorización de uso, tokens y estimación de costes de Inteligencia Artificial.</p>
+    </div>
+    <div class="dx-v2-page-header-actions">
         <div class="dx-v2-sys-dash-header-meta-layout">
-            <div class="dx-v2-sys-dash-header-meta-item">
+            <div class="dx-v2-sys-dash-header-meta-item" style="padding: 6px 12px; border-radius: 6px; background: var(--dx-v2-surface); border: 1px solid var(--dx-v2-border);">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="accent-color"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
                 <span class="accent-color">Auditoría IA Local</span>
             </div>
