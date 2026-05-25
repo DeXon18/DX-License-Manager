@@ -1,6 +1,16 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-25 09:49] — Gestión de Enterprise Cloud Accounts (Fase 29) ✅
+
+### Added
+- **Módulo de Gestión (ECA)**: Implementada tabla `enterprise_cloud_accounts` y lógica CRUD aislada para registrar cuentas de administración Cloud (Sold-To, Account ID y Admin Email) sin interferir con los demonios del inventario de licencias clásico.
+- **UI de Cliente (NOC Pro)**: Añadida la pestaña "Enterprise Cloud" en la ficha del cliente con una tabla de alta densidad y un modal de registro alineado con el diseño unificado de 6 capas CSS.
+- **Skill de Chatbot IA (`create_enterprise_cloud_account`)**: Dotado al agente inteligente interno de la capacidad de inyectar estas cuentas vía lenguaje natural.
+- **Búsqueda Sensible a Dominios**: Mejorada la herramienta `search_clients` del asistente IA para que, al pasarle un correo (ej. `luis@calvera.es`), detecte el cliente asociado buscando en la tabla de contactos y pida confirmación antes de guardar.
+
+---
+
 ## [2026-05-22 13:28] — Mejoras Avanzadas en Gráficas de Costes IA ✅
 
 ### Added
