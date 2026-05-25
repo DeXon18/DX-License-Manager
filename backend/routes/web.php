@@ -38,6 +38,7 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::get('/planificador/download/{file}', [\App\Http\Controllers\RenewalPlannerController::class, 'downloadFile'])->name('renewal-planner.download-file');
     
     Route::get('/changelog', [SystemController::class, 'changelog'])->name('system.changelog');
+    Route::view('/privacidad-ia', 'pages.ai-privacy')->name('pages.ai-privacy');
     
     // Contactar Soporte IT
     Route::get('/soporte', [\App\Http\Controllers\SupportController::class, 'index'])->name('support.contact');

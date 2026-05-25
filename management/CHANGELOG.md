@@ -1,6 +1,16 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-25 13:17] — Security & Compliance Corporativo + Estado de Contratos ✅
+
+### Added
+- **Página de Privacidad IA (`/privacidad-ia`)**: Desplegada una declaración formal de privacidad, seguridad y soberanía de datos sobre el uso de la Inteligencia Artificial (Zero-Data Retention) para cumplimiento normativo y transparencia corporativa (DPA).
+- **Diseño Corporativo (NOC Pro)**: Estructuración en Bento Grid asimétrico utilizando la tipografía técnica `Outfit` e `IBM Plex Mono` y un pipeline gráfico visual. Extracción de estilos a la capa 6 del sistema (`dx-v2-page-ai-privacy.css`).
+- **Estado de Contratos**: Implementado el estado visual "Renovación Tardía" utilizando la clase `dx-v2-color-rojo-oscuro` (#d73a49) para identificar licencias cuya renovación supera la ventana de expiración pero se gestionan como tardías.
+- **Navegación UI**: Añadidos enlaces directos a "Privacidad IA" en el menú principal y un enlace de marca de agua en el Footer ("AI-Powered Productivity").
+
+---
+
 ## [2026-05-25 09:49] — Gestión de Enterprise Cloud Accounts (Fase 29) ✅
 
 ### Added

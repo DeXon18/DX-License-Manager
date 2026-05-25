@@ -62,6 +62,7 @@
                 <a class="nav-link {{ request()->routeIs('clients.*') ? 'active' : '' }}" href="{{ route('clients.index') }}">Clientes</a>
                 <a class="nav-link {{ request()->routeIs('tools.*') ? 'active' : '' }}" href="{{ route('tools.index') }}">Herramientas</a>
                 <a class="nav-link {{ request()->is('admin/*') ? 'active' : '' }}" href="{{ route('admin.system.index') }}">Administración</a>
+                <a class="nav-link {{ request()->routeIs('pages.ai-privacy') ? 'active' : '' }}" href="{{ route('pages.ai-privacy') }}">Privacidad IA</a>
             </nav>
             <div class="nav-right">
                 <div class="theme-toggle" @click="toggleTheme()">

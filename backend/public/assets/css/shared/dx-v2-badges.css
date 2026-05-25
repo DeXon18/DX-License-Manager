@@ -13,6 +13,7 @@
 }
 .badge-success { background:rgba(46,160,67,0.15); color:#3fb950; border:1px solid rgba(46,160,67,0.3); }
 .badge-danger { background:rgba(248,81,73,0.15); color:#f85149; border:1px solid rgba(248,81,73,0.3); }
+.badge-late { background:rgba(215,58,73,0.15); color:#d73a49; border:1px solid rgba(215,58,73,0.3); }
 .badge-warn { background:rgba(210,153,34,0.15); color:#d29922; border:1px solid rgba(210,153,34,0.3); }
 .badge-info { background:rgba(56,139,253,0.15); color:#58a6ff; border:1px solid rgba(56,139,253,0.3); }
 .badge-primary { background:rgba(31,111,235,0.15); color:#58a6ff; border:1px solid rgba(31,111,235,0.3); }

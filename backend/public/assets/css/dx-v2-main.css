@@ -32,8 +32,8 @@
    4. CAPA 3: COMPONENTES COMPARTIDOS (UI / ATOMS)
    ========================================================================== */
 @import 'shared/dx-v2-cards.css';
-@import 'shared/dx-v2-tables.css';
-@import 'shared/dx-v2-badges.css';
+@import 'shared/dx-v2-tables.css?v=2.21.1';
+@import 'shared/dx-v2-badges.css?v=2.21.1';
 @import 'shared/dx-v2-buttons.css';
 @import 'shared/dx-v2-modals.css';
 @import 'shared/dx-v2-pagination.css';
@@ -47,7 +47,7 @@
    5. CAPA 4: MÓDULOS DE APLICACIÓN
    ========================================================================== */
 @import 'modules/dx-v2-login.css';
-@import 'modules/dx-v2-dashboard.css';
+@import 'modules/dx-v2-dashboard.css?v=2.21.1';
 @import 'modules/dx-v2-clients.css';
 @import 'modules/dx-v2-import.css';
 @import 'modules/dx-v2-normalization.css?v=2.21.2';
@@ -78,4 +78,5 @@
 @import 'pages/dx-v2-page-herramientas.css';
 @import 'pages/dx-v2-page-admin.css';
 @import 'pages/dx-v2-page-maintenance.css';
+@import 'pages/dx-v2-page-ai-privacy.css?v=2.21.4';
 @import 'pages/dx-v2-page-reports.css';
