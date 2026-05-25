@@ -10,4 +10,29 @@ return [
     'groq_key'       => env('GROQ_API_KEY'),
     'bot_token' => env('BOT_API_TOKEN'),
     'telegram_bot_token' => env('TELEGRAM_BOT_TOKEN'),
+
+    // Pricing per 1M tokens (USD)
+    'pricing' => [
+        'gemini-1.5-flash' => [
+            'prompt' => 0.15,
+            'completion' => 0.60,
+        ],
+        'gemini-3.1-flash-lite' => [
+            'prompt' => 0.15, // Aproximado
+            'completion' => 0.60,
+        ],
+        'deepseek-chat' => [
+            'prompt' => 0.14,
+            'completion' => 0.28,
+        ],
+        // n8n uses DeepSeek internally
+        'n8n-deepseek' => [
+            'prompt' => 0.14,
+            'completion' => 0.28,
+        ],
+        'default' => [
+            'prompt' => 0.00,
+            'completion' => 0.00,
+        ]
+    ],
 ];

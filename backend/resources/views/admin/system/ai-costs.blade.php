@@ -30,7 +30,7 @@
     
     <div class="dx-v2-sys-dash-stats-grid">
         {{-- Total Tokens (Month) --}}
-        <div class="dx-v2-sys-dash-stat-card">
+        <div class="dx-v2-sys-dash-stat-card" style="height: 100%; display: flex; flex-direction: column;">
             <div class="dx-v2-sys-dash-stat-card-watermark">
                 <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
             </div>
@@ -38,13 +38,13 @@
             <div class="dx-v2-sys-dash-stat-card-value accent-color">
                 {{ number_format($totalTokensThisMonth, 0, ',', '.') }}
             </div>
-            <div class="dx-v2-sys-dash-stat-card-meta-mono">
-                Prmpt: {{ number_format($promptTokensThisMonth, 0, ',', '.') }} <span class="dx-v2-sys-dash-dot-separator">·</span> Cmpl: {{ number_format($completionTokensThisMonth, 0, ',', '.') }}
+            <div class="dx-v2-sys-dash-stat-card-meta-mono" style="margin-top: auto; min-height: 44px; display: flex; align-items: center;">
+                <div style="width: 100%;">Prmpt: {{ number_format($promptTokensThisMonth, 0, ',', '.') }} <span class="dx-v2-sys-dash-dot-separator">·</span> Cmpl: {{ number_format($completionTokensThisMonth, 0, ',', '.') }}</div>
             </div>
         </div>
 
         {{-- Coste Total (Mes) --}}
-        <div class="dx-v2-sys-dash-stat-card">
+        <div class="dx-v2-sys-dash-stat-card" style="height: 100%; display: flex; flex-direction: column;">
             <div class="dx-v2-sys-dash-stat-card-watermark">
                 <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
             </div>
@@ -52,13 +52,13 @@
             <div class="dx-v2-sys-dash-stat-card-value success-color">
                 ${{ number_format($totalCostThisMonth, 4, ',', '.') }}
             </div>
-            <div class="dx-v2-sys-dash-stat-card-meta-mono">
-                Facturación basada en tokens consumidos
+            <div class="dx-v2-sys-dash-stat-card-meta-mono" style="margin-top: auto; min-height: 44px; display: flex; align-items: center;">
+                <div style="width: 100%;">Facturación basada en tokens consumidos</div>
             </div>
         </div>
 
         {{-- Coste Histórico --}}
-        <div class="dx-v2-sys-dash-stat-card">
+        <div class="dx-v2-sys-dash-stat-card" style="height: 100%; display: flex; flex-direction: column;">
             <div class="dx-v2-sys-dash-stat-card-watermark">
                 <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
             </div>
@@ -66,12 +66,12 @@
             <div class="dx-v2-sys-dash-stat-card-value success-color" style="opacity: 0.8;">
                 ${{ number_format($totalCostAllTime, 4, ',', '.') }}
             </div>
-            <div class="dx-v2-sys-dash-stat-card-meta-mono">
-                Acumulado desde inicio del sistema
+            <div class="dx-v2-sys-dash-stat-card-meta-mono" style="margin-top: auto; min-height: 44px; display: flex; align-items: center;">
+                <div style="width: 100%;">Acumulado desde inicio del sistema</div>
             </div>
         </div>
         {{-- Total Peticiones (Mes) --}}
-        <div class="dx-v2-sys-dash-stat-card">
+        <div class="dx-v2-sys-dash-stat-card" style="height: 100%; display: flex; flex-direction: column;">
             <div class="dx-v2-sys-dash-stat-card-watermark">
                 <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
             </div>
@@ -79,8 +79,8 @@
             <div class="dx-v2-sys-dash-stat-card-value accent-color" style="color: var(--dx-v2-accent);">
                 {{ number_format($providerStats->sum('requests_count'), 0, ',', '.') }}
             </div>
-            <div class="dx-v2-sys-dash-stat-card-meta-mono">
-                Llamadas a las APIs de IA
+            <div class="dx-v2-sys-dash-stat-card-meta-mono" style="margin-top: auto; min-height: 44px; display: flex; align-items: center;">
+                <div style="width: 100%;">Llamadas a las APIs de IA</div>
             </div>
         </div>
     </div>
@@ -103,30 +103,23 @@
                     <div class="card-header">
                         <span class="card-title">Distribución por Proveedor (Mes)</span>
                     </div>
-                    <div class="card-body">
-                        <div class="dx-v2-sys-dash-sec-box" style="margin:0; border:none; padding:0;">
-                            <div class="dx-v2-sys-dash-sec-layout">
-                                @forelse($providerStats as $stat)
-                                    <div class="dx-v2-sys-dash-sec-row {{ $loop->last ? 'no-border' : '' }}">
-                                        <span class="dx-v2-sys-dash-sec-label" style="text-transform: capitalize; font-weight: 600; color: var(--dx-v2-primary-base);">{{ $stat->provider }}</span>
-                                        <div style="display: flex; align-items: center; gap: 16px; text-align: right;">
-                                            <div style="display: flex; flex-direction: column; align-items: flex-end; min-width: 50px;">
-                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1;">{{ compact_number($stat->total_tokens) }}</span>
-                                                <span style="font-size: 0.65rem; color: var(--dx-v2-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 4px;">Tokens</span>
-                                            </div>
-                                            <div style="width: 1px; height: 28px; background: var(--dx-v2-border-base); opacity: 0.6;"></div>
-                                            <div style="display: flex; flex-direction: column; align-items: flex-end; min-width: 48px;">
-                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1; color: var(--dx-v2-text-secondary);">{{ compact_number($stat->requests_count) }}</span>
-                                                <span style="font-size: 0.65rem; color: var(--dx-v2-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 4px;">Reqs</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @empty
-                                    <div class="dx-v2-sys-dash-sec-row no-border">
-                                        <span class="dx-v2-sys-dash-sec-label" style="color: var(--dx-v2-text-muted);">Sin datos</span>
-                                    </div>
-                                @endforelse
-                            </div>
+                    <div class="dx-v2-sys-dash-sec-box">
+                        <div class="dx-v2-sys-dash-sec-layout">
+                            @forelse($providerStats as $stat)
+                                <div class="dx-v2-sys-dash-sec-row {{ $loop->last ? 'no-border' : '' }}">
+                                    <span class="dx-v2-sys-dash-sec-label" style="text-transform: capitalize;">{{ $stat->provider }}</span>
+                                    <span class="dx-v2-sys-dash-sec-value">
+                                        {{ compact_number($stat->total_tokens) }} <span style="font-size: 0.65rem; color: var(--dx-v2-muted); font-weight: normal; font-family: 'Outfit', sans-serif;">TK</span>
+                                        <span style="color: var(--dx-v2-border-base); margin: 0 4px; font-weight: normal;">|</span>
+                                        {{ compact_number($stat->requests_count) }} <span style="font-size: 0.65rem; color: var(--dx-v2-muted); font-weight: normal; font-family: 'Outfit', sans-serif;">RQ</span>
+                                    </span>
+                                </div>
+                            @empty
+                                <div class="dx-v2-sys-dash-sec-row no-border">
+                                    <span class="dx-v2-sys-dash-sec-label text-muted">Sin datos este mes</span>
+                                    <span class="dx-v2-sys-dash-sec-value">-</span>
+                                </div>
+                            @endforelse
                         </div>
                     </div>
                 </div>
@@ -136,48 +129,36 @@
                     <div class="card-header">
                         <span class="card-title">Distribución por Acción (Mes)</span>
                     </div>
-                    <div class="card-body">
-                        <div class="dx-v2-sys-dash-sec-box" style="margin:0; border:none; padding:0;">
-                            <div class="dx-v2-sys-dash-sec-layout">
-                                @php
-                                    $actionNames = [
-                                        'normalization_search' => 'Normalización (Búsqueda)',
-                                        'normalization_pair'   => 'Normalización (Escáner de Duplicados)',
-                                        'license_audit'        => 'Auditoría de Licencias (.lic)',
-                                        'composite_parse'      => 'Análisis Composite.txt (COD)',
-                                        'chatbot_query'        => 'Chatbot Asistente',
-                                        'cost_calculation'     => 'Cálculo de Costes',
-                                        'cod_processor'        => 'Procesador COD (Antiguo)',
-                                    ];
-                                @endphp
-                                @forelse($actionStats as $stat)
-                                    <div class="dx-v2-sys-dash-sec-row {{ $loop->last ? 'no-border' : '' }}" style="align-items: center;">
-                                        <div style="display: flex; flex-direction: column;">
-                                            <span class="dx-v2-sys-dash-sec-label" style="font-weight: 600; color: var(--dx-v2-primary-base);">
-                                                {{ $actionNames[$stat->action] ?? str_replace('_', ' ', Str::title($stat->action)) }}
-                                            </span>
-                                            <span style="font-size: 0.72rem; font-family: var(--font-mono); color: var(--dx-v2-muted); margin-top: 4px;">
-                                                ~{{ compact_number(round($stat->total_tokens / max(1, $stat->requests_count))) }} tk/req
-                                            </span>
-                                        </div>
-                                        <div style="display: flex; align-items: center; gap: 16px; text-align: right;">
-                                            <div style="display: flex; flex-direction: column; align-items: flex-end; min-width: 50px;">
-                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1;">{{ compact_number($stat->total_tokens) }}</span>
-                                                <span style="font-size: 0.65rem; color: var(--dx-v2-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 4px;">Tokens</span>
-                                            </div>
-                                            <div style="width: 1px; height: 28px; background: var(--dx-v2-border-base); opacity: 0.6;"></div>
-                                            <div style="display: flex; flex-direction: column; align-items: flex-end; min-width: 48px;">
-                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1; color: var(--dx-v2-text-secondary);">{{ compact_number($stat->requests_count) }}</span>
-                                                <span style="font-size: 0.65rem; color: var(--dx-v2-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 4px;">Reqs</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @empty
-                                    <div class="dx-v2-sys-dash-sec-row no-border">
-                                        <span class="dx-v2-sys-dash-sec-label text-muted">Sin datos este mes</span>
-                                    </div>
-                                @endforelse
-                            </div>
+                    <div class="dx-v2-sys-dash-sec-box">
+                        <div class="dx-v2-sys-dash-sec-layout">
+                            @php
+                                $actionNames = [
+                                    'normalization_search' => 'Norm. Búsqueda',
+                                    'normalization_pair'   => 'Norm. Duplicados',
+                                    'license_audit'        => 'Auditoría .lic',
+                                    'composite_parse'      => 'Análisis COD',
+                                    'chatbot_query'        => 'Chatbot Asistente',
+                                    'cost_calculation'     => 'Cálculo Costes',
+                                    'cod_processor'        => 'Procesador Antiguo',
+                                ];
+                            @endphp
+                            @forelse($actionStats as $stat)
+                                <div class="dx-v2-sys-dash-sec-row {{ $loop->last ? 'no-border' : '' }}">
+                                    <span class="dx-v2-sys-dash-sec-label">
+                                        {{ $actionNames[$stat->action] ?? str_replace('_', ' ', Str::title($stat->action)) }}
+                                    </span>
+                                    <span class="dx-v2-sys-dash-sec-value">
+                                        {{ compact_number($stat->total_tokens) }} <span style="font-size: 0.65rem; color: var(--dx-v2-muted); font-weight: normal; font-family: 'Outfit', sans-serif;">TK</span>
+                                        <span style="color: var(--dx-v2-border-base); margin: 0 4px; font-weight: normal;">|</span>
+                                        {{ compact_number($stat->requests_count) }} <span style="font-size: 0.65rem; color: var(--dx-v2-muted); font-weight: normal; font-family: 'Outfit', sans-serif;">RQ</span>
+                                    </span>
+                                </div>
+                            @empty
+                                <div class="dx-v2-sys-dash-sec-row no-border">
+                                    <span class="dx-v2-sys-dash-sec-label text-muted">Sin datos este mes</span>
+                                    <span class="dx-v2-sys-dash-sec-value">-</span>
+                                </div>
+                            @endforelse
                         </div>
                     </div>
                 </div>
@@ -187,34 +168,23 @@
                     <div class="card-header">
                         <span class="card-title">Distribución por Usuario (Mes)</span>
                     </div>
-                    <div class="card-body">
-                        <div class="dx-v2-sys-dash-sec-box" style="margin:0; border:none; padding:0;">
-                            <div class="dx-v2-sys-dash-sec-layout">
-                                @forelse($userStats as $stat)
-                                    <div class="dx-v2-sys-dash-sec-row {{ $loop->last ? 'no-border' : '' }}" style="align-items: center;">
-                                        <div style="display: flex; flex-direction: column;">
-                                            <span class="dx-v2-sys-dash-sec-label" style="font-weight: 600; color: var(--dx-v2-primary-base);">
-                                                {{ $stat->user->name ?? 'Sistema' }}
-                                            </span>
-                                        </div>
-                                        <div style="display: flex; align-items: center; gap: 16px; text-align: right;">
-                                            <div style="display: flex; flex-direction: column; align-items: flex-end; min-width: 50px;">
-                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1;">{{ compact_number($stat->total_tokens) }}</span>
-                                                <span style="font-size: 0.65rem; color: var(--dx-v2-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 4px;">Tokens</span>
-                                            </div>
-                                            <div style="width: 1px; height: 28px; background: var(--dx-v2-border-base); opacity: 0.6;"></div>
-                                            <div style="display: flex; flex-direction: column; align-items: flex-end; min-width: 48px;">
-                                                <span class="dx-v2-sys-dash-sec-value" style="font-size: 1.1rem; line-height: 1; color: var(--dx-v2-text-secondary);">{{ compact_number($stat->requests_count) }}</span>
-                                                <span style="font-size: 0.65rem; color: var(--dx-v2-muted); text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; margin-top: 4px;">Reqs</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @empty
-                                    <div class="dx-v2-sys-dash-sec-row no-border">
-                                        <span class="dx-v2-sys-dash-sec-label text-muted">Sin datos este mes</span>
-                                    </div>
-                                @endforelse
-                            </div>
+                    <div class="dx-v2-sys-dash-sec-box">
+                        <div class="dx-v2-sys-dash-sec-layout">
+                            @forelse($userStats as $stat)
+                                <div class="dx-v2-sys-dash-sec-row {{ $loop->last ? 'no-border' : '' }}">
+                                    <span class="dx-v2-sys-dash-sec-label">{{ $stat->user->name ?? 'Sistema' }}</span>
+                                    <span class="dx-v2-sys-dash-sec-value">
+                                        {{ compact_number($stat->total_tokens) }} <span style="font-size: 0.65rem; color: var(--dx-v2-muted); font-weight: normal; font-family: 'Outfit', sans-serif;">TK</span>
+                                        <span style="color: var(--dx-v2-border-base); margin: 0 4px; font-weight: normal;">|</span>
+                                        {{ compact_number($stat->requests_count) }} <span style="font-size: 0.65rem; color: var(--dx-v2-muted); font-weight: normal; font-family: 'Outfit', sans-serif;">RQ</span>
+                                    </span>
+                                </div>
+                            @empty
+                                <div class="dx-v2-sys-dash-sec-row no-border">
+                                    <span class="dx-v2-sys-dash-sec-label text-muted">Sin datos este mes</span>
+                                    <span class="dx-v2-sys-dash-sec-value">-</span>
+                                </div>
+                            @endforelse
                         </div>
                     </div>
                 </div>
@@ -264,46 +234,73 @@
 
             {{-- Historial Reciente --}}
             <div class="card" style="margin-top: 1.5rem;">
-                <div class="card-header">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                     <span class="card-title">Log de Peticiones</span>
+                    <div style="font-size: 0.75rem; color: var(--dx-v2-muted); display: flex; gap: 12px; font-family: 'Outfit', sans-serif;">
+                        <span><i class="fa-brands fa-google" style="color: #4285F4; margin-right: 4px;"></i> Gemini</span>
+                        <span><i class="fa-solid fa-brain" style="color: #4A90E2; margin-right: 4px;"></i> DeepSeek</span>
+                        <span><i class="fa-solid fa-minus text-muted" style="margin-right: 4px;"></i> N/A</span>
+                    </div>
                 </div>
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
+                <div class="dx-v2-audit-table-wrapper">
+                    <table class="dx-v2-audit-table">
+                        <thead class="dx-v2-audit-table-thead">
                             <tr>
-                                <th>FECHA</th>
-                                <th>ACCIÓN</th>
-                                <th>PROVEEDOR</th>
-                                <th class="text-right">PROMPT</th>
-                                <th class="text-right">COMPLETION</th>
-                                <th class="text-right">TOTAL</th>
-                                <th class="text-right">COSTE EST.</th>
-                                <th>USUARIO</th>
+                                <th class="dx-v2-audit-table-th width-120">Fecha</th>
+                                <th class="dx-v2-audit-table-th width-150">Acción</th>
+                                <th class="dx-v2-audit-table-th width-130">Proveedor</th>
+                                <th class="dx-v2-audit-table-th text-center width-60" title="Modelo IA">Mod.</th>
+                                <th class="dx-v2-audit-table-th text-right width-100">Prompt</th>
+                                <th class="dx-v2-audit-table-th text-right width-100">Completion</th>
+                                <th class="dx-v2-audit-table-th text-right width-100">Total</th>
+                                <th class="dx-v2-audit-table-th text-right width-120">Coste Est.</th>
+                                <th class="dx-v2-audit-table-th width-130">Usuario</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($logs as $log)
-                                <tr>
-                                    <td><span class="dx-v2-sys-dash-sec-footer-code">{{ $log->created_at->format('d M H:i:s') }}</span></td>
-                                    <td>{{ $log->action }}</td>
-                                    <td><span class="badge" style="background: var(--dx-v2-glass-border); color: var(--dx-v2-text-primary);">{{ $log->provider }}</span></td>
-                                    <td class="text-right">{{ number_format($log->prompt_tokens, 0, ',', '.') }}</td>
-                                    <td class="text-right">{{ number_format($log->completion_tokens, 0, ',', '.') }}</td>
-                                    <td class="text-right accent-color" style="font-family: 'Outfit', sans-serif; font-weight:600;">{{ number_format($log->total_tokens, 0, ',', '.') }}</td>
-                                    <td class="text-right text-success" style="font-family: 'Outfit', sans-serif;">${{ number_format($log->estimated_cost, 6, ',', '.') }}</td>
-                                    <td>{{ $log->user->name ?? 'Sistema' }}</td>
+                                <tr class="dx-v2-audit-table-tr">
+                                    <td class="dx-v2-audit-table-td dx-v2-audit-td-timestamp">{{ $log->created_at->format('d M H:i:s') }}</td>
+                                    <td class="dx-v2-audit-table-td">{{ $log->action }}</td>
+                                    <td class="dx-v2-audit-table-td"><span class="badge dx-v2-audit-badge-level info">{{ strtoupper($log->provider) }}</span></td>
+                                    <td class="dx-v2-audit-table-td text-center">
+                                        @php
+                                            $modelLower = strtolower($log->model ?? '');
+                                            $modelIcon = 'fa-solid fa-minus text-muted';
+                                            $modelColor = '';
+                                            if (str_contains($modelLower, 'gemini')) {
+                                                $modelIcon = 'fa-brands fa-google';
+                                                $modelColor = 'color: #4285F4;';
+                                            } elseif (str_contains($modelLower, 'deepseek')) {
+                                                $modelIcon = 'fa-solid fa-brain';
+                                                $modelColor = 'color: #4A90E2;';
+                                            } elseif ($modelLower !== '') {
+                                                $modelIcon = 'fa-solid fa-microchip text-muted';
+                                            }
+                                        @endphp
+                                        <i class="{{ $modelIcon }}" style="font-size: 1rem; {{ $modelColor }}" title="{{ $log->model ?? 'N/A' }}"></i>
+                                    </td>
+                                    <td class="dx-v2-audit-table-td text-right">{{ number_format($log->prompt_tokens, 0, ',', '.') }}</td>
+                                    <td class="dx-v2-audit-table-td text-right">{{ number_format($log->completion_tokens, 0, ',', '.') }}</td>
+                                    <td class="dx-v2-audit-table-td text-right accent-color" style="font-weight:600;">{{ number_format($log->total_tokens, 0, ',', '.') }}</td>
+                                    <td class="dx-v2-audit-table-td text-right text-success">${{ number_format($log->estimated_cost, 6, ',', '.') }}</td>
+                                    <td class="dx-v2-audit-table-td">
+                                        <div class="dx-v2-audit-user-badge" style="justify-content: flex-start;">
+                                            <span class="dx-v2-audit-user-name">{{ $log->user->name ?? 'Sistema' }}</span>
+                                        </div>
+                                    </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8" class="text-center text-muted" style="padding: 2rem;">No hay registros de IA disponibles.</td>
+                                    <td colspan="9" class="dx-v2-audit-table-td" style="padding: 40px; text-align: center; color: var(--muted);">No hay registros de IA disponibles.</td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
                 @if($logs->hasPages())
-                    <div class="card-body border-top">
-                        {{ $logs->links() }}
+                    <div class="card-body border-top" style="padding-top: 1rem; padding-bottom: 1rem;">
+                        {{ $logs->links('vendor.pagination.dx-jump') }}
                     </div>
                 @endif
             </div>

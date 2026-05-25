@@ -434,7 +434,8 @@ class ChatbotService
                 $finalText = $parts[0]['text'] ?? 'No he podido procesar una respuesta.';
                 return [
                     'message' => $finalText,
-                    'provider' => 'gemini-flash',
+                    'provider' => 'gemini',
+                    'model' => 'gemini-1.5-flash',
                     'success' => true,
                     'usage_metadata' => $usageMetadata,
                     'data' => $toolResults
@@ -560,6 +561,7 @@ class ChatbotService
                 return [
                     'message'        => $finalText,
                     'provider'       => $providerName,
+                    'model'          => $model,
                     'success'        => true,
                     'usage_metadata' => $resData['usage'] ?? null,
                     'data'           => $toolResults
