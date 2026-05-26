@@ -1,6 +1,6 @@
-Rama activa: feature/ai-routing-hub. Fase 29 — Telemetría IA & Routing.
-Último trabajo: Centralización de OpenRouter. Refactorización de costes granulados por modelo y telemetría de cuotas semanales. Interfaz NOC Pro actualizada sin sidebar y con barras de progreso de tokens (0 / ∞ o límite explícito). 
-Estado: Backend limpio, Frontend NOC Pro estabilizado en el panel de telemetría de IA. Migraciones de `weekly_tokens_limit` aplicadas y seeder ejecutado con los Top Free Models de OpenRouter.
-Próximo paso inmediato: Revisar BACKLOG y continuar con tareas pendientes de soporte/telemetría o hacer merge de la rama `feature/ai-routing-hub` a `dev`.
+Rama activa: dev. Fase 29 — Telemetría IA & Routing COMPLETADA y MERGEADA.
+Último trabajo: Merge con éxito de la rama `feature/ai-routing-hub` en `dev`, subido a remoto `origin/dev`. Añadida además la ordenación interactiva instantánea en frontend (JS nativo) para el Catálogo de Modelos (por Estado, Nombre, OpenRouter ID, Tipo, Cuota y Precio) sin recargar página ni perder el estado reactivo de Alpine.js.
+Estado: Backend limpio, Frontend NOC Pro pulido, vistas compiladas borradas y logs de PHP/Nginx beta 100% limpios (retornos 200/302).
+Próximo paso inmediato: Esperar nuevas directrices/prioridades definidas por Oskar.
 Bloqueos: Ninguno.
-Stack beta: Indeterminado. Stack prod: Indeterminado.
+Stack beta: Saludable. Stack prod: Saludable.
