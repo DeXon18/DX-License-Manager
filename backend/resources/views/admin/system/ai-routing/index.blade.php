@@ -117,19 +117,26 @@
                 <div style="overflow-x: auto;">
                     <table>
                         <thead>
-                            <tr>
-                                <th>Estado</th>
-                                <th>Modelo</th>
-                                <th>OpenRouter ID</th>
-                                <th>Tipo</th>
-                                <th style="text-align: right;">Cuota Semanal</th>
-                                <th style="text-align: right;">P. Prompt / Comp.</th>
+                            <tr style="user-select: none;">
+                                <th style="cursor: pointer; width: 80px;" onclick="sortTable('active')">Estado <span id="sort-active-icon" style="font-size: 10px; font-family: monospace;"></span></th>
+                                <th style="cursor: pointer;" onclick="sortTable('name')">Modelo <span id="sort-name-icon" style="font-size: 10px; font-family: monospace;"></span></th>
+                                <th style="cursor: pointer;" onclick="sortTable('id')">OpenRouter ID <span id="sort-id-icon" style="font-size: 10px; font-family: monospace;"></span></th>
+                                <th style="cursor: pointer; width: 100px;" onclick="sortTable('free')">Tipo <span id="sort-free-icon" style="font-size: 10px; font-family: monospace;"></span></th>
+                                <th style="cursor: pointer; text-align: right; width: 180px;" onclick="sortTable('usage')">Cuota Semanal <span id="sort-usage-icon" style="font-size: 10px; font-family: monospace;"></span></th>
+                                <th style="cursor: pointer; text-align: right; width: 180px;" onclick="sortTable('price')">P. Prompt / Comp. <span id="sort-price-icon" style="font-size: 10px; font-family: monospace;"></span></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="models-table-body">
                             @foreach($models as $m)
-                                <tr style="opacity: {{ $m->is_active ? '1' : '0.5' }};">
-                                    <td style="width: 50px; text-align: center;">
+                                <tr class="model-row" 
+                                    style="opacity: {{ $m->is_active ? '1' : '0.5' }};"
+                                    data-active="{{ $m->is_active ? 1 : 0 }}"
+                                    data-name="{{ strtolower($m->name) }}"
+                                    data-id="{{ strtolower($m->openrouter_id) }}"
+                                    data-free="{{ $m->is_free ? 1 : 0 }}"
+                                    data-usage="{{ $m->weekly_usage ?? 0 }}"
+                                    data-price="{{ $m->price_prompt + $m->price_completion }}">
+                                    <td style="text-align: center;">
                                         <form action="{{ route('admin.system.ai-routing.models.toggle', $m->id) }}" method="POST">
                                             @csrf
                                             <button type="submit" style="background: none; border: none; cursor: pointer; color: {{ $m->is_active ? 'var(--dx-v2-success)' : 'var(--dx-v2-muted)' }};">
@@ -237,4 +244,65 @@
         </div>
     </div>
 </div>
+
+<script>
+    let currentSort = {
+        field: 'name',
+        order: 'asc'
+    };
+
+    function sortTable(field) {
+        const tbody = document.getElementById('models-table-body');
+        const rows = Array.from(tbody.querySelectorAll('.model-row'));
+        
+        // Alternar dirección
+        if (currentSort.field === field) {
+            currentSort.order = currentSort.order === 'asc' ? 'desc' : 'asc';
+        } else {
+            currentSort.field = field;
+            currentSort.order = 'asc';
+        }
+        
+        // Ordenación
+        rows.sort((a, b) => {
+            let valA, valB;
+            
+            if (field === 'name' || field === 'id') {
+                valA = a.getAttribute(`data-${field}`);
+                valB = b.getAttribute(`data-${field}`);
+                return currentSort.order === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+            } else {
+                valA = parseFloat(a.getAttribute(`data-${field}`)) || 0;
+                valB = parseFloat(b.getAttribute(`data-${field}`)) || 0;
+                return currentSort.order === 'asc' ? valA - valB : valB - valA;
+            }
+        });
+        
+        // Reinyectar orden en DOM
+        rows.forEach(row => tbody.appendChild(row));
+        
+        // Actualizar indicadores visuales
+        updateSortIcons();
+    }
+
+    function updateSortIcons() {
+        const fields = ['active', 'name', 'id', 'free', 'usage', 'price'];
+        fields.forEach(field => {
+            const iconSpan = document.getElementById(`sort-${field}-icon`);
+            if (!iconSpan) return;
+            
+            if (currentSort.field === field) {
+                iconSpan.innerHTML = currentSort.order === 'asc' ? ' ▲' : ' ▼';
+                iconSpan.style.color = 'var(--dx-v2-accent)';
+            } else {
+                iconSpan.innerHTML = '';
+            }
+        });
+    }
+
+    // Registrar inicio
+    document.addEventListener('DOMContentLoaded', () => {
+        updateSortIcons();
+    });
+</script>
 @endsection
