@@ -1,37 +1,34 @@
 ---
 project: DX License Manager
 repo: github.com/DeXon18/DX-License-Manager
-status: Phase 25 - Chatbot de Asistencia IA Web (Extensión) | EN CURSO 🔜
-last_sync: 2026-05-21
+status: Fase 29 - Telemetría IA & Routing | COMPLETADO ✅
+last_sync: 2026-05-26
 current_agent: Antigravity (DX Agent) 🦾
 ---
 
 # 🧠 Contexto de Sesión Activa
 
 ## 🎯 Objetivo Actual
-Ampliar las capacidades del chatbot asistido por IA en el portal `DX-License-Manager` incorporando nuevas herramientas operativas, llamadas paralelas a funciones, telemetría y una Consola Técnica Bento expandible.
+Completar, estabilizar e integrar el AI Routing Hub en el portal unificando las telemetrías de cuotas y limites semanales para OpenRouter, y permitiendo la ordenación interactiva en el listado del catálogo de modelos.
 
 ## Estado de la Tarea Actual
-- **Rama:** `feature/chatbot-web-assist`
-- **Estado:** ✅ Completado (Todos los pasos finalizados con éxito).
+- **Rama:** `feature/ai-routing-hub` (Fusionada con éxito a `dev`)
+- **Estado:** ✅ Completado (100% verificado y testeado).
 - **Cambios clave:**
-  - Desarrollado e integrado el soporte para **Function Calling Paralelo** en `ChatbotService.php` para resolver múltiples llamadas a herramientas en un único turno.
-  - Implementadas las 5 nuevas herramientas operativas: `get_contract_details`, `search_contacts`, `update_contact`, `get_dashboard_summary` y `list_clients_without_contacts`.
-  - Integrada la sanitización de inputs fuzzy, validación estricta de variables y telemetría `finishReason`.
-  - Implementado **Caché Inteligente de Herramientas** de 5 minutos (`Cache::remember`) para `get_resource_links` y `get_expirations`.
-  - Actualizado `ChatbotController.php` para inyectar telemetría de tokens, límites de mutaciones por sesión (máximo 5) y soporte de respuestas enriquecidas (`data` dict).
-  - Diseñado y acoplado el sistema de estilos premium responsive para la **Consola Bento Split-Screen** expandible (`dx-v2-chatbot.css`).
-  - Refactorizada e implementada la reactividad Alpine.js en la plantilla `chatbot.blade.php`, dotándola de persistencia en `sessionStorage` para telemetría, límites de mutaciones y widgets visuales de herramientas Bento interactivos.
-  - Creados e implementados los tests unitarios y de integración de robustez en `ChatbotTest.php`, logrando un 100% de aserciones exitosas y cobertura completa.
-  - Logs de contenedores en Beta verificados libres de errores.
+  - Construido el AI Routing Hub (`admin/system/ai-routing`) para orquestar la IA.
+  - Implementado sistema de telemetría de cuotas semanales (`weekly_tokens_limit`) y visualización dinámica Bento en UI.
+  - Actualizado seeder `AiHubSeeder` con catálogo de 11+ modelos gratuitos y robustos de OpenRouter.
+  - Unificada UI NOC Pro para métricas sin sidebar y con ancho máximo expandido.
+  - Añadida ordenación interactiva instantánea en frontend (JS nativo) para Estado, Nombre, OpenRouter ID, Tipo, Cuota y Precio del catálogo sin perder la reactividad de Alpine.js.
+  - Verificado y fusionado limpiamente a la rama `dev` y subido a remoto `origin/dev`.
 
 ## Próximos Pasos
-- [ ] Revisión del PR final y autorización para mergear a `dev`.
+- [ ] En espera de nuevos objetivos y tareas prioritarias definidas por Oskar.
 
 ---
 
 ## 🛠️ Tareas en curso
-- Implementación de la Fase 25 - Extensión (100% Completada y Verificada). Listo para revisión.
+- Fase 29 - Telemetría IA & Routing (100% Completada, Verificada y Mergeada). Listo.
 
 ---
 
