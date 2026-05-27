@@ -340,6 +340,7 @@
   position: relative !important;
   overflow: hidden !important;
   transition: all 0.3s ease !important;
+  text-decoration: none !important;
 }
 
 [data-theme="light"] .dx-v2-sys-dash-service-item {
