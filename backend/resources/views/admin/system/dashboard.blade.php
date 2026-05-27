@@ -246,7 +246,7 @@
                         </div>
 
                         {{-- Docker Monitor --}}
-                        <a href="{{ route('admin.system.docker') }}" class="dx-v2-sys-dash-service-item">
+                        <div onclick="window.location.href='{{ route('admin.system.docker') }}'" class="dx-v2-sys-dash-service-item clickable">
                             <div class="dx-v2-sys-dash-service-icon-box online">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
                             </div>
@@ -258,10 +258,10 @@
                                 <div class="dx-v2-sys-dash-service-msg">Salud de contenedores</div>
                                 <div class="dx-v2-sys-dash-service-details-mono">Telemetría de CPU/RAM</div>
                             </div>
-                        </a>
+                        </div>
 
                         {{-- Gestión de Backups --}}
-                        <a href="{{ route('admin.backups.index') }}" class="dx-v2-sys-dash-service-item">
+                        <div onclick="window.location.href='{{ route('admin.backups.index') }}'" class="dx-v2-sys-dash-service-item clickable">
                             <div class="dx-v2-sys-dash-service-icon-box online">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                             </div>
@@ -273,10 +273,10 @@
                                 <div class="dx-v2-sys-dash-service-msg">Historial completo</div>
                                 <div class="dx-v2-sys-dash-service-details-mono">Descargas y espacio</div>
                             </div>
-                        </a>
+                        </div>
 
                         {{-- Auditoría y Logs --}}
-                        <a href="{{ route('admin.audit.index') }}" class="dx-v2-sys-dash-service-item">
+                        <div onclick="window.location.href='{{ route('admin.audit.index') }}'" class="dx-v2-sys-dash-service-item clickable">
                             <div class="dx-v2-sys-dash-service-icon-box online">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                             </div>
@@ -288,10 +288,10 @@
                                 <div class="dx-v2-sys-dash-service-msg">Trazabilidad total</div>
                                 <div class="dx-v2-sys-dash-service-details-mono">Filtros por IP y acción</div>
                             </div>
-                        </a>
+                        </div>
 
                         {{-- Costes IA --}}
-                        <a href="{{ route('admin.system.ai-costs') }}" class="dx-v2-sys-dash-service-item">
+                        <div onclick="window.location.href='{{ route('admin.system.ai-costs') }}'" class="dx-v2-sys-dash-service-item clickable">
                             <div class="dx-v2-sys-dash-service-icon-box online">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
                             </div>
@@ -303,10 +303,10 @@
                                 <div class="dx-v2-sys-dash-service-msg">Monitorización de tokens</div>
                                 <div class="dx-v2-sys-dash-service-details-mono">Telemetría de motores</div>
                             </div>
-                        </a>
+                        </div>
 
                         {{-- AI Routing Hub --}}
-                        <a href="{{ route('admin.system.ai-routing.index') }}" class="dx-v2-sys-dash-service-item">
+                        <div onclick="window.location.href='{{ route('admin.system.ai-routing.index') }}'" class="dx-v2-sys-dash-service-item clickable">
                             <div class="dx-v2-sys-dash-service-icon-box online">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg>
                             </div>
@@ -318,7 +318,7 @@
                                 <div class="dx-v2-sys-dash-service-msg">Gestor de OpenRouter</div>
                                 <div class="dx-v2-sys-dash-service-details-mono">Asignación y fallback</div>
                             </div>
-                        </a>
+                        </div>
                     </div>
                 </div>
             </div>
