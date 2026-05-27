@@ -81,8 +81,20 @@
             <div class="dx-v2-sys-dash-stat-card-value">
                 {{ $metrics['hardware']['disk']['folders']['total'] }}
             </div>
-            <div class="dx-v2-sys-dash-stat-card-meta-mono">
-                BETA: {{ $metrics['hardware']['disk']['folders']['beta'] }} <span class="dx-v2-sys-dash-dot-separator">·</span> PROD: {{ $metrics['hardware']['disk']['folders']['prod'] }}
+            <div class="dx-v2-sys-dash-stat-card-traffic-layout">
+                <div class="dx-v2-sys-dash-stat-card-traffic-col-left">
+                    <div class="dx-v2-sys-dash-stat-card-traffic-sub-label">Beta Storage</div>
+                    <div class="dx-v2-sys-dash-stat-card-traffic-value mono-text">
+                        {{ $metrics['hardware']['disk']['folders']['beta'] }}
+                    </div>
+                </div>
+                <div class="dx-v2-sys-dash-stat-card-traffic-separator"></div>
+                <div class="dx-v2-sys-dash-stat-card-traffic-col-right">
+                    <div class="dx-v2-sys-dash-stat-card-traffic-sub-label">Prod Storage</div>
+                    <div class="dx-v2-sys-dash-stat-card-traffic-value mono-text">
+                        {{ $metrics['hardware']['disk']['folders']['prod'] }}
+                    </div>
+                </div>
             </div>
         </div>
 
