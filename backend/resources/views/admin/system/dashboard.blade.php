@@ -82,9 +82,7 @@
                 {{ $metrics['hardware']['disk']['folders']['total'] }}
             </div>
             <div class="dx-v2-sys-dash-stat-card-meta-mono">
-                <span class="warning-color">BETA: {{ $metrics['hardware']['disk']['folders']['beta'] }}</span> 
-                <span class="dx-v2-sys-dash-dot-separator">·</span> 
-                <span class="danger-color">PROD: {{ $metrics['hardware']['disk']['folders']['prod'] }}</span>
+                BETA: {{ $metrics['hardware']['disk']['folders']['beta'] }} <span class="dx-v2-sys-dash-dot-separator">·</span> PROD: {{ $metrics['hardware']['disk']['folders']['prod'] }}
             </div>
         </div>
 
