@@ -83,7 +83,7 @@
             @if(Auth::user() && Auth::user()->hasRole('admin'))
             <div class="sidebar-section">
                 <div class="sidebar-heading">
-                    Portal <span class="badge {{ config('app.env') === 'production' ? 'badge-danger' : 'badge-warning' }}">{{ config('app.env') === 'production' ? 'PRODUCCIÓN' : 'BETA' }}</span>
+                    <span class="badge {{ config('app.env') === 'production' ? 'badge-danger' : 'badge-warning' }}">{{ config('app.env') === 'production' ? 'PRODUCCIÓN' : 'BETA' }}</span>
                 </div>
             </div>
             @endif
