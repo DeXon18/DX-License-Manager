@@ -1,13 +1,13 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-26 09:15  
-> Sesión en: Indeterminado  
+> Última actualización: 2026-05-27 16:15  
+> Sesión en: indeterminado  
 > Rama activa: dev
 
 ---
 
 ## Estado General
 
-**Fase actual:** Fase 30 — Security & Compliance Corporativo + Renovar Contratos ✅ COMPLETADA Y INTEGRADA  
+**Fase actual:** Mantenimiento y Ajustes UI NOC Pro  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,34 +15,32 @@
 
 ## Qué se hizo en esta sesión
 
-1. **Evaluación y Verificación**: Comprobado que la rama `feature/ai-routing-hub` estaba limpia, sin rutas temporales en `routes/web.php` y con logs de contenedores 100% saludables.
-2. **Ordenación Interactiva del Catálogo**: Añadida capacidad interactiva instantánea en frontend (JS nativo) para ordenar las columnas del catálogo de modelos (Estado, Modelo, OpenRouter ID, Tipo, Cuota Semanal, Precio) sin perder el estado reactivo de Alpine.js en la UI NOC Pro.
-3. **Fusión a dev**: Realizada la fusión fast-forward de la rama `feature/ai-routing-hub` a la rama `dev` de forma exitosa local y remota en `origin/dev`.
-4. **Limpieza de ramas**: Borrada la rama local de feature tras el merge para mantener la higiene de Git.
-5. **Documentación del Agente**: Actualizados `.agent/last_brain` y `.agent/memory/ACTIVE_CONTEXT.md` al día, y rotado el historial de estados cerebrales para mantener únicamente los últimos 5 archivos.
+1. **Dashboard UI Refactoring**: Se integraron los módulos del sistema (Docker, Backups, Auditoría, IA) en un grid compacto estilo `Services Matrix` idéntico a OpenRouter Core.
+2. **Javascript Navigation**: Reemplazados los `<a href="">` por contenedores `<div onclick="">` con estilo `.clickable` en el panel de control del sistema, solucionando errores de visualización de enlaces heredados (línea morada no deseada).
+3. **Métricas de Almacenamiento**: Desplegado en dos columnas divididas para evitar colisión de texto entre variables de Beta y Producción.
+4. Todo el código testeado y mergeado desde `dev` hacia `main` (`portal.dxpro.es`).
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-1. **Recuperar prioridades y Backlog**: Revisar el backlog general para recibir indicaciones sobre el siguiente bloque o fase prioritaria a implementar (por ejemplo, perfiles de administración o integraciones adicionales).
+Revisar BACKLOG o consultar a Oskar las nuevas directrices/prioridades del proyecto. Todo ha quedado funcional, verificado y mergeado a la rama principal (main).
 
 ### Tareas siguientes
-1. Esperar confirmación del desarrollador para abrir la siguiente rama en base a los requerimientos de negocio.
+1. Esperar nuevas instrucciones.
 
 ---
 
 ## Contexto técnico importante
 
-- La ordenación del catálogo se hace por frontend mapeando valores numéricos limpios a atributos `data-*` (`data-active`, `data-usage`, `data-price`, etc.) de las filas, lo que garantiza velocidad de render instantánea y robustez total.
-- El repositorio Git quedó al día en la rama `dev` con todo pusheado.
+- Arquitectura de Docker: Tanto el stack Beta como Prod están montando el directorio actual local (`./backend`) en lugar de ramas clonadas separadas en servidor, lo que implica que el servidor refleja instantáneamente cualquier checkout y commit realizado en Windows para ambas webs. El desarrollador tiene este conocimiento mapeado.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-Ninguno.
+Ninguno
 
 ---
 
@@ -63,6 +61,9 @@ Ninguno.
 # Arrancar beta si está down
 docker compose --project-directory . -f infra/docker-compose.beta.yml up -d
 
+# Entrar al contenedor PHP
+docker exec -it dx-php-beta sh
+
 # Ver logs en tiempo real
-docker compose --project-directory . -f infra/docker-compose.beta.yml logs -f php-fpm-beta
+docker compose --project-directory . -f infra/docker-compose.beta.yml logs -f nginx-beta
 ```
