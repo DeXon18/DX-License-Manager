@@ -80,6 +80,14 @@
 
     <div class="layout">
         <aside class="sidebar" x-show="sidebarOpen" x-transition>
+            @if(Auth::user() && Auth::user()->hasRole('admin'))
+            <div class="sidebar-section">
+                <div class="sidebar-heading">
+                    Portal <span class="badge {{ config('app.env') === 'production' ? 'badge-danger' : 'badge-warning' }}">{{ config('app.env') === 'production' ? 'PRODUCCIÓN' : 'BETA' }}</span>
+                </div>
+            </div>
+            @endif
+
             <div class="sidebar-section">
                 <div class="sidebar-heading">Mi Cuenta</div>
                 <a class="sidebar-item {{ request()->routeIs('profile.*') ? 'active' : '' }}" href="{{ route('profile.index') }}">
