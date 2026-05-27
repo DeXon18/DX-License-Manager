@@ -1,6 +1,15 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-27 16:10] — Integración de Módulos (Services Matrix) & Fix UI ✅
+
+### Added
+- **Services Matrix Dashboard**: Refactorizado el panel de módulos de administración (`admin/system/dashboard`) eliminando tarjetas monolíticas e integrando un layout compacto e industrial estilo "Services Matrix" idéntico al de OpenRouter Core.
+- **Javascript Navigation**: Reemplazadas etiquetas `<a>` de módulos por contenedores `<div>` con manejador `onclick` para anular por completo decoraciones moradas y subrayados heredados del navegador.
+- **Layout de Storage**: Modificado el diseño del indicador de almacenamiento de infraestructura (Beta/Prod) para mostrarlos en dos columnas aisladas en lugar de una línea contigua, mejorando la legibilidad.
+
+---
+
 ## [2026-05-25 16:55] — Centralización de OpenRouter & Telemetría de Cuotas Semanales ✅
 
 ### Added
