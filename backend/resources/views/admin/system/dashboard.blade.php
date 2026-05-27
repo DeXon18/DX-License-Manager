@@ -253,6 +253,7 @@
                             <div class="dx-v2-sys-dash-service-text-box">
                                 <div class="dx-v2-sys-dash-service-title-row">
                                     <span class="dx-v2-sys-dash-service-label">Docker Monitor</span>
+                                    <div class="dx-v2-sys-dash-service-status-dot online"></div>
                                 </div>
                                 <div class="dx-v2-sys-dash-service-msg">Salud de contenedores</div>
                                 <div class="dx-v2-sys-dash-service-details-mono">Telemetría de CPU/RAM</div>
@@ -267,6 +268,7 @@
                             <div class="dx-v2-sys-dash-service-text-box">
                                 <div class="dx-v2-sys-dash-service-title-row">
                                     <span class="dx-v2-sys-dash-service-label">Gestión de Backups</span>
+                                    <div class="dx-v2-sys-dash-service-status-dot online"></div>
                                 </div>
                                 <div class="dx-v2-sys-dash-service-msg">Historial completo</div>
                                 <div class="dx-v2-sys-dash-service-details-mono">Descargas y espacio</div>
@@ -281,6 +283,7 @@
                             <div class="dx-v2-sys-dash-service-text-box">
                                 <div class="dx-v2-sys-dash-service-title-row">
                                     <span class="dx-v2-sys-dash-service-label">Auditoría y Logs</span>
+                                    <div class="dx-v2-sys-dash-service-status-dot online"></div>
                                 </div>
                                 <div class="dx-v2-sys-dash-service-msg">Trazabilidad total</div>
                                 <div class="dx-v2-sys-dash-service-details-mono">Filtros por IP y acción</div>
@@ -295,6 +298,7 @@
                             <div class="dx-v2-sys-dash-service-text-box">
                                 <div class="dx-v2-sys-dash-service-title-row">
                                     <span class="dx-v2-sys-dash-service-label">Costes IA</span>
+                                    <div class="dx-v2-sys-dash-service-status-dot online"></div>
                                 </div>
                                 <div class="dx-v2-sys-dash-service-msg">Monitorización de tokens</div>
                                 <div class="dx-v2-sys-dash-service-details-mono">Telemetría de motores</div>
@@ -309,6 +313,7 @@
                             <div class="dx-v2-sys-dash-service-text-box">
                                 <div class="dx-v2-sys-dash-service-title-row">
                                     <span class="dx-v2-sys-dash-service-label">AI Routing Hub</span>
+                                    <div class="dx-v2-sys-dash-service-status-dot online"></div>
                                 </div>
                                 <div class="dx-v2-sys-dash-service-msg">Gestor de OpenRouter</div>
                                 <div class="dx-v2-sys-dash-service-details-mono">Asignación y fallback</div>
