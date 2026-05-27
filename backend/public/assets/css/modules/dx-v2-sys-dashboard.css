@@ -344,6 +344,10 @@
   color: inherit !important;
 }
 
+.dx-v2-sys-dash-service-item.clickable {
+  cursor: pointer !important;
+}
+
 [data-theme="light"] .dx-v2-sys-dash-service-item {
   background: rgba(0, 0, 0, 0.01) !important;
 }
