@@ -95,11 +95,11 @@ class BackupController extends Controller
             // IMPORTANTE: Se asumen variables de entorno del contenedor
             $cmd = sprintf(
                 'mariadb -h %s -u %s -p%s %s < %s',
-                config('database.connections.mysql.host'),
-                config('database.connections.mysql.username'),
-                config('database.connections.mysql.password'),
-                config('database.connections.mysql.database'),
-                $path
+                escapeshellarg(config('database.connections.mysql.host')),
+                escapeshellarg(config('database.connections.mysql.username')),
+                escapeshellarg(config('database.connections.mysql.password')),
+                escapeshellarg(config('database.connections.mysql.database')),
+                escapeshellarg($path)
             );
 
             // Ejecutar via shell_exec o Process
