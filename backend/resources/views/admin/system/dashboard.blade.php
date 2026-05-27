@@ -76,20 +76,15 @@
                 <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12H2M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11zM6 16h.01M10 16h.01"/></svg>
             </div>
             <div class="dx-v2-sys-dash-stat-card-title">
-                DISK STORAGE
+                STORAGE (BETA + PROD)
             </div>
-            <div class="dx-v2-sys-dash-stat-card-value {{ $metrics['hardware']['disk']['percent'] > 90 ? 'danger-status' : '' }}">
-                {{ $metrics['hardware']['disk']['percent'] }}<span class="percent-unit">%</span>
+            <div class="dx-v2-sys-dash-stat-card-value">
+                {{ $metrics['hardware']['disk']['folders']['total'] }}
             </div>
-            <div class="dx-v2-sys-dash-stat-card-progress-footer">
-                <div class="dx-v2-sys-dash-stat-card-progress-bar">
-                    <div class="dx-v2-sys-dash-stat-card-progress-bar-inner" style="width: {{ $metrics['hardware']['disk']['percent'] }}%;"></div>
-                </div>
-                <div class="dx-v2-sys-dash-stat-card-progress-text">
-                    <span>{{ $metrics['hardware']['disk']['used'] }}</span>
-                    <span class="separator">/</span>
-                    <span>{{ $metrics['hardware']['disk']['total'] }}</span>
-                </div>
+            <div class="dx-v2-sys-dash-stat-card-meta-mono">
+                <span class="warning-color">BETA: {{ $metrics['hardware']['disk']['folders']['beta'] }}</span> 
+                <span class="dx-v2-sys-dash-dot-separator">·</span> 
+                <span class="danger-color">PROD: {{ $metrics['hardware']['disk']['folders']['prod'] }}</span>
             </div>
         </div>
 
