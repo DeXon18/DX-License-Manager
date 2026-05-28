@@ -17,7 +17,7 @@
 
 <!-- SIEMENS -->
 @if(isset($features['Siemens']))
-<div class="dx-v2-tools-vendor-section">
+<div class="dx-v2-tools-vendor-section" id="tour-siemens-tools">
     <div class="dx-v2-tools-vendor-header">
         <span class="dx-v2-tools-vendor-label siemens">Siemens PLM</span>
         <span class="dx-v2-tools-vendor-desc">Ecosistema de Digital Industries Software y Gestión PLM</span>
@@ -75,7 +75,7 @@
 </div>
 
 <!-- DOCUMENTOS -->
-<div class="dx-v2-tools-vendor-section">
+<div class="dx-v2-tools-vendor-section" id="tour-docs-tools">
     <div class="dx-v2-tools-vendor-header">
         <span class="dx-v2-tools-vendor-label docs">Documentos · Recursos</span>
         <span class="dx-v2-tools-vendor-desc">Documentación oficial y acceso a portales externos</span>
@@ -123,7 +123,7 @@
 
 <!-- MOLDEX3D -->
 @if(isset($features['Moldex3D']))
-<div class="dx-v2-tools-vendor-section">
+<div class="dx-v2-tools-vendor-section" id="tour-moldex-tools">
     <div class="dx-v2-tools-vendor-header">
         <span class="dx-v2-tools-vendor-label moldex">Moldex<span class="accent">3D</span></span>
         <span class="dx-v2-tools-vendor-desc">Simulación Predictiva para el Diseño y Fabricación de Plásticos</span>
@@ -174,3 +174,38 @@
 @endif
 
 @endsection
+
+@push('scripts')
+<script>
+    // Tour Contextual específico para el Portal de Herramientas
+    window.pageTourSteps = [
+        {
+            element: '#tour-siemens-tools',
+            popover: {
+                title: 'Ecosistema Siemens PLM',
+                description: 'Aquí encontrarás los motores de auditoría basados en IA para archivos .lic de NX, STAR-CCM+ y HEEDS.',
+                side: 'bottom',
+                align: 'start'
+            }
+        },
+        {
+            element: '#tour-docs-tools',
+            popover: {
+                title: 'Documentos Oficiales',
+                description: 'Genera Certificados de Cese (COD) trazables en PDF o accede a los portales externos de recursos.',
+                side: 'top',
+                align: 'start'
+            }
+        },
+        {
+            element: '#tour-moldex-tools',
+            popover: {
+                title: 'Ecosistema Moldex3D',
+                description: 'Parsers especializados para extraer y auditar información de licencias desde archivos .mac de Moldex3D.',
+                side: 'top',
+                align: 'start'
+            }
+        }
+    ];
+</script>
+@endpush
