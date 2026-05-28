@@ -238,3 +238,38 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    // Tour Contextual específico para el Dashboard
+    window.pageTourSteps = [
+        {
+            element: '.stat-grid',
+            popover: {
+                title: 'Métricas de Inventario',
+                description: 'Resumen en tiempo real del estado global de licencias (vencidas, próximas a caducar y activas).',
+                side: 'bottom',
+                align: 'start'
+            }
+        },
+        {
+            element: '.quick-actions',
+            popover: {
+                title: 'Acciones Rápidas',
+                description: 'Accesos directos a las herramientas más utilizadas, como el planificador de renovaciones o la auditoría por IA.',
+                side: 'left',
+                align: 'start'
+            }
+        },
+        {
+            element: '.table',
+            popover: {
+                title: 'Últimas Actualizaciones',
+                description: 'Historial reciente de las modificaciones realizadas en las licencias del sistema.',
+                side: 'top',
+                align: 'start'
+            }
+        }
+    ];
+</script>
+@endpush
