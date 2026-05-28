@@ -34,6 +34,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Métricas de Clientes en Directorio ✅
+- **Completada:** 2026-05-28
+- **Rama:** `feature/client-metrics`
+- **Resumen:** Implementación de tarjetas de estadísticas estilo NOC Pro en la cabecera de la vista de clientes. Se integran conteos reales de clientes, contratos activos y desgloses de licencias activas separadas por fabricante (Siemens PLM y Moldex3D) respetando sus colores de marca corporativos.
+- **PR:** Pendiente
+
 ### Corrección Timeout IA y Cron Prod ✅
 - **Completada:** 2026-05-28
 - **Rama:** `fix/ai-timeout`
