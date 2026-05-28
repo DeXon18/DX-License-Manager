@@ -47,11 +47,15 @@ class DashboardController extends Controller
             ->active()
             ->whereNotNull('expiration_date')
             ->whereDate('expiration_date', '<=', $now->copy()->addDays(90))
-            ->selectRaw('daemon_id, MIN(expiration_date) as expiration_date')
+            ->selectRaw('daemon_id, MIN(expiration_date) as min_expiration_date')
             ->groupBy('daemon_id')
-            ->orderBy('expiration_date', 'asc')
+            ->orderBy('min_expiration_date', 'asc')
             ->limit(15)
-            ->get();
+            ->get()
+            ->map(function ($item) {
+                $item->expiration_date = $item->min_expiration_date ? Carbon::parse($item->min_expiration_date) : null;
+                return $item;
+            });
 
         // 5. Renovaciones del mes actual (para el contador de cara al usuario)
         $monthStart = Carbon::now()->startOfMonth();
