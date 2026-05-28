@@ -200,6 +200,38 @@
     
     <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
     <script>
+        // Definición por defecto del tour (Navegación general)
+        // Las vistas individuales pueden sobrescribir window.pageTourSteps antes de que cargue el DOM
+        window.pageTourSteps = window.pageTourSteps || [
+            {
+                element: '.nav-links',
+                popover: {
+                    title: 'Navegación Principal',
+                    description: 'Desde aquí puedes acceder rápidamente a clientes, herramientas y configuración de la plataforma.',
+                    side: 'bottom',
+                    align: 'start'
+                }
+            },
+            {
+                element: '.sidebar',
+                popover: {
+                    title: 'Panel Lateral',
+                    description: 'Tu menú principal de navegación con todas las funcionalidades de gestión de licencias, reportes y telemetría.',
+                    side: 'right',
+                    align: 'start'
+                }
+            },
+            {
+                element: '#start-tour-btn',
+                popover: {
+                    title: 'Ayuda Contextual',
+                    description: 'El contenido de este botón cambia según la pantalla en la que estés. Púlsalo siempre que tengas dudas.',
+                    side: 'bottom',
+                    align: 'end'
+                }
+            }
+        ];
+
         document.addEventListener('DOMContentLoaded', () => {
             const driver = window.driver.js.driver;
             
@@ -212,35 +244,7 @@
                 nextBtnText: 'Siguiente',
                 prevBtnText: 'Anterior',
                 progressText: '@{{current}} de @{{total}}',
-                steps: [
-                    {
-                        element: '.nav-links',
-                        popover: {
-                            title: 'Navegación Principal',
-                            description: 'Desde aquí puedes acceder rápidamente a clientes, herramientas y configuración de la plataforma.',
-                            side: 'bottom',
-                            align: 'start'
-                        }
-                    },
-                    {
-                        element: '.sidebar',
-                        popover: {
-                            title: 'Panel Lateral',
-                            description: 'Tu menú principal de navegación con todas las funcionalidades de gestión de licencias, reportes y telemetría.',
-                            side: 'right',
-                            align: 'start'
-                        }
-                    },
-                    {
-                        element: '#start-tour-btn',
-                        popover: {
-                            title: 'Ayuda y Capacitación',
-                            description: 'Si necesitas refrescar cómo funciona la plataforma en el futuro, solo tienes que pulsar este botón.',
-                            side: 'bottom',
-                            align: 'end'
-                        }
-                    }
-                ],
+                steps: window.pageTourSteps,
                 onDestroyStarted: () => {
                     if (!driverObj.hasNextStep() || confirm("¿Seguro que quieres salir del tour?")) {
                         driverObj.destroy();
