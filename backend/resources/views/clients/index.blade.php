@@ -103,13 +103,13 @@
             <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10M9 12l2 2 4-4"/></svg>
         </div>
         <div class="dx-v2-sys-dash-stat-card-title">
-            LICENCIAS ACTIVAS
+            SIEMENS PLM
         </div>
         <div class="dx-v2-sys-dash-stat-card-value success-status">
             {{ $globalMetrics['siemens_licenses'] }}
         </div>
-        <div class="dx-v2-sys-dash-stat-card-meta-mono" style="border-top: none; text-align: center; color: #00d8b6 !important; font-weight: 700 !important; font-size: 12px !important; letter-spacing: 1px; width: 100%;">
-            SIEMENS PLM
+        <div class="dx-v2-sys-dash-stat-card-meta-mono">
+            Licencias Activas
         </div>
     </div>
 
@@ -119,13 +119,13 @@
             <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
         </div>
         <div class="dx-v2-sys-dash-stat-card-title">
-            LICENCIAS ACTIVAS
+            MOLDEX3D
         </div>
         <div class="dx-v2-sys-dash-stat-card-value" style="color: var(--dx-v2-accent, #6366f1) !important;">
             {{ $globalMetrics['moldex_licenses'] }}
         </div>
-        <div class="dx-v2-sys-dash-stat-card-meta-mono" style="border-top: none; text-align: center; color: #ff5c5c !important; font-weight: 700 !important; font-size: 12px !important; letter-spacing: 1px; width: 100%;">
-            MOLDEX3D
+        <div class="dx-v2-sys-dash-stat-card-meta-mono">
+            Licencias Activas
         </div>
     </div>
 </div>
