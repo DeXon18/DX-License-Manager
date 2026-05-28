@@ -4,31 +4,45 @@
 
 /* Fondo oscuro y difuminado (Glassmorphism) */
 .driver-popover {
-    background-color: var(--color-surface) !important;
-    border: 1px solid var(--color-border) !important;
-    border-radius: 8px !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
-    color: var(--color-text) !important;
-    font-family: inherit !important;
-    padding: 1.25rem !important;
+    background-color: var(--dx-v2-surface) !important;
+    border: 1px solid var(--dx-v2-border) !important;
+    border-radius: var(--dx-v2-rounded-lg) !important;
+    box-shadow: var(--dx-v2-shadow-3) !important;
+    color: var(--dx-v2-primary) !important;
+    font-family: var(--dx-v2-font-sans) !important;
+    padding: var(--dx-v2-spacing-5) !important;
 }
 
 /* Título */
 .driver-popover-title {
     font-size: 1.1rem !important;
     font-weight: 600 !important;
-    color: var(--color-text) !important;
-    margin-bottom: 0.5rem !important;
-    border-bottom: 1px solid var(--color-border) !important;
-    padding-bottom: 0.5rem !important;
+    color: var(--dx-v2-primary) !important;
+    margin-bottom: var(--dx-v2-spacing-2) !important;
+    border-bottom: 1px solid var(--dx-v2-border) !important;
+    padding-bottom: var(--dx-v2-spacing-2) !important;
+    padding-right: var(--dx-v2-spacing-6) !important; /* Espacio para la X */
 }
 
 /* Descripción */
 .driver-popover-description {
     font-size: 0.95rem !important;
-    color: var(--color-text-muted) !important;
+    color: var(--dx-v2-muted) !important;
     line-height: 1.5 !important;
-    margin-bottom: 1rem !important;
+    margin-bottom: var(--dx-v2-spacing-4) !important;
+}
+
+/* Botón de Cerrar (X) */
+.driver-popover-close-btn {
+    color: var(--dx-v2-muted) !important;
+    top: var(--dx-v2-spacing-3) !important;
+    right: var(--dx-v2-spacing-3) !important;
+    transition: color 0.2s ease !important;
+}
+
+.driver-popover-close-btn:hover {
+    color: var(--dx-v2-primary) !important;
+    background: transparent !important;
 }
 
 /* Pie del popover (Botones) */
@@ -36,50 +50,52 @@
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
-    margin-top: 1rem !important;
+    margin-top: var(--dx-v2-spacing-4) !important;
 }
 
 /* Progreso */
 .driver-popover-progress-text {
     font-size: 0.85rem !important;
-    color: var(--color-text-muted) !important;
+    color: var(--dx-v2-muted) !important;
 }
 
-/* Botones genéricos */
+/* Botones genéricos (Anterior) */
 .driver-popover-footer button {
-    background-color: var(--color-background) !important;
-    color: var(--color-text) !important;
-    border: 1px solid var(--color-border) !important;
-    border-radius: 4px !important;
-    padding: 0.4rem 0.8rem !important;
+    background-color: var(--dx-v2-bg) !important;
+    color: var(--dx-v2-primary) !important;
+    border: 1px solid var(--dx-v2-border) !important;
+    border-radius: var(--dx-v2-rounded-sm) !important;
+    padding: var(--dx-v2-spacing-2) var(--dx-v2-spacing-3) !important;
     font-size: 0.85rem !important;
+    font-family: var(--dx-v2-font-sans) !important;
     cursor: pointer !important;
     transition: all 0.2s ease !important;
     text-shadow: none !important;
 }
 
 .driver-popover-footer button:hover {
-    background-color: var(--color-border) !important;
+    background-color: var(--dx-v2-raised) !important;
 }
 
 /* Botón Siguiente / Hecho (Destacado) */
 .driver-popover-footer .driver-popover-next-btn {
-    background-color: var(--color-accent) !important;
-    color: #fff !important;
-    border-color: var(--color-accent) !important;
+    background-color: var(--dx-v2-accent) !important;
+    color: #ffffff !important;
+    border-color: var(--dx-v2-accent) !important;
     font-weight: 600 !important;
 }
 
 .driver-popover-footer .driver-popover-next-btn:hover {
-    filter: brightness(1.2) !important;
+    background-color: var(--dx-v2-accent-hover) !important;
+    border-color: var(--dx-v2-accent-hover) !important;
 }
 
 /* Flechas direccionales */
 .driver-popover-arrow {
-    border-color: var(--color-surface) !important;
+    border-color: var(--dx-v2-surface) !important;
 }
 
-/* Ocultar sombras blancas por defecto en SVG */
+/* Ocultar sombras blancas por defecto en SVG Overlay */
 div#driver-page-overlay path {
     fill: rgba(0, 0, 0, 0.75) !important;
 }
