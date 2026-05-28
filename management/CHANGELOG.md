@@ -1,6 +1,16 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-28] — Fix Timeout IA y Cron Prod ✅
+
+### Fixed & Added
+- Aumentado timeout de OpenRouter a 30s en `ClientAiNormalizationService`.
+- Implementado fallback automático nativo (hacia Gemini) ante errores cURL 28 (timeout) y no solo para HTTP 429.
+- Cambiado HTTP-Referer en API de OpenRouter por `config('app.url')`.
+- Añadido y configurado tarea cron en el servidor de producción (LXC 600) para ejecutar `backup-db.sh prod system` todos los días a las 03:00.
+
+---
+
 ## [2026-05-27 16:10] — Integración de Módulos (Services Matrix) & Fix UI ✅
 
 ### Added

@@ -1,31 +1,33 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-27 16:15  
-> Sesión en: indeterminado  
+> Última actualización: 2026-05-28 08:30  
+> Sesión en: local  
 > Rama activa: dev
 
 ---
 
 ## Estado General
 
-**Fase actual:** Mantenimiento y Ajustes UI NOC Pro  
+**Fase actual:** Mantenimiento y Fixes en Producción (IA, Cron, DB)
 **Stack beta:** ✅ running  
-**Stack prod:** ✅ running  
+**Stack prod:** ✅ running (Recién recreada - DB limpia)
 
 ---
 
 ## Qué se hizo en esta sesión
 
-1. **Dashboard UI Refactoring**: Se integraron los módulos del sistema (Docker, Backups, Auditoría, IA) en un grid compacto estilo `Services Matrix` idéntico a OpenRouter Core.
-2. **Javascript Navigation**: Reemplazados los `<a href="">` por contenedores `<div onclick="">` con estilo `.clickable` en el panel de control del sistema, solucionando errores de visualización de enlaces heredados (línea morada no deseada).
-3. **Métricas de Almacenamiento**: Desplegado en dos columnas divididas para evitar colisión de texto entre variables de Beta y Producción.
-4. Todo el código testeado y mergeado desde `dev` hacia `main` (`portal.dxpro.es`).
+1. **Fix Timeout IA**: Aumentado timeout de OpenRouter a 30s en `ClientAiNormalizationService`.
+2. **Fallback IA Robustecido**: Implementado fallback automático nativo (hacia Gemini) ante errores `cURL 28` (timeout) y no solo para HTTP 429.
+3. **HTTP-Referer IA**: Cambiado `HTTP-Referer` hardcodeado en peticiones de OpenRouter por `config('app.url')`.
+4. **Hard Reset de Producción**: Recreada base de datos de producción desde cero (`migrate:fresh --seed --force`) para corregir inconsistencias (previo backup manual).
+5. **Backups Producción Automatizados**: Añadida y configurada tarea cron en el servidor de producción (LXC 600) para ejecutar `backup-db.sh prod system` todos los días a las 03:00.
+6. Fusionado `fix/ai-timeout` a `dev`.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Revisar BACKLOG o consultar a Oskar las nuevas directrices/prioridades del proyecto. Todo ha quedado funcional, verificado y mergeado a la rama principal (main).
+Confirmar despliegue de los cambios de `dev` a `main` (producción).
 
 ### Tareas siguientes
 1. Esperar nuevas instrucciones.
