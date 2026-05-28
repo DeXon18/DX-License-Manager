@@ -68,9 +68,11 @@ EOT;
             $parsed = $this->callOpenRouterApi($openrouterKey, $modelId, $prompt);
             if ($parsed) return $parsed;
         } catch (\Exception $e) {
-            if ($e->getCode() == 429) {
+            $isTimeout = str_contains($e->getMessage(), 'timed out') || str_contains($e->getMessage(), 'cURL error 28') || str_contains($e->getMessage(), 'Connection');
+            if ($e->getCode() == 429 || $isTimeout) {
                 if ($route && $route->fallbackModel) {
-                    Log::warning("ClientAiNormalizationService: 429 Rate Limit con {$modelId}, saltando a fallback {$route->fallbackModel->openrouter_id}");
+                    $reason = $isTimeout ? 'Timeout' : '429 Rate Limit';
+                    Log::warning("ClientAiNormalizationService: {$reason} con {$modelId}, saltando a fallback {$route->fallbackModel->openrouter_id}");
                     try {
                         $parsed = $this->callOpenRouterApi($openrouterKey, $route->fallbackModel->openrouter_id, $prompt);
                         if ($parsed) {
@@ -81,7 +83,7 @@ EOT;
                         Log::error("ClientAiNormalizationService: Fallback falló: " . $fallbackE->getMessage());
                     }
                 } else {
-                    Log::error("ClientAiNormalizationService: 429 Rate Limit y no hay fallback configurado.");
+                    Log::error("ClientAiNormalizationService: Error/Timeout y no hay fallback configurado.");
                 }
             } else {
                 Log::error("ClientAiNormalizationService: Error llamando a OpenRouter: " . $e->getMessage());
@@ -93,11 +95,11 @@ EOT;
 
     private function callOpenRouterApi(string $key, string $modelId, string $prompt): ?array
     {
-        $response = Http::timeout(15)
+        $response = Http::timeout(30)
             ->withHeaders([
                 'Authorization' => "Bearer {$key}",
                 'Content-Type' => 'application/json',
-                'HTTP-Referer' => 'https://beta.dxpro.es',
+                'HTTP-Referer' => config('app.url'),
                 'X-Title' => 'DX License Manager'
             ])
             ->post('https://openrouter.ai/api/v1/chat/completions', [

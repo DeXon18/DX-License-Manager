@@ -94,3 +94,5 @@ El agente debe revisar este archivo al inicio de cada sesión.
 
 ---
 _Firmado por: **Antigravity (DX Agent)** 🦾_
+- [2026-05-28] ERROR: Scripts de prueba (ej. tinker.php) creados durante diagnóstico quedaron olvidados en el proyecto. → REGLA: Eliminar siempre cualquier script temporal o de diagnóstico en el mismo checklist/paso en el que se verifica, ANTES de dar la tarea por concluida.
+- [2026-05-28] ERROR: Trabajo directo en rama dev sin crear feature branch. → REGLA: Jamás trabajar en dev. Ejecutar siempre /switch o crear rama (feature/ o fix/) antes de empezar a programar.
