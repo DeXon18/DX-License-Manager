@@ -190,6 +190,17 @@ docker exec dx-php-beta php artisan migrate:fresh --seed
 
 ---
 
+### Restauración de Backup — "ERROR 2026 (HY000): TLS/SSL error: SSL is required"
+
+**Causa:** El cliente de MariaDB/MySQL exige una conexión cifrada por defecto, pero los contenedores internos en Docker no usan SSL interno.
+
+**Fix:** Al ejecutar cualquier comando de `mariadb` o al usar el botón de Restaurar, es imprescindible inyectar el parámetro `--skip-ssl`:
+```bash
+mariadb --skip-ssl -h mariadb-beta -u dxportal -p... dxportal_beta < backup.sql
+```
+
+---
+
 ## Errores de GitHub Actions
 
 ### Deploy falla — "Connection refused" al hacer SSH

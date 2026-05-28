@@ -91,10 +91,9 @@ class BackupController extends Controller
                 return response()->json(['success' => false, 'message' => 'Archivo no encontrado.'], 404);
             }
 
-            // Comando de restauración
-            // IMPORTANTE: Se asumen variables de entorno del contenedor
+            // IMPORTANTE: Se asumen variables de entorno del contenedor y se desactiva SSL interno
             $cmd = sprintf(
-                'mariadb -h %s -u %s -p%s %s < %s',
+                'mariadb --skip-ssl -h %s -u %s -p%s %s < %s',
                 escapeshellarg(config('database.connections.mysql.host')),
                 escapeshellarg(config('database.connections.mysql.username')),
                 escapeshellarg(config('database.connections.mysql.password')),
