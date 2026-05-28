@@ -99,7 +99,7 @@ EOT;
             ->withHeaders([
                 'Authorization' => "Bearer {$key}",
                 'Content-Type' => 'application/json',
-                'HTTP-Referer' => 'https://beta.dxpro.es',
+                'HTTP-Referer' => config('app.url'),
                 'X-Title' => 'DX License Manager'
             ])
             ->post('https://openrouter.ai/api/v1/chat/completions', [
