@@ -34,6 +34,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Corrección Timeout IA y Cron Prod ✅
+- **Completada:** 2026-05-28
+- **Rama:** `fix/ai-timeout`
+- **Resumen:** Aumento de timeout a 30s en OpenRouter y activación de fallback por `cURL error 28` en subidas de CSV. Reparado referer hardcodeado en peticiones IA y añadido cron diario para copias de seguridad en Producción.
+- **PR:** Pendiente de merge a `dev`
+
 ### Fase 30 — Security & Compliance Corporativo + Renovar Contratos ✅
 - **Completada:** 2026-05-25
 - **Rama:** `feature/contracts-chatbot-updates`
