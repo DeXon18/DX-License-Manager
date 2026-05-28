@@ -73,7 +73,7 @@ class NormalizationController extends Controller
 
             if ($isSuspicion || $isNew) {
                 if ($isSuspicion) {
-                    preg_match('/El cliente \'(.*)\' se parece un .* a \'(.*)\'/i', $warning, $matches);
+                    preg_match('/El cliente \'([^\']+)\' se parece un .*? a \'([^\']+)\'/i', $warning, $matches);
                     $detectedName = $matches[1] ?? 'Error al extraer';
                     $suggestedName = $matches[2] ?? null;
                 } elseif ($isNew) {
