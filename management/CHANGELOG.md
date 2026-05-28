@@ -1,6 +1,14 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-28 10:50] — Fase 32: Auditoría y Optimización N+1 ✅
+
+### Added
+- **Rendimiento**: Habilitado `Model::preventLazyLoading(!app()->isProduction())` en `AppServiceProvider` para proteger la aplicación de consultas N+1 en fase de desarrollo.
+
+### Fixed
+- **Auditoría de Queries**: Se corrió un análisis de lazy loading en las vistas principales (Dashboard, Clientes, Renewal Planner, Reports) confirmando que el uso intensivo de `$client->load()` y `withCount` ya previene cuellos de botella. La aplicación actual está 100% limpia de N+1.
+
 ## [2026-05-28 10:20] — Fase 31: Validación de Testing Automatizado ✅
 
 ### Added

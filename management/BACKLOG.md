@@ -34,6 +34,11 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Fase 32 — Optimización N+1 Queries ✅
+- **Completada:** 2026-05-28
+- **Rama:** `feature/phase32-n1-optimization`
+- **Resumen:** Implementación estricta de `preventLazyLoading` en el ORM. Auditoría en `DashboardController`, `ClientController` y `RenewalPlannerController` que confirmó el correcto eager loading de todas las relaciones.
+
 ### Fase 31 — Testing Automatizado & Validación SQLite ✅
 - **Completada:** 2026-05-28
 - **Rama:** `feature/phase31-automated-testing` (Evaluación)
