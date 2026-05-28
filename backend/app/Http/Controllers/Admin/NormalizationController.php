@@ -69,18 +69,11 @@ class NormalizationController extends Controller
         $parsed = [];
         foreach ($warnings as $warning) {
             $isSuspicion = str_contains(strtolower($warning), 'sospecha') || str_contains(strtolower($warning), 'parece');
-            $isNew = str_contains(strtolower($warning), 'nuevo cliente');
 
-            if ($isSuspicion || $isNew) {
-                if ($isSuspicion) {
-                    preg_match('/El cliente \'(.*)\' se parece un .* a \'(.*)\'/i', $warning, $matches);
-                    $detectedName = $matches[1] ?? 'Error al extraer';
-                    $suggestedName = $matches[2] ?? null;
-                } elseif ($isNew) {
-                    preg_match('/registrado: (.*)/i', $warning, $matches);
-                    $detectedName = $matches[1] ?? 'Nuevo Cliente';
-                    $suggestedName = null;
-                }
+            if ($isSuspicion) {
+                preg_match('/El cliente \'([^\']+)\' se parece un .*? a \'([^\']+)\'/i', $warning, $matches);
+                $detectedName = $matches[1] ?? 'Error al extraer';
+                $suggestedName = $matches[2] ?? null;
 
                 $detectedName = trim($detectedName);
 
@@ -92,7 +85,7 @@ class NormalizationController extends Controller
                     'filename' => $sourceName,
                     'source_type' => $sourceType,
                     'date' => $date,
-                    'type' => $isSuspicion ? 'suspicion' : 'new',
+                    'type' => 'suspicion',
                     'detected_name' => $detectedName,
                     'suggested_name' => $suggestedName ? trim($suggestedName) : null,
                     'full_message' => $warning
