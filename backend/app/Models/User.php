@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'role_id',
         'is_active',
+        'has_seen_tour',
     ];
 
     /**
@@ -46,6 +47,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'is_active' => 'boolean',
+            'has_seen_tour' => 'boolean',
         ];
     }
 

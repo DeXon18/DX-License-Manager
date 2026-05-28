@@ -30,6 +30,7 @@ Route::middleware(['auth.jwt'])->group(function () {
     // Perfil de Usuario
     Route::get('/perfil', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('/perfil', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/perfil/tour-seen', [ProfileController::class, 'markTourSeen'])->name('profile.tour-seen');
 
     // Planificador de Renovaciones (Fase 14)
     Route::get('/planificador', [\App\Http\Controllers\RenewalPlannerController::class, 'index'])->name('renewal-planner.index');

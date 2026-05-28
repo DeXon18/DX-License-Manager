@@ -1,0 +1,85 @@
+/* ==========================================================================
+   DRIVER.JS / TOUR ONBOARDING (ESTILO NOC PRO)
+   ========================================================================== */
+
+/* Fondo oscuro y difuminado (Glassmorphism) */
+.driver-popover {
+    background-color: var(--color-surface) !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+    color: var(--color-text) !important;
+    font-family: inherit !important;
+    padding: 1.25rem !important;
+}
+
+/* Título */
+.driver-popover-title {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    color: var(--color-text) !important;
+    margin-bottom: 0.5rem !important;
+    border-bottom: 1px solid var(--color-border) !important;
+    padding-bottom: 0.5rem !important;
+}
+
+/* Descripción */
+.driver-popover-description {
+    font-size: 0.95rem !important;
+    color: var(--color-text-muted) !important;
+    line-height: 1.5 !important;
+    margin-bottom: 1rem !important;
+}
+
+/* Pie del popover (Botones) */
+.driver-popover-footer {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-top: 1rem !important;
+}
+
+/* Progreso */
+.driver-popover-progress-text {
+    font-size: 0.85rem !important;
+    color: var(--color-text-muted) !important;
+}
+
+/* Botones genéricos */
+.driver-popover-footer button {
+    background-color: var(--color-background) !important;
+    color: var(--color-text) !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: 4px !important;
+    padding: 0.4rem 0.8rem !important;
+    font-size: 0.85rem !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    text-shadow: none !important;
+}
+
+.driver-popover-footer button:hover {
+    background-color: var(--color-border) !important;
+}
+
+/* Botón Siguiente / Hecho (Destacado) */
+.driver-popover-footer .driver-popover-next-btn {
+    background-color: var(--color-accent) !important;
+    color: #fff !important;
+    border-color: var(--color-accent) !important;
+    font-weight: 600 !important;
+}
+
+.driver-popover-footer .driver-popover-next-btn:hover {
+    filter: brightness(1.2) !important;
+}
+
+/* Flechas direccionales */
+.driver-popover-arrow {
+    border-color: var(--color-surface) !important;
+}
+
+/* Ocultar sombras blancas por defecto en SVG */
+div#driver-page-overlay path {
+    fill: rgba(0, 0, 0, 0.75) !important;
+}
