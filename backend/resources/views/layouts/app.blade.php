@@ -18,15 +18,16 @@
         }
     </script>
 
-    <!-- Fonts & Styles -->
-    <link rel="stylesheet" href="{{ asset('assets/css/dx-v2-main.css?v=' . time()) }}">
+    <!-- Librerías Externas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Fonts & Styles del Proyecto -->
+    <link rel="stylesheet" href="{{ asset('assets/css/dx-v2-main.css?v=' . time()) }}">
+    
     
     <!-- Alpine.js (Legacy mode - no build step) -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    <!-- Driver.js para Onboarding Tour -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
 
     @stack('styles')
 </head>
