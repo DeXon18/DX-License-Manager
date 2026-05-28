@@ -209,7 +209,7 @@
                 closeBtnText: 'Cerrar',
                 nextBtnText: 'Siguiente',
                 prevBtnText: 'Anterior',
-                progressText: '{{current}} de {{total}}',
+                progressText: '@{{current}} de @{{total}}',
                 steps: [
                     {
                         element: '.nav-links',
