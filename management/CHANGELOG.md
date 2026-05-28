@@ -1,3 +1,9 @@
+## [2026-05-28] ó Fase 33: Onboarding Tour (NOC Pro)
+- Implementado sistema de onboarding guiado con Driver.js.
+- AÒadido soporte para tours contextuales por p·gina mediante la inyecciÛn de window.pageTourSteps.
+- Creados recorridos guiados especÌficos para Dashboard, Directorio de Clientes, Herramientas y Planificador de Renovaciones.
+- Persistencia asÌncrona del estado del tour en la tabla users mediante AJAX.
+- IntegraciÛn visual completa usando las variables CSS nativas del sistema NOC Pro.
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
@@ -1482,3 +1488,4 @@ _Firmado por: **Antigravity (DX Agent)** ü¶æ_
   - `deploy-beta.yml`: Despliegue autom√°tico a stack beta v√≠a SSH.
   - `deploy-prod.yml`: Despliegue autom√°tico a stack prod v√≠a SSH.
 - Estructura base de carpetas y archivos de gesti√≥n (`management/`, `infra/`, etc.) subida al repositorio.
+
