@@ -15,12 +15,14 @@
 
 ## Qué se hizo en esta sesión
 
-1. **Fix Timeout IA**: Aumentado timeout de OpenRouter a 30s en `ClientAiNormalizationService`.
-2. **Fallback IA Robustecido**: Implementado fallback automático nativo (hacia Gemini) ante errores `cURL 28` (timeout) y no solo para HTTP 429.
-3. **HTTP-Referer IA**: Cambiado `HTTP-Referer` hardcodeado en peticiones de OpenRouter por `config('app.url')`.
-4. **Hard Reset de Producción**: Recreada base de datos de producción desde cero (`migrate:fresh --seed --force`) para corregir inconsistencias (previo backup manual).
-5. **Backups Producción Automatizados**: Añadida y configurada tarea cron en el servidor de producción (LXC 600) para ejecutar `backup-db.sh prod system` todos los días a las 03:00.
-6. Fusionado `fix/ai-timeout` a `dev`.
+1. **Métricas de Clientes:** Implementado un Bento Grid NOC Pro en el directorio de clientes con contadores individuales de Clientes, Contratos y desglose de inventario activo separado por Siemens y MOLDEX3D con colores corporativos.
+2. **Limpieza de repositorio:** Eliminadas 5 ramas `feature/*` huérfanas locales y 3 ramas `origin/feature/*` remotas.
+3. **Fix Timeout IA**: Aumentado timeout de OpenRouter a 30s en `ClientAiNormalizationService`.
+4. **Fallback IA Robustecido**: Implementado fallback automático nativo (hacia Gemini) ante errores `cURL 28` (timeout) y no solo para HTTP 429.
+5. **HTTP-Referer IA**: Cambiado `HTTP-Referer` hardcodeado en peticiones de OpenRouter por `config('app.url')`.
+6. **Hard Reset de Producción**: Recreada base de datos de producción desde cero (`migrate:fresh --seed --force`) para corregir inconsistencias (previo backup manual).
+7. **Backups Producción Automatizados**: Añadida y configurada tarea cron en el servidor de producción (LXC 600) para ejecutar `backup-db.sh prod system` todos los días a las 03:00.
+8. Fusionadas features `feature/client-metrics` y `fix/ai-timeout` a `dev`.
 
 ---
 
