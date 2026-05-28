@@ -34,6 +34,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Fase 31 — Testing Automatizado & Validación SQLite ✅
+- **Completada:** 2026-05-28
+- **Rama:** `feature/phase31-automated-testing` (Evaluación)
+- **Resumen:** Validación de la infraestructura de testing. Confirmación de que `phpunit.xml` está configurado para usar base de datos en memoria (`:memory:`) protegiendo el entorno Beta. Validación de ejecución de la suite existente `ClientNormalizationTest`. Se documenta el uso del comando `docker exec -e DB_CONNECTION=sqlite -e DB_DATABASE=:memory: dx-php-beta php artisan test` a través del LXC 600 por SSH para futuros agentes.
+- **PR:** No requiere merge (documentación/validación).
+
 ### Métricas de Clientes en Directorio ✅
 - **Completada:** 2026-05-28
 - **Rama:** `feature/client-metrics`
