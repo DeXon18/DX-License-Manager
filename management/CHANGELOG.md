@@ -5,6 +5,7 @@
 
 ### Fixed
 - **Estética de Métricas**: Invertido el orden de Título/Subtítulo en las tarjetas de inventario Siemens/Moldex3D del Directorio de Clientes para mantener la coherencia cromática y tipográfica con el resto del Bento Grid.
+- **Ordenación en Dashboard**: Corregido un bug SQL en `DashboardController` que impedía ordenar correctamente la tabla de "Vencimientos inminentes" por fecha de caducidad debido a una colisión en el alias de la consulta.
 - **Normalización IA Regex Bug**: Corregido un error en `NormalizationController` donde una expresión regular codiciosa (`.*`) capturaba accidentalmente la explicación textual de la IA en lugar del solo nombre del cliente, provocando fallos de coincidencia en la base de datos al intentar unificar.
 - **Ruido en Bandeja de Normalización**: Ocultados permanentemente los avisos de "NUEVA IDENTIDAD" del registro de la bandeja de normalización para evitar ruido visual, ya que la creación de nuevos clientes es el comportamiento esperado natural de la plataforma durante una importación.
 
