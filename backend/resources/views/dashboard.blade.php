@@ -244,30 +244,66 @@
     // Tour Contextual específico para el Dashboard
     window.pageTourSteps = [
         {
-            element: '.stat-grid',
+            element: '.sidebar',
             popover: {
-                title: 'Métricas de Inventario',
-                description: 'Resumen en tiempo real del estado global de licencias (vencidas, próximas a caducar y activas).',
+                title: 'Navegación Principal',
+                description: 'Desde aquí puedes saltar a cualquier módulo del sistema: Clientes, Planificador, Reportes o Herramientas.',
+                side: 'right',
+                align: 'start'
+            }
+        },
+        {
+            element: '.stat-card.success',
+            popover: {
+                title: 'Licencias Activas',
+                description: 'El volumen total de licencias vigentes que estamos auditando y controlando en este momento.',
+                side: 'bottom',
+                align: 'center'
+            }
+        },
+        {
+            element: '.stat-card.danger',
+            popover: {
+                title: 'Urgencias (0–7 días)',
+                description: '¡Atención prioritaria! Licencias caducadas o que vencen esta misma semana. Requieren acción inmediata.',
+                side: 'bottom',
+                align: 'center'
+            }
+        },
+        {
+            element: '.stat-card.warn',
+            popover: {
+                title: 'Próximos Vencimientos (8–30 días)',
+                description: 'Licencias que caducarán este mes. Ideal para ir preparando renovaciones con margen.',
+                side: 'bottom',
+                align: 'center'
+            }
+        },
+        {
+            element: '.stat-card.accent',
+            popover: {
+                title: 'En Seguimiento (31–90 días)',
+                description: 'Licencias a medio plazo. Útil para hacer previsiones a trimestre vencido.',
+                side: 'bottom',
+                align: 'center'
+            }
+        },
+        {
+            element: '.dx-v2-dashboard-search-card',
+            popover: {
+                title: 'Buscador Global Express',
+                description: 'Encuentra al instante cualquier cliente introduciendo su nombre, su código Sold-To o su Machine ID.',
                 side: 'bottom',
                 align: 'start'
             }
         },
         {
-            element: '.quick-actions',
+            element: '.dx-chatbot-trigger',
             popover: {
-                title: 'Acciones Rápidas',
-                description: 'Accesos directos a las herramientas más utilizadas, como el planificador de renovaciones o la auditoría por IA.',
+                title: 'Asistente IA Integrado',
+                description: 'Si tienes dudas sobre el inventario o necesitas analizar datos, puedes preguntarle al Chatbot inteligente en cualquier momento.',
                 side: 'left',
-                align: 'start'
-            }
-        },
-        {
-            element: '.table',
-            popover: {
-                title: 'Últimas Actualizaciones',
-                description: 'Historial reciente de las modificaciones realizadas en las licencias del sistema.',
-                side: 'top',
-                align: 'start'
+                align: 'end'
             }
         }
     ];
