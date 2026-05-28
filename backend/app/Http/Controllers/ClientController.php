@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Client;
+use App\Models\Contract;
+use App\Models\LicenseInventoryProduct;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -56,8 +58,14 @@ class ClientController extends Controller
             ->orderBy('name')
             ->paginate(20);
 
+        $globalMetrics = [
+            'total_clients' => Client::count(),
+            'total_contracts' => Contract::count(),
+            'siemens_licenses' => \App\Models\LicenseInventoryDaemon::where('daemon', 'not like', '%moldex%')->count(),
+            'moldex_licenses' => \App\Models\LicenseInventoryDaemon::where('daemon', 'like', '%moldex%')->count(),
+        ];
 
-        return view('clients.index', compact('clients'));
+        return view('clients.index', compact('clients', 'globalMetrics'));
     }
 
     /**
