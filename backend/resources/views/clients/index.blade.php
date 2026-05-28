@@ -202,3 +202,47 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    // Tour Contextual específico para el Directorio de Clientes
+    window.pageTourSteps = [
+        {
+            element: '.dx-v2-clients-search-form',
+            popover: {
+                title: 'Búsqueda Avanzada',
+                description: 'Localiza cuentas rápidamente introduciendo el nombre de la empresa o cualquier identificador asociado.',
+                side: 'bottom',
+                align: 'start'
+            }
+        },
+        {
+            element: '.dx-v2-clients-filter-actions',
+            popover: {
+                title: 'Filtros de Inventario',
+                description: 'Filtra el listado para mostrar únicamente aquellos clientes que tienen licencias activas de Siemens o Moldex3D.',
+                side: 'bottom',
+                align: 'end'
+            }
+        },
+        {
+            element: '.dx-v2-sys-dash-stats-grid',
+            popover: {
+                title: 'Telemetría del Directorio',
+                description: 'Métricas en tiempo real sobre el volumen total de clientes registrados y los contratos detectados.',
+                side: 'bottom',
+                align: 'center'
+            }
+        },
+        {
+            element: '.dx-v2-table',
+            popover: {
+                title: 'Directorio Principal',
+                description: 'Listado completo de cuentas. Haz clic en "Ver Perfil" para acceder al detalle de contactos, notas y el desglose completo de licencias de cada cliente.',
+                side: 'top',
+                align: 'start'
+            }
+        }
+    ];
+</script>
+@endpush
