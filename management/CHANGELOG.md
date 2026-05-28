@@ -1,6 +1,14 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-28 10:20] — Fase 31: Validación de Testing Automatizado ✅
+
+### Added
+- **Infraestructura de Pruebas**: Verificada y documentada la viabilidad del framework de testing con base de datos en memoria (`sqlite :memory:`). 
+- **Conocimiento Documentado**: Acreditada la suite `Tests\Unit\ClientNormalizationTest` que ya cubre las casuísticas del normalizador. Documentado el acceso SSH a LXC 600 (`identities.json`) para que futuros agentes puedan ejecutar `php artisan test` en el contenedor de forma segura.
+
+---
+
 ## [2026-05-28 09:25] — Fixes de UI y Motor de Normalización IA ✅
 
 ### Fixed
