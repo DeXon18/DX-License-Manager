@@ -66,7 +66,7 @@
 </div>
 
 <div class="grid-2">
-    <div class="card">
+    <div class="card" id="tour-vencimientos">
         <div class="card-header">
             <span class="card-title">Vencimientos inminentes (Licencias)</span>
             @if(auth()->user()->isAdmin())
@@ -294,6 +294,15 @@
                 title: 'Buscador Global Express',
                 description: 'Encuentra al instante cualquier cliente introduciendo su nombre, su código Sold-To o su Machine ID.',
                 side: 'bottom',
+                align: 'start'
+            }
+        },
+        {
+            element: '#tour-vencimientos',
+            popover: {
+                title: 'Vencimientos Inminentes',
+                description: 'Listado en tiempo real de las licencias que requieren tu atención inmediata, ordenadas por urgencia.',
+                side: 'top',
                 align: 'start'
             }
         },
