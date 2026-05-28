@@ -1,6 +1,15 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-05-28 08:55] — Tarjetas Estadísticas NOC Pro en Clientes
+
+### Added
+- Cabecera analítica estilo Bento Grid en el Directorio de Clientes (`clients.index`).
+- Tarjetas de conteo individualizado de Clientes Registrados y Contratos Vigentes.
+- Tarjetas de inventario activo desgajadas por fabricante (Siemens PLM vs MOLDEX3D), renderizadas con colores de badge corporativo puro y libre de marcos para estética limpia.
+
+---
+
 ## [2026-05-28] — Fix Timeout IA y Cron Prod ✅
 
 ### Fixed & Added
