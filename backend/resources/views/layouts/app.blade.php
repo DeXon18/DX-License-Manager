@@ -205,6 +205,7 @@
             const driverObj = driver({
                 showProgress: true,
                 animate: true,
+                popoverClass: 'dx-tour-theme',
                 doneBtnText: 'Hecho',
                 closeBtnText: 'Cerrar',
                 nextBtnText: 'Siguiente',

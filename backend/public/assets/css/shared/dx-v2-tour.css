@@ -2,97 +2,59 @@
    DRIVER.JS / TOUR ONBOARDING (ESTILO NOC PRO)
    ========================================================================== */
 
-/* Fondo oscuro y difuminado (Glassmorphism) */
-.driver-popover {
-    background-color: var(--dx-v2-surface) !important;
-    border: 1px solid var(--dx-v2-border) !important;
-    border-radius: var(--dx-v2-rounded-lg) !important;
-    box-shadow: var(--dx-v2-shadow-3) !important;
-    color: var(--dx-v2-primary) !important;
-    font-family: var(--dx-v2-font-sans) !important;
-    padding: var(--dx-v2-spacing-5) !important;
+/* Theme para el popover de Driver.js v1 */
+.dx-tour-theme {
+    --driver-popover-bg: var(--dx-v2-surface);
+    --driver-popover-text: var(--dx-v2-primary);
+    --driver-popover-border: var(--dx-v2-border);
+    --driver-popover-shadow: var(--dx-v2-shadow-3);
+    --driver-popover-border-radius: var(--dx-v2-rounded-lg);
+
+    --driver-popover-title-text: var(--dx-v2-primary);
+    --driver-popover-description-text: var(--dx-v2-muted);
+    --driver-popover-progress-text: var(--dx-v2-muted);
+
+    --driver-popover-btn-bg: var(--dx-v2-bg);
+    --driver-popover-btn-text: var(--dx-v2-primary);
+    --driver-popover-btn-border: var(--dx-v2-border);
+
+    --driver-popover-btn-disabled-bg: var(--dx-v2-bg);
+    --driver-popover-btn-disabled-text: var(--dx-v2-muted);
+    --driver-popover-btn-disabled-border: var(--dx-v2-border-subtle);
 }
 
-/* Título */
-.driver-popover-title {
-    font-size: 1.1rem !important;
-    font-weight: 600 !important;
-    color: var(--dx-v2-primary) !important;
-    margin-bottom: var(--dx-v2-spacing-2) !important;
-    border-bottom: 1px solid var(--dx-v2-border) !important;
-    padding-bottom: var(--dx-v2-spacing-2) !important;
-    padding-right: var(--dx-v2-spacing-6) !important; /* Espacio para la X */
+/* Modificaciones estructurales finas sobre el theme */
+.dx-tour-theme .driver-popover-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: var(--dx-v2-spacing-2);
+    border-bottom: 1px solid var(--dx-v2-border);
+    padding-bottom: var(--dx-v2-spacing-2);
+    padding-right: var(--dx-v2-spacing-6); /* Espacio para la X */
 }
 
-/* Descripción */
-.driver-popover-description {
-    font-size: 0.95rem !important;
-    color: var(--dx-v2-muted) !important;
-    line-height: 1.5 !important;
-    margin-bottom: var(--dx-v2-spacing-4) !important;
+.dx-tour-theme .driver-popover-description {
+    line-height: 1.5;
+    margin-bottom: var(--dx-v2-spacing-4);
 }
 
-/* Botón de Cerrar (X) */
-.driver-popover-close-btn {
-    color: var(--dx-v2-muted) !important;
-    top: var(--dx-v2-spacing-3) !important;
-    right: var(--dx-v2-spacing-3) !important;
-    transition: color 0.2s ease !important;
-}
-
-.driver-popover-close-btn:hover {
-    color: var(--dx-v2-primary) !important;
-    background: transparent !important;
-}
-
-/* Pie del popover (Botones) */
-.driver-popover-footer {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    margin-top: var(--dx-v2-spacing-4) !important;
-}
-
-/* Progreso */
-.driver-popover-progress-text {
-    font-size: 0.85rem !important;
-    color: var(--dx-v2-muted) !important;
-}
-
-/* Botones genéricos (Anterior) */
-.driver-popover-footer button {
-    background-color: var(--dx-v2-bg) !important;
-    color: var(--dx-v2-primary) !important;
-    border: 1px solid var(--dx-v2-border) !important;
-    border-radius: var(--dx-v2-rounded-sm) !important;
-    padding: var(--dx-v2-spacing-2) var(--dx-v2-spacing-3) !important;
-    font-size: 0.85rem !important;
-    font-family: var(--dx-v2-font-sans) !important;
-    cursor: pointer !important;
-    transition: all 0.2s ease !important;
-    text-shadow: none !important;
-}
-
-.driver-popover-footer button:hover {
-    background-color: var(--dx-v2-raised) !important;
-}
-
-/* Botón Siguiente / Hecho (Destacado) */
-.driver-popover-footer .driver-popover-next-btn {
+/* Botón Siguiente Destacado */
+.dx-tour-theme .driver-popover-next-btn {
     background-color: var(--dx-v2-accent) !important;
     color: #ffffff !important;
     border-color: var(--dx-v2-accent) !important;
-    font-weight: 600 !important;
+    font-weight: 600;
+    text-shadow: none !important;
 }
 
-.driver-popover-footer .driver-popover-next-btn:hover {
+.dx-tour-theme .driver-popover-next-btn:hover {
     background-color: var(--dx-v2-accent-hover) !important;
     border-color: var(--dx-v2-accent-hover) !important;
 }
 
-/* Flechas direccionales */
-.driver-popover-arrow {
-    border-color: var(--dx-v2-surface) !important;
+/* Hover genérico de botones */
+.dx-tour-theme .driver-popover-footer button:not(.driver-popover-next-btn):hover {
+    background-color: var(--dx-v2-raised);
 }
 
 /* Ocultar sombras blancas por defecto en SVG Overlay */
