@@ -123,7 +123,6 @@ class BotQueryController extends Controller
         return trim(
             $request->header('X-Bot-Token')
             ?: $request->header('X-Telegram-Bot-Api-Secret-Token')
-            ?: $request->input('token')
             ?: ''
         );
     }

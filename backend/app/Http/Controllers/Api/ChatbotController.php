@@ -76,12 +76,13 @@ class ChatbotController extends Controller
                 'data' => $result['data'] ?? []
             ]);
         } catch (\Exception $e) {
-            Log::error("ChatbotController: Error procesando chat: " . $e->getMessage());
+            Log::error("ChatbotController: Error procesando chat: " . $e->getMessage(), [
+                'trace' => $e->getTraceAsString(),
+            ]);
 
             return response()->json([
                 'success' => false,
                 'message' => "Ha ocurrido un error inesperado al procesar tu consulta conversacional. Por favor, reintenta en unos instantes.",
-                'error' => $e->getMessage()
             ], 500);
         }
     }
