@@ -7,7 +7,7 @@
 
 ## Estado General
 
-**Fase actual:** Post-Fase 33 — Seguridad Auditada y Versionado 3.0.0 Centralizado  
+**Fase actual:** Post-Fase 33 — Seguridad Auditada y Versionado 3.0.1 Centralizado  
 **Stack beta:** ✅ running (Healthy)  
 **Stack prod:** ✅ running (Healthy)  
 
@@ -15,6 +15,7 @@
 
 ## Qué se hizo en esta sesión
 
+- **Patch de UI (v3.0.1):** Se corrigió un fallo molesto en el Tour de Bienvenida (Driver.js). Ahora el tour solo se autoinicia en las páginas que tienen configurados pasos específicos, y el botón "Cerrar" guarda la preferencia del usuario instantáneamente de forma silenciosa sin el popup de confirmación invasivo.
 - **Centralización de Versión (v3.0.0):** Se ha extraído la definición de la versión del sistema fuera de los archivos `.env` y código duro, centralizándolo en el propio `CHANGELOG.md`. Ahora `config/dx.php` lee mediante expresiones regulares la etiqueta de versión directamente desde el inicio del historial, haciendo del CHANGELOG la Única Fuente de Verdad.
 - **Infraestructura (Emails & Cron):** Se añadieron contenedores dedicados de `queue` y `scheduler` en los archivos Docker Compose para permitir el procesamiento en segundo plano de tareas programadas (ej. reportes semanales) y envíos de emails asíncronos en Beta y Producción.
 - **Seguridad & Limpieza:** Se detectó la fuga de un Token de Telegram Bot en el historial de Git (en un commit antiguo del HANDOFF). Se usó `git-filter-repo` para purgar completamente el historial y se forzó push a las ramas. El token fue rotado exitosamente en BotFather y actualizado en los `.env`.

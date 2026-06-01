@@ -1,6 +1,12 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
-> **Version:** v3.0.0
+> **Version:** v3.0.1
+
+## [2026-06-01 13:20] — Patch: Corrección del Tour (Driver.js)
+
+### Fixed
+
+- **UI / Tour**: Corregido comportamiento molesto del tour de bienvenida. Ahora solo se autoinicia en las pantallas que tienen pasos configurados específicamente (evitando interrupciones en el resto de páginas). Además, el botón "Cerrar" guarda la preferencia instantáneamente y de forma silenciosa sin preguntar confirmaciones redundantes.
 
 ## [2026-06-01 13:00] — Fix: Centralización de Versión e Infraestructura Background
 
