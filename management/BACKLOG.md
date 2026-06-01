@@ -34,6 +34,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Desacoplamiento de Entornos y Telemetría NOC ✅
+- **Completada:** 2026-06-01
+- **Rama:** `feature/env-decoupling`
+- **Resumen:** Refactorizado el código para eliminar hardcodes de entorno ('beta') en la ejecución de scripts y peticiones IA. Restaurada la lectura de volúmenes de almacenamiento en Docker para monitoreo cruzado desde NOC Dashboard y reparado el acceso a `docker.sock`.
+- **PR:** Pendiente de PR
+
 ### Fase 32 — Optimización N+1 Queries ✅
 - **Completada:** 2026-05-28
 - **Rama:** `feature/phase32-n1-optimization`

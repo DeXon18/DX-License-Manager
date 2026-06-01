@@ -1,54 +1,51 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-06-01 11:45] — Infrastructure: Desacoplamiento de Entornos (Beta/Prod)
+
+### Changed
+
+- **BackupController & SystemAction**: Reemplazados los comandos hardcodeados a `"beta"` por interpolación dinámica de `config('app.env')` (`prod` o `beta`) al llamar a `scripts/backup-db.sh`.
+- **backup-db.sh**: Eliminado el condicional `if/else` que diferenciaba entre `mariadb-beta` y `mariadb-prod`. Ahora usa `$DB_HOST` inyectado dinámicamente por Docker desde el `.env`.
+- **ChatbotService**: La cabecera `HTTP-Referer` de OpenRouter ahora lee `config('app.url')` en lugar de enviar `https://beta.dxpro.es`.
+
+### Fixed
+
+- **System Dashboard Storage**: Restaurados los volúmenes de solo lectura (`storage_beta:ro` y `storage_prod:ro`) en `infra/docker-compose.beta.yml` e `infra/docker-compose.prod.yml` para permitir al contenedor PHP medir el tamaño de almacenamiento de ambos entornos (telemetría NOC).
+- **Docker Daemon Socket**: Restablecidos permisos en el host LXC (`chmod 666 /var/run/docker.sock`) para que el usuario `www-data` (PHP) recupere acceso a la salud de contenedores (`docker ps`) perdido al recrear el stack con Docker Compose.
+
 ## [2026-06-01 10:00] — Security Hardening: Cierre Total de Auditoría Fase 3 ✅
 
-### Fixed — Pendientes Bajos Cerrados
-- **[CWE-116]** `SupportController`: Escapado de caracteres especiales Markdown (`*`, `_`, `` ` ``, `[`, etc.) antes de enviar ticket a Telegram — previene output injection cosmético
-- **[CWE-203]** `BotQueryController`: Mensaje de cliente no encontrado reemplazado por texto genérico — elimina posibilidad de enumerar clientes por nombre
-- **[CSP]** `infra/nginx/beta.conf` + `prod.conf`: Añadida cabecera `Content-Security-Policy` compatible con el stack real (Alpine.js `unsafe-inline`, Chart.js, Font Awesome, Google Fonts vía CDN allowlist)
-- **[CSP]** `infra/nginx/beta.conf` + `prod.conf`: Añadida cabecera `Permissions-Policy` deshabilitando APIs de navegador no usadas (`camera`, `microphone`, `geolocation`, `payment`, `usb`)
-
-### Verificado como ya implementado (no requirió acción)
-- ✅ **JWT blacklist Redis**: Completamente implementada en `AuthController@logout` (zadd ZSET) y verificada en `JwtAuth` middleware (zscore check) desde 2026-05-15
-- ✅ **`laravel/sanctum`**: Ya eliminado de `composer.json` en sesión anterior — no presente en dependencias de producción
-
-### Estado Final — Cero Hallazgos Abiertos
-Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) están cerrados.
-**Docs de auditoría:** `backend/docs/260509_auditoria-seguridad.md` · `backend/docs/260509_auditoria-seguridad-fase2.md` · `backend/docs/260601_auditoria-seguridad-fase3.md`
-
----
-
-
-
-**Auditoría completa:** [`backend/docs/260601_auditoria-seguridad-fase3.md`](../backend/docs/260601_auditoria-seguridad-fase3.md)
-**Auditorías previas:** [`260509_auditoria-seguridad.md`](../backend/docs/260509_auditoria-seguridad.md) · [`260509_auditoria-seguridad-fase2.md`](../backend/docs/260509_auditoria-seguridad-fase2.md)
-
-### Security — Verificación de Fixes Fases 1+2
-- ✅ Todos los hallazgos críticos de Fases 1 y 2 confirmados como corregidos (RBAC, MIME validation NXSuite/StarCCM/HEEDS, HMAC webhook n8n, fallback `auth()->id() ?? 1`)
+**Docs de auditoría:** [`260601_auditoria-seguridad-fase3.md`](../backend/docs/260601_auditoria-seguridad-fase3.md) · [`260509_auditoria-seguridad-fase2.md`](../backend/docs/260509_auditoria-seguridad-fase2.md) · [`260509_auditoria-seguridad.md`](../backend/docs/260509_auditoria-seguridad.md)
 
 ### Security — Nuevos módulos auditados (Fase 3)
-- **Auditado:** `BotQueryController` (Telegram bot, 646 líneas), `ChatbotController`, `AiAuditCostController`, `EnterpriseCloudAccountController`, `SupportController`, `AiModelController`
-- **Resultado:** Sin vulnerabilidades críticas. EnterpriseCloud, AiModel y AiAuditCost pasan audit completo
+
+- **Auditado**: `BotQueryController` _(Telegram bot, 646 líneas)_, `ChatbotController`, `AiAuditCostController`, `EnterpriseCloudAccountController`, `SupportController`, `AiModelController`
+- **Resultado**: Sin vulnerabilidades críticas. `EnterpriseCloud`, `AiModel` y `AiAuditCost` pasan audit completo
+
+### Security — Verificación de Fixes Fases 1+2
+
+- Todos los hallazgos críticos de Fases 1 y 2 confirmados como corregidos (RBAC, MIME validation NXSuite/StarCCM/HEEDS, HMAC webhook n8n, fallback `auth()->id() ?? 1`)
+- **JWT blacklist Redis**: Completamente implementada en `AuthController@logout` (zadd ZSET) y verificada en el middleware `JwtAuth` (zscore check) desde 2026-05-15
+- **laravel/sanctum**: Ya eliminado de `composer.json` en sesión anterior — no presente en dependencias de producción
 
 ### Fixed — Security Hardening (rama `fix/security-hardening-fase3`)
-- **[CWE-598]** `BotQueryController`: Eliminada aceptación de token de bot por query parameter (`?token=xxx`) — prevenía exposición en logs de Nginx
-- **[CWE-209]** `ChatbotController`: Eliminado `$e->getMessage()` de respuestas JSON 500 — prevenía stack trace expuesto al cliente. Log completo con trace persiste internamente
-- **[API4]** `web.php`: Añadido `throttle:30,1` en `/chatbot/query` — previene abuso de tokens IA por usuario autenticado
-- **[API4]** `api.php`: Añadido `throttle:60,1` en `/api/bot/query` y `/api/audit/callback` — previene spam en endpoints API públicos
 
-### Pendiente (severidad baja — no urgente)
-- JWT blacklist completa en Redis (logout)
-- CSP header en Nginx (beta + prod)
-- Sanitizar markdown en `SupportController` (Telegram output injection cosmético)
-- Eliminar `laravel/sanctum` instalado sin uso
-- Respuesta genérica en bot cuando cliente no existe (information disclosure menor)
+- [CWE-598] BotQueryController: Eliminada aceptación de token de bot por query parameter (`?token=xxx`) — prevenía exposición en logs de Nginx
+- [CWE-209] ChatbotController: Eliminado `$e->getMessage()` de respuestas JSON 500 — prevenía stack trace expuesto al cliente. Log completo con trace persiste internamente
+- [CWE-116] SupportController: Escapado de caracteres especiales Markdown (asteriscos, guiones bajos, backticks, corchetes) antes de enviar ticket a Telegram — previene output injection cosmético
+- [CWE-203] BotQueryController: Mensaje de cliente no encontrado reemplazado por texto genérico — elimina posibilidad de enumerar clientes por nombre
+- [API4] web.php: Añadido `throttle:30,1` en `/chatbot/query` — previene abuso de tokens IA por usuario autenticado
+- [API4] api.php: Añadido `throttle:60,1` en `/api/bot/query` y `/api/audit/callback` — previene spam en endpoints API públicos
+- [CSP] infra/nginx/beta.conf + prod.conf: Añadida cabecera `Content-Security-Policy` compatible con el stack real (Alpine.js `unsafe-inline`, Chart.js, Font Awesome, Google Fonts vía CDN allowlist)
+- [CSP] infra/nginx/beta.conf + prod.conf: Añadida cabecera `Permissions-Policy` deshabilitando APIs de navegador no usadas (`camera`, `microphone`, `geolocation`, `payment`, `usb`)
 
 ---
 
 ## [2026-05-28] — Fase 33: Onboarding Tour (NOC Pro) ✅
 
 ### Added
+
 - **Tour de Bienvenida**: Implementado sistema interactivo con `Driver.js` para guiar a los usuarios en su primer acceso.
 - **Tours Contextuales**: Soporte para tours por página inyectando `window.pageTourSteps`. Implementados en Dashboard, Clientes, Herramientas y Planificador.
 - **Persistencia**: Añadido flag `has_seen_tour` en la BD (Users) y guardado asíncrono vía AJAX (`ProfileController@markTourSeen`).
@@ -57,15 +54,18 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-28 10:50] — Fase 32: Auditoría y Optimización N+1 ✅
 
 ### Added
+
 - **Rendimiento**: Habilitado `Model::preventLazyLoading(!app()->isProduction())` en `AppServiceProvider` para proteger la aplicación de consultas N+1 en fase de desarrollo.
 
 ### Fixed
+
 - **Auditoría de Queries**: Se corrió un análisis de lazy loading en las vistas principales (Dashboard, Clientes, Renewal Planner, Reports) confirmando que el uso intensivo de `$client->load()` y `withCount` ya previene cuellos de botella. La aplicación actual está 100% limpia de N+1.
 
 ## [2026-05-28 10:20] — Fase 31: Validación de Testing Automatizado ✅
 
 ### Added
-- **Infraestructura de Pruebas**: Verificada y documentada la viabilidad del framework de testing con base de datos en memoria (`sqlite :memory:`). 
+
+- **Infraestructura de Pruebas**: Verificada y documentada la viabilidad del framework de testing con base de datos en memoria (`sqlite :memory:`).
 - **Conocimiento Documentado**: Acreditada la suite `Tests\Unit\ClientNormalizationTest` que ya cubre las casuísticas del normalizador. Documentado el acceso SSH a LXC 600 (`identities.json`) para que futuros agentes puedan ejecutar `php artisan test` en el contenedor de forma segura.
 
 ---
@@ -73,6 +73,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-28 09:25] — Fixes de UI y Motor de Normalización IA ✅
 
 ### Fixed
+
 - **Estética de Métricas**: Invertido el orden de Título/Subtítulo en las tarjetas de inventario Siemens/Moldex3D del Directorio de Clientes para mantener la coherencia cromática y tipográfica con el resto del Bento Grid.
 - **Ordenación en Dashboard**: Corregido un bug SQL en `DashboardController` que impedía ordenar correctamente la tabla de "Vencimientos inminentes" por fecha de caducidad debido a una colisión en el alias de la consulta.
 - **Normalización IA Regex Bug**: Corregido un error en `NormalizationController` donde una expresión regular codiciosa (`.*`) capturaba accidentalmente la explicación textual de la IA en lugar del solo nombre del cliente, provocando fallos de coincidencia en la base de datos al intentar unificar.
@@ -83,6 +84,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-28 08:55] — Tarjetas Estadísticas NOC Pro en Clientes
 
 ### Added
+
 - Cabecera analítica estilo Bento Grid en el Directorio de Clientes (`clients.index`).
 - Tarjetas de conteo individualizado de Clientes Registrados y Contratos Vigentes.
 - Tarjetas de inventario activo desgajadas por fabricante (Siemens PLM vs MOLDEX3D), renderizadas con colores de badge corporativo puro y libre de marcos para estética limpia.
@@ -92,6 +94,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-28] — Fix Timeout IA y Cron Prod ✅
 
 ### Fixed & Added
+
 - Aumentado timeout de OpenRouter a 30s en `ClientAiNormalizationService`.
 - Implementado fallback automático nativo (hacia Gemini) ante errores cURL 28 (timeout) y no solo para HTTP 429.
 - Cambiado HTTP-Referer en API de OpenRouter por `config('app.url')`.
@@ -102,6 +105,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-27 16:10] — Integración de Módulos (Services Matrix) & Fix UI ✅
 
 ### Added
+
 - **Services Matrix Dashboard**: Refactorizado el panel de módulos de administración (`admin/system/dashboard`) eliminando tarjetas monolíticas e integrando un layout compacto e industrial estilo "Services Matrix" idéntico al de OpenRouter Core.
 - **Javascript Navigation**: Reemplazadas etiquetas `<a>` de módulos por contenedores `<div>` con manejador `onclick` para anular por completo decoraciones moradas y subrayados heredados del navegador.
 - **Layout de Storage**: Modificado el diseño del indicador de almacenamiento de infraestructura (Beta/Prod) para mostrarlos en dos columnas aisladas en lugar de una línea contigua, mejorando la legibilidad.
@@ -111,11 +115,13 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-25 16:55] — Centralización de OpenRouter & Telemetría de Cuotas Semanales ✅
 
 ### Added
+
 - **AI Routing Hub**: Nuevo panel de control `admin/system/ai-routing` centralizado mediante pestañas para organizar el Enrutador de Tareas (Fallbacks anti-429) y el Catálogo de Modelos IA.
 - **Telemetría de Cuotas Semanales (Weekly Tokens)**: Añadido soporte en base de datos (`ai_models`) para almacenar los límites de tokens gratuitos (1.26T, 669B, etc.) y mostrar una barra de progreso visual calculando dinámicamente el consumo de los últimos 7 días.
 - **Top Modelos Gratuitos**: Actualizado el seeder principal para inyectar y mapear de manera automática el Top 10 de modelos gratis de OpenRouter (Owl Alpha, Nemotron 3 Super, Laguna M.1, etc.).
 
 ### Changed
+
 - **Refactorización de Interfaz NOC Pro**: Eliminado el layout de sidebar rígido en favor de una tercera pestaña "Añadir Modelo" en el hub de IA, logrando que el Catálogo utilice el ancho completo (full-width) de la pantalla.
 - **Diseño de Barras de Progreso**: Unificado el diseño de estado "Ilimitado / ∞" para modelos de pago sin cuotas artificiales.
 
@@ -124,6 +130,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-25 14:40] — Telemetría IA: Costes Granulares por Modelo & UI NOC Pro ✅
 
 ### Added
+
 - **Costes por Modelo & Facturación Dinámica**: Añadida columna `model` en `ai_token_logs`. El sistema ahora mapea los modelos específicos (ej. GPT, DeepSeek) y permite asignar reglas lógicas en `config/ai.php`, logrando coste $0 exacto para los modelos taggeados como `:free` en OpenRouter.
 - **Refactorización UI NOC Pro**: Migrado el panel completo de estadísticas a la arquitectura de interfaz industrial del sistema (`dx-v2-sys-dash-sec-layout`). Se eliminaron tablas densas sustituyéndolas por listados de precisión simétrica sin wrappers anidados.
 
@@ -132,6 +139,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-25 13:17] — Security & Compliance Corporativo + Estado de Contratos ✅
 
 ### Added
+
 - **Página de Privacidad IA (`/privacidad-ia`)**: Desplegada una declaración formal de privacidad, seguridad y soberanía de datos sobre el uso de la Inteligencia Artificial (Zero-Data Retention) para cumplimiento normativo y transparencia corporativa (DPA).
 - **Diseño Corporativo (NOC Pro)**: Estructuración en Bento Grid asimétrico utilizando la tipografía técnica `Outfit` e `IBM Plex Mono` y un pipeline gráfico visual. Extracción de estilos a la capa 6 del sistema (`dx-v2-page-ai-privacy.css`).
 - **Estado de Contratos**: Implementado el estado visual "Renovación Tardía" utilizando la clase `dx-v2-color-rojo-oscuro` (#d73a49) para identificar licencias cuya renovación supera la ventana de expiración pero se gestionan como tardías.
@@ -142,6 +150,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-25 09:49] — Gestión de Enterprise Cloud Accounts (Fase 29) ✅
 
 ### Added
+
 - **Módulo de Gestión (ECA)**: Implementada tabla `enterprise_cloud_accounts` y lógica CRUD aislada para registrar cuentas de administración Cloud (Sold-To, Account ID y Admin Email) sin interferir con los demonios del inventario de licencias clásico.
 - **UI de Cliente (NOC Pro)**: Añadida la pestaña "Enterprise Cloud" en la ficha del cliente con una tabla de alta densidad y un modal de registro alineado con el diseño unificado de 6 capas CSS.
 - **Skill de Chatbot IA (`create_enterprise_cloud_account`)**: Dotado al agente inteligente interno de la capacidad de inyectar estas cuentas vía lenguaje natural.
@@ -152,6 +161,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-22 13:28] — Mejoras Avanzadas en Gráficas de Costes IA ✅
 
 ### Added
+
 - **Métricas Avanzadas de Coste**: Añadida tarjeta "Total Peticiones" al panel principal para cerrar el Grid de 4 columnas simétricamente.
 - **Promedio de Consumo por Petición (tk/req)**: Nueva métrica en la tabla de acciones que calcula matemáticamente el coste en tokens por cada petición para identificar servicios costosos.
 - **Nombres Amigables para Logs**: Integrado un mapeador en la vista de costes para mostrar los nombres de las funciones (ej. `normalization_search` → `Herramienta de Licencias (Normalización)`).
@@ -160,6 +170,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 - **Formato de Números Compacto**: Aplicada función `compact_number` a todas las métricas de volumen alto en el dashboard (ej. `145k`, `1.5M`) para mantener intacto el diseño flex-grid NOC Pro.
 
 ### Fixed
+
 - **Excepción 500 de Variables no Definidas**: Corregido error en `AiAuditCostController` que omitía el envío de las variables `$totalCostThisMonth` a la vista.
 - **Grid Layout Roto**: Eliminada la clase CSS `dx-v2-sys-dash-main-layout` del contenedor de estadísticas que reservaba erróneamente un sidebar vacío de 340px causando desalineamiento a la derecha.
 
@@ -168,6 +179,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-22 11:30] — Módulo de Contacto de Soporte IT (Fase 28) ✅
 
 ### Added
+
 - **Formulario de Soporte**: Creación de una nueva vista en `/soporte` para que los usuarios puedan enviar incidencias o consultas directamente al equipo de IT.
 - **Integración con Telegram**: El formulario utiliza la API del Bot de Telegram (reutilizando la infraestructura de notificaciones del sistema) para entregar los mensajes instantáneamente a los administradores.
 - **Navegación UI**: Añadidos accesos directos de "Ayuda & Soporte" tanto en el Sidebar principal (`app.blade.php`) como en el pie de página (`footer.blade.php`).
@@ -178,6 +190,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-22 11:00] — AI Cost Audit & Telemetry Dashboard ✅
 
 ### Added
+
 - **Módulo de Costes y Telemetría IA**: Implementada la persistencia en base de datos (`AiTokenLog`) para realizar el seguimiento del consumo de tokens (prompt, completion y total) de todos los motores de Inteligencia Artificial (Gemini, DeepSeek, OpenRouter, n8n).
 - **Dashboard de Costes (NOC Pro)**: Nueva vista en `/admin/system/ai-costs` con diseño Bento Grid, contadores en tiempo real de tokens consumidos y gráficas interactivas con `Chart.js` comparando el uso por proveedor.
 - **Auditoría Financiera**: Cálculo automático de costes estimados basado en las tarifas de mercado actuales de cada proveedor. El cálculo se realiza por cada llamada y se resume mensualmente e históricamente.
@@ -189,10 +202,12 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-22 09:50] — COD Cloud Fields & PDF Refactor ✅
 
 ### Added
+
 - **Campos Cloud AWS & Azure**: Integración de nuevos campos (`Cloud_AWS` y `Cloud_Azure`) en el formulario de generación de COD, incluyendo su persistencia en el payload y renderizado en PDF.
 - **Acordeón Interactivo de Ayuda (getcid.exe)**: Implementación de un acordeón interactivo con Alpine.js en la vista COD (`cod.blade.php`) que proporciona una guía detallada para obtener el Composite ID, ejemplos de comandos y un recuadro dedicado para descargar la utilidad oficial de Siemens, así como un espacio reservado para una herramienta personalizada ATS.
 
 ### Changed
+
 - **Refactorización CSS del PDF Oficial**: Reescritura completa del CSS de la plantilla PDF de COD (`cod-template.blade.php`) utilizando medidas absolutas (pixels y pt), tipografía Calibri y ajustando márgenes y espaciados para lograr paridad total al 100% con la estética oficial de los documentos de Siemens.
 - **Alineación Modular**: Modificados los estilos inline de los recuadros de ayuda en la interfaz de usuario para que dependan estrictamente de los tokens HSL del diseño de sistema NOC Pro, garantizando adaptabilidad automática a modos claro/oscuro.
 
@@ -201,11 +216,13 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-21 15:10] — Despliegue v2.0 en Producción & Alineación de Infraestructura ✅
 
 ### Added
+
 - **Despliegue Limpio de Producción**: Lanzamiento oficial de la v2.0 del portal en `portal.dxpro.es` partiendo de una base de datos limpia (`migrate:fresh --seed`) e inyección de datos semilla (AdminUserSeeder, RoleSeeder, FeatureFlagSeeder).
 - **Alineación de Infraestructura Prod/Beta**: Igualadas las capacidades de Docker Compose en producción respecto a beta (añadido contenedor `node-prod`, montajes de `.git` y `/var/run/docker.sock` para `php-fpm-prod`) anticipando la futura desactivación del entorno Beta.
 - **Reconstrucción de Imágenes (Hotfix)**: Reconstrucción de la imagen Docker de `php-fpm-prod` en el servidor de producción para incluir la CLI de `docker` internamente, restaurando la telemetría en el Dashboard de Servicios Docker (`/admin/system/docker`).
 
 ### Changed
+
 - **Directivas de Storage Seguras**: Refactorización de `docker-compose.prod.yml` para utilizar el path seguro y estándar `./backend/storage` nativo de Laravel en lugar de la carpeta `./storage` en la raíz. Eliminado el directorio residual del host.
 - **Refactorización de Footer (UI)**: Eliminados los bloques obsoletos de "Stack Técnico" e "Infraestructura" en el pie de página. Reemplazados por secciones utilitarias de **Soporte Interno** y **Portales Oficiales** de fabricantes (Siemens, Moldex3D), junto con la insignia "AI-Powered Productivity".
 
@@ -214,11 +231,13 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-21 09:17] — Telegram Bot Integration & Deep Refactoring (NOC Pro) ✅
 
 ### Added
+
 - **Integración Nativa de Webhook de Telegram**: Implementación directa del webhook oficial de Telegram en el endpoint `/api/bot/query` de Laravel, evitando dependencias externas de n8n para flujos estándar de Telegram.
 - **Autocompletado de Comandos en Telegram**: Registro formal de los comandos `/cliente`, `/expiraciones` y `/soldto` en los servidores centrales de Telegram mediante la API `/setMyCommands` para habilitar el autocompletado en el teclado móvil del usuario.
 - **Mensajes de Ayuda Interactivos**: Lógica ergonómica integrada en `BotQueryController.php` para interceptar llamadas sin argumentos en `/cliente` o `/soldto` y retornar un formateo instructivo interactivo en Markdown que indica cómo usar la sintaxis junto a un ejemplo práctico.
 
 ### Changed
+
 - **Optimizaciones de Rendimiento de Base de Datos**:
   - Migradas todas las queries de filtrado de expiración de colecciones en memoria de PHP a queries de base de datos directas en Eloquent usando fechas relativas.
   - La búsqueda por Sold-To secundario ahora utiliza la directiva de base de datos `orWhereJsonContains` para buscar dentro de columnas JSON directamente en MariaDB.
@@ -230,6 +249,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-20 15:58] — Active Inventory Expiration Traffic Light (NOC Pro) ✅
 
 ### Added
+
 - **Semáforo Visual Semántico**: Implementación completa del código de color estándar de tráfico (rojo/amarillo/verde) para diagnosticar de forma inmediata la expiración de licencias activas en la ficha de cliente.
 - **Badges Técnicos Bento**: Diseñados badges premium con fuentes monoespaciadas, fondos translúcidos estilo glassmorphism, y bordes delgados HSL para los estados `.expired` (rojo), `.warning` (ámbar para vencimiento en menos de 30 días), `.default` (verde éxito para saludables) y `.permanent` (cyan corporativo).
 - **Iconografía Dinámica**: Integrados iconos semánticos dinámicos (`fa-circle-xmark`, `fa-triangle-exclamation`, `fa-calendar-check`, `fa-infinity`) por estado mediante lógica Carbon en show.blade.php.
@@ -240,6 +260,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-20 15:15] — Audit History & Detail UI Redesign (NOC Pro) ✅
 
 ### Added
+
 - **Acordeón Interactivo de Historial de Licencias**: Reemplazado el `<details>` rústico nativo por un acordeón interactivo y animado con Alpine.js (`historyOpen`) con banners explicativos de "Fuente de Verdad Histórica".
 - **Banner de Inmutabilidad Técnica**: Añadida una sección explicativa con badge de seguridad e icono de bloqueo (`fa-lock`) aclarando que las auditorías históricas son registros de solo lectura (inmutables) de respaldo.
 - **Bento Grid de Metadatos del Servidor**: Panel de visualización premium de alta gama para metadatos clave (Sold-To, Hostname, Composite y Daemons).
@@ -251,6 +272,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-20 14:15] — Normalization UI Tabs, Duplicate Similarity Stripping, Caching & Scanning Loader ✅
 
 ### Added
+
 - **Mapeo de 3 Pestañas en Alpine.js**: Restauración de la estructura de 3 pestañas ("Sospechas de Importación", "Escáner de Duplicados (IA)" y "Unificación Manual Libre") en [resources/views/admin/normalization/index.blade.php] con Alpine.js y persistencia en `localStorage`.
 - **Diseño Bento Modular CSS**: Creado el archivo de estilos modulares [modules/dx-v2-normalization.css] e importado en [dx-v2-main.css], implementando el diseño Bento premium para tarjetas de duplicados de alta fidelidad.
 - **Caché Inteligente de Base de Datos**: Cacheado del resultado de escaneo léxico en base de datos (`dx_scanned_duplicates`) por 24 horas usando la fachada `Cache` de Laravel, acelerando las cargas de página de la bandeja de normalización.
@@ -258,6 +280,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 - **Modal de Escaneo Productivo Real**: Ventana modal interactiva fija y centrada con desenfoque de cristal translúcido que realiza un envío de formulario inmediato al backend, mostrando el progreso de forma real y eliminando cualquier simulación artificial de retardo.
 
 ### Changed
+
 - **Resolución de Bugs en Similitud Léxica**:
   - **Bug #1 Resuelto**: Patrón `$genericPattern` expandido con más de 50 descriptores industriales y sectoriales españoles ("mecanicos", "metalicas", "quimicas", "logistica", etc.) eliminando de raíz falsos positivos de sector (ej: "Codesal vs Peña").
   - **Bug #2 Resuelto**: Cálculo del porcentaje de similitud con `similar_text` sobre las cadenas `$ultra` depuradas en lugar de `$clean`, garantizando un filtrado léxico estricto y preciso.
@@ -268,6 +291,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-20 11:00] — AI Normalization Engine: Fase 23 CERRADA ✅
 
 ### Added
+
 - **Core de Normalización de Identidades con IA**: Implementación de `ClientAiNormalizationService.php` en [backend/app/Services/AI/ClientAiNormalizationService.php]. Realiza un pre-filtrado tokenizado local de candidatos usando queries SQL `LIKE` para extraer coincidencias potenciales del mismo cliente.
 - **Cliente HTTP con Cadena de Fallback Multi-API**: Conexión a Gemini 3.5 Flash Lite (`GEMINI_API_KEY`), DeepSeek Chat (`DEEPSEEK_API_KEY`) y OpenRouter (`OPENROUTER_API_KEY` con modelo Llama 3 8B) de forma secuencial y tolerante a fallos, abstrayendo credenciales en variables del entorno.
 - **Rediseño Premium de la Bandeja de Normalización**: Adaptación visual de la bandeja de normalización con badges premium NOC Pro IA en [admin/normalization/index.blade.php], mostrando dinámicamente el proveedor (Gemini, DeepSeek, etc.), porcentaje de confianza y la razón técnica detallada de la IA.
@@ -275,6 +299,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 - **Cobertura de Tests Unitarios Robustos**: Creación de tests y mock en [tests/Unit/ClientNormalizationTest.php] simulando llamadas de alta y baja confianza en SQLite en memoria.
 
 ### Changed
+
 - **Desvío Inteligente en el Normalizador**: Integrado el servicio de IA en [backend/app/Services/Data/ClientNormalizationService.php] como fallback (Nivel 3.5) ante similitudes menores al 85%. Si la IA encuentra una coincidencia con alta confianza (>= 80%), el flujo se desvía a sospecha (`suspicion`) con su correspondiente advertencia, ID y razón técnica detallada.
 
 ---
@@ -282,14 +307,17 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-20 09:50] — DX Toasts & Estilos Usuarios: Incidencias #020 y #017 CERRADAS ✅
 
 ### Added
+
 - **Sistema de Toasts Premium**: Implementación de un motor reactivo de notificaciones flotantes con Alpine.js en [layouts/partials/toasts.blade.php]. Soporta auto-cierre, cierre manual, cola reactiva de eventos y visualización rica de HTML (`x-html`).
 - **Diseño Glassmorphism Adaptativo**: Creación de la hoja de estilos [shared/dx-v2-toast.css] con diseño de glassmorphism de alta gama, variables HSL adaptativas y aceleración por hardware para las transiciones.
 - **Acceso HTML Rico para Telemetría**: Integrado soporte en Toasts para extraer variables adicionales como `log_id` y renderizar enlaces seguros interactivos directos a los detalles de logs de importación sin fugas de seguridad.
 
 ### Changed
+
 - **Purga de Banners de Alertas Inline**: Eliminados todos los bloques de alertas inline estáticos y duplicados en las 7 vistas principales del portal (Gestión de Usuarios, Alertas, Importación, Repositorio, Normalización, Logs, Perfil) unificando todo el feedback bajo el motor reactivo global.
 
 ### Fixed
+
 - **Estilos en Gestión de Usuarios (#017)**: Corregidos los estilos de la barra de búsqueda rápida, inputs y selectores de roles y estado que colisionaban con el tema oscuro del portal.
 
 ---
@@ -297,6 +325,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-19 15:20] — DX CSS Unification: Fase 21 CERRADA ✅
 
 ### Added
+
 - **Cierre de Fase 21**: Finalizada oficialmente la **Fase 21 — Estructurar CSS — dx-v2**, modularizando el monolito CSS heredado de 10,118 líneas en 35 hojas de estilos compactas y organizadas jerárquicamente en 6 capas funcionales.
 - **Estructura de la Arquitectura Modular CSS**:
   - **Capa 1 (Tokens & Base)**: `dx-v2-tokens.css`, `dx-v2-reset.css` y `dx-v2-base.css` (variables HSL, keyframes y reset global).
@@ -308,12 +337,15 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 - **Fichero Maestro Consolidado**: Creado `dx-v2-main.css` unificando las 35 directivas de importación en el estricto orden jerárquico de cascada y especificidad.
 
 ### Changed
+
 - **Modernización y Desacoplamiento de Layouts Blade**: Actualizadas las referencias a las hojas de estilo en el `<head>` del layout principal del portal (`layouts/app.blade.php`), la pantalla de mantenimiento (`errors/503.blade.php`) y la interfaz de login (`auth/login.blade.php`), llamando directamente al maestro modular `dx-v2-main.css?v={{ time() }}` y ganando rendimiento en carga de red.
 
 ### Fixed
+
 - **Resolución de Recursos de Imagen del Login**: Corregido el bug de carga del fondo del login provocado por los `@import` relativos anidados, consolidando la ruta de carga en `dx-v2-login.css` a la ruta absoluta `/assets/img/login-bg-corporate.png`, asegurando su visualización robusta.
 
 ### Deleted
+
 - **Purga de Deuda Técnica Legacy**: Eliminado físicamente de disco y de Git el archivo monolítico redundante heredado `dx-styles.css` (`git rm`), limpiando el espacio de trabajo.
 
 ---
@@ -321,6 +353,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-19 12:30] — DX Brand & Logo: Fase 20 CERRADA ✅
 
 ### Added
+
 - **Cierre de Fase 20**: Finalizada oficialmente la **Fase 20 — Identidad Visual e Integración del Logotipo Premium**.
 - **Refinamiento de Micro-alineación e Interacción**:
   - Ajustado el espaciado lateral derecho de la marca en el header (`header .dx-lockup`) a `60px` para desplazar los enlaces de navegación, logrando una alineación perfecta de la pestaña "**Inicio**" a la altura del título "**Bienvenido, Oskar**" en el contenido principal.
@@ -333,6 +366,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-19 12:20] — DX Brand & Logo: Subfases 20.2 - 20.4 (Estilos, SVGs e Integración de Vistas) ✅
 
 ### Added
+
 - **Estilos de Logotipo y Scan Line (`dx-styles.css`)**: Implementado el namespace global `.dx-lockup`, `.dx-mark` y `.dx-wordmark` con variables de color semánticas HSL y fuentes del sistema (`Inter`). Desarrollada la animación `@keyframes dx-scan` con pseudo-elemento `::after` para el destello scan line interactivo al hacer hover.
 - **Exportaciones SVG Oficiales**: Generados los tres archivos SVG oficiales (`logo-light.svg`, `logo-dark.svg` y `logo-mark.svg` para favicon) bajo el directorio `public/assets/images/`.
 - **Integración de Logotipos en Vistas**: Reemplazada la cabecera de la marca estática tradicional con el bloque HTML interactivo de logotipo premium unificado en:
@@ -341,6 +375,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Pie de página unificado (`layouts/partials/footer.blade.php`).
 
 ### Changed
+
 - **Soporte Light/Dark**: Configurada la adaptabilidad dinámica de color para los textos del wordmark (`.dx-name`, `.dx-sub`) mediante selectores oscuros (`.dark`, `[data-theme="dark"]`).
 
 ---
@@ -348,6 +383,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-19 12:10] — DX Brand & Logo: Subfase 20.1 (Registro y Estructuración) ✅
 
 ### Added
+
 - **Fase 20 en ROADMAP.md**: Registrada oficialmente la **Fase 20 — Identidad Visual e Integración del Logotipo Premium** en la planificación general del proyecto.
 - **Planificación de Subfases**: Definidas las 5 subfases correspondientes para guiar de forma estructurada la inyección de estilos de logo interactivos con efecto "scan line", exportación de ficheros SVG standalone oficiales para modo claro/oscuro, integración en layouts y vistas Blade, y control de calidad final.
 
@@ -356,11 +392,13 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-19 12:00] — CSS Unification: Subfase 19.29 (Exclusiones Documentadas de Emails & PDFs) ✅
 
 ### Added
+
 - **Inventariado y Justificación de Exclusiones de Estilos**: Realizada una auditoría detallada de portabilidad y compatibilidad en las vistas de correos electrónicos y plantillas PDF del portal:
   - `emails/global-license-report.blade.php`, `emails/weekly-license-alert.blade.php` y `emails/weekly-report.blade.php`: Se determinó que el uso de estilos inline y hojas de estilos locales `<style>` está 100% justificado para asegurar la correcta compatibilidad con clientes de correo estándar (Gmail, Outlook, Apple Mail) sin dependencias del compilador de assets ni variables CSS del tema.
   - `pdf/cod-template.blade.php`: Se verificó el uso de estilos locales y fuentes autohospedadas (Calibri) como requisito de diseño estricto para la correcta compilación del motor PDF Dompdf de forma hermética y sin dependencias de red.
 
 ### Changed
+
 - **Aislamiento del Entorno de Renderizado**: Verificado y garantizado que ninguna de estas vistas herede variables de CSS `--dx-v2-*` ni cargue recursos externos que puedan romperse o producir fallos de visualización en destinatarios finales.
 
 ---
@@ -368,6 +406,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-19 11:50] — CSS Unification: Subfase 19.28 (Componentes UI Compartidos) ✅
 
 ### Added
+
 - **Namespace de UI Compartida (`.dx-v2-ui-*`)**: Diseñado e inyectado un bloque unificado de estilos en [dx-styles.css] (más de 310 líneas de código CSS HSL) para estandarizar los elementos visuales comunes:
   - Modales glassmorphic premium `.dx-v2-ui-modal-overlay` y `.dx-v2-ui-modal-content` con animaciones fluidas (`dxFadeIn` / `dxScaleIn`) y filtros blur de alta fidelidad.
   - Tablas industriales de alta densidad `.dx-v2-ui-table-wrapper` y `.dx-v2-ui-table` con filas translúcidas en hover y cabeceras monoespaciadas.
@@ -375,10 +414,12 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Badges compactas de estado y alertas deterministas.
 
 ### Changed
+
 - **Estandarización de Vistas de Clientes (`clients/show.blade.php`)**: Migradas al 100% las tablas de contratos, licencias, certificados, contactos y renovaciones bajo el nuevo estándar industrial, así como los modales de contacto y de auditoría de licencias.
 - **Vista de Enlaces de Recursos (`tools/partials/_resources.blade.php`)**: Modal de administración unificado al namespace de UI global.
 
 ### Fixed
+
 - **Resolución de Incidencia de Reactividad (Alpine.js)**: Removido el modificador `!important` en el display de `.dx-v2-ui-modal-overlay` en [dx-styles.css]. Esto corrige el bug crítico que forzaba la visualización persistente del modal "Detalle de Auditoría Siemens" al entrar en la ficha del cliente, restaurando el correcto funcionamiento de `x-show` y `x-cloak`.
 
 ---
@@ -386,9 +427,11 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-19 11:35] — CSS Unification: Subfase 19.27 (Componentes de Formulario) ✅
 
 ### Added
+
 - **Namespace de Formularios (`.dx-v2-form-*`)**: Creada una especificación centralizada en [dx-styles.css] con estilos para campos de texto, inputs, selectores de opciones, checkboxes y envolturas de subida interactiva. Soporta focus shadows ergonómicos, estados deshabilitados y animaciones de borde con variables HSL.
 
 ### Changed
+
 - **Formularios de Perfil (`profile/index.blade.php`)**: Refactorizados inputs, textareas y selectores de perfil para purgar paddings inline y heredar variables semánticas HSL globales.
 - **Formulario de Contacto (`clients/show.blade.php`)**: Migrado el modal de alta de contactos de la clase obsoleta `.gui-input` al namespace semántico `.dx-v2-form-*`.
 
@@ -397,6 +440,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-19 11:20] — CSS Unification: Subfase 19.26 (Páginas de Error) ✅
 
 ### Changed
+
 - **Mantenimiento Técnico (`errors/503.blade.php`)**: Purgado por completo un bloque complejo de estilos locales `<style>` de más de 200 líneas, delegando toda la presentación visual del modo mantenimiento premium y su temporizador interactivo a la hoja de estilos global `dx-styles.css`.
 
 ---
@@ -404,6 +448,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-18 16:00] — CSS Unification: Subfase 19.25 (Logs y Auditoría) ✅
 
 ### Added
+
 - **Namespace Semántico de Logs y Auditoría (`.dx-v2-audit-*`)**: Diseñado e inyectado al final de [dx-styles.css] (más de 500 líneas de código CSS optimizado) para estructurar el panel de actividad, logs de Laravel y correos SMTP sin dependencias estáticas:
   - Banners de estado de sesión unificados para éxitos y errores `.dx-v2-audit-banner-success` y `.dx-v2-audit-banner-error`.
   - Pestañas de navegación e interactividad avanzada `.dx-v2-audit-tabs-container` e interactores `.dx-v2-audit-tab-link` con soporte para estados activos (`.active`) y transiciones fluidas.
@@ -416,6 +461,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Estructuras y estados de correos SMTP enviados y fallidos `.dx-v2-audit-badge-email-status` (sent/failed).
 
 ### Changed
+
 - **Vista de Auditoría e Historial (`admin/audit/index.blade.php`)**: Refactorizada por completo para purgar el 100% de los estilos en línea estáticos y dinámicos (badges de nivel, filas hover, contadores métricos, pestañas activas, stack traces colapsables) y eliminar una hoja de estilos `<style>` local de más de 80 líneas, migrando toda la capa de diseño de las tres pestañas al namespace semántico centralizado.
 
 ---
@@ -423,6 +469,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-18 15:58] — CSS Unification: Subfase 19.24 (Integraciones IA) ✅
 
 ### Added
+
 - **Namespace de Integraciones IA (`.dx-v2-sys-dash-*`)**: Diseñado e integrado un completo y robusto bloque de clases semánticas en [dx-styles.css] para modularizar la sección de salud y latido de proveedores de Inteligencia AI y canales de alerta:
   - Estructuras para indicador circular del estado de conexión `.dx-v2-sys-dash-service-status-dot` (en sus variantes online y danger/offline) con animación de latido CSS nativa.
   - Definición de caja contenedora de icono del servicio `.dx-v2-sys-dash-service-icon-box` con transiciones de color de escala cúbica y curvatura de esquinas suave (`border-radius: 10px`).
@@ -438,11 +485,13 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Clase para punto de separación sutil de métricas del sistema operativo `.dx-v2-sys-dash-dot-separator`.
 
 ### Changed
+
 - **Vista de Dashboard del Sistema**: Refactorizada por completo la vista [dashboard.blade.php] en `admin/system/` purgando el 100% de la lógica PHP que calculaba estilos dinámicos (27 líneas de variables de color eliminadas) y eliminando todos los estilos inline estáticos restantes de botones y separadores. Delegada toda la presentación al motor de renderizado de la hoja CSS global.
 
 ## [2026-05-18 15:54] — CSS Unification: Subfase 19.23 (Backups) ✅
 
 ### Added
+
 - **Namespace de Gestión de Backups (`.dx-v2-backups-*`)**: Diseñado e integrado un completo y robusto bloque de clases semánticas en [dx-styles.css] para el control, historial y restauración de copias de seguridad:
   - Cabecera flex de tarjeta `.dx-v2-backups-card-header` con alineación vertical `.dx-v2-backups-header-left` y el badge de tiempo de retención `.dx-v2-backups-header-badge` estilizado.
   - Sección flex derecha `.dx-v2-backups-header-right` con el panel detallado de espacio total ocupado `.dx-v2-backups-storage-panel`, etiqueta `.dx-v2-backups-storage-label` y valor numérico destacado `.dx-v2-backups-storage-value`.
@@ -460,11 +509,13 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Campo de entrada de confirmación aislado `.dx-v2-backups-modal-input`, etiqueta de instrucción `.dx-v2-backups-modal-label`, rejilla de botones `.dx-v2-backups-modal-actions` y botones simétricos `.dx-v2-backups-modal-btn`.
 
 ### Changed
+
 - **Vista de Backups**: Refactorizada por completo la vista [index.blade.php] en `admin/backups/` purgando el 100% de los estilos inline locales (declaraciones `style="..."` eliminadas) y eliminando el bloque `<style>` incrustado local en favor de las clases de namespace del archivo central.
 
 ## [2026-05-18 15:52] — CSS Unification: Subfase 19.22 (Alertas y Notificaciones) ✅
 
 ### Added
+
 - **Namespace de Alertas y Notificaciones (`.dx-v2-alerts-*`)**: Diseñado e integrado un bloque de estilos cohesivos y ergonómicos en [dx-styles.css] para modularizar la configuración de umbrales e historial de envíos SMTP:
   - Estructuras para banner de alertas `.dx-v2-alerts-alert-banner` (en sus variantes success y danger) con fondos y bordes HSL matizados.
   - Cabecera flexible `.dx-v2-alerts-header-row`, grupo de botones `.dx-v2-alerts-btn-group` y botón de activación `.dx-v2-alerts-toggle-btn`.
@@ -478,11 +529,13 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Caja de ayuda informativa del motor `.dx-v2-alerts-info-box`, cuerpo `.dx-v2-alerts-info-box-inner`, icono `.dx-v2-alerts-info-box-icon`, título `.dx-v2-alerts-info-box-title` y descripción técnica `.dx-v2-alerts-info-box-desc`.
 
 ### Changed
+
 - **Vista de Alertas**: Refactorizada la vista [index.blade.php] en `admin/alerts/` purgando el 100% de los estilos inline locales (declaraciones `style="..."` eliminadas), aislando sus campos numéricos de la clase global `.gui-input` y delegando el 100% de la maquetación a las clases centralizadas de `dx-styles.css`.
 
 ## [2026-05-18 15:48] — CSS Unification: Subfase 19.21 (Repositorio de Licencias) ✅
 
 ### Added
+
 - **Namespace del Repositorio de Licencias (`.dx-v2-lic-repo-*`)**: Diseñado e integrado un bloque de estilos cohesivos y modulares en [dx-styles.css] para el control del empaquetado de licencias semanales:
   - Estructuras para espaciado de tarjetas `.dx-v2-lic-repo-card-mb`, alineación flex de cabeceras `.dx-v2-lic-repo-header-row` y grupo de botones `.dx-v2-lic-repo-btn-group` con padding específico para botones compactos `.dx-v2-lic-repo-btn-sm`.
   - Contenedor de cuerpo `.dx-v2-lic-repo-body` y envoltura de alertas en rejilla para estados de éxito/información/peligro `.dx-v2-lic-repo-alert` con bordes y fondos HSL matizados.
@@ -492,11 +545,13 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Panel informativo lateral unificado `.dx-v2-lic-repo-sidebar-card`, cabecera de ayuda `.dx-v2-lic-repo-sidebar-header`, título en mayúsculas `.dx-v2-lic-repo-sidebar-title`, texto fluido `.dx-v2-lic-repo-sidebar-text` y pie de firma `.dx-v2-lic-repo-sidebar-footer` con borde superior integrado.
 
 ### Changed
+
 - **Vista de Repositorio**: Purgado el 100% de los estilos inline locales (26 declaraciones `style="..."` eliminadas) en [repository.blade.php] enlazándolo directamente al nuevo bloque semántico unificado, corrigiendo a su vez una duplicación sintáctica menor en la sección `@endsection`.
 
 ## [2026-05-18 15:45] — CSS Unification: Subfase 19.20 (Datos e Importación) ✅
 
 ### Added
+
 - **Namespace de Datos e Importación (`.dx-v2-import-*`)**: Diseñado e integrado un completo y estructurado bloque de estilos en [dx-styles.css] para modularizar la visualización de la carga masiva y control de mapeo:
   - Estructuras para dropzone de arrastre responsivo `.dx-v2-import-dropzone`, botones de acción primary `.dx-v2-import-btn-submit` y alertas dinámicas de éxito con enlace a detalles.
   - Rejilla de mapeo estructurada `.dx-v2-import-mapping-grid` y visualización de columnas de datos `.dx-v2-import-mapping-col`.
@@ -504,11 +559,13 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Badges de alerta e historial de advertencias `.dx-v2-import-badge-warn` e items vacíos (Empty State) con iconos deterministas.
 
 ### Changed
+
 - **Vistas del Módulo de Importación**: Verificado el desacoplamiento completo y purga de estilos inline y `<style>` incrustados en [index.blade.php] (Carga), [index.blade.php] (Historial) y [show.blade.php] (Detalles de log) bajo la carpeta `admin/import/`, enlazando todas las estructuras directamente a las reglas del namespace global.
 
 ## [2026-05-18 15:39] — CSS Unification: Subfase 19.19 (Usuarios y Acceso) ✅
 
 ### Added
+
 - **Namespace de Usuarios y Acceso (`.dx-v2-users-*`)**: Diseñado e integrado un completo bloque de estilos ergonómicos en [dx-styles.css] con más de 340 líneas de código para el control total del CRUD de personal:
   - Layouts estructurales `.dx-v2-users-header-layout` y envolturas breadcrumb `.dx-v2-users-breadcrumb-wrapper` con enlaces de retroceso estilizados `.dx-v2-users-breadcrumb-link`.
   - Título y subtítulos ergonómicos `.dx-v2-users-title` y `.dx-v2-users-subtitle`.
@@ -520,11 +577,13 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Panel de configuración de seguridad lateral `.dx-v2-users-security-box` y banners informativos de envío de credenciales `.dx-v2-users-banner`.
 
 ### Changed
+
 - **Vistas del CRUD de Usuarios**: Refactorizadas por completo las vistas [index.blade.php], [create.blade.php] y [edit.blade.php] bajo el directorio `admin/users/`, purgando el 100% de los estilos inline locales y los bloques `<style>` incrustados. Delegada toda la lógica visual a las clases centralizadas de `dx-styles.css`.
 
 ## [2026-05-18 15:33] — CSS Unification: Subfase 19.19 (Docker Fleet Monitor & Padding Fix) ✅
 
 ### Added
+
 - **Namespace de Docker Fleet Monitor (`.dx-v2-sys-docker-*`)**: Diseñado e integrado un completo bloque de clases semánticas en [dx-styles.css] para modularizar la sección de monitorización de contenedores:
   - Estructuras para la cabecera `.dx-v2-sys-docker-page-header`, su layout flexible `.dx-v2-sys-docker-header-layout`, el breadcrumb `.dx-v2-sys-docker-breadcrumb-wrapper` e indicadores en vivo del túnel.
   - Rejilla responsiva para contenedores `.dx-v2-sys-docker-grid` con soporte para móvil.
@@ -535,11 +594,13 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 - **Clase Global `.card-body`**: Añadida la definición global `.card-body { padding: 24px !important; }` en la sección de tarjetas para restaurar la ergonomía visual y paddings en la Matriz de Servicios del Dashboard principal (Subfase 19.18).
 
 ### Changed
+
 - **Vista de Docker Fleet Monitor**: Refactorizada por completo la vista [docker.blade.php], purgando el 100% de los estilos inline locales y el bloque de estilos incrustado de `<style>`. Integrada la lógica de control de estado vacío si la lista de contenedores está vacía.
 
 ## [2026-05-18 15:15] — CSS Unification: Subfase 19.18 (Dashboard del Sistema / NOC Pro) ✅
 
 ### Added
+
 - **Namespace de Dashboard del Sistema (`.dx-v2-sys-dash-*`)**: Diseñado e integrado un completo y profesional bloque de clases en [dx-styles.css] para dar al centro de control técnico (NOC Pro) un acabado industrial premium:
   - Estructuras para la cabecera `.dx-v2-sys-dash-header-meta`, su layout flex `.dx-v2-sys-dash-header-meta-layout` e items individuales `.dx-v2-sys-dash-header-meta-item` con soporte para colores de acento y éxito del hash Git.
   - Rejilla responsiva para estadísticas de hardware `.dx-v2-sys-dash-stats-grid` con breakpoints para tablet y móvil.
@@ -553,12 +614,13 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Panel de seguridad lateral `.dx-v2-sys-dash-sec-box` con listados `.dx-v2-sys-dash-sec-row` y notas técnicas.
 
 ### Changed
+
 - **Vista del Dashboard de Administración**: Refactorizada por completo la vista principal [dashboard.blade.php], eliminando más de 100 líneas de estilos locales y purgando el 100% de los estilos inline locales de métricas, rejillas, listas de servicios y botones. Delegada toda la maquetación a la hoja global y centralizado el Toast interactivo de Alpine.js.
 
 ## [2026-05-18 11:21] — CSS Unification: Subfase 19.16 (Moldex3D: Parser .mac) ✅
 
-
 ### Added
+
 - **Namespace de Moldex3D (`.dx-v2-tools-moldex-*`)**: Diseñado e integrado un completo y robusto bloque de clases semánticas en [dx-styles.css] para unificar y profesionalizar la sección del auditor Moldex3D:
   - Estructuras alineadas para la cabecera `.dx-v2-tools-moldex-header-layout` y el icono de vendor estilizado traslúcido `.dx-v2-tools-moldex-header-icon`.
   - Títulos y subtítulos ergonómicos `.dx-v2-tools-moldex-header-title` and `.dx-v2-tools-moldex-header-sub`, con su distintivo acento naranja `.dx-v2-tools-moldex-vendor-label` específico para el motor Core Plastic.
@@ -570,11 +632,13 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Carteles laterales unificados de estándar de nomenclatura `.dx-v2-tools-moldex-sidebar-card` y aviso de privacidad determinista `.dx-v2-tools-moldex-sidebar-warning`.
 
 ### Changed
+
 - **Vista del Auditor Moldex3D**: Refactorizada por completo la vista principal [moldex3d.blade.php], purgando el 100% de los estilos inline locales y el bloque local incrustado de `<style>`, modularizando toda la vista e integrando las nuevas clases del namespace global de forma impecable sin alterar la lógica reactiva de Alpine.js.
 
 ## [2026-05-18 11:09] — CSS Unification: Subfase 19.15 (Siemens: Recursos & Enlaces) ✅
 
 ### Added
+
 - **Namespace de Recursos (`.dx-v2-resources-*`)**: Diseñado e integrado un completo sistema de estilos en [dx-styles.css] para unificar y profesionalizar la sección de Recursos e Enlaces de soporte técnico de Siemens y Moldex3D:
   - Estructuras alineadas para la cabecera `.dx-v2-resources-header-layout` y caja de título/subtítulo `.dx-v2-resources-title-block`.
   - Iconos de alta fidelidad `.dx-v2-resources-header-icon` y badges de marca `.dx-v2-resources-badge` con subclases dinámicas `.siemens` y `.moldex3d` para acentos de color específicos.
@@ -585,12 +649,14 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Bloque de estados vacíos del módulo `.dx-v2-resources-empty-state` (con su icono y texto semántico).
 
 ### Changed
+
 - **Vista de Recursos y parcial de enlaces**: Refactorizadas por completo la vista principal [resources.blade.php] y su parcial [_resources.blade.php], purgando el 100% de los estilos inline locales (como tarjetas, modales y layouts flex) y eliminando por completo el bloque incrustado local `<style>`, delegando todo el control visual e interactivo a la hoja de estilos global sin alterar la reactividad de Alpine.js.
 - **Correcciones de maquetación y espaciado del modal**: Resuelto el problema de padding perimetral en la vista de tarjetas de recursos y en la ventana modal de edición/creación mediante la clase `.dx-v2-resources-body` y `.dx-v2-resources-modal-body` con `padding: 24px !important`. Corregido el grid unificado y aplicados márgenes defensivos (`margin-bottom: 20px !important`) a los campos y botones del formulario.
 
 ## [2026-05-18 11:06] — CSS Unification: Subfase 19.14 (Siemens: COD) ✅
 
 ### Added
+
 - **Refuerzo del Namespace de COD (`.dx-v2-cod-*`)**: Diseñadas e integradas clases semánticas de apoyo en [dx-styles.css] para modularizar la visualización y mejorar el diseño visual adaptativo del Generador de COD y su Asistente IA:
   - Fila de dos columnas con espaciado vertical específico `.dx-v2-cod-columns-2-spaced`.
   - Botón de eliminación posicionado absolutamente y centrado verticalmente para MACs adicionales `.dx-v2-cod-remove-btn`.
@@ -599,11 +665,13 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Etiqueta destacada en color de acento Siemens para adaptadores recomendados por IA `.dx-v2-cod-ai-adapter-label`.
 
 ### Changed
+
 - **Vista del Generador de COD**: Refactorizada la vista [cod.blade.php] purgando el 100% de los estilos inline locales restantes (como los botones de eliminación de MACs y los divs del modal del asistente IA), asegurando el perfecto anidamiento de los divs del modal y la preservación completa de los estilos dinámicos calculados reactivamente de Alpine.js (`:style`).
 
 ## [2026-05-18 11:01] — CSS Unification: Subfase 19.13 (Siemens: HEEDS) ✅
 
 ### Added
+
 - **Namespace de HEEDS (`.dx-v2-tools-heeds-*`)**: Diseñadas e integradas clases semánticas dedicadas en [dx-styles.css] para modularizar la visualización y mejorar la ergonomía de la herramienta individual de HEEDS:
   - Estructura flexible de alineación de cabecera `.dx-v2-tools-heeds-header-layout` y su contenedor de icono traslúcido estilizado `.dx-v2-tools-heeds-header-icon`.
   - Títulos y subtítulos ergonómicos `.dx-v2-tools-heeds-header-title` y `.dx-v2-tools-heeds-header-sub`.
@@ -613,11 +681,13 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Contenedor lateral de avisos de almacenamiento `.dx-v2-tools-heeds-sidebar-warning` y bloques de daemons e información `.dx-v2-tools-heeds-sidebar-info`.
 
 ### Changed
+
 - **Vista de la Herramienta HEEDS**: Refactorizada por completo la vista [heeds.blade.php], purgando el 100% de los estilos inline locales redundantes en la cabecera de página, tarjetas de proceso, dropzone de arrastre, botón de acción y paneles laterales, delegando la maquetación y la interactividad a las clases unificadas del namespace global.
 
 ## [2026-05-18 10:59] — CSS Unification: Subfase 19.12 (Siemens: STAR-CCM+) ✅
 
 ### Added
+
 - **Namespace de STAR-CCM+ (`.dx-v2-tools-star-*`)**: Diseñadas e integradas clases semánticas dedicadas en [dx-styles.css] para modularizar la visualización y mejorar la ergonomía de la herramienta individual de STAR-CCM+:
   - Estructura flexible de alineación de cabecera `.dx-v2-tools-star-header-layout` y su contenedor de icono traslúcido estilizado `.dx-v2-tools-star-header-icon`.
   - Títulos y subtítulos ergonómicos `.dx-v2-tools-star-header-title` y `.dx-v2-tools-star-header-sub`.
@@ -627,11 +697,13 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Contenedor lateral de avisos de almacenamiento `.dx-v2-tools-star-sidebar-warning` y bloques de daemons e información `.dx-v2-tools-star-sidebar-info`.
 
 ### Changed
+
 - **Vista de la Herramienta STAR-CCM+**: Refactorizada por completo la vista [star-ccm.blade.php], purgando el 100% de los estilos inline locales redundantes en la cabecera de página, tarjetas de proceso, dropzone de arrastre, botón de acción y paneles laterales, delegando la maquetación y la interactividad a las clases unificadas del namespace global.
 
 ## [2026-05-18 10:55] — CSS Unification: Subfase 19.11 (Siemens: NX Suite) ✅
 
 ### Added
+
 - **Namespace de NX Suite (`.dx-v2-tools-nx-*`)**: Diseñadas e integradas clases semánticas dedicadas en [dx-styles.css] para modularizar la visualización y mejorar la ergonomía de la herramienta individual de NX Suite:
   - Estructura flexible de alineación de cabecera `.dx-v2-tools-nx-header-layout` y su contenedor de icono traslúcido estilizado `.dx-v2-tools-nx-header-icon`.
   - Títulos y subtítulos ergonómicos `.dx-v2-tools-nx-header-title` y `.dx-v2-tools-nx-header-sub`.
@@ -641,11 +713,13 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Contenedor lateral de avisos de almacenamiento `.dx-v2-tools-nx-sidebar-warning` y bloques de daemons e información `.dx-v2-tools-nx-sidebar-info`.
 
 ### Changed
+
 - **Vista de la Herramienta NX Suite**: Refactorizada por completo la vista [nx-suite.blade.php], purgando el 100% de los estilos inline locales redundantes en las tarjetas de motor, en la zona de arrastre, en el botón de procesado y en el panel lateral informativo, delegando toda la interactividad a las clases unificadas del namespace y variables HSL nativas.
 
 ## [2026-05-18 10:48] — CSS Unification: Subfase 19.10 (Herramientas: Vista general / índice) ✅
 
 ### Added
+
 - **Namespace de Herramientas (`.dx-v2-tools-*`)**: Diseñadas e integradas clases semánticas dedicadas en [dx-styles.css] para modularizar la visualización y mejorar la ergonomía del Hub de Herramientas:
   - Estructuras de layouts responsivos `.dx-v2-tools-grid`, `.dx-v2-tools-grid-2` (2 columnas) y `.dx-v2-tools-grid-3` (3 columnas).
   - Envoltura modular por tecnología `.dx-v2-tools-vendor-section` y su cabecera ergonómica `.dx-v2-tools-vendor-header`.
@@ -657,11 +731,13 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Badges de estado contextuales de alta densidad `.dx-v2-tools-badge.ai`, `.dx-v2-tools-badge.doc` y `.dx-v2-tools-badge.upcoming`.
 
 ### Changed
+
 - **Vista Principal de Herramientas**: Refactorizada la vista [index.blade.php], purgando por completo el bloque `<style>` incrustado (más de 20 líneas de CSS local) y todos los estilos inline redundantes, delegando la interactividad y colores a variables CSS y clases globales.
 
 ## [2026-05-18 10:44] — CSS Unification: Subfase 19.9 (Planificador de Renovaciones) ✅
 
 ### Added
+
 - **Namespace del Planificador (`.dx-v2-planner-*`)**: Diseñadas e integradas clases semánticas dedicadas en [dx-styles.css] para modularizar la visualización y mejorar la ergonomía del Planificador de Renovaciones:
   - Estructura contenedora de la cabecera `.dx-v2-planner-header-grid` con alineación ergonómica de estadísticas y selección de ciclo.
   - Componente selector interactivo `.dx-v2-planner-month-picker`, disparador `.dx-v2-planner-month-btn` y menú flotante absoluto `.dx-v2-planner-dropdown` para la selección de meses.
@@ -672,12 +748,14 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Estado vacío premium `.dx-v2-planner-empty` y su icono atenuado `.dx-v2-planner-empty-icon`.
 
 ### Changed
+
 - **Vista Principal del Planificador**: Refactorizada la vista [index.blade.php], eliminando el 100% de los estilos inline locales (más de 60 atributos) y purgando controladores arcaicos `onmouseover`/`onmouseout` locales, delegando toda la interacción dinámica a clases del namespace y selectores nativos CSS `:hover`.
 - **Higiene de Marcado**: Corregida la etiqueta duplicada `</tr>` residual en la tabla y simplificada la estructura HTML de alineación.
 
 ## [2026-05-18 10:40] — CSS Unification: Subfase 19.8 (Contactos & Certificados COD) ✅
 
 ### Added
+
 - **Namespace COD (`.dx-v2-cod-*`)**: Creadas y documentadas las clases semánticas dedicadas en [dx-styles.css] para encapsular y estilizar de forma limpia el generador de Certificado de Cese (COD) y el asistente inteligente de análisis de Composite:
   - Estructura `.dx-v2-cod-container` y tarjeta de alta fidelidad `.dx-v2-cod-card` con bordes premium.
   - Cabecera estilizada de alta densidad `.dx-v2-cod-card-header` con línea degradada interactiva `.dx-v2-cod-header-line`.
@@ -686,13 +764,14 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Grids de alta densidad para la previsualización del hardware recomendado `.dx-v2-cod-ai-result-grid` y explicaciones del motor IA `.dx-v2-cod-ai-reason`.
 
 ### Changed
+
 - **Generador de COD**: Refactorizada la vista [cod.blade.php], removiendo el bloque de estilos locales `<style>` incrustado (más de 850 líneas de CSS duplicado) e inline styles, remapeando todo el marcado a las clases semánticas unificadas en el namespace `.dx-v2-cod-*`.
 - **Vista Detallada de Clientes**: Auditada la vista [show.blade.php] para verificar la total adherencia a las clases unificadas en las pestañas de contactos y certificados COD, confirmando que tiene cero estilos inline y excelente consistencia visual.
 
 ## [2026-05-18 10:35] — CSS Unification: Subfase 19.7 (Importación CSV) ✅
 
-
 ### Added
+
 - **Namespace de Importación (`.dx-v2-import-*`)**: Diseñadas clases semánticas dedicadas en [dx-styles.css] para aislar y normalizar el módulo de importación de datos y visualización de logs históricos:
   - Estructuras `.dx-v2-import-dropzone` y `.dx-v2-import-dropzone-inner` para la carga visual interactiva de ficheros con transiciones suaves en hover y colores adaptados a la base visual.
   - El grid y la tabla del protocolo de mapeo de datos de alta densidad `.dx-v2-import-mapping-grid` y `.dx-v2-import-mapping-item`.
@@ -700,6 +779,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Componente estilizado reutilizable `.dx-v2-import-btn-icon` para los listados del historial.
 
 ### Changed
+
 - **Vista Principal de Importación**: Refactorizada [index.blade.php], eliminando el 100% de los estilos inline locales de la tarjeta de carga, dropzone y protocolo de mapeo, delegando la visualización a las clases semánticas del namespace.
 - **Historial de Logs**: Limpiado [logs/index.blade.php] al remover el bloque `<style>` incrustado y los estilos locales de alineaciones y botones de acción, migrando todo al estándar global.
 - **Detalle de Log**: Limpiado el 100% de los estilos inline locales en [logs/show.blade.php] de breadcrumbs, envolturas estadísticas y metadatos.
@@ -707,15 +787,18 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-18 10:30] — CSS Unification: Subfase 19.6 (Clientes: Licencias) ✅
 
 ### Fixed
+
 - **Variables CSS rotas**: Corregidas variables inexistentes (`--dx-v2-surface-raised` y `--dx-v2-text-muted`) en [dx-styles.css] por sus equivalentes unificados (`--dx-v2-raised` y `--dx-v2-muted`), reparando la renderización de la cabecera del daemon, la tabla de productos y el historial de auditoría de licencias.
 - **Soporte x-cloak**: Añadida la regla global `[x-cloak] { display: none !important; }` en la hoja de estilos global para manejar de forma nativa la visibilidad reactiva de Alpine.js.
 
 ### Changed
+
 - **Limpieza de estilos inline**: Removidos todos los estilos inline `style="display: none;"` de los tabs interactivos y modales en la vista detallada de clientes [show.blade.php], sustituyéndolos por la directiva limpia `x-cloak`.
 
 ## [2026-05-17 15:50] — CSS Unification: Subfase 19.4 & 19.5 (Dashboard & Clientes) ✅
 
 ### Added
+
 - **Dashboard Centralization (19.4)**:
   - Creadas las clases del namespace `.dx-v2-dashboard-*` para encapsular la estructura y el comportamiento del dashboard principal en `dx-styles.css`.
   - Diseñadas las clases del buscador global `.dx-v2-dashboard-search-card` y asociadas, utilizando selectores nativos de CSS `:focus` para prescindir de controladores Javascript inline.
@@ -727,6 +810,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Diseñada la clase `.dx-v2-clients-empty-state` para controlar el padding vertical, la alineación y el color de texto atenuado de la celda de tabla vacía de forma centralizada.
 
 ### Changed
+
 - **Dashboard Refactor**:
   - Eliminados el 100% de los atributos `style="..."` en las tarjetas estadísticas, envolturas de íconos SVG y contenedores de la columna lateral.
   - Limpiados los atributos interactivos `onfocus`/`onblur` del buscador Express, delegando la interactividad visual a selectores CSS puros en la hoja de estilos global.
@@ -736,47 +820,55 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
   - Eliminada la clase redundante `text-sm` del subtítulo `.page-sub` para heredar nativamente la tipografía definida en el CSS.
 
 ### Fixed
+
 - **Integridad de Tabla de Clientes**: Corregido el `colspan` del estado vacío (`@empty`) en `index.blade.php` de `colspan="4"` a `colspan="5"`. Al tener la tabla 5 columnas de cabecera, la celda vacía ahora se extiende perfectamente a lo ancho de toda la tabla, evitando desalineaciones visuales.
 
 ## [2026-05-16 16:15] — Herramientas: Fix Borrado Físico COD (#016) ✅
 
 ### Fixed
+
 - **Incidencia #016 (Crítica)**: Corregido bug que impedía el borrado físico de archivos PDF en el servidor. Se implementó una normalización de rutas más robusta para evitar discrepancias de encoding/espacios en Linux.
 - **Robustez**: Añadida telemetría de borrado en `CodController@destroy` para registrar el éxito o fallo de cada operación de archivo.
 
 ## [2026-05-16 15:45] — Herramientas: Fix COD Preview & UI Contextual IA ✅
 
 ### Fixed
+
 - **Incidencia #015 (Crítica)**: Reparado fallo de anidamiento HTML en `cod.blade.php`. Un bloque duplicado del modal de IA impedía la apertura de la "Vista Previa" del certificado.
 - **Storage Hygiene**: Eliminada la carpeta residual `backend/storage/private` (fuera del árbol de la app), centralizando todo en el disco `private` oficial de Laravel.
 
 ### Changed
+
 - **UX: Asistente IA Contextual**: Reubicado el botón "Analizar Composite.txt" directamente en la sección "Nueva Máquina". Se eliminó el botón grande redundante de la parte inferior para una interfaz más limpia y ergonómica.
 - **Storage Refactor**: Modificada la lógica de rutas de almacenamiento de CODs. Ahora se utiliza el **Nombre Real del Cliente en MAYÚSCULAS** (ej. `ABAD INTEGRACION...`) en lugar de slugs, mejorando la legibilidad en el sistema de archivos.
 
 ### Added
+
 - **Refuerzo UI**: Nuevos estilos `btn-ai-mini` y animaciones de pulso sutiles para los botones contextuales de IA.
 
 ## [2026-05-15 13:50] — Dashboard Operativo y Estabilización de Sistema ✅
 
-
 ### Added
+
 - **Buscador Global Express**: Motor de búsqueda de alta visibilidad en Dashboard con soporte instantáneo para Sold-To, Machine ID y Nombres de Clientes.
 - **Favoritos (Bento Actions)**: Vinculación funcional de botones rápidos a herramientas críticas: Generación de COD, Planificador de Renovaciones y Hub de Auditoría IA.
 - **Badge de Renovaciones**: Contador dinámico en tiempo real de renovaciones pendientes para el mes en curso.
 
 ### Changed
+
 - **JWT Deep Hardening**: Sesión estabilizada mediante rotación inteligente (solo tras 5 min de antigüedad), ventana de gracia de 120s y ampliación de inactividad a 60 minutos.
 - **Unificación de Volúmenes**: Eliminada la carpeta redundante `./storage` de la raíz. Todo el almacenamiento se ha centralizado en `backend/storage`, normalizando la infraestructura Docker.
 - **Git Hygiene**: Configurado el sistema para ignorar el estado de modificación interno de los submódulos de diseño/IA.
 
 ### Fixed
+
 - **QueryExceptions (Database)**: Restauradas columnas faltantes `warnings`, `detected_name` y `decision` en las tablas de auditoría y normalización.
 - **Limpieza de Huérfanos**: Eliminación de residuos de base de datos y archivos `.sql` antiguos del servidor.
 
 ## [2026-05-15 11:28] — Resolución de Incidencia #013 (Sincronización Moldex3D) ✅
 
 ### Fixed
+
 - **Invisibilidad Moldex3D**: Solucionado fallo crítico que impedía que las licencias de Moldex3D aparecieran en el inventario tras subirse, a pesar de que la UI indicaba éxito.
 - **Normalización**: Integración de `ClientNormalizationService` en `MoldexSyncService` para soportar búsqueda por Alias, Fuzzy Matching (85%) y creación automática de nuevos clientes (ej. `Metalocaucho Mtc - A Wabtec Company`).
 - **Control de Errores**: Actualizado `MoldexController` para que detecte correctamente los fallos internos de sincronización y retorne HTTP 422, cortando la falsa sensación de éxito.
@@ -784,24 +876,28 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-15 10:15] — Clientes: Filtro Granular de Inventario & UI Premium ✅
 
 ### Added
+
 - **Filtro Inteligente de Inventario**: Implementado control segmentado de 4 estados (OFF, ALL, Siemens, Moldex3D) para una gestión precisa del parque de licencias.
 - **UI Premium**: Rediseño del área de búsqueda con estética "cristal" (glassmorphism), etiquetas dinámicas y alineación ergonómica a la derecha.
 - **Búsqueda Avanzada**: Ampliado el ancho del buscador a 600px y mejorada la visibilidad del input para facilitar la localización de cuentas.
 - **Persistencia Multi-Vendor**: La lógica de filtrado ahora es 100% persistente por sesión, permitiendo navegar entre clientes manteniendo el contexto de vendor seleccionado.
 
 ### Fixed
+
 - **Incidencia #003**: Resuelto el límite del filtro "Solo con Licencias", que ahora soporta múltiples vendors de forma independiente.
 - **Visibilidad Moldex3D**: Identificado problema de sincronización de licencias Moldex3D (Incidencia #013). Se ha creado un registro de prueba para validar la funcionalidad.
 
 ## [2026-05-15 09:20] — Seguridad: Dashboard Telemetría & Blacklist (Fix #010) ✅
 
 ### Fixed
+
 - **Seguridad (Dashboard)**: Corregidos indicadores (Logins fallidos, Errores 24h, Blacklist) que se mostraban a 0 por falta de registro de datos.
 - **Auditoría**: Implementado log automático de `login_failed` con captura de IP y User Agent.
 - **JWT**: Implementada **Blacklist proactiva** en Redis (ZSET) para invalidación instantánea de tokens al cerrar sesión.
 - **Telemetría**: Sincronización de niveles de severidad (`error`, `critical`) para una visualización real del estado de la flota en el NOC Pro.
 
 ### Added
+
 - **Parser de Logs**: Nuevo motor de análisis Regex para estructurar `laravel.log` en entradas legibles con timestamp y nivel de severidad.
 - **UI Interactiva**: Implementado sistema de **Stack Traces colapsables** con Alpine.js en la pestaña de logs de sistema.
 - **Filtrado de Ruido**: Resaltado visual diferenciado para código de proyecto vs librerías `vendor`.
@@ -811,6 +907,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-15 08:45] — Infraestructura: Fix Redis Persistence (Fix #012) ✅
 
 ### Fixed
+
 - **Redis (Infra)**: Resuelto fallo crítico `MISCONF` que bloqueaba escrituras en el portal.
 - **Persistencia**: Implementados **volúmenes nombrados** (`redis_beta_data`, `redis_prod_data`) en Docker Compose para asegurar que los permisos de `/data` sean gestionados correctamente por Docker y persistan tras reinicios.
 - **Hotfix**: Aplicada corrección de propiedad (`chown redis:redis`) en caliente para restaurar el servicio sin downtime.
@@ -818,11 +915,13 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-15 08:35] — Estabilización Global: Validación UI & Robustez Tools (Fix #011) ✅
 
 ### Added
+
 - **Validación Global UI**: Implementada lógica Alpine.js en NX, StarCCM+, HEEDS y Moldex3D para validar extensiones en el cliente antes de la subida.
 - **Feedback Visual**: Nuevo sistema de mensajes de error temporales (4s) con estética semántica para informar sobre extensiones no permitidas.
 - **Soporte Siemens**: Ampliado el soporte de extensiones a `.dat` y `.cid` en todas las herramientas del ecosistema Siemens.
 
 ### Fixed
+
 - **Incidencia #011 (Crítica)**: Resuelto el fallo que impedía la descarga y transformación de licencias NX. Corregido el flujo de respuesta AJAX para garantizar el stream de descarga.
 - **Robustez Backend**: Implementada gestión de memoria avanzada (`256M`) y bloques `try-catch` con degradación elegante. El sistema ahora asegura la entrega del archivo transformado aunque fallen servicios secundarios.
 - **Optimización de Parser**: Refactorizado `LicenseParserService` para procesar archivos FlexLM masivos línea a línea, eliminando el riesgo de `Memory Exhaustion` por regex complejos.
@@ -831,10 +930,12 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-15 07:55] — Estabilización: Fix Scripts de Backup & Mejora UI ✅
 
 ### Fixed
+
 - **Infraestructura (Backup)**: Reparado el script `backup-db.sh` (Fix #002). Corregidos finales de línea CRLF -> LF y errores de sintaxis en bloques `bash`.
 - **Blindaje**: Añadidas comillas de seguridad a variables de entorno (`$MYSQL_USER`, etc.) para prevenir errores con caracteres especiales.
 
 ### Added
+
 - **Backup Naming Pro**: Evolución del formato de nombre de archivo para incluir origen (`ENV_TYPE_DATE.sql`). Ahora el sistema distingue automáticamente entre copias `SISTEMA` (cron) y `MANUAL` (UI).
 - **UI NOC Pro**: Nueva columna "Origen" en la gestión de backups con badges semánticos (Azul para Sistema, Gris para Manual) para una monitorización técnica precisa.
 - **Backend**: Actualizado `BackupController` para extraer metadatos del nombre del archivo y pasar el argumento `manual` al disparar copias desde la web.
@@ -842,40 +943,46 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 ## [2026-05-14 16:40] — Switch: Multi-Sold-To Finalizado -> Tracking de Errores ✅
 
 ### Added
+
 - **Log de Sesión**: Fase 14 (Soporte Multi-Sold-To) completada y validada en Beta. Rama pusheada a `origin`.
 
 ## [2026-05-14 16:20] — Soporte: Multi-Sold-To (Licencias Unificadas) ✅
 
-
 ### Added
+
 - **n8n Workflow v2.1**: Actualizado motor de IA para detectar "Other Installs" en archivos contractuales de Siemens.
 - **Base de Datos**: Añadida columna JSON `additional_sold_tos` en la tabla de inventario activo.
 - **Auto-Mapeo**: Implementada lógica de creación automática de registros en `client_mappings` para todos los IDs secundarios detectados.
 - **Sincronización**: El motor de inventario ahora persiste los IDs unificados permitiendo su gestión centralizada.
 
 ### UI/UX
+
 - **Multi-Badges**: Visualización de Sold-Tos adicionales mediante badges técnicos en cada servidor del inventario.
 - **Auditoría Transparente**: Normalizada la visualización de IDs unificados en el modal de detalle de auditoría.
 
 ## [2026-05-14 15:20] — Fix: Validación MIME en Herramientas ✅
 
 ### Fixed
+
 - **Moldex3D**: Corregido error de validación que bloqueaba la carga de archivos `.mac`. Eliminada restricción estricta de `mimetypes` en favor de validación por extensión.
 - **Robustez Global**: Aplicada misma mejora en Siemens (NX, Star-CCM+ y HEEDS) para prevenir fallos futuros.
 
 ## [2026-05-14 15:15] — Optimización: Salto de Auditoría IA para Temporales ✅
 
 ### Added
+
 - **Ahorro de Tokens**: Implementada lógica de cortocircuito en `AuditService` para evitar llamadas a n8n/IA en licencias temporales de 7 días (aquellas con "YourHostname" o "ANY").
 - **Trazabilidad Silenciosa**: Las auditorías saltadas se registran en la base de datos con estado `skipped`, manteniendo el historial de archivos originales sin incurrir en costes de procesamiento pesado.
 
 ### Changed
+
 - **Tool Controllers**: Actualizados `NXSuiteController`, `StarCcmController` y `HeedsController` para realizar la detección de tipo de licencia antes de invocar el motor de auditoría.
 - **UI Feedback**: El historial de auditorías ahora muestra "SKIPPED" para las licencias temporales procesadas, indicando que el archivo es válido pero no requiere auditoría profunda.
 
 ## [2026-05-14 12:35] — Dashboard: Rediseño NOC Pro y Estética Premium ✅
 
 ### Added
+
 - **Premium Metric Cards**: Rediseño de las tarjetas del Dashboard con línea de acento superior (pseudo-elemento ::before) unificado con el Hub de Herramientas.
 
 - **Background NOC Icons**: Integración de iconos Lucide SVG en el fondo de las tarjetas con opacidad 0.08 y rotación dinámica para mejorar la estética profesional.
@@ -883,6 +990,7 @@ Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) e
 - **Hover UX**: Añadido efecto de elevación (box-shadow) y resalte de acento al pasar el ratón.
 
 ### Changed
+
 - **Brand Consistency**: Cambio de color semántico de "Licencias Activas" a verde (`success`) para alineación visual con el estado positivo del inventario.
 
 ## [2026-05-14 11:15] — Planificador: Optimización NOC Pro e Identidad ✅
@@ -1306,7 +1414,6 @@ _Firmado por: **Antigravity (DX Agent)** 🦾_
 - **Unificación**: Lógica de migración total que mueve contratos, licencias, inventario y contactos al unificar clientes.
 - **Regex**: Corregidos los patrones de extracción de nombres en los logs de importación.
 
-
 ## [2026-05-07] — Optimización de Auditoría IA (v2.2) ⏳ (Pendiente Verificar)
 
 ### Added
@@ -1393,10 +1500,12 @@ _Firmado por: **Antigravity (DX Agent)** 🦾_
 ## [2026-05-21] — Fase 25: Consola de Diagnósticos y Generador COD
 
 ### Added
+
 - **Chatbot UI**: Refactorización de la interfaz del asistente IA. Ventana ampliada (460x640) y eliminación del panel lateral Bento para reducir el ruido visual y mejorar la legibilidad.
 - **Resiliencia IA**: Implementada cadena completa de Fallback (Gemini -> DeepSeek -> OpenRouter -> Groq) con soporte de Function Calling en todos los niveles para acceso ininterrumpido a BD.
 
 ### Fixed
+
 - **Generador COD**: Solucionado error 500 crítico al generar certificados de cese (COD) para empresas no registradas en la base de datos (`client_id` nullable).
 - **Manejo de Errores UI**: Mejorado el parseo de respuestas HTTP 422 en peticiones `fetch` del frontend (se añadió `Accept: application/json` para evitar parseos erróneos de HTML).
 

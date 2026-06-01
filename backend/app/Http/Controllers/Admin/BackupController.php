@@ -31,8 +31,9 @@ class BackupController extends Controller
     public function backup()
     {
         try {
-            // Ejecutar script de backup con etiqueta manual
-            $process = \Illuminate\Support\Facades\Process::run('bash /var/www/html/scripts/backup-db.sh beta manual');
+            // Ejecutar script de backup con etiqueta manual, dinámico según entorno
+            $env = config('app.env') === 'production' ? 'prod' : 'beta';
+            $process = \Illuminate\Support\Facades\Process::run("bash /var/www/html/scripts/backup-db.sh {$env} manual");
             
             if ($process->successful()) {
                 $this->logAction('db_backup', 'Manual database backup created via Backups module');

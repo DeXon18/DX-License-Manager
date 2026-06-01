@@ -11,6 +11,15 @@ class ChangelogService
      */
     protected string $path = '/var/www/management/CHANGELOG.md';
 
+    private function parseInlineMarkdown(string $text): string
+    {
+        $text = htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+        $text = preg_replace('/`([^`]+)`/', '<code>$1</code>', $text);
+        $text = preg_replace('/\*\*([^*]+)\*\*/', '<strong>$1</strong>', $text);
+        $text = preg_replace('/_([^_]+)_/', '<em>$1</em>', $text);
+        return $text;
+    }
+
     /**
      * Parse the CHANGELOG.md file into a structured array
      */
@@ -82,13 +91,13 @@ class ChangelogService
                     $currentEntry['categories'][$currentCategory][] = [
                         'label' => $itemMatches[1],
                         'tag' => $tag,
-                        'description' => $itemMatches[2]
+                        'description' => $this->parseInlineMarkdown($itemMatches[2])
                     ];
                 } else {
                     $currentEntry['categories'][$currentCategory][] = [
                         'label' => null,
                         'tag' => $tag,
-                        'description' => $item
+                        'description' => $this->parseInlineMarkdown($item)
                     ];
                 }
             }

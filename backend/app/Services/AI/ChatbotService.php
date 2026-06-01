@@ -52,7 +52,7 @@ class ChatbotService
                     $openrouterKey,
                     $modelId,
                     $chatHistory,
-                    ['HTTP-Referer' => 'https://beta.dxpro.es', 'X-Title' => 'DX License Manager'],
+                    ['HTTP-Referer' => config('app.url'), 'X-Title' => 'DX License Manager'],
                     'openrouter'
                 );
             } catch (\Exception $e) {
@@ -67,7 +67,7 @@ class ChatbotService
                                 $openrouterKey,
                                 $route->fallbackModel->openrouter_id,
                                 $chatHistory,
-                                ['HTTP-Referer' => 'https://beta.dxpro.es', 'X-Title' => 'DX License Manager'],
+                                ['HTTP-Referer' => config('app.url'), 'X-Title' => 'DX License Manager'],
                                 'openrouter'
                             );
                             $response['used_fallback'] = true;
