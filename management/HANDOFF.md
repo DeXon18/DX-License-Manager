@@ -7,7 +7,7 @@
 
 ## Estado General
 
-**Fase actual:** Post-Fase 33 — Seguridad Auditada y Versionado 2.8.0  
+**Fase actual:** Post-Fase 33 — Seguridad Auditada y Versionado 3.0.0 Centralizado  
 **Stack beta:** ✅ running (Healthy)  
 **Stack prod:** ✅ running (Healthy)  
 
@@ -15,10 +15,10 @@
 
 ## Qué se hizo en esta sesión
 
+- **Centralización de Versión (v3.0.0):** Se ha extraído la definición de la versión del sistema fuera de los archivos `.env` y código duro, centralizándolo en el propio `CHANGELOG.md`. Ahora `config/dx.php` lee mediante expresiones regulares la etiqueta de versión directamente desde el inicio del historial, haciendo del CHANGELOG la Única Fuente de Verdad.
 - **Infraestructura (Emails & Cron):** Se añadieron contenedores dedicados de `queue` y `scheduler` en los archivos Docker Compose para permitir el procesamiento en segundo plano de tareas programadas (ej. reportes semanales) y envíos de emails asíncronos en Beta y Producción.
 - **Seguridad & Limpieza:** Se detectó la fuga de un Token de Telegram Bot en el historial de Git (en un commit antiguo del HANDOFF). Se usó `git-filter-repo` para purgar completamente el historial y se forzó push a las ramas. El token fue rotado exitosamente en BotFather y actualizado en los `.env`.
 - **UI & Ribbon Beta:** Se eliminó el antiguo badge estático de la barra lateral en favor de un Ribbon CSS flotante en la esquina superior derecha exclusivo para entornos no-producción (`.dx-v2-beta-ribbon`).
-- **Versionado Global:** Se bumpó la versión del sistema de `v2.7 · Beta` a `v2.8.0` eliminando la referencia explícita a Beta, ya que ahora el Ribbon asume esa labor visual.
 - **Documentación:** Se reestructuró y pulió el `README.md` con vocabulario enterprise (aclarando la diferencia entre el Gemini nativo para composite/chatbot y el DeepSeek orquestado por n8n para FlexLM), además de referenciar explícitamente el directorio de auditorías `docs/`.
 - **Infraestructura:** Se resolvieron los errores recurrentes `502 Bad Gateway` en Nginx causados por el desajuste de IPs tras los reinicios dinámicos del contenedor PHP-FPM originados por los cambios en `.env`.
 
