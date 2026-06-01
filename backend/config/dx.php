@@ -10,5 +10,11 @@ return [
     | el footer, la pantalla de login y cualquier otra interfaz que lo requiera.
     |
     */
-    'version' => env('APP_VERSION', 'v2.8.0'),
+    'version' => (function() {
+        $path = base_path('../management/CHANGELOG.md');
+        if (file_exists($path) && preg_match('/^\>\s*\*\*Version:\*\*\s*(v[\d\.]+)/m', file_get_contents($path), $m)) {
+            return $m[1];
+        }
+        return 'v3.0.0';
+    })(),
 ];

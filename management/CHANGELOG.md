@@ -1,10 +1,12 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
+> **Version:** v3.0.0
 
-## [2026-06-01 13:00] — Fix: Infraestructura de Correos y Tareas Programadas
+## [2026-06-01 13:00] — Fix: Centralización de Versión e Infraestructura Background
 
 ### Added
 
+- **Version Centralization**: Centralización global de la versión en `backend/VERSION.json`. El README y los configs de Laravel ahora son dinámicos leyendo desde esta única fuente de verdad.
 - **Docker Infra**: Añadidos contenedores dedicados `queue` (worker de colas Redis) y `scheduler` (cron daemon) en ambos entornos (`beta` y `prod`) para procesar de forma asíncrona los reportes semanales y envíos de emails sin bloquear al usuario.
 
 ## [2026-06-01 12:20] — Feature: Beta Ribbon UI
