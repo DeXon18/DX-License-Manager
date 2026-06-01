@@ -36,12 +36,32 @@
                     </div>
 
                     <div class="dx-v2-import-submit-row">
-                        <button type="submit" class="btn-primary dx-v2-import-btn-submit">
+                        <button type="submit" class="btn-primary dx-v2-import-btn-submit" id="submit-btn">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/><polyline points="16 16 12 12 8 16"/></svg>
                             PROCESAR ARCHIVO
                         </button>
                     </div>
                 </form>
+            </div>
+            
+            <!-- Terminal de Consola (Oculta por defecto) -->
+            <div id="console-container" style="display: none; padding: 20px; background: var(--bg-card); color: var(--text-primary); border-top: 1px solid var(--border-color); border-radius: 0 0 12px 12px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 13px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; color: var(--text-secondary); font-weight: 500; font-size: 12px; letter-spacing: 0.5px; text-transform: uppercase;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                        Terminal asíncrona [dx-queue-beta]
+                    </div>
+                    <span id="console-status" style="color: var(--accent);">INICIANDO...</span>
+                </div>
+                
+                <!-- Progress Bar -->
+                <div style="width: 100%; background: var(--bg-dark); height: 6px; border-radius: 3px; margin-bottom: 15px; overflow: hidden; border: 1px solid var(--border-color);">
+                    <div id="console-progress-bar" style="width: 0%; height: 100%; background: var(--accent); transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 0 8px var(--accent);"></div>
+                </div>
+
+                <div id="console-output" style="height: 320px; overflow-y: auto; background: var(--bg-dark); padding: 16px; border-radius: 8px; border: 1px solid var(--border-color); line-height: 1.6; box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);">
+                    <div style="color: var(--text-secondary);">> Esperando recepción de archivo...</div>
+                </div>
             </div>
         </div>
 
@@ -136,6 +156,97 @@ function updateFileName(input) {
         display.style.color = 'var(--accent)';
         display.style.opacity = '1';
     }
+}
+
+document.getElementById('import-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const fileInput = document.getElementById('file-input');
+    if (!fileInput.files.length) {
+        alert("Por favor seleccione un archivo.");
+        return;
+    }
+
+    // Preparar UI
+    document.getElementById('submit-btn').disabled = true;
+    document.getElementById('console-container').style.display = 'block';
+    const consoleOutput = document.getElementById('console-output');
+    consoleOutput.innerHTML = '<div style="color: var(--text-secondary);">> Subiendo archivo al servidor...</div>';
+
+    // Enviar archivo
+    const formData = new FormData(this);
+    
+    fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success && data.log_id) {
+            consoleOutput.innerHTML += `<div style="color: var(--accent);">> Archivo encolado exitosamente. Log ID: ${data.log_id}</div>`;
+            consoleOutput.innerHTML += '<div style="color: var(--text-secondary);">> Esperando procesamiento en cola (dx-queue-beta)...</div>';
+            startPolling(data.log_id);
+        } else {
+            consoleOutput.innerHTML += `<div style="color: var(--danger, #ef4444);">> Error al encolar: ${data.error || 'Desconocido'}</div>`;
+            document.getElementById('submit-btn').disabled = false;
+        }
+    })
+    .catch(error => {
+        consoleOutput.innerHTML += `<div style="color: var(--danger, #ef4444);">> Error de red: ${error}</div>`;
+        document.getElementById('submit-btn').disabled = false;
+    });
+});
+
+let renderedLinesCount = 0;
+
+function startPolling(logId) {
+    const consoleOutput = document.getElementById('console-output');
+    const progressBar = document.getElementById('console-progress-bar');
+    const statusText = document.getElementById('console-status');
+
+    const interval = setInterval(() => {
+        fetch(`/admin/import/status/${logId}`, {
+            headers: { 'Accept': 'application/json' }
+        })
+        .then(res => res.json())
+        .then(data => {
+            progressBar.style.width = data.progress + '%';
+            
+            let statusColor = 'var(--accent)';
+            if (data.status === 'success') statusColor = 'var(--success, #10b981)';
+            if (data.status === 'failed') statusColor = 'var(--danger, #ef4444)';
+            
+            statusText.style.color = statusColor;
+            statusText.textContent = data.status.toUpperCase() + ` [${data.progress}%]`;
+            
+            // Añadir nuevas líneas
+            if (data.lines && data.lines.length > renderedLinesCount) {
+                for (let i = renderedLinesCount; i < data.lines.length; i++) {
+                    let lineStr = data.lines[i];
+                    // Colorear dependiendo del tipo
+                    let color = 'var(--text-primary)';
+                    if (lineStr.includes('[ERROR]') || lineStr.includes('[CRÍTICO]')) color = 'var(--danger, #ef4444)';
+                    else if (lineStr.includes('[IA/MATCH]')) color = 'var(--warning, #a855f7)'; // Violet
+                    else if (lineStr.includes('[SISTEMA]')) color = 'var(--text-secondary)';
+                    else if (lineStr.includes('[INFO]')) color = 'var(--info, #38bdf8)'; // Light blue
+                    else if (lineStr.includes('[NUEVO]')) color = 'var(--success, #10b981)'; // Emerald green
+                    
+                    consoleOutput.innerHTML += `<div style="color: ${color}; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;">> ${lineStr}</div>`;
+                }
+                renderedLinesCount = data.lines.length;
+                consoleOutput.scrollTop = consoleOutput.scrollHeight; // Auto-scroll
+            }
+
+            if (data.status === 'success' || data.status === 'failed' || data.status === 'partial') {
+                clearInterval(interval);
+                document.getElementById('submit-btn').disabled = false;
+                consoleOutput.innerHTML += `<div>> --- PROCESO TERMINADO [${data.status.toUpperCase()}] ---</div>`;
+            }
+        });
+    }, 1500); // Poll cada 1.5 segundos
 }
 </script>
 @endsection
