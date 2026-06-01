@@ -252,6 +252,7 @@
                         @if(Auth::check() && !Auth::user()->has_seen_tour)
                         fetch("{{ route('profile.tour-seen') }}", {
                             method: "POST",
+                            credentials: "same-origin",
                             headers: {
                                 "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                                 "Accept": "application/json",
