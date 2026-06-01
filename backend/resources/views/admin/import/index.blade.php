@@ -36,12 +36,29 @@
                     </div>
 
                     <div class="dx-v2-import-submit-row">
-                        <button type="submit" class="btn-primary dx-v2-import-btn-submit">
+                        <button type="submit" class="btn-primary dx-v2-import-btn-submit" id="submit-btn">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 8px;"><polyline points="16 16 12 12 8 16"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/><polyline points="16 16 12 12 8 16"/></svg>
                             PROCESAR ARCHIVO
                         </button>
                     </div>
                 </form>
+            </div>
+            
+            <!-- Terminal de Consola (Oculta por defecto) -->
+            <div id="console-container" style="display: none; padding: 20px; background: #000; color: #0f0; border-radius: 0 0 12px 12px; font-family: 'Courier New', monospace; font-size: 13px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px; color: #888;">
+                    <span>Terminal asíncrona [dx-queue-beta]</span>
+                    <span id="console-status">Iniciando...</span>
+                </div>
+                
+                <!-- Progress Bar -->
+                <div style="width: 100%; background: #222; height: 10px; border-radius: 5px; margin-bottom: 15px; overflow: hidden;">
+                    <div id="console-progress-bar" style="width: 0%; height: 100%; background: #0f0; transition: width 0.5s ease;"></div>
+                </div>
+
+                <div id="console-output" style="height: 300px; overflow-y: auto; background: #0a0a0a; padding: 15px; border-radius: 6px; border: 1px solid #333; line-height: 1.5;">
+                    <div>> Esperando recepción de archivo...</div>
+                </div>
             </div>
         </div>
 
@@ -136,6 +153,89 @@ function updateFileName(input) {
         display.style.color = 'var(--accent)';
         display.style.opacity = '1';
     }
+}
+
+document.getElementById('import-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const fileInput = document.getElementById('file-input');
+    if (!fileInput.files.length) {
+        alert("Por favor seleccione un archivo.");
+        return;
+    }
+
+    // Preparar UI
+    document.getElementById('submit-btn').disabled = true;
+    document.getElementById('console-container').style.display = 'block';
+    const consoleOutput = document.getElementById('console-output');
+    consoleOutput.innerHTML = '<div>> Subiendo archivo al servidor...</div>';
+
+    // Enviar archivo
+    const formData = new FormData(this);
+    
+    fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success && data.log_id) {
+            consoleOutput.innerHTML += `<div>> Archivo encolado exitosamente. Log ID: ${data.log_id}</div>`;
+            consoleOutput.innerHTML += '<div>> Esperando procesamiento en cola (dx-queue-beta)...</div>';
+            startPolling(data.log_id);
+        } else {
+            consoleOutput.innerHTML += `<div style="color: red;">> Error al encolar: ${data.error || 'Desconocido'}</div>`;
+            document.getElementById('submit-btn').disabled = false;
+        }
+    })
+    .catch(error => {
+        consoleOutput.innerHTML += `<div style="color: red;">> Error de red: ${error}</div>`;
+        document.getElementById('submit-btn').disabled = false;
+    });
+});
+
+let renderedLinesCount = 0;
+
+function startPolling(logId) {
+    const consoleOutput = document.getElementById('console-output');
+    const progressBar = document.getElementById('console-progress-bar');
+    const statusText = document.getElementById('console-status');
+
+    const interval = setInterval(() => {
+        fetch(`/admin/import/status/${logId}`, {
+            headers: { 'Accept': 'application/json' }
+        })
+        .then(res => res.json())
+        .then(data => {
+            progressBar.style.width = data.progress + '%';
+            statusText.textContent = data.status.toUpperCase() + ` [${data.progress}%]`;
+            
+            // Añadir nuevas líneas
+            if (data.lines && data.lines.length > renderedLinesCount) {
+                for (let i = renderedLinesCount; i < data.lines.length; i++) {
+                    let lineStr = data.lines[i];
+                    // Colorear dependiendo del tipo
+                    let color = '#0f0';
+                    if (lineStr.includes('[ERROR]') || lineStr.includes('[CRÍTICO]')) color = '#f55';
+                    if (lineStr.includes('[IA/MATCH]')) color = '#0ff';
+                    if (lineStr.includes('[SISTEMA]')) color = '#ff0';
+                    
+                    consoleOutput.innerHTML += `<div style="color: ${color};">> ${lineStr}</div>`;
+                }
+                renderedLinesCount = data.lines.length;
+                consoleOutput.scrollTop = consoleOutput.scrollHeight; // Auto-scroll
+            }
+
+            if (data.status === 'success' || data.status === 'failed' || data.status === 'partial') {
+                clearInterval(interval);
+                document.getElementById('submit-btn').disabled = false;
+                consoleOutput.innerHTML += `<div>> --- PROCESO TERMINADO [${data.status.toUpperCase()}] ---</div>`;
+            }
+        });
+    }, 1500); // Poll cada 1.5 segundos
 }
 </script>
 @endsection

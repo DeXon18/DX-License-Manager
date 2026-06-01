@@ -158,5 +158,167 @@ class CsvImportService
             'warnings' => $warnings
         ];
     }
+
+    /**
+     * Import contracts asynchronously, streaming logs to Redis.
+     */
+    public function importAsync(string $filePath, string $filename, int $logId): void
+    {
+        $handle = fopen($filePath, 'r');
+        
+        $log = ImportLog::find($logId);
+        if (!$log) return;
+
+        $processedIds = [];
+        $rowCount = 0;
+        $errors = [];
+        $warnings = [];
+
+        // Count total rows roughly for progress
+        $totalLines = 0;
+        $countHandle = fopen($filePath, 'r');
+        while (!feof($countHandle)) {
+            fgets($countHandle);
+            $totalLines++;
+        }
+        fclose($countHandle);
+        // adjust for header
+        $totalLines = max(1, $totalLines - 1);
+
+        $redisKey = "import_console_{$logId}";
+        $redisProgressKey = "import_progress_{$logId}";
+        
+        \Illuminate\Support\Facades\Redis::del($redisKey);
+        \Illuminate\Support\Facades\Redis::set($redisProgressKey, 0);
+        \Illuminate\Support\Facades\Redis::expire($redisKey, 3600);
+        \Illuminate\Support\Facades\Redis::expire($redisProgressKey, 3600);
+
+        $this->logToConsole($redisKey, "[SISTEMA] Iniciando procesamiento asíncrono del archivo: {$filename}");
+
+        try {
+            DB::beginTransaction();
+
+            // 1. Detectar separador automáticamente
+            $firstLine = fgets($handle);
+            $separator = (str_contains($firstLine, ';')) ? ';' : ',';
+            rewind($handle);
+
+            // 2. Omitir BOM si existe
+            $bom = fread($handle, 3);
+            if ($bom !== "\xEF\xBB\xBF") {
+                rewind($handle);
+            }
+
+            while (($row = fgetcsv($handle, 0, $separator)) !== false) {
+                if ($rowCount === 0) {
+                    $firstCol = strtoupper(trim($row[0] ?? ''));
+                    if (!str_contains($firstCol, 'CONH')) {
+                        $rowCount++;
+                        continue;
+                    }
+                }
+
+                $rowCount++;
+                
+                // Update progress every 10 rows
+                if ($rowCount % 10 === 0) {
+                    $progress = min(99, round(($rowCount / $totalLines) * 100));
+                    \Illuminate\Support\Facades\Redis::set($redisProgressKey, $progress);
+                }
+
+                $contractNumber = trim($row[0] ?? '');
+                if (empty($contractNumber) || !str_contains(strtoupper($contractNumber), 'CONH')) {
+                    continue;
+                }
+                
+                try {
+                    $rawName = trim($row[2] ?? 'Desconocido');
+                    
+                    // Call resolve WITH AI enabled ($useAi = true) because we are in background!
+                    $normalization = $this->normalizationService->resolve($rawName, 0.85, true);
+                    $clientId = $normalization['id'];
+
+                    if (isset($normalization['warning'])) {
+                        $warnings[] = "Fila $rowCount: " . $normalization['warning'];
+                        $this->logToConsole($redisKey, "[IA/MATCH] Fila {$rowCount}: " . $normalization['warning']);
+                    }
+
+                    $vendorName = trim($row[3] ?? '');
+                    $vendor = Vendor::firstOrCreate(['name' => $vendorName]);
+
+                    $endDate = null;
+                    if (!empty($row[6])) {
+                        try {
+                            $endDate = Carbon::createFromFormat('d/m/Y', trim($row[6]))->startOfDay();
+                        } catch (\Exception $e) {
+                            $errors[] = "Fila $rowCount: Formato de fecha inválido [{$row[6]}]";
+                            $this->logToConsole($redisKey, "[ERROR] Fila {$rowCount}: Formato de fecha inválido [{$row[6]}]");
+                        }
+                    }
+
+                    $contract = Contract::updateOrCreate(
+                        ['contract_number' => trim($row[0])],
+                        [
+                            'client_id' => $clientId,
+                            'vendor_id' => $vendor->id,
+                            'cost_center' => $row[1] ?? null,
+                            'type_product' => $row[4] ?? null,
+                            'sub_product' => $row[5] ?? null,
+                            'end_date' => $endDate,
+                            'status' => isset($row[7]) ? trim($row[7]) : null,
+                            'comment' => isset($row[8]) ? trim($row[8]) : null,
+                        ]
+                    );
+
+                    $processedIds[] = $contract->id;
+
+                } catch (\Exception $e) {
+                    $errors[] = "Fila $rowCount: " . $e->getMessage();
+                    $this->logToConsole($redisKey, "[ERROR] Fila {$rowCount}: " . $e->getMessage());
+                }
+            }
+
+            if (!empty($processedIds)) {
+                $this->logToConsole($redisKey, "[SISTEMA] Dando de baja contratos obsoletos...");
+                Contract::whereNotIn('id', $processedIds)
+                    ->where('status', '!=', 'Baja')
+                    ->update(['status' => 'Baja']);
+            }
+
+            DB::commit();
+
+            $log->update([
+                'status' => count($errors) > 0 ? 'partial' : 'success',
+                'total_rows' => $rowCount,
+                'processed_rows' => count($processedIds),
+                'errors' => $errors,
+                'warnings' => $warnings,
+            ]);
+
+            \Illuminate\Support\Facades\Redis::set($redisProgressKey, 100);
+            $this->logToConsole($redisKey, "[SISTEMA] Importación completada. {$rowCount} filas procesadas.");
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            $log->update([
+                'status' => 'failed',
+                'errors' => [$e->getMessage()],
+            ]);
+            $this->logToConsole($redisKey, "[CRÍTICO] Error fatal en la importación: " . $e->getMessage());
+            throw $e;
+        } finally {
+            fclose($handle);
+            // Optionally delete the file
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            }
+        }
+    }
+
+    private function logToConsole(string $redisKey, string $message)
+    {
+        $time = now()->format('H:i:s');
+        \Illuminate\Support\Facades\Redis::rpush($redisKey, "[{$time}] {$message}");
+    }
 }
 
