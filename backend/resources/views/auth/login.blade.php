@@ -55,7 +55,7 @@
     <div class="dx-v2-login-right">
         <div class="dx-v2-login-inner-col">
             <div class="dx-v2-login-box">
-                <div class="dx-v2-login-version-badge"><div class="dot"></div>v2.7 · Beta</div>
+                <div class="dx-v2-login-version-badge"><div class="dot"></div>{{ $dxVersion }}</div>
                 <h2 class="dx-v2-login-title">Acceso al portal</h2>
                 <p class="dx-v2-login-sub">Introduce tus credenciales para continuar</p>
 

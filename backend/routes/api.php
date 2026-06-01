@@ -9,3 +9,9 @@ Route::get('/user', function (Request $request) {
 
 Route::post('/audit/callback', \App\Http\Controllers\Api\AuditCallbackController::class);
 Route::post('/bot/query', [\App\Http\Controllers\Api\BotQueryController::class, 'query']);
+
+Route::get('/version', function () {
+    return response()->json([
+        'version' => config('dx.version')
+    ]);
+});
