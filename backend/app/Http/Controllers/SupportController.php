@@ -30,11 +30,21 @@ class SupportController extends Controller
         $userName = $user ? $user->name : 'Usuario Desconocido';
         $userEmail = $user ? $user->email : 'Sin email';
 
+        // Escapar caracteres especiales de Markdown para prevenir output injection en Telegram
+        $escapeMarkdown = fn(string $s): string => str_replace(
+            ['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!'],
+            ['\\_', '\\*', '\\[', '\\]', '\\(', '\\)', '\\~', '\\`', '\\>', '\\#', '\\+', '\\-', '\\=', '\\|', '\\{', '\\}', '\\.', '\\!'],
+            $s
+        );
+
+        $safeSubject = $escapeMarkdown($request->subject);
+        $safeMessage = $escapeMarkdown($request->message);
+
         // Construir el mensaje Markdown para Telegram
         $text = "🚨 *Nuevo Ticket de Soporte (DX Portal)*\n\n";
         $text .= "👤 *De:* {$userName} ({$userEmail})\n";
-        $text .= "📌 *Asunto:* {$request->subject}\n\n";
-        $text .= "📝 *Mensaje:*\n{$request->message}";
+        $text .= "📌 *Asunto:* {$safeSubject}\n\n";
+        $text .= "📝 *Mensaje:*\n{$safeMessage}";
 
         $token = config('services.telegram-bot-api.token');
         $chatId = config('services.telegram-bot-api.chat_id') ?? '2795962'; // Fallback a Oskar si no hay chat_id

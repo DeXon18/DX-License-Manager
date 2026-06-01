@@ -172,7 +172,7 @@ class BotQueryController extends Controller
         if (!$client) {
             return response()->json([
                 'status' => 'not_found',
-                'message' => "Cliente '{$arg}' no encontrado en base de datos."
+                'message' => "No se encontró información para el término de búsqueda proporcionado."
             ]);
         }
 
