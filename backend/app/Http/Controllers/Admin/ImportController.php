@@ -39,7 +39,7 @@ class ImportController extends Controller
             
             // Store file safely
             $path = $file->storeAs('imports', uniqid() . '_' . $originalName);
-            $fullPath = storage_path('app/' . $path);
+            $fullPath = \Illuminate\Support\Facades\Storage::disk('local')->path($path);
 
             // Create initial log
             $log = \App\Models\ImportLog::create([
