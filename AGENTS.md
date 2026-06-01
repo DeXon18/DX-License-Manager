@@ -252,8 +252,13 @@ docker exec -e DB_CONNECTION=sqlite -e DB_DATABASE=:memory: dx-php-beta php arti
 
 **El agente trabaja EXCLUSIVAMENTE en ramas que mergean a `dev`. Nunca tocar `main`.**
 
+### 🛡️ BLINDAJE DE PRODUCCIÓN (MAIN) — REGLA CRÍTICA
+La rama `main` y la base de datos de producción (`mariadb-prod`) están **estrictamente blindadas**. 
+Cualquier cambio en `main`, por minúsculo que sea (un espacio, un estilo CSS, o una variable de entorno), afecta de forma inmediata y en tiempo real a los usuarios de Producción.
+- **PROHIBIDO** hacer `git push` o `git merge` directo a `main` sin que el desarrollador lo pida explícitamente.
+- **PROHIBIDO** ejecutar migraciones o tests en el entorno de producción (`dx-php-prod`) sin haber realizado antes un volcado completo de la base de datos de producción (`./scripts/backup-db.sh prod`).
 
-
+### Flujo de Trabajo Estandarizado
 - **Una rama por funcionalidad.** Cuando la tarea termina, la rama termina.
 - **Formato de rama:** `feature/nombre-corto` · `fix/descripcion` · `chore/descripcion`
 - **Nunca** login + migrations + otra feature en la misma rama

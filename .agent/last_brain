@@ -1,7 +1,6 @@
-Rama activa: dev (Sincronizada, lista para iniciar nuevo ciclo).
-Fase: Post-Fase 33 — Seguridad Auditada y Versionado 2.8.0.
-Último trabajo: Merge de fixes de seguridad a dev (CSP, RBAC, Webhooks). Resolución de 502 Bad Gateway por desincronización de IPs entre Nginx y PHP al recrear contenedores. Despliegue de Ribbon UI Beta para eliminar el badge estático. Limpieza y purga de historial Git por leak accidental de token de Telegram (rotado exitosamente). Actualización global a versión v2.8.0 y pulido del README.md.
-Estado: Entornos Beta y Prod estabilizados y corriendo (Healthy).
-Próximo paso inmediato: Validar despliegue de `dev` a `main` y arrancar la siguiente funcionalidad del backlog (posiblemente exportación/gestión de nuevos contratos).
-Bloqueos: Ninguno. Todo el flujo de Nginx está restaurado y funcionando.
-Stack beta: up (healthy). Stack prod: up (healthy).
+Rama activa: dev. Fase Post-33 — Estabilización v3.0.1. 
+Último trabajo: Fix del Tour de bienvenida persistente y migración de has_seen_tour en BD Prod, centralización de la versión a CHANGELOG.md mediante Regex en config/dx.php. Eliminados .env APP_VERSION y VERSION.json. Archivos tocados: app.blade.php, CHANGELOG.md, config/dx.php.
+Estado: Release v3.0.1 desplegada en Producción y etiquetada en GitHub. Todo 100% operativo.
+Próximo paso inmediato: Revisar BACKLOG e iniciar nueva tarea o fase según indicaciones de Oskar.
+Bloqueos: ninguno.
+Stack beta: running. Stack prod: running.

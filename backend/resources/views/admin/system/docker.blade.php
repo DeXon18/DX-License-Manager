@@ -55,6 +55,10 @@
                                     <i class="fa-brands fa-node-js" style="font-size: 24px; color: #339933;"></i>
                                 @elseif(str_contains($service, 'redis'))
                                     <i class="fa-solid fa-cube" style="font-size: 20px; color: #DC382D;"></i>
+                                @elseif(str_contains($service, 'scheduler'))
+                                    <i class="fa-regular fa-clock" style="font-size: 20px; color: #FF8C00;"></i>
+                                @elseif(str_contains($service, 'queue'))
+                                    <i class="fa-solid fa-layer-group" style="font-size: 20px; color: #1E90FF;"></i>
                                 @else
                                     <i class="fa-solid fa-box-archive" style="font-size: 20px; color: var(--dx-v2-muted);"></i>
                                 @endif
