@@ -34,6 +34,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Fix: Bucle infinito del Tour de Bienvenida ✅
+- **Completada:** 2026-06-01
+- **Rama:** `fix/tour-persistence`
+- **Resumen:** Se añade `credentials: 'same-origin'` a la llamada `fetch` del frontend en `app.blade.php` para resolver la denegación de JWT y permitir guardar el estado del tour visto en BD.
+- **PR:** #28 — merged a dev
+
 ### Desacoplamiento de Entornos y Telemetría NOC ✅
 - **Completada:** 2026-06-01
 - **Rama:** `feature/env-decoupling`

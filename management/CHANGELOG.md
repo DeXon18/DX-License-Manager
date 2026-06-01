@@ -1,6 +1,12 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-06-01 12:15] — Bugfix: Persistencia del Tour de Bienvenida
+
+### Fixed
+
+- **Tour (Driver.js)**: Añadido `credentials: 'same-origin'` a la llamada `fetch` en `app.blade.php` para asegurar que el middleware JWT pueda autenticar la petición y persistir el marcador de `has_seen_tour`, evitando el bucle infinito del popup del tour.
+
 ## [2026-06-01 11:45] — Infrastructure: Desacoplamiento de Entornos (Beta/Prod)
 
 ### Changed
