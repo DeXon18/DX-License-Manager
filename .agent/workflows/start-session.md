@@ -47,12 +47,12 @@ Leer en este orden exacto. **No saltarse ningún archivo.**
 1. `.agent/last_brain` — párrafo técnico denso del estado mental del agente anterior. Leer primero — da el contexto inmediato en segundos.
 2. `.agent/memory/ACTIVE_CONTEXT.md` — estado activo, decisiones técnicas, handover.
 3. `.agent/INDEX.md` — mapa de skills y reglas disponibles.
-4. `.agent/secrets/identities.json` — infraestructura y URLs.
+4. `.agent/secrets/identities.json` — **OBLIGATORIO.** infraestructura y URLs.
 5. `management/HANDOFF.md` — qué se hizo en la última sesión y qué queda pendiente.
 6. `management/ROADMAP.md` — fase actual y siguientes pasos.
 7. `management/BACKLOG.md` — tareas en progreso.
 8. `DESIGN.md` — **OBLIGATORIO.** Sistema de diseño del proyecto. Cualquier vista, componente o elemento visual debe seguir este documento. No crear nada visual sin haberlo leído.
-9. `AGENTS.md` — reglas de operación activas. Confirmar que la Regla Cero está activa.
+9. `AGENTS.md` — **OBLIGATORIO.** reglas de operación activas. Confirmar que la Regla Cero está activa.
 10. `.agent/lessons.md` — lecciones aprendidas de sesiones anteriores. Aplicar desde el primer momento.
 
 ---
