@@ -275,7 +275,69 @@ docker exec -e DB_CONNECTION=sqlite -e DB_DATABASE=:memory: dx-php-beta php arti
 - JWT: access token 15 min + refresh token 24h con rotación automática
 - RBAC: `admin` escribe · `technician` lee · `viewer` solo visualiza
 
----
+### 0.10.1 Buenas Prácticas — Derivadas de Auditorías (Fases 1-3)
+
+**Docs de referencia:**
+- `backend/docs/260509_auditoria-seguridad.md` — Fase 1 (RBAC, MIME, JWT)
+- `backend/docs/260509_auditoria-seguridad-fase2.md` — Fase 2 (fallback auth, HMAC)
+- `backend/docs/260601_auditoria-seguridad-fase3.md` — Fase 3 (Bot, Chatbot, throttle)
+
+**Al crear cualquier endpoint nuevo — checklist obligatorio:**
+
+```
+[ ] ¿Tiene middleware auth.jwt o token de bot?
+[ ] ¿Tiene middleware permission:rol si es de escritura?
+[ ] ¿Tiene throttle si puede generar coste (IA, email, Telegram)?
+[ ] ¿El catch no expone $e->getMessage() en respuesta JSON/HTML?
+[ ] ¿La subida de archivos valida extensión Y mime type?
+[ ] ¿Los tokens/secretos se reciben solo por Header, nunca por query param?
+[ ] ¿Los webhooks externos verifican HMAC con hash_equals()?
+```
+
+**Patrones prohibidos — nunca escribir esto:**
+
+```php
+// ❌ Expone stack trace al cliente
+return response()->json(['error' => $e->getMessage()], 500);
+
+// ✅ Correcto
+Log::error('...', ['trace' => $e->getTraceAsString()]);
+return response()->json(['message' => 'Error interno. Reintenta.'], 500);
+
+// ❌ Token en query param (queda en logs de Nginx)
+$token = $request->input('token');
+
+// ✅ Correcto — solo headers
+$token = $request->header('X-Bot-Token') ?: $request->bearerToken();
+
+// ❌ Subida sin restricción
+'license_file' => 'required|file'
+
+// ✅ Correcto — extensión + mime
+'license_file' => 'required|file|max:10240|mimetypes:text/plain,application/octet-stream'
+// + validación de extensión explícita con in_array()
+
+// ❌ Endpoint con coste sin throttle
+Route::post('/chatbot/query', [ChatbotController::class, 'query']);
+
+// ✅ Correcto
+Route::post('/chatbot/query', ...)->middleware('throttle:30,1');
+
+// ❌ Webhook externo sin verificación
+public function callback(Request $request) { $this->service->handle($request->all()); }
+
+// ✅ Correcto — HMAC con hash_equals
+$secret = config('ai.webhook_secret');
+if (!hash_equals(hash_hmac('sha256', $request->getContent(), $secret), $request->header('X-Signature'))) {
+    abort(401);
+}
+```
+
+**Periodicidad de auditorías:**
+- Ejecutar auditoría de seguridad tras añadir 3+ controllers nuevos o modificar auth/middleware.
+- Usar skill `laravel-security-audit` + `php-security-auditor`.
+- Guardar resultado en `backend/docs/YYMMDD_auditoria-seguridad-faseN.md`.
+- Añadir entrada en CHANGELOG.md con referencia al doc.
 
 ## 0.11 Las 5 Leyes del Modo Estricto
 
