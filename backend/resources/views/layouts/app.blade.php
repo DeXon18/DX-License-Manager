@@ -197,9 +197,11 @@
     
     <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
     <script>
-        // Definición por defecto del tour (Navegación general)
-        // Las vistas individuales pueden sobrescribir window.pageTourSteps antes de que cargue el DOM
-        window.pageTourSteps = window.pageTourSteps || [
+        // Comprobamos si la página definió sus propios pasos
+        const hasCustomSteps = typeof window.pageTourSteps !== 'undefined';
+        
+        // Definición por defecto del tour (fallback)
+        const defaultTourSteps = [
             {
                 element: '.nav-links',
                 popover: {
@@ -229,6 +231,8 @@
             }
         ];
 
+        window.pageTourSteps = window.pageTourSteps || defaultTourSteps;
+
         document.addEventListener('DOMContentLoaded', () => {
             const driver = window.driver.js.driver;
             
@@ -243,29 +247,31 @@
                 progressText: '@{{current}} de @{{total}}',
                 steps: window.pageTourSteps,
                 onDestroyStarted: () => {
-                    if (!driverObj.hasNextStep() || confirm("¿Seguro que quieres salir del tour?")) {
-                        driverObj.destroy();
-                        
-                        @if(Auth::check() && !Auth::user()->has_seen_tour)
-                        fetch("{{ route('profile.tour-seen') }}", {
-                            method: "POST",
-                            credentials: "same-origin",
-                            headers: {
-                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                                "Accept": "application/json",
-                                "Content-Type": "application/json"
-                            }
-                        }).then(response => response.json())
-                          .then(data => console.log('Tour marcado como completado.'));
-                        @endif
-                    }
+                    // Se cierra sin preguntar y se guarda la preferencia inmediatamente
+                    driverObj.destroy();
+                    
+                    @if(Auth::check() && !Auth::user()->has_seen_tour)
+                    fetch("{{ route('profile.tour-seen') }}", {
+                        method: "POST",
+                        credentials: "same-origin",
+                        headers: {
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        }
+                    }).then(response => response.json())
+                      .then(data => console.log('Tour marcado como completado de forma silenciosa.'));
+                    @endif
                 }
             });
 
             @if(Auth::check() && !Auth::user()->has_seen_tour)
-                setTimeout(() => {
-                    driverObj.drive();
-                }, 500);
+                // Solo auto-iniciamos si la vista actual definió pasos personalizados
+                if (hasCustomSteps) {
+                    setTimeout(() => {
+                        driverObj.drive();
+                    }, 500);
+                }
             @endif
 
             document.getElementById('start-tour-btn')?.addEventListener('click', () => {
