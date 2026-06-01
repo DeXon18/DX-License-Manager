@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-3.0.0-388BFD?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-3.0.1-388BFD?style=for-the-badge" alt="Version">
   <img src="https://img.shields.io/badge/Stack-Laravel_11_|_PHP_8.4-FF2D20?style=for-the-badge&logo=laravel" alt="Laravel">
   <img src="https://img.shields.io/badge/Engine-AI_Gemini_Flash-9171ff?style=for-the-badge" alt="AI Gemini Engine">
   <img src="https://img.shields.io/badge/CSS-Modular_35_Files-007aff?style=for-the-badge" alt="CSS Modular architecture">
