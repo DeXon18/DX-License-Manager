@@ -42,6 +42,10 @@
     }
 }" @keyup.slash.window="sidebarOpen = !sidebarOpen">
     
+    @if(config('app.env') !== 'production')
+        <div class="dx-v2-beta-ribbon">BETA</div>
+    @endif
+
     @if($maintenance_active ?? false)
     <div class="dx-v2-maintenance-banner">
         <span>⚠️</span>
@@ -87,13 +91,6 @@
 
     <div class="layout">
         <aside class="sidebar" x-show="sidebarOpen" x-transition>
-            @if(Auth::user() && Auth::user()->hasRole('admin'))
-            <div class="sidebar-section">
-                <div class="sidebar-heading">
-                    <span class="badge {{ config('app.env') === 'production' ? 'badge-danger' : 'badge-warning' }}">{{ config('app.env') === 'production' ? 'PRODUCCIÓN' : 'BETA' }}</span>
-                </div>
-            </div>
-            @endif
 
             <div class="sidebar-section">
                 <div class="sidebar-heading">Mi Cuenta</div>
@@ -252,6 +249,7 @@
                         @if(Auth::check() && !Auth::user()->has_seen_tour)
                         fetch("{{ route('profile.tour-seen') }}", {
                             method: "POST",
+                            credentials: "same-origin",
                             headers: {
                                 "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                                 "Accept": "application/json",

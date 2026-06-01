@@ -1,5 +1,26 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
+> **Version:** v3.0.0
+
+## [2026-06-01 13:00] — Fix: Centralización de Versión e Infraestructura Background
+
+### Added
+
+- **Version Centralization**: Centralización global de la versión en `backend/VERSION.json`. El README y los configs de Laravel ahora son dinámicos leyendo desde esta única fuente de verdad.
+- **Docker Infra**: Añadidos contenedores dedicados `queue` (worker de colas Redis) y `scheduler` (cron daemon) en ambos entornos (`beta` y `prod`) para procesar de forma asíncrona los reportes semanales y envíos de emails sin bloquear al usuario.
+
+## [2026-06-01 12:20] — Feature: Beta Ribbon UI
+
+### Changed
+
+- **UI / Navbar**: Reemplazado el antiguo badge de entorno de la barra lateral por un ribbon flotante en la esquina superior derecha (`.dx-v2-beta-ribbon`).
+- **Entornos**: El nuevo ribbon solo es visible cuando el entorno no es de producción, ocultándose completamente en `prod` para ofrecer una interfaz más limpia.
+
+## [2026-06-01 12:15] — Bugfix: Persistencia del Tour de Bienvenida
+
+### Fixed
+
+- **Tour (Driver.js)**: Añadido `credentials: 'same-origin'` a la llamada `fetch` en `app.blade.php` para asegurar que el middleware JWT pueda autenticar la petición y persistir el marcador de `has_seen_tour`, evitando el bucle infinito del popup del tour.
 
 ## [2026-06-01 11:45] — Infrastructure: Desacoplamiento de Entornos (Beta/Prod)
 

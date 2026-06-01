@@ -34,6 +34,24 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Fix: Infraestructura de Correos y Tareas Programadas (Scheduler/Queue) ✅
+- **Completada:** 2026-06-01
+- **Rama:** `fix/email-scheduler`
+- **Resumen:** Se añadieron contenedores dedicados (`queue` y `scheduler`) en los entornos Beta y Prod para procesar asíncronamente los correos semanales de caducidad en Redis.
+- **PR:** #TBD — pendiente merge a dev
+
+### Feature: Beta Ribbon UI ✅
+- **Completada:** 2026-06-01
+- **Rama:** `feature/beta-ribbon`
+- **Resumen:** Se eliminó el badge estático de entorno de la barra lateral y se implementó un ribbon CSS flotante exclusivo para el entorno Beta, mejorando la limpieza visual en producción.
+- **PR:** #29 — merged a dev
+
+### Fix: Bucle infinito del Tour de Bienvenida ✅
+- **Completada:** 2026-06-01
+- **Rama:** `fix/tour-persistence`
+- **Resumen:** Se añade `credentials: 'same-origin'` a la llamada `fetch` del frontend en `app.blade.php` para resolver la denegación de JWT y permitir guardar el estado del tour visto en BD.
+- **PR:** #28 — merged a dev
+
 ### Desacoplamiento de Entornos y Telemetría NOC ✅
 - **Completada:** 2026-06-01
 - **Rama:** `feature/env-decoupling`
