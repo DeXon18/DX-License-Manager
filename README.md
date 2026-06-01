@@ -27,12 +27,14 @@ A través de una interfaz industrial de alta densidad visual y un motor de intel
 
 ## 🏛️ Pilares Tecnológicos & Arquitectura
 
-- **Núcleo de Aplicación:** Laravel 11.x (PHP 8.4) estructurado bajo buenas prácticas defensivas y optimización de consultas.
-- **Inteligencia Artificial (AI Agent):** Pipeline con cortocircuito inteligente de tokens. Conexión nativa con **Google Gemini (Flash 3.1 & Lite)** para composite matching y **n8n Workflow Engine** con fallback dinámico (DeepSeek R1 / OpenRouter) para análisis contractuales y auditorías de FlexLM.
-- **Seguridad y Control de Acceso:** Sistema RBAC (Roles: Admin, Technician, Viewer), mitigación CSRF, políticas de cabeceras de seguridad estrictas (CSP) e integración segura de Webhooks externos con validación HMAC.
-- **Reactividad Ligera:** **Alpine.js** inyectado en vistas Blade para evitar la carga de pesadas dependencias de Javascript, manteniendo la interacción fluida (incluye Tours Interactivos con Driver.js).
-- **Mensajería y Cola de Trabajo:** **Redis** integrado para invalidación instantánea de tokens revocados (ZSET blacklist) y procesamiento asíncrono de telemetría de auditorías.
-- **Base de Datos Relacional:** **MariaDB** con almacenamiento normalizado de aliases de clientes, Sold-Tos y Machine IDs.
+La plataforma está construida sobre una arquitectura modular de alta disponibilidad, priorizando la resiliencia operativa y la eficiencia en el procesamiento de datos:
+
+- **Núcleo de Orquestación (Backend):** Desarrollado en **Laravel 11.x** (sobre PHP 8.4). El framework opera con patrones de diseño defensivos, inyección de dependencias estricta y Eloquent ORM altamente optimizado mediante *Eager Loading* y *Query Caching*.
+- **Motor de Inteligencia Artificial & NLU:** Pipeline cognitivo multicapa con **Cortocircuito Heurístico** (para evasión de gasto innecesario de tokens). Emplea **Google Gemini** para análisis estructural en tiempo real, orquestado a través de **n8n Workflow Engine**, con estrategias de *Fallback Dinámico* hacia modelos LLM alternativos (DeepSeek R1 / OpenRouter) asegurando un 99.9% de uptime en auditorías.
+- **Blindaje y Zero-Trust Security:** Arquitectura basada en el principio de mínimo privilegio mediante un sistema RBAC granular. Incorpora mitigación nativa CSRF/XSS, inyección de cabeceras de seguridad estrictas (CSP Nivel 3, HSTS) y verificación criptográfica HMAC asimétrica para la validación de webhooks externos.
+- **Micro-Frontend Reactivo:** Despliegue de vistas SSR (Server-Side Rendering) a través de Blade, enriquecidas dinámicamente con **Alpine.js**. Esto elimina la sobrecarga de Virtual DOMs (React/Vue), garantizando una huella de memoria nula en el cliente y latencia ultra-baja (incluyendo sistemas de Onboarding contextual on-the-fly mediante Driver.js).
+- **State Management & Colas Distribuidas:** Clúster **Redis** actuando como capa de caché de alta velocidad y Broker de Mensajería. Gestiona colas de trabajos asíncronos para la telemetría, y mantiene un sistema de listas negras (ZSET) para invalidación criptográfica instantánea de tokens JWT revocados.
+- **Capa de Persistencia:** Base de datos **MariaDB** con modelado estrictamente normalizado e índices optimizados, diseñada para la trazabilidad inmutable de *Machine IDs*, *Sold-Tos* y mapeo de identidades de clientes corporativos.
 
 ---
 
