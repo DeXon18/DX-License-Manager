@@ -10,5 +10,5 @@ return [
     | el footer, la pantalla de login y cualquier otra interfaz que lo requiera.
     |
     */
-    'version' => env('APP_VERSION', 'v2.7 · Beta'),
+    'version' => env('APP_VERSION', 'v2.8.0'),
 ];
