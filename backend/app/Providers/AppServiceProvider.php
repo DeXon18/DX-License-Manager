@@ -25,5 +25,7 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Model::preventLazyLoading(! app()->isProduction());
+
+        \Illuminate\Support\Facades\View::share('dxVersion', config('dx.version'));
     }
 }

@@ -12,7 +12,7 @@
         <div class="header-actions">
             <div class="version-badge-lg">
                 <span class="dot-pulse"></span>
-                v2.7.4 Stable
+                {{ $dxVersion }}
             </div>
         </div>
     </div>

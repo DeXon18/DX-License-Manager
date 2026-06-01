@@ -66,6 +66,8 @@
                 </a>
                 <span style="margin: 0 4px; opacity: 0.5;">—</span>
                 <span>Desarrollado con <i class="fa-solid fa-heart dx-v2-heart"></i> por Oskar y Antigravity (DX Agent)</span>
+                <span style="margin: 0 4px; opacity: 0.5;">—</span>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.85em; opacity: 0.7;">{{ $dxVersion }}</span>
             </div>
     </div>
 </footer>
