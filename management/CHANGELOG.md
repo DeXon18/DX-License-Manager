@@ -1,6 +1,12 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-06-01 13:00] — Fix: Infraestructura de Correos y Tareas Programadas
+
+### Added
+
+- **Docker Infra**: Añadidos contenedores dedicados `queue` (worker de colas Redis) y `scheduler` (cron daemon) en ambos entornos (`beta` y `prod`) para procesar de forma asíncrona los reportes semanales y envíos de emails sin bloquear al usuario.
+
 ## [2026-06-01 12:20] — Feature: Beta Ribbon UI
 
 ### Changed

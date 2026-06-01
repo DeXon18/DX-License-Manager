@@ -15,6 +15,7 @@
 
 ## Qué se hizo en esta sesión
 
+- **Infraestructura (Emails & Cron):** Se añadieron contenedores dedicados de `queue` y `scheduler` en los archivos Docker Compose para permitir el procesamiento en segundo plano de tareas programadas (ej. reportes semanales) y envíos de emails asíncronos en Beta y Producción.
 - **Seguridad & Limpieza:** Se detectó la fuga de un Token de Telegram Bot en el historial de Git (en un commit antiguo del HANDOFF). Se usó `git-filter-repo` para purgar completamente el historial y se forzó push a las ramas. El token fue rotado exitosamente en BotFather y actualizado en los `.env`.
 - **UI & Ribbon Beta:** Se eliminó el antiguo badge estático de la barra lateral en favor de un Ribbon CSS flotante en la esquina superior derecha exclusivo para entornos no-producción (`.dx-v2-beta-ribbon`).
 - **Versionado Global:** Se bumpó la versión del sistema de `v2.7 · Beta` a `v2.8.0` eliminando la referencia explícita a Beta, ya que ahora el Ribbon asume esa labor visual.
