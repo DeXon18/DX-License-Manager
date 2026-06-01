@@ -1,6 +1,13 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-06-01 12:20] — Feature: Beta Ribbon UI
+
+### Changed
+
+- **UI / Navbar**: Reemplazado el antiguo badge de entorno de la barra lateral por un ribbon flotante en la esquina superior derecha (`.dx-v2-beta-ribbon`).
+- **Entornos**: El nuevo ribbon solo es visible cuando el entorno no es de producción, ocultándose completamente en `prod` para ofrecer una interfaz más limpia.
+
 ## [2026-06-01 12:15] — Bugfix: Persistencia del Tour de Bienvenida
 
 ### Fixed

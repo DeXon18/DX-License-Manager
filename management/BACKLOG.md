@@ -34,6 +34,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Feature: Beta Ribbon UI ✅
+- **Completada:** 2026-06-01
+- **Rama:** `feature/beta-ribbon`
+- **Resumen:** Se eliminó el badge estático de entorno de la barra lateral y se implementó un ribbon CSS flotante exclusivo para el entorno Beta, mejorando la limpieza visual en producción.
+- **PR:** #29 — merged a dev
+
 ### Fix: Bucle infinito del Tour de Bienvenida ✅
 - **Completada:** 2026-06-01
 - **Rama:** `fix/tour-persistence`
