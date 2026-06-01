@@ -1,7 +1,25 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
-## [2026-06-01] — Auditoría de Seguridad Fase 3 + Security Hardening ✅
+## [2026-06-01 10:00] — Security Hardening: Cierre Total de Auditoría Fase 3 ✅
+
+### Fixed — Pendientes Bajos Cerrados
+- **[CWE-116]** `SupportController`: Escapado de caracteres especiales Markdown (`*`, `_`, `` ` ``, `[`, etc.) antes de enviar ticket a Telegram — previene output injection cosmético
+- **[CWE-203]** `BotQueryController`: Mensaje de cliente no encontrado reemplazado por texto genérico — elimina posibilidad de enumerar clientes por nombre
+- **[CSP]** `infra/nginx/beta.conf` + `prod.conf`: Añadida cabecera `Content-Security-Policy` compatible con el stack real (Alpine.js `unsafe-inline`, Chart.js, Font Awesome, Google Fonts vía CDN allowlist)
+- **[CSP]** `infra/nginx/beta.conf` + `prod.conf`: Añadida cabecera `Permissions-Policy` deshabilitando APIs de navegador no usadas (`camera`, `microphone`, `geolocation`, `payment`, `usb`)
+
+### Verificado como ya implementado (no requirió acción)
+- ✅ **JWT blacklist Redis**: Completamente implementada en `AuthController@logout` (zadd ZSET) y verificada en `JwtAuth` middleware (zscore check) desde 2026-05-15
+- ✅ **`laravel/sanctum`**: Ya eliminado de `composer.json` en sesión anterior — no presente en dependencias de producción
+
+### Estado Final — Cero Hallazgos Abiertos
+Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) están cerrados.
+**Docs de auditoría:** `backend/docs/260509_auditoria-seguridad.md` · `backend/docs/260509_auditoria-seguridad-fase2.md` · `backend/docs/260601_auditoria-seguridad-fase3.md`
+
+---
+
+
 
 **Auditoría completa:** [`backend/docs/260601_auditoria-seguridad-fase3.md`](../backend/docs/260601_auditoria-seguridad-fase3.md)
 **Auditorías previas:** [`260509_auditoria-seguridad.md`](../backend/docs/260509_auditoria-seguridad.md) · [`260509_auditoria-seguridad-fase2.md`](../backend/docs/260509_auditoria-seguridad-fase2.md)
