@@ -1,6 +1,19 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 
+## [2026-06-01 11:45] — Infrastructure: Desacoplamiento de Entornos (Beta/Prod)
+
+### Changed
+
+- **BackupController & SystemAction**: Reemplazados los comandos hardcodeados a `"beta"` por interpolación dinámica de `config('app.env')` (`prod` o `beta`) al llamar a `scripts/backup-db.sh`.
+- **backup-db.sh**: Eliminado el condicional `if/else` que diferenciaba entre `mariadb-beta` y `mariadb-prod`. Ahora usa `$DB_HOST` inyectado dinámicamente por Docker desde el `.env`.
+- **ChatbotService**: La cabecera `HTTP-Referer` de OpenRouter ahora lee `config('app.url')` en lugar de enviar `https://beta.dxpro.es`.
+
+### Fixed
+
+- **System Dashboard Storage**: Restaurados los volúmenes de solo lectura (`storage_beta:ro` y `storage_prod:ro`) en `infra/docker-compose.beta.yml` e `infra/docker-compose.prod.yml` para permitir al contenedor PHP medir el tamaño de almacenamiento de ambos entornos (telemetría NOC).
+- **Docker Daemon Socket**: Restablecidos permisos en el host LXC (`chmod 666 /var/run/docker.sock`) para que el usuario `www-data` (PHP) recupere acceso a la salud de contenedores (`docker ps`) perdido al recrear el stack con Docker Compose.
+
 ## [2026-06-01 10:00] — Security Hardening: Cierre Total de Auditoría Fase 3 ✅
 
 **Docs de auditoría:** [`260601_auditoria-seguridad-fase3.md`](../backend/docs/260601_auditoria-seguridad-fase3.md) · [`260509_auditoria-seguridad-fase2.md`](../backend/docs/260509_auditoria-seguridad-fase2.md) · [`260509_auditoria-seguridad.md`](../backend/docs/260509_auditoria-seguridad.md)

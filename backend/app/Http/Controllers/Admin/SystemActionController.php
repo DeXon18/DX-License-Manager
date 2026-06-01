@@ -44,7 +44,8 @@ class SystemActionController extends Controller
         try {
             // Ejecutar script de backup
             // Nota: El script debe tener permisos de ejecución
-            $process = Process::run('bash /var/www/html/scripts/backup-db.sh beta');
+            $env = config('app.env') === 'production' ? 'prod' : 'beta';
+            $process = Process::run("bash /var/www/html/scripts/backup-db.sh {$env}");
             
             if ($process->successful()) {
                 $this->logAction('db_backup', 'Manual database backup created');
