@@ -3,46 +3,29 @@
 
 ## [2026-06-01 10:00] — Security Hardening: Cierre Total de Auditoría Fase 3 ✅
 
-### Fixed — Pendientes Bajos Cerrados
-- **[CWE-116]** `SupportController`: Escapado de caracteres especiales Markdown (`*`, `_`, `` ` ``, `[`, etc.) antes de enviar ticket a Telegram — previene output injection cosmético
-- **[CWE-203]** `BotQueryController`: Mensaje de cliente no encontrado reemplazado por texto genérico — elimina posibilidad de enumerar clientes por nombre
-- **[CSP]** `infra/nginx/beta.conf` + `prod.conf`: Añadida cabecera `Content-Security-Policy` compatible con el stack real (Alpine.js `unsafe-inline`, Chart.js, Font Awesome, Google Fonts vía CDN allowlist)
-- **[CSP]** `infra/nginx/beta.conf` + `prod.conf`: Añadida cabecera `Permissions-Policy` deshabilitando APIs de navegador no usadas (`camera`, `microphone`, `geolocation`, `payment`, `usb`)
-
-### Verificado como ya implementado (no requirió acción)
-- ✅ **JWT blacklist Redis**: Completamente implementada en `AuthController@logout` (zadd ZSET) y verificada en `JwtAuth` middleware (zscore check) desde 2026-05-15
-- ✅ **`laravel/sanctum`**: Ya eliminado de `composer.json` en sesión anterior — no presente en dependencias de producción
-
-### Estado Final — Cero Hallazgos Abiertos
-Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) están cerrados.
-**Docs de auditoría:** `backend/docs/260509_auditoria-seguridad.md` · `backend/docs/260509_auditoria-seguridad-fase2.md` · `backend/docs/260601_auditoria-seguridad-fase3.md`
-
----
-
-
-
-**Auditoría completa:** [`backend/docs/260601_auditoria-seguridad-fase3.md`](../backend/docs/260601_auditoria-seguridad-fase3.md)
-**Auditorías previas:** [`260509_auditoria-seguridad.md`](../backend/docs/260509_auditoria-seguridad.md) · [`260509_auditoria-seguridad-fase2.md`](../backend/docs/260509_auditoria-seguridad-fase2.md)
-
-### Security — Verificación de Fixes Fases 1+2
-- ✅ Todos los hallazgos críticos de Fases 1 y 2 confirmados como corregidos (RBAC, MIME validation NXSuite/StarCCM/HEEDS, HMAC webhook n8n, fallback `auth()->id() ?? 1`)
+**Docs de auditoría:** [`260601_auditoria-seguridad-fase3.md`](../backend/docs/260601_auditoria-seguridad-fase3.md) · [`260509_auditoria-seguridad-fase2.md`](../backend/docs/260509_auditoria-seguridad-fase2.md) · [`260509_auditoria-seguridad.md`](../backend/docs/260509_auditoria-seguridad.md)
 
 ### Security — Nuevos módulos auditados (Fase 3)
 - **Auditado:** `BotQueryController` (Telegram bot, 646 líneas), `ChatbotController`, `AiAuditCostController`, `EnterpriseCloudAccountController`, `SupportController`, `AiModelController`
 - **Resultado:** Sin vulnerabilidades críticas. EnterpriseCloud, AiModel y AiAuditCost pasan audit completo
 
+### Security — Verificación de Fixes Fases 1+2
+- ✅ Todos los hallazgos críticos de Fases 1 y 2 confirmados como corregidos (RBAC, MIME validation NXSuite/StarCCM/HEEDS, HMAC webhook n8n, fallback `auth()->id() ?? 1`)
+- ✅ **JWT blacklist Redis**: Completamente implementada en `AuthController@logout` (zadd ZSET) y verificada en `JwtAuth` middleware (zscore check) desde 2026-05-15
+- ✅ **`laravel/sanctum`**: Ya eliminado de `composer.json` en sesión anterior — no presente en dependencias de producción
+
 ### Fixed — Security Hardening (rama `fix/security-hardening-fase3`)
 - **[CWE-598]** `BotQueryController`: Eliminada aceptación de token de bot por query parameter (`?token=xxx`) — prevenía exposición en logs de Nginx
 - **[CWE-209]** `ChatbotController`: Eliminado `$e->getMessage()` de respuestas JSON 500 — prevenía stack trace expuesto al cliente. Log completo con trace persiste internamente
+- **[CWE-116]** `SupportController`: Escapado de caracteres especiales Markdown (`*`, `_`, `` ` ``, `[`, etc.) antes de enviar ticket a Telegram — previene output injection cosmético
+- **[CWE-203]** `BotQueryController`: Mensaje de cliente no encontrado reemplazado por texto genérico — elimina posibilidad de enumerar clientes por nombre
 - **[API4]** `web.php`: Añadido `throttle:30,1` en `/chatbot/query` — previene abuso de tokens IA por usuario autenticado
 - **[API4]** `api.php`: Añadido `throttle:60,1` en `/api/bot/query` y `/api/audit/callback` — previene spam en endpoints API públicos
+- **[CSP]** `infra/nginx/beta.conf` + `prod.conf`: Añadida cabecera `Content-Security-Policy` compatible con el stack real (Alpine.js `unsafe-inline`, Chart.js, Font Awesome, Google Fonts vía CDN allowlist)
+- **[CSP]** `infra/nginx/beta.conf` + `prod.conf`: Añadida cabecera `Permissions-Policy` deshabilitando APIs de navegador no usadas (`camera`, `microphone`, `geolocation`, `payment`, `usb`)
 
-### Pendiente (severidad baja — no urgente)
-- JWT blacklist completa en Redis (logout)
-- CSP header en Nginx (beta + prod)
-- Sanitizar markdown en `SupportController` (Telegram output injection cosmético)
-- Eliminar `laravel/sanctum` instalado sin uso
-- Respuesta genérica en bot cuando cliente no existe (information disclosure menor)
+### Estado Final — Cero Hallazgos Abiertos
+Todos los hallazgos de las 3 fases de auditoría (2026-05-09 × 2, 2026-06-01) están cerrados.
 
 ---
 
