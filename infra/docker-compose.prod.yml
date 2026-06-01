@@ -42,6 +42,44 @@ services:
       retries: 3
       start_period: 30s
 
+  queue-prod:
+    build:
+      context: ./infra/php
+    container_name: dx-queue-prod
+    restart: always
+    mem_limit: 256m
+    env_file: ./infra/.env.prod
+    volumes:
+      - ./backend:/var/www/html
+      - ./infra/.env.prod:/var/www/html/.env
+      - ./infra/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./backend/storage_prod:/var/www/html/storage
+    depends_on:
+      mariadb-prod:
+        condition: service_healthy
+      redis-prod:
+        condition: service_healthy
+    command: ["php", "artisan", "queue:work", "redis", "--sleep=3", "--tries=3", "--timeout=90"]
+
+  scheduler-prod:
+    build:
+      context: ./infra/php
+    container_name: dx-scheduler-prod
+    restart: always
+    mem_limit: 128m
+    env_file: ./infra/.env.prod
+    volumes:
+      - ./backend:/var/www/html
+      - ./infra/.env.prod:/var/www/html/.env
+      - ./infra/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./backend/storage_prod:/var/www/html/storage
+    depends_on:
+      mariadb-prod:
+        condition: service_healthy
+      redis-prod:
+        condition: service_healthy
+    command: ["php", "artisan", "schedule:work"]
+
   mariadb-prod:
     image: mariadb:10.11
     container_name: dx-mariadb-prod

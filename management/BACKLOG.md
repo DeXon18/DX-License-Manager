@@ -34,6 +34,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Fix: Infraestructura de Correos y Tareas Programadas (Scheduler/Queue) ✅
+- **Completada:** 2026-06-01
+- **Rama:** `fix/email-scheduler`
+- **Resumen:** Se añadieron contenedores dedicados (`queue` y `scheduler`) en los entornos Beta y Prod para procesar asíncronamente los correos semanales de caducidad en Redis.
+- **PR:** #TBD — pendiente merge a dev
+
 ### Feature: Beta Ribbon UI ✅
 - **Completada:** 2026-06-01
 - **Rama:** `feature/beta-ribbon`
