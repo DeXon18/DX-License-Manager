@@ -2,8 +2,19 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Version:** v3.0.1
 
-## [2026-06-01 13:20] — Patch: Corrección del Tour (Driver.js)
+## [2026-06-01 15:00] — Feature: Importación Masiva Asíncrona (Consola en Vivo)
 
+### Added
+
+- **Consola UI**: Implementada una consola en vivo (terminal integrada) en la vista de importación (`admin/import/index.blade.php`), adaptada a los tokens de diseño de NOC Pro (fondo oscuro, barra de progreso acentuada, tipografía monospace).
+- **Procesamiento en Segundo Plano**: Creado `ProcessCsvImportJob` para descargar el procesamiento de archivos CSV masivos al nuevo contenedor `dx-queue-beta/prod`.
+- **Telemetría Redis**: Integrado streaming de logs en tiempo real hacia la consola del cliente vía Redis, con colores según severidad (`[INFO]`, `[ERROR]`, `[IA/MATCH]`, `[NUEVO]`).
+
+### Changed
+
+- **ClientNormalizationService**: Reactivada la IA (`$useAi = true`) por defecto en importaciones masivas, ya que al procesarse en background (Jobs) se evita el riesgo de timeouts 524 de Cloudflare.
+
+## [2026-06-01 13:20] — Patch: Corrección del Tour (Driver.js)
 ### Fixed
 
 - **UI / Tour**: Corregido comportamiento molesto del tour de bienvenida. Ahora solo se autoinicia en las pantallas que tienen pasos configurados específicamente (evitando interrupciones en el resto de páginas). Además, el botón "Cerrar" guarda la preferencia instantáneamente y de forma silenciosa sin preguntar confirmaciones redundantes.
