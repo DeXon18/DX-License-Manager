@@ -33,3 +33,24 @@
 .date-sub    { font-size:11px; color:var(--dx-v2-danger); }
 .date-sub.warn  { color:var(--dx-v2-warning); }
 .date-sub.muted { color:var(--dx-v2-muted); }
+
+/* RIBBON BETA */
+.dx-v2-beta-ribbon {
+    position: fixed;
+    top: 25px;
+    right: -55px;
+    width: 200px;
+    background-color: var(--dx-v2-warning, #eab308);
+    color: #111;
+    text-align: center;
+    padding: 4px 0;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transform: rotate(45deg);
+    z-index: 9999;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    pointer-events: none;
+    font-family: var(--dx-v2-font-mono, monospace);
+}
