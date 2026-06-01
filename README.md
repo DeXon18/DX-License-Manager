@@ -105,6 +105,7 @@ Centro de telemetría e infraestructura para administradores de sistemas y monit
 ├── backend/              # Núcleo del portal (Laravel 11 App)
 │   ├── app/              # Controladores, Modelos, Middleware, Servicios de IA
 │   ├── config/           # Configuraciones (auth, base de datos, gemini)
+│   ├── docs/             # Registro oficial de Auditorías de Seguridad Continuas (OWASP)
 │   ├── public/           # Ficheros públicos y hojas modulares compiladas de CSS
 │   ├── resources/        # Vistas Blade, traducciones y componentes Alpine.js
 │   └── routes/           # Enrutamiento del portal (web, api)
@@ -150,6 +151,7 @@ Para mantener la calidad y blindaje del código, cualquier interacción de desar
 
 - **Modo Estricto:** Prohibido realizar cambios o ejecutar scripts sin plan previo aprobado explícitamente por Oskar.
 - **Blindaje de Descargas:** Las licencias se recuperan de `storage/licenses/` mediante IDs abstractos de base de datos (`/licenses/download?id=[UUID]`). Nunca se pasan rutas directas en las URLs.
+- **Auditorías de Seguridad Continuas:** Ejecución periódica de peritajes tipo OWASP (`laravel-security-audit`) registrados históricamente en `backend/docs/`. Garantizan la ausencia de vulnerabilidades XSS, CSRF, Path Traversal y fugas de datos antes de cada salto de fase mayor.
 - **Auditoría IA Privada:** El contenido en bruto de las licencias y metadatos sensibles nunca se almacena; se parsea en RAM y se elimina tras el análisis.
 - **Gobernanza Git:** El desarrollo se realiza en ramas de funcionalidad (`feature/`, `fix/`) que nacen y regresan exclusivamente a la rama `dev`.
 
