@@ -222,6 +222,8 @@ function startPolling(logId) {
                     if (lineStr.includes('[ERROR]') || lineStr.includes('[CRÍTICO]')) color = '#f55';
                     if (lineStr.includes('[IA/MATCH]')) color = '#0ff';
                     if (lineStr.includes('[SISTEMA]')) color = '#ff0';
+                    if (lineStr.includes('[INFO]')) color = '#aaa';
+                    if (lineStr.includes('[NUEVO]')) color = '#f0f';
                     
                     consoleOutput.innerHTML += `<div style="color: ${color};">> ${lineStr}</div>`;
                 }

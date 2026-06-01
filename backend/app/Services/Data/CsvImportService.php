@@ -226,6 +226,11 @@ class CsvImportService
                     \Illuminate\Support\Facades\Redis::set($redisProgressKey, $progress);
                 }
 
+                // Log heartbeat every 50 rows
+                if ($rowCount % 50 === 0) {
+                    $this->logToConsole($redisKey, "[SISTEMA] Procesadas {$rowCount} de {$totalLines} filas...");
+                }
+
                 $contractNumber = trim($row[0] ?? '');
                 if (empty($contractNumber) || !str_contains(strtoupper($contractNumber), 'CONH')) {
                     continue;
@@ -240,7 +245,13 @@ class CsvImportService
 
                     if (isset($normalization['warning'])) {
                         $warnings[] = "Fila $rowCount: " . $normalization['warning'];
-                        $this->logToConsole($redisKey, "[IA/MATCH] Fila {$rowCount}: " . $normalization['warning']);
+                        
+                        // Separate completely new clients from AI matches or Suspicions
+                        if ($normalization['status'] === 'new') {
+                            $this->logToConsole($redisKey, "[NUEVO] Fila {$rowCount}: " . $normalization['warning']);
+                        } else {
+                            $this->logToConsole($redisKey, "[IA/MATCH] Fila {$rowCount}: " . $normalization['warning']);
+                        }
                     }
 
                     $vendorName = trim($row[3] ?? '');
@@ -269,6 +280,12 @@ class CsvImportService
                             'comment' => isset($row[8]) ? trim($row[8]) : null,
                         ]
                     );
+
+                    if ($contract->wasRecentlyCreated) {
+                        $this->logToConsole($redisKey, "[INFO] Fila {$rowCount}: Nuevo contrato registrado ({$contract->contract_number}).");
+                    } elseif ($contract->wasChanged()) {
+                        $this->logToConsole($redisKey, "[INFO] Fila {$rowCount}: Contrato actualizado ({$contract->contract_number}).");
+                    }
 
                     $processedIds[] = $contract->id;
 
