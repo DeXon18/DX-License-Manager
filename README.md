@@ -51,14 +51,7 @@ Capa 5: Technical Tools  ───► Herramientas de vendors (tools-hub.css · 
 Capa 6: Special Pages    ───► Vistas independientes (page-herramientas.css · admin.css · page-maintenance.css)
 ```
 
-### 🏷️ Identidad de Marca por Vendor
 
-El portal adapta dinámicamente sus acentos de color de manera ergonómica según el fabricante seleccionado:
-
-| Vendor          | Primary Color    | Hover State | CSS Class                 | Propósito Principal                      |
-| :-------------- | :--------------- | :---------- | :------------------------ | :--------------------------------------- |
-| **Siemens PLM** | `#009999` (Teal) | `#007A7A`   | `.theme-teal` / `.accent` | Entornos NX Suite, STAR-CCM+, HEEDS, COD |
-| **Moldex3D**    | `#ED1C24` (Red)  | `#C41520`   | `.theme-red` / `.danger`  | Auditoría de licencias Moldex3D (`.mac`) |
 
 ---
 
