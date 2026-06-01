@@ -34,11 +34,17 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Patch: Corrección del Tour y Persistencia (v3.0.1) ✅
+- **Completada:** 2026-06-01
+- **Rama:** `fix/tour-persistence`
+- **Resumen:** Se solucionó el comportamiento invasivo del tour eliminando el auto-arranque genérico y el `confirm()` al cerrar. Además, se aplicó la migración pendiente `add_has_seen_tour_to_users_table` en la base de datos de producción previa copia de seguridad manual. Todo subido y funcionando en `main`.
+- **PR:** Merge directo tras estabilización en `dev`.
+
 ### Fix: Infraestructura de Correos y Tareas Programadas (Scheduler/Queue) ✅
 - **Completada:** 2026-06-01
 - **Rama:** `fix/email-scheduler`
 - **Resumen:** Se añadieron contenedores dedicados (`queue` y `scheduler`) en los entornos Beta y Prod para procesar asíncronamente los correos semanales de caducidad en Redis.
-- **PR:** #TBD — pendiente merge a dev
+- **PR:** Merged a dev y main
 
 ### Feature: Beta Ribbon UI ✅
 - **Completada:** 2026-06-01
