@@ -263,6 +263,18 @@ systemctl restart docker
 
 ---
 
+### Cambios en Nginx no aplican tras `nginx -s reload`
+
+**Causa:** Si el archivo `.conf` de Nginx está mapeado en Docker como un solo archivo (`- ./infra/nginx/beta.conf:/etc/nginx/conf.d/default.conf`), hacer un `git pull` en el host cambia el inode del archivo. Docker se vincula al inode, por lo que el contenedor sigue leyendo la versión antigua en memoria.
+
+**Fix:** NUNCA usar `nginx -s reload` si el archivo se modificó desde el host (por ej. vía git).
+SIEMPRE reiniciar el contenedor:
+```bash
+docker compose --project-directory . -f infra/docker-compose.beta.yml restart nginx-beta
+```
+
+---
+
 ## Referencia Rápida de Comandos
 
 ```bash
