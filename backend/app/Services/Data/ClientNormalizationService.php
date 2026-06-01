@@ -15,7 +15,7 @@ class ClientNormalizationService
      * @param float $threshold Similarity threshold (0 to 1)
      * @return array [id, status, name, suggested_name, similarity, warning]
      */
-    public function resolve(string $name, float $threshold = 0.85): array
+    public function resolve(string $name, float $threshold = 0.85, bool $useAi = true): array
     {
         $name = trim($name);
         $titleName = Str::title($name);
@@ -64,6 +64,7 @@ class ClientNormalizationService
         }
 
         // 3.5. Fallback a Inteligencia Artificial (Gemini/DeepSeek/OpenRouter)
+        if ($useAi) {
         try {
             $aiService = app(\App\Services\AI\ClientAiNormalizationService::class);
             $aiResult = $aiService->evaluate($titleName);
@@ -94,6 +95,7 @@ class ClientNormalizationService
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error("ClientNormalizationService AI fallback error: " . $e->getMessage());
         }
+        } // End if ($useAi)
 
         // 4. Totally New (No similarity or very low)
         $newClient = Client::create(['name' => $titleName]);

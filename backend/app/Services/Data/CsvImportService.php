@@ -75,8 +75,9 @@ class CsvImportService
                 
                 try {
                     // 1. Normalize Client Name using the Intelligence Engine
+                    // Bypass AI on bulk CSV import to prevent timeouts and rate limits (passes false as 3rd param)
                     $rawName = trim($row[2] ?? 'Desconocido');
-                    $normalization = $this->normalizationService->resolve($rawName);
+                    $normalization = $this->normalizationService->resolve($rawName, 0.85, false);
                     
                     $clientId = $normalization['id'];
 
