@@ -12,9 +12,9 @@
 
 ### Security — Verificación de Fixes Fases 1+2
 
-- ✅ Todos los hallazgos críticos de Fases 1 y 2 confirmados como corregidos (RBAC, MIME validation NXSuite/StarCCM/HEEDS, HMAC webhook n8n, fallback `auth()->id() ?? 1`)
-- ✅ **JWT blacklist Redis**: Completamente implementada en `AuthController@logout` (zadd ZSET) y verificada en el middleware `JwtAuth` (zscore check) desde 2026-05-15
-- ✅ **laravel/sanctum**: Ya eliminado de `composer.json` en sesión anterior — no presente en dependencias de producción
+- Todos los hallazgos críticos de Fases 1 y 2 confirmados como corregidos (RBAC, MIME validation NXSuite/StarCCM/HEEDS, HMAC webhook n8n, fallback `auth()->id() ?? 1`)
+- **JWT blacklist Redis**: Completamente implementada en `AuthController@logout` (zadd ZSET) y verificada en el middleware `JwtAuth` (zscore check) desde 2026-05-15
+- **laravel/sanctum**: Ya eliminado de `composer.json` en sesión anterior — no presente en dependencias de producción
 
 ### Fixed — Security Hardening (rama `fix/security-hardening-fase3`)
 
