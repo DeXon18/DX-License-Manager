@@ -18,9 +18,13 @@
         }
     </script>
 
-    <!-- Fonts & Styles -->
-    <link rel="stylesheet" href="{{ asset('assets/css/dx-v2-main.css?v=' . time()) }}">
+    <!-- Librerías Externas -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Fonts & Styles del Proyecto -->
+    <link rel="stylesheet" href="{{ asset('assets/css/dx-v2-main.css?v=' . time()) }}">
+    
     
     <!-- Alpine.js (Legacy mode - no build step) -->
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -65,6 +69,9 @@
                 <a class="nav-link {{ request()->routeIs('pages.ai-privacy') ? 'active' : '' }}" href="{{ route('pages.ai-privacy') }}">Privacidad IA</a>
             </nav>
             <div class="nav-right">
+                <button class="theme-toggle" id="start-tour-btn" style="background: none; border: none; cursor: pointer; color: var(--color-text-muted); font-size: 1.2rem; margin-right: 15px;" title="Ayuda / Tour">
+                    <i class="fa-solid fa-circle-question"></i>
+                </button>
                 <div class="theme-toggle" @click="toggleTheme()">
                     <span class="toggle-icon">☀️</span>
                     <div class="toggle-track"><div class="toggle-knob" :style="darkMode ? 'left: 20px' : 'left: 2px'"></div></div>
@@ -188,6 +195,84 @@
                 searchInput.value = '';
                 searchInput.value = val;
             }
+        });
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+    <script>
+        // Definición por defecto del tour (Navegación general)
+        // Las vistas individuales pueden sobrescribir window.pageTourSteps antes de que cargue el DOM
+        window.pageTourSteps = window.pageTourSteps || [
+            {
+                element: '.nav-links',
+                popover: {
+                    title: 'Navegación Principal',
+                    description: 'Desde aquí puedes acceder rápidamente a clientes, herramientas y configuración de la plataforma.',
+                    side: 'bottom',
+                    align: 'start'
+                }
+            },
+            {
+                element: '.sidebar',
+                popover: {
+                    title: 'Panel Lateral',
+                    description: 'Tu menú principal de navegación con todas las funcionalidades de gestión de licencias, reportes y telemetría.',
+                    side: 'right',
+                    align: 'start'
+                }
+            },
+            {
+                element: '#start-tour-btn',
+                popover: {
+                    title: 'Ayuda Contextual',
+                    description: 'El contenido de este botón cambia según la pantalla en la que estés. Púlsalo siempre que tengas dudas.',
+                    side: 'bottom',
+                    align: 'end'
+                }
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const driver = window.driver.js.driver;
+            
+            const driverObj = driver({
+                showProgress: true,
+                animate: true,
+                popoverClass: 'dx-tour-theme',
+                doneBtnText: 'Hecho',
+                closeBtnText: 'Cerrar',
+                nextBtnText: 'Siguiente',
+                prevBtnText: 'Anterior',
+                progressText: '@{{current}} de @{{total}}',
+                steps: window.pageTourSteps,
+                onDestroyStarted: () => {
+                    if (!driverObj.hasNextStep() || confirm("¿Seguro que quieres salir del tour?")) {
+                        driverObj.destroy();
+                        
+                        @if(Auth::check() && !Auth::user()->has_seen_tour)
+                        fetch("{{ route('profile.tour-seen') }}", {
+                            method: "POST",
+                            headers: {
+                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                "Accept": "application/json",
+                                "Content-Type": "application/json"
+                            }
+                        }).then(response => response.json())
+                          .then(data => console.log('Tour marcado como completado.'));
+                        @endif
+                    }
+                }
+            });
+
+            @if(Auth::check() && !Auth::user()->has_seen_tour)
+                setTimeout(() => {
+                    driverObj.drive();
+                }, 500);
+            @endif
+
+            document.getElementById('start-tour-btn')?.addEventListener('click', () => {
+                driverObj.drive();
+            });
         });
     </script>
 </body>

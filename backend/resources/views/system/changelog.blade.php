@@ -12,7 +12,7 @@
         <div class="header-actions">
             <div class="version-badge-lg">
                 <span class="dot-pulse"></span>
-                v2.7.4 Stable
+                {{ $dxVersion }}
             </div>
         </div>
     </div>
@@ -64,7 +64,7 @@
                                                 @if($item['label'])
                                                     <span class="change-label">{{ $item['label'] }}</span>
                                                 @endif
-                                                <span class="change-desc">{{ $item['description'] }}</span>
+                                                <span class="change-desc">{!! $item['description'] !!}</span>
                                             </li>
                                         @endforeach
                                     </ul>
@@ -157,6 +157,11 @@
 }
 .change-label { font-weight: 600; color: var(--primary); margin-right: 4px; }
 .change-desc { color: var(--secondary); }
+.change-desc code {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11px;
+    background: var(--surface); border: 1px solid var(--border); color: var(--accent);
+    padding: 2px 6px; border-radius: 4px;
+}
 
 @media (max-width: 768px) {
     .timeline::before { left: 0; }

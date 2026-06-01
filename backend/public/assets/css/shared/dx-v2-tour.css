@@ -1,0 +1,63 @@
+/* ==========================================================================
+   DRIVER.JS / TOUR ONBOARDING (ESTILO NOC PRO)
+   ========================================================================== */
+
+/* Theme para el popover de Driver.js v1 */
+.dx-tour-theme {
+    --driver-popover-bg: var(--dx-v2-surface);
+    --driver-popover-text: var(--dx-v2-primary);
+    --driver-popover-border: var(--dx-v2-border);
+    --driver-popover-shadow: var(--dx-v2-shadow-3);
+    --driver-popover-border-radius: var(--dx-v2-rounded-lg);
+
+    --driver-popover-title-text: var(--dx-v2-primary);
+    --driver-popover-description-text: var(--dx-v2-muted);
+    --driver-popover-progress-text: var(--dx-v2-muted);
+
+    --driver-popover-btn-bg: var(--dx-v2-bg);
+    --driver-popover-btn-text: var(--dx-v2-primary);
+    --driver-popover-btn-border: var(--dx-v2-border);
+
+    --driver-popover-btn-disabled-bg: var(--dx-v2-bg);
+    --driver-popover-btn-disabled-text: var(--dx-v2-muted);
+    --driver-popover-btn-disabled-border: var(--dx-v2-border-subtle);
+}
+
+/* Modificaciones estructurales finas sobre el theme */
+.dx-tour-theme .driver-popover-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: var(--dx-v2-spacing-2);
+    border-bottom: 1px solid var(--dx-v2-border);
+    padding-bottom: var(--dx-v2-spacing-2);
+    padding-right: var(--dx-v2-spacing-6); /* Espacio para la X */
+}
+
+.dx-tour-theme .driver-popover-description {
+    line-height: 1.5;
+    margin-bottom: var(--dx-v2-spacing-4);
+}
+
+/* Botón Siguiente Destacado */
+.dx-tour-theme .driver-popover-next-btn {
+    background-color: var(--dx-v2-accent) !important;
+    color: #ffffff !important;
+    border-color: var(--dx-v2-accent) !important;
+    font-weight: 600;
+    text-shadow: none !important;
+}
+
+.dx-tour-theme .driver-popover-next-btn:hover {
+    background-color: var(--dx-v2-accent-hover) !important;
+    border-color: var(--dx-v2-accent-hover) !important;
+}
+
+/* Hover genérico de botones */
+.dx-tour-theme .driver-popover-footer button:not(.driver-popover-next-btn):hover {
+    background-color: var(--dx-v2-raised);
+}
+
+/* Ocultar sombras blancas por defecto en SVG Overlay */
+div#driver-page-overlay path {
+    fill: rgba(0, 0, 0, 0.75) !important;
+}

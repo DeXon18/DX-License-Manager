@@ -34,6 +34,35 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Desacoplamiento de Entornos y Telemetría NOC ✅
+- **Completada:** 2026-06-01
+- **Rama:** `feature/env-decoupling`
+- **Resumen:** Refactorizado el código para eliminar hardcodes de entorno ('beta') en la ejecución de scripts y peticiones IA. Restaurada la lectura de volúmenes de almacenamiento en Docker para monitoreo cruzado desde NOC Dashboard y reparado el acceso a `docker.sock`.
+- **PR:** Pendiente de PR
+
+### Fase 32 — Optimización N+1 Queries ✅
+- **Completada:** 2026-05-28
+- **Rama:** `feature/phase32-n1-optimization`
+- **Resumen:** Implementación estricta de `preventLazyLoading` en el ORM. Auditoría en `DashboardController`, `ClientController` y `RenewalPlannerController` que confirmó el correcto eager loading de todas las relaciones.
+
+### Fase 31 — Testing Automatizado & Validación SQLite ✅
+- **Completada:** 2026-05-28
+- **Rama:** `feature/phase31-automated-testing` (Evaluación)
+- **Resumen:** Validación de la infraestructura de testing. Confirmación de que `phpunit.xml` está configurado para usar base de datos en memoria (`:memory:`) protegiendo el entorno Beta. Validación de ejecución de la suite existente `ClientNormalizationTest`. Se documenta el uso del comando `docker exec -e DB_CONNECTION=sqlite -e DB_DATABASE=:memory: dx-php-beta php artisan test` a través del LXC 600 por SSH para futuros agentes.
+- **PR:** No requiere merge (documentación/validación).
+
+### Métricas de Clientes en Directorio ✅
+- **Completada:** 2026-05-28
+- **Rama:** `feature/client-metrics`
+- **Resumen:** Implementación de tarjetas de estadísticas estilo NOC Pro en la cabecera de la vista de clientes. Se integran conteos reales de clientes, contratos activos y desgloses de licencias activas separadas por fabricante (Siemens PLM y Moldex3D) respetando sus colores de marca corporativos.
+- **PR:** Pendiente
+
+### Corrección Timeout IA y Cron Prod ✅
+- **Completada:** 2026-05-28
+- **Rama:** `fix/ai-timeout`
+- **Resumen:** Aumento de timeout a 30s en OpenRouter y activación de fallback por `cURL error 28` en subidas de CSV. Reparado referer hardcodeado en peticiones IA y añadido cron diario para copias de seguridad en Producción.
+- **PR:** Pendiente de merge a `dev`
+
 ### Fase 30 — Security & Compliance Corporativo + Renovar Contratos ✅
 - **Completada:** 2026-05-25
 - **Rama:** `feature/contracts-chatbot-updates`

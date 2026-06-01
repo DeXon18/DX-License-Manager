@@ -45,4 +45,13 @@ class ProfileController extends Controller
 
         return back()->with('success', 'Perfil actualizado correctamente.');
     }
+
+    public function markTourSeen(Request $request)
+    {
+        $user = auth()->user();
+        $user->has_seen_tour = true;
+        $user->save();
+
+        return response()->json(['success' => true]);
+    }
 }

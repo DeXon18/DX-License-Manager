@@ -275,7 +275,69 @@ docker exec -e DB_CONNECTION=sqlite -e DB_DATABASE=:memory: dx-php-beta php arti
 - JWT: access token 15 min + refresh token 24h con rotación automática
 - RBAC: `admin` escribe · `technician` lee · `viewer` solo visualiza
 
----
+### 0.10.1 Buenas Prácticas — Derivadas de Auditorías (Fases 1-3)
+
+**Docs de referencia:**
+- `backend/docs/260509_auditoria-seguridad.md` — Fase 1 (RBAC, MIME, JWT)
+- `backend/docs/260509_auditoria-seguridad-fase2.md` — Fase 2 (fallback auth, HMAC)
+- `backend/docs/260601_auditoria-seguridad-fase3.md` — Fase 3 (Bot, Chatbot, throttle)
+
+**Al crear cualquier endpoint nuevo — checklist obligatorio:**
+
+```
+[ ] ¿Tiene middleware auth.jwt o token de bot?
+[ ] ¿Tiene middleware permission:rol si es de escritura?
+[ ] ¿Tiene throttle si puede generar coste (IA, email, Telegram)?
+[ ] ¿El catch no expone $e->getMessage() en respuesta JSON/HTML?
+[ ] ¿La subida de archivos valida extensión Y mime type?
+[ ] ¿Los tokens/secretos se reciben solo por Header, nunca por query param?
+[ ] ¿Los webhooks externos verifican HMAC con hash_equals()?
+```
+
+**Patrones prohibidos — nunca escribir esto:**
+
+```php
+// ❌ Expone stack trace al cliente
+return response()->json(['error' => $e->getMessage()], 500);
+
+// ✅ Correcto
+Log::error('...', ['trace' => $e->getTraceAsString()]);
+return response()->json(['message' => 'Error interno. Reintenta.'], 500);
+
+// ❌ Token en query param (queda en logs de Nginx)
+$token = $request->input('token');
+
+// ✅ Correcto — solo headers
+$token = $request->header('X-Bot-Token') ?: $request->bearerToken();
+
+// ❌ Subida sin restricción
+'license_file' => 'required|file'
+
+// ✅ Correcto — extensión + mime
+'license_file' => 'required|file|max:10240|mimetypes:text/plain,application/octet-stream'
+// + validación de extensión explícita con in_array()
+
+// ❌ Endpoint con coste sin throttle
+Route::post('/chatbot/query', [ChatbotController::class, 'query']);
+
+// ✅ Correcto
+Route::post('/chatbot/query', ...)->middleware('throttle:30,1');
+
+// ❌ Webhook externo sin verificación
+public function callback(Request $request) { $this->service->handle($request->all()); }
+
+// ✅ Correcto — HMAC con hash_equals
+$secret = config('ai.webhook_secret');
+if (!hash_equals(hash_hmac('sha256', $request->getContent(), $secret), $request->header('X-Signature'))) {
+    abort(401);
+}
+```
+
+**Periodicidad de auditorías:**
+- Ejecutar auditoría de seguridad tras añadir 3+ controllers nuevos o modificar auth/middleware.
+- Usar skill `laravel-security-audit` + `php-security-auditor`.
+- Guardar resultado en `backend/docs/YYMMDD_auditoria-seguridad-faseN.md`.
+- Añadir entrada en CHANGELOG.md con referencia al doc.
 
 ## 0.11 Las 5 Leyes del Modo Estricto
 
@@ -309,3 +371,6 @@ Al iniciar sesión con `/start`: leer esta sección completa antes de empezar.
 
 - [2026-05-15] ERROR: La base de datos Beta se vació accidentalmente durante la ejecución de tests de integración debido a una mala configuración del entorno de test en el contenedor. → REGLA: Verificar SIEMPRE el aislamiento del entorno de test y realizar backup obligatorio de la DB (`./scripts/backup-db.sh beta`) antes de cualquier ejecución de tests en el servidor.
 - [2026-05-22] ERROR: Intento fallido de ejecutar comandos `docker exec` desde el entorno local de Windows. → REGLA: GRABAR A FUEGO: NUNCA, y digo NUNCA, hay Docker en el entorno local (Windows). El servidor web se accede por SSH o se interactúa a través de los directorios mapeados en red (`Z:`). Los comandos de Docker documentados son exclusivamente para correr en el host Proxmox, no en local.
+- [2026-05-28] ERROR: Base de datos Beta borrada accidentalmente por olvidar las variables `DB_CONNECTION=sqlite DB_DATABASE=:memory:` en SSH al hacer tests, y posterior error TLS/SSL al restaurar backup local. → REGLA: Usar siempre `DB_CONNECTION=sqlite` en tests. Al restaurar MariaDB en un contenedor interno mediante comandos de backup/script, añadir **obligatoriamente** el flag `--skip-ssl` al comando `mariadb` para saltarse el requisito TLS que los contenedores locales de Docker no soportan.
+- [2026-06-01] ERROR: Nginx no actualizaba la cabecera CSP tras hacer git pull y nginx -s reload. → REGLA: Al modificar archivos mapeados uno a uno por volumen en Docker (como beta.conf o prod.conf), git pull cambia su inode en el host y rompe el bind mount de Docker. NUNCA usar `nginx -s reload` si el archivo ha sido modificado externamente. SIEMPRE reiniciar el contenedor completo con `docker compose restart nginx-beta` (o prod).
+- [2026-06-01] ERROR: Pérdida de conexión con el Daemon de Docker (`/var/run/docker.sock`) desde el dashboard del sistema tras ejecutar `docker compose up -d` para recrear el contenedor de PHP. → REGLA: Al recrear contenedores en un entorno LXC que acceden al socket de Docker, los permisos del socket en el host pueden restablecerse. Si el usuario del contenedor (`www-data`) pierde acceso, restaurar ejecutando `chmod 666 /var/run/docker.sock` en el host.

@@ -252,3 +252,47 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    // Tour Contextual específico para el Planificador de Renovaciones
+    window.pageTourSteps = [
+        {
+            element: '.dx-v2-planner-month-picker',
+            popover: {
+                title: 'Selector de Mes',
+                description: 'Cambia rápidamente entre meses para organizar y prever las renovaciones a lo largo del año fiscal.',
+                side: 'bottom',
+                align: 'start'
+            }
+        },
+        {
+            element: '.dx-v2-planner-filters-wrap',
+            popover: {
+                title: 'Filtros de Estado',
+                description: 'Filtra el listado según la etapa de la renovación (Ofertado, En Negociación, Cerrado...). Múltiples selecciones permitidas.',
+                side: 'bottom',
+                align: 'center'
+            }
+        },
+        {
+            element: '.dx-v2-planner-stats',
+            popover: {
+                title: 'Progreso del Mes',
+                description: 'Mide cuántos contratos quedan pendientes de gestionar y cuántos ya se han completado este mes.',
+                side: 'bottom',
+                align: 'end'
+            }
+        },
+        {
+            element: '.table',
+            popover: {
+                title: 'Matriz de Renovaciones',
+                description: 'Gestiona la cola de contratos. Pulsa el botón de Acción (✓) para marcar una renovación como procesada o (⟲) para revertirla.',
+                side: 'top',
+                align: 'start'
+            }
+        }
+    ];
+</script>
+@endpush

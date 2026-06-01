@@ -1,68 +1,36 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-05-26 09:15  
-> Sesión en: Indeterminado  
-> Rama activa: dev
+> Última actualización: 2026-06-01 11:51  
+> Sesión en: Windows local (Z: drive mapeado)  
+> Rama activa: `dev`
 
 ---
 
 ## Estado General
 
-**Fase actual:** Fase 30 — Security & Compliance Corporativo + Renovar Contratos ✅ COMPLETADA Y INTEGRADA  
-**Stack beta:** ✅ running  
-**Stack prod:** ✅ running  
+**Fase actual:** Desacoplamiento de Entornos y Telemetría NOC ✅ COMPLETADA  
+**Stack beta:** Operativo (volúmenes de telemetría y docker.sock restaurados)  
+**Stack prod:** Operativo  
 
 ---
 
 ## Qué se hizo en esta sesión
 
-1. **Evaluación y Verificación**: Comprobado que la rama `feature/ai-routing-hub` estaba limpia, sin rutas temporales en `routes/web.php` y con logs de contenedores 100% saludables.
-2. **Ordenación Interactiva del Catálogo**: Añadida capacidad interactiva instantánea en frontend (JS nativo) para ordenar las columnas del catálogo de modelos (Estado, Modelo, OpenRouter ID, Tipo, Cuota Semanal, Precio) sin perder el estado reactivo de Alpine.js en la UI NOC Pro.
-3. **Fusión a dev**: Realizada la fusión fast-forward de la rama `feature/ai-routing-hub` a la rama `dev` de forma exitosa local y remota en `origin/dev`.
-4. **Limpieza de ramas**: Borrada la rama local de feature tras el merge para mantener la higiene de Git.
-5. **Documentación del Agente**: Actualizados `.agent/last_brain` y `.agent/memory/ACTIVE_CONTEXT.md` al día, y rotado el historial de estados cerebrales para mantener únicamente los últimos 5 archivos.
+1. **Environment Agnosticism** — Refactorizados los controladores (`BackupController`, `SystemActionController`) y scripts (`backup-db.sh`) para usar la variable inyectada `$DB_HOST` y no depender del string hardcodeado "beta".
+2. **Chatbot Service** — Eliminada la URL hardcodeada de `beta.dxpro.es` en la cabecera `HTTP-Referer` de OpenRouter (ahora usa `config('app.url')`).
+3. **Telemetría NOC Dashboard** — Mapeados los volúmenes `storage_beta:ro` y `storage_prod:ro` en ambos `docker-compose` para que el contenedor PHP pueda reportar tamaños reales de los directorios sin importar el entorno.
+4. **Fix Docker Daemon Socket** — Se descubrió y documentó (en `AGENTS.md`) que `docker compose up -d` en un entorno LXC pierde el permiso de lectura para el usuario web. Se ejecutó `chmod 666 /var/run/docker.sock` en el host, restaurando el módulo de monitorización de contenedores en el NOC Dashboard.
+5. **Merge** — La rama `feature/env-decoupling` fue validada, commiteada, pusheada y mergeada a `dev` vía GitHub por el usuario. La rama local y remota ha sido borrada, y el repositorio limpiado con `git remote prune origin`.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-1. **Recuperar prioridades y Backlog**: Revisar el backlog general para recibir indicaciones sobre el siguiente bloque o fase prioritaria a implementar (por ejemplo, perfiles de administración o integraciones adicionales).
-
-### Tareas siguientes
-1. Esperar confirmación del desarrollador para abrir la siguiente rama en base a los requerimientos de negocio.
+Consultar con Oskar la próxima prioridad en el BACKLOG o validar si la rama `dev` está lista para ser subida a Producción (`main`) y cerrar release.
 
 ---
 
 ## Contexto técnico importante
 
-- La ordenación del catálogo se hace por frontend mapeando valores numéricos limpios a atributos `data-*` (`data-active`, `data-usage`, `data-price`, etc.) de las filas, lo que garantiza velocidad de render instantánea y robustez total.
-- El repositorio Git quedó al día en la rama `dev` con todo pusheado.
-
----
-
-## Bloqueos o problemas sin resolver
-
-Ninguno.
-
----
-
-## Estado de archivos clave
-
-| Archivo | Estado |
-|:---|:---|
-| `infra/.env.prod` | ✅ configurado |
-| `infra/.env.beta` | ✅ configurado |
-| `backend/.env` | ✅ configurado |
-| `backend/vendor/` | ✅ instalado |
-
----
-
-## Comandos útiles para la próxima sesión
-
-```bash
-# Arrancar beta si está down
-docker compose --project-directory . -f infra/docker-compose.beta.yml up -d
-
-# Ver logs en tiempo real
-docker compose --project-directory . -f infra/docker-compose.beta.yml logs -f php-fpm-beta
-```
+- Al recrear contenedores que usen el `DockerMonitorService`, recordar que el socket `/var/run/docker.sock` puede requerir un nuevo `chmod 666` en Proxmox si el usuario `www-data` pierde el acceso. Documentado en lecciones aprendidas de `AGENTS.md`.
+- La aplicación es ahora completamente agnóstica respecto a su entorno (beta vs prod). La lógica se controla 100% mediante las variables inyectadas en los archivos `.env.beta` y `.env.prod`.

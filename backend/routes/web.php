@@ -25,11 +25,12 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::get('/clientes/{client}', [ClientController::class, 'show'])->name('clients.show');
     
     // Chatbot de Asistencia IA Web (Fase 25)
-    Route::post('/chatbot/query', [\App\Http\Controllers\Api\ChatbotController::class, 'query'])->name('chatbot.query');
+    Route::post('/chatbot/query', [\App\Http\Controllers\Api\ChatbotController::class, 'query'])->middleware('throttle:30,1')->name('chatbot.query');
     
     // Perfil de Usuario
     Route::get('/perfil', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('/perfil', [ProfileController::class, 'update'])->name('profile.update');
+    Route::post('/perfil/tour-seen', [ProfileController::class, 'markTourSeen'])->name('profile.tour-seen');
 
     // Planificador de Renovaciones (Fase 14)
     Route::get('/planificador', [\App\Http\Controllers\RenewalPlannerController::class, 'index'])->name('renewal-planner.index');

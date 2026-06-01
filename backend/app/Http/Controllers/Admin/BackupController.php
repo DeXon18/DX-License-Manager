@@ -31,8 +31,9 @@ class BackupController extends Controller
     public function backup()
     {
         try {
-            // Ejecutar script de backup con etiqueta manual
-            $process = \Illuminate\Support\Facades\Process::run('bash /var/www/html/scripts/backup-db.sh beta manual');
+            // Ejecutar script de backup con etiqueta manual, dinámico según entorno
+            $env = config('app.env') === 'production' ? 'prod' : 'beta';
+            $process = \Illuminate\Support\Facades\Process::run("bash /var/www/html/scripts/backup-db.sh {$env} manual");
             
             if ($process->successful()) {
                 $this->logAction('db_backup', 'Manual database backup created via Backups module');
@@ -91,10 +92,9 @@ class BackupController extends Controller
                 return response()->json(['success' => false, 'message' => 'Archivo no encontrado.'], 404);
             }
 
-            // Comando de restauración
-            // IMPORTANTE: Se asumen variables de entorno del contenedor
+            // IMPORTANTE: Se asumen variables de entorno del contenedor y se desactiva SSL interno
             $cmd = sprintf(
-                'mariadb -h %s -u %s -p%s %s < %s',
+                'mariadb --skip-ssl -h %s -u %s -p%s %s < %s',
                 escapeshellarg(config('database.connections.mysql.host')),
                 escapeshellarg(config('database.connections.mysql.username')),
                 escapeshellarg(config('database.connections.mysql.password')),

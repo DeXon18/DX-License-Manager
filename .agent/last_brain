@@ -1,6 +1,8 @@
-Rama activa: dev. Fase 29 — Telemetría IA & Routing COMPLETADA y MERGEADA.
-Último trabajo: Merge con éxito de la rama `feature/ai-routing-hub` en `dev`, subido a remoto `origin/dev`. Añadida además la ordenación interactiva instantánea en frontend (JS nativo) para el Catálogo de Modelos (por Estado, Nombre, OpenRouter ID, Tipo, Cuota y Precio) sin recargar página ni perder el estado reactivo de Alpine.js.
-Estado: Backend limpio, Frontend NOC Pro pulido, vistas compiladas borradas y logs de PHP/Nginx beta 100% limpios (retornos 200/302).
-Próximo paso inmediato: Esperar nuevas directrices/prioridades definidas por Oskar.
-Bloqueos: Ninguno.
-Stack beta: Saludable. Stack prod: Saludable.
+Rama activa: fix/security-hardening-fase3 (4 commits, pendiente merge a dev — autorización de Oskar requerida).
+Fase: Post-Fase 33 — Auditoría de Seguridad Fase 3 completada.
+Último trabajo: Auditoría de seguridad completa (controllers nuevos + verificación fixes F1+2). Se corrigieron 6 hallazgos: token bot en query param (BotQueryController), stack trace en chatbot JSON (ChatbotController), throttle en /chatbot/query y /api/bot+callback, markdown injection en SupportController, mensaje genérico cliente no encontrado, CSP+Permissions-Policy en nginx beta+prod. JWT blacklist y sanctum ya estaban resueltos previamente.
+Archivos tocados: BotQueryController.php, ChatbotController.php, SupportController.php, routes/web.php, routes/api.php, infra/nginx/beta.conf, infra/nginx/prod.conf, backend/docs/260601_auditoria-seguridad-fase3.md, management/CHANGELOG.md, AGENTS.md (§0.10.1 nuevas buenas prácticas).
+Estado: Cero hallazgos de seguridad abiertos. Todos los findings de Fases 1+2+3 cerrados.
+Próximo paso inmediato: Merge fix/security-hardening-fase3 → dev (autorización Oskar). Luego: deploy nginx configs en servidor (docker compose reload nginx en beta + prod).
+Bloqueos: El CSP de Nginx requiere reload del contenedor en el servidor para tener efecto — hacer desde SSH/Proxmox.
+Stack beta: no verificable desde local Windows. Stack prod: no verificable desde local.

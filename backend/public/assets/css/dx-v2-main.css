@@ -42,6 +42,7 @@
 @import 'shared/dx-v2-empty-states.css';
 @import 'shared/dx-v2-ui.css';
 @import 'shared/dx-v2-brand.css';
+@import 'shared/dx-v2-tour.css?v=2.22.1';
 
 /* ==========================================================================
    5. CAPA 4: MÓDULOS DE APLICACIÓN

@@ -190,6 +190,17 @@ docker exec dx-php-beta php artisan migrate:fresh --seed
 
 ---
 
+### Restauración de Backup — "ERROR 2026 (HY000): TLS/SSL error: SSL is required"
+
+**Causa:** El cliente de MariaDB/MySQL exige una conexión cifrada por defecto, pero los contenedores internos en Docker no usan SSL interno.
+
+**Fix:** Al ejecutar cualquier comando de `mariadb` o al usar el botón de Restaurar, es imprescindible inyectar el parámetro `--skip-ssl`:
+```bash
+mariadb --skip-ssl -h mariadb-beta -u dxportal -p... dxportal_beta < backup.sql
+```
+
+---
+
 ## Errores de GitHub Actions
 
 ### Deploy falla — "Connection refused" al hacer SSH
@@ -249,6 +260,18 @@ systemctl restart docker
 **Causa:** DeepSeek devolvió el JSON envuelto en bloques markdown ` ```json ``` `.
 
 **Fix:** Ya está manejado en el nodo "Parse & Merge" del workflow n8n con `.replace(/```json\s*/gi, '')`. Si persiste, revisar el prompt del LLM Chain.
+
+---
+
+### Cambios en Nginx no aplican tras `nginx -s reload`
+
+**Causa:** Si el archivo `.conf` de Nginx está mapeado en Docker como un solo archivo (`- ./infra/nginx/beta.conf:/etc/nginx/conf.d/default.conf`), hacer un `git pull` en el host cambia el inode del archivo. Docker se vincula al inode, por lo que el contenedor sigue leyendo la versión antigua en memoria.
+
+**Fix:** NUNCA usar `nginx -s reload` si el archivo se modificó desde el host (por ej. vía git).
+SIEMPRE reiniciar el contenedor:
+```bash
+docker compose --project-directory . -f infra/docker-compose.beta.yml restart nginx-beta
+```
 
 ---
 

@@ -123,7 +123,6 @@ class BotQueryController extends Controller
         return trim(
             $request->header('X-Bot-Token')
             ?: $request->header('X-Telegram-Bot-Api-Secret-Token')
-            ?: $request->input('token')
             ?: ''
         );
     }
@@ -173,7 +172,7 @@ class BotQueryController extends Controller
         if (!$client) {
             return response()->json([
                 'status' => 'not_found',
-                'message' => "Cliente '{$arg}' no encontrado en base de datos."
+                'message' => "No se encontró información para el término de búsqueda proporcionado."
             ]);
         }
 

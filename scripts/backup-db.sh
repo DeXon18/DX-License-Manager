@@ -27,11 +27,7 @@ echo "--- Iniciando backup de base de datos ($APP_ENV - $TYPE) ---"
 echo "Destino: $BACKUP_DIR/$FILENAME"
 
 # Ejecutar mariadb-dump (con --ssl=0 para evitar error 2026 en conexiones internas Docker)
-if [ "$APP_ENV" == "prod" ]; then
-    mariadb-dump --ssl=0 -h mariadb-prod -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" > "$BACKUP_DIR/$FILENAME"
-else
-    mariadb-dump --ssl=0 -h mariadb-beta -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" > "$BACKUP_DIR/$FILENAME"
-fi
+mariadb-dump --ssl=0 -h "$DB_HOST" -u "$MYSQL_USER" -p"$MYSQL_PASSWORD" "$MYSQL_DATABASE" > "$BACKUP_DIR/$FILENAME"
 
 # Verificar éxito
 if [ $? -eq 0 ]; then

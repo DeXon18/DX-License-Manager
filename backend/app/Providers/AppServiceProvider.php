@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Database\Eloquent\Model;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,5 +23,9 @@ class AppServiceProvider extends ServiceProvider
         if (str_starts_with(config('app.url'), 'https://')) {
             \Illuminate\Support\Facades\URL::forceScheme('https');
         }
+
+        Model::preventLazyLoading(! app()->isProduction());
+
+        \Illuminate\Support\Facades\View::share('dxVersion', config('dx.version'));
     }
 }

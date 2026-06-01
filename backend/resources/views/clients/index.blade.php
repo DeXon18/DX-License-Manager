@@ -64,6 +64,71 @@
     </div>
 </div>
 
+<div class="dx-v2-sys-dash-stats-grid" style="margin-bottom: 24px;">
+    {{-- Clientes Registrados --}}
+    <div class="dx-v2-sys-dash-stat-card">
+        <div class="dx-v2-sys-dash-stat-card-watermark">
+            <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="dx-v2-sys-dash-stat-card-title">
+            CLIENTES REGISTRADOS
+        </div>
+        <div class="dx-v2-sys-dash-stat-card-value success-status">
+            {{ $globalMetrics['total_clients'] }}
+        </div>
+        <div class="dx-v2-sys-dash-stat-card-meta-mono">
+            Directorio Total
+        </div>
+    </div>
+
+    {{-- Contratos --}}
+    <div class="dx-v2-sys-dash-stat-card">
+        <div class="dx-v2-sys-dash-stat-card-watermark">
+            <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div class="dx-v2-sys-dash-stat-card-title">
+            CONTRATOS GESTIONADOS
+        </div>
+        <div class="dx-v2-sys-dash-stat-card-value" style="color: var(--dx-v2-accent);">
+            {{ $globalMetrics['total_contracts'] }}
+        </div>
+        <div class="dx-v2-sys-dash-stat-card-meta-mono">
+            Acuerdos en Sistema
+        </div>
+    </div>
+
+    {{-- Activos Siemens --}}
+    <div class="dx-v2-sys-dash-stat-card">
+        <div class="dx-v2-sys-dash-stat-card-watermark">
+            <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10M9 12l2 2 4-4"/></svg>
+        </div>
+        <div class="dx-v2-sys-dash-stat-card-title">
+            SIEMENS PLM
+        </div>
+        <div class="dx-v2-sys-dash-stat-card-value success-status">
+            {{ $globalMetrics['siemens_licenses'] }}
+        </div>
+        <div class="dx-v2-sys-dash-stat-card-meta-mono">
+            Licencias Activas
+        </div>
+    </div>
+
+    {{-- Activos Moldex --}}
+    <div class="dx-v2-sys-dash-stat-card">
+        <div class="dx-v2-sys-dash-stat-card-watermark">
+            <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        </div>
+        <div class="dx-v2-sys-dash-stat-card-title">
+            MOLDEX3D
+        </div>
+        <div class="dx-v2-sys-dash-stat-card-value" style="color: var(--dx-v2-accent, #6366f1) !important;">
+            {{ $globalMetrics['moldex_licenses'] }}
+        </div>
+        <div class="dx-v2-sys-dash-stat-card-meta-mono">
+            Licencias Activas
+        </div>
+    </div>
+</div>
 
 <div class="card">
     <table class="table">
@@ -137,3 +202,47 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    // Tour Contextual específico para el Directorio de Clientes
+    window.pageTourSteps = [
+        {
+            element: '.dx-v2-clients-search-form',
+            popover: {
+                title: 'Búsqueda Avanzada',
+                description: 'Localiza cuentas rápidamente introduciendo el nombre de la empresa o cualquier identificador asociado.',
+                side: 'bottom',
+                align: 'start'
+            }
+        },
+        {
+            element: '.dx-v2-clients-filter-actions',
+            popover: {
+                title: 'Filtros de Inventario',
+                description: 'Filtra el listado para mostrar únicamente aquellos clientes que tienen licencias activas de Siemens o Moldex3D.',
+                side: 'bottom',
+                align: 'end'
+            }
+        },
+        {
+            element: '.dx-v2-sys-dash-stats-grid',
+            popover: {
+                title: 'Telemetría del Directorio',
+                description: 'Métricas en tiempo real sobre el volumen total de clientes registrados y los contratos detectados.',
+                side: 'bottom',
+                align: 'center'
+            }
+        },
+        {
+            element: '.dx-v2-table',
+            popover: {
+                title: 'Directorio Principal',
+                description: 'Listado completo de cuentas. Haz clic en "Ver Perfil" para acceder al detalle de contactos, notas y el desglose completo de licencias de cada cliente.',
+                side: 'top',
+                align: 'start'
+            }
+        }
+    ];
+</script>
+@endpush
