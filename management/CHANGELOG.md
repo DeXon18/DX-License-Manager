@@ -6,19 +6,19 @@
 **Docs de auditoría:** [`260601_auditoria-seguridad-fase3.md`](../backend/docs/260601_auditoria-seguridad-fase3.md) · [`260509_auditoria-seguridad-fase2.md`](../backend/docs/260509_auditoria-seguridad-fase2.md) · [`260509_auditoria-seguridad.md`](../backend/docs/260509_auditoria-seguridad.md)
 
 ### Security — Nuevos módulos auditados (Fase 3)
-- **Auditado:** `BotQueryController` (Telegram bot, 646 líneas), `ChatbotController`, `AiAuditCostController`, `EnterpriseCloudAccountController`, `SupportController`, `AiModelController`
-- **Resultado:** Sin vulnerabilidades críticas. EnterpriseCloud, AiModel y AiAuditCost pasan audit completo
+- **Auditado**: `BotQueryController` *(Telegram bot, 646 líneas)*, `ChatbotController`, `AiAuditCostController`, `EnterpriseCloudAccountController`, `SupportController`, `AiModelController`
+- **Resultado**: Sin vulnerabilidades críticas. `EnterpriseCloud`, `AiModel` y `AiAuditCost` pasan audit completo
 
 ### Security — Verificación de Fixes Fases 1+2
 - ✅ Todos los hallazgos críticos de Fases 1 y 2 confirmados como corregidos (RBAC, MIME validation NXSuite/StarCCM/HEEDS, HMAC webhook n8n, fallback `auth()->id() ?? 1`)
-- ✅ **JWT blacklist Redis**: Completamente implementada en `AuthController@logout` (zadd ZSET) y verificada en `JwtAuth` middleware (zscore check) desde 2026-05-15
-- ✅ **`laravel/sanctum`**: Ya eliminado de `composer.json` en sesión anterior — no presente en dependencias de producción
+- ✅ **JWT blacklist Redis**: Completamente implementada en `AuthController@logout` (zadd ZSET) y verificada en el middleware **JwtAuth** (zscore check) desde 2026-05-15
+- ✅ **laravel/sanctum**: Ya eliminado de `composer.json` en sesión anterior — no presente en dependencias de producción
 
 ### Fixed — Security Hardening (rama `fix/security-hardening-fase3`)
-- **[CWE-598]** `BotQueryController`: Eliminada aceptación de token de bot por query parameter (`?token=xxx`) — prevenía exposición en logs de Nginx
-- **[CWE-209]** `ChatbotController`: Eliminado `$e->getMessage()` de respuestas JSON 500 — prevenía stack trace expuesto al cliente. Log completo con trace persiste internamente
-- **[CWE-116]** `SupportController`: Escapado de caracteres especiales Markdown (`*`, `_`, `` ` ``, `[`, etc.) antes de enviar ticket a Telegram — previene output injection cosmético
-- **[CWE-203]** `BotQueryController`: Mensaje de cliente no encontrado reemplazado por texto genérico — elimina posibilidad de enumerar clientes por nombre
+- **[CWE-598]** **BotQueryController**: Eliminada aceptación de token de bot por query parameter (`?token=xxx`) — prevenía exposición en logs de Nginx
+- **[CWE-209]** **ChatbotController**: Eliminado `$e->getMessage()` de respuestas JSON 500 — prevenía stack trace expuesto al cliente. Log completo con trace persiste internamente
+- **[CWE-116]** **SupportController**: Escapado de caracteres especiales Markdown (asteriscos, guiones bajos, backticks, corchetes) antes de enviar ticket a Telegram — previene output injection cosmético
+- **[CWE-203]** **BotQueryController**: Mensaje de cliente no encontrado reemplazado por texto genérico — elimina posibilidad de enumerar clientes por nombre
 - **[API4]** `web.php`: Añadido `throttle:30,1` en `/chatbot/query` — previene abuso de tokens IA por usuario autenticado
 - **[API4]** `api.php`: Añadido `throttle:60,1` en `/api/bot/query` y `/api/audit/callback` — previene spam en endpoints API públicos
 - **[CSP]** `infra/nginx/beta.conf` + `prod.conf`: Añadida cabecera `Content-Security-Policy` compatible con el stack real (Alpine.js `unsafe-inline`, Chart.js, Font Awesome, Google Fonts vía CDN allowlist)
