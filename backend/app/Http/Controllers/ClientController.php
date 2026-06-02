@@ -83,7 +83,7 @@ class ClientController extends Controller
             }
         ]);
 
-        $client->load(['contracts', 'contacts', 'certificates', 'auditResults' => function($query) {
+        $client->load(['contracts.vendor', 'contacts', 'certificates', 'auditResults' => function($query) {
             $query->orderBy('created_at', 'desc');
         }, 'codCertificates' => function($query) {
             $query->orderBy('created_at', 'desc');
