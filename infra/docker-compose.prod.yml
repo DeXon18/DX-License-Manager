@@ -23,7 +23,7 @@ services:
       - ./backend:/var/www/html
       - ./infra/.env.prod:/var/www/html/.env
       - ./infra/php/local.ini:/usr/local/etc/php/conf.d/local.ini
-      - ./backend/storage_prod:/var/www/html/storage
+      - ./backend/storage:/var/www/html/storage
       - ./management:/var/www/management:ro
       - ./scripts:/var/www/html/scripts:ro
       - ./.git:/var/www/html/.git:ro
@@ -51,7 +51,7 @@ services:
       - ./backend:/var/www/html
       - ./infra/.env.prod:/var/www/html/.env
       - ./infra/php/local.ini:/usr/local/etc/php/conf.d/local.ini
-      - ./backend/storage_prod:/var/www/html/storage
+      - ./backend/storage:/var/www/html/storage
     depends_on:
       mariadb-prod:
         condition: service_healthy
@@ -70,7 +70,7 @@ services:
       - ./backend:/var/www/html
       - ./infra/.env.prod:/var/www/html/.env
       - ./infra/php/local.ini:/usr/local/etc/php/conf.d/local.ini
-      - ./backend/storage_prod:/var/www/html/storage
+      - ./backend/storage:/var/www/html/storage
     depends_on:
       mariadb-prod:
         condition: service_healthy

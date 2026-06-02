@@ -1,6 +1,17 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
-> **Version:** v3.0.1
+> **Version:** v3.1.0
+
+## [2026-06-01 15:00] — Feature: Importación Masiva Asíncrona (Consola en Vivo)
+### Added
+
+- **Consola UI**: Implementada una consola en vivo (terminal integrada) en la vista de importación (`admin/import/index.blade.php`), adaptada a los tokens de diseño de NOC Pro (fondo oscuro, barra de progreso acentuada, tipografía monospace).
+- **Procesamiento en Segundo Plano**: Creado `ProcessCsvImportJob` para descargar el procesamiento de archivos CSV masivos al nuevo contenedor `dx-queue-beta/prod`.
+- **Telemetría Redis**: Integrado streaming de logs en tiempo real hacia la consola del cliente vía Redis, con colores según severidad (`[INFO]`, `[ERROR]`, `[IA/MATCH]`, `[NUEVO]`).
+
+### Changed
+
+- **ClientNormalizationService**: Reactivada la IA (`$useAi = true`) por defecto en importaciones masivas, ya que al procesarse en background (Jobs) se evita el riesgo de timeouts 524 de Cloudflare.
 
 ## [2026-06-02 14:10] — Infrastructure: Aislamiento Absoluto Prod vs Dev
 
@@ -13,20 +24,8 @@
 ### Changed
 
 - **GitHub Actions**: Refactorizado `deploy-beta.yml` para apuntar exclusivamente al path `/opt/web-projects/DX-License-Manager-DEV` y prevenir superposiciones.
-- **Limpieza de Storage**: Eliminados montajes de solo lectura redundantes (`storage_prod:ro`) de `docker-compose.beta.yml` y viceversa en el archivo de producción, aislando totalmente los volúmenes de Laravel.
-
-## [2026-06-01 15:00] — Feature: Importación Masiva Asíncrona (Consola en Vivo)
-
-
-### Added
-
-- **Consola UI**: Implementada una consola en vivo (terminal integrada) en la vista de importación (`admin/import/index.blade.php`), adaptada a los tokens de diseño de NOC Pro (fondo oscuro, barra de progreso acentuada, tipografía monospace).
-- **Procesamiento en Segundo Plano**: Creado `ProcessCsvImportJob` para descargar el procesamiento de archivos CSV masivos al nuevo contenedor `dx-queue-beta/prod`.
-- **Telemetría Redis**: Integrado streaming de logs en tiempo real hacia la consola del cliente vía Redis, con colores según severidad (`[INFO]`, `[ERROR]`, `[IA/MATCH]`, `[NUEVO]`).
-
-### Changed
-
-- **ClientNormalizationService**: Reactivada la IA (`$useAi = true`) por defecto en importaciones masivas, ya que al procesarse en background (Jobs) se evita el riesgo de timeouts 524 de Cloudflare.
+- **Estandarización de Storage**: Renombrados los directorios host `storage_prod` y `storage_beta` a la nomenclatura oficial de Laravel (`storage`). Actualizados los montajes en `docker-compose.prod.yml` y `docker-compose.beta.yml` para usar la ruta universal, eliminando todos los montajes de solo lectura cruzados.
+- **Limpieza de Secretos**: Purgado `infra/.env.beta` de la carpeta de Producción, y `infra/.env.prod` de la carpeta de DEV, eliminando definitivamente la posibilidad de carga cruzada de secretos.
 
 ## [2026-06-01 13:20] — Patch: Corrección del Tour (Driver.js)
 ### Fixed

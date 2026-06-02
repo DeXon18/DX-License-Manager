@@ -34,12 +34,13 @@ Este es el punto más crítico para la seguridad y la integridad de los datos de
 | :--- | :--- | :--- |
 | **Volumen MariaDB** | `dx-license-manager_mariadb_prod_data` | `dx-license-manager-dev_mariadb_beta_data` |
 | **Volumen Redis** | `dx-license-manager_redis_prod_data` | `dx-license-manager-dev_redis_beta_data` |
-| **Archivos (Storage)** | `./backend/storage_prod` (En la carpeta original) | `./backend/storage_beta` (En la carpeta `-DEV`) |
-| **Credenciales** | Carga `infra/.env.prod` | Carga `infra/.env.beta` |
+| **Archivos (Storage)** | `./backend/storage` | `./backend/storage` |
+| **Credenciales** | Exclusivamente `infra/.env.prod` | Exclusivamente `infra/.env.beta` |
 
 **Riesgos Eliminados:**
-1. Al usar carpetas distintas, Docker Compose crea **volúmenes de base de datos independientes**. Un comando `migrate:fresh` en Desarrollo jamás borrará datos de Producción.
-2. Los archivos físicos subidos (`storage`) se guardan en carpetas aisladas, sin montajes cruzados.
+1. Al usar carpetas distintas en el host, Docker Compose crea **volúmenes de base de datos independientes**. Un comando `migrate:fresh` en Desarrollo jamás borrará datos de Producción.
+2. Los archivos físicos subidos se guardan en la ruta estándar de Laravel (`storage`), pero al estar en carpetas clonadas distintas, es físicamente imposible que se pisen. Hemos eliminado los viejos directorios `storage_beta` y `storage_prod` para volver al estándar de Laravel sin riesgo.
+3. Limpieza cruzada de secretos: `.env.beta` borrado físicamente de la carpeta de Producción y viceversa, impidiendo que el motor de Docker de Producción cargue accidentalmente variables de Desarrollo.
 
 ---
 
