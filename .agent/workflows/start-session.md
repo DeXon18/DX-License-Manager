@@ -87,8 +87,12 @@ Confirmar:
 Ejecutar via SSH MCP en el LXC 600:
 
 ```bash
-cd /opt/web-projects/DX-License-Manager
+# Stack Beta (Entorno de Trabajo)
+cd /opt/web-projects/DX-License-Manager-DEV
 docker compose --project-directory . -f infra/docker-compose.beta.yml ps
+
+# Stack Producción (Intocable)
+cd /opt/web-projects/DX-License-Manager
 docker compose --project-directory . -f infra/docker-compose.prod.yml ps
 ```
 
@@ -156,7 +160,7 @@ Señales de que el contexto está al límite:
 
 ```bash
 # Verificar logs de beta
-ssh root@192.168.50.60 -p 22 "docker compose --project-directory /opt/web-projects/DX-License-Manager -f /opt/web-projects/DX-License-Manager/infra/docker-compose.beta.yml logs -f"
+ssh root@192.168.50.60 -p 22 "docker compose --project-directory /opt/web-projects/DX-License-Manager-DEV -f /opt/web-projects/DX-License-Manager-DEV/infra/docker-compose.beta.yml logs -f"
 ```
 
 El HANDOFF y el CHANGELOG garantizan que no se pierde nada.
