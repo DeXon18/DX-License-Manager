@@ -1,10 +1,10 @@
 ---
-description: 
+description:
 ---
 
 # Workflow: Inicio de Sesión
 
-> Ruta: `.agent/workflows/start-session.md`  
+> Ruta: `.agent/workflows/start-session.md`
 > Trigger: Al abrir el proyecto en Antigravity — ejecutar `/start`
 
 ---
@@ -28,7 +28,7 @@ Todo corre dentro de Docker en el servidor LXC 600 (`192.168.50.60`).
 | Redis         | Contenedor `dx-redis-beta` en LXC 600   | SSH → `docker exec`                    |
 | Código fuente | `Z:\DX-License-Manager\` via Samba      | Editar directamente en Antigravity     |
 
-**Nunca ejecutar en el PC local:** `php`, `composer`, `artisan`, `mysql`, `npm`.  
+**Nunca ejecutar en el PC local:** `php`, `composer`, `artisan`, `mysql`, `npm`.
 **Siempre ejecutar en el servidor:** via SSH MCP o pidiendo al desarrollador que ejecute en el LXC.
 
 ---
@@ -60,6 +60,7 @@ Leer en este orden exacto. **No saltarse ningún archivo.**
 8. `DESIGN.md` — **OBLIGATORIO.** Sistema de diseño del proyecto. Cualquier vista, componente o elemento visual debe seguir este documento. No crear nada visual sin haberlo leído.
 9. `AGENTS.md` — **OBLIGATORIO.** reglas de operación activas. Confirmar que la Regla Cero está activa.
 10. `.agent/lessons.md` — lecciones aprendidas de sesiones anteriores. Aplicar desde el primer momento.
+11. `management/ARCHITECTURE.md` — **OBLIGATORIO.** Reglas de arquitectura y separación física entre los entornos de Desarrollo y Producción.
 
 ---
 
@@ -113,6 +114,7 @@ docker compose --project-directory . -f infra/docker-compose.prod.yml ps
 [x] DESIGN.md           — sistema de diseño activo
 [x] AGENTS.md           — reglas de operación activas
 [x] lessons.md          — [N lecciones aplicadas / "sin entradas aún"]
+[x] ARCHITECTURE.md     — reglas de infraestructura cargadas
 
 📍 Rama activa:       [nombre de la rama]
 📦 Fase actual:       [fase X — nombre]
