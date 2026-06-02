@@ -8,7 +8,7 @@
 
 | 🔴 Críticos (P1) | 🟠 Importantes (P2) | 🟢 Menores (P3) | ✅ Resueltos |
 | :---: | :---: | :---: | :---: |
-| 0 | 1 | 0 | 22 |
+| 0 | 2 | 3 | 22 |
 
 ---
 
@@ -27,6 +27,10 @@
 
 | ID | Incidencia | Módulo | Prioridad | Detectado | Resuelto |
 |---:|---|---|:---:|:---:|:---:|
+| [#027] | Lector de logs no encuentra laravel.log en entorno DEV | Admin/Logs | 🟢 P3 | 2026-06-02 | - |
+| [#026] | BadMethodCallException en JwtCleanupCommand::success | Auth/Cron | 🟢 P3 | 2026-06-02 | - |
+| [#025] | Fallo en fallback AI: google/gemini-1.5-flash no es válido en OpenRouter | API/AI | 🟠 P2 | 2026-06-02 | - |
+| [#024] | Contadores de storage siempre a 0 B en /admin/system | Admin/System | 🟢 P3 | 2026-06-02 | - |
 | [#023] | Bot query unauthorized attempt from IP 172.18.0.1 | API/Bot | 🟠 P2 | 2026-06-02 | - |
 
 ---
@@ -73,6 +77,70 @@
 ## 🔍 Detalle de incidencias
 
 ### Pendientes
+
+#### #027 — Lector de logs no encuentra laravel.log en DEV
+
+| Campo | Valor |
+|---|---|
+| **Módulo** | Admin/Logs |
+| **Prioridad** | 🟢 P3 |
+| **Estado** | ⏳ Pendiente |
+| **Detectado** | 2026-06-02 |
+| **Resuelto** | - |
+
+- **Síntoma**: Al entrar en el visor de logs, muestra el mensaje "No hay registros en el fichero laravel.log". No lo encuentra.
+- **Causa**: El parser (`AuditLogController`) puede estar apuntando a una ruta hardcodeada absoluta (`/rpool/webs/DX-License-Manager/...`) en lugar de usar `storage_path('logs/laravel.log')`, fallando al correr en el workspace aislado de DEV. O bien, el log de Laravel no se ha creado aún en la carpeta nueva.
+- **Plan**: Revisar la ruta de lectura del archivo en el controlador para forzar rutas relativas al framework.
+
+---
+
+#### #026 — BadMethodCallException en JwtCleanupCommand
+
+| Campo | Valor |
+|---|---|
+| **Módulo** | Auth/Cron |
+| **Prioridad** | 🟢 P3 |
+| **Estado** | ⏳ Pendiente |
+| **Detectado** | 2026-06-02 |
+| **Resuelto** | - |
+
+- **Síntoma**: Falla la tarea programada `auth:jwt-cleanup` con `Method App\Console\Commands\Auth\JwtCleanupCommand::success does not exist`.
+- **Causa**: En los comandos de Laravel (clase `Command`), no existe el método nativo `$this->success()`. El desarrollador utilizó una firma incorrecta para mostrar la salida.
+- **Plan**: Cambiar `$this->success(...)` por `$this->info(...)` en `JwtCleanupCommand.php`.
+
+---
+
+#### #025 — Fallo en fallback AI: google/gemini-1.5-flash no válido
+
+| Campo | Valor |
+|---|---|
+| **Módulo** | API/AI |
+| **Prioridad** | 🟠 P2 |
+| **Estado** | ⏳ Pendiente |
+| **Detectado** | 2026-06-02 |
+| **Resuelto** | - |
+
+- **Síntoma**: El log indica "Timeout con openrouter/owl-alpha, saltando a fallback google/gemini-1.5-flash" y acto seguido falla con HTTP 400 "google/gemini-1.5-flash is not a valid model ID".
+- **Causa**: OpenRouter o el proveedor configurado no reconoce el ID de modelo `google/gemini-1.5-flash`.
+- **Plan**: Actualizar el ID del modelo fallback en `config/ai.php` o `ClientAiNormalizationService` al ID correcto (ej. `google/gemini-flash-1.5` o el que corresponda en el proveedor).
+
+---
+
+#### #024 — Contadores de storage a 0 B en /admin/system
+
+| Campo | Valor |
+|---|---|
+| **Módulo** | Admin/System |
+| **Prioridad** | 🟢 P3 |
+| **Estado** | ⏳ Pendiente |
+| **Detectado** | 2026-06-02 |
+| **Resuelto** | - |
+
+- **Síntoma**: Los indicadores de "STORAGE (BETA + PROD)" muestran siempre `0 B` para Beta Storage y Prod Storage en la vista `/admin/system`.
+- **Causa probable**: Falta implementar el cálculo de espacio en el controlador o existen problemas de permisos (Docker/Samba) para leer el peso real del directorio.
+- **Plan**: Revisar la lógica en el controlador correspondiente para calcular recursivamente el tamaño de `/storage` y dar formato humano (MB/GB).
+
+---
 
 #### #023 — Bot query unauthorized attempt from IP 172.18.0.1
 
