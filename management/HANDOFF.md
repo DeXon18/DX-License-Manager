@@ -1,49 +1,53 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-06-02 13:14
-> Sesión en: SoporteAYS
-> Rama activa: fix/client-n1-query
+> Última actualización: 2026-06-02 16:10
+> Sesión en: DEV (DX-License-Manager-DEV)
+> Rama activa: dev
 
 ---
 
 ## Estado General
 
-**Fase actual:** Fase Post-33 — Optimización  
-**Stack beta:** ✅ running  
-**Stack prod:** ✅ running  
+**Fase actual:** Preparación para Integración Siemens (Inventario)
+**Stack beta:** ✅ running (en `/opt/web-projects/DX-License-Manager-DEV`)
+**Stack prod:** ✅ running (en `/opt/web-projects/DX-License-Manager`)
 
 ---
 
 ## Qué se hizo en esta sesión
 
-- **Fix**: Resuelto problema de N+1 queries al cargar la relación `vendor` de los contratos dentro del `ClientController@show`.
-- **Documentación**: Registrado bug #023 en `ERRORS.md` referente a peticiones no autorizadas de bots desde la IP de Docker `172.18.0.1` (`BotQueryController`).
-- **Infraestructura**: Creado perfil MCP `mcp.SoporteAYS.json` para configuración de Antigravity IDE localmente.
+- **Aislamiento Físico de Entornos**: Completada la separación total de los entornos `prod` y `beta`. Ahora residen en carpetas físicas distintas en el host, con bases de datos y redes aisladas por Docker Compose.
+- **GitOps y CI/CD**: Modificado `.github/workflows/deploy-beta.yml` para desplegar automáticamente en la nueva ruta `-DEV`.
+- **Limpieza de Storage**: Eliminados montajes cruzados de `storage_beta` y `storage_prod` en los archivos `docker-compose`, y limpiadas las carpetas residuales físicas.
+- **Documentación de Arquitectura**: Generado `management/ARCHITECTURE.md` para documentar la arquitectura de dos carpetas.
+- **Planificación de Tarea**: Aprobado y generado el checklist de integración para el inventario de licencias Siemens (Paso 1, 2, 3, 4).
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Revisar el `BACKLOG.md` con Oskar para seleccionar el próximo módulo a desarrollar (como la interfaz de control de bots, estadísticas en el panel, etc).
+Iniciar con el **Paso 1 del Plan Siemens**: 
+- Crear el modelo `SiemensLicense` y su migración (`create_siemens_licenses_table`).
+- Definir relaciones en el modelo `Client` (`clientMapping()`).
 
-### Tareas siguientes
-1. Continuar con iteraciones de diseño o nuevas analíticas en el Dashboard.
-2. Explorar despliegue de módulos adicionales según ROADMAP.
+### Tareas siguientes (Plan Siemens)
+1. Desarrollar `SiemensImportService` y `SiemensInventoryController` para procesar CSV.
+2. Crear `SiemensReconciliationService` para cruzar datos reales (.lic) vs teóricos (CSV).
+3. Implementar la UI "Perfil de Siemens" en la ficha del cliente con badges de color.
 
 ---
 
 ## Contexto técnico importante
 
-- Los archivos `.env` no cambian. 
-- En Laravel 11, `storeAs` por defecto guarda en `storage/app/private`. Se corrigió el path dinámico usando `Storage::disk('local')->path()`.
-- Recordatorio: Al modificar Jobs o clases que usan la cola, SIEMPRE hacer `docker exec dx-php-beta php artisan queue:restart` o la cola no cargará los cambios en código.
-- N+1 Query: Para arreglar `LazyLoadingViolationException`, se añadió eager loading (`contracts.vendor`) en `ClientController`.
+- **REGLA DE ORO DE INFRAESTRUCTURA**: El repositorio base es el MISMO. Los archivos `.yml` trackeados por Git existen en ambas carpetas. NUNCA borrar `docker-compose.prod.yml` de la carpeta DEV, o se borrará en Producción tras el merge.
+- La limpieza de secretos (`.env`) sí está permitida al estar ignorados por Git.
+- Todos los comandos de entorno de desarrollo se ejecutan ahora sobre `Z:\DX-License-Manager-DEV\`.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-Ninguno
+Ninguno. El entorno de desarrollo (Beta) está listo para empezar a picar código de forma 100% aislada.
 
 ---
 
@@ -51,20 +55,15 @@ Ninguno
 
 | Archivo | Estado |
 |:---|:---|
-| `infra/.env.prod` | ✅ configurado |
-| `infra/.env.beta` | ✅ configurado |
-| `backend/.env` | ✅ configurado |
-| `backend/vendor/` | ✅ instalado |
+| `infra/.env.beta` | ✅ configurado en DEV |
+| `management/ARCHITECTURE.md` | ✅ nuevo doc permanente |
+| `task.md` | ✅ plan de Siemens listo |
 
 ---
 
 ## Comandos útiles para la próxima sesión
 
 ```bash
-# Reiniciar colas tras modificar un Job
-docker exec -it dx-php-beta php artisan queue:restart
-docker exec -it dx-php-prod php artisan queue:restart
-
-# Ver logs de la cola en beta
-docker compose --project-directory . -f infra/docker-compose.beta.yml logs -f queue-beta
+# Crear el modelo y migración para Siemens en Beta
+docker exec -it dx-php-beta php artisan make:model SiemensLicense -m
 ```

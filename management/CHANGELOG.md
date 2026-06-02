@@ -2,7 +2,21 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Version:** v3.0.1
 
+## [2026-06-02 14:10] — Infrastructure: Aislamiento Absoluto Prod vs Dev
+
+### Added
+
+- **Aislamiento Físico**: Separación arquitectónica completa en dos carpetas (`DX-License-Manager` para Prod y `DX-License-Manager-DEV` para Beta).
+- **Aislamiento de Docker**: Despliegue de bases de datos MariaDB y colas Redis en volúmenes Docker físicos distintos para imposibilitar el borrado accidental cruzado.
+- **Documentación de Arquitectura**: Creado `management/ARCHITECTURE.md` detallando el aislamiento de los stacks para futuras sesiones y protegido el repositorio desde la `Regla Cero`.
+
+### Changed
+
+- **GitHub Actions**: Refactorizado `deploy-beta.yml` para apuntar exclusivamente al path `/opt/web-projects/DX-License-Manager-DEV` y prevenir superposiciones.
+- **Limpieza de Storage**: Eliminados montajes de solo lectura redundantes (`storage_prod:ro`) de `docker-compose.beta.yml` y viceversa en el archivo de producción, aislando totalmente los volúmenes de Laravel.
+
 ## [2026-06-01 15:00] — Feature: Importación Masiva Asíncrona (Consola en Vivo)
+
 
 ### Added
 

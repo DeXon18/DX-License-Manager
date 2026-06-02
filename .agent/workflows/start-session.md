@@ -11,6 +11,12 @@ description:
 
 ## ⚠️ Arquitectura — Leer antes de ejecutar nada
 
+**⚠️ REGLA CRÍTICA DE CARPETAS:**
+Existen DOS carpetas físicas en el servidor:
+- `/opt/web-projects/DX-License-Manager-DEV` (Desarrollo / Beta) -> Aquí trabajas SIEMPRE (rama `dev`).
+- `/opt/web-projects/DX-License-Manager` (Producción) -> Intocable (rama `main`).
+**NUNCA** trabajes ni modifiques archivos en la carpeta de Producción. Todos tus comandos y herramientas deben apuntar a la carpeta `-DEV`.
+
 **El PC del desarrollador NO tiene PHP, Composer, Node, ni ningún runtime del proyecto instalado.**
 
 Todo corre dentro de Docker en el servidor LXC 600 (`192.168.50.60`).
