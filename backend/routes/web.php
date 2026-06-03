@@ -108,6 +108,10 @@ Route::middleware(['auth.jwt'])->group(function () {
         Route::get('/system/docker', [SystemDashboardController::class, 'docker'])->name('system.docker');
         Route::get('/system/ai-costs', [\App\Http\Controllers\Admin\AiAuditCostController::class, 'index'])->name('system.ai-costs');
         
+        // Monitor de Procesamiento Asíncrono
+        Route::get('/queue-monitor', [\App\Http\Controllers\Admin\QueueMonitorController::class, 'index'])->name('queue-monitor.index');
+        Route::get('/queue-monitor/logs', [\App\Http\Controllers\Admin\QueueMonitorController::class, 'logs'])->name('queue-monitor.logs');
+        
         Route::prefix('system/actions')->name('system.')->group(function () {
             Route::post('/clear-cache', [SystemActionController::class, 'clearCache'])->name('clear-cache');
             Route::post('/restart-queues', [SystemActionController::class, 'restartQueues'])->name('restart-queues');
