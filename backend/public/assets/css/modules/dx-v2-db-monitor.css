@@ -1,0 +1,122 @@
+/* 
+ * DX-V2 System Dashboard Database Monitor Module 
+ * Module-specific styles for the Database Monitor interface, integrating with dx-v2-sys-dashboard.css
+ */
+
+.dx-v2-db-monitor-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Metric Cards Refinement (Extending Base Sys Dashboard Cards if needed) */
+.dx-v2-db-metric-value {
+    font-family: var(--font-mono, monospace);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--dx-v2-text-main);
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.dx-v2-db-metric-value.dx-color-success { color: var(--dx-v2-success, #2da44e); }
+.dx-v2-db-metric-value.dx-color-warning { color: var(--dx-v2-warning, #bf8700); }
+.dx-v2-db-metric-value.dx-color-error { color: var(--dx-v2-danger, #cf222e); }
+
+/* Table Styles */
+.dx-v2-db-table-container {
+    background-color: var(--dx-v2-surface);
+    border: 1px solid var(--dx-v2-border);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--dx-v2-shadow-sm);
+    margin-top: 24px;
+}
+
+.dx-v2-db-table-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--dx-v2-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dx-v2-db-table-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--dx-v2-text-main);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dx-v2-db-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.dx-v2-db-table th {
+    background-color: var(--dx-v2-bg);
+    color: var(--dx-v2-muted);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--dx-v2-border);
+}
+
+.dx-v2-db-table td {
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--dx-v2-border-light, rgba(255,255,255,0.05));
+    color: var(--dx-v2-text-main);
+    font-size: 13px;
+    transition: background-color 0.15s ease;
+}
+
+.dx-v2-db-table tbody tr:hover td {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.dx-v2-db-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Mono Font Helpers */
+.dx-v2-mono {
+    font-family: var(--font-mono, monospace);
+    font-size: 12px;
+}
+
+/* Visual Bar for Size */
+.dx-v2-db-size-bar-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 200px;
+}
+
+.dx-v2-db-size-bar-bg {
+    flex-grow: 1;
+    height: 6px;
+    background-color: var(--dx-v2-border);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.dx-v2-db-size-bar-fill {
+    height: 100%;
+    background-color: var(--dx-v2-accent-base);
+    border-radius: 3px;
+    transition: width 0.5s ease-out;
+}
+
+/* Empty State */
+.dx-v2-db-empty {
+    padding: 40px;
+    text-align: center;
+    color: var(--dx-v2-muted);
+}
