@@ -27,7 +27,6 @@
 
 | ID | Incidencia | Módulo | Prioridad | Detectado | Resuelto |
 |---:|---|---|:---:|:---:|:---:|
-| [#027] | Lector de logs no encuentra laravel.log en entorno DEV | Admin/Logs | 🟢 P3 | 2026-06-02 | - |
 | [#024] | Contadores de storage siempre a 0 B en /admin/system | Admin/System | 🟢 P3 | 2026-06-02 | - |
 | [#023] | Bot query unauthorized attempt from IP 172.18.0.1 | API/Bot | 🟠 P2 | 2026-06-02 | - |
 
@@ -37,6 +36,7 @@
 
 | ID | Incidencia | Módulo | Prioridad | Detectado | Resuelto |
 |---:|---|---|:---:|:---:|:---:|
+| [#027] | Lector de logs no encuentra laravel.log (Regex) | Admin/Logs | 🟢 P3 | 2026-06-02 | 2026-06-03 |
 | [#026] | BadMethodCallException en JwtCleanupCommand::success | Auth/Cron | 🟢 P3 | 2026-06-02 | 2026-06-03 |
 | [#025] | Fallo en fallback AI: google/gemini-1.5-flash no es válido en OpenRouter | API/AI | 🟠 P2 | 2026-06-02 | 2026-06-03 |
 | [#022] | Clientes duplicados ya persistidos no aparecen en la Bandeja de Normalización | Normalización | 🟠 P2 | 2026-05-20 | 2026-05-20 |
@@ -77,22 +77,6 @@
 ## 🔍 Detalle de incidencias
 
 ### Pendientes
-
-#### #027 — Lector de logs no encuentra laravel.log en DEV
-
-| Campo | Valor |
-|---|---|
-| **Módulo** | Admin/Logs |
-| **Prioridad** | 🟢 P3 |
-| **Estado** | ⏳ Pendiente |
-| **Detectado** | 2026-06-02 |
-| **Resuelto** | - |
-
-- **Síntoma**: Al entrar en el visor de logs, muestra el mensaje "No hay registros en el fichero laravel.log". No lo encuentra.
-- **Causa**: El parser (`AuditLogController`) puede estar apuntando a una ruta hardcodeada absoluta (`/rpool/webs/DX-License-Manager/...`) en lugar de usar `storage_path('logs/laravel.log')`, fallando al correr en el workspace aislado de DEV. O bien, el log de Laravel no se ha creado aún en la carpeta nueva.
-- **Plan**: Revisar la ruta de lectura del archivo en el controlador para forzar rutas relativas al framework.
-
-
 
 #### #024 — Contadores de storage a 0 B en /admin/system
 
