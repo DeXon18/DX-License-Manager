@@ -8,7 +8,7 @@
 
 | 🔴 Críticos (P1) | 🟠 Importantes (P2) | 🟢 Menores (P3) | ✅ Resueltos |
 | :---: | :---: | :---: | :---: |
-| 0 | 2 | 3 | 22 |
+| 0 | 1 | 2 | 24 |
 
 ---
 
@@ -28,8 +28,6 @@
 | ID | Incidencia | Módulo | Prioridad | Detectado | Resuelto |
 |---:|---|---|:---:|:---:|:---:|
 | [#027] | Lector de logs no encuentra laravel.log en entorno DEV | Admin/Logs | 🟢 P3 | 2026-06-02 | - |
-| [#026] | BadMethodCallException en JwtCleanupCommand::success | Auth/Cron | 🟢 P3 | 2026-06-02 | - |
-| [#025] | Fallo en fallback AI: google/gemini-1.5-flash no es válido en OpenRouter | API/AI | 🟠 P2 | 2026-06-02 | - |
 | [#024] | Contadores de storage siempre a 0 B en /admin/system | Admin/System | 🟢 P3 | 2026-06-02 | - |
 | [#023] | Bot query unauthorized attempt from IP 172.18.0.1 | API/Bot | 🟠 P2 | 2026-06-02 | - |
 
@@ -39,6 +37,8 @@
 
 | ID | Incidencia | Módulo | Prioridad | Detectado | Resuelto |
 |---:|---|---|:---:|:---:|:---:|
+| [#026] | BadMethodCallException en JwtCleanupCommand::success | Auth/Cron | 🟢 P3 | 2026-06-02 | 2026-06-03 |
+| [#025] | Fallo en fallback AI: google/gemini-1.5-flash no es válido en OpenRouter | API/AI | 🟠 P2 | 2026-06-02 | 2026-06-03 |
 | [#022] | Clientes duplicados ya persistidos no aparecen en la Bandeja de Normalización | Normalización | 🟠 P2 | 2026-05-20 | 2026-05-20 |
 | [#020] Mensajes de confirmación sin feedback visual destacado (toasts) | UI/UX | 🟠 P2 | 2026-05-19 | 2026-05-20 |
 | [#017] Barra de búsqueda sin estilos en Gestión de Usuarios | UI/UX | 🟢 P3 | 2026-05-19 | 2026-05-20 |
