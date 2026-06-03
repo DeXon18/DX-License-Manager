@@ -32,6 +32,8 @@ El desarrollador inicia. El agente espera.
 
 ### 💡 Ideas Pendientes (UI / UX / Soporte)
 
+- [ ] **Visor de Procesamiento Asíncrono (Queue)**: Ver progreso en tiempo real de terminal asíncrona (ej. `[dx-queue-beta] PROCESSING [0%] > Esperando en cola...`).
+
 ## ✅ Completado
 
 ### Bugfixes Infraestructura: Errores 023-027 ✅
