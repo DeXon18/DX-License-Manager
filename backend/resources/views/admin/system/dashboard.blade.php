@@ -260,6 +260,21 @@
                             </div>
                         </div>
 
+                        {{-- Database Monitor --}}
+                        <div onclick="window.location.href='{{ route('system.database') }}'" class="dx-v2-sys-dash-service-item clickable">
+                            <div class="dx-v2-sys-dash-service-icon-box online">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+                            </div>
+                            <div class="dx-v2-sys-dash-service-text-box">
+                                <div class="dx-v2-sys-dash-service-title-row">
+                                    <span class="dx-v2-sys-dash-service-label">Database Monitor</span>
+                                    <div class="dx-v2-sys-dash-service-status-dot online"></div>
+                                </div>
+                                <div class="dx-v2-sys-dash-service-msg">Esquema MariaDB</div>
+                                <div class="dx-v2-sys-dash-service-details-mono">Tablas, peso y conexiones</div>
+                            </div>
+                        </div>
+
                         {{-- Gestión de Backups --}}
                         <div onclick="window.location.href='{{ route('admin.backups.index') }}'" class="dx-v2-sys-dash-service-item clickable">
                             <div class="dx-v2-sys-dash-service-icon-box online">

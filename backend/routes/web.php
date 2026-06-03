@@ -12,6 +12,7 @@ use App\Http\Controllers\Tools\NXSuiteController;
 use App\Http\Controllers\Admin\SystemDashboardController;
 use App\Http\Controllers\Admin\SystemActionController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\DatabaseMonitorController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -105,6 +106,9 @@ Route::middleware(['auth.jwt'])->group(function () {
         Route::get('/system', [SystemDashboardController::class, 'index'])->name('system.index');
         Route::get('/system/docker', [SystemDashboardController::class, 'docker'])->name('system.docker');
         Route::get('/system/ai-costs', [\App\Http\Controllers\Admin\AiAuditCostController::class, 'index'])->name('system.ai-costs');
+        
+        // Visor de Base de Datos
+        Route::get('/system/database', [DatabaseMonitorController::class, 'index'])->name('system.database');
         
         Route::prefix('system/actions')->name('system.')->group(function () {
             Route::post('/clear-cache', [SystemActionController::class, 'clearCache'])->name('clear-cache');
