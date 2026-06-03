@@ -92,39 +92,7 @@
 - **Causa**: El parser (`AuditLogController`) puede estar apuntando a una ruta hardcodeada absoluta (`/rpool/webs/DX-License-Manager/...`) en lugar de usar `storage_path('logs/laravel.log')`, fallando al correr en el workspace aislado de DEV. O bien, el log de Laravel no se ha creado aún en la carpeta nueva.
 - **Plan**: Revisar la ruta de lectura del archivo en el controlador para forzar rutas relativas al framework.
 
----
 
-#### #026 — BadMethodCallException en JwtCleanupCommand
-
-| Campo | Valor |
-|---|---|
-| **Módulo** | Auth/Cron |
-| **Prioridad** | 🟢 P3 |
-| **Estado** | ⏳ Pendiente |
-| **Detectado** | 2026-06-02 |
-| **Resuelto** | - |
-
-- **Síntoma**: Falla la tarea programada `auth:jwt-cleanup` con `Method App\Console\Commands\Auth\JwtCleanupCommand::success does not exist`.
-- **Causa**: En los comandos de Laravel (clase `Command`), no existe el método nativo `$this->success()`. El desarrollador utilizó una firma incorrecta para mostrar la salida.
-- **Plan**: Cambiar `$this->success(...)` por `$this->info(...)` en `JwtCleanupCommand.php`.
-
----
-
-#### #025 — Fallo en fallback AI: google/gemini-1.5-flash no válido
-
-| Campo | Valor |
-|---|---|
-| **Módulo** | API/AI |
-| **Prioridad** | 🟠 P2 |
-| **Estado** | ⏳ Pendiente |
-| **Detectado** | 2026-06-02 |
-| **Resuelto** | - |
-
-- **Síntoma**: El log indica "Timeout con openrouter/owl-alpha, saltando a fallback google/gemini-1.5-flash" y acto seguido falla con HTTP 400 "google/gemini-1.5-flash is not a valid model ID".
-- **Causa**: OpenRouter o el proveedor configurado no reconoce el ID de modelo `google/gemini-1.5-flash`.
-- **Plan**: Actualizar el ID del modelo fallback en `config/ai.php` o `ClientAiNormalizationService` al ID correcto (ej. `google/gemini-flash-1.5` o el que corresponda en el proveedor).
-
----
 
 #### #024 — Contadores de storage a 0 B en /admin/system
 
@@ -159,6 +127,38 @@
 ---
 
 ### Resueltos
+
+---
+
+#### #026 — BadMethodCallException en JwtCleanupCommand
+
+| Campo | Valor |
+|---|---|
+| **Módulo** | Auth/Cron |
+| **Prioridad** | 🟢 P3 |
+| **Estado** | ✅ Resuelto |
+| **Detectado** | 2026-06-02 |
+| **Resuelto** | 2026-06-03 |
+
+- **Síntoma**: Falla la tarea programada `auth:jwt-cleanup` con `Method App\Console\Commands\Auth\JwtCleanupCommand::success does not exist`.
+- **Causa**: En los comandos de Laravel (clase `Command`), no existe el método nativo `$this->success()`. El desarrollador utilizó una firma incorrecta para mostrar la salida.
+- **Resolución**: Se reemplazó la llamada a `$this->success(...)` por el método correcto de consola en Laravel `$this->info(...)` en la clase `JwtCleanupCommand.php`.
+
+---
+
+#### #025 — Fallo en fallback AI: google/gemini-1.5-flash no válido
+
+| Campo | Valor |
+|---|---|
+| **Módulo** | API/AI |
+| **Prioridad** | 🟠 P2 |
+| **Estado** | ✅ Resuelto |
+| **Detectado** | 2026-06-02 |
+| **Resuelto** | 2026-06-03 |
+
+- **Síntoma**: El log indica "Timeout con openrouter/owl-alpha, saltando a fallback google/gemini-1.5-flash" y acto seguido falla con HTTP 400 "google/gemini-1.5-flash is not a valid model ID".
+- **Causa**: OpenRouter o el proveedor configurado no reconoce el ID de modelo `google/gemini-1.5-flash`.
+- **Resolución**: Se actualizó el seeder `AiHubSeeder.php` para apuntar el ID a `openrouter/owl-alpha`, y se generó una migración de base de datos para migrar los registros existentes en `ai_routes` para utilizar el nuevo ID como modelo de fallback.
 
 ---
 
