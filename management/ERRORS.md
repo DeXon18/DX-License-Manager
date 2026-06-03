@@ -8,7 +8,7 @@
 
 | 🔴 Críticos (P1) | 🟠 Importantes (P2) | 🟢 Menores (P3) | ✅ Resueltos |
 | :---: | :---: | :---: | :---: |
-| 0 | 1 | 2 | 25 |
+| 0 | 1 | 0 | 27 |
 
 ---
 
