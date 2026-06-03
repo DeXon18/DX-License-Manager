@@ -179,7 +179,7 @@ class AuditLogController extends Controller
             // Solo contamos niveles críticos
             $yesterday = now()->subDay()->format('Y-m-d H:i:s');
             
-            $pattern = '/^\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\]\s*\w+\.(error|critical|alert|emergency):/m';
+            $pattern = '/^\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\]\s*\w+\.(error|critical|alert|emergency):/im';
             preg_match_all($pattern, $content, $matches);
             
             if (isset($matches[1])) {
