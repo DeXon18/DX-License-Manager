@@ -93,4 +93,50 @@ class ImportController extends Controller
             'status' => $log ? $log->status : 'unknown'
         ]);
     }
+
+    /**
+     * Get list of active (processing) imports.
+     */
+    public function active()
+    {
+        $activeJobs = \App\Models\ImportLog::where('status', 'processing')
+            ->orderBy('id', 'desc')
+            ->get();
+            
+        // For each active job, get current progress from Redis
+        $jobsWithProgress = $activeJobs->map(function ($job) {
+            $redisProgressKey = "import_progress_{$job->id}";
+            $progress = \Illuminate\Support\Facades\Redis::get($redisProgressKey) ?: 0;
+            
+            return [
+                'id' => $job->id,
+                'filename' => $job->filename,
+                'status' => $job->status,
+                'progress' => (int) $progress,
+                'created_at' => $job->created_at->format('Y-m-d H:i:s'),
+                'created_at_human' => $job->created_at->diffForHumans()
+            ];
+        });
+
+        return response()->json([
+            'active_jobs' => $jobsWithProgress
+        ]);
+    }
+
+    /**
+     * Cancel an active processing import.
+     */
+    public function cancel($logId)
+    {
+        $redisCancelKey = "import_cancel_{$logId}";
+        \Illuminate\Support\Facades\Redis::set($redisCancelKey, true);
+        \Illuminate\Support\Facades\Redis::expire($redisCancelKey, 3600);
+
+        $log = \App\Models\ImportLog::find($logId);
+        if ($log && $log->status === 'processing') {
+            $log->update(['status' => 'canceled']);
+        }
+
+        return response()->json(['success' => true]);
+    }
 }
