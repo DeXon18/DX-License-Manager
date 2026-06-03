@@ -92,6 +92,8 @@ Route::middleware(['auth.jwt'])->group(function () {
         Route::post('/import', [ImportController::class, 'store'])->name('import.store');
         
         Route::get('/import/status/{log}', [ImportController::class, 'status'])->name('import.status');
+        Route::post('/import/cancel/{log}', [ImportController::class, 'cancel'])->name('import.cancel');
+        Route::get('/import/active', [ImportController::class, 'active'])->name('import.active');
         Route::get('/import/logs', [\App\Http\Controllers\Admin\ImportLogController::class, 'index'])->name('import.logs.index');
         Route::get('/import/logs/{log}', [\App\Http\Controllers\Admin\ImportLogController::class, 'show'])->name('import.logs.show');
         Route::delete('/import/logs/{log}', [\App\Http\Controllers\Admin\ImportLogController::class, 'destroy'])->name('import.logs.destroy');
@@ -105,6 +107,10 @@ Route::middleware(['auth.jwt'])->group(function () {
         Route::get('/system', [SystemDashboardController::class, 'index'])->name('system.index');
         Route::get('/system/docker', [SystemDashboardController::class, 'docker'])->name('system.docker');
         Route::get('/system/ai-costs', [\App\Http\Controllers\Admin\AiAuditCostController::class, 'index'])->name('system.ai-costs');
+        
+        // Monitor de Procesamiento Asíncrono
+        Route::get('/queue-monitor', [\App\Http\Controllers\Admin\QueueMonitorController::class, 'index'])->name('queue-monitor.index');
+        Route::get('/queue-monitor/logs', [\App\Http\Controllers\Admin\QueueMonitorController::class, 'logs'])->name('queue-monitor.logs');
         
         Route::prefix('system/actions')->name('system.')->group(function () {
             Route::post('/clear-cache', [SystemActionController::class, 'clearCache'])->name('clear-cache');

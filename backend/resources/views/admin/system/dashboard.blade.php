@@ -260,6 +260,21 @@
                             </div>
                         </div>
 
+                        {{-- Queue Monitor --}}
+                        <div onclick="window.location.href='{{ route('admin.queue-monitor.index') }}'" class="dx-v2-sys-dash-service-item clickable">
+                            <div class="dx-v2-sys-dash-service-icon-box online">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 6h16M4 12h16M4 18h16"/><path d="M4 6l4 6-4 6"/></svg>
+                            </div>
+                            <div class="dx-v2-sys-dash-service-text-box">
+                                <div class="dx-v2-sys-dash-service-title-row">
+                                    <span class="dx-v2-sys-dash-service-label">Queue Monitor</span>
+                                    <div class="dx-v2-sys-dash-service-status-dot online"></div>
+                                </div>
+                                <div class="dx-v2-sys-dash-service-msg">Visor Asíncrono</div>
+                                <div class="dx-v2-sys-dash-service-details-mono">Logs de trabajadores</div>
+                            </div>
+                        </div>
+
                         {{-- Gestión de Backups --}}
                         <div onclick="window.location.href='{{ route('admin.backups.index') }}'" class="dx-v2-sys-dash-service-item clickable">
                             <div class="dx-v2-sys-dash-service-icon-box online">

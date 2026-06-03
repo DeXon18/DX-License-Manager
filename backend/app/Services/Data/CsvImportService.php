@@ -231,6 +231,16 @@ class CsvImportService
                     $this->logToConsole($redisKey, "[SISTEMA] Procesadas {$rowCount} de {$totalLines} filas...");
                 }
 
+                // Check for cancel flag
+                $redisCancelKey = "import_cancel_{$logId}";
+                if (\Illuminate\Support\Facades\Redis::get($redisCancelKey)) {
+                    $this->logToConsole($redisKey, "[SISTEMA] Importación CANCELADA por el usuario en la fila {$rowCount}.");
+                    DB::rollBack();
+                    $log->update(['status' => 'canceled']);
+                    \Illuminate\Support\Facades\Redis::del($redisCancelKey);
+                    return; // exit the method completely
+                }
+
                 $contractNumber = trim($row[0] ?? '');
                 if (empty($contractNumber) || !str_contains(strtoupper($contractNumber), 'CONH')) {
                     continue;

@@ -65,6 +65,19 @@
             </div>
         </div>
 
+        <!-- Bloque Active Queues -->
+        <div class="card dx-v2-import-card-mb" id="active-queues-container" style="display: none;">
+            <div class="card-header flex justify-between items-center">
+                <span class="card-title">Procesos Activos en Cola</span>
+                <span class="badge badge-ai" style="background: var(--info, #38bdf8); color: #fff;">LIVE</span>
+            </div>
+            <div class="card-body" style="padding: 20px;">
+                <div id="active-queues-list" style="display: flex; flex-direction: column; gap: 15px;">
+                    <!-- Rellenado por JS -->
+                </div>
+            </div>
+        </div>
+
         <!-- Bloque 2: Mapeo -->
         <div class="card">
             <div class="card-header">
@@ -248,5 +261,82 @@ function startPolling(logId) {
         });
     }, 1500); // Poll cada 1.5 segundos
 }
+
+// Global Polling para Procesos Activos
+let activeQueuesInterval = null;
+
+function fetchActiveQueues() {
+    fetch('{{ route("admin.import.active") }}', {
+        headers: { 'Accept': 'application/json' }
+    })
+    .then(res => res.json())
+    .then(data => {
+        const container = document.getElementById('active-queues-container');
+        const list = document.getElementById('active-queues-list');
+        
+        if (data.active_jobs && data.active_jobs.length > 0) {
+            container.style.display = 'block';
+            let html = '';
+            
+            data.active_jobs.forEach(job => {
+                html += `
+                <div style="background: var(--bg-dark); padding: 15px; border-radius: 8px; border: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div style="display: flex; flex-direction: column;">
+                            <span style="color: var(--text-primary); font-weight: 500;">${job.filename}</span>
+                            <span style="color: var(--text-secondary); font-size: 12px;">Iniciado ${job.created_at_human} (ID: ${job.id})</span>
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button onclick="viewActiveConsole(${job.id})" class="btn-secondary" style="padding: 6px 12px; font-size: 12px;">VER CONSOLA</button>
+                            <button onclick="cancelActiveJob(${job.id})" class="btn-primary" style="padding: 6px 12px; font-size: 12px; background: var(--danger, #ef4444); border-color: var(--danger, #ef4444);">CANCELAR</button>
+                        </div>
+                    </div>
+                    <div style="width: 100%; background: rgba(0,0,0,0.2); height: 6px; border-radius: 3px; overflow: hidden;">
+                        <div style="width: ${job.progress}%; height: 100%; background: var(--info, #38bdf8); transition: width 0.4s;"></div>
+                    </div>
+                </div>
+                `;
+            });
+            list.innerHTML = html;
+        } else {
+            container.style.display = 'none';
+        }
+    })
+    .catch(err => console.error("Error fetching active queues:", err));
+}
+
+function viewActiveConsole(logId) {
+    document.getElementById('console-container').style.display = 'block';
+    const consoleOutput = document.getElementById('console-output');
+    consoleOutput.innerHTML = `<div style="color: var(--text-secondary);">> Conectando a terminal del proceso (Log ID: ${logId})...</div>`;
+    startPolling(logId);
+}
+
+function cancelActiveJob(logId) {
+    if (!confirm("¿Está seguro de que desea cancelar esta importación? Los cambios no procesados se revertirán (Rollback).")) {
+        return;
+    }
+    
+    fetch(`/admin/import/cancel/${logId}`, {
+        method: 'POST',
+        headers: { 
+            'Accept': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            alert("Orden de cancelación enviada. El proceso se detendrá en breve.");
+            fetchActiveQueues(); // refrescar
+        }
+    })
+    .catch(err => console.error("Error canceling job:", err));
+}
+
+// Iniciar polling global cada 5 segundos
+fetchActiveQueues();
+activeQueuesInterval = setInterval(fetchActiveQueues, 5000);
+
 </script>
 @endsection

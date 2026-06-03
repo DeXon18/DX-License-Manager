@@ -103,4 +103,38 @@ class DockerMonitorService
         }
         return 'unknown';
     }
+
+    /**
+     * Extrae las últimas N líneas del log de un contenedor específico.
+     * Restringe el acceso únicamente a los contenedores del entorno actual.
+     *
+     * @param string $containerName
+     * @param int $lines
+     * @return string
+     */
+    public function getContainerLogs($containerName, $lines = 100)
+    {
+        try {
+            $env = config('app.env') === 'production' ? 'prod' : 'beta';
+            $prefix = "dx-";
+            $suffix = "-{$env}";
+
+            // Filtro de seguridad: Solo contenedores del stack actual
+            if (!str_starts_with($containerName, $prefix) || !str_ends_with($containerName, $suffix)) {
+                return "Error: Acceso denegado al contenedor '{$containerName}'. Solo se permiten contenedores del entorno actual.";
+            }
+
+            $safeContainer = escapeshellarg($containerName);
+            $safeLines = (int) $lines;
+            
+            // Ejecutar docker logs
+            $output = shell_exec("docker logs --tail {$safeLines} {$safeContainer} 2>&1");
+            
+            return $output ?: "No hay logs disponibles o el contenedor no existe.";
+            
+        } catch (\Exception $e) {
+            Log::error("DockerMonitorService@getContainerLogs Error: " . $e->getMessage());
+            return "Error al recuperar logs: " . $e->getMessage();
+        }
+    }
 }
