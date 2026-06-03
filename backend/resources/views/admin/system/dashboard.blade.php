@@ -76,23 +76,23 @@
                 <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12H2M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11zM6 16h.01M10 16h.01"/></svg>
             </div>
             <div class="dx-v2-sys-dash-stat-card-title">
-                STORAGE (ENTORNO ACTUAL)
+                STORAGE (BETA + PROD)
             </div>
             <div class="dx-v2-sys-dash-stat-card-value">
                 {{ $metrics['hardware']['disk']['folders']['total'] }}
             </div>
             <div class="dx-v2-sys-dash-stat-card-traffic-layout">
                 <div class="dx-v2-sys-dash-stat-card-traffic-col-left">
-                    <div class="dx-v2-sys-dash-stat-card-traffic-sub-label">Storage/</div>
+                    <div class="dx-v2-sys-dash-stat-card-traffic-sub-label">Beta Storage</div>
                     <div class="dx-v2-sys-dash-stat-card-traffic-value mono-text">
-                        {{ $metrics['hardware']['disk']['folders']['storage'] }}
+                        {{ $metrics['hardware']['disk']['folders']['beta'] }}
                     </div>
                 </div>
                 <div class="dx-v2-sys-dash-stat-card-traffic-separator"></div>
                 <div class="dx-v2-sys-dash-stat-card-traffic-col-right">
-                    <div class="dx-v2-sys-dash-stat-card-traffic-sub-label">Logs/</div>
+                    <div class="dx-v2-sys-dash-stat-card-traffic-sub-label">Prod Storage</div>
                     <div class="dx-v2-sys-dash-stat-card-traffic-value mono-text">
-                        {{ $metrics['hardware']['disk']['folders']['logs'] }}
+                        {{ $metrics['hardware']['disk']['folders']['prod'] }}
                     </div>
                 </div>
             </div>

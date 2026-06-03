@@ -1,21 +1,15 @@
 ---
-description:
+description: 
 ---
 
 # Workflow: Inicio de Sesión
 
-> Ruta: `.agent/workflows/start-session.md`
+> Ruta: `.agent/workflows/start-session.md`  
 > Trigger: Al abrir el proyecto en Antigravity — ejecutar `/start`
 
 ---
 
 ## ⚠️ Arquitectura — Leer antes de ejecutar nada
-
-**⚠️ REGLA CRÍTICA DE CARPETAS:**
-Existen DOS carpetas físicas en el servidor:
-- `/opt/web-projects/DX-License-Manager-DEV` (Desarrollo / Beta) -> Aquí trabajas SIEMPRE (rama `dev`).
-- `/opt/web-projects/DX-License-Manager` (Producción) -> Intocable (rama `main`).
-**NUNCA** trabajes ni modifiques archivos en la carpeta de Producción. Todos tus comandos y herramientas deben apuntar a la carpeta `-DEV`.
 
 **El PC del desarrollador NO tiene PHP, Composer, Node, ni ningún runtime del proyecto instalado.**
 
@@ -28,7 +22,7 @@ Todo corre dentro de Docker en el servidor LXC 600 (`192.168.50.60`).
 | Redis         | Contenedor `dx-redis-beta` en LXC 600   | SSH → `docker exec`                    |
 | Código fuente | `Z:\DX-License-Manager\` via Samba      | Editar directamente en Antigravity     |
 
-**Nunca ejecutar en el PC local:** `php`, `composer`, `artisan`, `mysql`, `npm`.
+**Nunca ejecutar en el PC local:** `php`, `composer`, `artisan`, `mysql`, `npm`.  
 **Siempre ejecutar en el servidor:** via SSH MCP o pidiendo al desarrollador que ejecute en el LXC.
 
 ---
@@ -60,7 +54,6 @@ Leer en este orden exacto. **No saltarse ningún archivo.**
 8. `DESIGN.md` — **OBLIGATORIO.** Sistema de diseño del proyecto. Cualquier vista, componente o elemento visual debe seguir este documento. No crear nada visual sin haberlo leído.
 9. `AGENTS.md` — **OBLIGATORIO.** reglas de operación activas. Confirmar que la Regla Cero está activa.
 10. `.agent/lessons.md` — lecciones aprendidas de sesiones anteriores. Aplicar desde el primer momento.
-11. `management/ARCHITECTURE.md` — **OBLIGATORIO.** Reglas de arquitectura y separación física entre los entornos de Desarrollo y Producción.
 
 ---
 
@@ -87,12 +80,8 @@ Confirmar:
 Ejecutar via SSH MCP en el LXC 600:
 
 ```bash
-# Stack Beta (Entorno de Trabajo)
-cd /opt/web-projects/DX-License-Manager-DEV
-docker compose --project-directory . -f infra/docker-compose.beta.yml ps
-
-# Stack Producción (Intocable)
 cd /opt/web-projects/DX-License-Manager
+docker compose --project-directory . -f infra/docker-compose.beta.yml ps
 docker compose --project-directory . -f infra/docker-compose.prod.yml ps
 ```
 
@@ -118,7 +107,6 @@ docker compose --project-directory . -f infra/docker-compose.prod.yml ps
 [x] DESIGN.md           — sistema de diseño activo
 [x] AGENTS.md           — reglas de operación activas
 [x] lessons.md          — [N lecciones aplicadas / "sin entradas aún"]
-[x] ARCHITECTURE.md     — reglas de infraestructura cargadas
 
 📍 Rama activa:       [nombre de la rama]
 📦 Fase actual:       [fase X — nombre]
@@ -160,7 +148,7 @@ Señales de que el contexto está al límite:
 
 ```bash
 # Verificar logs de beta
-ssh root@192.168.50.60 -p 22 "docker compose --project-directory /opt/web-projects/DX-License-Manager-DEV -f /opt/web-projects/DX-License-Manager-DEV/infra/docker-compose.beta.yml logs -f"
+ssh root@192.168.50.60 -p 22 "docker compose --project-directory /opt/web-projects/DX-License-Manager -f /opt/web-projects/DX-License-Manager/infra/docker-compose.beta.yml logs -f"
 ```
 
 El HANDOFF y el CHANGELOG garantizan que no se pierde nada.

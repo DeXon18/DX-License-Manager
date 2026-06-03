@@ -1,31 +1,9 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
-> **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
-> **Version:** v3.1.1
-
-## [2026-06-03 08:30] — Bugfix: Permisos de laravel.log (Bug #028) ✅
-
-### Fixed
-
-- **Logging**: Resuelto el error `Permission denied` (`Bug #028`) al intentar vaciar el log de sistema desde el panel de administración.
-  - Modificado `config/logging.php` para asignar `'permission' => 0666` a los canales single y daily, forzando escritura global sin importar si el creador original fue el daemon `root` (ej. cron o artisan) o `www-data` (PHP-FPM).
-  - Modificado `AuditLogController::clearSystem()` eliminando el fichero problemático vía `@unlink()` antes de recrearlo con `@file_put_contents()`, asegurando que `www-data` pueda sobrescribirlo aprovechando los permisos (777) del directorio `storage/logs/`.
-
-## [2026-06-02 14:10] — Infrastructure: Aislamiento Absoluto Prod vs Dev
-
-### Added
-
-- **Aislamiento Físico**: Separación arquitectónica completa en dos carpetas (`DX-License-Manager` para Prod y `DX-License-Manager-DEV` para Beta).
-- **Aislamiento de Docker**: Despliegue de bases de datos MariaDB y colas Redis en volúmenes Docker físicos distintos para imposibilitar el borrado accidental cruzado.
-- **Documentación de Arquitectura**: Creado `management/ARCHITECTURE.md` detallando el aislamiento de los stacks para futuras sesiones y protegido el repositorio desde la `Regla Cero`.
-
-### Changed
-
-- **GitHub Actions**: Refactorizado `deploy-beta.yml` para apuntar exclusivamente al path `/opt/web-projects/DX-License-Manager-DEV` y prevenir superposiciones.
-- **Estandarización de Storage**: Renombrados los directorios host `storage_prod` y `storage_beta` a la nomenclatura oficial de Laravel (`storage`). Actualizados los montajes en `docker-compose.prod.yml` y `docker-compose.beta.yml` para usar la ruta universal, eliminando todos los montajes de solo lectura cruzados.
-- **Limpieza de Secretos**: Purgado `infra/.env.beta` de la carpeta de Producción, y `infra/.env.prod` de la carpeta de DEV, eliminando definitivamente la posibilidad de carga cruzada de secretos.
+> **Version:** v3.0.1
 
 ## [2026-06-01 15:00] — Feature: Importación Masiva Asíncrona (Consola en Vivo)
+
 ### Added
 
 - **Consola UI**: Implementada una consola en vivo (terminal integrada) en la vista de importación (`admin/import/index.blade.php`), adaptada a los tokens de diseño de NOC Pro (fondo oscuro, barra de progreso acentuada, tipografía monospace).
@@ -35,7 +13,6 @@
 ### Changed
 
 - **ClientNormalizationService**: Reactivada la IA (`$useAi = true`) por defecto en importaciones masivas, ya que al procesarse en background (Jobs) se evita el riesgo de timeouts 524 de Cloudflare.
-
 
 ## [2026-06-01 13:20] — Patch: Corrección del Tour (Driver.js)
 ### Fixed

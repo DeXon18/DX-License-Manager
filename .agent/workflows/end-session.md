@@ -50,11 +50,8 @@ git stash push -m "WIP: descripción de lo que está en progreso"
 ### 3. Anotar el estado de los stacks
 
 ```bash
-# Stack Beta (Entorno de Trabajo)
-docker compose --project-directory /opt/web-projects/DX-License-Manager-DEV -f /opt/web-projects/DX-License-Manager-DEV/infra/docker-compose.beta.yml ps
-
-# Stack Producción (Intocable)
-docker compose --project-directory /opt/web-projects/DX-License-Manager -f /opt/web-projects/DX-License-Manager/infra/docker-compose.prod.yml ps
+docker compose --project-directory . -f infra/docker-compose.beta.yml ps
+docker compose --project-directory . -f infra/docker-compose.prod.yml ps
 ```
 
 Registrar si están up o down para el HANDOFF y el resumen de cierre.
@@ -166,13 +163,13 @@ Este archivo se **sobreescribe completamente** en cada sesión. No es un histori
 
 ```bash
 # Arrancar beta si está down
-docker compose --project-directory /opt/web-projects/DX-License-Manager-DEV -f /opt/web-projects/DX-License-Manager-DEV/infra/docker-compose.beta.yml up -d
+docker compose --project-directory . -f infra/docker-compose.beta.yml up -d
 
 # Entrar al contenedor PHP
 docker exec -it dx-php-beta sh
 
 # Ver logs en tiempo real
-docker compose --project-directory /opt/web-projects/DX-License-Manager-DEV -f /opt/web-projects/DX-License-Manager-DEV/infra/docker-compose.beta.yml logs -f nginx-beta
+docker compose --project-directory . -f infra/docker-compose.beta.yml logs -f nginx-beta
 ```
 ```
 

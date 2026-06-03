@@ -140,9 +140,7 @@ class AuditLogController extends Controller
     {
         $path = storage_path('logs/laravel.log');
         if (file_exists($path)) {
-            @unlink($path);
-            @file_put_contents($path, '');
-            @chmod($path, 0666);
+            file_put_contents($path, '');
             $this->logAction('system_log_reset', 'Se ha vaciado el fichero de logs de sistema (laravel.log).');
             return back()->with('tab', 'system')->with('success', 'Fichero laravel.log reseteado.');
         }
@@ -181,7 +179,7 @@ class AuditLogController extends Controller
             // Solo contamos niveles críticos
             $yesterday = now()->subDay()->format('Y-m-d H:i:s');
             
-            $pattern = '/^\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\]\s*\w+\.(error|critical|alert|emergency):/im';
+            $pattern = '/^\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\]\s*\w+\.(error|critical|alert|emergency):/m';
             preg_match_all($pattern, $content, $matches);
             
             if (isset($matches[1])) {

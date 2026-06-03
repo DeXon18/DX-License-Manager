@@ -8,7 +8,7 @@
 
 | 🔴 Críticos (P1) | 🟠 Importantes (P2) | 🟢 Menores (P3) | ✅ Resueltos |
 | :---: | :---: | :---: | :---: |
-| 0 | 1 | 0 | 27 |
+| 0 | 0 | 0 | 22 |
 
 ---
 
@@ -25,10 +25,7 @@
 
 ## ⏳ Pendientes
 
-| ID | Incidencia | Módulo | Prioridad | Detectado | Resuelto |
-|---:|---|---|:---:|:---:|:---:|
-
-| [#023] | Bot query unauthorized attempt from IP 172.18.0.1 | API/Bot | 🟠 P2 | 2026-06-02 | - |
+*No hay incidencias activas pendientes. ¡El portal está 100% libre de errores!*
 
 ---
 
@@ -36,11 +33,6 @@
 
 | ID | Incidencia | Módulo | Prioridad | Detectado | Resuelto |
 |---:|---|---|:---:|:---:|:---:|
-| [#028] | Permiso denegado al borrar laravel.log desde Admin | Admin/Logs | 🟠 P2 | 2026-06-03 | 2026-06-03 |
-| [#024] | Contadores de storage siempre a 0 B en /admin/system | Admin/System | 🟢 P3 | 2026-06-02 | 2026-06-03 |
-| [#027] | Lector de logs no encuentra laravel.log (Regex) | Admin/Logs | 🟢 P3 | 2026-06-02 | 2026-06-03 |
-| [#026] | BadMethodCallException en JwtCleanupCommand::success | Auth/Cron | 🟢 P3 | 2026-06-02 | 2026-06-03 |
-| [#025] | Fallo en fallback AI: google/gemini-1.5-flash no es válido en OpenRouter | API/AI | 🟠 P2 | 2026-06-02 | 2026-06-03 |
 | [#022] | Clientes duplicados ya persistidos no aparecen en la Bandeja de Normalización | Normalización | 🟠 P2 | 2026-05-20 | 2026-05-20 |
 | [#020] Mensajes de confirmación sin feedback visual destacado (toasts) | UI/UX | 🟠 P2 | 2026-05-19 | 2026-05-20 |
 | [#017] Barra de búsqueda sin estilos en Gestión de Usuarios | UI/UX | 🟢 P3 | 2026-05-19 | 2026-05-20 |
@@ -80,88 +72,11 @@
 
 ### Pendientes
 
+*No hay incidencias pendientes.*
+
+---
 
 ### Resueltos
-
----
-
-#### #028 — Permiso denegado al limpiar laravel.log
-
-| Campo | Valor |
-|---|---|
-| **Módulo** | Admin/Logs |
-| **Prioridad** | 🟠 P2 |
-| **Estado** | ✅ Resuelto |
-| **Detectado** | 2026-06-03 |
-| **Resuelto** | 2026-06-03 |
-
-- **Síntoma**: Error 500 al intentar limpiar el log del sistema desde `/admin/audit/clear/system` con el mensaje `Failed to open stream: Permission denied`.
-- **Causa**: `laravel.log` fue creado por un proceso `root` (cron o artisan) con permisos `0644`. El usuario `www-data` no tenía permisos de escritura para vaciarlo mediante `file_put_contents()`.
-- **Resolución**:
-  - En `config/logging.php`, se añadió `'permission' => 0666` a los canales de log.
-  - En `AuditLogController::clearSystem()`, se sustituyó la escritura directa por `@unlink()` seguido de `@file_put_contents()` y `@chmod(0666)`, permitiendo a `www-data` eliminar el archivo (directorio con permisos 777) y recrearlo correctamente.
-
----
-
-#### #023 — Bot query unauthorized attempt from IP 172.18.0.1
-
-| Campo | Valor |
-|---|---|
-| **Módulo** | API/Bot |
-| **Prioridad** | 🟠 P2 |
-| **Estado** | ✅ Resuelto |
-| **Detectado** | 2026-06-02 |
-| **Resuelto** | 2026-06-03 |
-
-- **Síntoma**: Múltiples avisos en logs: "Bot query unauthorized attempt from IP: 172.18.0.1".
-- **Causa**: Faltaba configurar `N8N_WEBHOOK_SECRET` o `BOT_API_TOKEN` en el archivo `.env.beta` del servidor, por lo que `BotQueryController` rechazaba las peticiones provenientes del contenedor de n8n.
-- **Resolución**: Se generó y añadió un token seguro `N8N_WEBHOOK_SECRET` al archivo `.env.beta` de infraestructura, y se limpió la caché de configuración. El webhook de n8n debe ser actualizado con este mismo secreto.
-
----
-
-#### #026 — BadMethodCallException en JwtCleanupCommand
-
-| Campo | Valor |
-|---|---|
-| **Módulo** | Auth/Cron |
-| **Prioridad** | 🟢 P3 |
-| **Estado** | ✅ Resuelto |
-| **Detectado** | 2026-06-02 |
-| **Resuelto** | 2026-06-03 |
-
-- **Síntoma**: Falla la tarea programada `auth:jwt-cleanup` con `Method App\Console\Commands\Auth\JwtCleanupCommand::success does not exist`.
-- **Causa**: En los comandos de Laravel (clase `Command`), no existe el método nativo `$this->success()`. El desarrollador utilizó una firma incorrecta para mostrar la salida.
-- **Resolución**: Se reemplazó la llamada a `$this->success(...)` por el método correcto de consola en Laravel `$this->info(...)` en la clase `JwtCleanupCommand.php`.
-
----
-
-#### #025 — Fallo en fallback AI: google/gemini-1.5-flash no válido
-
-| Campo | Valor |
-|---|---|
-| **Módulo** | API/AI |
-| **Prioridad** | 🟠 P2 |
-| **Estado** | ✅ Resuelto |
-| **Detectado** | 2026-06-02 |
-| **Resuelto** | 2026-06-03 |
-
-- **Síntoma**: El log indica "Timeout con openrouter/owl-alpha, saltando a fallback google/gemini-1.5-flash" y acto seguido falla con HTTP 400 "google/gemini-1.5-flash is not a valid model ID".
-- **Causa**: OpenRouter o el proveedor configurado no reconoce el ID de modelo `google/gemini-1.5-flash`.
-- **Resolución**: Se actualizó el seeder `AiHubSeeder.php` para apuntar el ID a `openrouter/owl-alpha`, y se generó una migración de base de datos para migrar los registros existentes en `ai_routes` para utilizar el nuevo ID como modelo de fallback.
-
-#### #024 — Contadores de storage a 0 B en /admin/system
-
-| Campo | Valor |
-|---|---|
-| **Módulo** | Admin/System |
-| **Prioridad** | 🟢 P3 |
-| **Estado** | ✅ Resuelto |
-| **Detectado** | 2026-06-02 |
-| **Resuelto** | 2026-06-03 |
-
-- **Síntoma**: Los indicadores de "STORAGE (BETA + PROD)" muestran siempre `0 B` para Beta Storage y Prod Storage en la vista `/admin/system`.
-- **Causa**: La separación de los contenedores de entorno Beta y Producción modificó los mappings de las carpetas de log/almacenamiento, y el controlador `SystemDashboardController` intentaba buscar carpetas `storage_beta` y `storage_prod` hardcodeadas que ya no existen en este entorno.
-- **Resolución**: Se actualizó el método `getDiskMetrics` para leer dinámicamente usando el path relativo `storage_path()` del framework para `Storage` y `Logs`, y se ajustó la vista UI para reflejar "STORAGE (ENTORNO ACTUAL)" en su lugar.
 
 ---
 

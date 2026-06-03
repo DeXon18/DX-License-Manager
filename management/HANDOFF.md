@@ -1,13 +1,13 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-06-03 08:52  
+> Última actualización: 2026-06-01 15:13  
 > Sesión en: indeterminado  
-> Rama activa: dev
+> Rama activa: main
 
 ---
 
 ## Estado General
 
-**Fase actual:** Corrección de Bugs / Infraestructura  
+**Fase actual:** Fase Post-33 — Optimización  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,36 +15,36 @@
 
 ## Qué se hizo en esta sesión
 
-1. **Resolución del Bug #028**: Se corrigió el problema de permisos en los logs de auditoría (conflicto root/www-data) usando vaciado por redirección (`>`) desde PHP. Se modificó `AuditLogController.php` y `config/logging.php`.
-2. **Endurecimiento de Reglas**: Se añadió la regla 0.6.1 en `AGENTS.md` para evitar que el agente borre directorios no rastreados sin confirmación del usuario.
-3. **Restauración de Archivos**: Se restauró la carpeta `X__Carpeta Temporal` desde un snapshot de ZFS (`zfs-auto-snap_frequent-2026-06-03-0630`) en Proxmox tras un borrado accidental.
-4. **Limpieza de Ramas**: Se limpiaron las ramas integradas en `dev` (`fix/bug-028-log-permissions` y `fix/bugs-024-027`) tanto en local como en remoto.
-5. **Documentación**: Se actualizó el versionado en `CHANGELOG.md` a v3.1.1 y se documentó la resolución del bug en `ERRORS.md`.
+- **Feature**: Implementada la importación asíncrona de archivos CSV con Jobs de Laravel para evitar timeouts de Cloudflare (Error 524).
+- **Feature UI**: Desarrollada una "Consola en Vivo" en el front-end de importación usando Javascript y Redis para telemetría en tiempo real de los logs del Job.
+- **Design**: La terminal de la consola fue rediseñada para coincidir con el sistema de diseño NOC Pro (`var(--bg-card)`, `var(--accent)`, fuentes monospace).
+- **Core**: Se volvió a activar el motor de normalización de IA para todos los imports (`$useAi = true`) al correr en segundo plano.
+- **Infraestructura**: Despliegue completado a la rama `main` y contenedor de Producción sincronizado con reinicio de la cola.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Revisar el `management/BACKLOG.md` para continuar con las tareas de mantenimiento y nuevas funcionalidades programadas para la siguiente fase.
+Revisar el `BACKLOG.md` con Oskar para seleccionar el próximo módulo a desarrollar (como la interfaz de control de bots, estadísticas en el panel, etc).
 
 ### Tareas siguientes
-1. Continuar con la fase de infraestructura o módulos pendientes en el backend.
-2. Resolver posibles warnings o alertas no críticas listadas en `ERRORS.md`.
+1. Continuar con iteraciones de diseño o nuevas analíticas en el Dashboard.
+2. Explorar despliegue de módulos adicionales según ROADMAP.
 
 ---
 
 ## Contexto técnico importante
 
-- El entorno debe usar estricta separación de carpetas (`-DEV`).
-- Los comandos Docker no se pueden correr desde el local (Windows). Si es necesario gestionar logs o contenedores de Docker, la ejecución se asume desde el servidor u host de Proxmox.
-- Nunca se deben borrar carpetas `untracked` automáticamente.
+- Los archivos `.env` no cambian. 
+- En Laravel 11, `storeAs` por defecto guarda en `storage/app/private`. Se corrigió el path dinámico usando `Storage::disk('local')->path()`.
+- Recordatorio: Al modificar Jobs o clases que usan la cola, SIEMPRE hacer `docker exec dx-php-beta php artisan queue:restart` o la cola no cargará los cambios en código.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-Ninguno.
+Ninguno
 
 ---
 
@@ -62,12 +62,10 @@ Ninguno.
 ## Comandos útiles para la próxima sesión
 
 ```bash
-# Arrancar beta si está down
-docker compose --project-directory /opt/web-projects/DX-License-Manager-DEV -f /opt/web-projects/DX-License-Manager-DEV/infra/docker-compose.beta.yml up -d
+# Reiniciar colas tras modificar un Job
+docker exec -it dx-php-beta php artisan queue:restart
+docker exec -it dx-php-prod php artisan queue:restart
 
-# Entrar al contenedor PHP
-docker exec -it dx-php-beta sh
-
-# Ver logs en tiempo real
-docker compose --project-directory /opt/web-projects/DX-License-Manager-DEV -f /opt/web-projects/DX-License-Manager-DEV/infra/docker-compose.beta.yml logs -f nginx-beta
+# Ver logs de la cola en beta
+docker compose --project-directory . -f infra/docker-compose.beta.yml logs -f queue-beta
 ```

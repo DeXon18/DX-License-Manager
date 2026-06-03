@@ -32,16 +32,7 @@ El desarrollador inicia. El agente espera.
 
 ### 💡 Ideas Pendientes (UI / UX / Soporte)
 
-- [ ] **Visor de Procesamiento Asíncrono (Queue)**: Ver progreso en tiempo real de terminal asíncrona (ej. `[dx-queue-beta] PROCESSING [0%] > Esperando en cola...`).
-- [ ] **Visor de Base de Datos**: Ver base de datos en tiempo real.
-
 ## ✅ Completado
-
-### Bugfixes Infraestructura: Errores 023-027 ✅
-- **Completada:** 2026-06-03
-- **Rama:** `fix/bugs-024-027`
-- **Resumen:** Se resolvieron los errores pendientes de infraestructura reportados en `ERRORS.md` (#023-#027) incluyendo corrección en el log parser, contadores de storage independientes de entorno, fallback modelo IA, y validación auth de N8N.
-- **PR:** Pendiente de merge a dev
 
 ### Patch: Corrección del Tour y Persistencia (v3.0.1) ✅
 - **Completada:** 2026-06-01
