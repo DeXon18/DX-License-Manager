@@ -31,6 +31,6 @@ class JwtCleanupCommand extends Command
         // Eliminar tokens cuyo tiempo de gracia (score) sea menor al tiempo actual
         $removed = Redis::zremrangebyscore('jwt_blacklist', '-inf', time());
 
-        $this->success("Limpieza completada. Tokens eliminados: {$removed}");
+        $this->info("Limpieza completada. Tokens eliminados: {$removed}");
     }
 }

@@ -145,21 +145,20 @@ class SystemDashboardController extends Controller
         $used = $total - $free;
         $percent = $total > 0 ? round(($used / $total) * 100, 1) : 0;
 
-        $pathBeta = base_path('storage_beta');
-        $pathProd = base_path('storage_prod');
+        $pathStorage = storage_path();
+        $pathLogs = storage_path('logs');
         
-        $sizeBeta = file_exists($pathBeta) ? (int) shell_exec("du -sb {$pathBeta} | cut -f1") : 0;
-        $sizeProd = file_exists($pathProd) ? (int) shell_exec("du -sb {$pathProd} | cut -f1") : 0;
-        $sizeTotal = $sizeBeta + $sizeProd;
+        $sizeStorage = file_exists($pathStorage) ? (int) shell_exec("du -sb {$pathStorage} | cut -f1") : 0;
+        $sizeLogs = file_exists($pathLogs) ? (int) shell_exec("du -sb {$pathLogs} | cut -f1") : 0;
 
         return [
             'total' => round($total / (1024 ** 3), 1) . ' GB',
             'used' => round($used / (1024 ** 3), 1) . ' GB',
             'percent' => $percent,
             'folders' => [
-                'beta' => $this->formatBytes($sizeBeta),
-                'prod' => $this->formatBytes($sizeProd),
-                'total' => $this->formatBytes($sizeTotal),
+                'storage' => $this->formatBytes($sizeStorage),
+                'logs' => $this->formatBytes($sizeLogs),
+                'total' => $this->formatBytes($sizeStorage),
             ]
         ];
     }

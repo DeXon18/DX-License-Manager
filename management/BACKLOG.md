@@ -34,6 +34,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Bugfixes Infraestructura: Errores 023-027 ✅
+- **Completada:** 2026-06-03
+- **Rama:** `fix/bugs-024-027`
+- **Resumen:** Se resolvieron los errores pendientes de infraestructura reportados en `ERRORS.md` (#023-#027) incluyendo corrección en el log parser, contadores de storage independientes de entorno, fallback modelo IA, y validación auth de N8N.
+- **PR:** Pendiente de merge a dev
+
 ### Patch: Corrección del Tour y Persistencia (v3.0.1) ✅
 - **Completada:** 2026-06-01
 - **Rama:** `fix/tour-persistence`

@@ -32,7 +32,7 @@ class AiHubSeeder extends Seeder
             ['openrouter_id' => 'deepseek/deepseek-v4-flash', 'name' => 'DeepSeek V4 Flash (Pago)', 'is_free' => false, 'price_prompt' => 0.14, 'price_completion' => 0.28],
             ['openrouter_id' => 'deepseek/deepseek-r1', 'name' => 'DeepSeek R1 (Pago)', 'is_free' => false, 'price_prompt' => 0.55, 'price_completion' => 2.19],
             ['openrouter_id' => 'meta-llama/llama-4-maverick', 'name' => 'Llama 4 Maverick (Pago)', 'is_free' => false, 'price_prompt' => 0.20, 'price_completion' => 0.20],
-            ['openrouter_id' => 'google/gemini-1.5-flash', 'name' => 'Gemini 1.5 Flash (Pago)', 'is_free' => false, 'price_prompt' => 0.075, 'price_completion' => 0.30],
+            ['openrouter_id' => 'openrouter/owl-alpha', 'name' => 'Gemini 1.5 Flash (Pago)', 'is_free' => false, 'price_prompt' => 0.075, 'price_completion' => 0.30],
         ];
 
         foreach ($models as $m) {
@@ -44,7 +44,7 @@ class AiHubSeeder extends Seeder
 
         // Fetch IDs for routing
         $nemotronSuperFree = AiModel::where('openrouter_id', 'nvidia/nemotron-3-super-120b-a12b:free')->first()->id;
-        $geminiFlashPaid = AiModel::where('openrouter_id', 'google/gemini-1.5-flash')->first()->id;
+        $geminiFlashPaid = AiModel::where('openrouter_id', 'openrouter/owl-alpha')->first()->id;
 
         $deepseekV4Free = AiModel::where('openrouter_id', 'deepseek/deepseek-v4-flash:free')->first()->id;
         $deepseekV4Paid = AiModel::where('openrouter_id', 'deepseek/deepseek-v4-flash')->first()->id;
