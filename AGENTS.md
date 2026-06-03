@@ -223,6 +223,22 @@ Consecuencia: [qué se perderá]
 ¿Confirmas? (sí/no)
 ```
 
+### 0.6.1 Gestión de Archivos No Rastreados o Desconocidos (Untracked)
+
+**NUNCA** se eliminará por defecto ningún archivo o carpeta que aparezca como "untracked" o que sea desconocido para el agente, por muy prescindible que parezca (ej. volcados, carpetas temporales, logs antiguos). 
+
+Si el agente detecta archivos que ensucian el entorno y considera que deben borrarse, debe aplicar el siguiente protocolo de consulta:
+
+```
+⚠️ Archivos desconocidos detectados
+He encontrado estos archivos/carpetas que no pertenecen al repositorio:
+- [archivo 1]
+- [carpeta 2]
+¿Qué hacemos con ellos? ¿Los ignoro, los añado al .gitignore o los elimino?
+```
+
+Solo tras el permiso expreso del desarrollador se procederá a borrarlos.
+
 ---
 
 ## 0.7 Scope — Qué Puede Tocar el Agente
@@ -387,3 +403,4 @@ Al iniciar sesión con `/start`: leer esta sección completa antes de empezar.
 - [2026-06-01] ERROR: Nginx no actualizaba la cabecera CSP tras hacer git pull y nginx -s reload. → REGLA: Al modificar archivos mapeados uno a uno por volumen en Docker (como beta.conf o prod.conf), git pull cambia su inode en el host y rompe el bind mount de Docker. NUNCA usar `nginx -s reload` si el archivo ha sido modificado externamente. SIEMPRE reiniciar el contenedor completo con `docker compose restart nginx-beta` (o prod).
 - [2026-06-01] ERROR: Pérdida de conexión con el Daemon de Docker (`/var/run/docker.sock`) desde el dashboard del sistema tras ejecutar `docker compose up -d` para recrear el contenedor de PHP. → REGLA: Al recrear contenedores en un entorno LXC que acceden al socket de Docker, los permisos del socket en el host pueden restablecerse. Si el usuario del contenedor (`www-data`) pierde acceso, restaurar ejecutando `chmod 666 /var/run/docker.sock` en el host.
 - [2026-06-02] ERROR: Riesgo crítico de corrupción en Producción al editar código en caliente en el entorno Beta, ya que ambos entornos compartían el mismo volumen de código (`./backend:/var/www/html`). → REGLA: **Arquitectura de Carpetas Separadas Obligatoria**. El entorno de Desarrollo/Beta DEBE ejecutarse en una carpeta física aislada (`/opt/web-projects/DX-License-Manager-DEV`) anclada a la rama `dev`, mientras que Producción (`/opt/web-projects/DX-License-Manager`) permanece aislada en `main`. NUNCA usar la misma carpeta física para contenedores de distintos entornos.
+- [2026-06-03] ERROR: Borrado accidental de archivos y carpetas del usuario (como `X__Carpeta Temporal/`) al usar comandos destructivos de limpieza sobre archivos "untracked" sin preguntar ni verificar su contenido. → REGLA: **NUNCA usar comandos destructivos (`Remove-Item`, `rm -rf`, borrar directorios) sobre archivos o carpetas "untracked" sin confirmación expresa del usuario.** El agente solo puede borrar archivos de "scratch" que él mismo haya creado con absoluta seguridad en ese mismo momento. Si hay basura o archivos desconocidos, se debe preguntar al desarrollador, nunca eliminarlos por iniciativa propia.
