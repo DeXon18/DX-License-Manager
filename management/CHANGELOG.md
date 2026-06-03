@@ -1,7 +1,7 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
-> **Version:** v3.1.1
+> **Version:** v3.2.0
 
 ## [2026-06-03 08:30] — Bugfix: Permisos de laravel.log (Bug #028) ✅
 

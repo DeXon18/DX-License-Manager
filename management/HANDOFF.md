@@ -19,7 +19,7 @@
 2. **Endurecimiento de Reglas**: Se añadió la regla 0.6.1 en `AGENTS.md` para evitar que el agente borre directorios no rastreados sin confirmación del usuario.
 3. **Restauración de Archivos**: Se restauró la carpeta `X__Carpeta Temporal` desde un snapshot de ZFS (`zfs-auto-snap_frequent-2026-06-03-0630`) en Proxmox tras un borrado accidental.
 4. **Limpieza de Ramas**: Se limpiaron las ramas integradas en `dev` (`fix/bug-028-log-permissions` y `fix/bugs-024-027`) tanto en local como en remoto.
-5. **Documentación**: Se actualizó el versionado en `CHANGELOG.md` a v3.1.1 y se documentó la resolución del bug en `ERRORS.md`.
+5. **Documentación**: Se actualizó el versionado en `CHANGELOG.md` a v3.2.0 y se documentó la resolución del bug en `ERRORS.md`.
 
 ---
 
