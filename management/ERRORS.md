@@ -8,7 +8,7 @@
 
 | 🔴 Críticos (P1) | 🟠 Importantes (P2) | 🟢 Menores (P3) | ✅ Resueltos |
 | :---: | :---: | :---: | :---: |
-| 0 | 1 | 2 | 24 |
+| 0 | 1 | 2 | 25 |
 
 ---
 
@@ -36,6 +36,7 @@
 
 | ID | Incidencia | Módulo | Prioridad | Detectado | Resuelto |
 |---:|---|---|:---:|:---:|:---:|
+| [#028] | Permiso denegado al borrar laravel.log desde Admin | Admin/Logs | 🟠 P2 | 2026-06-03 | 2026-06-03 |
 | [#024] | Contadores de storage siempre a 0 B en /admin/system | Admin/System | 🟢 P3 | 2026-06-02 | 2026-06-03 |
 | [#027] | Lector de logs no encuentra laravel.log (Regex) | Admin/Logs | 🟢 P3 | 2026-06-02 | 2026-06-03 |
 | [#026] | BadMethodCallException en JwtCleanupCommand::success | Auth/Cron | 🟢 P3 | 2026-06-02 | 2026-06-03 |
@@ -81,6 +82,24 @@
 
 
 ### Resueltos
+
+---
+
+#### #028 — Permiso denegado al limpiar laravel.log
+
+| Campo | Valor |
+|---|---|
+| **Módulo** | Admin/Logs |
+| **Prioridad** | 🟠 P2 |
+| **Estado** | ✅ Resuelto |
+| **Detectado** | 2026-06-03 |
+| **Resuelto** | 2026-06-03 |
+
+- **Síntoma**: Error 500 al intentar limpiar el log del sistema desde `/admin/audit/clear/system` con el mensaje `Failed to open stream: Permission denied`.
+- **Causa**: `laravel.log` fue creado por un proceso `root` (cron o artisan) con permisos `0644`. El usuario `www-data` no tenía permisos de escritura para vaciarlo mediante `file_put_contents()`.
+- **Resolución**:
+  - En `config/logging.php`, se añadió `'permission' => 0666` a los canales de log.
+  - En `AuditLogController::clearSystem()`, se sustituyó la escritura directa por `@unlink()` seguido de `@file_put_contents()` y `@chmod(0666)`, permitiendo a `www-data` eliminar el archivo (directorio con permisos 777) y recrearlo correctamente.
 
 ---
 

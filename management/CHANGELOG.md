@@ -13,6 +13,14 @@
 
 - **ClientNormalizationService**: Reactivada la IA (`$useAi = true`) por defecto en importaciones masivas, ya que al procesarse en background (Jobs) se evita el riesgo de timeouts 524 de Cloudflare.
 
+## [2026-06-03 08:30] — Bugfix: Permisos de laravel.log (Bug #028) ✅
+
+### Fixed
+
+- **Logging**: Resuelto el error `Permission denied` (`Bug #028`) al intentar vaciar el log de sistema desde el panel de administración.
+  - Modificado `config/logging.php` para asignar `'permission' => 0666` a los canales single y daily, forzando escritura global sin importar si el creador original fue el daemon `root` (ej. cron o artisan) o `www-data` (PHP-FPM).
+  - Modificado `AuditLogController::clearSystem()` eliminando el fichero problemático vía `@unlink()` antes de recrearlo con `@file_put_contents()`, asegurando que `www-data` pueda sobrescribirlo aprovechando los permisos (777) del directorio `storage/logs/`.
+
 ## [2026-06-02 14:10] — Infrastructure: Aislamiento Absoluto Prod vs Dev
 
 ### Added
