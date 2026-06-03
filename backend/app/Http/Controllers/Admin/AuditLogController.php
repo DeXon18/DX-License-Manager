@@ -140,7 +140,9 @@ class AuditLogController extends Controller
     {
         $path = storage_path('logs/laravel.log');
         if (file_exists($path)) {
-            file_put_contents($path, '');
+            @unlink($path);
+            @file_put_contents($path, '');
+            @chmod($path, 0666);
             $this->logAction('system_log_reset', 'Se ha vaciado el fichero de logs de sistema (laravel.log).');
             return back()->with('tab', 'system')->with('success', 'Fichero laravel.log reseteado.');
         }
