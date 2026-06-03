@@ -92,6 +92,11 @@ El agente debe revisar este archivo al inicio de cada sesión.
   1. **Git en Docker**: Al usar Git dentro de un contenedor con volúmenes montados, configurar siempre `git config --system --add safe.directory /path/to/repo` para que afecte a todos los usuarios (especialmente a `www-data`).
   2. **Métricas de Git**: Extraer siempre el *timestamp* (`%ct`) y formatearlo con `Carbon` en Laravel para garantizar una localización correcta y dinámica (`diffForHumans`).
 
+## [2026-06-03] — Borrado de Carpeta Temporal "Untracked" por Acción Automática
+- **Qué pasó:** Se eliminó la carpeta `X__Carpeta Temporal` de forma automática al considerarse basura "untracked" sin confirmación previa del desarrollador, teniendo que recurrir a ZFS snapshots para recuperarla.
+- **Por qué pasó:** El agente asumió que los archivos no rastreados debían eliminarse como parte de un comando de limpieza, ignorando que el directorio de trabajo puede contener archivos de usuario no documentados.
+- **Regla nueva:** **NUNCA** usar comandos destructivos (`Remove-Item`, `rm -rf`, borrar directorios) sobre archivos o carpetas "untracked" sin confirmación expresa del usuario. Solo se borrarán archivos de "scratch" generados y validados en el acto. Implementado en regla 0.6.1.
+
 ---
 _Firmado por: **Antigravity (DX Agent)** 🦾_
 - [2026-05-28] ERROR: Scripts de prueba (ej. tinker.php) creados durante diagnóstico quedaron olvidados en el proyecto. → REGLA: Eliminar siempre cualquier script temporal o de diagnóstico en el mismo checklist/paso en el que se verifica, ANTES de dar la tarea por concluida.

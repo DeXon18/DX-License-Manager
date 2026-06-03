@@ -1,13 +1,13 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-06-02 17:34  
-> Sesión en: SoporteAYS (Oskar)  
+> Última actualización: 2026-06-03 08:52  
+> Sesión en: indeterminado  
 > Rama activa: dev
 
 ---
 
 ## Estado General
 
-**Fase actual:** Fase 2 — Siemens Plm (Backend)  
+**Fase actual:** Corrección de Bugs / Infraestructura  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,36 +15,36 @@
 
 ## Qué se hizo en esta sesión
 
-- Completada la configuración del workspace multi-raíz (aislamiento Dev/Prod).
-- Configurados los servidores MCP en Antigravity (`ssh-local`, `memory`, `github`, `git-dev`, `git-prod`, `filesystem`, `n8n`).
-- Detectado problema de N8N con stdio; actualizado a `sse` con token y validada conexión 100%.
-- Añadidas incidencias #024 (Storage 0B), #025 (Fallback AI error 400), #026 (JwtCleanupCommand method), #027 (Log no encontrado en DEV) al backlog en `ERRORS.md`.
+1. **Resolución del Bug #028**: Se corrigió el problema de permisos en los logs de auditoría (conflicto root/www-data) usando vaciado por redirección (`>`) desde PHP. Se modificó `AuditLogController.php` y `config/logging.php`.
+2. **Endurecimiento de Reglas**: Se añadió la regla 0.6.1 en `AGENTS.md` para evitar que el agente borre directorios no rastreados sin confirmación del usuario.
+3. **Restauración de Archivos**: Se restauró la carpeta `X__Carpeta Temporal` desde un snapshot de ZFS (`zfs-auto-snap_frequent-2026-06-03-0630`) en Proxmox tras un borrado accidental.
+4. **Limpieza de Ramas**: Se limpiaron las ramas integradas en `dev` (`fix/bug-028-log-permissions` y `fix/bugs-024-027`) tanto en local como en remoto.
+5. **Documentación**: Se actualizó el versionado en `CHANGELOG.md` a v3.1.1 y se documentó la resolución del bug en `ERRORS.md`.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Iniciar la lógica de negocio de la Fase 2 (Siemens Plm): Ejecutar `php artisan make:model SiemensLicense -m` para crear el modelo y migración en el contenedor `dx-php-beta`.
+Revisar el `management/BACKLOG.md` para continuar con las tareas de mantenimiento y nuevas funcionalidades programadas para la siguiente fase.
 
 ### Tareas siguientes
-1. Solucionar los bugs menores (#024 a #027) documentados en `ERRORS.md`.
-2. Desarrollar `SiemensImportService` e integrar la lógica de normalización.
-3. Modificar UI de clientes (`clients/show.blade.php`) para soportar conciliación.
+1. Continuar con la fase de infraestructura o módulos pendientes en el backend.
+2. Resolver posibles warnings o alertas no críticas listadas en `ERRORS.md`.
 
 ---
 
 ## Contexto técnico importante
 
-- Los workspaces ahora operan desde unidades físicas mapeadas independientemente (`DX-License-Manager-DEV`).
-- N8N MCP usa modo `sse` porque funciona mejor con el endpoint HTTP directo expuesto por la propia API.
-- Filesystem MCP incluye rutas UNC de Windows para no ser bloqueado por resoluciones estrictas.
+- El entorno debe usar estricta separación de carpetas (`-DEV`).
+- Los comandos Docker no se pueden correr desde el local (Windows). Si es necesario gestionar logs o contenedores de Docker, la ejecución se asume desde el servidor u host de Proxmox.
+- Nunca se deben borrar carpetas `untracked` automáticamente.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-Ninguno. La infraestructura está lista.
+Ninguno.
 
 ---
 
