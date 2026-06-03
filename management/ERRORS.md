@@ -79,23 +79,24 @@
 
 ### Pendientes
 
+
+### Resueltos
+
+---
+
 #### #023 — Bot query unauthorized attempt from IP 172.18.0.1
 
 | Campo | Valor |
 |---|---|
 | **Módulo** | API/Bot |
 | **Prioridad** | 🟠 P2 |
-| **Estado** | ⏳ Pendiente |
+| **Estado** | ✅ Resuelto |
 | **Detectado** | 2026-06-02 |
-| **Resuelto** | - |
+| **Resuelto** | 2026-06-03 |
 
 - **Síntoma**: Múltiples avisos en logs: "Bot query unauthorized attempt from IP: 172.18.0.1".
-- **Causa**: Peticiones desde la red interna de Docker (probablemente n8n o cron) hacia `BotQueryController` con un token (`X-Bot-Token` o `Authorization`) que no coincide con los tokens en `.env` de Laravel (`ai.bot_token`, `ai.telegram_bot_token`, o `ai.n8n_webhook_secret`).
-- **Plan**: Revisar configuración de tokens en la herramienta cliente (n8n/Telegram) y validar contra `.env` del servidor.
-
----
-
-### Resueltos
+- **Causa**: Faltaba configurar `N8N_WEBHOOK_SECRET` o `BOT_API_TOKEN` en el archivo `.env.beta` del servidor, por lo que `BotQueryController` rechazaba las peticiones provenientes del contenedor de n8n.
+- **Resolución**: Se generó y añadió un token seguro `N8N_WEBHOOK_SECRET` al archivo `.env.beta` de infraestructura, y se limpió la caché de configuración. El webhook de n8n debe ser actualizado con este mismo secreto.
 
 ---
 
