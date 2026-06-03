@@ -12,6 +12,7 @@ use App\Http\Controllers\Tools\NXSuiteController;
 use App\Http\Controllers\Admin\SystemDashboardController;
 use App\Http\Controllers\Admin\SystemActionController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\DatabaseMonitorController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -111,6 +112,9 @@ Route::middleware(['auth.jwt'])->group(function () {
         // Monitor de Procesamiento Asíncrono
         Route::get('/queue-monitor', [\App\Http\Controllers\Admin\QueueMonitorController::class, 'index'])->name('queue-monitor.index');
         Route::get('/queue-monitor/logs', [\App\Http\Controllers\Admin\QueueMonitorController::class, 'logs'])->name('queue-monitor.logs');
+
+        // Visor de Base de Datos
+        Route::get('/system/database', [DatabaseMonitorController::class, 'index'])->name('system.database');
         
         Route::prefix('system/actions')->name('system.')->group(function () {
             Route::post('/clear-cache', [SystemActionController::class, 'clearCache'])->name('clear-cache');
