@@ -1,6 +1,6 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
-> **Version:** v3.0.1
+> **Version:** v3.1.1
 
 ## [2026-06-01 15:00] — Feature: Importación Masiva Asíncrona (Consola en Vivo)
 
