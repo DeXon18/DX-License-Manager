@@ -1,0 +1,145 @@
+/**
+ * @module    dx-v2-queue-monitor
+ * @desc      Estilos para el Monitor de Colas (Terminal y Stats)
+ */
+
+.dx-v2-queue-terminal-wrapper {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  height: 600px;
+}
+
+.dx-v2-queue-terminal-header {
+  background: #161b22;
+  padding: 10px 16px;
+  border-bottom: 1px solid #30363d;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dx-v2-queue-terminal-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dx-v2-queue-terminal-title i {
+  color: #8b949e;
+}
+
+.dx-v2-queue-terminal-title span {
+  color: #c9d1d9;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+}
+
+.dx-v2-queue-terminal-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dx-v2-queue-terminal-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #8b949e;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.dx-v2-queue-terminal-checkbox input {
+  accent-color: #238636;
+}
+
+.dx-v2-queue-terminal-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dx-v2-queue-terminal-indicator.active {
+  background: #238636;
+  box-shadow: 0 0 8px #238636;
+}
+
+.dx-v2-queue-terminal-indicator.inactive {
+  background: #cf222e;
+}
+
+.dx-v2-queue-terminal-btn {
+  background: transparent;
+  border: 1px solid #30363d;
+  color: #c9d1d9;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dx-v2-queue-terminal-body {
+  padding: 16px;
+  overflow-y: auto;
+  flex: 1;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #c9d1d9;
+  white-space: pre-wrap;
+}
+
+.dx-v2-queue-log-time { color: #8b949e; }
+.dx-v2-queue-log-info { color: #3fb950; font-weight: bold; }
+.dx-v2-queue-log-error { color: #f85149; font-weight: bold; }
+.dx-v2-queue-log-processing { color: #d2a8ff; font-weight: bold; }
+.dx-v2-queue-log-done { color: #3fb950; font-weight: bold; }
+
+/* Icon boxes for stats using existing NOC Pro variables if available */
+.dx-v2-queue-stat-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dx-v2-queue-stat-icon-wrapper.blue {
+  background: rgba(30, 144, 255, 0.1);
+  color: #1E90FF;
+}
+
+.dx-v2-queue-stat-icon-wrapper.green {
+  background: rgba(0, 150, 57, 0.1);
+  color: #009639;
+}
+
+.dx-v2-queue-stat-icon-wrapper.indigo {
+  background: rgba(119, 123, 180, 0.1);
+  color: #777BB4;
+}
+
+.dx-v2-queue-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dx-v2-queue-btn-reload {
+  margin: 0;
+  padding: 6px 14px;
+  font-size: 13px;
+}
+
+.dx-v2-queue-btn-reload span {
+  margin-left: 6px;
+}
