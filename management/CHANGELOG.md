@@ -3,6 +3,14 @@
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 > **Version:** v3.2.2
 
+## [2026-06-04 08:41] — Deployment: Producción v3.2.2 ✅
+
+### Added
+
+- **Producción**: Despliegue oficial de la versión `v3.2.2` en `portal.dxpro.es` incluyendo el rediseño NOC Pro de los monitores de base de datos y colas, así como la eliminación de tablas huérfanas.
+- **Seguridad**: Realizado volcado preventivo de la base de datos de producción y etiquetado del estado de la rama `main` como `backup-pre-v3.2.2` para asegurar la recuperación ante desastres.
+- **Sincronización**: Sincronizado el contenedor de PHP-FPM con `composer install --no-dev`, ejecución de migraciones, purga de cachés internas y reinicio de queues de Redis.
+
 ## [2026-06-04 08:06] — Feature: UI Database Monitor NOC Pro Style
 
 ### Changed
