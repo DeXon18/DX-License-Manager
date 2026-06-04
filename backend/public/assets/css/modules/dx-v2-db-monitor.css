@@ -6,7 +6,7 @@
 .dx-v2-db-monitor-container {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 0;
 }
 
 /* Metric Cards Refinement (Extending Base Sys Dashboard Cards if needed) */
@@ -24,23 +24,6 @@
 .dx-v2-db-metric-value.dx-color-error { color: var(--dx-v2-danger, #cf222e); }
 
 /* Table Styles */
-.dx-v2-db-table-container {
-    background-color: var(--dx-v2-surface);
-    border: 1px solid var(--dx-v2-border);
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: var(--dx-v2-shadow-sm);
-    margin-top: 24px;
-}
-
-.dx-v2-db-table-header {
-    padding: 20px 24px;
-    border-bottom: 1px solid var(--dx-v2-border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .dx-v2-db-table-title {
     font-family: 'Outfit', sans-serif;
     font-size: 16px;
@@ -119,4 +102,51 @@
     padding: 40px;
     text-align: center;
     color: var(--dx-v2-muted);
+}
+
+/* Utility Classes para eliminar inlines */
+.dx-v2-db-btn-refresh {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dx-v2-db-version-text {
+    font-size: 1.5rem !important;
+}
+
+.dx-v2-db-meta-text {
+    opacity: 0.7;
+}
+
+.dx-v2-db-table-name-col {
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dx-v2-db-icon-muted {
+    opacity: 0.5;
+}
+
+.dx-v2-db-meta-text-lg {
+    opacity: 0.8;
+}
+
+.dx-v2-db-meta-text-md {
+    opacity: 0.6;
+    font-size: 12px;
+}
+
+.dx-v2-db-empty-icon {
+    margin: 0 auto 12px;
+    opacity: 0.4;
+    display: block;
+}
+
+.dx-v2-db-stat-card-centered {
+    align-items: center !important;
+    text-align: center !important;
+    justify-content: center !important;
 }
