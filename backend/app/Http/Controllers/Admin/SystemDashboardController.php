@@ -36,17 +36,60 @@ class SystemDashboardController extends Controller
             ],
             'git' => $this->getGitMetrics(),
             'services' => [
-                'Infrastructure' => [
-                    'database' => $this->checkDatabase(),
-                    'redis' => $this->checkRedis(),
+                'Infraestructura Base' => [
+                    'database' => array_merge($this->checkDatabase(), [
+                        'label' => 'Database Monitor (MariaDB)',
+                        'url' => route('admin.system.database')
+                    ]),
+                    'redis' => array_merge($this->checkRedis(), [
+                        'label' => 'Queue Monitor (Redis)',
+                        'url' => route('admin.queue-monitor.index')
+                    ]),
+                    'docker' => [
+                        'status' => 'online',
+                        'icon' => 'server',
+                        'label' => 'Docker Monitor',
+                        'message' => 'Salud de contenedores',
+                        'details' => 'Telemetría de CPU/RAM',
+                        'url' => route('admin.system.docker')
+                    ],
                 ],
-                'Processors' => [
+                'Seguridad y Trazabilidad' => [
+                    'audit' => [
+                        'status' => 'online',
+                        'icon' => 'shield',
+                        'label' => 'Auditoría y Logs',
+                        'message' => 'Trazabilidad total',
+                        'details' => 'Filtros por IP y acción',
+                        'url' => route('admin.audit.index')
+                    ],
+                    'backups' => [
+                        'status' => 'online',
+                        'icon' => 'archive',
+                        'label' => 'Gestión de Backups',
+                        'message' => 'Historial completo',
+                        'details' => 'Descargas y espacio',
+                        'url' => route('admin.backups.index')
+                    ],
+                ],
+                'Procesadores y Alertas' => [
                     'n8n' => $this->checkN8n(),
                     'telegram' => $this->checkTelegram(),
                 ],
-                'OpenRouter Hub' => [
+                'Inteligencia Artificial' => [
                     'openrouter_core' => $this->checkOpenRouterCore(),
-                    'ai_routing' => $this->checkAiRouting(),
+                    'ai_routing' => array_merge($this->checkAiRouting(), [
+                        'label' => 'AI Routing Hub',
+                        'url' => route('admin.system.ai-routing.index')
+                    ]),
+                    'ai_costs' => [
+                        'status' => 'online',
+                        'icon' => 'chart',
+                        'label' => 'Costes IA',
+                        'message' => 'Monitorización de tokens',
+                        'details' => 'Telemetría de motores',
+                        'url' => route('admin.system.ai-costs')
+                    ],
                 ],
             ],
             'security' => [
@@ -262,14 +305,14 @@ class SystemDashboardController extends Controller
         });
 
         if ($online === 'online') {
-            return ['status' => 'online', 'icon' => 'cloud', 'label' => 'OpenRouter Core', 'message' => 'API Activa', 'details' => 'Conexión Centralizada OK'];
+            return ['status' => 'online', 'icon' => 'openrouter', 'label' => 'OpenRouter Core', 'message' => 'API Activa', 'details' => 'Conexión Centralizada OK'];
         } elseif ($online === 'rate_limit') {
-            return ['status' => 'warning', 'icon' => 'cloud', 'label' => 'OpenRouter Core', 'message' => 'Rate Limit', 'details' => 'Exceso de Peticiones (429)'];
+            return ['status' => 'warning', 'icon' => 'openrouter', 'label' => 'OpenRouter Core', 'message' => 'Rate Limit', 'details' => 'Exceso de Peticiones (429)'];
         } elseif ($online === 'server_error') {
-            return ['status' => 'danger', 'icon' => 'cloud', 'label' => 'OpenRouter Core', 'message' => 'Saturado', 'details' => 'Error 502/503 en Hub'];
+            return ['status' => 'danger', 'icon' => 'openrouter', 'label' => 'OpenRouter Core', 'message' => 'Saturado', 'details' => 'Error 502/503 en Hub'];
         }
 
-        return ['status' => 'danger', 'icon' => 'cloud', 'label' => 'OpenRouter Core', 'message' => 'API Caída', 'details' => 'Fallo de Red'];
+        return ['status' => 'danger', 'icon' => 'openrouter', 'label' => 'OpenRouter Core', 'message' => 'API Inaccesible', 'details' => 'Verificar Status Page'];
     }
 
     private function checkAiRouting()

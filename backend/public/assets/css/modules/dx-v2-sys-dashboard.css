@@ -832,3 +832,33 @@
   color: #ffffff !important;
   box-shadow: 0 4px 12px rgba(216, 44, 32, 0.25) !important;
 }
+
+.dx-v2-sys-dash-service-icon-box.online.server {
+  background: linear-gradient(135deg, #0ea5e9, #0284c7) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(14, 165, 233, 0.25) !important;
+}
+
+.dx-v2-sys-dash-service-icon-box.online.shield {
+  background: linear-gradient(135deg, #64748b, #475569) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(100, 116, 139, 0.25) !important;
+}
+
+.dx-v2-sys-dash-service-icon-box.online.archive {
+  background: linear-gradient(135deg, #6366f1, #4f46e5) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25) !important;
+}
+
+.dx-v2-sys-dash-service-icon-box.online.chart {
+  background: linear-gradient(135deg, #ec4899, #be185d) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(236, 72, 153, 0.25) !important;
+}
+
+.dx-v2-sys-dash-service-icon-box.online.route {
+  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25) !important;
+}

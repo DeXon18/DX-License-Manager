@@ -150,22 +150,22 @@
                             <div class="dx-v2-sys-dash-services-cat-row {{ $loop->first ? 'first-cat' : '' }}">
                                 <div class="dx-v2-sys-dash-services-cat-wrapper">
                                     <div class="dx-v2-sys-dash-services-cat-icon">
-                                        @if($category === 'Infrastructure')
+                                        @if($category === 'Infraestructura Base')
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
-                                        @elseif($category === 'Processors')
+                                        @elseif($category === 'Procesadores y Alertas')
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                                        @elseif($category === 'Seguridad y Trazabilidad')
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                                         @else
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/></svg>
                                         @endif
                                     </div>
-                                    <span class="dx-v2-sys-dash-services-cat-title">
-                                        {{ $category === 'Infrastructure' ? 'Infraestructura' : ($category === 'Processors' ? 'Procesadores' : 'Inteligencia AI') }}
-                                    </span>
+                                    <span class="dx-v2-sys-dash-services-cat-title">{{ $category }}</span>
                                     <div class="dx-v2-sys-dash-services-cat-line"></div>
                                 </div>
                             </div>
                             @foreach($items as $id => $info)
-                                <div class="dx-v2-sys-dash-service-item">
+                                <div {!! isset($info['url']) ? 'onclick="window.location.href=\''.$info['url'].'\'"' : '' !!} class="dx-v2-sys-dash-service-item {{ isset($info['url']) ? 'clickable' : '' }}">
                                     <div class="dx-v2-sys-dash-service-icon-box {{ $info['status'] }} {{ $info['icon'] }}">
                                         @if($info['icon'] === 'database')
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4 3 9 3s9-1.34 9-3"/></svg>
@@ -176,43 +176,31 @@
                                         @elseif($info['icon'] === 'bell')
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
                                         @elseif($info['icon'] === 'gemini')
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M12 2C12 2 12.6 7.4 14.5 9.5C16.6 11.4 22 12 22 12C22 12 16.6 12.6 14.5 14.5C12.6 16.6 12 22 12 22C12 22 11.4 16.6 9.5 14.5C7.4 12.6 2 12 2 12C2 12 7.4 11.4 9.5 9.5C11.4 7.4 12 2 12 2Z" fill="currentColor"/>
-                                            </svg>
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C12 2 12.6 7.4 14.5 9.5C16.6 11.4 22 12 22 12C22 12 16.6 12.6 14.5 14.5C12.6 16.6 12 22 12 22C12 22 11.4 16.6 9.5 14.5C7.4 12.6 2 12 2 12C2 12 7.4 11.4 9.5 9.5C11.4 7.4 12 2 12 2Z" fill="currentColor"/></svg>
                                         @elseif($info['icon'] === 'deepseek')
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                                <path d="M12 4.5V19.5M4.5 12H19.5M8 8L16 16M16 8L8 16" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 4.5V19.5M4.5 12H19.5M8 8L16 16M16 8L8 16" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                         @elseif($info['icon'] === 'openrouter' || $info['icon'] === 'cloud')
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                                <circle cx="12" cy="12" r="9"/>
-                                                <path d="M3.6 9h16.8M3.6 15h16.8"/>
-                                                <path d="M11.5 3a17 17 0 0 0 0 18M12.5 3a17 17 0 0 1 0 18"/>
-                                            </svg>
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18M12.5 3a17 17 0 0 1 0 18"/></svg>
                                         @elseif($info['icon'] === 'route')
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                                <circle cx="6" cy="19" r="3"/>
-                                                <path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/>
-                                                <circle cx="18" cy="5" r="3"/>
-                                            </svg>
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg>
                                         @elseif($info['icon'] === 'n8n')
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                                <circle cx="12" cy="12" r="3"/>
-                                                <circle cx="19" cy="5" r="3"/>
-                                                <circle cx="5" cy="19" r="3"/>
-                                                <path d="M14.5 9.5 16.5 7.5M7.5 16.5 9.5 14.5"/>
-                                            </svg>
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="19" cy="5" r="3"/><circle cx="5" cy="19" r="3"/><path d="M14.5 9.5 16.5 7.5M7.5 16.5 9.5 14.5"/></svg>
                                         @elseif($info['icon'] === 'telegram')
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                                <line x1="22" y1="2" x2="11" y2="13"></line>
-                                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                                            </svg>
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                                        @elseif($info['icon'] === 'server')
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                                        @elseif($info['icon'] === 'shield')
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                        @elseif($info['icon'] === 'archive')
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><rect x="6" y="8" width="12" height="8"></rect></svg>
+                                        @elseif($info['icon'] === 'chart')
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
                                         @endif
                                     </div>
                                     <div class="dx-v2-sys-dash-service-text-box">
                                         <div class="dx-v2-sys-dash-service-title-row">
                                             <span class="dx-v2-sys-dash-service-label">{{ $info['label'] }}</span>
-                                            <span class="dx-v2-sys-dash-service-status-dot {{ $info['status'] === 'online' ? 'online' : 'danger' }}"></span>
+                                            <span class="dx-v2-sys-dash-service-status-dot {{ ($info['status'] === 'online' || !isset($info['status'])) ? 'online' : 'danger' }}"></span>
                                         </div>
                                         <div class="dx-v2-sys-dash-service-msg">{{ $info['message'] }}</div>
                                         @if(isset($info['details']))
@@ -234,121 +222,6 @@
                                 </div>
                             @endforeach
                         @endforeach
-                        {{-- Módulos de Gestión Integrados --}}
-                        <div class="dx-v2-sys-dash-services-cat-row">
-                            <div class="dx-v2-sys-dash-services-cat-wrapper">
-                                <div class="dx-v2-sys-dash-services-cat-icon">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
-                                </div>
-                                <span class="dx-v2-sys-dash-services-cat-title">Módulos del Sistema</span>
-                                <div class="dx-v2-sys-dash-services-cat-line"></div>
-                            </div>
-                        </div>
-
-                        {{-- Docker Monitor --}}
-                        <div onclick="window.location.href='{{ route('admin.system.docker') }}'" class="dx-v2-sys-dash-service-item clickable">
-                            <div class="dx-v2-sys-dash-service-icon-box online">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-                            </div>
-                            <div class="dx-v2-sys-dash-service-text-box">
-                                <div class="dx-v2-sys-dash-service-title-row">
-                                    <span class="dx-v2-sys-dash-service-label">Docker Monitor</span>
-                                    <div class="dx-v2-sys-dash-service-status-dot online"></div>
-                                </div>
-                                <div class="dx-v2-sys-dash-service-msg">Salud de contenedores</div>
-                                <div class="dx-v2-sys-dash-service-details-mono">Telemetría de CPU/RAM</div>
-                            </div>
-                        </div>
-
-                        {{-- Queue Monitor --}}
-                        <div onclick="window.location.href='{{ route('admin.queue-monitor.index') }}'" class="dx-v2-sys-dash-service-item clickable">
-                            <div class="dx-v2-sys-dash-service-icon-box online">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 6h16M4 12h16M4 18h16"/><path d="M4 6l4 6-4 6"/></svg>
-                            </div>
-                            <div class="dx-v2-sys-dash-service-text-box">
-                                <div class="dx-v2-sys-dash-service-title-row">
-                                    <span class="dx-v2-sys-dash-service-label">Queue Monitor</span>
-                                    <div class="dx-v2-sys-dash-service-status-dot online"></div>
-                                </div>
-                                <div class="dx-v2-sys-dash-service-msg">Visor Asíncrono</div>
-                                <div class="dx-v2-sys-dash-service-details-mono">Logs de trabajadores</div>
-                            </div>
-                        </div>
-
-                        {{-- Database Monitor --}}
-                        <div onclick="window.location.href='{{ route('admin.system.database') }}'" class="dx-v2-sys-dash-service-item clickable">
-                            <div class="dx-v2-sys-dash-service-icon-box online">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
-                            </div>
-                            <div class="dx-v2-sys-dash-service-text-box">
-                                <div class="dx-v2-sys-dash-service-title-row">
-                                    <span class="dx-v2-sys-dash-service-label">Database Monitor</span>
-                                    <div class="dx-v2-sys-dash-service-status-dot online"></div>
-                                </div>
-                                <div class="dx-v2-sys-dash-service-msg">Esquema MariaDB</div>
-                                <div class="dx-v2-sys-dash-service-details-mono">Tablas, peso y conexiones</div>
-                            </div>
-                        </div>
-
-                        {{-- Gestión de Backups --}}
-                        <div onclick="window.location.href='{{ route('admin.backups.index') }}'" class="dx-v2-sys-dash-service-item clickable">
-                            <div class="dx-v2-sys-dash-service-icon-box online">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-                            </div>
-                            <div class="dx-v2-sys-dash-service-text-box">
-                                <div class="dx-v2-sys-dash-service-title-row">
-                                    <span class="dx-v2-sys-dash-service-label">Gestión de Backups</span>
-                                    <div class="dx-v2-sys-dash-service-status-dot online"></div>
-                                </div>
-                                <div class="dx-v2-sys-dash-service-msg">Historial completo</div>
-                                <div class="dx-v2-sys-dash-service-details-mono">Descargas y espacio</div>
-                            </div>
-                        </div>
-
-                        {{-- Auditoría y Logs --}}
-                        <div onclick="window.location.href='{{ route('admin.audit.index') }}'" class="dx-v2-sys-dash-service-item clickable">
-                            <div class="dx-v2-sys-dash-service-icon-box online">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-                            </div>
-                            <div class="dx-v2-sys-dash-service-text-box">
-                                <div class="dx-v2-sys-dash-service-title-row">
-                                    <span class="dx-v2-sys-dash-service-label">Auditoría y Logs</span>
-                                    <div class="dx-v2-sys-dash-service-status-dot online"></div>
-                                </div>
-                                <div class="dx-v2-sys-dash-service-msg">Trazabilidad total</div>
-                                <div class="dx-v2-sys-dash-service-details-mono">Filtros por IP y acción</div>
-                            </div>
-                        </div>
-
-                        {{-- Costes IA --}}
-                        <div onclick="window.location.href='{{ route('admin.system.ai-costs') }}'" class="dx-v2-sys-dash-service-item clickable">
-                            <div class="dx-v2-sys-dash-service-icon-box online">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
-                            </div>
-                            <div class="dx-v2-sys-dash-service-text-box">
-                                <div class="dx-v2-sys-dash-service-title-row">
-                                    <span class="dx-v2-sys-dash-service-label">Costes IA</span>
-                                    <div class="dx-v2-sys-dash-service-status-dot online"></div>
-                                </div>
-                                <div class="dx-v2-sys-dash-service-msg">Monitorización de tokens</div>
-                                <div class="dx-v2-sys-dash-service-details-mono">Telemetría de motores</div>
-                            </div>
-                        </div>
-
-                        {{-- AI Routing Hub --}}
-                        <div onclick="window.location.href='{{ route('admin.system.ai-routing.index') }}'" class="dx-v2-sys-dash-service-item clickable">
-                            <div class="dx-v2-sys-dash-service-icon-box online">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 0 0 0-7h-11a3.5 3.5 0 0 1 0-7H15"/><circle cx="18" cy="5" r="3"/></svg>
-                            </div>
-                            <div class="dx-v2-sys-dash-service-text-box">
-                                <div class="dx-v2-sys-dash-service-title-row">
-                                    <span class="dx-v2-sys-dash-service-label">AI Routing Hub</span>
-                                    <div class="dx-v2-sys-dash-service-status-dot online"></div>
-                                </div>
-                                <div class="dx-v2-sys-dash-service-msg">Gestor de OpenRouter</div>
-                                <div class="dx-v2-sys-dash-service-details-mono">Asignación y fallback</div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
