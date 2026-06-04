@@ -1,7 +1,16 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
-> **Version:** v3.2.0
+> **Version:** v3.2.1
+
+## [2026-06-04 07:45] — Feature: UI Queue Monitor NOC Pro Style
+
+### Changed
+
+- **UI / Queue Monitor**: Rediseño visual del monitor de colas (`admin/queue/index.blade.php`) aplicando el estándar premium NOC Pro.
+- **Tarjetas de Estadísticas**: Reemplazado layout estático por un grid de 4 columnas estilo dashboard, con bordes superior coloreados, iconos FontAwesome y valores destacados para "Estado Worker", "Trabajos Fallidos", "Daemon" y "Conexión".
+- **Terminal Header**: Refactorizada la cabecera de la terminal en vivo (mayúsculas, fuente monospace, botón de control de polling translúcido con colores según estado activo/inactivo).
+- **CSS**: Eliminados estilos inline estáticos, inyectando nuevas clases modulares (`.dx-v2-queue-terminal-title`, `.dx-v2-queue-terminal-btn-override`) en `modules/dx-v2-queue-monitor.css`.
 
 ## [2026-06-03 08:30] — Bugfix: Permisos de laravel.log (Bug #028) ✅
 
