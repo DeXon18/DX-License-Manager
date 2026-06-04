@@ -15,6 +15,7 @@
 
 ## Qué se hizo en esta sesión
 
+- Refactorización de la matriz de servicios del Dashboard (`admin/system/dashboard.blade.php`) aplicando diseño dinámico, SVG nuevos y gradientes de color NOC Pro.
 - Rediseño de `admin/database/index.blade.php` al estilo NOC Pro con Bento Grid y eliminación de márgenes redundantes.
 - Rediseño de `admin/queue/index.blade.php` con dashboard analítico superior y cabecera de terminal en vivo adaptativa.
 - Eliminación y borrado de la tabla de la base de datos `siemens_licenses` huérfana.

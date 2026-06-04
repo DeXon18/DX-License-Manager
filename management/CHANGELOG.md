@@ -3,6 +3,14 @@
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 > **Version:** v3.2.2
 
+## [2026-06-04 09:20] — Feature: Dashboard UI Refactor NOC Pro Style
+
+### Changed
+
+- **UI / Dashboard**: Rediseño visual del centro de control (`admin/system/dashboard.blade.php`) adaptando la estética NOC Pro y Bento Grid.
+- **Iconos y Gradientes**: Reemplazo de SVG genéricos por iconos Lucide dinámicos. Inyección de clases CSS con gradientes premium (`dx-v2-sys-dashboard.css`) para diferenciar visualmente módulos como Docker Monitor, Auditoría, Routing IA, Backups y Costes.
+- **Código**: Refactorizado el bucle Blade de la matriz de servicios (`$metrics['services']`) para unificar el renderizado y eliminar código estático duplicado, obteniendo datos y colores personalizados dinámicamente desde `SystemDashboardController.php`.
+
 ## [2026-06-04 08:41] — Deployment: Producción v3.2.2 ✅
 
 ### Added
