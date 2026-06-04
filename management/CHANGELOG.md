@@ -1,7 +1,17 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
-> **Version:** v3.2.1
+> **Version:** v3.2.2
+
+## [2026-06-04 08:06] — Feature: UI Database Monitor NOC Pro Style
+
+### Changed
+
+- **UI / Database Monitor**: Rediseño visual del monitor de base de datos (`admin/database/index.blade.php`) adaptando la estética NOC Pro.
+- **Métricas**: Implementadas tarjetas Bento Grid para "Tamaño Total", "Conexiones Activas", "Total Tablas" y "Versión MariaDB". Textos centrados dinámicamente y versión simplificada.
+- **Detalle de Tablas**: Refactorizada la tabla a un layout `.card` estilo NOC Pro, incluyendo el badge dinámico del "Uptime".
+- **CSS**: Purgado de estilos inline. Limpiadas viejas clases de tabla e inyectadas utilidades (`.dx-v2-db-stat-card-centered`) en `dx-v2-db-monitor.css`.
+- **Layout**: Eliminación de márgenes duplicados para respetar el `gap` estándar de 24px entre tarjetas y tabla.
 
 ## [2026-06-04 07:45] — Feature: UI Queue Monitor NOC Pro Style
 
