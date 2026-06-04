@@ -1,42 +1,28 @@
 /**
  * @module    dx-v2-queue-monitor
- * @desc      Estilos para el Monitor de Colas (Terminal y Stats)
+ * @desc      Estilos para el Monitor de Colas (Terminal y Stats NOC Pro style)
  */
 
-.dx-v2-queue-terminal-wrapper {
-  background: #0d1117;
-  border: 1px solid #30363d;
-  border-radius: 8px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  height: 600px;
-}
-
-.dx-v2-queue-terminal-header {
-  background: #161b22;
-  padding: 10px 16px;
-  border-bottom: 1px solid #30363d;
+.dx-v2-queue-terminal-header-override {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .dx-v2-queue-terminal-title {
+  text-transform: uppercase;
+  font-family: var(--font-mono, monospace);
+  letter-spacing: 0.05em;
+  font-size: 13px;
   display: flex;
   align-items: center;
   gap: 8px;
+  color: var(--dx-v2-secondary, #c9d1d9);
+  font-weight: 600;
 }
 
 .dx-v2-queue-terminal-title i {
-  color: #8b949e;
-}
-
-.dx-v2-queue-terminal-title span {
-  color: #c9d1d9;
-  font-size: 14px;
-  font-weight: 600;
-  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  color: var(--dx-v2-muted);
 }
 
 .dx-v2-queue-terminal-controls {
@@ -49,84 +35,76 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  color: #8b949e;
-  font-size: 12px;
+  color: var(--dx-v2-muted);
+  font-size: var(--font-size-body-sm, 0.79rem);
+  font-family: var(--font-inter, 'Inter', sans-serif);
   cursor: pointer;
 }
 
 .dx-v2-queue-terminal-checkbox input {
-  accent-color: #238636;
+  accent-color: var(--dx-v2-accent-base);
 }
 
 .dx-v2-queue-terminal-indicator {
   width: 8px;
   height: 8px;
-  border-radius: 50%;
+  border-radius: 9999px;
 }
 
 .dx-v2-queue-terminal-indicator.active {
-  background: #238636;
-  box-shadow: 0 0 8px #238636;
+  background: var(--dx-v2-success, #3fb950);
+  box-shadow: 0 0 8px var(--dx-v2-success, #3fb950);
 }
 
 .dx-v2-queue-terminal-indicator.inactive {
-  background: #cf222e;
+  background: var(--dx-v2-danger, #f85149);
 }
 
-.dx-v2-queue-terminal-btn {
-  background: transparent;
-  border: 1px solid #30363d;
-  color: #c9d1d9;
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-size: 12px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 6px;
+.dx-v2-queue-terminal-btn-override {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  background: transparent !important;
+  font-size: 12px !important;
+  padding: 4px 10px !important;
+}
+
+.dx-v2-queue-terminal-btn-override.is-polling {
+  color: var(--dx-v2-danger) !important;
+  border-color: rgba(248, 81, 73, 0.4) !important;
+}
+.dx-v2-queue-terminal-btn-override.is-polling:hover {
+  background: rgba(248, 81, 73, 0.1) !important;
+  border-color: var(--dx-v2-danger) !important;
+}
+
+.dx-v2-queue-terminal-btn-override.is-paused {
+  color: var(--dx-v2-success) !important;
+  border-color: rgba(63, 185, 80, 0.4) !important;
+}
+.dx-v2-queue-terminal-btn-override.is-paused:hover {
+  background: rgba(63, 185, 80, 0.1) !important;
+  border-color: var(--dx-v2-success) !important;
 }
 
 .dx-v2-queue-terminal-body {
-  padding: 16px;
+  background-color: #0d1117;
+  height: 600px;
   overflow-y: auto;
-  flex: 1;
-  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-size: 13px;
+  font-family: var(--font-mono, 'IBM Plex Mono', ui-monospace, SFMono-Regular, monospace);
+  font-size: var(--font-size-mono, 0.8125rem);
   line-height: 1.5;
-  color: #c9d1d9;
+  color: var(--dx-v2-secondary, #c9d1d9);
   white-space: pre-wrap;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
-.dx-v2-queue-log-time { color: #8b949e; }
-.dx-v2-queue-log-info { color: #3fb950; font-weight: bold; }
-.dx-v2-queue-log-error { color: #f85149; font-weight: bold; }
+.dx-v2-queue-log-time { color: var(--dx-v2-muted, #8b949e); }
+.dx-v2-queue-log-info { color: var(--dx-v2-success, #3fb950); font-weight: bold; }
+.dx-v2-queue-log-error { color: var(--dx-v2-danger, #f85149); font-weight: bold; }
 .dx-v2-queue-log-processing { color: #d2a8ff; font-weight: bold; }
-.dx-v2-queue-log-done { color: #3fb950; font-weight: bold; }
-
-/* Icon boxes for stats using existing NOC Pro variables if available */
-.dx-v2-queue-stat-icon-wrapper {
-  width: 48px;
-  height: 48px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.dx-v2-queue-stat-icon-wrapper.blue {
-  background: rgba(30, 144, 255, 0.1);
-  color: #1E90FF;
-}
-
-.dx-v2-queue-stat-icon-wrapper.green {
-  background: rgba(0, 150, 57, 0.1);
-  color: #009639;
-}
-
-.dx-v2-queue-stat-icon-wrapper.indigo {
-  background: rgba(119, 123, 180, 0.1);
-  color: #777BB4;
-}
+.dx-v2-queue-log-done { color: var(--dx-v2-success, #3fb950); font-weight: bold; }
 
 .dx-v2-queue-header-actions {
   display: flex;

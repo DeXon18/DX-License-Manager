@@ -31,58 +31,56 @@
 
 <div class="dashboard-container" x-data="queueMonitor()">
     <!-- Stats Row -->
-    <div class="dx-v2-sys-dash-stats-grid" style="margin-bottom: 24px; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
-        <div class="dx-v2-sys-dash-stat-card" style="flex-direction: row; align-items: center; justify-content: flex-start; text-align: left; padding: 20px;">
-            <div class="dx-v2-queue-stat-icon-wrapper blue" style="margin-right: 16px; font-size: 20px;">
-                <i class="fa-solid fa-layer-group"></i>
-            </div>
-            <div>
-                <div class="dx-v2-sys-dash-stat-card-title" style="margin-bottom: 4px;">Estado del Worker</div>
-                <div class="dx-v2-sys-dash-stat-card-value" style="font-size: 20px; display: flex; align-items: center; gap: 8px;">
-                    <span class="dx-v2-sys-docker-card-dot running"></span> ACTIVO
-                </div>
-            </div>
+    <div class="stats-row">
+        <div class="stat-card success">
+            <div class="stat-label">ESTADO WORKER</div>
+            <div class="stat-value success">ACTIVO</div>
+            <div class="stat-meta">ONLINE</div>
+            <i class="fa-solid fa-layer-group dx-v2-dashboard-stat-icon"></i>
         </div>
-        <div class="dx-v2-sys-dash-stat-card" style="flex-direction: row; align-items: center; justify-content: flex-start; text-align: left; padding: 20px;">
-            <div class="dx-v2-queue-stat-icon-wrapper green" style="margin-right: 16px; font-size: 20px;">
-                <i class="fa-solid fa-bolt"></i>
-            </div>
-            <div>
-                <div class="dx-v2-sys-dash-stat-card-title" style="margin-bottom: 4px;">Conexión</div>
-                <div class="dx-v2-sys-dash-stat-card-value" style="font-size: 20px;">Redis</div>
-            </div>
+
+        <div class="stat-card danger">
+            <div class="stat-label">TRABAJOS FALLIDOS</div>
+            <div class="stat-value danger">0</div>
+            <div class="stat-meta">Requieren atención</div>
+            <i class="fa-solid fa-triangle-exclamation dx-v2-dashboard-stat-icon"></i>
         </div>
-        <div class="dx-v2-sys-dash-stat-card" style="flex-direction: row; align-items: center; justify-content: flex-start; text-align: left; padding: 20px;">
-            <div class="dx-v2-queue-stat-icon-wrapper indigo" style="margin-right: 16px; font-size: 20px;">
-                <i class="fa-brands fa-php"></i>
-            </div>
-            <div>
-                <div class="dx-v2-sys-dash-stat-card-title" style="margin-bottom: 4px;">Daemon</div>
-                <div class="dx-v2-sys-dash-stat-card-value" style="font-size: 16px; font-family: var(--font-mono);">php artisan queue:work</div>
-            </div>
+
+        <div class="stat-card warn">
+            <div class="stat-label">DAEMON PROCESO</div>
+            <div class="stat-value warn" style="font-size: 24px;">queue:work</div>
+            <div class="stat-meta">php artisan</div>
+            <i class="fa-brands fa-php dx-v2-dashboard-stat-icon"></i>
+        </div>
+
+        <div class="stat-card accent">
+            <div class="stat-label">CONEXIÓN</div>
+            <div class="stat-value accent">Redis</div>
+            <div class="stat-meta">BROKER PRINCIPAL</div>
+            <i class="fa-solid fa-bolt dx-v2-dashboard-stat-icon"></i>
         </div>
     </div>
 
     <!-- Terminal -->
-    <div class="dx-v2-queue-terminal-wrapper">
-        <div class="dx-v2-queue-terminal-header">
-            <div class="dx-v2-queue-terminal-title">
-                <i class="fa-solid fa-terminal"></i>
-                <span>Live Output: dx-queue-{{ config('app.env') === 'production' ? 'prod' : 'beta' }}</span>
-            </div>
+    <div class="card">
+        <div class="card-header dx-v2-queue-terminal-header-override">
+            <span class="dx-v2-queue-terminal-title">
+                <i class="fa-solid fa-terminal"></i> 
+                LIVE OUTPUT: DX-QUEUE-{{ strtoupper(config('app.env') === 'production' ? 'PROD' : 'BETA') }}
+            </span>
             <div class="dx-v2-queue-terminal-controls">
                 <label class="dx-v2-queue-terminal-checkbox">
                     <input type="checkbox" x-model="autoScroll">
                     Auto-scroll
                 </label>
                 <div class="dx-v2-queue-terminal-indicator" :class="isPolling ? 'active' : 'inactive'"></div>
-                <button @click="togglePolling()" class="dx-v2-queue-terminal-btn">
+                <button @click="togglePolling()" class="btn-secondary sm dx-v2-queue-terminal-btn-override" :class="isPolling ? 'is-polling' : 'is-paused'">
                     <i class="fa-solid" :class="isPolling ? 'fa-pause' : 'fa-play'"></i>
                     <span x-text="isPolling ? 'Pausar' : 'Reanudar'"></span>
                 </button>
             </div>
         </div>
-        <div id="terminal-output" class="dx-v2-queue-terminal-body" x-ref="terminal" x-html="formatLogs(logs)">
+        <div id="terminal-output" class="dx-v2-queue-terminal-body card-body" x-ref="terminal" x-html="formatLogs(logs)">
         </div>
     </div>
 </div>
