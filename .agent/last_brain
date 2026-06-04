@@ -1,6 +1,6 @@
 Rama activa: dev. Fase Despliegue — NOC Pro System Monitors.
-Último trabajo: Despliegue de la versión v3.2.2 a Producción. Se rediseñaron los monitores de BD y Colas con estética NOC Pro. Se limpiaron tablas huérfanas (siemens_licenses). Se forzó sincronización de Prod y se etiquetó `backup-pre-v3.2.2`.
-Estado: Todo funcional, desplegado, y `portal.dxpro.es` verificadamente operativo.
+Último trabajo: Refactorización completa del System Dashboard a estilo NOC Pro con SVG dinámicos y gradientes premium. Merge a dev.
+Estado: Todo funcional y desplegado en dev.
 Próximo paso inmediato: Elegir siguiente feature del ROADMAP.
 Bloqueos: Ninguno.
 Stack beta: running. Stack prod: running.
