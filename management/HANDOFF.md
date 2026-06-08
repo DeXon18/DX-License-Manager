@@ -1,13 +1,13 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-06-04 08:46  
-> Sesión en: indeterminado  
+> Última actualización: 2026-06-08 12:56
+> Sesión en: finalizada
 > Rama activa: dev
 
 ---
 
 ## Estado General
 
-**Fase actual:** Post-Despliegue — NOC Pro System Monitors  
+**Fase actual:** Post-Despliegue — Feature "Superseded"
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,29 +15,28 @@
 
 ## Qué se hizo en esta sesión
 
-- Refactorización de la matriz de servicios del Dashboard (`admin/system/dashboard.blade.php`) aplicando diseño dinámico, SVG nuevos y gradientes de color NOC Pro.
-- Rediseño de `admin/database/index.blade.php` al estilo NOC Pro con Bento Grid y eliminación de márgenes redundantes.
-- Rediseño de `admin/queue/index.blade.php` con dashboard analítico superior y cabecera de terminal en vivo adaptativa.
-- Eliminación y borrado de la tabla de la base de datos `siemens_licenses` huérfana.
-- Creación del tag `v3.2.2` en Git.
-- Despliegue de `dev` a `main` resolviendo los conflictos intermedios de los archivos de gestión.
-- Backup de seguridad de Producción en `storage/app/backups/db`.
-- Sincronización completa de Producción (`composer install --no-dev`, `migrate`, cachés).
-- Test en vivo positivo de `portal.dxpro.es`.
+- Se completó el soporte para el estatus `superseded` (Reemplazada) en licencias.
+- Migración de base de datos añadiendo `superseded` al ENUM `status` en `license_inventory_products`.
+- Creación y ejecución del comando en background `dx:mark-superseded` para identificar retroactivamente productos obsoletos (los que tienen versiones más recientes del mismo contrato).
+- Corrección en UI (`clients/show.blade.php`): Se añadió insignia `Reemplazada` y se arregló falso positivo de "MAC Pendiente" en productos floating que dependen de daemons node-locked (ej: `ugslmd`).
+- Backup en Producción, despliegue de cambios (commit, sync dev->main) y ejecución de migraciones en vivo en la BD de Producción. Limpieza de cachés.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Revisar el `management/ROADMAP.md` y elegir la próxima Feature u Optimización pendiente (ya que se acaba de lanzar exitosamente una versión a producción).
+1. Continuar con el roadmap/backlog ahora que la rama `dev` está limpia y actualizada.
+2. Comprobar si `dx:mark-superseded` necesita agregarse al kernel scheduler o si su uso será puramente manual.
 
 ---
 
 ## Contexto técnico importante
 
-- Los comandos de despliegue a producción y de backup en producción se ejecutaron inyectando temporalmente un endpoint GET (`/run-deploy-temp` y `/run-backup-temp`) en `web.php` debido a la restricción para ejecutar Docker Exec localmente en el host Windows. Esta táctica ha funcionado a la perfección sin generar cortes.
-- Hubo un error HTTP 500 post `composer install --no-dev` por `laravel/pail` guardado en la caché bootstrap; se solucionó rápidamente eliminando `backend/bootstrap/cache/*.php`.
+- Los comandos de despliegue a producción y backup se realizaron correctamente.
+- Se verificaron logs de contenedores y todo funciona correctamente.
+- La BD de producción ya cuenta con los registros históricos actualizados a `superseded`.
+- Los daemons node-locked que entregan productos floating ahora ya no muestran alerta engañosa de "Pendiente MAC".
 
 ---
 
