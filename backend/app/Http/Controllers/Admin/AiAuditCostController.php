@@ -149,59 +149,60 @@ class AiAuditCostController extends Controller
             'stats' => $dailyUserStats
         ];
 
-        // 7. Uso horario (Día Actual) agrupado por hora y proveedor
-        $hourlyRecords = AiTokenLog::where('created_at', '>=', $today)
-            ->select(DB::raw('HOUR(created_at) as hour'), 'provider', DB::raw('SUM(total_tokens) as total'))
-            ->groupBy(DB::raw('HOUR(created_at)'), 'provider')
-            ->orderBy('hour')
+        // 7. Uso por proveedor (Últimos 7 días)
+        $startOfWeek = Carbon::today()->subDays(6);
+        $weeklyRecords = AiTokenLog::where('created_at', '>=', $startOfWeek)
+            ->select(DB::raw('DATE(created_at) as date'), 'provider', DB::raw('SUM(total_tokens) as total'))
+            ->groupBy(DB::raw('DATE(created_at)'), 'provider')
+            ->orderBy('date')
             ->get();
 
-        $hourlyStats = [];
-        $hourlyProvidersSet = [];
-        // Pre-fill hours 0 to 23
-        for ($i = 0; $i <= 23; $i++) {
-            $h = str_pad($i, 2, '0', STR_PAD_LEFT) . ':00';
-            $hourlyStats[$h] = [];
+        $weeklyStats = [];
+        $weeklyProvidersSet = [];
+        // Pre-fill dates for the last 7 days
+        $currentDate = $startOfWeek->copy();
+        while ($currentDate <= $today) {
+            $weeklyStats[$currentDate->format('Y-m-d')] = [];
+            $currentDate->addDay();
         }
 
-        foreach ($hourlyRecords as $record) {
-            $h = str_pad($record->hour, 2, '0', STR_PAD_LEFT) . ':00';
-            $hourlyStats[$h][$record->provider] = $record->total;
-            $hourlyProvidersSet[$record->provider] = true;
+        foreach ($weeklyRecords as $record) {
+            $weeklyStats[$record->date][$record->provider] = $record->total;
+            $weeklyProvidersSet[$record->provider] = true;
         }
 
-        $hourlyChartData = [
-            'hours' => array_keys($hourlyStats),
-            'providers' => array_keys($hourlyProvidersSet),
-            'stats' => $hourlyStats
+        $weeklyChartData = [
+            'dates' => array_keys($weeklyStats),
+            'providers' => array_keys($weeklyProvidersSet),
+            'stats' => $weeklyStats
         ];
 
-        // 7. Uso horario (Día Actual) agrupado por hora y usuario
-        $hourlyUserRecords = AiTokenLog::with('user:id,name')
-            ->where('created_at', '>=', $today)
-            ->select(DB::raw('HOUR(created_at) as hour'), 'user_id', DB::raw('SUM(total_tokens) as total'))
-            ->groupBy(DB::raw('HOUR(created_at)'), 'user_id')
-            ->orderBy('hour')
+        // 8. Uso por usuario (Últimos 7 días)
+        $weeklyUserRecords = AiTokenLog::with('user:id,name')
+            ->where('created_at', '>=', $startOfWeek)
+            ->select(DB::raw('DATE(created_at) as date'), 'user_id', DB::raw('SUM(total_tokens) as total'))
+            ->groupBy(DB::raw('DATE(created_at)'), 'user_id')
+            ->orderBy('date')
             ->get();
 
-        $hourlyUserStats = [];
-        $hourlyUsersSet = [];
-        for ($i = 0; $i <= 23; $i++) {
-            $h = str_pad($i, 2, '0', STR_PAD_LEFT) . ':00';
-            $hourlyUserStats[$h] = [];
+        $weeklyUserStats = [];
+        $weeklyUsersSet = [];
+        $currentDate = $startOfWeek->copy();
+        while ($currentDate <= $today) {
+            $weeklyUserStats[$currentDate->format('Y-m-d')] = [];
+            $currentDate->addDay();
         }
 
-        foreach ($hourlyUserRecords as $record) {
-            $h = str_pad($record->hour, 2, '0', STR_PAD_LEFT) . ':00';
+        foreach ($weeklyUserRecords as $record) {
             $userName = $record->user->name ?? 'Sistema';
-            $hourlyUserStats[$h][$userName] = $record->total;
-            $hourlyUsersSet[$userName] = true;
+            $weeklyUserStats[$record->date][$userName] = $record->total;
+            $weeklyUsersSet[$userName] = true;
         }
 
-        $hourlyUserChartData = [
-            'hours' => array_keys($hourlyUserStats),
-            'users' => array_keys($hourlyUsersSet),
-            'stats' => $hourlyUserStats
+        $weeklyUserChartData = [
+            'dates' => array_keys($weeklyUserStats),
+            'users' => array_keys($weeklyUsersSet),
+            'stats' => $weeklyUserStats
         ];
 
         // 8. Historial reciente con paginación
@@ -221,8 +222,8 @@ class AiAuditCostController extends Controller
             'userStats',
             'chartData',
             'userChartData',
-            'hourlyChartData',
-            'hourlyUserChartData',
+            'weeklyChartData',
+            'weeklyUserChartData',
             'logs',
             'modelsFromDb'
         ));
