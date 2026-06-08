@@ -258,7 +258,7 @@
                                             </td>
                                             <td class="dx-v2-clients-host-mono">
                                                 @if($isMissingMac && !$isSuperseded)
-                                                    <span class="dx-v2-clients-expiry-status warning" style="font-size: 10px; padding: 2px 6px; display: inline-flex; align-items: center; gap: 4px;">
+                                                    <span class="dx-v2-clients-expiry-status warning" style="font-size: 10px; padding: 2px 6px; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;">
                                                         <i class="fa-solid fa-triangle-exclamation"></i> Pendiente MAC
                                                     </span>
                                                 @else
