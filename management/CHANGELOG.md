@@ -1,7 +1,17 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
-> **Version:** v3.2.3
+> **Version:** v3.2.4
+
+## [2026-06-08 14:35] — Feature: Gestión de Licencias Duplicadas y Superseded ✅
+
+### Added
+- **Base de Datos**: Añadido el valor `superseded` al ENUM de la columna `status` en la tabla `license_inventory_products` mediante una nueva migración.
+- **Mantenimiento**: Nuevo comando Artisan `dx:mark-superseded` para identificar retroactivamente y marcar productos duplicados obsoletos.
+- **UI / Clientes**: Nueva insignia visual "Reemplazada" con atenuación (grayscale y opacidad) en la vista `clients/show.blade.php` para diferenciar visualmente los productos marcados como superseded.
+
+### Fixed
+- **UI / Alertas MAC**: Corregido un falso positivo donde los productos flotantes bajo un daemon node-locked recibían erróneamente la advertencia de "Pendiente MAC". La validación ahora busca estrictamente en la descripción técnica del producto y se asegura de mantenerse en una sola línea mediante `white-space: nowrap`.
 
 ## [2026-06-08 10:48] — Bugfix: Corrección de sobrescritura de productos por fecha de expiración ✅
 
