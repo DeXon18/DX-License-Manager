@@ -91,6 +91,9 @@ class MoldexSyncService
                 );
             }
 
+            // 4. Resolver duplicados y estados (superseded)
+            $this->resolveSupersededProducts($daemon->id);
+
             $summary['synced'] = true;
             Log::info("MoldexSync: Inventario actualizado para {$client->name} (Sold-To: {$soldTo})");
 
@@ -102,6 +105,37 @@ class MoldexSyncService
         return $summary;
     }
 
+    /**
+     * Identifica duplicados por producto+MAC y deja activo solo el que tiene la fecha mayor.
+     * El resto pasa a estado 'superseded'.
+     */
+    private function resolveSupersededProducts($daemonId)
+    {
+        $products = LicenseInventoryProduct::where('daemon_id', $daemonId)
+            ->get()
+            ->groupBy(function ($item) {
+                return $item->product_code . '|' . $item->node_locked_host_id;
+            });
+
+        foreach ($products as $group) {
+            if ($group->count() > 1) {
+                $sorted = $group->sortByDesc(function ($item) {
+                    return $item->expiration_date ? $item->expiration_date->timestamp : PHP_INT_MAX;
+                })->values();
+
+                $newest = $sorted->first();
+                if ($newest->status !== 'active') {
+                    $newest->update(['status' => 'active']);
+                }
+
+                for ($i = 1; $i < $sorted->count(); $i++) {
+                    if ($sorted[$i]->status !== 'superseded') {
+                        $sorted[$i]->update(['status' => 'superseded']);
+                    }
+                }
+            }
+        }
+    }
 
 
     /**

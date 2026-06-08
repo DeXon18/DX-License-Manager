@@ -66,12 +66,50 @@ class InventorySyncService
                 [
                     'description' => $prodData['description'] ?? null,
                     'quantity' => $prodData['quantity'] ?? 1,
-                    'status' => 'active', // Siempre reactivamos si aparece en una nueva subida
+                    'status' => 'active', // Lo marcamos activo inicialmente
                 ]
             );
         }
 
+        // 3. Resolver duplicados y estados (superseded)
+        $this->resolveSupersededProducts($daemon->id);
+
         Log::info("InventorySync: Sincronización completada para Sold-To {$soldTo} / {$daemonName}");
+    }
+
+    /**
+     * Identifica duplicados por producto+MAC y deja activo solo el que tiene la fecha mayor.
+     * El resto pasa a estado 'superseded'.
+     */
+    private function resolveSupersededProducts($daemonId)
+    {
+        $products = LicenseInventoryProduct::where('daemon_id', $daemonId)
+            ->get()
+            ->groupBy(function ($item) {
+                return $item->product_code . '|' . $item->node_locked_host_id;
+            });
+
+        foreach ($products as $group) {
+            if ($group->count() > 1) {
+                // Ordenar por fecha de expiración descendente (null = permanent = siempre gana)
+                $sorted = $group->sortByDesc(function ($item) {
+                    return $item->expiration_date ? $item->expiration_date->timestamp : PHP_INT_MAX;
+                })->values();
+
+                // El primero (índice 0) es el más reciente -> activo
+                $newest = $sorted->first();
+                if ($newest->status !== 'active') {
+                    $newest->update(['status' => 'active']);
+                }
+
+                // Los demás -> superseded
+                for ($i = 1; $i < $sorted->count(); $i++) {
+                    if ($sorted[$i]->status !== 'superseded') {
+                        $sorted[$i]->update(['status' => 'superseded']);
+                    }
+                }
+            }
+        }
     }
 
     /**
