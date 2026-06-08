@@ -243,10 +243,28 @@
                                 </thead>
                                 <tbody>
                                     @foreach($daemon->products as $product)
-                                        <tr class="dx-v2-clients-product-row {{ $product->status !== 'active' ? 'inactive' : '' }}">
+                                        @php
+                                            $isSuperseded = $product->status === 'superseded';
+                                            $isNodeLocked = $daemon->type === 'node-locked' || stripos($product->description, 'node locked') !== false || stripos($product->description, 'nodelocked') !== false;
+                                            $isMissingMac = empty($product->node_locked_host_id) && $isNodeLocked;
+                                        @endphp
+                                        <tr class="dx-v2-clients-product-row {{ $isSuperseded ? 'superseded' : ($product->status !== 'active' ? 'inactive' : '') }}" style="{{ $isSuperseded ? 'opacity: 0.6; filter: grayscale(1);' : '' }}">
                                             <td class="dx-v2-clients-product-code">{{ $product->product_code }}</td>
-                                            <td>{{ $product->description }}</td>
-                                            <td class="dx-v2-clients-host-mono">{{ $product->node_locked_host_id ?? '—' }}</td>
+                                            <td>
+                                                {{ $product->description }}
+                                                @if($isSuperseded)
+                                                    <span class="badge badge-muted" style="margin-left: 8px; font-size: 9px; padding: 2px 6px; background: rgba(255,255,255,0.1); border-radius: 4px; color: var(--muted); border: 1px solid var(--border);">Reemplazada</span>
+                                                @endif
+                                            </td>
+                                            <td class="dx-v2-clients-host-mono">
+                                                @if($isMissingMac && !$isSuperseded)
+                                                    <span class="dx-v2-clients-expiry-status warning" style="font-size: 10px; padding: 2px 6px; display: inline-flex; align-items: center; gap: 4px;">
+                                                        <i class="fa-solid fa-triangle-exclamation"></i> Pendiente MAC
+                                                    </span>
+                                                @else
+                                                    {{ $product->node_locked_host_id ?? '—' }}
+                                                @endif
+                                            </td>
                                             <td class="text-center">
                                                 <div class="dx-v2-clients-qty-badge">{{ $product->quantity }}</div>
                                             </td>
