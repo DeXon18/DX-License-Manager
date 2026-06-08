@@ -307,8 +307,13 @@
                         <div class="dx-v2-clients-history-toggle-left">
                             <i class="fa-solid fa-clock-rotate-left dx-v2-clients-history-toggle-icon" style="font-size: 16px;"></i>
                             <div style="text-align: left;">
-                                <span style="display: block; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #fff; line-height: 1.2;">Historial de Archivos de Licencia Originales</span>
-                                <span style="display: block; font-size: 10px; color: var(--muted); margin-top: 2px;">{{ $client->auditResults->count() }} archivos subidos en este cliente</span>
+                                <span style="display: block; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-primary); line-height: 1.2;">Historial de Archivos de Licencia Originales</span>
+                                @php
+                                    $totalAudits = $client->auditResults->count();
+                                @endphp
+                                <span style="display: block; font-size: 10px; color: var(--muted); margin-top: 2px;">
+                                    {{ $totalAudits > 10 ? "Mostrando los últimos 10 de $totalAudits" : $totalAudits }} archivos subidos en este cliente
+                                </span>
                             </div>
                         </div>
                         <i class="fa-solid fa-chevron-down dx-v2-clients-history-toggle-arrow" style="transition: transform 0.3s ease; font-size: 12px;" :style="historyOpen ? 'transform: rotate(180deg); color: var(--dx-v2-accent-base);' : ''"></i>
@@ -340,7 +345,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($client->auditResults as $result)
+                                    @foreach($client->auditResults->sortByDesc('created_at')->take(10) as $result)
                                         @php
                                             $daemonVal = $result->results['vendor_daemon'] ?? ($result->results['daemon'] ?? 'Desconocido');
                                             $isMoldex = str_contains(strtolower($daemonVal), 'moldex') || !isset($result->results['vendor_daemon']);
@@ -356,7 +361,7 @@
                                                 </div>
                                             </td>
                                             <td style="padding: 12px 24px;">
-                                                <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: #fff;">{{ $result->sold_to ?? 'N/A' }}</span>
+                                                <span style="font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--text-primary);">{{ $result->sold_to ?? 'N/A' }}</span>
                                             </td>
                                             <td style="padding: 12px 24px; font-size: 11px; color: var(--muted); white-space: nowrap;">
                                                 <i class="fa-solid fa-calendar-days" style="color: var(--muted); opacity: 0.4; margin-right: 6px;"></i>
@@ -795,21 +800,21 @@
             class="dx-v2-ui-modal-overlay high-z-index"
             x-cloak
         >
-            <div class="dx-v2-ui-modal-content wide" @click.outside="open = false" style="background: #0d0f19; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.65);">
+            <div class="dx-v2-ui-modal-content wide" @click.outside="open = false" style="background: var(--surface); border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.65);">
                 <div class="dx-v2-ui-modal-header no-border no-padding-bottom" style="padding: 24px 32px 12px 32px; display: flex !important; align-items: center !important; justify-content: space-between !important; width: 100% !important; box-sizing: border-box !important;">
                     <div style="display: flex !important; align-items: center !important; gap: 16px !important;">
                         <div class="dx-v2-clients-audit-icon-box" style="background: rgba(167, 139, 250, 0.1); border: 1px solid rgba(167, 139, 250, 0.2); width: 44px; height: 44px; border-radius: 8px; display: flex !important; align-items: center !important; justify-content: center !important; color: #a78bfa; flex-shrink: 0 !important;">
                             <i class="fa-solid fa-file-invoice" style="font-size: 18px;"></i>
                         </div>
                         <div style="text-align: left !important;">
-                            <h3 class="dx-v2-ui-modal-title text-white" style="margin: 0 0 4px 0 !important; line-height: 1.2 !important;" 
+                            <h3 class="dx-v2-ui-modal-title" style="margin: 0 0 4px 0 !important; line-height: 1.2 !important; color: var(--text-primary);" 
                                 x-text="(auditDetail?.results?.vendor_daemon || auditDetail?.results?.daemon || '').toLowerCase().includes('moldex') ? 'Detalle de Auditoría Moldex3D' : 'Detalle de Auditoría Siemens'">
                                 Detalle de Auditoría
                             </h3>
                             <span style="font-size: 9px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; display: block;">Inspección del Respaldo Físico Original</span>
                         </div>
                     </div>
-                    <button type="button" @click="open = false" class="dx-v2-ui-modal-close" style="font-size: 28px !important; color: var(--muted) !important; background: transparent !important; border: none !important; cursor: pointer !important; padding: 0 !important; margin: 0 !important; width: 32px !important; height: 32px !important; display: flex !important; align-items: center !important; justify-content: center !important; align-self: center !important; line-height: 1 !important; transition: color 0.2s;" @mouseenter="$el.style.color = '#fff'" @mouseleave="$el.style.color = 'var(--muted)'">&times;</button>
+                    <button type="button" @click="open = false" class="dx-v2-ui-modal-close" style="font-size: 28px !important; color: var(--muted) !important; background: transparent !important; border: none !important; cursor: pointer !important; padding: 0 !important; margin: 0 !important; width: 32px !important; height: 32px !important; display: flex !important; align-items: center !important; justify-content: center !important; align-self: center !important; line-height: 1 !important; transition: color 0.2s;" @mouseenter="$el.style.color = 'var(--text-primary)'" @mouseleave="$el.style.color = 'var(--muted)'">&times;</button>
                 </div>
 
                 <div class="dx-v2-ui-modal-body p-8" style="padding: 12px 32px 32px 32px;">
@@ -827,7 +832,7 @@
                                     </span>
                                     <p style="font-size: 11px; color: var(--muted); margin: 2px 0 0 0; line-height: 1.4;">
                                         Este registro es una copia exacta e inmutable del archivo subido el 
-                                        <span class="text-white font-bold" x-text="auditDetail ? new Date(auditDetail.created_at).toLocaleDateString('es-ES', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit'}) : ''"></span>. 
+                                        <span class="font-bold" style="color: var(--text-primary);" x-text="auditDetail ? new Date(auditDetail.created_at).toLocaleDateString('es-ES', {day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit'}) : ''"></span>. 
                                         Para modificar el inventario activo de producción actual, edita los bloques de licencias en la pestaña principal.
                                     </p>
                                 </div>
