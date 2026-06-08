@@ -1,7 +1,15 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
-> **Version:** v3.2.2
+> **Version:** v3.2.3
+
+## [2026-06-08 10:48] — Bugfix: Corrección de sobrescritura de productos por fecha de expiración ✅
+
+### Fixed
+
+- **Sincronización de Licencias**: Resuelto un error crítico donde productos con el mismo código pero distinta fecha de expiración se sobrescribían durante la importación.
+  - Refactorizada la lógica `updateOrCreate` en `InventorySyncService` y `MoldexSyncService` para incluir el campo `expiration_date` dentro de la clave única de búsqueda.
+  - El sistema de inventario ahora respeta y conserva las licencias coexistentes para el mismo producto cuando tienen diferentes vigencias temporales.
 
 ## [2026-06-04 09:20] — Feature: Dashboard UI Refactor NOC Pro Style
 

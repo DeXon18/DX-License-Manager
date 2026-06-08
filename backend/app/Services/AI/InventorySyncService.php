@@ -54,16 +54,18 @@ class InventorySyncService
             $productCode = $prodData['product_code'];
             $hostId = $prodData['node_locked_host_id'] ?? null;
 
+            $expDate = $this->parseDate($prodData['expiration_date'] ?? null);
+
             LicenseInventoryProduct::updateOrCreate(
                 [
                     'daemon_id' => $daemon->id,
                     'product_code' => $productCode,
                     'node_locked_host_id' => $hostId,
+                    'expiration_date' => $expDate,
                 ],
                 [
                     'description' => $prodData['description'] ?? null,
                     'quantity' => $prodData['quantity'] ?? 1,
-                    'expiration_date' => $this->parseDate($prodData['expiration_date'] ?? null),
                     'status' => 'active', // Siempre reactivamos si aparece en una nueva subida
                 ]
             );

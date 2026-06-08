@@ -75,15 +75,17 @@ class MoldexSyncService
 
             // 3. Sincronizar Productos
             foreach ($parsedData['products'] as $prodData) {
+                $expDate = $this->parseDate($prodData['expiration']);
+
                 LicenseInventoryProduct::updateOrCreate(
                     [
                         'daemon_id'    => $daemon->id,
                         'product_code' => $prodData['code'],
+                        'expiration_date' => $expDate,
                     ],
                     [
                         'description'     => $prodData['name'] ?? null,
                         'quantity'        => $prodData['quantity'] ?? 1,
-                        'expiration_date' => $this->parseDate($prodData['expiration']),
                         'status'          => 'active'
                     ]
                 );
