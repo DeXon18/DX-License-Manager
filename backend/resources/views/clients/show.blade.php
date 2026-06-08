@@ -245,7 +245,7 @@
                                     @foreach($daemon->products as $product)
                                         @php
                                             $isSuperseded = $product->status === 'superseded';
-                                            $isNodeLocked = $daemon->type === 'node-locked' || stripos($product->description, 'node locked') !== false || stripos($product->description, 'nodelocked') !== false;
+                                            $isNodeLocked = stripos($product->description, 'node locked') !== false || stripos($product->description, 'nodelocked') !== false;
                                             $isMissingMac = empty($product->node_locked_host_id) && $isNodeLocked;
                                         @endphp
                                         <tr class="dx-v2-clients-product-row {{ $isSuperseded ? 'superseded' : ($product->status !== 'active' ? 'inactive' : '') }}" style="{{ $isSuperseded ? 'opacity: 0.6; filter: grayscale(1);' : '' }}">
