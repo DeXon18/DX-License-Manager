@@ -79,23 +79,30 @@ class AiAuditCostController extends Controller
 
         // 4. Uso por Usuario (Mes Actual)
         $userStats = AiTokenLog::where('created_at', '>=', $currentMonth)
-            ->whereNotNull('user_id')
             ->select('user_id', DB::raw('SUM(total_tokens) as total_tokens'), DB::raw('COUNT(*) as requests_count'))
             ->groupBy('user_id')
             ->with('user:id,name,email')
             ->orderByDesc('total_tokens')
             ->get();
 
-        // 4. Uso diario (Mes Actual) para la gráfica, agrupado por fecha y proveedor
+        // 5. Uso diario (Mes Actual) para la gráfica, agrupado por fecha y proveedor
         $dailyRecords = AiTokenLog::where('created_at', '>=', $currentMonth)
             ->select(DB::raw('DATE(created_at) as date'), 'provider', DB::raw('SUM(total_tokens) as total'))
             ->groupBy(DB::raw('DATE(created_at)'), 'provider')
             ->orderBy('date')
             ->get();
 
-        // Estructurar para el frontend: ['2026-05-22' => ['gemini' => 120, 'deepseek' => 40]]
         $dailyStats = [];
         $providersSet = [];
+        
+        // Pre-fill days from start of month to today
+        $today = Carbon::today();
+        $currentDate = $currentMonth->copy();
+        while ($currentDate <= $today) {
+            $dailyStats[$currentDate->format('Y-m-d')] = [];
+            $currentDate->addDay();
+        }
+
         foreach ($dailyRecords as $record) {
             if (!isset($dailyStats[$record->date])) {
                 $dailyStats[$record->date] = [];
@@ -110,10 +117,9 @@ class AiAuditCostController extends Controller
             'stats' => $dailyStats
         ];
 
-        // 5. Uso diario (Mes Actual) agrupado por fecha y usuario
+        // 6. Uso diario (Mes Actual) agrupado por fecha y usuario
         $dailyUserRecords = AiTokenLog::with('user:id,name')
             ->where('created_at', '>=', $currentMonth)
-            ->whereNotNull('user_id')
             ->select(DB::raw('DATE(created_at) as date'), 'user_id', DB::raw('SUM(total_tokens) as total'))
             ->groupBy(DB::raw('DATE(created_at)'), 'user_id')
             ->orderBy('date')
@@ -121,6 +127,13 @@ class AiAuditCostController extends Controller
 
         $dailyUserStats = [];
         $usersSet = [];
+        
+        $currentDate = $currentMonth->copy();
+        while ($currentDate <= $today) {
+            $dailyUserStats[$currentDate->format('Y-m-d')] = [];
+            $currentDate->addDay();
+        }
+
         foreach ($dailyUserRecords as $record) {
             if (!isset($dailyUserStats[$record->date])) {
                 $dailyUserStats[$record->date] = [];
@@ -136,8 +149,7 @@ class AiAuditCostController extends Controller
             'stats' => $dailyUserStats
         ];
 
-        // 6. Uso horario (Día Actual) agrupado por hora y proveedor
-        $today = Carbon::today();
+        // 7. Uso horario (Día Actual) agrupado por hora y proveedor
         $hourlyRecords = AiTokenLog::where('created_at', '>=', $today)
             ->select(DB::raw('HOUR(created_at) as hour'), 'provider', DB::raw('SUM(total_tokens) as total'))
             ->groupBy(DB::raw('HOUR(created_at)'), 'provider')
@@ -167,7 +179,6 @@ class AiAuditCostController extends Controller
         // 7. Uso horario (Día Actual) agrupado por hora y usuario
         $hourlyUserRecords = AiTokenLog::with('user:id,name')
             ->where('created_at', '>=', $today)
-            ->whereNotNull('user_id')
             ->select(DB::raw('HOUR(created_at) as hour'), 'user_id', DB::raw('SUM(total_tokens) as total'))
             ->groupBy(DB::raw('HOUR(created_at)'), 'user_id')
             ->orderBy('hour')
