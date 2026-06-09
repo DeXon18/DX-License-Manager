@@ -1,7 +1,13 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
-> **Version:** v3.2.4
+> **Version:** v3.2.5
+
+## [2026-06-09 10:59] — Refactor: Limpieza de alertas semanales obsoletas ✅
+
+### Removed
+- **UI / Clientes**: Eliminado el badge y el checkbox "Recibir reportes semanales de caducidad" de la vista `clients/show.blade.php`, dado que el sistema ya no envía reportes individuales por cliente, sino un único reporte global interno.
+- **Mailable**: Eliminado el código muerto `WeeklyLicenseAlert.php` y su vista Blade `weekly-license-alert.blade.php`.
 
 ## [2026-06-08 14:35] — Feature: Gestión de Licencias Duplicadas y Superseded ✅
 

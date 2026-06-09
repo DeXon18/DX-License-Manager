@@ -1,13 +1,13 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-06-08 12:56
-> Sesión en: finalizada
+> Última actualización: 2026-06-09 11:00  
+> Sesión en: PC de Oskar (Windows)
 > Rama activa: dev
 
 ---
 
 ## Estado General
 
-**Fase actual:** Post-Despliegue — Feature "Superseded"
+**Fase actual:** Post-Despliegue — Feature "Superseded"  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,34 +15,33 @@
 
 ## Qué se hizo en esta sesión
 
-- Se completó el soporte para el estatus `superseded` (Reemplazada) en licencias.
-- Migración de base de datos añadiendo `superseded` al ENUM `status` en `license_inventory_products`.
-- Creación y ejecución del comando en background `dx:mark-superseded` para identificar retroactivamente productos obsoletos (los que tienen versiones más recientes del mismo contrato).
-- Corrección en UI (`clients/show.blade.php`): Se añadió insignia `Reemplazada` y se arregló falso positivo de "MAC Pendiente" en productos floating que dependen de daemons node-locked (ej: `ugslmd`).
-- Backup en Producción, despliegue de cambios (commit, sync dev->main) y ejecución de migraciones en vivo en la BD de Producción. Limpieza de cachés.
+- Se ha eliminado la opción obsoleta "Recibir reportes semanales de caducidad" en el perfil de cliente (`backend/resources/views/clients/show.blade.php`), ya que los envíos semanales se redirigen al equipo de soporte y no a clientes individuales.
+- Eliminado el código muerto relacionado (`WeeklyLicenseAlert.php` y su vista).
+- Actualizado CHANGELOG con el registro del refactor.
+- Todo ha sido commiteado y verificado en logs de `php-fpm-beta`.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-1. Continuar con el roadmap/backlog ahora que la rama `dev` está limpia y actualizada.
-2. Comprobar si `dx:mark-superseded` necesita agregarse al kernel scheduler o si su uso será puramente manual.
+Revisar ROADMAP o BACKLOG para seleccionar la siguiente gran tarea a desarrollar. Se mencionó en la sesión anterior comprobar la necesidad de agregar `dx:mark-superseded` al kernel scheduler.
+
+### Tareas siguientes
+1. Integración de `dx:mark-superseded` si se confirma necesario.
+2. Continuar roadmap.
 
 ---
 
 ## Contexto técnico importante
 
-- Los comandos de despliegue a producción y backup se realizaron correctamente.
-- Se verificaron logs de contenedores y todo funciona correctamente.
-- La BD de producción ya cuenta con los registros históricos actualizados a `superseded`.
-- Los daemons node-locked que entregan productos floating ahora ya no muestran alerta engañosa de "Pendiente MAC".
+El comando de `SendWeeklyLicenseAlertsJob` envía reportes globales a `soporte@ats-global.com`. Las opciones por contacto en UI eran código muerto, de ahí la limpieza para simplificar la interfaz.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-Ninguno
+Existen carpetas temporales (`X__Carpeta Temporal/`) en local, se ignoraron y no afectan el repositorio. Ningún bloqueo.
 
 ---
 
