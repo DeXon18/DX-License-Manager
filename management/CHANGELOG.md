@@ -1,7 +1,16 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
-> **Version:** v3.2.5
+> **Version:** v3.2.6
+
+## [2026-06-10 10:35] — Feature: COD Form Cloud Types & Naming Refactor ✅
+
+### Added
+- **UI / COD Form**: Añadidos nuevos campos `Cloud_AWS` y `Cloud_Azure` como opciones opcionales para capturar los datos de plataformas de la nube en formularios de COD.
+- **Tipos de COD**: Se introdujeron nuevos tipos de documento (`Change_Full`, `Change_Composite`, `Change_NodeLocked`, `New_Machine`, `Change_Cloud`) para cubrir de manera específica las solicitudes Cloud y casuísticas modernas de Siemens.
+
+### Changed
+- **Nomenclatura PDF**: Ajustado el formato de salida de los documentos PDF de COD (tanto originales como firmados). Ahora respeta el formato estricto de camelCase/PascalCase `COD_{docType}_{SoldTo}_{cliente}.pdf` (e.g. `COD_Change_Full_123456_cliente_ejemplo.pdf`) en lugar de convertir forzosamente a mayúsculas con `strtoupper`.
 
 ## [2026-06-09 10:59] — Refactor: Limpieza de alertas semanales obsoletas ✅
 

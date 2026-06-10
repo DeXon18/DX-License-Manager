@@ -15,10 +15,11 @@
 
 ## Qué se hizo en esta sesión
 
-- Se ha eliminado la opción obsoleta "Recibir reportes semanales de caducidad" en el perfil de cliente (`backend/resources/views/clients/show.blade.php`), ya que los envíos semanales se redirigen al equipo de soporte y no a clientes individuales.
-- Eliminado el código muerto relacionado (`WeeklyLicenseAlert.php` y su vista).
-- Actualizado CHANGELOG con el registro del refactor.
-- Todo ha sido commiteado y verificado en logs de `php-fpm-beta`.
+- Refactorización de la generación de PDF de COD (ahora respeta el formato camelCase/PascalCase: `COD_{docType}_{SoldTo}_{cliente}.pdf`).
+- Añadidos nuevos tipos de solicitud COD (`Change_Full`, `Change_Composite`, `Change_NodeLocked`, `New_Machine`, `Change_Cloud`).
+- Añadidos nuevos campos opcionales `Cloud_AWS` y `Cloud_Azure` en los formularios COD.
+- Actualizado el CHANGELOG a la versión `v3.2.6`.
+- Los cambios están listos en la rama activa.
 
 ---
 

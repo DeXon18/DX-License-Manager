@@ -73,8 +73,8 @@ class CodController extends Controller
         }
         
         $pdf = $this->codService->generatePdf($request->all(), $request->Language);
-        $safeClientName = strtoupper(Str::slug($clientName, '_'));
-        $fileName = 'COD_' . strtoupper($request->docType) . '_' . trim($request->Data_SoldTo) . '_' . $safeClientName . '.pdf';
+        $safeClientName = Str::slug($clientName, '_');
+        $fileName = 'COD_' . $request->docType . '_' . trim($request->Data_SoldTo) . '_' . $safeClientName . '.pdf';
         
         $directory = $this->codService->getStoragePath($clientName);
         $filePath = $directory . '/' . $fileName;
@@ -84,7 +84,7 @@ class CodController extends Controller
         $certificate = CodCertificate::create([
             'client_id' => $request->client_id,
             'sold_to' => $request->Data_SoldTo,
-            'type' => strtoupper($request->docType),
+            'type' => $request->docType,
             'os' => strtoupper($request->os),
             'language' => strtoupper($request->Language),
             'status' => 'PENDING',
@@ -128,7 +128,7 @@ class CodController extends Controller
         $client = $certificate->client;
 
         $directory = $this->codService->getStoragePath($client->name);
-        $safeClientName = strtoupper(Str::slug($client->name, '_'));
+        $safeClientName = Str::slug($client->name, '_');
         $fileName = 'COD_SIGNED_' . $certificate->type . '_' . trim($certificate->sold_to) . '_' . $safeClientName . '.pdf';
         
         // Uso de putFileAs para mayor seguridad y manejo de streams
