@@ -1,13 +1,13 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-06-04 08:46  
-> Sesión en: indeterminado  
+> Última actualización: 2026-06-09 11:00  
+> Sesión en: PC de Oskar (Windows)
 > Rama activa: dev
 
 ---
 
 ## Estado General
 
-**Fase actual:** Post-Despliegue — NOC Pro System Monitors  
+**Fase actual:** Post-Despliegue — Feature "Superseded"  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,35 +15,34 @@
 
 ## Qué se hizo en esta sesión
 
-- Refactorización de la matriz de servicios del Dashboard (`admin/system/dashboard.blade.php`) aplicando diseño dinámico, SVG nuevos y gradientes de color NOC Pro.
-- Rediseño de `admin/database/index.blade.php` al estilo NOC Pro con Bento Grid y eliminación de márgenes redundantes.
-- Rediseño de `admin/queue/index.blade.php` con dashboard analítico superior y cabecera de terminal en vivo adaptativa.
-- Eliminación y borrado de la tabla de la base de datos `siemens_licenses` huérfana.
-- Creación del tag `v3.2.2` en Git.
-- Despliegue de `dev` a `main` resolviendo los conflictos intermedios de los archivos de gestión.
-- Backup de seguridad de Producción en `storage/app/backups/db`.
-- Sincronización completa de Producción (`composer install --no-dev`, `migrate`, cachés).
-- Test en vivo positivo de `portal.dxpro.es`.
+- Refactorización de la generación de PDF de COD (ahora respeta el formato camelCase/PascalCase: `COD_{docType}_{SoldTo}_{cliente}.pdf`).
+- Añadidos nuevos tipos de solicitud COD (`Change_Full`, `Change_Composite`, `Change_NodeLocked`, `New_Machine`, `Change_Cloud`).
+- Añadidos nuevos campos opcionales `Cloud_AWS` y `Cloud_Azure` en los formularios COD.
+- Actualizado el CHANGELOG a la versión `v3.2.6`.
+- Los cambios están listos en la rama activa.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Revisar el `management/ROADMAP.md` y elegir la próxima Feature u Optimización pendiente (ya que se acaba de lanzar exitosamente una versión a producción).
+Revisar ROADMAP o BACKLOG para seleccionar la siguiente gran tarea a desarrollar. Se mencionó en la sesión anterior comprobar la necesidad de agregar `dx:mark-superseded` al kernel scheduler.
+
+### Tareas siguientes
+1. Integración de `dx:mark-superseded` si se confirma necesario.
+2. Continuar roadmap.
 
 ---
 
 ## Contexto técnico importante
 
-- Los comandos de despliegue a producción y de backup en producción se ejecutaron inyectando temporalmente un endpoint GET (`/run-deploy-temp` y `/run-backup-temp`) en `web.php` debido a la restricción para ejecutar Docker Exec localmente en el host Windows. Esta táctica ha funcionado a la perfección sin generar cortes.
-- Hubo un error HTTP 500 post `composer install --no-dev` por `laravel/pail` guardado en la caché bootstrap; se solucionó rápidamente eliminando `backend/bootstrap/cache/*.php`.
+El comando de `SendWeeklyLicenseAlertsJob` envía reportes globales a `soporte@ats-global.com`. Las opciones por contacto en UI eran código muerto, de ahí la limpieza para simplificar la interfaz.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-Ninguno
+Existen carpetas temporales (`X__Carpeta Temporal/`) en local, se ignoraron y no afectan el repositorio. Ningún bloqueo.
 
 ---
 

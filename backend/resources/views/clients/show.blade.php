@@ -510,7 +510,6 @@
                         <th>Nombre</th>
                         <th>Email</th>
                         <th>Cargo</th>
-                        <th class="text-center">Alertas</th>
                         <th class="text-right">Acciones</th>
                     </tr>
                 </thead>
@@ -526,15 +525,7 @@
                                 <span class="muted">—</span>
                             @endif
                         </td>
-                        <td class="text-center">
-                            @if($contact->receives_alerts)
-                                <span class="badge badge-success sm" title="Recibe reporte semanal">
-                                    <i class="fa-solid fa-bell mr-1"></i> Sí
-                                </span>
-                            @else
-                                <span class="badge badge-muted sm opacity-50">No</span>
-                            @endif
-                        </td>
+
                         <td class="text-right max-w-100">
                             <div class="dx-v2-clients-contacts-actions">
                                 <button class="dx-v2-clients-btn-action-tool" 
@@ -543,8 +534,7 @@
                                         name: '{{ $contact->name }}', 
                                         email: '{{ $contact->email }}', 
                                         position: '{{ $contact->position }}',
-                                        phone: '{{ $contact->phone }}',
-                                        receives_alerts: {{ $contact->receives_alerts ? 'true' : 'false' }}
+                                        phone: '{{ $contact->phone }}'
                                     })">
                                     <i class="fa-solid fa-pen"></i>
                                 </button>
@@ -684,7 +674,7 @@
                 open: false, 
                 editMode: false,
                 action: '{{ route('contacts.store', $client) }}',
-                form: { id: '', name: '', email: '', position: '', phone: '', receives_alerts: false }
+                form: { id: '', name: '', email: '', position: '', phone: '' }
             }"
             x-show="open"
             @open-contact-modal.window="
@@ -696,7 +686,7 @@
                 } else {
                     editMode = false;
                     action = '{{ route('contacts.store', $client) }}';
-                    form = { id: '', name: '', email: '', position: '', phone: '', receives_alerts: false };
+                    form = { id: '', name: '', email: '', position: '', phone: '' };
                 }
             "
             class="dx-v2-ui-modal-overlay"
@@ -732,12 +722,7 @@
                             <label class="dx-v2-form-label" for="contact_phone">Teléfono (Opcional)</label>
                             <input type="text" id="contact_phone" name="phone" x-model="form.phone" autocomplete="tel" class="dx-v2-form-input w-full" placeholder="+34 ...">
                         </div>
-                        <div class="dx-v2-form-group" style="margin-bottom: 0; padding-top: 8px;">
-                            <label class="dx-v2-form-checkbox-wrapper" for="contact_receives_alerts">
-                                <input type="checkbox" id="contact_receives_alerts" name="receives_alerts" value="1" x-model="form.receives_alerts" class="dx-v2-form-checkbox">
-                                <span class="dx-v2-form-label" style="text-transform: none; font-size: 13px; color: var(--dx-v2-primary) !important; cursor: pointer;">Recibir reportes semanales de caducidad</span>
-                            </label>
-                        </div>
+
                     </div>
                     
                     <div class="dx-v2-ui-modal-footer">

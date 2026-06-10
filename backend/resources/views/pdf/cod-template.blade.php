@@ -128,11 +128,13 @@
         </div>
     @endif
 
-    @if(($data['docType'] ?? '') === 'Change_Full' || ($data['docType'] ?? '') === 'Change_Composite')
-        <div class="data-row">
-            <span class="data-label">{{ $texts['composite_id'] }}:</span> 
-            <span class="case-sensitive">{{ $data['Composite_Old'] ?? '' }}</span>
-        </div>
+    @if(($data['docType'] ?? '') === 'Change_Full' || ($data['docType'] ?? '') === 'Change_Composite' || ($data['docType'] ?? '') === 'Change_Cloud')
+        @if(($data['docType'] ?? '') !== 'Change_Cloud')
+            <div class="data-row">
+                <span class="data-label">{{ $texts['composite_id'] }}:</span> 
+                <span class="case-sensitive">{{ $data['Composite_Old'] ?? '' }}</span>
+            </div>
+        @endif
         <div class="data-row">
             <span class="data-label">{{ $texts['hostname'] }}:</span> 
             <span class="case-sensitive">{{ $data['Hostname_Old'] ?? '' }}</span>
@@ -173,7 +175,7 @@
         </div>
     @endif
 
-    @if(($data['docType'] ?? '') === 'Change_Full' || ($data['docType'] ?? '') === 'Change_Composite')
+    @if(($data['docType'] ?? '') === 'Change_Full' || ($data['docType'] ?? '') === 'Change_Composite' || ($data['docType'] ?? '') === 'Change_Cloud')
         <div class="data-row">
             <span class="data-label">{{ $texts['composite_id'] }}:</span> 
             <span class="case-sensitive">{{ $data['Composite_New'] ?? '' }}</span>

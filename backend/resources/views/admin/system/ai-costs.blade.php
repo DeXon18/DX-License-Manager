@@ -190,23 +190,23 @@
                 </div>
             </div>
 
-            {{-- Gráficas de Consumo Diario (Hoy) --}}
+            {{-- Gráficas de Consumo (Últimos 7 días) --}}
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
                 <div class="card">
                     <div class="card-header">
-                        <span class="card-title">Tendencia por Proveedor (Día)</span>
+                        <span class="card-title">Tendencia por Proveedor (Semana)</span>
                     </div>
                     <div class="card-body">
-                        <canvas id="hourlyTokensChart" height="120"></canvas>
+                        <canvas id="weeklyTokensChart" height="120"></canvas>
                     </div>
                 </div>
                 
                 <div class="card">
                     <div class="card-header">
-                        <span class="card-title">Tendencia por Usuario (Día)</span>
+                        <span class="card-title">Tendencia por Usuario (Semana)</span>
                     </div>
                     <div class="card-body">
-                        <canvas id="hourlyUserTokensChart" height="120"></canvas>
+                        <canvas id="weeklyUserTokensChart" height="120"></canvas>
                     </div>
                 </div>
             </div>
@@ -436,10 +436,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    // 3. Gráfica Horaria por Proveedor
-    const hourlyChartData = @json($hourlyChartData);
-    if (hourlyChartData && hourlyChartData.hours.length > 0) {
-        const ctxHourly = document.getElementById('hourlyTokensChart').getContext('2d');
+    // 3. Gráfica por Proveedor (Últimos 7 días)
+    const weeklyChartData = @json($weeklyChartData);
+    if (weeklyChartData && weeklyChartData.dates.length > 0) {
+        const ctxWeekly = document.getElementById('weeklyTokensChart').getContext('2d');
         const colors = {
             'gemini': '#8e44ad',
             'deepseek': '#4a90e2',
@@ -448,9 +448,9 @@ document.addEventListener('DOMContentLoaded', function() {
             'default': '#e74c3c'
         };
 
-        const hourlyDatasets = hourlyChartData.providers.map(provider => {
+        const weeklyDatasets = weeklyChartData.providers.map(provider => {
             const color = colors[provider] || colors['default'];
-            const data = hourlyChartData.hours.map(hour => hourlyChartData.stats[hour][provider] || 0);
+            const data = weeklyChartData.dates.map(date => weeklyChartData.stats[date][provider] || 0);
 
             return {
                 label: provider.toUpperCase(),
@@ -467,9 +467,9 @@ document.addEventListener('DOMContentLoaded', function() {
             };
         });
 
-        new Chart(ctxHourly, {
+        new Chart(ctxWeekly, {
             type: 'line',
-            data: { labels: hourlyChartData.hours, datasets: hourlyDatasets },
+            data: { labels: weeklyChartData.dates, datasets: weeklyDatasets },
             options: {
                 responsive: true,
                 plugins: {
@@ -485,15 +485,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // 4. Gráfica Horaria por Usuario
-    const hourlyUserChartData = @json($hourlyUserChartData);
-    if (hourlyUserChartData && hourlyUserChartData.hours.length > 0) {
-        const ctxUserHourly = document.getElementById('hourlyUserTokensChart').getContext('2d');
+    // 4. Gráfica por Usuario (Últimos 7 días)
+    const weeklyUserChartData = @json($weeklyUserChartData);
+    if (weeklyUserChartData && weeklyUserChartData.dates.length > 0) {
+        const ctxUserWeekly = document.getElementById('weeklyUserTokensChart').getContext('2d');
         const userColors = ['#1abc9c', '#9b59b6', '#34495e', '#f1c40f', '#e67e22', '#e74c3c', '#95a5a6'];
 
-        const hourlyUserDatasets = hourlyUserChartData.users.map((user, index) => {
+        const weeklyUserDatasets = weeklyUserChartData.users.map((user, index) => {
             const color = userColors[index % userColors.length];
-            const data = hourlyUserChartData.hours.map(hour => hourlyUserChartData.stats[hour][user] || 0);
+            const data = weeklyUserChartData.dates.map(date => weeklyUserChartData.stats[date][user] || 0);
 
             return {
                 label: user,
@@ -510,9 +510,9 @@ document.addEventListener('DOMContentLoaded', function() {
             };
         });
 
-        new Chart(ctxUserHourly, {
+        new Chart(ctxUserWeekly, {
             type: 'line',
-            data: { labels: hourlyUserChartData.hours, datasets: hourlyUserDatasets },
+            data: { labels: weeklyUserChartData.dates, datasets: weeklyUserDatasets },
             options: {
                 responsive: true,
                 plugins: {
