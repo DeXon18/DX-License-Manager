@@ -1,13 +1,13 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-06-10 10:48  
-> Sesión en: PC de Oskar (Windows)
+> Última actualización: 2026-06-10 11:30  
+> Sesión en: indeterminado  
 > Rama activa: dev
 
 ---
 
 ## Estado General
 
-**Fase actual:** Post-Despliegue — Producción (v3.2.6) desplegada con éxito.  
+**Fase actual:** Fase 3 — Security Hardening & Bugfixes  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,35 +15,37 @@
 
 ## Qué se hizo en esta sesión
 
-- **Despliegue a Producción (v3.2.6)**: Se realizó un backup de seguridad completo de la BD de Producción.
-- Se crearon los tags de seguridad `v3.2.6-pre-deploy-dev` en dev y `v3.2.6-pre-deploy-main` en main.
-- Se resolvió conflicto de merge en `CHANGELOG.md` al hacer merge de dev a main.
-- Push exitoso a main que disparó el Action `deploy-prod.yml`.
-- Verificación exitosa de los contenedores de producción.
-- Retorno a la rama `dev` para continuar el desarrollo.
+- Se diagnosticó y solucionó la incidencia de bloqueo de contenido (PDF de COD) en Producción.
+- Se identificó que la política de seguridad (CSP) bloqueaba iframes generados por URLs `blob:`.
+- Se aplicó el Hotfix en `infra/nginx/beta.conf` y `infra/nginx/prod.conf` añadiendo `frame-src 'self' blob:;` a la directiva `Content-Security-Policy`.
+- Se sincronizó la rama `dev`, se integró en `main` y se desplegó en Producción.
+- Se resolvió conflicto de saltos de línea local restaurando la versión remota.
+- Se reinició de forma limpia el contenedor `dx-nginx-prod` (Up & Healthy) y el visor de PDF vuelve a cargar.
+- Se actualizó el `CHANGELOG.md` con el Hotfix (v3.2.7).
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Revisar ROADMAP o BACKLOG para seleccionar la siguiente gran tarea a desarrollar. Se mencionó en la sesión anterior comprobar la necesidad de agregar `dx:mark-superseded` al kernel scheduler.
+Revisar el `BACKLOG.md` y seleccionar la siguiente tarea prioritaria de desarrollo, asegurándose de trabajar exclusivamente bajo la rama `dev`.
 
 ### Tareas siguientes
-1. Integración de `dx:mark-superseded` si se confirma necesario.
-2. Continuar roadmap.
+1. Evaluar si quedan configuraciones pendientes de la Fase 3.
+2. Continuar con la integración o nuevas vistas pendientes en la aplicación.
 
 ---
 
 ## Contexto técnico importante
 
-El comando de `SendWeeklyLicenseAlertsJob` envía reportes globales a `soporte@ats-global.com`. Las opciones por contacto en UI eran código muerto, de ahí la limpieza para simplificar la interfaz.
+- Durante el hotfix en Producción hubo un conflicto de "line endings" (CRLF vs LF) que bloqueaba el `git pull`. Se resolvió usando `git checkout -- infra/nginx/prod.conf`.
+- La política de Content Security Policy ahora permite visualización segura de objetos en memoria (`blob:`) únicamente como `frame-src`, lo cual es vital para el renderizado local de PDF firmado.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-Existen carpetas temporales (`X__Carpeta Temporal/`) en local, se ignoraron y no afectan el repositorio. Ningún bloqueo.
+Ninguno. La incidencia de Producción está cerrada.
 
 ---
 
@@ -64,9 +66,9 @@ Existen carpetas temporales (`X__Carpeta Temporal/`) en local, se ignoraron y no
 # Arrancar beta si está down
 docker compose --project-directory /opt/web-projects/DX-License-Manager-DEV -f /opt/web-projects/DX-License-Manager-DEV/infra/docker-compose.beta.yml up -d
 
-# Entrar al contenedor PHP
+# Entrar al contenedor PHP Beta
 docker exec -it dx-php-beta sh
 
-# Ver logs en tiempo real
-docker compose --project-directory /opt/web-projects/DX-License-Manager-DEV -f /opt/web-projects/DX-License-Manager-DEV/infra/docker-compose.beta.yml logs -f nginx-beta
+# Ver logs en tiempo real Nginx Prod
+docker compose --project-directory /opt/web-projects/DX-License-Manager -f /opt/web-projects/DX-License-Manager/infra/docker-compose.prod.yml logs -f nginx-prod
 ```
