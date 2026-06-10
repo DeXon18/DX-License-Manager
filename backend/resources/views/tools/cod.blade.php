@@ -96,8 +96,8 @@
                         <!-- Indicador deslizante -->
                         <div class="dx-v2-cod-active-indicator" 
                              :style="{
-                                 width: '33.33%',
-                                 left: formData.docType === 'Change_Full' ? '0%' : (formData.docType === 'Change_Composite' ? '33.33%' : '66.66%')
+                                 width: '25%',
+                                 left: formData.docType === 'Change_Full' ? '0%' : (formData.docType === 'Change_Composite' ? '25%' : (formData.docType === 'Change_NodeLocked' ? '50%' : '75%'))
                              }">
                         </div>
 
@@ -112,6 +112,10 @@
                         <button type="button" :class="formData.docType === 'Change_NodeLocked' ? 'active' : ''" @click="formData.docType = 'Change_NodeLocked'">
                             <i class="fa-solid fa-network-wired"></i>
                             <span>Cambio NodeLocked</span>
+                        </button>
+                        <button type="button" :class="formData.docType === 'Change_Cloud' ? 'active' : ''" @click="formData.docType = 'Change_Cloud'">
+                            <i class="fa-solid fa-cloud"></i>
+                            <span>Cambio Cloud</span>
                         </button>
                     </div>
                 </div>
@@ -129,6 +133,10 @@
                     <div x-show="formData.docType === 'Change_NodeLocked'" x-transition:enter="fade-in">
                         <i class="fa-solid fa-circle-info"></i>
                         <span>Licencias bloqueadas a máquina (<strong>MAC</strong>) que no dependen de un servidor central.</span>
+                    </div>
+                    <div x-show="formData.docType === 'Change_Cloud'" x-transition:enter="fade-in">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span>Migración o cambio de servidor hacia entornos Cloud (AWS/Azure). El <strong>Hostname</strong> es obligatorio.</span>
                     </div>
                 </div>
             </div>
@@ -162,8 +170,8 @@
                                        @input="formData.Composite_Old = formData.Composite_Old.replace(/[^a-zA-Z0-9]/g, '')"
                                        class="dx-v2-form-input" 
                                        placeholder="Composite" 
-                                       :required="formData.docType === 'Change_Composite'" 
-                                       :disabled="formData.docType === 'Change_NodeLocked'" 
+                                       :required="['Change_Composite', 'Change_Full'].includes(formData.docType)" 
+                                       :disabled="['Change_NodeLocked', 'Change_Cloud'].includes(formData.docType)" 
                                        maxlength="12">
                             </div>
                         </div>
@@ -175,8 +183,8 @@
                                        @input="formData.MAC_Old = formData.MAC_Old.replace(/[^a-zA-Z0-9]/g, '')"
                                        class="dx-v2-form-input" 
                                        placeholder="HostID (MAC sin guiones)" 
-                                       :required="formData.docType === 'Change_NodeLocked'" 
-                                       :disabled="formData.docType === 'Change_Composite'" 
+                                       :required="['Change_NodeLocked', 'Change_Full'].includes(formData.docType)" 
+                                       :disabled="['Change_Composite', 'Change_Cloud'].includes(formData.docType)" 
                                        maxlength="12">
                             </div>
                         </div>
@@ -187,7 +195,7 @@
                                        x-model="formData.Cloud_AWS_Old" 
                                        class="dx-v2-form-input" 
                                        placeholder="Cloud AWS (Opcional)" 
-                                       :disabled="formData.docType === 'Change_NodeLocked'">
+                                       :disabled="formData.docType !== 'Change_Cloud'">
                             </div>
                         </div>
                         <div class="dx-v2-cod-field-row">
@@ -197,7 +205,7 @@
                                        x-model="formData.Cloud_Azure_Old" 
                                        class="dx-v2-form-input" 
                                        placeholder="Cloud Azure (Opcional)" 
-                                       :disabled="formData.docType === 'Change_NodeLocked'">
+                                       :disabled="formData.docType !== 'Change_Cloud'">
                             </div>
                         </div>
                         
@@ -256,7 +264,7 @@
                                        @input="formData.Composite_New = formData.Composite_New.replace(/[^a-zA-Z0-9]/g, '')"
                                        class="dx-v2-form-input" 
                                        placeholder="Composite" 
-                                       :required="formData.docType === 'Change_Composite'" 
+                                       :required="['Change_Composite', 'Change_Full', 'Change_Cloud'].includes(formData.docType)" 
                                        :disabled="formData.docType === 'Change_NodeLocked'" 
                                        maxlength="12">
                             </div>
@@ -269,8 +277,8 @@
                                        @input="formData.MAC_New = formData.MAC_New.replace(/[^a-zA-Z0-9]/g, '')"
                                        class="dx-v2-form-input" 
                                        placeholder="HostID (MAC sin guiones)" 
-                                       :required="formData.docType === 'Change_NodeLocked'" 
-                                       :disabled="formData.docType === 'Change_Composite'" 
+                                       :required="['Change_NodeLocked', 'Change_Full'].includes(formData.docType)" 
+                                       :disabled="['Change_Composite', 'Change_Cloud'].includes(formData.docType)" 
                                        maxlength="12">
                             </div>
                         </div>
@@ -281,7 +289,7 @@
                                        x-model="formData.Cloud_AWS_New" 
                                        class="dx-v2-form-input" 
                                        placeholder="Nuevo Cloud AWS (Opcional)" 
-                                       :disabled="formData.docType === 'Change_NodeLocked'">
+                                       :disabled="formData.docType !== 'Change_Cloud'">
                             </div>
                         </div>
                         <div class="dx-v2-cod-field-row">
@@ -291,7 +299,7 @@
                                        x-model="formData.Cloud_Azure_New" 
                                        class="dx-v2-form-input" 
                                        placeholder="Nuevo Cloud Azure (Opcional)" 
-                                       :disabled="formData.docType === 'Change_NodeLocked'">
+                                       :disabled="formData.docType !== 'Change_Cloud'">
                             </div>
                         </div>
 
@@ -313,8 +321,8 @@
                 </div>
             </div>
 
-            <!-- Botón Añadir MACs (Solo NodeLocked) -->
-            <div class="flex justify-center mt-2" x-show="formData.docType === 'Change_NodeLocked'">
+            <!-- Botón Añadir MACs (NodeLocked y Full) -->
+            <div class="flex justify-center mt-2" x-show="['Change_NodeLocked', 'Change_Full'].includes(formData.docType)">
                 <button type="button" class="dx-v2-cod-btn-add-mac" @click="addMacPair()">
                     <i class="fa-solid fa-plus"></i> Añadir par de MACs
                 </button>
