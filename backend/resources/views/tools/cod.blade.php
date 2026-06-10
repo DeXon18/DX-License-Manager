@@ -120,7 +120,7 @@
                 <div class="dx-v2-cod-type-description-box">
                     <div x-show="formData.docType === 'Change_Full'" x-transition:enter="fade-in">
                         <i class="fa-solid fa-circle-info"></i>
-                        <span>Cambio total del servidor: implica nuevo <strong>Hostname</strong> y nuevo identificador <strong>Composite</strong>.</span>
+                        <span>Cambio total del servidor: implica nuevo <strong>Hostname</strong>, nuevo <strong>Composite</strong> y nuevo <strong>HostID (MAC)</strong>.</span>
                     </div>
                     <div x-show="formData.docType === 'Change_Composite'" x-transition:enter="fade-in">
                         <i class="fa-solid fa-circle-info"></i>
@@ -162,7 +162,7 @@
                                        @input="formData.Composite_Old = formData.Composite_Old.replace(/[^a-zA-Z0-9]/g, '')"
                                        class="dx-v2-form-input" 
                                        placeholder="Composite" 
-                                       :required="formData.docType !== 'Change_NodeLocked'" 
+                                       :required="formData.docType === 'Change_Composite'" 
                                        :disabled="formData.docType === 'Change_NodeLocked'" 
                                        maxlength="12">
                             </div>
@@ -175,7 +175,7 @@
                                        @input="formData.MAC_Old = formData.MAC_Old.replace(/[^a-zA-Z0-9]/g, '')"
                                        class="dx-v2-form-input" 
                                        placeholder="HostID (MAC sin guiones)" 
-                                       :required="formData.docType !== 'Change_Composite'" 
+                                       :required="formData.docType === 'Change_NodeLocked'" 
                                        :disabled="formData.docType === 'Change_Composite'" 
                                        maxlength="12">
                             </div>
@@ -256,7 +256,7 @@
                                        @input="formData.Composite_New = formData.Composite_New.replace(/[^a-zA-Z0-9]/g, '')"
                                        class="dx-v2-form-input" 
                                        placeholder="Composite" 
-                                       :required="formData.docType !== 'Change_NodeLocked'" 
+                                       :required="formData.docType === 'Change_Composite'" 
                                        :disabled="formData.docType === 'Change_NodeLocked'" 
                                        maxlength="12">
                             </div>
@@ -269,7 +269,7 @@
                                        @input="formData.MAC_New = formData.MAC_New.replace(/[^a-zA-Z0-9]/g, '')"
                                        class="dx-v2-form-input" 
                                        placeholder="HostID (MAC sin guiones)" 
-                                       :required="formData.docType !== 'Change_Composite'" 
+                                       :required="formData.docType === 'Change_NodeLocked'" 
                                        :disabled="formData.docType === 'Change_Composite'" 
                                        maxlength="12">
                             </div>
