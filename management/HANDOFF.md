@@ -1,5 +1,5 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-06-09 11:00  
+> Última actualización: 2026-06-10 10:48  
 > Sesión en: PC de Oskar (Windows)
 > Rama activa: dev
 
@@ -7,7 +7,7 @@
 
 ## Estado General
 
-**Fase actual:** Post-Despliegue — Feature "Superseded"  
+**Fase actual:** Post-Despliegue — Producción (v3.2.6) desplegada con éxito.  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,11 +15,12 @@
 
 ## Qué se hizo en esta sesión
 
-- Refactorización de la generación de PDF de COD (ahora respeta el formato camelCase/PascalCase: `COD_{docType}_{SoldTo}_{cliente}.pdf`).
-- Añadidos nuevos tipos de solicitud COD (`Change_Full`, `Change_Composite`, `Change_NodeLocked`, `New_Machine`, `Change_Cloud`).
-- Añadidos nuevos campos opcionales `Cloud_AWS` y `Cloud_Azure` en los formularios COD.
-- Actualizado el CHANGELOG a la versión `v3.2.6`.
-- Los cambios están listos en la rama activa.
+- **Despliegue a Producción (v3.2.6)**: Se realizó un backup de seguridad completo de la BD de Producción.
+- Se crearon los tags de seguridad `v3.2.6-pre-deploy-dev` en dev y `v3.2.6-pre-deploy-main` en main.
+- Se resolvió conflicto de merge en `CHANGELOG.md` al hacer merge de dev a main.
+- Push exitoso a main que disparó el Action `deploy-prod.yml`.
+- Verificación exitosa de los contenedores de producción.
+- Retorno a la rama `dev` para continuar el desarrollo.
 
 ---
 
