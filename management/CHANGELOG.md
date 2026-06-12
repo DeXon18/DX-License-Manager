@@ -1,7 +1,14 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
-> **Version:** v3.2.7
+> **Version:** v3.2.8
+
+## [2026-06-12 09:30] 🐛 Fix: Detección de Hostname en Licencias Dongle USB ✅
+
+### Fixed
+- **Motor de Auditoría**: Actualizada la lógica de extracción de fechas y versiones en NXSuite, StarCCM+ y Heeds para dar soporte a etiquetas `FEATURE` en licencias Dongle.
+- **Identificación Permanente**: Corregido el *fallback* que etiquetaba incorrectamente las licencias Dongle sin fecha tradicional como "Permanentes".
+- **Nomenclatura**: Ajustado el nombrado de archivos procesados excluyendo `localhost` e inyectando la etiqueta `DongleUSB` para facilitar su identificación.
 
 ## [2026-06-10 11:25] 🚑 Hotfix: Nginx CSP PDF Visualization 🚨
 
