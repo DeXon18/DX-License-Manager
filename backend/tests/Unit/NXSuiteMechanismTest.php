@@ -21,8 +21,17 @@ class NXSuiteMechanismTest extends TestCase
         $content = "SERVER YourHostname ANY 28000\nVENDOR ugslmd";
         $transformed = $this->nxService->transform($content, 'legacy', true);
 
-        $this->assertStringContainsString('SERVER localhost ANY 28000', $transformed);
+        $this->assertStringContainsString('SERVER YourHostname ANY 28000', $transformed);
         $this->assertStringContainsString('VENDOR ugslmd', $transformed);
+    }
+
+    /** @test */
+    public function it_transforms_yourhostname_with_composite_to_localhost()
+    {
+        $content = "SERVER YourHostname COMPOSITE=2F1A76CA1F5C 28000\nVENDOR ugslmd";
+        $transformed = $this->nxService->transform($content, 'legacy');
+
+        $this->assertStringContainsString('SERVER localhost COMPOSITE=2F1A76CA1F5C 28000', $transformed);
     }
 
     /** @test */
@@ -48,33 +57,31 @@ class NXSuiteMechanismTest extends TestCase
     public function it_generates_correct_filename_for_dongle()
     {
         $metadata = [
-            'sold_to' => '123456',
-            'client'  => 'Test Client',
-            'version' => 'V1',
-            'date'    => '20260507',
-            'type'    => 'Dongle'
+            'sold_to'    => '123456',
+            'client'     => 'Test Client',
+            'version'    => 'V1',
+            'expiration' => '07-may-2026',
+            'type'       => 'Dongle'
         ];
         $filename = $this->nxService->generateFilename($metadata);
-        $expectedDate = date('dmY');
 
-        $this->assertEquals("123456_TEST-CLIENT_V1_DongleUSB_Valida_{$expectedDate}.lic", $filename);
+        $this->assertEquals("123456_TEST_CLIENT_V1_DongleUSB_Valida_07-May-2026.lic", $filename);
     }
 
     /** @test */
     public function it_generates_correct_filename_for_temporal()
     {
         $metadata = [
-            'sold_to'  => '123456',
-            'hostname' => 'localhost',
-            'client'   => 'Test Client',
-            'version'  => 'V1',
-            'date'     => '20260507',
-            'type'     => 'Temporal'
+            'sold_to'    => '123456',
+            'hostname'   => 'localhost',
+            'client'     => 'Test Client',
+            'version'    => 'V1',
+            'expiration' => '07-may-2026',
+            'type'       => 'Temporal'
         ];
         $filename = $this->nxService->generateFilename($metadata);
-        $expectedDate = date('dmY');
 
         // Sin hostname en temporales: SOLDTO_CLIENTE_VERSION_TEMP_Valida_FECHA.lic
-        $this->assertEquals("123456_TEST-CLIENT_V1_TEMP_Valida_{$expectedDate}.lic", $filename);
+        $this->assertEquals("123456_TEST_CLIENT_V1_TEMP_Valida_07-May-2026.lic", $filename);
     }
 }

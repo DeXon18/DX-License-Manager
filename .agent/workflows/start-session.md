@@ -48,7 +48,7 @@ Sin este paso, el agente trabaja con contexto desactualizado.
 
 ### 1. Leer el estado actual
 
-Leer en este orden exacto. **No saltarse ningún archivo.**
+Leer en este orden exacto. **No saltarse ningún archivo**, ni paso total 11 puntos.
 
 1. `.agent/last_brain` — párrafo técnico denso del estado mental del agente anterior. Leer primero — da el contexto inmediato en segundos.
 2. `.agent/memory/ACTIVE_CONTEXT.md` — estado activo, decisiones técnicas, handover.
