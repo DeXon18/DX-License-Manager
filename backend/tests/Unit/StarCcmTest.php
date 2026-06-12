@@ -46,33 +46,33 @@ class StarCcmTest extends TestCase
     public function test_it_generates_correct_contractual_filename()
     {
         $metadata = [
-            'sold_to' => '1905294',
-            'client'  => 'ESCUELA TECNICA',
-            'hostname' => 'DELL_LM',
-            'version' => '4.36',
-            'type'    => 'Contractual'
+            'sold_to'    => '1905294',
+            'client'     => 'ESCUELA TECNICA',
+            'hostname'   => 'DELL_LM',
+            'version'    => '4.36',
+            'expiration' => '07-may-2026',
+            'type'       => 'Contractual'
         ];
 
         $filename = $this->starService->generateFilename($metadata);
-        $date = date('dmY');
 
-        $this->assertEquals("1905294_DELL_LM_ESCUELA-TECNICA_STARCCM_V4.36_Valida_{$date}.lic", $filename);
+        $this->assertEquals("1905294_DELL_LM_ESCUELA_TECNICA_STARCCM_V4.36_Valida_07-May-2026.lic", $filename);
     }
 
     public function test_it_generates_correct_temporal_filename()
     {
         $metadata = [
-            'sold_to' => '1905294',
-            'client'  => 'ESCUELA TECNICA',
-            'hostname' => 'ANY',
-            'version' => '4.36',
-            'type'    => 'Temporal'
+            'sold_to'    => '1905294',
+            'client'     => 'ESCUELA TECNICA',
+            'hostname'   => 'ANY',
+            'version'    => '4.36',
+            'expiration' => '07-may-2026',
+            'type'       => 'Temporal'
         ];
 
         $filename = $this->starService->generateFilename($metadata);
-        $date = date('dmY');
 
-        $this->assertEquals("1905294_ESCUELA-TECNICA_STARCCM_V4.36_TEMP_Valida_{$date}.lic", $filename);
+        $this->assertEquals("1905294_ESCUELA_TECNICA_STARCCM_V4.36_TEMP_Valida_07-May-2026.lic", $filename);
     }
 
     public function test_it_transforms_to_salt_correctly()
