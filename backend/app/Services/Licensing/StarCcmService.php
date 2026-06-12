@@ -58,8 +58,8 @@ class StarCcmService
             }
         }
 
-        // 6. Extraer Fecha de Expiración del primer INCREMENT
-        if (preg_match('/INCREMENT\s+\S+\s+cdlmd\s+\S+\s+(\d+-\w+-\d+)/', $content, $m)) {
+        // 6. Extraer Fecha de Expiración del primer INCREMENT o FEATURE
+        if (preg_match('/(?:INCREMENT|FEATURE)\s+\S+\s+cdlmd\s+\S+\s+(\d+-\w+-\d+|permanent)/i', $content, $m)) {
             $metadata['expiration'] = $m[1];
         }
 

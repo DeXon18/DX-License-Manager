@@ -203,8 +203,8 @@ class NXSuiteService
             }
         }
 
-        // 5. Extraer Versión del primer INCREMENT
-        if (preg_match('/INCREMENT\s+\S+\s+(ugslmd|saltd|cdlmd|RCTECH)\s+([\d.]+)/i', $content, $matches)) {
+        // 5. Extraer Versión del primer INCREMENT o FEATURE
+        if (preg_match('/(?:INCREMENT|FEATURE)\s+\S+\s+(ugslmd|saltd|cdlmd|RCTECH)\s+([\d.]+)/i', $content, $matches)) {
             $version = $matches[2];
             // Si es formato 2025.12 -> 25.12
             if (preg_match('/^\d{2}(\d{2})\.(\d+)$/', $version, $vMatches)) {
@@ -214,8 +214,8 @@ class NXSuiteService
             }
         }
 
-        // 6. Extraer Fecha de Caducidad del primer INCREMENT
-        if (preg_match('/INCREMENT\s+\S+\s+(ugslmd|saltd|cdlmd|RCTECH)\s+[\d.]+\s+(\d+-\w+-\d+|permanent)/i', $content, $matches)) {
+        // 6. Extraer Fecha de Caducidad del primer INCREMENT o FEATURE
+        if (preg_match('/(?:INCREMENT|FEATURE)\s+\S+\s+(ugslmd|saltd|cdlmd|RCTECH)\s+[\d.]+\s+(\d+-\w+-\d+|permanent)/i', $content, $matches)) {
             $metadata['expiration'] = $matches[2];
         }
 

@@ -69,8 +69,8 @@ class HeedsService
             }
         }
 
-        // 4. Extraer Fecha de Expiración del primer INCREMENT RCTECH
-        if (preg_match('/INCREMENT\s+\S+\s+RCTECH\s+\S+\s+(\d+-\w+-\d+)/', $content, $m)) {
+        // 4. Extraer Fecha de Expiración del primer INCREMENT o FEATURE RCTECH
+        if (preg_match('/(?:INCREMENT|FEATURE)\s+\S+\s+RCTECH\s+\S+\s+(\d+-\w+-\d+|permanent)/i', $content, $m)) {
             $metadata['expiration'] = $m[1];
         }
 
