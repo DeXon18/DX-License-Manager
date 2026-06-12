@@ -54,8 +54,11 @@ class NXSuiteService
         $hostid   = $parts[2];
         $port     = $parts[3];
 
-        // En licencias temporales, siempre usar localhost para evitar fallos de resolución
-        if ($isTemporal7Days && ($hostname === 'YourHostname' || $hostname === 'ANY')) {
+        // REEMPLAZO INCONDICIONAL DE YourHostname
+        // Siempre usamos localhost para el placeholder de Siemens, sea temporal o contractual
+        if ($hostname === 'YourHostname') {
+            $hostname = 'localhost';
+        } elseif ($isTemporal7Days && $hostname === 'ANY') {
             $hostname = 'localhost';
         }
 
@@ -150,7 +153,8 @@ class NXSuiteService
             return 'Unificada';
         }
 
-        if (str_contains($content, 'YourHostname') || str_contains($content, 'ANY')) {
+        // Solo es temporal si el hostid es ANY. Evitamos que YourHostname marque la licencia como temporal.
+        if (preg_match('/SERVER\s+[^\s]+\s+ANY\b/', $content)) {
             return 'Temporal';
         }
 

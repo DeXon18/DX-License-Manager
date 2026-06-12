@@ -153,8 +153,10 @@ class StarCcmService
                 if (count($parts) >= 3) {
                     $hostname = $parts[1];
                     $hostid   = $parts[2];
-                    
-                    if ($isTemporal && ($hostname === 'YourHostname' || $hostname === 'ANY')) {
+                    // REEMPLAZO INCONDICIONAL DE YourHostname
+                    if ($hostname === 'YourHostname') {
+                        $hostname = 'localhost';
+                    } elseif ($isTemporal && $hostname === 'ANY') {
                         $hostname = 'localhost';
                     }
 
