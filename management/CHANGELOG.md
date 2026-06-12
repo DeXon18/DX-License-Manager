@@ -3,6 +3,14 @@
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 > **Version:** v3.2.8
 
+## [2026-06-12 11:06] — Deployment: Producción v3.2.8 ✅
+
+### Changed
+- **Despliegue**: Despliegue de los últimos cambios de la rama `main` a producción mediante el script centralizado `deploy.sh`.
+
+### Fixed
+- **Infraestructura**: Estandarización de llamadas a scripts de infraestructura y refuerzo de la seguridad en el entorno de desarrollo mediante la Regla 0.0 (Aislamiento total SSH).
+
 ## [2026-06-12 09:30] — 🐛 Fix: Detección de Hostname en Licencias Dongle USB ✅
 
 ### Fixed

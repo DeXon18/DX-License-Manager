@@ -45,6 +45,15 @@ Al iniciar sesión, declarar: **"Modo estricto activo. No ejecuto sin confirmaci
 
 ---
 
+## 0.0 Entorno de Ejecución — Regla Absoluta de SSH
+
+**TODO COMANDO DE TERMINAL DIRIGIDO A INFRAESTRUCTURA (Docker, despliegues, logs, scripts) DEBE EJECUTARSE OBLIGATORIAMENTE VÍA LA HERRAMIENTA MCP `ssh-local`.**
+- El agente **NO TIENE PERMITIDO** usar su terminal local (ej. `run_command` en Windows) para intentar ejecutar comandos `docker`, `systemctl`, o scripts de servidor como `./scripts/deploy-prod.sh`.
+- La máquina local (Windows) **NO TIENE DOCKER**. Toda la infraestructura vive en el servidor remoto en Proxmox, accesible únicamente a través de la conexión MCP SSH.
+- Cuando la tarea o el troubleshooting requiera "ver logs", "entrar al contenedor", o "ejecutar script", la ÚNICA VÍA aceptable es la herramienta de ejecución SSH.
+
+---
+
 ## 0. Idioma
 
 **Siempre responder en castellano.** Sin excepciones — aunque el código, los errores o las preguntas estén en inglés.
@@ -404,3 +413,4 @@ Al iniciar sesión con `/start`: leer esta sección completa antes de empezar.
 - [2026-06-01] ERROR: Pérdida de conexión con el Daemon de Docker (`/var/run/docker.sock`) desde el dashboard del sistema tras ejecutar `docker compose up -d` para recrear el contenedor de PHP. → REGLA: Al recrear contenedores en un entorno LXC que acceden al socket de Docker, los permisos del socket en el host pueden restablecerse. Si el usuario del contenedor (`www-data`) pierde acceso, restaurar ejecutando `chmod 666 /var/run/docker.sock` en el host.
 - [2026-06-02] ERROR: Riesgo crítico de corrupción en Producción al editar código en caliente en el entorno Beta, ya que ambos entornos compartían el mismo volumen de código (`./backend:/var/www/html`). → REGLA: **Arquitectura de Carpetas Separadas Obligatoria**. El entorno de Desarrollo/Beta DEBE ejecutarse en una carpeta física aislada (`/opt/web-projects/DX-License-Manager-DEV`) anclada a la rama `dev`, mientras que Producción (`/opt/web-projects/DX-License-Manager`) permanece aislada en `main`. NUNCA usar la misma carpeta física para contenedores de distintos entornos.
 - [2026-06-03] ERROR: Borrado accidental de archivos y carpetas del usuario (como `X__Carpeta Temporal/`) al usar comandos destructivos de limpieza sobre archivos "untracked" sin preguntar ni verificar su contenido. → REGLA: **NUNCA usar comandos destructivos (`Remove-Item`, `rm -rf`, borrar directorios) sobre archivos o carpetas "untracked" sin confirmación expresa del usuario.** El agente solo puede borrar archivos de "scratch" que él mismo haya creado con absoluta seguridad en ese mismo momento. Si hay basura o archivos desconocidos, se debe preguntar al desarrollador, nunca eliminarlos por iniciativa propia.
+- [2026-06-12] ERROR: El agente intentó nuevamente (o tuvo el instinto de) ejecutar comandos de infraestructura como si Docker estuviera en Windows, omitiendo las reglas previas. → REGLA: **REGLA 0.0 IMPLANTADA EN EL ADN.** Cualquier comando de servidor (Docker, Nginx, despliegues) debe enrutarse por la herramienta MCP de SSH obligatoriamente. Queda terminalmente prohibido usar herramientas locales para interactuar con la infraestructura.

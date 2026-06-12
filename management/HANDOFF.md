@@ -8,8 +8,8 @@
 ## Estado General
 
 **Fase actual:** Despliegue a Producción  
-**Stack beta:** ✅ Indeterminado (acceso desde host local)  
-**Stack prod:** ✅ Indeterminado (acceso desde host local)  
+**Stack beta:** ✅ Operativo y verificado (vía SSH)
+**Stack prod:** ✅ Operativo y verificado (vía SSH)
 
 ---
 
@@ -26,10 +26,10 @@
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Ejecutar el script `./scripts/deploy-prod.sh` para hacer efectivo el despliegue a producción de los últimos cambios de `main`.
+(Nada pendiente — Despliegue a producción completado y verificado)
 
 ### Tareas siguientes
-1. Verificar logs en producción después del despliegue.
+(A la espera de nuevas directrices del desarrollador)
 
 ---
 
@@ -60,5 +60,5 @@ Ninguno
 
 ```bash
 # Desplegar a producción
-./scripts/deploy-prod.sh
+./scripts/deploy.sh prod
 ```
