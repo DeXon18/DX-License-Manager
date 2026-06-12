@@ -54,9 +54,8 @@ class NXSuiteService
         $hostid   = $parts[2];
         $port     = $parts[3];
 
-        // REEMPLAZO INCONDICIONAL DE YourHostname
-        // Siempre usamos localhost para el placeholder de Siemens, sea temporal o contractual
-        if ($hostname === 'YourHostname') {
+        // Reemplazar YourHostname por localhost SÓLO si tiene un COMPOSITE
+        if ($hostname === 'YourHostname' && str_contains($hostid, 'COMPOSITE=')) {
             $hostname = 'localhost';
         } elseif ($isTemporal7Days && $hostname === 'ANY') {
             $hostname = 'localhost';
@@ -192,9 +191,16 @@ class NXSuiteService
             $metadata['client'] = trim($matches[1]);
         }
 
-        // 4. Extraer Hostname de la línea SERVER
-        if (preg_match('/SERVER\s+([^\s]+)/', $content, $matches)) {
-            $metadata['hostname'] = $matches[1];
+        // 4. Extraer Hostname y HostID de la línea SERVER
+        if (preg_match('/SERVER\s+([^\s]+)(?:\s+([^\s]+))?/', $content, $matches)) {
+            $hostname = $matches[1];
+            $hostid   = $matches[2] ?? '';
+            
+            if ($hostname === 'YourHostname' && str_contains($hostid, 'COMPOSITE=')) {
+                $metadata['hostname'] = 'localhost';
+            } else {
+                $metadata['hostname'] = $hostname;
+            }
         }
 
         // 5. Extraer Versión del primer INCREMENT

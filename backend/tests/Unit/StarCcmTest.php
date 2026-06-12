@@ -86,4 +86,17 @@ class StarCcmTest extends TestCase
         $this->assertStringContainsString('SERVER myhost myid 29000', $transformed);
         $this->assertStringContainsString('VENDOR saltd saltd PORT=29001', $transformed);
     }
+
+    public function test_it_replaces_yourhostname_only_with_composite()
+    {
+        // 1. Without COMPOSITE (e.g. ANY) -> should NOT replace
+        $contentTemp = "SERVER YourHostname ANY 1999\nVENDOR cdlmd";
+        $transformedTemp = $this->starService->transform($contentTemp, true);
+        $this->assertStringContainsString('SERVER YourHostname ANY 29000', $transformedTemp);
+
+        // 2. With COMPOSITE -> should replace
+        $contentContract = "SERVER YourHostname COMPOSITE=XYZ 1999\nVENDOR cdlmd";
+        $transformedContract = $this->starService->transform($contentContract);
+        $this->assertStringContainsString('SERVER localhost COMPOSITE=XYZ 29000', $transformedContract);
+    }
 }

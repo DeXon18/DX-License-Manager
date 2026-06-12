@@ -21,8 +21,17 @@ class NXSuiteMechanismTest extends TestCase
         $content = "SERVER YourHostname ANY 28000\nVENDOR ugslmd";
         $transformed = $this->nxService->transform($content, 'legacy', true);
 
-        $this->assertStringContainsString('SERVER localhost ANY 28000', $transformed);
+        $this->assertStringContainsString('SERVER YourHostname ANY 28000', $transformed);
         $this->assertStringContainsString('VENDOR ugslmd', $transformed);
+    }
+
+    /** @test */
+    public function it_transforms_yourhostname_with_composite_to_localhost()
+    {
+        $content = "SERVER YourHostname COMPOSITE=2F1A76CA1F5C 28000\nVENDOR ugslmd";
+        $transformed = $this->nxService->transform($content, 'legacy');
+
+        $this->assertStringContainsString('SERVER localhost COMPOSITE=2F1A76CA1F5C 28000', $transformed);
     }
 
     /** @test */

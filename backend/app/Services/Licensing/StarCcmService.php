@@ -48,6 +48,10 @@ class StarCcmService
             $metadata['hostname'] = $m[1];
             $metadata['hostid']   = $m[2];
             
+            if ($metadata['hostname'] === 'YourHostname' && str_contains($metadata['hostid'], 'COMPOSITE=')) {
+                $metadata['hostname'] = 'localhost';
+            }
+            
             // Si tiene MAC/Composite (no es ANY), es Contractual
             if ($metadata['hostid'] !== 'ANY' && !str_contains($metadata['hostid'], 'YourHostname')) {
                 $metadata['type'] = 'Contractual';
@@ -153,8 +157,9 @@ class StarCcmService
                 if (count($parts) >= 3) {
                     $hostname = $parts[1];
                     $hostid   = $parts[2];
-                    // REEMPLAZO INCONDICIONAL DE YourHostname
-                    if ($hostname === 'YourHostname') {
+                    
+                    // Reemplazo YourHostname por localhost SÓLO si tiene COMPOSITE
+                    if ($hostname === 'YourHostname' && str_contains($hostid, 'COMPOSITE=')) {
                         $hostname = 'localhost';
                     } elseif ($isTemporal && $hostname === 'ANY') {
                         $hostname = 'localhost';
