@@ -46,33 +46,33 @@ class StarCcmTest extends TestCase
     public function test_it_generates_correct_contractual_filename()
     {
         $metadata = [
-            'sold_to' => '1905294',
-            'client'  => 'ESCUELA TECNICA',
-            'hostname' => 'DELL_LM',
-            'version' => '4.36',
-            'type'    => 'Contractual'
+            'sold_to'    => '1905294',
+            'client'     => 'ESCUELA TECNICA',
+            'hostname'   => 'DELL_LM',
+            'version'    => '4.36',
+            'expiration' => '07-may-2026',
+            'type'       => 'Contractual'
         ];
 
         $filename = $this->starService->generateFilename($metadata);
-        $date = date('dmY');
 
-        $this->assertEquals("1905294_DELL_LM_ESCUELA-TECNICA_STARCCM_V4.36_Valida_{$date}.lic", $filename);
+        $this->assertEquals("1905294_DELL_LM_ESCUELA_TECNICA_STARCCM_V4.36_Valida_07-May-2026.lic", $filename);
     }
 
     public function test_it_generates_correct_temporal_filename()
     {
         $metadata = [
-            'sold_to' => '1905294',
-            'client'  => 'ESCUELA TECNICA',
-            'hostname' => 'ANY',
-            'version' => '4.36',
-            'type'    => 'Temporal'
+            'sold_to'    => '1905294',
+            'client'     => 'ESCUELA TECNICA',
+            'hostname'   => 'ANY',
+            'version'    => '4.36',
+            'expiration' => '07-may-2026',
+            'type'       => 'Temporal'
         ];
 
         $filename = $this->starService->generateFilename($metadata);
-        $date = date('dmY');
 
-        $this->assertEquals("1905294_ESCUELA-TECNICA_STARCCM_V4.36_TEMP_Valida_{$date}.lic", $filename);
+        $this->assertEquals("1905294_ESCUELA_TECNICA_STARCCM_V4.36_TEMP_Valida_07-May-2026.lic", $filename);
     }
 
     public function test_it_transforms_to_salt_correctly()
@@ -85,5 +85,18 @@ class StarCcmTest extends TestCase
 
         $this->assertStringContainsString('SERVER myhost myid 29000', $transformed);
         $this->assertStringContainsString('VENDOR saltd saltd PORT=29001', $transformed);
+    }
+
+    public function test_it_replaces_yourhostname_only_with_composite()
+    {
+        // 1. Without COMPOSITE (e.g. ANY) -> should NOT replace
+        $contentTemp = "SERVER YourHostname ANY 1999\nVENDOR cdlmd";
+        $transformedTemp = $this->starService->transform($contentTemp, true);
+        $this->assertStringContainsString('SERVER YourHostname ANY 29000', $transformedTemp);
+
+        // 2. With COMPOSITE -> should replace
+        $contentContract = "SERVER YourHostname COMPOSITE=XYZ 1999\nVENDOR cdlmd";
+        $transformedContract = $this->starService->transform($contentContract);
+        $this->assertStringContainsString('SERVER localhost COMPOSITE=XYZ 29000', $transformedContract);
     }
 }

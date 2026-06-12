@@ -54,8 +54,10 @@ class NXSuiteService
         $hostid   = $parts[2];
         $port     = $parts[3];
 
-        // En licencias temporales, siempre usar localhost para evitar fallos de resolución
-        if ($isTemporal7Days && ($hostname === 'YourHostname' || $hostname === 'ANY')) {
+        // Reemplazar YourHostname por localhost SÓLO si tiene un COMPOSITE
+        if ($hostname === 'YourHostname' && str_contains($hostid, 'COMPOSITE=')) {
+            $hostname = 'localhost';
+        } elseif ($isTemporal7Days && $hostname === 'ANY') {
             $hostname = 'localhost';
         }
 
@@ -150,7 +152,8 @@ class NXSuiteService
             return 'Unificada';
         }
 
-        if (str_contains($content, 'YourHostname') || str_contains($content, 'ANY')) {
+        // Solo es temporal si el hostid es ANY. Evitamos que YourHostname marque la licencia como temporal.
+        if (preg_match('/SERVER\s+[^\s]+\s+ANY\b/', $content)) {
             return 'Temporal';
         }
 
@@ -188,13 +191,20 @@ class NXSuiteService
             $metadata['client'] = trim($matches[1]);
         }
 
-        // 4. Extraer Hostname de la línea SERVER
-        if (preg_match('/SERVER\s+([^\s]+)/', $content, $matches)) {
-            $metadata['hostname'] = $matches[1];
+        // 4. Extraer Hostname y HostID de la línea SERVER
+        if (preg_match('/SERVER\s+([^\s]+)(?:\s+([^\s]+))?/', $content, $matches)) {
+            $hostname = $matches[1];
+            $hostid   = $matches[2] ?? '';
+            
+            if ($hostname === 'YourHostname' && str_contains($hostid, 'COMPOSITE=')) {
+                $metadata['hostname'] = 'localhost';
+            } else {
+                $metadata['hostname'] = $hostname;
+            }
         }
 
-        // 5. Extraer Versión del primer INCREMENT
-        if (preg_match('/INCREMENT\s+\S+\s+(ugslmd|saltd|cdlmd|RCTECH)\s+([\d.]+)/i', $content, $matches)) {
+        // 5. Extraer Versión del primer INCREMENT o FEATURE
+        if (preg_match('/(?:INCREMENT|FEATURE)\s+\S+\s+(ugslmd|saltd|cdlmd|RCTECH)\s+([\d.]+)/i', $content, $matches)) {
             $version = $matches[2];
             // Si es formato 2025.12 -> 25.12
             if (preg_match('/^\d{2}(\d{2})\.(\d+)$/', $version, $vMatches)) {
@@ -204,8 +214,8 @@ class NXSuiteService
             }
         }
 
-        // 6. Extraer Fecha de Caducidad del primer INCREMENT
-        if (preg_match('/INCREMENT\s+\S+\s+(ugslmd|saltd|cdlmd|RCTECH)\s+[\d.]+\s+(\d+-\w+-\d+|permanent)/i', $content, $matches)) {
+        // 6. Extraer Fecha de Caducidad del primer INCREMENT o FEATURE
+        if (preg_match('/(?:INCREMENT|FEATURE)\s+\S+\s+(ugslmd|saltd|cdlmd|RCTECH)\s+[\d.]+\s+(\d+-\w+-\d+|permanent)/i', $content, $matches)) {
             $metadata['expiration'] = $matches[2];
         }
 

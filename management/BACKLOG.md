@@ -37,6 +37,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Fix: Detección de Hostname en Licencias Dongle USB ✅
+- **Completada:** 2026-06-12
+- **Rama:** `feature/fix-hostname-detection`
+- **Resumen:** Se actualizó la lógica de extracción de fechas y versiones en NXSuite, StarCCM+ y Heeds para soportar etiquetas `FEATURE` en licencias tipo Dongle, corrigiendo el error de fallback a Permanente y ajustando el naming de los archivos (se añade DongleUSB).
+- **PR:** Pendiente de merge a dev
+
 ### Bugfixes Infraestructura: Errores 023-027 ✅
 - **Completada:** 2026-06-03
 - **Rama:** `fix/bugs-024-027`

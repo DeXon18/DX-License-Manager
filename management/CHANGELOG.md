@@ -1,7 +1,19 @@
 > Historial completo de cambios desde el inicio del proyecto.
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
-> **Version:** v3.2.6
+> **Version:** v3.2.8
+
+## [2026-06-12 09:30] 🐛 Fix: Detección de Hostname en Licencias Dongle USB ✅
+
+### Fixed
+- **Motor de Auditoría**: Actualizada la lógica de extracción de fechas y versiones en NXSuite, StarCCM+ y Heeds para dar soporte a etiquetas `FEATURE` en licencias Dongle.
+- **Identificación Permanente**: Corregido el *fallback* que etiquetaba incorrectamente las licencias Dongle sin fecha tradicional como "Permanentes".
+- **Nomenclatura**: Ajustado el nombrado de archivos procesados excluyendo `localhost` e inyectando la etiqueta `DongleUSB` para facilitar su identificación.
+
+## [2026-06-10 11:25] 🚑 Hotfix: Nginx CSP PDF Visualization 🚨
+
+### Fixed
+- **Nginx / CSP**: Se ha añadido `frame-src 'self' blob:;` a las cabeceras `Content-Security-Policy` en `beta.conf` y `prod.conf` para permitir la renderización de iframes basados en memoria (URLs `blob:`). Esto soluciona la incidencia crítica en Producción que bloqueaba la visualización de los documentos PDF de COD con el error "Este contenido está bloqueado".
 
 ## [2026-06-10 10:35] — Feature: COD Form Cloud Types & Naming Refactor ✅
 

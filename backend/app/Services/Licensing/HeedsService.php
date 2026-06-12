@@ -59,14 +59,18 @@ class HeedsService
             $metadata['hostname'] = $m[1];
             $metadata['hostid']   = $m[2];
             
+            if ($metadata['hostname'] === 'YourHostname' && str_contains($metadata['hostid'], 'COMPOSITE=')) {
+                $metadata['hostname'] = 'localhost';
+            }
+            
             // Si tiene MAC/Composite (no es ANY), es Contractual
             if ($metadata['hostid'] !== 'ANY' && !str_contains($metadata['hostid'], 'YourHostname')) {
                 $metadata['type'] = 'Contractual';
             }
         }
 
-        // 4. Extraer Fecha de Expiración del primer INCREMENT RCTECH
-        if (preg_match('/INCREMENT\s+\S+\s+RCTECH\s+\S+\s+(\d+-\w+-\d+)/', $content, $m)) {
+        // 4. Extraer Fecha de Expiración del primer INCREMENT o FEATURE RCTECH
+        if (preg_match('/(?:INCREMENT|FEATURE)\s+\S+\s+RCTECH\s+\S+\s+(\d+-\w+-\d+|permanent)/i', $content, $m)) {
             $metadata['expiration'] = $m[1];
         }
 
@@ -164,7 +168,10 @@ class HeedsService
                     $hostname = $parts[1];
                     $hostid   = $parts[2];
 
-                    if ($isTemporal && ($hostname === 'YourHostname' || $hostname === 'ANY')) {
+                    // Reemplazo YourHostname por localhost SÓLO si tiene COMPOSITE
+                    if ($hostname === 'YourHostname' && str_contains($hostid, 'COMPOSITE=')) {
+                        $hostname = 'localhost';
+                    } elseif ($isTemporal && $hostname === 'ANY') {
                         $hostname = 'localhost';
                     }
 
