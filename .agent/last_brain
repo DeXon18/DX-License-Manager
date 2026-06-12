@@ -1,6 +1,6 @@
-Rama activa: dev. Fase 3 — Security Hardening & Bugfixes. 
-Último trabajo: Hotfix de Nginx CSP (`prod.conf` y `beta.conf`) añadiendo `frame-src 'self' blob:;` para permitir la visualización de PDFs de COD sin bloqueo del navegador. Se aplicó en dev, se hizo merge a main y se reinició `dx-nginx-prod` con éxito.
-Estado: Hotfix desplegado en Producción, ambos stacks operativos.
-Próximo paso inmediato: Seleccionar la siguiente tarea del `BACKLOG.md` de la Fase 3.
-Bloqueos: Ninguno.
-Stack beta: running. Stack prod: running.
+Rama activa: dev. Fase actual.
+Último trabajo: Renombrado de placeholders en COD Generator a "LM Host (MAC)" y despliegue a dev y main.
+Estado: Los cambios están commiteados en dev y main, pero falta desplegar a producción.
+Próximo paso inmediato: Ejecutar ./scripts/deploy-prod.sh para pasar los cambios a producción.
+Bloqueos: ninguno.
+Stack beta: Indeterminado (acceso desde host local). Stack prod: Indeterminado.
