@@ -553,7 +553,7 @@
   opacity: 0.3;
 }
 .dx-v2-clients-history-content {
-  padding: 20px;
+  padding: 16px;
   background: rgba(0,0,0,0.1);
   border: 1px solid var(--dx-v2-border-base);
   border-top: none;

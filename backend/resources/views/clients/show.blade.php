@@ -148,7 +148,7 @@
     <div x-show="tab === 'licenses'" x-cloak>
         <div class="dx-v2-clients-inv-container">
             @forelse($inventoryBySoldTo as $soldTo => $daemons)
-                <div class="dx-v2-clients-soldto-block" style="{{ $loop->last ? 'margin-bottom: 20px !important;' : '' }}">
+                <div class="dx-v2-clients-soldto-block" style="{{ $loop->last ? 'margin-bottom: 0 !important;' : '' }}">
                     <div class="dx-v2-clients-soldto-header">
                         <div class="dx-v2-clients-soldto-badge-wrapper">
                             <div class="dx-v2-clients-soldto-icon"><i class="fa-solid fa-id-card"></i></div>
@@ -320,7 +320,7 @@
                     <!-- Acordeón Header Toggle -->
                     <div class="dx-v2-clients-history-toggle" 
                          @click="historyOpen = !historyOpen"
-                         style="margin-top: 0;"
+                         style="margin-top: 0; padding: 10px 16px;"
                          :style="historyOpen ? 'border-bottom-left-radius: 0; border-bottom-right-radius: 0;' : ''">
                         <div class="dx-v2-clients-history-toggle-left">
                             <i class="fa-solid fa-clock-rotate-left dx-v2-clients-history-toggle-icon" style="font-size: 16px;"></i>
@@ -341,7 +341,7 @@
                     <div class="dx-v2-clients-history-content" x-show="historyOpen" x-cloak x-transition style="display: none;">
                         <div>
                             <!-- Banner Explicativo de Propósito -->
-                            <div style="background: rgba(56, 139, 253, 0.04); border: 1px solid rgba(56, 139, 253, 0.15); border-radius: 6px; padding: 12px 16px; margin-bottom: 20px; display: flex; gap: 12px; align-items: flex-start;">
+                            <div style="background: rgba(56, 139, 253, 0.04); border: 1px solid rgba(56, 139, 253, 0.15); border-radius: 6px; padding: 12px 16px; margin-bottom: 12px; display: flex; gap: 12px; align-items: flex-start;">
                                 <i class="fa-solid fa-circle-info" style="color: #388bfd; font-size: 14px; margin-top: 2px;"></i>
                                 <div>
                                     <h5 style="font-size: 11px; font-weight: 800; color: #388bfd; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 4px 0;">Fuente de Verdad Histórica (Solo Lectura)</h5>
