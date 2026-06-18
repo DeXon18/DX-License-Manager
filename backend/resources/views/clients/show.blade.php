@@ -161,7 +161,7 @@
                     </div>
 
                     @foreach($daemons as $daemon)
-                        <div class="dx-v2-clients-daemon-card {{ $daemon->vendor }} {{ !empty($daemon->additional_sold_tos) ? 'unified-card' : '' }}">
+                        <div x-data="{ showSuperseded: false }" class="dx-v2-clients-daemon-card {{ $daemon->vendor }} {{ !empty($daemon->additional_sold_tos) ? 'unified-card' : '' }}">
                             @if(!empty($daemon->additional_sold_tos))
                                 <div class="dx-v2-clients-daemon-watermark">
                                     <i class="fa-solid fa-network-wired"></i>
@@ -248,13 +248,10 @@
                                             $isNodeLocked = stripos($product->description, 'node locked') !== false || stripos($product->description, 'nodelocked') !== false;
                                             $isMissingMac = empty($product->node_locked_host_id) && $isNodeLocked;
                                         @endphp
-                                        <tr class="dx-v2-clients-product-row {{ $isSuperseded ? 'superseded' : ($product->status !== 'active' ? 'inactive' : '') }}" style="{{ $isSuperseded ? 'opacity: 0.6; filter: grayscale(1);' : '' }}">
+                                        <tr class="dx-v2-clients-product-row {{ $isSuperseded ? 'superseded' : ($product->status !== 'active' ? 'inactive' : '') }}" style="{{ $isSuperseded ? 'opacity: 0.6; filter: grayscale(1);' : '' }}" @if($isSuperseded) x-show="showSuperseded" x-cloak x-transition @endif>
                                             <td class="dx-v2-clients-product-code">{{ $product->product_code }}</td>
                                             <td>
                                                 {{ $product->description }}
-                                                @if($isSuperseded)
-                                                    <span class="badge badge-muted" style="margin-left: 8px; font-size: 9px; padding: 2px 6px; background: rgba(255,255,255,0.1); border-radius: 4px; color: var(--muted); border: 1px solid var(--border);">Reemplazada</span>
-                                                @endif
                                             </td>
                                             <td class="dx-v2-clients-host-mono">
                                                 @if($isMissingMac && !$isSuperseded)
@@ -269,29 +266,33 @@
                                                 <div class="dx-v2-clients-qty-badge">{{ $product->quantity }}</div>
                                             </td>
                                             <td>
-                                                @php
-                                                    $expiration = $product->expiration_date;
-                                                    $isExpired = $expiration?->isPast();
-                                                    $diffInDays = $expiration ? now()->diffInDays($expiration, false) : null;
-                                                    
-                                                    if ($isExpired) {
-                                                        $statusClass = 'expired';
-                                                        $icon = 'fa-solid fa-circle-xmark';
-                                                    } elseif ($diffInDays !== null && $diffInDays >= 0 && $diffInDays <= 30) {
-                                                        $statusClass = 'warning';
-                                                        $icon = 'fa-solid fa-triangle-exclamation';
-                                                    } elseif (!$expiration) {
-                                                        $statusClass = 'permanent';
-                                                        $icon = 'fa-solid fa-infinity';
-                                                    } else {
-                                                        $statusClass = 'default';
-                                                        $icon = 'fa-solid fa-calendar-check';
-                                                    }
-                                                @endphp
-                                                <span class="dx-v2-clients-expiry-status {{ $statusClass }}">
-                                                    <i class="{{ $icon }}"></i>
-                                                    {{ $expiration ? $expiration->format('d/m/Y') : 'PERMANENTE' }}
-                                                </span>
+                                                @if($isSuperseded)
+                                                    <span class="dx-v2-clients-expiry-status warning" style="font-size: 10px; padding: 2px 6px; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;"><i class="fa-solid fa-arrow-rotate-left"></i> Reemplazada</span>
+                                                @else
+                                                    @php
+                                                        $expiration = $product->expiration_date;
+                                                        $isExpired = $expiration?->isPast();
+                                                        $diffInDays = $expiration ? now()->diffInDays($expiration, false) : null;
+                                                        
+                                                        if ($isExpired) {
+                                                            $statusClass = 'expired';
+                                                            $icon = 'fa-solid fa-circle-xmark';
+                                                        } elseif ($diffInDays !== null && $diffInDays >= 0 && $diffInDays <= 30) {
+                                                            $statusClass = 'warning';
+                                                            $icon = 'fa-solid fa-triangle-exclamation';
+                                                        } elseif (!$expiration) {
+                                                            $statusClass = 'permanent';
+                                                            $icon = 'fa-solid fa-infinity';
+                                                        } else {
+                                                            $statusClass = 'default';
+                                                            $icon = 'fa-solid fa-calendar-check';
+                                                        }
+                                                    @endphp
+                                                    <span class="dx-v2-clients-expiry-status {{ $statusClass }}">
+                                                        <i class="{{ $icon }}"></i>
+                                                        {{ $expiration ? $expiration->format('d/m/Y') : 'PERMANENTE' }}
+                                                    </span>
+                                                @endif
                                             </td>
                                             <td class="text-right">
                                                 <form action="{{ route('inventory.product.destroy', $product) }}" method="POST">
@@ -305,6 +306,17 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            @php
+                                $supersededCount = $daemon->products->where('status', 'superseded')->count();
+                            @endphp
+                            @if($supersededCount > 0)
+                                <div style="padding: 10px 20px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.02); text-align: center;">
+                                    <button @click="showSuperseded = !showSuperseded" style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); cursor: pointer; border: none; background: transparent; display: inline-flex; align-items: center; justify-content: center; width: 100%; gap: 6px; transition: color 0.2s;">
+                                        <i class="fa-solid fa-clock-rotate-left"></i>
+                                        <span x-text="showSuperseded ? 'Ocultar licencias reemplazadas' : 'Mostrar {{ $supersededCount }} licencias reemplazadas'"></span>
+                                    </button>
+                                </div>
+                            @endif
                         </div>
                     @endforeach
                 </div>
