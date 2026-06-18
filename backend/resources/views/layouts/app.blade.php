@@ -114,9 +114,11 @@
                 <a class="sidebar-item {{ request()->routeIs('renewal-planner.*') ? 'active' : '' }}" href="{{ route('renewal-planner.index') }}">
                     <span class="sidebar-icon">📅</span> Planificador
                 </a>
+                @if(config('app.env') !== 'beta')
                 <a class="sidebar-item {{ request()->routeIs('reports.*') ? 'active' : '' }}" href="{{ route('reports.index') }}">
                     <span class="sidebar-icon">📈</span> Reportes y Analítica
                 </a>
+                @endif
             </div>
             
             <div class="sidebar-section">
