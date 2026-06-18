@@ -247,7 +247,7 @@
             element: '.sidebar',
             popover: {
                 title: 'Navegación Principal',
-                description: 'Desde aquí puedes saltar a cualquier módulo del sistema: Clientes, Planificador, Reportes o Herramientas.',
+                description: 'Desde aquí puedes saltar a cualquier módulo del sistema: Clientes, Planificador{{ config("app.env") !== "beta" ? ", Reportes" : "" }} o Herramientas.',
                 side: 'right',
                 align: 'start'
             }
