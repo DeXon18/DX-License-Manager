@@ -28,8 +28,6 @@
 | ID | Incidencia | Módulo | Prioridad | Detectado | Resuelto |
 |---:|---|---|:---:|:---:|:---:|
 
-| [#029] | Ha desaparecido la opción de cuando una licencia estaba unificada | UI/UX | 🟠 P2 | 2026-06-18 | - |
-| [#030] | Etiqueta 'Reemplazada' en licencias causa confusión visual | UI/UX | 🟢 P3 | 2026-06-18 | - |
 | [#023] | Bot query unauthorized attempt from IP 172.18.0.1 | API/Bot | 🟠 P2 | 2026-06-02 | - |
 
 ---
@@ -38,6 +36,9 @@
 
 | ID | Incidencia | Módulo | Prioridad | Detectado | Resuelto |
 |---:|---|---|:---:|:---:|:---:|
+
+| [#029] | Ha desaparecido la opción de cuando una licencia estaba unificada | UI/UX | 🟠 P2 | 2026-06-18 | 2026-06-18 |
+| [#030] | Etiqueta 'Reemplazada' en licencias causa confusión visual | UI/UX | 🟢 P3 | 2026-06-18 | 2026-06-18 |
 | [#031] | Desactivar envío de reportes (cron) en el entorno Beta | Infra/Cron | 🟠 P2 | 2026-06-18 | 2026-06-18 |
 | [#028] | Permiso denegado al borrar laravel.log desde Admin | Admin/Logs | 🟠 P2 | 2026-06-03 | 2026-06-03 |
 | [#024] | Contadores de storage siempre a 0 B en /admin/system | Admin/System | 🟢 P3 | 2026-06-02 | 2026-06-03 |
