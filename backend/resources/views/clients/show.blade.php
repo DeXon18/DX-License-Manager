@@ -148,7 +148,7 @@
     <div x-show="tab === 'licenses'" x-cloak>
         <div class="dx-v2-clients-inv-container">
             @forelse($inventoryBySoldTo as $soldTo => $daemons)
-                <div class="dx-v2-clients-soldto-block" style="{{ $loop->last ? 'margin-bottom: 20px !important;' : '' }}">
+                <div class="dx-v2-clients-soldto-block">
                     <div class="dx-v2-clients-soldto-header">
                         <div class="dx-v2-clients-soldto-badge-wrapper">
                             <div class="dx-v2-clients-soldto-icon"><i class="fa-solid fa-id-card"></i></div>

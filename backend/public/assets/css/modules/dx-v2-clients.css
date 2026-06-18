@@ -254,7 +254,6 @@
 
 /* Inventario Activo */
 .dx-v2-clients-soldto-block {
-  margin-bottom: 40px;
   animation: dxFadeIn 0.4s ease-out;
 }
 .dx-v2-clients-soldto-header {
