@@ -1,5 +1,5 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-06-12 12:59  
+> Última actualización: 2026-06-18 13:40  
 > Sesión en: local  
 > Rama activa: dev
 
@@ -7,41 +7,42 @@
 
 ## Estado General
 
-**Fase actual:** Despliegue a Producción  
-**Stack beta:** ✅ Operativo y verificado (vía SSH)
-**Stack prod:** ✅ Operativo y verificado (vía SSH)
+**Fase actual:** Mantenimiento y optimización UI
+**Stack beta:** ✅ Operativo y verificado
+**Stack prod:** ✅ Operativo 
 
 ---
 
 ## Qué se hizo en esta sesión
 
-- Se actualizaron los placeholders en `backend/resources/views/tools/cod.blade.php` para cambiar de `HostID (MAC sin guiones)` a `LM Host (MAC) (sin guiones)` y similares.
-- Se hizo commit de los cambios en la rama `chore/rename-lm-host`.
-- Se hizo merge a `dev` y se subió al repositorio remoto.
-- Se hizo checkout a `main`, se hizo merge desde `dev` y se subió `main` al repositorio remoto (solicitado explícitamente).
-- Se volvió a la rama `dev`.
+- Se solucionó la incidencia **#029**: Restauración de la lógica de UI en Alpine.js (`.dx-v2-clients-soldto-additional`) para mostrar las licencias unificadas adicionales correctamente.
+- Se solucionó la incidencia **#030**: Modificación del comportamiento de la etiqueta 'Reemplazada'. Se añadieron estilos para ocultarlas por defecto y un toggle dinámico (`showSuperseded`) para verlas a demanda, reduciendo la carga visual.
+- Se aplicó y unificó un ajuste de espaciado (`gap-3` y `py-3`) en las tarjetas de licencias para conseguir un diseño más limpio y consistente.
+- Limpieza completa de ramas: se purgaron ramas locales y remotas ya aplicadas (ej. `fix/license-superseded-toggle`).
+- Documentación: Se actualizó `ERRORS.md`, moviendo las incidencias #029 y #030 a la sección de resueltos.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-(Nada pendiente — Despliegue a producción completado y verificado)
+- (A la espera de nuevas directrices del desarrollador. El entorno `dev` se encuentra estable y limpio de ramas temporales).
 
 ### Tareas siguientes
-(A la espera de nuevas directrices del desarrollador)
+- Continuar con el roadmap o abordar cualquier reporte de bugs adicional.
 
 ---
 
 ## Contexto técnico importante
 
-- Los placeholders han sido unificados a `LM Host (MAC) (sin guiones)` y `LM Host (MAC) Extra (sin guiones)` para mantener un formato consistente a lo largo de toda la aplicación COD.
+- La UI del inventario ha recibido mejoras de UX para la gestión de licencias reemplazadas. Se utiliza Alpine.js (`x-data`, `x-show`, `x-transition`) de forma extendida para interactividad ligera en los layouts.
+- Evitar usar CSS para ocultar cosas que tienen lógica condicionada en JS, para mantener la coherencia.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-Ninguno
+Ninguno. El stack funciona correctamente.
 
 ---
 
@@ -59,6 +60,6 @@ Ninguno
 ## Comandos útiles para la próxima sesión
 
 ```bash
-# Desplegar a producción
-./scripts/deploy.sh prod
+# Ver estado del contenedor beta
+docker compose --project-directory . -f infra/docker-compose.beta.yml ps
 ```
