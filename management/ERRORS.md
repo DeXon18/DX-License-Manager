@@ -8,7 +8,7 @@
 
 | 🔴 Críticos (P1) | 🟠 Importantes (P2) | 🟢 Menores (P3) | ✅ Resueltos |
 | :---: | :---: | :---: | :---: |
-| 0 | 1 | 0 | 27 |
+| 0 | 2 | 1 | 28 |
 
 ---
 
@@ -28,6 +28,8 @@
 | ID | Incidencia | Módulo | Prioridad | Detectado | Resuelto |
 |---:|---|---|:---:|:---:|:---:|
 
+| [#029] | Ha desaparecido la opción de cuando una licencia estaba unificada | UI/UX | 🟠 P2 | 2026-06-18 | - |
+| [#030] | Etiqueta 'Reemplazada' en licencias causa confusión visual | UI/UX | 🟢 P3 | 2026-06-18 | - |
 | [#023] | Bot query unauthorized attempt from IP 172.18.0.1 | API/Bot | 🟠 P2 | 2026-06-02 | - |
 
 ---
@@ -36,6 +38,7 @@
 
 | ID | Incidencia | Módulo | Prioridad | Detectado | Resuelto |
 |---:|---|---|:---:|:---:|:---:|
+| [#031] | Desactivar envío de reportes (cron) en el entorno Beta | Infra/Cron | 🟠 P2 | 2026-06-18 | 2026-06-18 |
 | [#028] | Permiso denegado al borrar laravel.log desde Admin | Admin/Logs | 🟠 P2 | 2026-06-03 | 2026-06-03 |
 | [#024] | Contadores de storage siempre a 0 B en /admin/system | Admin/System | 🟢 P3 | 2026-06-02 | 2026-06-03 |
 | [#027] | Lector de logs no encuentra laravel.log (Regex) | Admin/Logs | 🟢 P3 | 2026-06-02 | 2026-06-03 |
@@ -80,8 +83,55 @@
 
 ### Pendientes
 
+#### #029 — Opción de licencia unificada desaparecida
+
+| Campo | Valor |
+|---|---|
+| **Módulo** | UI/UX |
+| **Prioridad** | 🟠 P2 |
+| **Estado** | ⏳ Pendiente |
+| **Detectado** | 2026-06-18 |
+| **Resuelto** | - |
+
+- **Síntoma**: Ha desaparecido la opción que indicaba cuándo una licencia estaba unificada en el portal.
+- **Causa**: Regresión de UI / Bug funcional pendiente de investigar.
+
+---
+
+#### #030 — Etiqueta 'Reemplazada' en licencias causa confusión
+
+| Campo | Valor |
+|---|---|
+| **Módulo** | UI/UX |
+| **Prioridad** | 🟢 P3 |
+| **Estado** | ⏳ Pendiente |
+| **Detectado** | 2026-06-18 |
+| **Resuelto** | - |
+
+- **Síntoma**: La feature que muestra cuándo una licencia es "Reemplazada" genera confusión visual porque el texto se anexa directamente al nombre del producto.
+  - Ejemplo actual: `NX91100 NX Design Standard Node Locked Reemplazada d8f88324937a 1`
+  - Esto mezcla el estado con el nombre y dificulta la lectura en el listado de clientes.
+- **Causa**: Diseño mejorable en la forma de mostrar los estados históricos / reemplazados.
+
+---
 
 ### Resueltos
+
+---
+
+#### #031 — Desactivar envío de reportes (cron) en el entorno Beta
+
+| Campo | Valor |
+|---|---|
+| **Módulo** | Infra/Cron |
+| **Prioridad** | 🟠 P2 |
+| **Estado** | ✅ Resuelto |
+| **Detectado** | 2026-06-18 |
+| **Resuelto** | 2026-06-18 |
+
+- **Síntoma**: El entorno Beta seguía enviando reportes automáticos semanales.
+- **Causa**: Dado que Producción ya está operando y enviando los correos reales, mantener esto activo en Beta generaba duplicidad y confusión para los destinatarios.
+- **Resolución**: Se añadió el método `->environments(['production'])` a la tarea programada `SendWeeklyLicenseAlertsJob` en `backend/routes/console.php` para restringir su ejecución exclusivamente al entorno de Producción.
 
 ---
 

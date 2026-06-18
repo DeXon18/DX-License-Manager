@@ -12,8 +12,8 @@ Artisan::command('inspire', function () {
 use Illuminate\Support\Facades\Schedule;
 use App\Jobs\SendWeeklyLicenseAlertsJob;
 
-// Envío semanal todos los lunes a las 07:30 AM
-Schedule::job(new SendWeeklyLicenseAlertsJob)->mondays()->at('07:30');
+// Envío semanal todos los lunes a las 07:30 AM (Sólo en Producción)
+Schedule::job(new SendWeeklyLicenseAlertsJob)->mondays()->at('07:30')->environments(['production']);
 
 // Comando manual para pruebas
 Artisan::command('dx:send-weekly-alerts', function () {
