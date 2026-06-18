@@ -84,18 +84,23 @@
 
 ### Pendientes
 
+### Resueltos
+
+---
+
 #### #029 — Opción de licencia unificada desaparecida
 
 | Campo | Valor |
 |---|---|
 | **Módulo** | UI/UX |
 | **Prioridad** | 🟠 P2 |
-| **Estado** | ⏳ Pendiente |
+| **Estado** | ✅ Resuelto |
 | **Detectado** | 2026-06-18 |
-| **Resuelto** | - |
+| **Resuelto** | 2026-06-18 |
 
 - **Síntoma**: Ha desaparecido la opción que indicaba cuándo una licencia estaba unificada en el portal.
-- **Causa**: Regresión de UI / Bug funcional pendiente de investigar.
+- **Causa**: Regresión de UI al ajustar estilos.
+- **Resolución**: Se restauró la lógica con Alpine.js para mostrar y ocultar licencias adicionales usando `.dx-v2-clients-soldto-additional`.
 
 ---
 
@@ -105,18 +110,13 @@
 |---|---|
 | **Módulo** | UI/UX |
 | **Prioridad** | 🟢 P3 |
-| **Estado** | ⏳ Pendiente |
+| **Estado** | ✅ Resuelto |
 | **Detectado** | 2026-06-18 |
-| **Resuelto** | - |
+| **Resuelto** | 2026-06-18 |
 
 - **Síntoma**: La feature que muestra cuándo una licencia es "Reemplazada" genera confusión visual porque el texto se anexa directamente al nombre del producto.
-  - Ejemplo actual: `NX91100 NX Design Standard Node Locked Reemplazada d8f88324937a 1`
-  - Esto mezcla el estado con el nombre y dificulta la lectura en el listado de clientes.
 - **Causa**: Diseño mejorable en la forma de mostrar los estados históricos / reemplazados.
-
----
-
-### Resueltos
+- **Resolución**: Se ocultaron las licencias "Reemplazadas" por defecto en el inventario y se implementó un toggle interactivo (`x-data="{ showSuperseded: false }"`) para mostrarlas a voluntad del usuario, mejorando la legibilidad general.
 
 ---
 
