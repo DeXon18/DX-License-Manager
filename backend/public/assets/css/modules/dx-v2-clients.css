@@ -255,6 +255,10 @@
 /* Inventario Activo */
 .dx-v2-clients-soldto-block {
   animation: dxFadeIn 0.4s ease-out;
+  margin-bottom: 30px;
+}
+.dx-v2-clients-soldto-block:last-child {
+  margin-bottom: 0;
 }
 .dx-v2-clients-soldto-header {
   display: flex;
@@ -299,9 +303,12 @@
   border: 1px solid var(--dx-v2-border-base);
   border-radius: var(--dx-v2-rounded-lg);
   overflow: hidden;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   box-shadow: var(--dx-v2-shadow-sm);
   position: relative;
+}
+.dx-v2-clients-daemon-card:last-child {
+  margin-bottom: 0;
 }
 .dx-v2-clients-daemon-card.siemens { border-left: 4px solid var(--dx-v2-siemens); }
 .dx-v2-clients-daemon-card.moldex { border-left: 4px solid var(--dx-v2-moldex); }

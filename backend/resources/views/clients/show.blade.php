@@ -148,7 +148,7 @@
     <div x-show="tab === 'licenses'" x-cloak>
         <div class="dx-v2-clients-inv-container">
             @forelse($inventoryBySoldTo as $soldTo => $daemons)
-                <div class="dx-v2-clients-soldto-block">
+                <div class="dx-v2-clients-soldto-block" {!! $loop->last ? 'style="margin-bottom: 0;"' : '' !!}>
                     <div class="dx-v2-clients-soldto-header">
                         <div class="dx-v2-clients-soldto-badge-wrapper">
                             <div class="dx-v2-clients-soldto-icon"><i class="fa-solid fa-id-card"></i></div>
@@ -310,7 +310,7 @@
                                 $supersededCount = $daemon->products->where('status', 'superseded')->count();
                             @endphp
                             @if($supersededCount > 0)
-                                <div style="padding: 10px 20px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.02); text-align: center;">
+                                <div style="padding: 10px 20px; border-top: 1px solid var(--dx-v2-border-base); background: rgba(0,0,0,0.02); text-align: center; border-bottom-left-radius: inherit; border-bottom-right-radius: inherit;">
                                     <button @click="showSuperseded = !showSuperseded" style="font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); cursor: pointer; border: none; background: transparent; display: inline-flex; align-items: center; justify-content: center; width: 100%; gap: 6px; transition: color 0.2s;">
                                         <i class="fa-solid fa-clock-rotate-left"></i>
                                         <span x-text="showSuperseded ? 'Ocultar licencias reemplazadas' : 'Mostrar {{ $supersededCount }} licencias reemplazadas'"></span>
