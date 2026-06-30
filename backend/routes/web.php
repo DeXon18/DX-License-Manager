@@ -23,6 +23,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth.jwt'])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/clientes', [ClientController::class, 'index'])->name('clients.index');
+    Route::get('/clientes/unificadas', [ClientController::class, 'unified'])->name('clients.unified');
     Route::get('/clientes/{client}', [ClientController::class, 'show'])->name('clients.show');
     
     // Chatbot de Asistencia IA Web (Fase 25)

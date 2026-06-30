@@ -1009,3 +1009,51 @@
 [x-cloak] {
   display: none !important;
 }
+
+/* --------------------------------------------------------------------------
+ * LICENCIAS UNIFICADAS
+ * -------------------------------------------------------------------------- */
+.dx-v2-unified-actions {
+  align-items: center;
+}
+.dx-v2-unified-actions .btn-secondary i {
+  margin-right: var(--dx-v2-spacing-2);
+}
+.dx-v2-unified-daemon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  height: auto;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.dx-v2-unified-sold-to {
+  color: var(--dx-v2-accent-base);
+}
+.dx-v2-unified-install-list {
+  display: flex;
+  gap: var(--dx-v2-spacing-2);
+  flex-wrap: wrap;
+}
+.dx-v2-unified-badge {
+  padding: 4px 8px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: default;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--dx-v2-rounded-sm);
+  border: 1px solid var(--dx-v2-border-base);
+}
+[data-theme="light"] .dx-v2-unified-badge {
+  background: rgba(0, 0, 0, 0.02);
+}
+.dx-v2-unified-badge i {
+  opacity: 0.7;
+  color: var(--dx-v2-text-muted);
+}
+.dx-v2-clients-btn-profile {
+  white-space: nowrap;
+}
