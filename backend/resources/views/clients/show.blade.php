@@ -181,19 +181,6 @@
                                 </div>
                             </div>
 
-                            @if(!empty($daemon->additional_sold_tos))
-                                <div class="dx-v2-clients-daemon-unified-row">
-                                    <div class="dx-v2-clients-unified-list">
-                                        @foreach($daemon->additional_sold_tos as $extraSt)
-                                            <span class="dx-v2-clients-unified-item">
-                                                <i class="fa-solid fa-link"></i>
-                                                {{ $extraSt }}
-                                            </span>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            @endif
-
                                 <div class="dx-v2-clients-daemon-header-col grow">
                                     @if($daemon->type === 'dongle')
                                         <span class="tech-label">Hardware Key / Dongle</span>
@@ -229,6 +216,20 @@
                                     </form>
                                 </div>
                             </div>
+
+                            @if(!empty($daemon->additional_sold_tos))
+                                <div class="dx-v2-clients-daemon-unified-row">
+                                    <span class="label">Sold-Tos Unificados:</span>
+                                    <div class="dx-v2-clients-unified-list">
+                                        @foreach($daemon->additional_sold_tos as $extraSt)
+                                            <span class="dx-v2-clients-unified-item">
+                                                <i class="fa-solid fa-link"></i>
+                                                {{ $extraSt }}
+                                            </span>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
 
                             <table class="dx-v2-clients-inv-table">
                                 <thead>
