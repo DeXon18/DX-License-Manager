@@ -383,24 +383,32 @@
 .dx-v2-clients-daemon-badge.version { background: var(--dx-v2-bg-base); color: var(--dx-v2-primary-base); border: 1px solid var(--dx-v2-border-base); }
 
 .dx-v2-clients-daemon-unified-row {
-  background: rgba(255, 255, 255, 0.015);
+  background: linear-gradient(90deg, rgba(56, 139, 253, 0.05) 0%, transparent 100%);
+  border-left: 2px solid var(--dx-v2-primary-base);
   border-bottom: 1px solid rgba(255, 255, 255, 0.03);
   padding: 8px 24px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   position: relative;
   z-index: 2;
+  margin-top: 1px;
 }
 .dx-v2-clients-daemon-unified-row .label {
-  font-size: 11px;
-  font-weight: 500;
-  text-transform: none;
-  color: var(--dx-v2-text-muted);
-  margin-right: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--dx-v2-primary-base);
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+}
+.dx-v2-clients-daemon-unified-row .label i {
+  background: rgba(56, 139, 253, 0.15);
+  padding: 4px;
+  border-radius: 4px;
+  color: var(--dx-v2-primary-base);
 }
 .dx-v2-clients-unified-list {
   display: flex;
@@ -410,24 +418,27 @@
 .dx-v2-clients-unified-item {
   font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 500;
-  color: var(--dx-v2-text-base);
-  background: rgba(255, 255, 255, 0.04);
-  padding: 3px 10px;
-  border-radius: var(--dx-v2-rounded-md);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-weight: 600;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 4px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   gap: 6px;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .dx-v2-clients-unified-item:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(56, 139, 253, 0.15);
+  border-color: rgba(56, 139, 253, 0.4);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(56, 139, 253, 0.15);
+  color: #fff;
 }
 .dx-v2-clients-unified-item i {
   font-size: 10px;
-  color: var(--dx-v2-text-muted);
+  color: var(--dx-v2-primary-base);
 }
 .dx-v2-clients-hardware-id-wrap {
   display: flex;

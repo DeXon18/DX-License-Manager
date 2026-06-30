@@ -219,11 +219,11 @@
 
                             @if(!empty($daemon->additional_sold_tos))
                                 <div class="dx-v2-clients-daemon-unified-row">
-                                    <span class="label">Sold-Tos Unificados:</span>
+                                    <span class="label"><i class="fa-solid fa-code-branch"></i> Sold-Tos Unificados</span>
                                     <div class="dx-v2-clients-unified-list">
                                         @foreach($daemon->additional_sold_tos as $extraSt)
                                             <span class="dx-v2-clients-unified-item">
-                                                <i class="fa-solid fa-link"></i>
+                                                <i class="fa-solid fa-hashtag"></i>
                                                 {{ $extraSt }}
                                             </span>
                                         @endforeach
