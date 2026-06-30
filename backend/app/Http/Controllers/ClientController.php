@@ -99,4 +99,18 @@ class ClientController extends Controller
         
         return view('clients.show', compact('client', 'inventoryBySoldTo'));
     }
+
+    /**
+     * Display a listing of clients with unified licenses (multiple sold-tos).
+     */
+    public function unified(Request $request)
+    {
+        $daemons = \App\Models\LicenseInventoryDaemon::with('client')
+            ->whereNotNull('additional_sold_tos')
+            ->where('additional_sold_tos', '!=', '[]')
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+
+        return view('clients.unified', compact('daemons'));
+    }
 }

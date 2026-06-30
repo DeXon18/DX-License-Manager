@@ -22,6 +22,10 @@
                     x-on:input.debounce.500ms="$el.closest('form').submit()">
             </form>
 
+            <a href="{{ route('clients.unified') }}" class="btn-secondary" style="margin-left: 12px; white-space: nowrap; height: 38px; display: flex; align-items: center; gap: 8px;">
+                <i class="fa-solid fa-layer-group"></i> Licencias Unificadas
+            </a>
+
             <div class="filter-actions dx-v2-clients-filter-actions">
                 @php 
                     $hasInv = session('client_has_inventory', false); 

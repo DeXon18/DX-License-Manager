@@ -4,6 +4,15 @@
 
 > **Version:** v3.2.9
 
+## [2026-06-30 08:30] — Mejora Visual: UI Sold-Tos Unificados y Fix N8N ✅
+
+### Added
+- **UI / Inventario**: Se ha rediseñado la sección de "Sold-Tos Unificados" en la ficha de cliente utilizando un estilo Bento-Grid premium. Se han añadido iconos identificativos (`fa-layer-group`) y efectos visuales modernos (fondos suaves, bordes contrastados y `hover` interactivo) a través de la clase CSS modular `.dx-v2-unified-badge`.
+
+### Fixed
+- **N8N / Auditoría de Licencias**: Corregida la expresión regular en el flujo de n8n para extraer correctamente el campo `Other Installs` (Sold-Tos adicionales) de los archivos `.lic` e inyectarlos de forma estructurada en la base de datos bajo `additional_sold_tos`.
+- **Despliegue a Producción**: Sincronizado el entorno `main` y desplegados los cambios en Producción (`portal.dxpro.es`) sin interrupciones mediante el comando unificado `deploy.sh prod` con cache reset total.
+
 ## [2026-06-18 13:45] — Mantenimiento: Optimización UI y Saneamiento ✅
 
 ### Changed
