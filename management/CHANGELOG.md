@@ -1,3 +1,30 @@
+> Historial completo de cambios desde el inicio del proyecto.
+> **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
+> **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
+
+> **Version:** v3.2.9
+
+## [2026-06-18 13:45] — Mantenimiento: Optimización UI y Saneamiento ✅
+
+### Changed
+- **UI / Inventario**: Modificado el comportamiento de la etiqueta de licencias 'Reemplazada'. Se ocultan por defecto para reducir el ruido visual y se implementó un toggle dinámico con Alpine.js (`x-data="{ showSuperseded: false }"`) para mostrarlas a demanda (#030).
+- **UI / Tarjetas**: Se ajustaron y unificaron los márgenes (`gap-3` y `py-3`) en las tarjetas de licencias de todos los proveedores para mantener la consistencia visual.
+
+### Fixed
+- **UI / Inventario**: Se restauró la lógica funcional en Alpine.js (`.dx-v2-clients-soldto-additional`) que permitía expandir y visualizar las licencias adicionales cuando un contrato está unificado (#029).
+
+## [2026-06-12 11:06] — Deployment: Producción v3.2.8 ✅
+
+### Changed
+- **Despliegue**: Despliegue de los últimos cambios de la rama `main` a producción mediante el script centralizado `deploy.sh`.
+
+### Fixed
+- **Infraestructura**: Estandarización de llamadas a scripts de infraestructura y refuerzo de la Regla 0.0 (Aislamiento total SSH).
+
+## [2026-06-12 09:30] — 🐛 Fix: Detección de Hostname en Licencias Dongle USB ✅
+
+### Fixed
+- **Motor de Auditoría**: Actualizada la lógica de extracción de fechas y versiones en NXSuite, StarCCM+ y Heeds para dar soporte a etiquetas `FEATURE` en licencias Dongle.
 - **Identificación Permanente**: Corregido el *fallback* que etiquetaba incorrectamente las licencias Dongle sin fecha tradicional como "Permanentes".
 - **Nomenclatura**: Ajustado el nombrado de archivos procesados excluyendo `localhost` e inyectando la etiqueta `DongleUSB` para facilitar su identificación.
 
