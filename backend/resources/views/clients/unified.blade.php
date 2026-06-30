@@ -13,9 +13,9 @@
         <h1 class="page-title">Licencias <span>Unificadas</span></h1>
         <p class="page-subtitle">Auditoría de clientes con licencias que agrupan múltiples Sold-Tos (Other Installs).</p>
     </div>
-    <div class="dx-v2-page-header-actions" style="align-items: center;">
+    <div class="dx-v2-page-header-actions dx-v2-unified-actions">
         <a href="{{ route('clients.index') }}" class="btn-secondary">
-            <i class="fa-solid fa-arrow-left" style="margin-right: 8px;"></i> Volver al Directorio
+            <i class="fa-solid fa-arrow-left"></i> Volver al Directorio
         </a>
     </div>
 </div>
@@ -41,23 +41,23 @@
                 </td>
                 <td class="text-center">
                     @if($daemon->vendor === 'siemens')
-                        <span class="badge dx-v2-clients-vendor-badge siemens" style="display: inline-flex; justify-content: center;">
-                            <span class="dx-v2-clients-badge-sub" style="margin:0;">{{ strtoupper($daemon->daemon) }}</span>
+                        <span class="badge dx-v2-clients-vendor-badge siemens dx-v2-unified-daemon-badge">
+                            {{ strtoupper($daemon->daemon) }}
                         </span>
                     @else
-                        <span class="badge dx-v2-clients-vendor-badge moldex" style="display: inline-flex; justify-content: center;">
-                            <span class="dx-v2-clients-badge-sub" style="margin:0;">{{ strtoupper($daemon->daemon) }}</span>
+                        <span class="badge dx-v2-clients-vendor-badge moldex dx-v2-unified-daemon-badge">
+                            {{ strtoupper($daemon->daemon) }}
                         </span>
                     @endif
                 </td>
-                <td class="text-center font-mono body-sm" style="color: var(--dx-v2-accent);">
+                <td class="text-center font-mono body-sm dx-v2-unified-sold-to">
                     {{ $daemon->sold_to }}
                 </td>
                 <td>
-                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <div class="dx-v2-unified-install-list">
                         @foreach($daemon->additional_sold_tos as $soldTo)
-                            <div class="dx-v2-unified-badge" style="padding: 4px 8px; font-size: 12px; display: flex; align-items: center; gap: 6px; cursor: default;">
-                                <i class="fa-solid fa-layer-group" style="opacity: 0.7;"></i>
+                            <div class="dx-v2-unified-badge">
+                                <i class="fa-solid fa-link"></i>
                                 <span class="font-mono">{{ $soldTo }}</span>
                             </div>
                         @endforeach
