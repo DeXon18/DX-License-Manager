@@ -383,9 +383,9 @@
 .dx-v2-clients-daemon-badge.version { background: var(--dx-v2-bg-base); color: var(--dx-v2-primary-base); border: 1px solid var(--dx-v2-border-base); }
 
 .dx-v2-clients-daemon-unified-row {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.015);
   border-bottom: 1px solid rgba(255, 255, 255, 0.03);
-  padding: 4px 24px;
+  padding: 8px 24px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -393,11 +393,14 @@
   z-index: 2;
 }
 .dx-v2-clients-daemon-unified-row .label {
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  color: #f59e0b;
-  margin-right: 8px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: none;
+  color: var(--dx-v2-text-muted);
+  margin-right: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 .dx-v2-clients-unified-list {
   display: flex;
@@ -406,21 +409,25 @@
 }
 .dx-v2-clients-unified-item {
   font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 700;
-  color: #fde68a;
-  background: rgba(253, 230, 138, 0.05);
-  padding: 2px 8px;
-  border-radius: var(--dx-v2-rounded-sm);
-  border: 1px solid rgba(253, 230, 138, 0.15);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--dx-v2-text-base);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 3px 10px;
+  border-radius: var(--dx-v2-rounded-md);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+.dx-v2-clients-unified-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
 }
 .dx-v2-clients-unified-item i {
-  font-size: 8px;
-  color: #fde68a;
-  opacity: 0.5;
+  font-size: 10px;
+  color: var(--dx-v2-text-muted);
 }
 .dx-v2-clients-hardware-id-wrap {
   display: flex;
