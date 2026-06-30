@@ -2,7 +2,18 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.2.9
+> **Version:** v3.3.0
+
+## [2026-06-30 09:30] — Feature: Vista Global de Licencias Unificadas ✅
+
+### Added
+- **UI / Inventario**: Creada una nueva vista global "Licencias Unificadas" (`/clientes/unificadas`) que lista y filtra todos los clientes que tienen `other_installs` (múltiples Sold-Tos asociados).
+- **Controlador**: Añadido método `unified()` en `ClientController` con paginación optimizada para no cargar todo el modelo de golpe.
+- **Botón Global**: Incluido botón "Licencias Unificadas" en el menú principal del directorio de inventario (`index.blade.php`), al lado de los filtros por vendor, sin romper el diseño responsive.
+- **CSS**: Estilizada la vista de licencias unificadas siguiendo la arquitectura CSS modular de `DESIGN.md`, trasladando los estilos inline a `dx-v2-clients.css` (clases `dx-v2-unified-*`).
+
+### Changed
+- **Buscador Directorio**: Mejorado el ancho dinámico del buscador principal (`min-width: 450px`, `max-width: 800px`) en el directorio de clientes para evitar el truncamiento del placeholder "Buscar clientes por nombre o identificador...".
 
 ## [2026-06-30 08:30] — Mejora Visual: UI Sold-Tos Unificados y Fix N8N ✅
 
