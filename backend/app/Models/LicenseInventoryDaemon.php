@@ -21,6 +21,7 @@ class LicenseInventoryDaemon extends Model
         'hardware_id',
         'version',
         'type',
+        'status',
     ];
 
     protected $casts = [
@@ -56,5 +57,21 @@ class LicenseInventoryDaemon extends Model
             return 'moldex';
         }
         return 'siemens';
+    }
+
+    /**
+     * Scope to only include active daemons.
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('status', 'active');
+    }
+
+    /**
+     * Scope to only include dropped daemons.
+     */
+    public function scopeDropped($query)
+    {
+        return $query->where('status', 'dropped');
     }
 }
