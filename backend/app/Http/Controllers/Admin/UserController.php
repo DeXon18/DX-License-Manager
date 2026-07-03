@@ -68,7 +68,7 @@ class UserController extends Controller
             'is_active' => $request->has('is_active'),
         ]);
 
-        $user->assignRole($request->role_id);
+        $user->assignRole((int) $request->role_id);
         $user->syncPermissions($request->input('permissions', []));
 
         // Enviar notificación con credenciales
@@ -123,7 +123,7 @@ class UserController extends Controller
         }
 
         $user->update($data);
-        $user->syncRoles([$request->role_id]);
+        $user->syncRoles([(int) $request->role_id]);
         $user->syncPermissions($request->input('permissions', []));
 
         return redirect()->route('admin.users.index')->with('success', 'Usuario actualizado correctamente.');
