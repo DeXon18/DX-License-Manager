@@ -1,0 +1,41 @@
+
+
+.imputation-badge {
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.imputation-100052480 { background: #e0f2fe; color: #0284c7; }
+.imputation-100052479 { background: #dcfce7; color: #16a34a; }
+.imputation-100052478 { background: #fef9c3; color: #ca8a04; }
+.imputation-SOPORTE { background: #f3f4f6; color: #4b5563; border: 1px solid #d1d5db; }
+
+.tt-row td {
+    transition: background-color 0.2s ease;
+}
+.tt-row-100052480:hover td { background-color: rgba(2, 132, 199, 0.12) !important; }
+.tt-row-100052479:hover td { background-color: rgba(22, 163, 74, 0.12) !important; }
+.tt-row-100052478:hover td { background-color: rgba(202, 138, 4, 0.12) !important; }
+.tt-row-SOPORTE:hover td { background-color: rgba(255, 255, 255, 0.04) !important; }
+
+[x-cloak] { display: none !important; }
+
+/* Inline styles moved to CSS */
+.tt-card-container {
+    min-height: 400px;
+}
+
+.tt-loading-text {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.tt-client-name {
+    color: var(--text);
+}
+
+.tt-empty-icon {
+    opacity: 0.2;
+}

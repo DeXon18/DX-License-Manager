@@ -72,6 +72,9 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::post('/herramientas/cod/{uuid}/upload-signed', [\App\Http\Controllers\Tools\CodController::class, 'uploadSigned'])->name('tools.cod.upload-signed');
     Route::get('/herramientas/cod/download-signed', [\App\Http\Controllers\Tools\CodController::class, 'downloadSigned'])->name('tools.cod.download-signed');
 
+    Route::get('/herramientas/imputacion-horas', [\App\Http\Controllers\TimeTrackingController::class, 'index'])->name('tools.time-tracking.index');
+    Route::get('/herramientas/imputacion-horas/search', [\App\Http\Controllers\TimeTrackingController::class, 'search'])->name('tools.time-tracking.search');
+
     
     Route::post('/clientes/{client}/contactos', [ContactController::class, 'store'])->middleware('permission:technician')->name('contacts.store');
     Route::put('/clientes/{client}/contactos/{contact}', [ContactController::class, 'update'])->middleware('permission:technician')->name('contacts.update');

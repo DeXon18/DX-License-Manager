@@ -123,7 +123,10 @@
             
             <div class="sidebar-section">
                 <div class="sidebar-heading">Herramientas</div>
-                <a class="sidebar-item {{ request()->routeIs('tools.*') ? 'active' : '' }}" href="{{ route('tools.index') }}">
+                <a class="sidebar-item {{ request()->routeIs('tools.time-tracking.*') ? 'active' : '' }}" href="{{ route('tools.time-tracking.index') }}">
+                    <span class="sidebar-icon">⏱️</span> Imputación Horas
+                </a>
+                <a class="sidebar-item {{ request()->routeIs('tools.index') ? 'active' : '' }}" href="{{ route('tools.index') }}">
                     <span class="sidebar-icon">🛠️</span> Hub de Utilidades
                 </a>
             </div>
