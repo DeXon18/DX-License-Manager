@@ -2,7 +2,20 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.4.0
+> **Version:** v3.5.0
+
+## [2026-07-03 11:06] — Feature: Migración Avanzada RBAC a Spatie y Rediseño UI ✅
+
+### Added
+- **Autorización (Spatie)**: Migrado el sistema de roles estáticos al paquete dinámico `spatie/laravel-permission` (v6.25).
+- **Rediseño UI**: Implementado un diseño corporativo ("Premium Full-Width") en las vistas de Edición y Creación de usuarios, con tarjetas simétricas y un grid de 4 columnas para permisos granulares.
+
+### Changed
+- **Motor de Autenticación**: Reemplazado el middleware propio `CheckPermission` por el nativo de Spatie.
+- **Relaciones de Usuario**: Eliminada la columna `role_id` en la tabla `users` preservando los usuarios mediante una migración automática. La vinculación ahora usa tablas pivote polimórficas (`model_has_roles`, `model_has_permissions`).
+
+### Fixed
+- **Perfil de Usuario**: Actualizada la lógica de la vista Mi Perfil (`profile/index.blade.php`) para extraer la relación del rol desde la nueva colección de Spatie (`$user->roles`).
 
 ## [2026-07-03 10:35] — Feature: Herramienta de Imputación de Horas (Time Tracking) ✅
 
