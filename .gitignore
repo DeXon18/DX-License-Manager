@@ -50,3 +50,6 @@ desktop.ini
 backup_pre_normalization.sql
 task.md
 management/task.md
+
+# --- Carpetas excluidas por el usuario ---
+X__Carpeta Temporal/
