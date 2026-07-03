@@ -55,9 +55,12 @@ DX License Manager
 │   │   ├── HEEDS ✅ (RCTECH)
 │   │   ├── COD ✅ (Generador + Asistente IA)
 │   │   └── Recursos & enlaces ✅
-│   └── Moldex3D | Software de simulación de moldeo por inyección de plástico
-│       ├── Moldex3D ✅ (Parser .mac + Sincronización)
-│       └── Recursos & enlaces ✅
+│   ├── Moldex3D | Software de simulación de moldeo por inyección de plástico
+│   │   ├── Moldex3D ✅ (Parser .mac + Sincronización)
+│   │   └── Recursos & enlaces ✅
+│   └── Utilidades Generales
+│       ├── Imputación de Horas ✅ (Buscador Jira/Trello)
+│       └── Soporte IT & Chatbot ✅ (Contacto y Asistente IA Web)
 └── 8. Sistema y configuración ✅
     ├── Dashboard del sistema ✅ (NOC Pro + Brand Icons)
     ├── Usuarios y acceso ✅
@@ -84,8 +87,9 @@ DX License Manager
     ├── Integraciones IA ✅
     │   ├── Gemini ✅ (Flash 3.1)
     │   ├── Deepseek ✅
-    │   ├── OpenRouter ✅
+    │   ├── OpenRouter Hub ✅ (Enrutador dinámico)
     │   ├── Telegram Bot ✅
+    │   ├── Panel de Facturación IA ✅ (Auditoría de Costes)
     │   └── Estado de conexión ✅
     └── Logs y auditoría ✅
         ├── Logs de actividad ✅
