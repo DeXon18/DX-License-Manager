@@ -147,13 +147,6 @@
 
     <!-- Licencias Tab (Inventario Activo) -->
     <div x-show="tab === 'licenses'" x-cloak>
-        <div class="flex justify-end mb-4">
-            <button @click="showDropped = !showDropped" class="dx-v2-ui-btn dx-v2-ui-btn-secondary" style="font-size: 11px; padding: 6px 12px;">
-                <i class="fa-solid fa-eye" x-show="!showDropped"></i>
-                <i class="fa-solid fa-eye-slash" x-show="showDropped" x-cloak></i>
-                <span x-text="showDropped ? 'Ocultar Inactivos (Bajas)' : 'Ver Inactivos (Bajas)'"></span>
-            </button>
-        </div>
         <div class="dx-v2-clients-inv-container">
             @forelse($inventoryBySoldTo as $soldTo => $daemons)
                 <div class="dx-v2-clients-soldto-block" style="{{ $loop->last ? 'margin-bottom: 0 !important;' : '' }}">
@@ -165,11 +158,22 @@
                                 <div class="dx-v2-clients-soldto-id">{{ $soldTo }}</div>
                             </div>
                         </div>
-                        <div class="tech-label dx-v2-clients-soldto-header-right">Active Inventory</div>
+                        <div class="tech-label dx-v2-clients-soldto-header-right" style="display: flex; gap: 12px; align-items: center;">
+                            <span>Active Inventory</span>
+                            @if($daemons->where('status', 'dropped')->count() > 0)
+                                <button @click="showDropped = !showDropped" style="border: none; background: rgba(0,0,0,0.05); padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;">
+                                    <i class="fa-solid" :class="showDropped ? 'fa-eye-slash' : 'fa-eye'"></i>
+                                    <span x-text="showDropped ? 'Ocultar Daemons Baja' : 'Ver Daemons Baja'"></span>
+                                </button>
+                            @endif
+                        </div>
                     </div>
 
                     @foreach($daemons as $daemon)
-                        <div x-data="{ showSuperseded: false }" 
+                        @php
+                            $droppedProductsCount = $daemon->products->where('status', 'dropped')->count();
+                        @endphp
+                        <div x-data="{ showSuperseded: false, showDroppedProducts: false }" 
                              class="dx-v2-clients-daemon-card {{ $daemon->vendor }} {{ !empty($daemon->additional_sold_tos) ? 'unified-card' : '' }}"
                              @if($daemon->status === 'dropped') x-show="showDropped" x-cloak x-transition style="opacity: 0.6; filter: grayscale(1);" @endif>
                             @if(!empty($daemon->additional_sold_tos))
@@ -218,6 +222,16 @@
                                         @endif
                                     </div>
                                 </div>
+                                
+                                @if($droppedProductsCount > 0)
+                                    <div class="dx-v2-clients-daemon-header-col">
+                                        <span class="tech-label">Prod. en Baja</span>
+                                        <button @click="showDroppedProducts = !showDroppedProducts" class="dx-v2-clients-daemon-badge" style="cursor: pointer; background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1); color: var(--muted); display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px;">
+                                            <i class="fa-solid" :class="showDroppedProducts ? 'fa-eye-slash' : 'fa-eye'" style="font-size: 10px;"></i>
+                                            <span x-text="showDroppedProducts ? 'Ocultar' : 'Ver ({{ $droppedProductsCount }})'"></span>
+                                        </button>
+                                    </div>
+                                @endif
 
                                 <div class="dx-v2-clients-daemon-header-col" style="display: flex; gap: 6px;">
                                     <form action="{{ route('inventory.daemon.toggle-status', $daemon) }}" method="POST" onsubmit="return confirm('¿{{ $daemon->status === 'dropped' ? 'Reactivar' : 'Dar de Baja' }} este servidor?')">
@@ -269,7 +283,7 @@
                                         <tr class="dx-v2-clients-product-row {{ $isSuperseded ? 'superseded' : '' }} {{ $isDropped ? 'dropped' : '' }} {{ $product->status !== 'active' ? 'inactive' : '' }}" 
                                             style="{{ $isSuperseded || $isDropped ? 'opacity: 0.6; filter: grayscale(1);' : '' }}" 
                                             @if($isSuperseded) x-show="showSuperseded" x-cloak x-transition @endif
-                                            @if($isDropped) x-show="showDropped" x-cloak x-transition @endif>
+                                            @if($isDropped) x-show="showDroppedProducts" x-cloak x-transition @endif>
                                             <td class="dx-v2-clients-product-code">{{ $product->product_code }}</td>
                                             <td>
                                                 {{ $product->description }}
