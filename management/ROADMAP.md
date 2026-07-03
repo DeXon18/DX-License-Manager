@@ -381,6 +381,19 @@ DX License Manager
 
 ---
 
+### ✅ Fase 11.5 — Migración a Spatie RBAC y Rediseño UI ✅ COMPLETADA
+
+**Estado:** COMPLETADA
+**Validación:** ✅ Verificado por Oskar el 2026-07-03.
+**Descripción:** Evolución del sistema de permisos de legacy estático a dinámico con Spatie y rediseño de interfaz corporativo.
+
+- [x] Migración de `CheckPermission` a `spatie/laravel-permission` v6.25.
+- [x] Script de migración de datos automático (`role_id` a `model_has_roles`).
+- [x] Rediseño Premium Full-Width de las vistas de Edición y Creación de usuarios.
+- [x] Implementación de Bento grid de 4 columnas para asignar permisos granulares individuales.
+
+---
+
 ### ✅ Fase 12 — Repositorio de Licencias
  
 **Estado:** COMPLETADA
