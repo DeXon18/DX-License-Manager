@@ -2,7 +2,13 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.5.0
+> **Version:** v3.6.1
+
+## [2026-07-03 13:25] — Hotfix: Resolución de bug al asignar roles (Spatie) en Producción ✅
+
+### Fixed
+- **Roles**: Corregido Error 500 (`RoleDoesNotExist`) al asignar o actualizar roles de usuario, causado por buscar el ID del rol como string (nombre) en lugar de entero.
+- **Despliegue**: Sincronizado entorno de Producción y base de datos con los últimos cambios de `dev` (Spatie RBAC y Status en inventario).
 
 ## [2026-07-03 11:06] — Feature: Migración Avanzada RBAC a Spatie y Rediseño UI ✅
 

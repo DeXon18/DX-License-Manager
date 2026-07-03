@@ -1,5 +1,5 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-07-03 11:12  
+> Última actualización: 2026-07-03 13:30  
 > Sesión en: indeterminado  
 > Rama activa: dev
 
@@ -7,7 +7,7 @@
 
 ## Estado General
 
-**Fase actual:** Sistema de Autorización y Permisos (Spatie RBAC) completado  
+**Fase actual:** Fase 4 — Spatie RBAC y unificación ✅ Completada  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,36 +15,37 @@
 
 ## Qué se hizo en esta sesión
 
-- Se migró el sistema nativo y estático `CheckPermission` a la librería `spatie/laravel-permission` (v6.25).
-- Se ejecutó una migración de datos que lee todos los `role_id` existentes en `users`, les asigna un rol dinámico en `model_has_roles` y finalmente elimina la columna `role_id` obsoleta para que no haya pérdida de datos en Producción.
-- Se rediseñó por completo las vistas `admin/users/create.blade.php` y `admin/users/edit.blade.php` con un formato Premium Full-Width (Bento grid de 2 columnas arriba y 4 columnas de checkboxes abajo).
-- Se modificó la vista de Perfil (`profile/index.blade.php`) para interactuar correctamente con `$user->roles`.
-- Se creó y fusionó el Pull Request de la rama `feature/advanced-rbac` hacia la rama `dev`.
-- Documentado en CHANGELOG.md (con bump a v3.5.0) y BACKLOG.md.
+- Se migró el inventario para añadir las columnas `status` y `dropped` en Producción.
+- Se instaló Spatie RBAC en Producción ejecutando migraciones y seeders (`PermissionSeeder`).
+- Se unificó `dev` a `main` resolviendo los problemas del Error 500 al hacer toggle de licencias en Producción.
+- Se reparó el código de asignación de roles de usuario (`UserController@update` y `@store`) que estaba causando una excepción `RoleDoesNotExist` en producción debido al casteo string vs entero de Spatie.
+- Se generó el release tag `v3.6.0-spatie-rbac-ok`.
+- Producción está totalmente funcional con Spatie RBAC y las nuevas vistas.
+- Se actualizó el versionado a `v3.6.1` en el CHANGELOG y se dejó documentado el fix.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Revisar el BACKLOG en la sección de ideas pendientes, o solicitar al desarrollador Oskar el próximo objetivo prioritario del Roadmap/Backlog para el desarrollo general de la app.
+Revisar el BACKLOG.md para escoger la próxima feature a desarrollar (posiblemente seguir con la sección de renovación de licencias o telemetría).
 
 ### Tareas siguientes
-1. Esperar despliegue de dev a main en el futuro.
-2. Definir próximos requisitos de negocio.
+1. Continuar con implementaciones del backlog.
+2. Hacer refactoring del bug encontrado en los logs sobre la vista de herramientas.
 
 ---
 
 ## Contexto técnico importante
 
-- Ahora las rutas y vistas pueden usar `@role('admin')` o `$user->can('manage alerts')`. Los middleware también se cambiaron en `app.php` a `role` y `permission` en vez de `auth.role`.
-- La caché de Spatie para permisos está configurada y se purga sola, pero si hay problemas en producción en el futuro acordarse de limpiar caché.
+- Hubo un error antiguo en los logs: `Attempt to read property 'label' on null originado en tools/resources.blade.php`. No fue provocado por el cambio actual, pero vale la pena revisarlo en el futuro.
+- Producción y Desarrollo (`dev`) están completamente sincronizados.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-Ninguno
+Ninguno. Producción está 100% sana.
 
 ---
 
