@@ -71,12 +71,54 @@
                     <p class="dx-v2-users-security-desc" style="margin-top: 0; margin-bottom: 16px;">
                         Selecciona permisos adicionales para este usuario. Estos se sumarán a los que ya le otorga su rol principal.
                     </p>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px;">
-                        @foreach($permissions as $permission)
-                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dark); cursor: pointer; padding: 6px; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='var(--surface-hover)'" onmouseout="this.style.background='transparent'">
-                                <input type="checkbox" name="permissions[]" value="{{ $permission->name }}" {{ is_array(old('permissions')) && in_array($permission->name, old('permissions')) ? 'checked' : '' }} style="accent-color: var(--primary); width: 16px; height: 16px;">
-                                <span>{{ ucwords(str_replace('_', ' ', $permission->name)) }}</span>
-                            </label>
+                    <div style="display: flex; flex-direction: column; gap: 24px;">
+                        @php
+                            $permissionCategories = [
+                                'Administración' => [
+                                    'manage system' => 'Telemetría y Sistema',
+                                    'manage users' => 'Gestión de Usuarios',
+                                    'manage backups' => 'Copias de Seguridad',
+                                    'manage ai' => 'Modelos y Rutas IA',
+                                    'manage imports' => 'Importación de Datos',
+                                    'manage normalization' => 'Normalización de BD',
+                                ],
+                                'Gestión y Operaciones' => [
+                                    'manage inventory' => 'Inventario de Licencias',
+                                    'manage clients' => 'Gestión de Clientes',
+                                    'manage cloud accounts' => 'Cuentas Cloud',
+                                    'manage contacts' => 'Contactos de Clientes',
+                                    'manage alerts' => 'Configuración de Alertas',
+                                    'manage resources' => 'Recursos y Enlaces',
+                                ],
+                                'Herramientas' => [
+                                    'access nx suite tool' => 'Herramienta: NX Suite',
+                                    'access star ccm tool' => 'Herramienta: STAR-CCM+',
+                                    'access heeds tool' => 'Herramienta: HEEDS',
+                                    'access moldex3d tool' => 'Herramienta: Moldex3D',
+                                    'access cod tool' => 'Herramienta: Certificados (COD)',
+                                    'access time tracking tool' => 'Imputación de Horas',
+                                    'access renewal planner' => 'Planificador de Renovaciones',
+                                ],
+                                'Visualización Básica' => [
+                                    'view clients' => 'Ver Fichas de Clientes',
+                                    'view inventory' => 'Ver Inventario Global',
+                                    'view reports' => 'Ver Reportes y Analítica'
+                                ]
+                            ];
+                        @endphp
+
+                        @foreach($permissionCategories as $categoryName => $perms)
+                            <div>
+                                <h4 style="font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">{{ $categoryName }}</h4>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; background: var(--surface-light); padding: 16px; border-radius: 8px; border: 1px solid var(--border);">
+                                    @foreach($perms as $permName => $humanLabel)
+                                        <label style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-dark); cursor: pointer; padding: 6px; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='var(--background)'" onmouseout="this.style.background='transparent'">
+                                            <input type="checkbox" name="permissions[]" value="{{ $permName }}" {{ is_array(old('permissions')) && in_array($permName, old('permissions')) ? 'checked' : '' }} style="accent-color: var(--primary); width: 16px; height: 16px;">
+                                            <span>{{ $humanLabel }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
+                            </div>
                         @endforeach
                     </div>
                 </div>
