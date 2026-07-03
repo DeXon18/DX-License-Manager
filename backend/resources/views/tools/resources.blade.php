@@ -44,7 +44,7 @@
                     <span class="dx-v2-resources-sidebar-action-title">Modo Edición</span>
                 </div>
                 <p class="dx-v2-resources-sidebar-action-text">
-                    Como tienes permisos de {{ auth()->user()->role->label }}, puedes gestionar los enlaces pasando el ratón sobre cada tarjeta.
+                    Como tienes permisos de {{ ucfirst(auth()->user()->roles->first()?->name ?? 'edición') }}, puedes gestionar los enlaces pasando el ratón sobre cada tarjeta.
                 </p>
             </div>
         @endif
