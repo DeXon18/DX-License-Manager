@@ -1,6 +1,0 @@
-Rama activa: dev. Fase actual.
-Último trabajo: Renombrado de placeholders en COD Generator a "LM Host (MAC)" y despliegue a dev y main.
-Estado: Los cambios están commiteados en dev y main, pero falta desplegar a producción.
-Próximo paso inmediato: Ejecutar ./scripts/deploy-prod.sh para pasar los cambios a producción.
-Bloqueos: ninguno.
-Stack beta: Indeterminado (acceso desde host local). Stack prod: Indeterminado.
