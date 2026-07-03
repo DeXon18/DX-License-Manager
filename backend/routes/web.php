@@ -82,7 +82,10 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::delete('/clientes/{client}/enterprise-cloud-accounts/{enterpriseCloudAccount}', [\App\Http\Controllers\EnterpriseCloudAccountController::class, 'destroy'])->middleware('permission:technician')->name('enterprise-cloud-accounts.destroy');
 
     Route::delete('/inventory/daemon/{daemon}', [\App\Http\Controllers\InventoryController::class, 'destroyDaemon'])->middleware('permission:technician')->name('inventory.daemon.destroy');
+    Route::post('/inventory/daemon/{daemon}/toggle-status', [\App\Http\Controllers\InventoryController::class, 'toggleDaemonStatus'])->middleware('permission:technician')->name('inventory.daemon.toggle-status');
+    
     Route::delete('/inventory/product/{product}', [\App\Http\Controllers\InventoryController::class, 'destroyProduct'])->middleware('permission:technician')->name('inventory.product.destroy');
+    Route::post('/inventory/product/{product}/toggle-status', [\App\Http\Controllers\InventoryController::class, 'toggleProductStatus'])->middleware('permission:technician')->name('inventory.product.toggle-status');
 
     if (config('app.env') !== 'beta') {
         Route::prefix('reports')->name('reports.')->middleware('permission:technician')->group(function () {
