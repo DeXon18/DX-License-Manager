@@ -62,8 +62,8 @@ DX License Manager
     ├── Dashboard del sistema ✅ (NOC Pro + Brand Icons)
     ├── Usuarios y acceso ✅
     │   ├── Listado de usuarios ✅
-    │   ├── Crear / Editar usuario ✅
-    │   └── Roles y permisos ✅
+    │   ├── Crear / Editar usuario (Rediseño Premium) ✅
+    │   └── Roles y Permisos Granulares (Spatie RBAC) ✅
     ├── Datos e importación ✅
     │   ├── Importar CSV ✅
     │   ├── Historial de importaciones ✅
