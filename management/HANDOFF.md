@@ -1,53 +1,50 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-07-03 07:53  
-> Sesión en: local (Windows)  
+> Última actualización: 2026-07-03 11:12  
+> Sesión en: indeterminado  
 > Rama activa: dev
 
 ---
 
 ## Estado General
 
-**Fase actual:** Fase 29 — AI Routing Hub ✅ Completada. En espera de nuevas tareas.  
-**Stack beta:** ⚠️ indeterminado (SSH no disponible en esta sesión)  
-**Stack prod:** ⚠️ indeterminado (SSH no disponible en esta sesión)  
+**Fase actual:** Sistema de Autorización y Permisos (Spatie RBAC) completado  
+**Stack beta:** ✅ running  
+**Stack prod:** ✅ running  
 
 ---
 
 ## Qué se hizo en esta sesión
 
-- **Limpieza crítica de git:** `.agent/` estaba completamente rastreado en `dev` y `main` (327 archivos).
-- Actualizado `.gitignore` → excluye `.agent/` completo (antes solo excluía `secrets/` y `brain/`).
-- Ejecutado `git rm -r --cached .agent/` en ambas ramas.
-- Commiteado y pusheado en `dev` y `main` exitosamente.
-- `.agent/` es ahora **local-only** en todos los entornos.
+- Se migró el sistema nativo y estático `CheckPermission` a la librería `spatie/laravel-permission` (v6.25).
+- Se ejecutó una migración de datos que lee todos los `role_id` existentes en `users`, les asigna un rol dinámico en `model_has_roles` y finalmente elimina la columna `role_id` obsoleta para que no haya pérdida de datos en Producción.
+- Se rediseñó por completo las vistas `admin/users/create.blade.php` y `admin/users/edit.blade.php` con un formato Premium Full-Width (Bento grid de 2 columnas arriba y 4 columnas de checkboxes abajo).
+- Se modificó la vista de Perfil (`profile/index.blade.php`) para interactuar correctamente con `$user->roles`.
+- Se creó y fusionó el Pull Request de la rama `feature/advanced-rbac` hacia la rama `dev`.
+- Documentado en CHANGELOG.md (con bump a v3.5.0) y BACKLOG.md.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Verificar si hay deploy pendiente del COD Generator (renombrado de placeholders a "LM Host (MAC)"). El `last_brain` anterior indicaba que los cambios estaban en `dev` y `main` pero faltaba ejecutar `./scripts/deploy-prod.sh`. Confirmar con Oskar si sigue pendiente.
+Revisar el BACKLOG en la sección de ideas pendientes, o solicitar al desarrollador Oskar el próximo objetivo prioritario del Roadmap/Backlog para el desarrollo general de la app.
 
 ### Tareas siguientes
-1. Definir con Oskar las tareas de la próxima fase del ROADMAP.
+1. Esperar despliegue de dev a main en el futuro.
+2. Definir próximos requisitos de negocio.
 
 ---
 
 ## Contexto técnico importante
 
-**CAMBIO ARQUITECTURAL IMPORTANTE — 2026-07-03:**  
-`.agent/` ya NO está en git. Consecuencias:
-- `last_brain` y `brain_history/` son **solo locales** — no se sincronizan entre PCs via git.
-- En otro PC, `.agent/` deberá reinstalarse manualmente o copiarse.
-- `management/HANDOFF.md` es la única fuente de verdad inter-sesión en git.
-- El `.gitignore` correcto ya está pusheado en `dev` y `main`.
+- Ahora las rutas y vistas pueden usar `@role('admin')` o `$user->can('manage alerts')`. Los middleware también se cambiaron en `app.php` a `role` y `permission` en vez de `auth.role`.
+- La caché de Spatie para permisos está configurada y se purga sola, pero si hay problemas en producción en el futuro acordarse de limpiar caché.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-- SSH MCP (`ssh-local`) no disponible en esta sesión — estado real de los stacks Docker desconocido.
-- Verificar manualmente que `nginx-beta`, `dx-php-beta`, `mariadb-beta` y `redis-beta` siguen up.
+Ninguno
 
 ---
 
@@ -55,22 +52,22 @@ Verificar si hay deploy pendiente del COD Generator (renombrado de placeholders 
 
 | Archivo | Estado |
 |:---|:---|
-| `infra/.env.prod` | ✅ configurado (no en git) |
-| `infra/.env.beta` | ✅ configurado (no en git) |
-| `.gitignore` | ✅ actualizado — `.agent/` excluido completo |
-| `management/HANDOFF.md` | ✅ este archivo |
+| `infra/.env.prod` | ✅ configurado |
+| `infra/.env.beta` | ✅ configurado |
+| `backend/.env` | ✅ configurado |
+| `backend/vendor/` | ✅ instalado |
 
 ---
 
 ## Comandos útiles para la próxima sesión
 
 ```bash
-# Verificar stacks
-docker compose --project-directory /opt/web-projects/DX-License-Manager-DEV -f /opt/web-projects/DX-License-Manager-DEV/infra/docker-compose.beta.yml ps
-
 # Arrancar beta si está down
 docker compose --project-directory /opt/web-projects/DX-License-Manager-DEV -f /opt/web-projects/DX-License-Manager-DEV/infra/docker-compose.beta.yml up -d
 
-# Deploy a producción (si procede)
-./scripts/deploy-prod.sh
+# Entrar al contenedor PHP
+docker exec -it dx-php-beta sh
+
+# Ver logs en tiempo real
+docker compose --project-directory /opt/web-projects/DX-License-Manager-DEV -f /opt/web-projects/DX-License-Manager-DEV/infra/docker-compose.beta.yml logs -f nginx-beta
 ```

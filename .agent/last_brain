@@ -1,0 +1,6 @@
+Rama activa: dev. Fase: Sistema de Autorización y Permisos.
+Último trabajo: Migración del motor de autorización estático `CheckPermission` a `spatie/laravel-permission` (v6.25). Se migró la base de datos limpiando la columna `role_id` en usuarios y rediseñando por completo los formularios de Creación y Edición de usuarios con un grid "Premium Full-Width" para permisos granulares individuales. Todo se mergeó limpiamente a dev y se documentó en CHANGELOG y BACKLOG.
+Estado: Funcional y mergeado. UI operativa, base de datos de Beta alineada y cache limpiada.
+Próximo paso inmediato: Recibir la próxima directriz u objetivo prioritario de Oskar.
+Bloqueos: Ninguno.
+Stack beta: running. Stack prod: running.
