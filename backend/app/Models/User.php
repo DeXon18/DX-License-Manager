@@ -6,11 +6,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -21,7 +22,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id',
         'is_active',
         'has_seen_tour',
     ];
@@ -49,22 +49,6 @@ class User extends Authenticatable
             'is_active' => 'boolean',
             'has_seen_tour' => 'boolean',
         ];
-    }
-
-    /**
-     * Get the role associated with the user.
-     */
-    public function role()
-    {
-        return $this->belongsTo(Role::class);
-    }
-
-    /**
-     * Check if the user has a specific role.
-     */
-    public function hasRole(string $slug): bool
-    {
-        return $this->role && $this->role->slug === $slug;
     }
 
     public function isAdmin(): bool

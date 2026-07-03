@@ -32,8 +32,8 @@
             <select name="role" class="dx-v2-form-select dx-v2-users-filter-select" onchange="this.form.submit()">
                 <option value="">Todos los roles</option>
                 @foreach($roles as $role)
-                    <option value="{{ $role->slug }}" {{ request('role') == $role->slug ? 'selected' : '' }}>
-                        {{ $role->name }}
+                    <option value="{{ $role->name }}" {{ request('role') == $role->name ? 'selected' : '' }}>
+                        {{ ucfirst($role->name) }}
                     </option>
                 @endforeach
             </select>
@@ -73,7 +73,7 @@
                             @elseif($user->isTechnician()) badge-primary
                             @elseif($user->isStaff()) badge-info
                             @else badge-muted @endif">
-                            {{ $user->role->name ?? 'Sin Rol' }}
+                            {{ ucfirst($user->roles->first()->name ?? 'Sin Rol') }}
                         </span>
                     </td>
                     <td>

@@ -61,16 +61,34 @@
                 <div class="dx-v2-form-group">
                     <label for="role_id" class="dx-v2-form-label">ROL EN EL SISTEMA</label>
                     <select name="role_id" id="role_id" class="dx-v2-form-select" required>
+                        @php $currentRoleId = $user->roles->first()->id ?? null; @endphp
                         @foreach($roles as $role)
-                            <option value="{{ $role->id }}" {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>
-                                {{ $role->name }} — {{ $role->description }}
+                            <option value="{{ $role->id }}" {{ old('role_id', $currentRoleId) == $role->id ? 'selected' : '' }}>
+                                {{ ucfirst($role->name) }}
                             </option>
                         @endforeach
                     </select>
                     @error('role_id') <p class="date-sub">{{ $message }}</p> @enderror
                 </div>
 
-                <div class="dx-v2-form-group" x-data="{ active: {{ $user->is_active ? 'true' : 'false' }} }">
+                <div class="dx-v2-users-security-box" style="margin-top: 24px;">
+                    <div class="dx-v2-users-security-title" style="color: var(--primary);">
+                        <i class="fas fa-sliders-h me-2"></i>Permisos Especiales (Individuales)
+                    </div>
+                    <p class="dx-v2-users-security-desc" style="margin-top: 0; margin-bottom: 16px;">
+                        Selecciona permisos adicionales para este usuario. Estos se sumarán a los que ya le otorga su rol principal.
+                    </p>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px;">
+                        @foreach($permissions as $permission)
+                            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dark); cursor: pointer; padding: 6px; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='var(--surface-hover)'" onmouseout="this.style.background='transparent'">
+                                <input type="checkbox" name="permissions[]" value="{{ $permission->name }}" {{ (is_array(old('permissions')) && in_array($permission->name, old('permissions'))) || (!old('permissions') && $user->hasDirectPermission($permission->name)) ? 'checked' : '' }} style="accent-color: var(--primary); width: 16px; height: 16px;">
+                                <span>{{ ucwords(str_replace('_', ' ', $permission->name)) }}</span>
+                            </label>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="dx-v2-form-group" x-data="{ active: {{ $user->is_active ? 'true' : 'false' }} }" style="margin-top: 24px;">
                     <div class="dx-v2-users-switch-box">
                         <div>
                             <div class="dx-v2-users-switch-title">Usuario Activo</div>

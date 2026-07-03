@@ -74,7 +74,7 @@ class AuthController extends Controller
         $token = $this->jwtService->generate([
             'sub' => $user->id,
             'name' => $user->name,
-            'role' => $user->role->slug ?? 'viewer',
+            'role' => $user->roles->first()->name ?? 'viewer',
         ]);
 
         // Store in HttpOnly Cookie (15 minutes)
