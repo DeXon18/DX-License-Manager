@@ -55,15 +55,18 @@ DX License Manager
 │   │   ├── HEEDS ✅ (RCTECH)
 │   │   ├── COD ✅ (Generador + Asistente IA)
 │   │   └── Recursos & enlaces ✅
-│   └── Moldex3D | Software de simulación de moldeo por inyección de plástico
-│       ├── Moldex3D ✅ (Parser .mac + Sincronización)
-│       └── Recursos & enlaces ✅
+│   ├── Moldex3D | Software de simulación de moldeo por inyección de plástico
+│   │   ├── Moldex3D ✅ (Parser .mac + Sincronización)
+│   │   └── Recursos & enlaces ✅
+│   └── Utilidades Generales
+│       ├── Imputación de Horas ✅ (Buscador Jira/Trello)
+│       └── Soporte IT & Chatbot ✅ (Contacto y Asistente IA Web)
 └── 8. Sistema y configuración ✅
     ├── Dashboard del sistema ✅ (NOC Pro + Brand Icons)
     ├── Usuarios y acceso ✅
     │   ├── Listado de usuarios ✅
-    │   ├── Crear / Editar usuario ✅
-    │   └── Roles y permisos ✅
+    │   ├── Crear / Editar usuario (Rediseño Premium) ✅
+    │   └── Roles y Permisos Granulares (Spatie RBAC) ✅
     ├── Datos e importación ✅
     │   ├── Importar CSV ✅
     │   ├── Historial de importaciones ✅
@@ -84,8 +87,9 @@ DX License Manager
     ├── Integraciones IA ✅
     │   ├── Gemini ✅ (Flash 3.1)
     │   ├── Deepseek ✅
-    │   ├── OpenRouter ✅
+    │   ├── OpenRouter Hub ✅ (Enrutador dinámico)
     │   ├── Telegram Bot ✅
+    │   ├── Panel de Facturación IA ✅ (Auditoría de Costes)
     │   └── Estado de conexión ✅
     └── Logs y auditoría ✅
         ├── Logs de actividad ✅
@@ -378,6 +382,19 @@ DX License Manager
 - [x] Crear / Editar usuario con asignación de rol (Generación de contraseñas OK)
 - [x] Activar / Desactivar usuario (Toggle AJAX)
 - [x] Gestión de roles y permisos (Asignación funcional)
+
+---
+
+### ✅ Fase 11.5 — Migración a Spatie RBAC y Rediseño UI ✅ COMPLETADA
+
+**Estado:** COMPLETADA
+**Validación:** ✅ Verificado por Oskar el 2026-07-03.
+**Descripción:** Evolución del sistema de permisos de legacy estático a dinámico con Spatie y rediseño de interfaz corporativo.
+
+- [x] Migración de `CheckPermission` a `spatie/laravel-permission` v6.25.
+- [x] Script de migración de datos automático (`role_id` a `model_has_roles`).
+- [x] Rediseño Premium Full-Width de las vistas de Edición y Creación de usuarios.
+- [x] Implementación de Bento grid de 4 columnas para asignar permisos granulares individuales.
 
 ---
 

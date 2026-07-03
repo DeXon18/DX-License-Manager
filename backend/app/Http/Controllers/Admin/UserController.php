@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\Role;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -17,11 +18,11 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::with('role');
+        $query = User::with('roles');
 
         if ($request->filled('role')) {
-            $query->whereHas('role', function ($q) use ($request) {
-                $q->where('slug', $request->role);
+            $query->whereHas('roles', function ($q) use ($request) {
+                $q->where('name', $request->role);
             });
         }
 
@@ -41,7 +42,8 @@ class UserController extends Controller
     public function create()
     {
         $roles = Role::all();
-        return view('admin.users.create', compact('roles'));
+        $permissions = Permission::orderBy('name')->get();
+        return view('admin.users.create', compact('roles', 'permissions'));
     }
 
     public function store(Request $request)
@@ -51,6 +53,7 @@ class UserController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => $request->filled('password') ? 'required|string|min:8|confirmed' : 'nullable',
             'role_id' => 'required|exists:roles,id',
+            'permissions' => 'nullable|array',
             'is_active' => 'boolean',
         ]);
 
@@ -62,9 +65,11 @@ class UserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($password),
-            'role_id' => $request->role_id,
             'is_active' => $request->has('is_active'),
         ]);
+
+        $user->assignRole($request->role_id);
+        $user->syncPermissions($request->input('permissions', []));
 
         // Enviar notificación con credenciales
         $mailSent = true;
@@ -86,7 +91,8 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::all();
-        return view('admin.users.edit', compact('user', 'roles'));
+        $permissions = Permission::orderBy('name')->get();
+        return view('admin.users.edit', compact('user', 'roles', 'permissions'));
     }
 
     public function update(Request $request, User $user)
@@ -102,13 +108,13 @@ class UserController extends Controller
             ],
             'password' => 'nullable|string|min:8|confirmed',
             'role_id' => 'required|exists:roles,id',
+            'permissions' => 'nullable|array',
             'is_active' => 'boolean',
         ]);
 
         $data = [
             'name' => $request->name,
             'email' => $request->email,
-            'role_id' => $request->role_id,
             'is_active' => $request->has('is_active'),
         ];
 
@@ -117,6 +123,8 @@ class UserController extends Controller
         }
 
         $user->update($data);
+        $user->syncRoles([$request->role_id]);
+        $user->syncPermissions($request->input('permissions', []));
 
         return redirect()->route('admin.users.index')->with('success', 'Usuario actualizado correctamente.');
     }

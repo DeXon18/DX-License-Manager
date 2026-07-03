@@ -37,6 +37,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Feature: Migración Avanzada RBAC a Spatie y Rediseño UI ✅
+- **Completada:** 2026-07-03
+- **Rama:** `feature/advanced-rbac`
+- **Resumen:** Migrado el sistema de roles y permisos estáticos al paquete dinámico `spatie/laravel-permission` (v6.25). Rediseño corporativo ("Premium Full-Width") en las vistas de Edición y Creación de usuarios con grid de 4 columnas para permisos granulares.
+- **PR:** #[número] — merged a dev
+
 ### Fix: Detección de Hostname en Licencias Dongle USB ✅
 - **Completada:** 2026-06-12
 - **Rama:** `feature/fix-hostname-detection`

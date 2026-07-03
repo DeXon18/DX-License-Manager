@@ -37,14 +37,14 @@
             </p>
         </div>
 
-        @if(auth()->user()->role->slug !== 'viewer')
+        @if(!auth()->user()->hasRole('viewer'))
             <div class="dx-v2-resources-sidebar-action">
                 <div class="dx-v2-resources-sidebar-action-header">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                     <span class="dx-v2-resources-sidebar-action-title">Modo Edición</span>
                 </div>
                 <p class="dx-v2-resources-sidebar-action-text">
-                    Como tienes permisos de {{ auth()->user()->role->label }}, puedes gestionar los enlaces pasando el ratón sobre cada tarjeta.
+                    Como tienes permisos de {{ ucfirst(auth()->user()->roles->first()?->name ?? 'edición') }}, puedes gestionar los enlaces pasando el ratón sobre cada tarjeta.
                 </p>
             </div>
         @endif

@@ -41,14 +41,22 @@
                 <div class="form-group">
                     <label>ROL ASIGNADO</label>
                     <div style="padding: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--muted); font-size: 14px;">
+                        @php 
+                            $primaryRole = $user->roles->first(); 
+                            $roleName = $primaryRole ? $primaryRole->name : 'viewer';
+                            $descriptions = [
+                                'admin' => 'Acceso total al sistema y configuración.',
+                                'technician' => 'Acceso operativo y de gestión.',
+                                'viewer' => 'Acceso de solo lectura.'
+                            ];
+                        @endphp
                         <span class="badge 
-                            @if($user->isAdmin()) badge-danger 
-                            @elseif($user->isTechnician()) badge-primary
-                            @elseif($user->isStaff()) badge-info
+                            @if($user->hasRole('admin')) badge-danger 
+                            @elseif($user->hasRole('technician')) badge-primary
                             @else badge-muted @endif" style="margin-right: 8px;">
-                            {{ $user->role->name }}
+                            {{ ucfirst($roleName) }}
                         </span>
-                        {{ $user->role->description }}
+                        {{ $descriptions[$roleName] ?? 'Acceso limitado.' }}
                     </div>
                 </div>
 
