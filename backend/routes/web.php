@@ -72,6 +72,9 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::post('/herramientas/cod/{uuid}/upload-signed', [\App\Http\Controllers\Tools\CodController::class, 'uploadSigned'])->name('tools.cod.upload-signed');
     Route::get('/herramientas/cod/download-signed', [\App\Http\Controllers\Tools\CodController::class, 'downloadSigned'])->name('tools.cod.download-signed');
 
+    Route::get('/herramientas/imputacion-horas', [\App\Http\Controllers\TimeTrackingController::class, 'index'])->name('tools.time-tracking.index');
+    Route::get('/herramientas/imputacion-horas/search', [\App\Http\Controllers\TimeTrackingController::class, 'search'])->name('tools.time-tracking.search');
+
     
     Route::post('/clientes/{client}/contactos', [ContactController::class, 'store'])->middleware('permission:technician')->name('contacts.store');
     Route::put('/clientes/{client}/contactos/{contact}', [ContactController::class, 'update'])->middleware('permission:technician')->name('contacts.update');
@@ -82,7 +85,10 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::delete('/clientes/{client}/enterprise-cloud-accounts/{enterpriseCloudAccount}', [\App\Http\Controllers\EnterpriseCloudAccountController::class, 'destroy'])->middleware('permission:technician')->name('enterprise-cloud-accounts.destroy');
 
     Route::delete('/inventory/daemon/{daemon}', [\App\Http\Controllers\InventoryController::class, 'destroyDaemon'])->middleware('permission:technician')->name('inventory.daemon.destroy');
+    Route::post('/inventory/daemon/{daemon}/toggle-status', [\App\Http\Controllers\InventoryController::class, 'toggleDaemonStatus'])->middleware('permission:technician')->name('inventory.daemon.toggle-status');
+    
     Route::delete('/inventory/product/{product}', [\App\Http\Controllers\InventoryController::class, 'destroyProduct'])->middleware('permission:technician')->name('inventory.product.destroy');
+    Route::post('/inventory/product/{product}/toggle-status', [\App\Http\Controllers\InventoryController::class, 'toggleProductStatus'])->middleware('permission:technician')->name('inventory.product.toggle-status');
 
     if (config('app.env') !== 'beta') {
         Route::prefix('reports')->name('reports.')->middleware('permission:technician')->group(function () {
