@@ -72,26 +72,32 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::post('/herramientas/cod/{uuid}/upload-signed', [\App\Http\Controllers\Tools\CodController::class, 'uploadSigned'])->name('tools.cod.upload-signed');
     Route::get('/herramientas/cod/download-signed', [\App\Http\Controllers\Tools\CodController::class, 'downloadSigned'])->name('tools.cod.download-signed');
 
+    Route::get('/herramientas/imputacion-horas', [\App\Http\Controllers\TimeTrackingController::class, 'index'])->name('tools.time-tracking.index');
+    Route::get('/herramientas/imputacion-horas/search', [\App\Http\Controllers\TimeTrackingController::class, 'search'])->name('tools.time-tracking.search');
+
     
-    Route::post('/clientes/{client}/contactos', [ContactController::class, 'store'])->middleware('permission:technician')->name('contacts.store');
-    Route::put('/clientes/{client}/contactos/{contact}', [ContactController::class, 'update'])->middleware('permission:technician')->name('contacts.update');
-    Route::delete('/clientes/{client}/contactos/{contact}', [ContactController::class, 'destroy'])->middleware('permission:technician')->name('contacts.destroy');
+    Route::post('/clientes/{client}/contactos', [ContactController::class, 'store'])->middleware('role:admin|technician')->name('contacts.store');
+    Route::put('/clientes/{client}/contactos/{contact}', [ContactController::class, 'update'])->middleware('role:admin|technician')->name('contacts.update');
+    Route::delete('/clientes/{client}/contactos/{contact}', [ContactController::class, 'destroy'])->middleware('role:admin|technician')->name('contacts.destroy');
 
-    Route::post('/clientes/{client}/enterprise-cloud-accounts', [\App\Http\Controllers\EnterpriseCloudAccountController::class, 'store'])->middleware('permission:technician')->name('enterprise-cloud-accounts.store');
-    Route::put('/clientes/{client}/enterprise-cloud-accounts/{enterpriseCloudAccount}', [\App\Http\Controllers\EnterpriseCloudAccountController::class, 'update'])->middleware('permission:technician')->name('enterprise-cloud-accounts.update');
-    Route::delete('/clientes/{client}/enterprise-cloud-accounts/{enterpriseCloudAccount}', [\App\Http\Controllers\EnterpriseCloudAccountController::class, 'destroy'])->middleware('permission:technician')->name('enterprise-cloud-accounts.destroy');
+    Route::post('/clientes/{client}/enterprise-cloud-accounts', [\App\Http\Controllers\EnterpriseCloudAccountController::class, 'store'])->middleware('role:admin|technician')->name('enterprise-cloud-accounts.store');
+    Route::put('/clientes/{client}/enterprise-cloud-accounts/{enterpriseCloudAccount}', [\App\Http\Controllers\EnterpriseCloudAccountController::class, 'update'])->middleware('role:admin|technician')->name('enterprise-cloud-accounts.update');
+    Route::delete('/clientes/{client}/enterprise-cloud-accounts/{enterpriseCloudAccount}', [\App\Http\Controllers\EnterpriseCloudAccountController::class, 'destroy'])->middleware('role:admin|technician')->name('enterprise-cloud-accounts.destroy');
 
-    Route::delete('/inventory/daemon/{daemon}', [\App\Http\Controllers\InventoryController::class, 'destroyDaemon'])->middleware('permission:technician')->name('inventory.daemon.destroy');
-    Route::delete('/inventory/product/{product}', [\App\Http\Controllers\InventoryController::class, 'destroyProduct'])->middleware('permission:technician')->name('inventory.product.destroy');
+    Route::delete('/inventory/daemon/{daemon}', [\App\Http\Controllers\InventoryController::class, 'destroyDaemon'])->middleware('role:admin|technician')->name('inventory.daemon.destroy');
+    Route::post('/inventory/daemon/{daemon}/toggle-status', [\App\Http\Controllers\InventoryController::class, 'toggleDaemonStatus'])->middleware('role:admin|technician')->name('inventory.daemon.toggle-status');
+    
+    Route::delete('/inventory/product/{product}', [\App\Http\Controllers\InventoryController::class, 'destroyProduct'])->middleware('role:admin|technician')->name('inventory.product.destroy');
+    Route::post('/inventory/product/{product}/toggle-status', [\App\Http\Controllers\InventoryController::class, 'toggleProductStatus'])->middleware('role:admin|technician')->name('inventory.product.toggle-status');
 
     if (config('app.env') !== 'beta') {
-        Route::prefix('reports')->name('reports.')->middleware('permission:technician')->group(function () {
+        Route::prefix('reports')->name('reports.')->middleware('role:admin|technician')->group(function () {
             Route::get('/', [\App\Http\Controllers\ReportController::class, 'index'])->name('index');
             Route::get('/client/{client}/download', [\App\Http\Controllers\ReportController::class, 'downloadClientReport'])->name('client.download');
         });
     }
 
-    Route::prefix('admin')->name('admin.')->middleware('permission:admin')->group(function () {
+    Route::prefix('admin')->name('admin.')->middleware('role:admin')->group(function () {
         Route::get('/import', [ImportController::class, 'index'])->name('import.index');
         Route::post('/import', [ImportController::class, 'store'])->name('import.store');
         
@@ -164,7 +170,7 @@ Route::middleware(['auth.jwt'])->group(function () {
         Route::delete('/repository/{archive}', [\App\Http\Controllers\Admin\LicenseRepositoryController::class, 'destroy'])->name('repository.destroy');
 
         // Gestión de Recursos y Enlaces
-        Route::middleware('permission:staff')->group(function () {
+        Route::middleware('role:admin|technician|staff')->group(function () {
             Route::post('/resources', [\App\Http\Controllers\Admin\ResourceController::class, 'store'])->name('resources.store');
             Route::put('/resources/{resource}', [\App\Http\Controllers\Admin\ResourceController::class, 'update'])->name('resources.update');
             Route::delete('/resources/{resource}', [\App\Http\Controllers\Admin\ResourceController::class, 'destroy'])->name('resources.destroy');

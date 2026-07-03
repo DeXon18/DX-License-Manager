@@ -37,6 +37,7 @@
     tab: localStorage.getItem('activeTab') || '{{ request('tab', 'contracts') }}',
     auditDetail: null,
     historyOpen: false,
+    showDropped: false,
     setTab(name) {
         this.tab = name;
         localStorage.setItem('activeTab', name);
@@ -157,11 +158,24 @@
                                 <div class="dx-v2-clients-soldto-id">{{ $soldTo }}</div>
                             </div>
                         </div>
-                        <div class="tech-label dx-v2-clients-soldto-header-right">Active Inventory</div>
+                        <div class="tech-label dx-v2-clients-soldto-header-right" style="display: flex; gap: 12px; align-items: center;">
+                            <span>Active Inventory</span>
+                            @if($daemons->where('status', 'dropped')->count() > 0)
+                                <button @click="showDropped = !showDropped" style="border: none; background: rgba(0,0,0,0.05); padding: 2px 8px; border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s;">
+                                    <i class="fa-solid" :class="showDropped ? 'fa-eye-slash' : 'fa-eye'"></i>
+                                    <span x-text="showDropped ? 'Ocultar Daemons Baja' : 'Ver Daemons Baja'"></span>
+                                </button>
+                            @endif
+                        </div>
                     </div>
 
                     @foreach($daemons as $daemon)
-                        <div x-data="{ showSuperseded: false }" class="dx-v2-clients-daemon-card {{ $daemon->vendor }} {{ !empty($daemon->additional_sold_tos) ? 'unified-card' : '' }}">
+                        @php
+                            $droppedProductsCount = $daemon->products->where('status', 'dropped')->count();
+                        @endphp
+                        <div x-data="{ showSuperseded: false, showDroppedProducts: false }" 
+                             class="dx-v2-clients-daemon-card {{ $daemon->vendor }} {{ !empty($daemon->additional_sold_tos) ? 'unified-card' : '' }}"
+                             @if($daemon->status === 'dropped') x-show="showDropped" x-cloak x-transition style="opacity: 0.6; filter: grayscale(1);" @endif>
                             @if(!empty($daemon->additional_sold_tos))
                                 <div class="dx-v2-clients-daemon-watermark">
                                     <i class="fa-solid fa-network-wired"></i>
@@ -208,9 +222,25 @@
                                         @endif
                                     </div>
                                 </div>
+                                
+                                @if($droppedProductsCount > 0)
+                                    <div class="dx-v2-clients-daemon-header-col">
+                                        <span class="tech-label">Prod. en Baja</span>
+                                        <button @click="showDroppedProducts = !showDroppedProducts" class="dx-v2-clients-daemon-badge" style="cursor: pointer; background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1); color: var(--muted); display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px;">
+                                            <i class="fa-solid" :class="showDroppedProducts ? 'fa-eye-slash' : 'fa-eye'" style="font-size: 10px;"></i>
+                                            <span x-text="showDroppedProducts ? 'Ocultar' : 'Ver ({{ $droppedProductsCount }})'"></span>
+                                        </button>
+                                    </div>
+                                @endif
 
-                                <div class="dx-v2-clients-daemon-header-col">
-                                    <form action="{{ route('inventory.daemon.destroy', $daemon) }}" method="POST" onsubmit="return confirm('¿Eliminar bloque?')">
+                                <div class="dx-v2-clients-daemon-header-col" style="display: flex; gap: 6px;">
+                                    <form action="{{ route('inventory.daemon.toggle-status', $daemon) }}" method="POST" onsubmit="return confirm('¿{{ $daemon->status === 'dropped' ? 'Reactivar' : 'Dar de Baja' }} este servidor?')">
+                                        @csrf
+                                        <button type="submit" class="dx-v2-clients-btn-action" title="{{ $daemon->status === 'dropped' ? 'Reactivar Servidor' : 'Dar de Baja (Inactivar)' }}">
+                                            <i class="fa-solid {{ $daemon->status === 'dropped' ? 'fa-arrow-rotate-left' : 'fa-power-off' }}" style="color: {{ $daemon->status === 'dropped' ? 'inherit' : 'var(--danger)' }};"></i>
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('inventory.daemon.destroy', $daemon) }}" method="POST" onsubmit="return confirm('¿Eliminar bloque permanentemente?')">
                                         @csrf @method('DELETE')
                                         <button type="submit" class="dx-v2-clients-btn-action"><i class="fa-solid fa-trash-can"></i></button>
                                     </form>
@@ -246,10 +276,14 @@
                                     @foreach($daemon->products as $product)
                                         @php
                                             $isSuperseded = $product->status === 'superseded';
+                                            $isDropped = $product->status === 'dropped';
                                             $isNodeLocked = stripos($product->description, 'node locked') !== false || stripos($product->description, 'nodelocked') !== false;
                                             $isMissingMac = empty($product->node_locked_host_id) && $isNodeLocked;
                                         @endphp
-                                        <tr class="dx-v2-clients-product-row {{ $isSuperseded ? 'superseded' : ($product->status !== 'active' ? 'inactive' : '') }}" style="{{ $isSuperseded ? 'opacity: 0.6; filter: grayscale(1);' : '' }}" @if($isSuperseded) x-show="showSuperseded" x-cloak x-transition @endif>
+                                        <tr class="dx-v2-clients-product-row {{ $isSuperseded ? 'superseded' : '' }} {{ $isDropped ? 'dropped' : '' }} {{ $product->status !== 'active' ? 'inactive' : '' }}" 
+                                            style="{{ $isSuperseded || $isDropped ? 'opacity: 0.6; filter: grayscale(1);' : '' }}" 
+                                            @if($isSuperseded) x-show="showSuperseded" x-cloak x-transition @endif
+                                            @if($isDropped) x-show="showDroppedProducts" x-cloak x-transition @endif>
                                             <td class="dx-v2-clients-product-code">{{ $product->product_code }}</td>
                                             <td>
                                                 {{ $product->description }}
@@ -295,8 +329,14 @@
                                                     </span>
                                                 @endif
                                             </td>
-                                            <td class="text-right">
-                                                <form action="{{ route('inventory.product.destroy', $product) }}" method="POST">
+                                            <td class="text-right" style="display: flex; gap: 4px; justify-content: flex-end; align-items: center; height: 100%;">
+                                                <form action="{{ route('inventory.product.toggle-status', $product) }}" method="POST" onsubmit="return confirm('¿{{ $product->status === 'dropped' ? 'Reactivar' : 'Dar de Baja' }} este producto?')">
+                                                    @csrf
+                                                    <button type="submit" class="dx-v2-clients-btn-action delete-action" title="{{ $product->status === 'dropped' ? 'Reactivar Producto' : 'Dar de Baja (Inactivar)' }}">
+                                                        <i class="fa-solid {{ $product->status === 'dropped' ? 'fa-arrow-rotate-left' : 'fa-power-off' }}" style="color: {{ $product->status === 'dropped' ? 'inherit' : 'var(--danger)' }};"></i>
+                                                    </button>
+                                                </form>
+                                                <form action="{{ route('inventory.product.destroy', $product) }}" method="POST" onsubmit="return confirm('¿Eliminar producto permanentemente?')">
                                                     @csrf @method('DELETE')
                                                     <button type="submit" class="dx-v2-clients-btn-action delete-action">
                                                         <i class="fa-solid fa-trash"></i>
