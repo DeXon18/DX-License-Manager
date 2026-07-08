@@ -72,6 +72,9 @@ class MoldexController extends Controller
         $file    = $request->file('license_file');
         $content = file_get_contents($file->getRealPath());
 
+        // Normalizar saltos de línea para compatibilidad estricta con Windows (CRLF)
+        $content = preg_replace("/\r\n|\n|\r/", "\r\n", $content);
+
         // 1. Extraer metadatos para nomenclatura y almacenamiento
         $metadata = $this->moldexService->extractMetadata($content);
         $parsedData = $this->parserService->parse($content);
