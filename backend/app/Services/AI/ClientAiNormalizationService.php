@@ -72,6 +72,7 @@ EOT;
             if ($e->getCode() == 429 || $isTimeout) {
                 if ($route && $route->fallbackModel) {
                     $reason = $isTimeout ? 'Timeout' : '429 Rate Limit';
+                    $this->logError('openrouter', $modelId, 'normalization_search', $e->getMessage());
                     Log::warning("ClientAiNormalizationService: {$reason} con {$modelId}, saltando a fallback {$route->fallbackModel->openrouter_id}");
                     try {
                         $parsed = $this->callOpenRouterApi($openrouterKey, $route->fallbackModel->openrouter_id, $prompt);
@@ -86,6 +87,7 @@ EOT;
                     Log::error("ClientAiNormalizationService: Error/Timeout y no hay fallback configurado.");
                 }
             } else {
+                $this->logError('openrouter', $modelId, 'normalization_search', $e->getMessage());
                 Log::error("ClientAiNormalizationService: Error llamando a OpenRouter: " . $e->getMessage());
             }
         }
@@ -273,6 +275,7 @@ EOT;
                     }
                 }
             } catch (\Exception $e) {
+                $this->logError('gemini', 'gemini-3.1-flash-lite', 'normalization_pair', $e->getMessage());
                 Log::warning("ClientAiNormalizationService: Error evaluando par en Gemini: " . $e->getMessage());
             }
         }
@@ -305,6 +308,7 @@ EOT;
                     }
                 }
             } catch (\Exception $e) {
+                $this->logError('deepseek', 'deepseek-chat', 'normalization_pair', $e->getMessage());
                 Log::warning("ClientAiNormalizationService: Error evaluando par en Deepseek: " . $e->getMessage());
             }
         }
@@ -368,6 +372,28 @@ EOT;
             ]);
         } catch (\Exception $e) {
             Log::warning("ClientAiNormalizationService: No se pudo registrar tokens: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Registra un error de modelo en la base de datos.
+     */
+    private function logError(string $provider, string $model, string $action, string $errorMessage): void
+    {
+        try {
+            AiTokenLog::create([
+                'provider' => $provider,
+                'model' => $model,
+                'action' => $action,
+                'prompt_tokens' => 0,
+                'completion_tokens' => 0,
+                'total_tokens' => 0,
+                'user_id' => auth()->check() ? auth()->id() : null,
+                'status' => 'failed',
+                'error_message' => substr($errorMessage, 0, 500)
+            ]);
+        } catch (\Exception $e) {
+            Log::warning("ClientAiNormalizationService: No se pudo registrar error en DB: " . $e->getMessage());
         }
     }
 }

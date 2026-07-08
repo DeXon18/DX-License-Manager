@@ -232,6 +232,41 @@
                 </div>
             </div>
 
+            {{-- Estadísticas de Fallos --}}
+            <div class="card" style="margin-top: 1.5rem; border: 1px solid var(--dx-v2-danger-border);">
+                <div class="card-header" style="background: rgba(220, 53, 69, 0.1);">
+                    <span class="card-title" style="color: #e74c3c;"><i class="fa-solid fa-triangle-exclamation" style="margin-right: 8px;"></i>Telemetría de Fallos y Errores (30 Días)</span>
+                </div>
+                <div class="dx-v2-audit-table-wrapper">
+                    <table class="dx-v2-audit-table">
+                        <thead class="dx-v2-audit-table-thead">
+                            <tr>
+                                <th class="dx-v2-audit-table-th width-200">Modelo Afectado</th>
+                                <th class="dx-v2-audit-table-th">Motivo o Mensaje de Error</th>
+                                <th class="dx-v2-audit-table-th text-center width-100">Frecuencia</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($failureStats as $stat)
+                                <tr class="dx-v2-audit-table-tr">
+                                    <td class="dx-v2-audit-table-td" style="font-family: var(--font-mono, monospace); font-size: 0.85rem;">{{ $stat->model }}</td>
+                                    <td class="dx-v2-audit-table-td" style="color: #e74c3c; font-size: 0.85rem;">{{ $stat->error_message }}</td>
+                                    <td class="dx-v2-audit-table-td text-center" style="font-weight: 600;">
+                                        <span class="badge" style="background: rgba(220, 53, 69, 0.1); color: #e74c3c;">{{ $stat->error_count }}</span>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="3" class="dx-v2-audit-table-td" style="padding: 20px; text-align: center; color: var(--dx-v2-muted);">
+                                        <i class="fa-solid fa-check-circle" style="color: var(--dx-v2-success); margin-right: 6px;"></i> No se han registrado fallos en este periodo.
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             {{-- Historial Reciente --}}
             <div class="card" style="margin-top: 1.5rem;">
                 <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">

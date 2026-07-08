@@ -17,6 +17,8 @@ class AiTokenLog extends Model
         'completion_tokens',
         'total_tokens',
         'user_id',
+        'status',
+        'error_message',
     ];
 
     public function user()

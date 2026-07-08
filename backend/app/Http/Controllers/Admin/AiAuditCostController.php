@@ -210,6 +210,14 @@ class AiAuditCostController extends Controller
             ->orderByDesc('created_at')
             ->paginate(15);
 
+        // 9. Estadísticas de fallos (Mes Actual)
+        $failureStats = AiTokenLog::where('created_at', '>=', $currentMonth)
+            ->where('status', 'failed')
+            ->select('model', 'error_message', DB::raw('COUNT(*) as error_count'))
+            ->groupBy('model', 'error_message')
+            ->orderByDesc('error_count')
+            ->get();
+
         return view('admin.system.ai-costs', compact(
             'totalTokensThisMonth',
             'promptTokensThisMonth',
@@ -224,6 +232,7 @@ class AiAuditCostController extends Controller
             'userChartData',
             'weeklyChartData',
             'weeklyUserChartData',
+            'failureStats',
             'logs',
             'modelsFromDb'
         ));
