@@ -15,7 +15,7 @@ class AiAuditCostController extends Controller
      */
     public function index(Request $request)
     {
-        $currentMonth = Carbon::now()->startOfMonth();
+        $currentMonth = Carbon::now()->subDays(29)->startOfDay(); // Últimos 30 días en lugar del mes natural
 
         // 1. Estadísticas Globales
         $totalTokensThisMonth = AiTokenLog::where('created_at', '>=', $currentMonth)->sum('total_tokens');
