@@ -58,6 +58,7 @@ class ChatbotService
             } catch (\Exception $e) {
                 // Si el error es 429 (Rate Limit agotado) o 404 (Modelo no encontrado / deprecado)
                 if (in_array($e->getCode(), [429, 404])) {
+                    $this->logError('openrouter', $modelId, 'chatbot_query', $e->getMessage());
                     $route = \App\Models\AiRoute::with(['fallbackModel'])->find('chatbot');
                     if ($route && $route->fallbackModel) {
                         Log::warning("ChatbotService: Error {$e->getCode()} en modelo primario ({$modelId}), saltando a fallback de pago: {$route->fallbackModel->openrouter_id}");
@@ -72,6 +73,7 @@ class ChatbotService
                             );
                             $response['used_fallback'] = true;
                         } catch (\Exception $fallbackE) {
+                            $this->logError('openrouter', $route->fallbackModel->openrouter_id, 'chatbot_query', $fallbackE->getMessage());
                             Log::error("ChatbotService: Fallback falló: " . $fallbackE->getMessage());
                             $response = $this->fallbackToTextChain($chatHistory, "Error {$e->getCode()} y Fallback falló: " . $fallbackE->getMessage());
                         }
@@ -80,6 +82,7 @@ class ChatbotService
                         $response = $this->fallbackToTextChain($chatHistory, "Servicio saturado o modelo no disponible sin respaldo configurado.");
                     }
                 } else {
+                    $this->logError('openrouter', $modelId, 'chatbot_query', $e->getMessage());
                     Log::error("ChatbotService: Excepción en el bucle principal de OpenRouter: " . $e->getMessage());
                     $errorMsg = $e->getCode() >= 500 ? "El servicio central de Inteligencia Artificial está temporalmente saturado o en mantenimiento. Por favor, inténtelo de nuevo en unos minutos." : $e->getMessage();
                     $response = $this->fallbackToTextChain($chatHistory, $errorMsg);
@@ -676,8 +679,30 @@ class ChatbotService
     }
 
     // ==========================================
-    // IMPLEMENTACIÓN DE HERRAMIENTAS (TOOLS)
+    // LOG DE ERRORES Y HERRAMIENTAS
     // ==========================================
+
+    /**
+     * Registra un error de modelo en la base de datos.
+     */
+    private function logError(string $provider, string $model, string $action, string $errorMessage): void
+    {
+        try {
+            \App\Models\AiTokenLog::create([
+                'provider' => $provider,
+                'model' => $model,
+                'action' => $action,
+                'prompt_tokens' => 0,
+                'completion_tokens' => 0,
+                'total_tokens' => 0,
+                'user_id' => auth()->check() ? auth()->id() : null,
+                'status' => 'failed',
+                'error_message' => substr($errorMessage, 0, 500)
+            ]);
+        } catch (\Exception $e) {
+            Log::warning("ChatbotService: No se pudo registrar error en DB: " . $e->getMessage());
+        }
+    }
 
     private function toolSearchClients(string $query): array
     {
