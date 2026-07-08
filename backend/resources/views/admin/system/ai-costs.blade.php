@@ -34,7 +34,7 @@
             <div class="dx-v2-sys-dash-stat-card-watermark">
                 <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
             </div>
-            <div class="dx-v2-sys-dash-stat-card-title">TOTAL TOKENS (MES)</div>
+            <div class="dx-v2-sys-dash-stat-card-title">TOTAL TOKENS (30 DÍAS)</div>
             <div class="dx-v2-sys-dash-stat-card-value accent-color">
                 {{ number_format($totalTokensThisMonth, 0, ',', '.') }}
             </div>
@@ -48,7 +48,7 @@
             <div class="dx-v2-sys-dash-stat-card-watermark">
                 <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
             </div>
-            <div class="dx-v2-sys-dash-stat-card-title">COSTE ESTIMADO (MES)</div>
+            <div class="dx-v2-sys-dash-stat-card-title">COSTE ESTIMADO (30 DÍAS)</div>
             <div class="dx-v2-sys-dash-stat-card-value success-color">
                 ${{ number_format($totalCostThisMonth, 4, ',', '.') }}
             </div>
@@ -75,7 +75,7 @@
             <div class="dx-v2-sys-dash-stat-card-watermark">
                 <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
             </div>
-            <div class="dx-v2-sys-dash-stat-card-title">TOTAL PETICIONES (MES)</div>
+            <div class="dx-v2-sys-dash-stat-card-title">TOTAL PETICIONES (30 DÍAS)</div>
             <div class="dx-v2-sys-dash-stat-card-value accent-color" style="color: var(--dx-v2-accent);">
                 {{ number_format($providerStats->sum('requests_count'), 0, ',', '.') }}
             </div>
@@ -101,7 +101,7 @@
                 {{-- Uso por Proveedor --}}
                 <div class="card">
                     <div class="card-header">
-                        <span class="card-title">Distribución por Proveedor (Mes)</span>
+                        <span class="card-title">Distribución por Proveedor (30 Días)</span>
                     </div>
                     <div class="dx-v2-sys-dash-sec-box">
                         <div class="dx-v2-sys-dash-sec-layout">
@@ -116,7 +116,7 @@
                                 </div>
                             @empty
                                 <div class="dx-v2-sys-dash-sec-row no-border">
-                                    <span class="dx-v2-sys-dash-sec-label text-muted">Sin datos este mes</span>
+                                    <span class="dx-v2-sys-dash-sec-label text-muted">Sin datos en 30 días</span>
                                     <span class="dx-v2-sys-dash-sec-value">-</span>
                                 </div>
                             @endforelse
@@ -127,7 +127,7 @@
                 {{-- Uso por Acción --}}
                 <div class="card">
                     <div class="card-header">
-                        <span class="card-title">Distribución por Acción (Mes)</span>
+                        <span class="card-title">Distribución por Acción (30 Días)</span>
                     </div>
                     <div class="dx-v2-sys-dash-sec-box">
                         <div class="dx-v2-sys-dash-sec-layout">
@@ -155,7 +155,7 @@
                                 </div>
                             @empty
                                 <div class="dx-v2-sys-dash-sec-row no-border">
-                                    <span class="dx-v2-sys-dash-sec-label text-muted">Sin datos este mes</span>
+                                    <span class="dx-v2-sys-dash-sec-label text-muted">Sin datos en 30 días</span>
                                     <span class="dx-v2-sys-dash-sec-value">-</span>
                                 </div>
                             @endforelse
@@ -166,7 +166,7 @@
                 {{-- Uso por Usuario --}}
                 <div class="card">
                     <div class="card-header">
-                        <span class="card-title">Distribución por Usuario (Mes)</span>
+                        <span class="card-title">Distribución por Usuario (30 Días)</span>
                     </div>
                     <div class="dx-v2-sys-dash-sec-box">
                         <div class="dx-v2-sys-dash-sec-layout">
@@ -181,7 +181,7 @@
                                 </div>
                             @empty
                                 <div class="dx-v2-sys-dash-sec-row no-border">
-                                    <span class="dx-v2-sys-dash-sec-label text-muted">Sin datos este mes</span>
+                                    <span class="dx-v2-sys-dash-sec-label text-muted">Sin datos en 30 días</span>
                                     <span class="dx-v2-sys-dash-sec-value">-</span>
                                 </div>
                             @endforelse
@@ -215,7 +215,7 @@
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 1.5rem;">
                 <div class="card">
                     <div class="card-header">
-                        <span class="card-title">Tendencia por Proveedor (Mes)</span>
+                        <span class="card-title">Tendencia por Proveedor (30 Días)</span>
                     </div>
                     <div class="card-body">
                         <canvas id="dailyTokensChart" height="120"></canvas>
@@ -224,7 +224,7 @@
                 
                 <div class="card">
                     <div class="card-header">
-                        <span class="card-title">Tendencia por Usuario (Mes)</span>
+                        <span class="card-title">Tendencia por Usuario (30 Días)</span>
                     </div>
                     <div class="card-body">
                         <canvas id="dailyUserTokensChart" height="120"></canvas>
