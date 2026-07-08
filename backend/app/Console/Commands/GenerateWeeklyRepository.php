@@ -41,13 +41,17 @@ class GenerateWeeklyRepository extends Command
             $this->info("Archivo generado: {$archive->filename}");
             $this->info("Total de archivos incluidos: {$archive->files_count}");
 
-            // Envío de correo
-            $recipient = config('mail.support_address', 'Soporte@ats-global.com');
-            $this->info("Enviando correo a: {$recipient}...");
-            
-            Mail::to($recipient)->send(new WeeklyLicenseReport($archive));
+            // Envío de correo (Sólo en Producción)
+            if (app()->environment('production')) {
+                $recipient = config('mail.support_address', 'Soporte@ats-global.com');
+                $this->info("Enviando correo a: {$recipient}...");
+                
+                Mail::to($recipient)->send(new WeeklyLicenseReport($archive));
 
-            $this->info('✅ Repositorio semanal completado y enviado con éxito.');
+                $this->info('✅ Repositorio semanal completado y enviado con éxito.');
+            } else {
+                $this->info('✅ Repositorio semanal generado. Envío omitido (no es producción).');
+            }
             
         } catch (\Exception $e) {
             $this->error('❌ Error durante la generación del repositorio: ' . $e->getMessage());
