@@ -2,7 +2,14 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.6.2
+> **Version:** v3.6.3
+
+## [2026-07-08 12:01] — Feature: Telemetría de Fallos de IA ✅
+
+### Added
+- **Base de Datos**: Añadidas las columnas `status` y `error_message` a la tabla `ai_token_logs` para persistir los fallos de conectividad o disponibilidad de los modelos de Inteligencia Artificial.
+- **Servicios IA**: Actualizados `ClientAiNormalizationService` y `ChatbotService` para capturar y registrar en base de datos los errores (como Timeouts, Rate Limits 429, o Model Not Found 404) antes de redirigir al modelo de respaldo (fallback).
+- **UI / Telemetría**: Añadido el nuevo panel "Telemetría de Fallos y Errores (30 Días)" en el dashboard de Costes y Telemetría de IA (`ai-costs.blade.php`), mostrando de forma agregada qué modelos han fallado, el motivo exacto y la cantidad de incidencias.
 
 ## [2026-07-08 09:33] — Hotfix: Corrección de formato CRLF en licencias descargadas ✅
 
