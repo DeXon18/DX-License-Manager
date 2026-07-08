@@ -81,6 +81,9 @@ class StarCcmController extends Controller
             // 3. Transformación (SALT 29000)
             $transformedContent = $this->starService->transform($content, $isTemporal);
 
+            // Normalizar saltos de línea para compatibilidad estricta con Windows (CRLF)
+            $transformedContent = preg_replace("/\r\n|\n|\r/", "\r\n", $transformedContent);
+
             // 4. Generar nombre de archivo
             $filename = $this->starService->generateFilename($metadata);
 

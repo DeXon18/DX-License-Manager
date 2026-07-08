@@ -98,6 +98,9 @@ class NXSuiteController extends Controller
             // Transformar contenido para el usuario
             $transformedContent = $this->nxService->transform($content, $motor, $isTemporal);
 
+            // Normalizar saltos de línea para compatibilidad estricta con Windows (CRLF)
+            $transformedContent = preg_replace("/\r\n|\n|\r/", "\r\n", $transformedContent);
+
             // Generar nombre de archivo
             $filename = $this->nxService->generateFilename($metadata);
 
