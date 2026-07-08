@@ -2,7 +2,12 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.6.1
+> **Version:** v3.6.2
+
+## [2026-07-08 09:33] — Hotfix: Corrección de formato CRLF en licencias descargadas ✅
+
+### Fixed
+- **Herramientas**: Añadida normalización estricta de saltos de línea a CRLF (`\r\n`) en los controladores de NXSuite, StarCCM+, Heeds y Moldex3D. Esto asegura que los archivos descargados y almacenados se muestren correctamente (sin perder los saltos de línea) en el Bloc de Notas de versiones antiguas de Windows o Windows Server.
 
 ## [2026-07-03 13:25] — Hotfix: Resolución de bug al asignar roles (Spatie) en Producción ✅
 
