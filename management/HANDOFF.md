@@ -20,6 +20,7 @@
 - Despliegue en Producción (LXC 600) previo volcado de la BD. Verificación de cero errores 502.
 - Resolución de un bug en UI donde los fallos de IA idénticos se listaban repetidos debido a prefijos divergentes en `error_message`. Fix en `AiAuditCostController` con Regex de extracción. Commit `fix(ui): normalizar y agrupar mensajes...` fusionado a `dev` y subido a GitHub.
 - Estandarización de `throw new \Exception` en `ClientAiNormalizationService`.
+- Limpieza total de ramas fusionadas (`feature/ai-failure-telemetry`, `feature/license-dropped`, `fix/ai-telemetry-grouping` y backups) tanto en local como en Origin.
 - CHANGELOG.md actualizado a v3.6.4.
 
 ---

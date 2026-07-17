@@ -1,6 +1,6 @@
 Rama activa: dev. Fase: Mantenimiento y Features (Telemetría IA).
-Último trabajo: Merge dev a main y push de ambas ramas a origin (resolviendo el bloqueo de HTTPS local). Despliegue seguro en Producción verificando zero errores 502. Hotfix de UI para agrupar mensajes de telemetría de fallos IA (error_message regex en AiAuditCostController).
-Estado: Todo funcional, sincrónico y desplegado en Producción (v3.6.4). GitHub actualizado.
+Último trabajo: Merge dev a main y push a origin. Despliegue seguro en Producción verificando zero errores 502. Hotfix de UI para agrupar mensajes de telemetría de fallos IA en AiAuditCostController. Limpieza final de ramas (feature/ai-failure-telemetry, feature/license-dropped, fix/ai-telemetry-grouping y backups eliminados local y remoto).
+Estado: Todo funcional, sincrónico, limpio y desplegado en Producción (v3.6.4).
 Próximo paso inmediato: Revisar siguientes tareas del backlog o ROADMAP.
 Bloqueos: Ninguno.
 Stack beta: running. Stack prod: running.
