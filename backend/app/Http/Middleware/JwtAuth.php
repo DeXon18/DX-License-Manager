@@ -26,6 +26,9 @@ class JwtAuth
         $token = $request->cookie('jwt_token') ?? $request->bearerToken();
 
         if (!$token) {
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json(['error' => 'Unauthenticated.'], 401);
+            }
             return redirect('/login');
         }
 
@@ -40,6 +43,9 @@ class JwtAuth
                     'current_time' => time(),
                     'diff' => time() - $graceTime
                 ]);
+                if ($request->expectsJson() || $request->ajax()) {
+                    return response()->json(['error' => 'Session expired.'], 401);
+                }
                 return redirect('/login')->withErrors(['session' => 'Sesión revocada o expirada. Por favor, inicie sesión de nuevo.']);
             }
             $decoded = $this->jwtService->decode($token);
@@ -48,20 +54,26 @@ class JwtAuth
         }
 
         if (!$decoded || !isset($decoded['sub'])) {
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json(['error' => 'Invalid session.'], 401);
+            }
             return redirect('/login')->withErrors(['session' => 'Sesión inválida o expirada.']);
         }
 
         $user = User::find($decoded['sub']);
 
         if (!$user || !$user->is_active) {
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json(['error' => 'User not found or inactive.'], 401);
+            }
             return redirect('/login')->withErrors(['session' => 'Usuario no encontrado o inactivo.']);
         }
 
         // Authenticate user
         Auth::login($user);
 
-        // Track active user in Redis (15 min TTL)
-        \Illuminate\Support\Facades\Redis::set("user:active:{$user->id}", now()->toIso8601String(), 'EX', 900);
+        // Track active user in Redis (30 min TTL)
+        \Illuminate\Support\Facades\Redis::set("user:active:{$user->id}", now()->toIso8601String(), 'EX', 1800);
 
         $response = $next($request);
 

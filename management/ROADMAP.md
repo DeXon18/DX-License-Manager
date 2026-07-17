@@ -1226,6 +1226,12 @@ Creación de un formulario directo de soporte (`/soporte`) integrado con la API 
 
 ---
 
+# FASE 34 — TELEMETRÍA DE FALLOS DE IA ✅ COMPLETADA
+
+Monitorización avanzada de los modelos de inteligencia artificial (OpenRouter, Gemini, DeepSeek, etc.) mediante el registro de excepciones de red, Timeouts, errores 429 (Rate Limit) y 404 (Model Not Found) en la tabla `ai_token_logs`. Integración de los bloqueos de errores en la cadena de fallback (antes de pasar al siguiente modelo) y visualización gráfica agregada ("Telemetría de Fallos y Errores") dentro de la consola del NOC Pro (Sección de Costes y Telemetría IA) indicando modelo, mensaje y frecuencia.
+
+---
+
 ## Stack Tecnológico
 
 | Capa           | Tecnología                     |

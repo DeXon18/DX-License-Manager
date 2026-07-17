@@ -176,7 +176,37 @@
     @include('layouts.partials.chatbot')
 
     @stack('scripts')
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        // Interceptor Global de Fetch para errores 401 (Sesión Expirada)
+        const originalFetch = window.fetch;
+        window.fetch = async function() {
+            const response = await originalFetch.apply(this, arguments);
+            if (response.status === 401) {
+                // Prevenir múltiples popups si hay múltiples peticiones fallidas
+                if (!window.sessionExpiredAlertShown) {
+                    window.sessionExpiredAlertShown = true;
+                    if (typeof Swal !== 'undefined') {
+                        await Swal.fire({
+                            title: 'Sesión Expirada',
+                            text: 'Tu sesión ha expirado por inactividad para proteger tus datos.',
+                            icon: 'warning',
+                            confirmButtonText: 'Ir al Login',
+                            confirmButtonColor: 'var(--color-primary)',
+                            background: 'var(--color-bg)',
+                            color: 'var(--color-text)',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
+                        });
+                    } else {
+                        alert('Tu sesión ha expirado por inactividad. Serás redirigido al login.');
+                    }
+                    window.location.href = '/login';
+                }
+            }
+            return response;
+        };
+
         // Atajo global Ctrl + Espacio para buscar
         window.addEventListener('keydown', (e) => {
             if (e.ctrlKey && e.code === 'Space') {
