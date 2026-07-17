@@ -1,5 +1,5 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-07-08 12:09  
+> Última actualización: 2026-07-17 10:35  
 > Sesión en: Windows (Agent)  
 > Rama activa: dev
 
@@ -15,36 +15,34 @@
 
 ## Qué se hizo en esta sesión
 
-- Implementación de la funcionalidad "Telemetría de Fallos y Errores de IA".
-- Creada migración en Base de Datos para añadir campos `status` y `error_message` en la tabla `ai_token_logs`.
-- Modificados `ClientAiNormalizationService` y `ChatbotService` para atrapar excepciones y registrar fallos de forma segura antes de realizar el fallback.
-- Añadido un nuevo panel UI (NOC Pro) en la vista de Costes (`ai-costs.blade.php`) listando el conteo de errores por modelo.
-- Fusión de los cambios desde `feature/ai-failure-telemetry` a `dev` y luego a `main`.
-- Despliegue completado en Producción (`portal.dxpro.es`) saltándose `git pull origin main` vía pull local en el servidor, ya que el push a origin estaba bloqueado por permisos HTTPS. Cero errores 502 detectados en Producción.
-- Documentación y Changelog (v3.6.3) actualizados.
+- Merge de `dev` a `main` localmente.
+- Push a Origin de las ramas `dev` y `main` hacia GitHub (resolviendo el requerimiento HTTPS local).
+- Despliegue en Producción (LXC 600) previo volcado de la BD. Verificación de cero errores 502.
+- Resolución de un bug en UI donde los fallos de IA idénticos se listaban repetidos debido a prefijos divergentes en `error_message`. Fix en `AiAuditCostController` con Regex de extracción. Commit `fix(ui): normalizar y agrupar mensajes...` fusionado a `dev` y subido a GitHub.
+- Estandarización de `throw new \Exception` en `ClientAiNormalizationService`.
+- CHANGELOG.md actualizado a v3.6.4.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Por favor, abre tu terminal local o cliente Git en Windows y realiza un **Push a Origin** de las ramas `dev` y `main` para subir los cambios a GitHub. (Las credenciales HTTPS locales requerían interacción).
+Revisar el `ROADMAP.md` y `BACKLOG.md` para iniciar la siguiente fase o feature planificada.
 
 ### Tareas siguientes
-1. Continuar con el ROADMAP de funcionalidades o mantenimiento.
-2. Revisar si existen otras áreas donde inyectar la misma telemetría de errores.
+1. Evaluar si hay nuevos requerimientos del desarrollador (ej. nuevas integraciones o fixes).
 
 ---
 
 ## Contexto técnico importante
 
-- El paso a Producción se hizo sincronizando el repositorio directamente en la máquina virtual (pulling de `/opt/web-projects/DX-License-Manager-DEV` desde `/opt/web-projects/DX-License-Manager`) seguido de `./scripts/deploy.sh prod`. Esto permitió saltar la barrera de HTTPS para que pudieras testearlo hoy mismo sin esperas.
+- Para el fix de la agrupación de telemetría, se implementó en `AiAuditCostController.php` una interceptación de la colección de fallos usando Regex para limpiar y unificar los strings `error_message`, agrupando de forma unificada errores como `Status 404:` y `Fallo en API openrouter: (Status 404)`.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-Ninguno. Producción está 100% sana y corriendo la última versión (v3.6.3).
+Ninguno. Producción está 100% sana y corriendo la última versión (v3.6.4).
 
 ---
 
@@ -71,3 +69,4 @@ docker exec -it dx-php-beta sh
 # Ver logs en tiempo real
 docker compose --project-directory /opt/web-projects/DX-License-Manager-DEV -f /opt/web-projects/DX-License-Manager-DEV/infra/docker-compose.beta.yml logs -f nginx-beta
 ```
+
