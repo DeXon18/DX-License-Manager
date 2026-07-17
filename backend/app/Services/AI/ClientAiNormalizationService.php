@@ -113,7 +113,7 @@ EOT;
             ]);
 
         if (!$response->successful()) {
-            throw new \Exception("Status " . $response->status() . ": " . $response->body(), $response->status());
+            throw new \Exception("Fallo en API openrouter: (Status " . $response->status() . ") " . $response->body(), $response->status());
         }
 
         $resData = $response->json();
