@@ -2,7 +2,13 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.6.3
+> **Version:** v3.6.4
+
+## [2026-07-17 10:30] — Hotfix: Agrupación de Errores de Telemetría IA ✅
+
+### Fixed
+- **UI / Telemetría**: Corregido bug en `AiAuditCostController` que separaba los errores idénticos en múltiples filas debido a prefijos divergentes (`Status 404:` vs `Fallo en API openrouter: (Status 404)`). Ahora se usa Regex para extraer el JSON y agrupar uniformemente bajo un formato limpio (`Error 404:`).
+- **Servicios IA**: Estandarizado el mensaje de excepción en `ClientAiNormalizationService.php` para coincidir con `ChatbotService.php` a futuro.
 
 ## [2026-07-08 12:01] — Feature: Telemetría de Fallos de IA ✅
 
