@@ -1,5 +1,5 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-07-17 10:35  
+> Última actualización: 2026-07-30 14:35  
 > Sesión en: Windows (Agent)  
 > Rama activa: dev
 
@@ -7,7 +7,7 @@
 
 ## Estado General
 
-**Fase actual:** Mantenimiento y Features (Telemetría IA)  
+**Fase actual:** Mantenimiento & Features (Licencias & UX)  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,35 +15,40 @@
 
 ## Qué se hizo en esta sesión
 
-- Merge de `dev` a `main` localmente.
-- Push a Origin de las ramas `dev` y `main` hacia GitHub (resolviendo el requerimiento HTTPS local).
-- Despliegue en Producción (LXC 600) previo volcado de la BD. Verificación de cero errores 502.
-- Resolución de un bug en UI donde los fallos de IA idénticos se listaban repetidos debido a prefijos divergentes en `error_message`. Fix en `AiAuditCostController` con Regex de extracción. Commit `fix(ui): normalizar y agrupar mensajes...` fusionado a `dev` y subido a GitHub.
-- Estandarización de `throw new \Exception` en `ClientAiNormalizationService`.
-- Limpieza total de ramas fusionadas (`feature/ai-failure-telemetry`, `feature/license-dropped`, `fix/ai-telemetry-grouping` y backups) tanto en local como en Origin.
-- CHANGELOG.md actualizado a v3.6.4.
+- **Refinamiento del Algoritmo de Licencias Superseded (`v3.7.0`):**
+  - Actualizados `InventorySyncService.php`, `MoldexSyncService.php` y el comando `MarkSupersededLicenses.php`.
+  - Node-Locked (con MAC): Se evalúan por MAC address. La fecha más lejana queda `active` y las versiones anteriores pasan a `superseded`.
+  - Flotantes / Paquetes (Sin MAC): Se agrupan únicamente por misma cantidad y mismo mes/día de expiración (ciclo de renovación anual del mismo paquete). Compras con fechas o cantidades diferentes permanecen como registros `active` independientes.
+  - **Postergación al vencimiento (`isPast`):** Una licencia anterior solo pasa a `superseded` a partir del día siguiente a la expiración real de su fecha (`$expiration_date->isPast()`), manteniéndose activa en el portal durante toda su vigencia.
+- **UI (Ficha de Cliente):**
+  - Añadido botón toggle `Reemplazadas` en la cabecera del servidor/daemon en `/clientes/{id}` en `show.blade.php` para ocultar/mostrar las licencias superseded de forma limpia.
+- **Docker Socket Permisos:**
+  - Corregidos los permisos de `/var/run/docker.sock` con `chmod 666` en el host LXC 600, restaurando la conectividad de la vista `/admin/system/docker` en Beta y Producción.
+- **UI / Paginador en Alertas:**
+  - Actualizado el paginador de la vista de alertas de administración `/admin/alerts` (`admin/alerts/index.blade.php`) para usar el componente de salto `vendor.pagination.dx-jump` en Beta y aplicado también en Producción por orden del usuario.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Revisar el `ROADMAP.md` y `BACKLOG.md` para iniciar la siguiente fase o feature planificada.
+Revisar con Oskar el comportamiento de las renovaciones y licencias superseded en `/clientes/118` y verificar la visualización general.
 
 ### Tareas siguientes
-1. Evaluar si hay nuevos requerimientos del desarrollador (ej. nuevas integraciones o fixes).
+1. Evaluar requerimientos pendientes del BACKLOG.
 
 ---
 
 ## Contexto técnico importante
 
-- Para el fix de la agrupación de telemetría, se implementó en `AiAuditCostController.php` una interceptación de la colección de fallos usando Regex para limpiar y unificar los strings `error_message`, agrupando de forma unificada errores como `Status 404:` y `Fallo en API openrouter: (Status 404)`.
+- Los permisos de `/var/run/docker.sock` en el host LXC 600 pueden restablecerse a `660` al recrear contenedores de Docker. Si `/admin/system/docker` falla, ejecutar `chmod 666 /var/run/docker.sock` en el host vía SSH MCP.
+- Las licencias `superseded` respetan siempre la fecha de vencimiento (`isPast()`) antes de ocultarse bajo el toggle de Reemplazadas.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-Ninguno. Producción está 100% sana y corriendo la última versión (v3.6.4).
+Ninguno. Todos los stacks Beta y Prod operando con normalidad.
 
 ---
 
