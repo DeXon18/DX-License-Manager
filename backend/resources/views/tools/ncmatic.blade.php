@@ -163,16 +163,13 @@
         </div>
 
         <div class="dx-v2-tools-ncmatic-sidebar-info">
-            <div class="dx-v2-tools-ncmatic-sidebar-info-header">
-                <i class="fa-solid fa-circle-info"></i>
-                <span class="dx-v2-tools-ncmatic-sidebar-info-title">Modalidades Soportadas</span>
+            <div class="dx-v2-tools-ncmatic-sidebar-info-text">
+                <strong>Modalidades Soportadas:</strong><br>
+                - <strong>MNTO:</strong> Mantenimiento anual.<br>
+                - <strong>ALQ:</strong> Licencia temporal de alquiler.<br>
+                - <strong>PERMANENT:</strong> Licencia vitalicia.<br>
+                - <strong>TRIAL:</strong> Licencia de demostración.
             </div>
-            <p class="dx-v2-tools-ncmatic-sidebar-info-text">
-                <strong>MNTO:</strong> Mantenimiento anual.<br>
-                <strong>ALQ:</strong> Licencia temporal de alquiler.<br>
-                <strong>PERMANENT:</strong> Licencia vitalicia.<br>
-                <strong>TRIAL:</strong> Licencia de demostración.
-            </p>
         </div>
     </div>
 </div>
