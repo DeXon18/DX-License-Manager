@@ -11,27 +11,7 @@ class NcMaticController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->get('search');
         $selectedClientId = $request->get('client_id');
-
-        $query = NcmaticLicense::with('client')
-            ->orderBy('created_at', 'desc');
-
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('serial_number', 'like', "%{$search}%")
-                  ->orWhere('notes', 'like', "%{$search}%")
-                  ->orWhereHas('client', function ($cq) use ($search) {
-                      $cq->where('name', 'like', "%{$search}%");
-                  });
-            });
-        }
-
-        if ($selectedClientId) {
-            $query->where('client_id', $selectedClientId);
-        }
-
-        $licenses = $query->paginate(20)->withQueryString();
 
         // Obtener únicamente clientes que tengan contratos de NCmatic
         $clients = Client::whereHas('contracts', function ($q) {
@@ -40,7 +20,7 @@ class NcMaticController extends Controller
               ->orWhere('comment', 'like', '%NCmatic%');
         })->orderBy('name', 'asc')->get();
 
-        return view('tools.ncmatic', compact('licenses', 'clients', 'search', 'selectedClientId'));
+        return view('tools.ncmatic', compact('clients', 'selectedClientId'));
     }
 
     public function store(Request $request)
