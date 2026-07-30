@@ -73,7 +73,7 @@
 @import 'tools/dx-v2-tools-star.css';
 @import 'tools/dx-v2-tools-heeds.css';
 @import 'tools/dx-v2-tools-moldex.css';
-@import 'tools/dx-v2-tools-ncmatic.css';
+@import 'tools/dx-v2-tools-ncmatic.css?v=4.0.0';
 @import 'tools/dx-v2-tools-time-tracking.css';
 
 /* ==========================================================================
