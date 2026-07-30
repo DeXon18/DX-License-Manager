@@ -75,15 +75,10 @@
                     <span class="card-title" x-text="editMode ? 'Edición de Licencia NCmatic' : 'Registro de Nueva Licencia NCmatic'"></span>
                 </div>
                 <div class="dx-v2-tools-ncmatic-card-actions">
-                    <span class="dx-v2-tools-ncmatic-badge" x-text="editMode ? 'MODO EDICIÓN' : 'ASIGNACIÓN DE SERIE'"></span>
+                    <span class="dx-v2-tools-ncmatic-badge" x-show="editMode">MODO EDICIÓN</span>
                     <button type="button" @click="resetForm()" class="btn-ghost" x-show="editMode">
                         <i class="fa-solid fa-plus"></i>
                         <span> Nueva Licencia</span>
-                    </button>
-                    <!-- Move submit button to the top -->
-                    <button type="submit" form="ncmatic-form" class="btn-primary dx-v2-tools-ncmatic-btn-submit">
-                        <i class="fa-solid fa-floppy-disk" style="margin-right: 8px;"></i>
-                        <span x-text="editMode ? 'Actualizar Licencia NCmatic' : 'Guardar y Asignar Licencia'"></span>
                     </button>
                 </div>
             </div>
@@ -139,6 +134,13 @@
                             <label class="dx-v2-form-label">Notas / Observaciones</label>
                             <input type="text" name="notes" x-model="form.notes" placeholder="Detalles de instalación, contrato o versión..." class="dx-v2-form-input">
                         </div>
+                    </div>
+
+                    <div class="dx-v2-tools-ncmatic-form-actions">
+                        <button type="submit" class="btn-primary dx-v2-tools-ncmatic-btn-submit">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            <span x-text="editMode ? 'Actualizar Licencia NCmatic' : 'Guardar y Asignar Licencia'"></span>
+                        </button>
                     </div>
 
                 </form>
