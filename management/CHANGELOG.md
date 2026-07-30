@@ -2,7 +2,15 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.8.0
+> **Version:** v3.9.0
+
+## [2026-07-30 17:20] — Feature: Módulo de Gestión de Licencias NCmatic por Número de Serie ✅
+
+### Added
+- **Base de Datos & Modelo**: Creada migración `ncmatic_licenses` y modelo `NcmaticLicense` con soporte para vinculación a cliente (`client_id`), número de serie (`serial_number`), modalidad (`license_type`: MNTO, ALQ, PERMANENT, TRIAL), asientos (`seats`), vencimiento (`expiration_date`), estado (`status`) y observaciones (`notes`).
+- **Herramientas / Gestor NCmatic**: Creado controlador `NcMaticController` y vista dedicada en `/herramientas/ncmatic` con buscador en tiempo real por número de serie o cliente, filtros y modal de alta/edición interactivo.
+- **Ficha de Cliente**: Integrada la pestaña **NCmatic** en `/clientes/{id}` para visualizar el inventario de seriales asignados al cliente con botón de alta directa.
+- **UI / Sistema de Diseño**: Diseñado siguiendo estrictamente el sistema de componentes del proyecto `DESIGN.md` (clases nativas NOC Pro, tokens de color CSS, badges de estado, fuentes Outfit e IBM Plex Mono para seriales sin inline styles).
 
 ## [2026-07-30 16:50] — Feature: Selector de Año y Filtros Dinámicos en el Planificador de Renovaciones ✅
 
