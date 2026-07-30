@@ -105,8 +105,11 @@ class InventorySyncService
                 }
 
                 for ($i = 1; $i < $sorted->count(); $i++) {
-                    if ($sorted[$i]->status !== 'superseded') {
-                        $sorted[$i]->update(['status' => 'superseded']);
+                    // Solo marcar como superseded si la licencia ya ha caducado (al día siguiente)
+                    if ($sorted[$i]->expiration_date && $sorted[$i]->expiration_date->isPast()) {
+                        if ($sorted[$i]->status !== 'superseded') {
+                            $sorted[$i]->update(['status' => 'superseded']);
+                        }
                     }
                 }
             }
@@ -138,8 +141,11 @@ class InventorySyncService
                     }
 
                     for ($i = 1; $i < $sorted->count(); $i++) {
-                        if ($sorted[$i]->status !== 'superseded') {
-                            $sorted[$i]->update(['status' => 'superseded']);
+                        // Solo marcar como superseded si la licencia ya ha caducado (al día siguiente)
+                        if ($sorted[$i]->expiration_date && $sorted[$i]->expiration_date->isPast()) {
+                            if ($sorted[$i]->status !== 'superseded') {
+                                $sorted[$i]->update(['status' => 'superseded']);
+                            }
                         }
                     }
                 }
