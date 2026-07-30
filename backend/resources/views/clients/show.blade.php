@@ -49,7 +49,9 @@
         <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'contacts' }" @click="setTab('contacts')">Contactos</button>
         <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'certificates' }" @click="setTab('certificates')">Certificados</button>
         <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'renewals' }" @click="setTab('renewals')">Renovaciones</button>
+        @if($client->ncmaticLicenses()->exists())
         <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'ncmatic' }" @click="setTab('ncmatic')">NCmatic</button>
+        @endif
         <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'enterprise_cloud' }" @click="setTab('enterprise_cloud')">Enterprise Cloud</button>
     </div>
 
@@ -675,6 +677,7 @@
     </div>
 
     <!-- NCmatic Tab -->
+    @if($client->ncmaticLicenses()->exists())
     <div x-show="tab === 'ncmatic'" class="tab-content" x-cloak>
         <div class="card p-0">
             <div class="card-header flex justify-between items-center px-5 py-4">
@@ -745,6 +748,7 @@
             </div>
         </div>
     </div>
+    @endif
 
     <!-- Enterprise Cloud Tab -->
     <div x-show="tab === 'enterprise_cloud'" class="tab-content" x-cloak>
