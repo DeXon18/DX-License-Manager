@@ -172,6 +172,7 @@
                     @foreach($daemons as $daemon)
                         @php
                             $droppedProductsCount = $daemon->products->where('status', 'dropped')->count();
+                            $supersededProductsCount = $daemon->products->where('status', 'superseded')->count();
                         @endphp
                         <div x-data="{ showSuperseded: false, showDroppedProducts: false }" 
                              class="dx-v2-clients-daemon-card {{ $daemon->vendor }} {{ !empty($daemon->additional_sold_tos) ? 'unified-card' : '' }}"
@@ -223,6 +224,16 @@
                                     </div>
                                 </div>
                                 
+                                @if($supersededProductsCount > 0)
+                                    <div class="dx-v2-clients-daemon-header-col">
+                                        <span class="tech-label">Reemplazadas</span>
+                                        <button @click="showSuperseded = !showSuperseded" class="dx-v2-clients-daemon-badge" style="cursor: pointer; background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1); color: var(--muted); display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px;">
+                                            <i class="fa-solid" :class="showSuperseded ? 'fa-eye-slash' : 'fa-eye'" style="font-size: 10px;"></i>
+                                            <span x-text="showSuperseded ? 'Ocultar' : 'Ver ({{ $supersededProductsCount }})'"></span>
+                                        </button>
+                                    </div>
+                                @endif
+
                                 @if($droppedProductsCount > 0)
                                     <div class="dx-v2-clients-daemon-header-col">
                                         <span class="tech-label">Prod. en Baja</span>
