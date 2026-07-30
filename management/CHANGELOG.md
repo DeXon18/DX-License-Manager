@@ -2,7 +2,13 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.7.0
+> **Version:** v3.8.0
+
+## [2026-07-30 16:50] — Feature: Selector de Año y Filtros Dinámicos en el Planificador de Renovaciones ✅
+
+### Added
+- **Planificador de Renovaciones**: Añadido selector dinámico de **Año** en la cabecera de `/planificador` (junto al selector de Mes), obteniendo automáticamente los años disponibles en los contratos de la base de datos (ej. 2026, 2027, 2028, etc.).
+- **Filtros de Estado**: Barra de filtros por estado disponible en cualquier año consultado, con selección desmarcada por defecto para ver la totalidad de contratos del mes/año seleccionado de manera limpia.
 
 ## [2026-07-30 14:30] — Fix: Refinamiento del Algoritmo de Renovaciones y Licencias Superseded ✅
 
