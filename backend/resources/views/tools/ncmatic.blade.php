@@ -70,19 +70,19 @@
         <!-- Panel de Registro / Edición de Licencia NCmatic -->
         <div class="card dx-v2-tools-ncmatic-card">
             <div class="card-header dx-v2-tools-ncmatic-card-header">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-key" style="color: var(--dx-v2-vendor-ncmatic);"></i>
+                <div class="dx-v2-tools-ncmatic-card-title-group">
+                    <i class="fa-solid fa-key dx-v2-tools-ncmatic-card-icon"></i>
                     <span class="card-title" x-text="editMode ? 'Edición de Licencia NCmatic' : 'Registro de Nueva Licencia NCmatic'"></span>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="dx-v2-tools-ncmatic-card-actions">
                     <span class="dx-v2-tools-ncmatic-badge" x-text="editMode ? 'MODO EDICIÓN' : 'ASIGNACIÓN DE SERIE'"></span>
-                    <button type="button" @click="resetForm()" class="dx-v2-ui-btn dx-v2-ui-btn-ghost" x-show="editMode">
+                    <button type="button" @click="resetForm()" class="btn-ghost" x-show="editMode">
                         <i class="fa-solid fa-plus"></i>
                         <span> Nueva Licencia</span>
                     </button>
                     <!-- Move submit button to the top -->
-                    <button type="submit" form="ncmatic-form" class="dx-v2-ui-btn dx-v2-tools-ncmatic-btn-submit">
-                        <i class="fa-solid fa-floppy-disk mr-2"></i>
+                    <button type="submit" form="ncmatic-form" class="btn-primary dx-v2-tools-ncmatic-btn-submit">
+                        <i class="fa-solid fa-floppy-disk" style="margin-right: 8px;"></i>
                         <span x-text="editMode ? 'Actualizar Licencia NCmatic' : 'Guardar y Asignar Licencia'"></span>
                     </button>
                 </div>

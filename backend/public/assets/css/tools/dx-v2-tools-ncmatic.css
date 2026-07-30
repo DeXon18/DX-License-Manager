@@ -77,6 +77,22 @@
   border-bottom: 1px solid var(--dx-v2-border);
 }
 
+.dx-v2-tools-ncmatic-card-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dx-v2-tools-ncmatic-card-icon {
+  color: var(--dx-v2-vendor-ncmatic);
+}
+
+.dx-v2-tools-ncmatic-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .dx-v2-tools-ncmatic-badge {
   background: var(--dx-v2-vendor-ncmatic-muted);
   color: var(--dx-v2-vendor-ncmatic);
