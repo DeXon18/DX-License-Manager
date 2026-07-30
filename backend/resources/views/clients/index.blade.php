@@ -11,9 +11,13 @@
         <h1 class="page-title">Gestión de <span>Clientes</span></h1>
         <p class="page-subtitle" style="white-space: nowrap;">Visualización y búsqueda de cuentas del ecosistema.</p>
     </div>
-    <div class="dx-v2-page-header-actions" style="flex-direction: column; align-items: flex-end; gap: 8px;">
+    <div class="dx-v2-page-header-actions" style="flex-direction: column; align-items: flex-end; gap: 12px;">
 
-        <div class="search-box dx-v2-clients-search-box" style="margin: 0; flex-wrap: wrap; justify-content: flex-end;">
+        <a href="{{ route('clients.unified') }}" class="dx-v2-ui-btn dx-v2-ui-btn-primary" style="white-space: nowrap;">
+            <i class="fa-solid fa-link" style="margin-right: 8px;"></i> Licencias Unificadas
+        </a>
+
+        <div class="search-box dx-v2-clients-search-box" style="margin: 0; display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-end;">
             <form action="{{ route('clients.index') }}" method="GET" class="dx-v2-clients-search-form" style="min-width: 400px; width: 100%; max-width: 500px; flex: 1;">
                 <svg class="dx-v2-clients-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
@@ -68,10 +72,6 @@
                     </div>
                 </div>
             </div>
-
-            <a href="{{ route('clients.unified') }}" class="btn-secondary" style="white-space: nowrap; height: 38px; display: flex; align-items: center; gap: 8px;">
-                <i class="fa-solid fa-link"></i> Licencias Unificadas
-            </a>
         </div>
     </div>
 </div>
