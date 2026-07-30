@@ -61,7 +61,7 @@
 
                         <!-- NCMATIC -->
                         <a href="{{ route('clients.index', array_merge(request()->all(), ['has_inventory' => 1, 'vendor_filter' => 'ncmatic'])) }}"
-                           class="dx-v2-clients-seg-item {{ $hasInv && $currentVendor === 'ncmatic' ? 'active' : '' }}" title="Solo NCmatic" style="{{ $hasInv && $currentVendor === 'ncmatic' ? 'background: rgba(16, 185, 129, 0.15); color: #10B981; border-color: rgba(16, 185, 129, 0.3);' : '' }}">
+                           class="dx-v2-clients-seg-item {{ $hasInv && $currentVendor === 'ncmatic' ? 'active' : '' }}" title="Solo NCmatic">
                             <div class="dx-v2-clients-seg-icon"><i class="fa-solid fa-key"></i></div>
                             <span class="dx-v2-clients-seg-text">NCmatic</span>
                         </a>
@@ -76,7 +76,7 @@
     </div>
 </div>
 
-<div class="dx-v2-sys-dash-stats-grid" style="margin-bottom: 24px; grid-template-cols: repeat(5, 1fr);">
+<div class="dx-v2-sys-dash-stats-grid" style="margin-bottom: 24px;">
     {{-- Clientes Registrados --}}
     <div class="dx-v2-sys-dash-stat-card">
         <div class="dx-v2-sys-dash-stat-card-watermark">
@@ -138,22 +138,6 @@
         </div>
         <div class="dx-v2-sys-dash-stat-card-meta-mono">
             Licencias Activas
-        </div>
-    </div>
-
-    {{-- Activos NCmatic --}}
-    <div class="dx-v2-sys-dash-stat-card">
-        <div class="dx-v2-sys-dash-stat-card-watermark">
-            <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
-        </div>
-        <div class="dx-v2-sys-dash-stat-card-title">
-            NCMATIC
-        </div>
-        <div class="dx-v2-sys-dash-stat-card-value" style="color: #10B981 !important;">
-            {{ $globalMetrics['ncmatic_licenses'] }}
-        </div>
-        <div class="dx-v2-sys-dash-stat-card-meta-mono">
-            Seriales Registrados
         </div>
     </div>
 </div>
