@@ -140,33 +140,24 @@ class MoldexSyncService
             }
         }
 
-        // 2. Procesar Flotantes / Sin Host ID
+        // 2. Procesar Flotantes / Sin Host ID (Pendientes de MAC / Machine ID)
         $floatingProducts = $allProducts->filter(fn($p) => empty($p->node_locked_host_id))
             ->groupBy('product_code');
 
         foreach ($floatingProducts as $productCode => $group) {
-            $subGroups = $group->groupBy(function ($item) {
-                if (!$item->expiration_date) {
-                    return $item->quantity . '|PERMANENT';
+            if ($group->count() > 1) {
+                $sorted = $group->sortByDesc(function ($item) {
+                    return $item->expiration_date ? $item->expiration_date->timestamp : PHP_INT_MAX;
+                })->values();
+
+                $newest = $sorted->first();
+                if ($newest->status !== 'active') {
+                    $newest->update(['status' => 'active']);
                 }
-                return $item->quantity . '|' . $item->expiration_date->format('m-d');
-            });
 
-            foreach ($subGroups as $subGroup) {
-                if ($subGroup->count() > 1) {
-                    $sorted = $subGroup->sortByDesc(function ($item) {
-                        return $item->expiration_date ? $item->expiration_date->timestamp : PHP_INT_MAX;
-                    })->values();
-
-                    $newest = $sorted->first();
-                    if ($newest->status !== 'active') {
-                        $newest->update(['status' => 'active']);
-                    }
-
-                    for ($i = 1; $i < $sorted->count(); $i++) {
-                        if ($sorted[$i]->status !== 'superseded') {
-                            $sorted[$i]->update(['status' => 'superseded']);
-                        }
+                for ($i = 1; $i < $sorted->count(); $i++) {
+                    if ($sorted[$i]->status !== 'superseded') {
+                        $sorted[$i]->update(['status' => 'superseded']);
                     }
                 }
             }
