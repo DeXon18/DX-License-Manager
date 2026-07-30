@@ -114,7 +114,8 @@ class MoldexSyncService
         $products = LicenseInventoryProduct::where('daemon_id', $daemonId)
             ->get()
             ->groupBy(function ($item) {
-                return $item->product_code . '|' . $item->node_locked_host_id;
+                $expStr = $item->expiration_date ? $item->expiration_date->format('Y-m-d') : 'PERMANENT';
+                return $item->product_code . '|' . ($item->node_locked_host_id ?? 'NO_HOST') . '|' . $expStr;
             });
 
         foreach ($products as $group) {

@@ -13,7 +13,7 @@ class MarkSupersededLicenses extends Command
      *
      * @var string
      */
-    protected $signature = 'dx:mark-superseded';
+    protected $signature = 'dx:mark-superseded {--reset : Restaura primero todos los productos a active antes de reevaluar}';
 
     /**
      * The console command description.
@@ -28,6 +28,12 @@ class MarkSupersededLicenses extends Command
     public function handle()
     {
         $this->info("Iniciando la revisión retroactiva de licencias...");
+        
+        if ($this->option('reset')) {
+            $resetCount = \App\Models\LicenseInventoryProduct::where('status', 'superseded')->update(['status' => 'active']);
+            $this->info("Restauradas {$resetCount} licencias de superseded a active.");
+        }
+
         $daemons = LicenseInventoryDaemon::with('products')->get();
         $totalSuperseded = 0;
 
@@ -36,7 +42,8 @@ class MarkSupersededLicenses extends Command
             
             // Agrupar por producto y host id
             $groupedProducts = $products->groupBy(function ($product) {
-                return $product->product_code . '_' . ($product->node_locked_host_id ?? 'floating');
+                $expStr = $product->expiration_date ? $product->expiration_date->format('Y-m-d') : 'PERMANENT';
+                return $product->product_code . '_' . ($product->node_locked_host_id ?? 'floating') . '_' . $expStr;
             });
 
             foreach ($groupedProducts as $key => $group) {
