@@ -112,6 +112,6 @@ class MarkSupersededLicenses extends Command
         $this->info("Revisión completada. Total de licencias marcadas como superseded: {$totalSuperseded}");
         Log::info("Comando dx:mark-superseded completado. {$totalSuperseded} licencias actualizadas.");
         
-        return Command::SUCCESS;
+        return \Symfony\Component\Console\Command\Command::SUCCESS;
     }
 }

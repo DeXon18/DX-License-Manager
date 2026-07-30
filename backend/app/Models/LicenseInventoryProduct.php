@@ -19,7 +19,7 @@ class LicenseInventoryProduct extends Model
     ];
 
     protected $casts = [
-        'expiration_date' => 'date',
+        'expiration_date' => 'datetime',
     ];
 
     public function daemon(): BelongsTo
