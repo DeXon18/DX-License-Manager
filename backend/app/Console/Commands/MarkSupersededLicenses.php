@@ -38,41 +38,73 @@ class MarkSupersededLicenses extends Command
         $totalSuperseded = 0;
 
         foreach ($daemons as $daemon) {
-            $products = $daemon->products;
+            $allProducts = $daemon->products;
             
-            // Agrupar por producto y host id
-            $groupedProducts = $products->groupBy(function ($product) {
-                $expStr = $product->expiration_date ? $product->expiration_date->format('Y-m-d') : 'PERMANENT';
-                return $product->product_code . '_' . ($product->node_locked_host_id ?? 'floating') . '_' . $expStr;
-            });
+            // 1. Procesar Node-locked (con MAC no nula)
+            $nodeLockedGroups = $allProducts->whereNotNull('node_locked_host_id')
+                ->filter(fn($p) => trim($p->node_locked_host_id) !== '')
+                ->groupBy(function ($item) {
+                    return $item->product_code . '|' . $item->node_locked_host_id;
+                });
 
-            foreach ($groupedProducts as $key => $group) {
-                if ($group->count() <= 1) {
-                    continue;
-                }
+            foreach ($nodeLockedGroups as $group) {
+                if ($group->count() <= 1) continue;
 
-                // Filtrar para ignorar los que ya están superseded (opcional, o procesarlos todos)
-                // Encontrar el producto con la fecha de expiración más lejana
-                $latestProduct = $group->sortByDesc(function ($product) {
-                    // Si no hay fecha (permanente), lo tratamos como la fecha más lejana posible
+                $sorted = $group->sortByDesc(function ($product) {
                     return $product->expiration_date ? $product->expiration_date->timestamp : PHP_INT_MAX;
-                })->first();
+                })->values();
 
-                // Marcar el resto como superseded
+                $latestProduct = $sorted->first();
+
                 foreach ($group as $product) {
                     if ($product->id !== $latestProduct->id && $product->status !== 'superseded') {
                         $product->status = 'superseded';
                         $product->save();
                         $totalSuperseded++;
-                        $this->line("Producto marcado como superseded: ID {$product->id} - {$product->product_code}");
+                        $this->line("Producto marcado como superseded (MAC): ID {$product->id} - {$product->product_code}");
                     }
                 }
                 
-                // Asegurarse de que el último está activo (si fue marcado como inactive antes)
                 if ($latestProduct->status !== 'active') {
                     $latestProduct->status = 'active';
                     $latestProduct->save();
-                    $this->line("Producto restaurado a active: ID {$latestProduct->id} - {$latestProduct->product_code}");
+                }
+            }
+
+            // 2. Procesar Flotantes / Sin Host ID (renovación anual del mismo bloque: misma cantidad + mismo mes y día)
+            $floatingProducts = $allProducts->filter(fn($p) => empty($p->node_locked_host_id))
+                ->groupBy('product_code');
+
+            foreach ($floatingProducts as $productCode => $group) {
+                $subGroups = $group->groupBy(function ($item) {
+                    if (!$item->expiration_date) {
+                        return $item->quantity . '|PERMANENT';
+                    }
+                    return $item->quantity . '|' . $item->expiration_date->format('m-d');
+                });
+
+                foreach ($subGroups as $subGroup) {
+                    if ($subGroup->count() <= 1) continue;
+
+                    $sorted = $subGroup->sortByDesc(function ($product) {
+                        return $product->expiration_date ? $product->expiration_date->timestamp : PHP_INT_MAX;
+                    })->values();
+
+                    $latestProduct = $sorted->first();
+
+                    foreach ($subGroup as $product) {
+                        if ($product->id !== $latestProduct->id && $product->status !== 'superseded') {
+                            $product->status = 'superseded';
+                            $product->save();
+                            $totalSuperseded++;
+                            $this->line("Producto marcado como superseded (Flotante Anual): ID {$product->id} - {$product->product_code}");
+                        }
+                    }
+
+                    if ($latestProduct->status !== 'active') {
+                        $latestProduct->status = 'active';
+                        $latestProduct->save();
+                    }
                 }
             }
         }
