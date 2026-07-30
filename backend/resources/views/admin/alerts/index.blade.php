@@ -163,8 +163,8 @@
         </table>
         
         @if($logs->hasPages())
-        <div class="dx-v2-alerts-pagination-wrapper">
-            {{ $logs->links() }}
+        <div class="dx-v2-alerts-pagination-wrapper" style="margin-top: 15px;">
+            {{ $logs->links('vendor.pagination.dx-jump') }}
         </div>
         @endif
     </div>
