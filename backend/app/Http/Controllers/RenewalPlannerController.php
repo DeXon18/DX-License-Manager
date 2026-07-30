@@ -13,11 +13,15 @@ class RenewalPlannerController extends Controller
 {
     public function index(Request $request)
     {
-        $month = $request->get('month', now()->month);
-        $selectedStatuses = $request->get('statuses', []);
-        $year = now()->year;
+        $currentYear = (int) now()->year;
+        $year = (int) $request->get('year', $currentYear);
+        $month = (int) $request->get('month', now()->month);
+        
+        // Si el año consultado es futuro respecto al actual, no se filtran estados por defecto
+        $selectedStatuses = ($year > $currentYear) ? [] : $request->get('statuses', []);
 
         $query = Contract::with(['client.contacts', 'client.inventoryDaemons'])
+            ->whereYear('end_date', $year)
             ->whereMonth('end_date', $month);
 
         if (!empty($selectedStatuses)) {
@@ -40,11 +44,25 @@ class RenewalPlannerController extends Controller
 
         $pendingRenewals = $query->get()->groupBy('client_id');
 
-        // Obtener logs de este mes/año para saber quién está completado
+        // Obtener logs del mes y año seleccionados para saber quién está completado
         $completedLogs = RenewalLog::where('month', $month)
             ->where('year', $year)
             ->pluck('client_id')
             ->toArray();
+
+        // Años disponibles en los contratos de la BD
+        $availableYears = Contract::selectRaw('YEAR(end_date) as yr')
+            ->whereNotNull('end_date')
+            ->groupBy('yr')
+            ->orderBy('yr', 'asc')
+            ->pluck('yr')
+            ->map(fn($y) => (int) $y)
+            ->toArray();
+
+        if (!in_array($currentYear, $availableYears, true)) {
+            $availableYears[] = $currentYear;
+            sort($availableYears);
+        }
 
         // Lista de estados para el filtro (incluyendo vacíos/null como "")
         $availableStatuses = Contract::distinct()
@@ -56,7 +74,16 @@ class RenewalPlannerController extends Controller
             ->sort()
             ->values();
 
-        return view('renewal-planner.index', compact('pendingRenewals', 'completedLogs', 'month', 'availableStatuses', 'selectedStatuses'));
+        return view('renewal-planner.index', compact(
+            'pendingRenewals',
+            'completedLogs',
+            'month',
+            'year',
+            'currentYear',
+            'availableYears',
+            'availableStatuses',
+            'selectedStatuses'
+        ));
     }
 
     public function store(Request $request)
