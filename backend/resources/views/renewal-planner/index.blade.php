@@ -70,11 +70,9 @@
             <form action="{{ route('renewal-planner.index') }}" method="GET" x-ref="yearForm" style="display: none;">
                 <input type="hidden" name="year" :value="selectedYear">
                 <input type="hidden" name="month" value="{{ $month }}">
-                @if($year <= $currentYear)
-                    @foreach($selectedStatuses as $s)
-                        <input type="hidden" name="statuses[]" value="{{ $s }}">
-                    @endforeach
-                @endif
+                @foreach($selectedStatuses as $s)
+                    <input type="hidden" name="statuses[]" value="{{ $s }}">
+                @endforeach
             </form>
         </div>
 
@@ -117,56 +115,50 @@
             <form action="{{ route('renewal-planner.index') }}" method="GET" x-ref="monthForm" style="display: none;">
                 <input type="hidden" name="year" value="{{ $year }}">
                 <input type="hidden" name="month" :value="selected">
-                @if($year <= $currentYear)
-                    @foreach($selectedStatuses as $s)
-                        <input type="hidden" name="statuses[]" value="{{ $s }}">
-                    @endforeach
-                @endif
+                @foreach($selectedStatuses as $s)
+                    <input type="hidden" name="statuses[]" value="{{ $s }}">
+                @endforeach
             </form>
         </div>
 
-        <!-- Filtros de Estado (SOLO SE MUESTRAN EN EL AÑO ACTUAL O ANTERIORES) -->
-        @if($year <= $currentYear)
-            <div class="dx-v2-planner-filters-wrap" style="flex: 1;">
-                <span class="dx-v2-planner-filter-label">Filtrar por:</span>
-                <form action="{{ route('renewal-planner.index') }}" method="GET" id="filter-form" class="dx-v2-planner-filter-form">
-                    <input type="hidden" name="year" value="{{ $year }}">
-                    <input type="hidden" name="month" value="{{ $month }}">
-                    @foreach($availableStatuses as $status)
-                        @php
-                            $isSelected = in_array($status, $selectedStatuses);
-                            $color = match(trim($status)) {
-                                'Ofertado' => '#58a6ff',
-                                'En negociación' => '#388bfd',
-                                'Aceptado por el cliente' => '#bc71f8',
-                                'Procesado (M) - Pte fact.' => '#d29922',
-                                'Facturado - Pte proc. (M)' => '#db6d28',
-                                'Cerrado' => '#3fb950',
-                                'Baja' => '#e05252',
-                                'Renovación Tardía' => '#d73a49',
-                                default => '#8b949e'
-                            };
-                        @endphp
-                        <label style="cursor: pointer; transition: all 0.2s;">
-                            <input type="checkbox" name="statuses[]" value="{{ $status }}" {{ $isSelected ? 'checked' : '' }} onchange="this.form.submit()" style="display: none;">
-                            <span class="dx-v2-planner-filter-chip {{ $isSelected ? 'active' : '' }}"
-                                  style="--filter-color: {{ $color }}; --filter-bg-active: rgba({{ hexToRgb($color) }}, 0.15);">
-                                {{ $status ?: 'Sin estado' }}
-                            </span>
-                        </label>
-                    @endforeach
+        <!-- Filtros de Estado (Disponibles en todos los años) -->
+        <div class="dx-v2-planner-filters-wrap" style="flex: 1;">
+            <span class="dx-v2-planner-filter-label">Filtrar por:</span>
+            <form action="{{ route('renewal-planner.index') }}" method="GET" id="filter-form" class="dx-v2-planner-filter-form">
+                <input type="hidden" name="year" value="{{ $year }}">
+                <input type="hidden" name="month" value="{{ $month }}">
+                @foreach($availableStatuses as $status)
+                    @php
+                        $isSelected = in_array($status, $selectedStatuses);
+                        $color = match(trim($status)) {
+                            'Ofertado' => '#58a6ff',
+                            'En negociación' => '#388bfd',
+                            'Aceptado por el cliente' => '#bc71f8',
+                            'Procesado (M) - Pte fact.' => '#d29922',
+                            'Facturado - Pte proc. (M)' => '#db6d28',
+                            'Cerrado' => '#3fb950',
+                            'Baja' => '#e05252',
+                            'Renovación Tardía' => '#d73a49',
+                            default => '#8b949e'
+                        };
+                    @endphp
+                    <label style="cursor: pointer; transition: all 0.2s;">
+                        <input type="checkbox" name="statuses[]" value="{{ $status }}" {{ $isSelected ? 'checked' : '' }} onchange="this.form.submit()" style="display: none;">
+                        <span class="dx-v2-planner-filter-chip {{ $isSelected ? 'active' : '' }}"
+                              style="--filter-color: {{ $color }}; --filter-bg-active: rgba({{ hexToRgb($color) }}, 0.15);">
+                            {{ $status ?: 'Sin estado' }}
+                        </span>
+                    </label>
+                @endforeach
 
-                    @if(count($selectedStatuses) > 0)
-                        <a href="{{ route('renewal-planner.index', ['year' => $year, 'month' => $month]) }}" class="dx-v2-planner-filter-clear">
-                            <i class="fa-solid fa-trash-can"></i>
-                            <span>LIMPIAR</span>
-                        </a>
-                    @endif
-                </form>
-            </div>
-        @else
-            <div style="flex: 1;"></div>
-        @endif
+                @if(count($selectedStatuses) > 0)
+                    <a href="{{ route('renewal-planner.index', ['year' => $year, 'month' => $month]) }}" class="dx-v2-planner-filter-clear">
+                        <i class="fa-solid fa-trash-can"></i>
+                        <span>LIMPIAR</span>
+                    </a>
+                @endif
+            </form>
+        </div>
 
         <!-- Estadísticas -->
         <div class="dx-v2-planner-stats">

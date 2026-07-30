@@ -17,8 +17,7 @@ class RenewalPlannerController extends Controller
         $year = (int) $request->get('year', $currentYear);
         $month = (int) $request->get('month', now()->month);
         
-        // Si el año consultado es futuro respecto al actual, no se filtran estados por defecto
-        $selectedStatuses = ($year > $currentYear) ? [] : $request->get('statuses', []);
+        $selectedStatuses = $request->get('statuses', []);
 
         $query = Contract::with(['client.contacts', 'client.inventoryDaemons'])
             ->whereYear('end_date', $year)
