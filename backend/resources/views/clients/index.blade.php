@@ -11,10 +11,10 @@
         <h1 class="page-title">Gestión de <span>Clientes</span></h1>
         <p class="page-subtitle" style="white-space: nowrap;">Visualización y búsqueda de cuentas del ecosistema.</p>
     </div>
-    <div class="dx-v2-page-header-actions" style="display: flex; align-items: center; justify-content: flex-end; gap: 12px; flex-wrap: wrap;">
+    <div class="dx-v2-page-header-actions" style="display: flex; align-items: center; justify-content: flex-end; gap: 12px; flex-wrap: nowrap;">
 
-        <div class="search-box dx-v2-clients-search-box" style="margin: 0; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-            <form action="{{ route('clients.index') }}" method="GET" class="dx-v2-clients-search-form" style="min-width: 300px; max-width: 400px; flex: 1;">
+        <div class="search-box dx-v2-clients-search-box" style="margin: 0; display: flex; gap: 12px; align-items: center; flex-wrap: nowrap;">
+            <form action="{{ route('clients.index') }}" method="GET" class="dx-v2-clients-search-form" style="min-width: 250px; max-width: 350px; flex: 1;">
                 <svg class="dx-v2-clients-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
@@ -70,8 +70,8 @@
             </div>
         </div>
 
-        <a href="{{ route('clients.unified') }}" class="dx-v2-ui-btn dx-v2-ui-btn-primary" style="white-space: nowrap; height: 38px; display: flex; align-items: center;">
-            <i class="fa-solid fa-link" style="margin-right: 8px;"></i> Licencias Unificadas
+        <a href="{{ route('clients.unified') }}" class="dx-v2-ui-btn dx-v2-ui-btn-primary" style="white-space: nowrap; height: 38px; display: flex; align-items: center; padding: 0 16px;">
+            <i class="fa-solid fa-link" style="margin-right: 6px;"></i> Unificadas
         </a>
     </div>
 </div>
