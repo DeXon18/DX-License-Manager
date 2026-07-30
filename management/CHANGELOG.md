@@ -2,7 +2,17 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.6.4
+> **Version:** v3.7.0
+
+## [2026-07-30 14:30] — Fix: Refinamiento del Algoritmo de Renovaciones y Licencias Superseded ✅
+
+### Fixed
+- **Inventario / Licencias**: Refinada la lógica de resolución de reemplazos (`superseded`) en `InventorySyncService.php`, `MoldexSyncService.php` y el comando `dx:mark-superseded`:
+  - **Node-Locked (con MAC)**: Se comparan únicamente entre licencias con la misma MAC. La versión de fecha más lejana queda `active` y las versiones anteriores pasan a `superseded`.
+  - **Flotantes / Paquetes**: Se agrupan únicamente por misma cantidad y mismo día/mes de vencimiento (ciclo de renovación anual del mismo paquete).
+  - **Compras Independientes**: Las compras o licencias de distintas fechas de expiración o cantidades diferentes permanecen como registros `active` independientes.
+  - **Vencimiento Postergado**: Una licencia anterior solo pasa al estado `superseded` al día siguiente de vencer su fecha de expiración (`isPast()`), manteniéndose vigente en el portal hasta el último día de contrato.
+- **UI (Ficha de Cliente)**: Añadido botón toggle interactivo `Reemplazadas` en la cabecera del servidor/daemon en `/clientes/{id}` para desplegar u ocultar el histórico de licencias reemplazadas de forma limpia.
 
 ## [2026-07-17 10:30] — Hotfix: Agrupación de Errores de Telemetría IA ✅
 
