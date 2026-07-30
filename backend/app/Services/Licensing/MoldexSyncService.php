@@ -106,19 +106,22 @@ class MoldexSyncService
     }
 
     /**
-     * Identifica duplicados por producto+MAC y deja activo solo el que tiene la fecha mayor.
-     * El resto pasa a estado 'superseded'.
+     * Identifica duplicados y renovaciones (superseded) respetando licencias independientes.
+     * - Node-locked (con MAC): la versión con fecha más lejana reemplaza a las versiones anteriores con la misma MAC.
+     * - Flotantes (sin MAC): solo se reemplaza una licencia anterior si coincide la cantidad y el día/mes de expiración (renovación anual del mismo bloque).
      */
     private function resolveSupersededProducts($daemonId)
     {
-        $products = LicenseInventoryProduct::where('daemon_id', $daemonId)
-            ->get()
+        $allProducts = LicenseInventoryProduct::where('daemon_id', $daemonId)->get();
+
+        // 1. Procesar Node-locked (con MAC no nula)
+        $nodeLockedGroups = $allProducts->whereNotNull('node_locked_host_id')
+            ->filter(fn($p) => trim($p->node_locked_host_id) !== '')
             ->groupBy(function ($item) {
-                $expStr = $item->expiration_date ? $item->expiration_date->format('Y-m-d') : 'PERMANENT';
-                return $item->product_code . '|' . ($item->node_locked_host_id ?? 'NO_HOST') . '|' . $expStr;
+                return $item->product_code . '|' . $item->node_locked_host_id;
             });
 
-        foreach ($products as $group) {
+        foreach ($nodeLockedGroups as $group) {
             if ($group->count() > 1) {
                 $sorted = $group->sortByDesc(function ($item) {
                     return $item->expiration_date ? $item->expiration_date->timestamp : PHP_INT_MAX;
@@ -132,6 +135,38 @@ class MoldexSyncService
                 for ($i = 1; $i < $sorted->count(); $i++) {
                     if ($sorted[$i]->status !== 'superseded') {
                         $sorted[$i]->update(['status' => 'superseded']);
+                    }
+                }
+            }
+        }
+
+        // 2. Procesar Flotantes / Sin Host ID
+        $floatingProducts = $allProducts->filter(fn($p) => empty($p->node_locked_host_id))
+            ->groupBy('product_code');
+
+        foreach ($floatingProducts as $productCode => $group) {
+            $subGroups = $group->groupBy(function ($item) {
+                if (!$item->expiration_date) {
+                    return $item->quantity . '|PERMANENT';
+                }
+                return $item->quantity . '|' . $item->expiration_date->format('m-d');
+            });
+
+            foreach ($subGroups as $subGroup) {
+                if ($subGroup->count() > 1) {
+                    $sorted = $subGroup->sortByDesc(function ($item) {
+                        return $item->expiration_date ? $item->expiration_date->timestamp : PHP_INT_MAX;
+                    })->values();
+
+                    $newest = $sorted->first();
+                    if ($newest->status !== 'active') {
+                        $newest->update(['status' => 'active']);
+                    }
+
+                    for ($i = 1; $i < $sorted->count(); $i++) {
+                        if ($sorted[$i]->status !== 'superseded') {
+                            $sorted[$i]->update(['status' => 'superseded']);
+                        }
                     }
                 }
             }
