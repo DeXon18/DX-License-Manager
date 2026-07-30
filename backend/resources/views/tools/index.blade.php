@@ -177,7 +177,7 @@
 <div class="dx-v2-tools-vendor-section" id="tour-ncmatic-tools">
     <div class="dx-v2-tools-vendor-header">
         <span class="dx-v2-tools-vendor-label" style="background: rgba(16, 185, 129, 0.1); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.2);">NCmatic</span>
-        <span class="dx-v2-tools-vendor-desc">Gestión de Claves y Números de Serie por Cliente</span>
+        <span class="dx-v2-tools-vendor-desc">Siemens PLM Solution Partner</span>
         <div class="dx-v2-tools-vendor-line"></div>
     </div>
     <div class="dx-v2-tools-grid dx-v2-tools-grid-3">
