@@ -689,7 +689,6 @@
                     <tr>
                         <th>Número de Serie</th>
                         <th>Tipo / Modalidad</th>
-                        <th class="text-center">Asientos</th>
                         <th>Vencimiento</th>
                         <th>Estado</th>
                         <th>Notas</th>
@@ -699,7 +698,7 @@
                     @forelse($client->ncmaticLicenses()->orderBy('created_at', 'desc')->get() as $lic)
                     <tr>
                         <td>
-                            <span class="font-mono bg-muted/20 px-2 py-1 rounded font-bold text-sm">{{ $lic->serial_number }}</span>
+                            <span class="mono" style="font-size: 13px; font-weight: 700;">{{ $lic->serial_number }}</span>
                         </td>
                         <td>
                             @php
@@ -712,14 +711,13 @@
                             @endphp
                             <span class="badge {{ $typeBadgeClass }}">{{ $lic->license_type }}</span>
                         </td>
-                        <td class="text-center font-bold">{{ $lic->seats }}</td>
                         <td>
                             @if($lic->expiration_date)
-                                <span class="{{ $lic->expiration_date->isPast() ? 'text-danger font-bold' : '' }}">
+                                <span class="{{ $lic->expiration_date->isPast() ? 'badge badge-danger' : 'mono' }}">
                                     {{ $lic->expiration_date->format('d/m/Y') }}
                                 </span>
                             @else
-                                <span class="muted">Permanente / Sin fecha</span>
+                                <span class="badge badge-muted">Permanente</span>
                             @endif
                         </td>
                         <td>
@@ -731,13 +729,13 @@
                                 <span class="badge badge-warn">Expirado</span>
                             @endif
                         </td>
-                        <td class="muted text-xs">
+                        <td class="body-sm">
                             {{ $lic->notes ?: '—' }}
                         </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="text-center py-12 muted">
+                        <td colspan="5" class="text-center py-12 muted">
                             No se han registrado licencias NCmatic para este cliente.
                         </td>
                     </tr>

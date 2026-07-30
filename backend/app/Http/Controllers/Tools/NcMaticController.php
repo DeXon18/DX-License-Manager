@@ -32,7 +32,13 @@ class NcMaticController extends Controller
         }
 
         $licenses = $query->paginate(20)->withQueryString();
-        $clients = Client::orderBy('name', 'asc')->get();
+
+        // Obtener únicamente clientes que tengan contratos de NCmatic
+        $clients = Client::whereHas('contracts', function ($q) {
+            $q->where('type_product', 'like', '%NCmatic%')
+              ->orWhere('sub_product', 'like', '%NCmatic%')
+              ->orWhere('comment', 'like', '%NCmatic%');
+        })->orderBy('name', 'asc')->get();
 
         return view('tools.ncmatic.index', compact('licenses', 'clients', 'search', 'selectedClientId'));
     }
@@ -44,11 +50,12 @@ class NcMaticController extends Controller
             'client_id' => 'required|exists:clients,id',
             'serial_number' => 'required|string|max:255',
             'license_type' => 'required|string|max:100',
-            'seats' => 'required|integer|min:1',
             'expiration_date' => 'nullable|date',
             'status' => 'required|string|in:active,dropped,expired',
             'notes' => 'nullable|string',
         ]);
+
+        $validated['seats'] = 1;
 
         NcmaticLicense::updateOrCreate(
             ['id' => $request->id],

@@ -56,14 +56,15 @@
 
     <!-- Filtros de búsqueda -->
     <div class="card mb-4">
-        <div class="card-body">
-            <form action="{{ route('tools.ncmatic.index') }}" method="GET" class="dx-v2-ui-filter-row">
-                <div class="flex-grow-1">
-                    <input type="text" name="search" value="{{ $search }}" placeholder="Buscar por número de serie, cliente o notas..." class="dx-v2-ui-input">
+        <div class="card-body" style="padding: 16px;">
+            <form action="{{ route('tools.ncmatic.index') }}" method="GET" style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 280px; position: relative;">
+                    <i class="fa-solid fa-magnifying-glass" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--dx-v2-muted); font-size: 13px;"></i>
+                    <input type="text" name="search" value="{{ $search }}" placeholder="Buscar por número de serie, cliente o notas..." class="dx-v2-form-input" style="padding-left: 36px; width: 100%;">
                 </div>
 
-                <div class="dx-v2-ui-select-wrap">
-                    <select name="client_id" class="dx-v2-ui-input">
+                <div style="width: 260px;">
+                    <select name="client_id" class="dx-v2-form-select" style="width: 100%;" onchange="this.form.submit()">
                         <option value="">-- Todos los Clientes --</option>
                         @foreach($clients as $c)
                             <option value="{{ $c->id }}" {{ $selectedClientId == $c->id ? 'selected' : '' }}>{{ $c->name }}</option>
@@ -93,7 +94,6 @@
                         <th>Cliente</th>
                         <th>Número de Serie</th>
                         <th>Tipo / Modalidad</th>
-                        <th class="text-center">Asientos</th>
                         <th>Vencimiento</th>
                         <th>Estado</th>
                         <th>Notas</th>
@@ -109,7 +109,7 @@
                                 </a>
                             </td>
                             <td>
-                                <span class="mono">{{ $lic->serial_number }}</span>
+                                <span class="mono" style="font-size: 13px; font-weight: 700;">{{ $lic->serial_number }}</span>
                             </td>
                             <td>
                                 @php
@@ -122,7 +122,6 @@
                                 @endphp
                                 <span class="badge {{ $typeBadgeClass }}">{{ $lic->license_type }}</span>
                             </td>
-                            <td class="text-center font-bold">{{ $lic->seats }}</td>
                             <td>
                                 @if($lic->expiration_date)
                                     <span class="{{ $lic->expiration_date->isPast() ? 'badge badge-danger' : 'mono' }}">
@@ -151,7 +150,6 @@
                                         client_id: {{ $lic->client_id }},
                                         serial_number: '{{ addslashes($lic->serial_number) }}',
                                         license_type: '{{ $lic->license_type }}',
-                                        seats: {{ $lic->seats }},
                                         expiration_date: '{{ $lic->expiration_date ? $lic->expiration_date->format('Y-m-d') : '' }}',
                                         status: '{{ $lic->status }}',
                                         notes: '{{ addslashes($lic->notes) }}'
@@ -171,7 +169,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="text-center py-12 muted">
+                            <td colspan="7" class="text-center py-12 muted">
                                 No hay licencias de NCmatic registradas en el sistema.
                             </td>
                         </tr>
@@ -186,7 +184,7 @@
         @endif
     </div>
 
-    <!-- Modal Formulario NCmatic (Reutilizando modal-overlay y modal-content estándar de DESIGN.md) -->
+    <!-- Modal Formulario NCmatic -->
     <div x-show="modalOpen" x-cloak class="modal-overlay">
         <div class="modal-content" @click.away="modalOpen = false">
             <div class="modal-header">
@@ -203,7 +201,7 @@
                 <div class="modal-body">
                     <div class="dx-v2-form-group mb-3">
                         <label class="dx-v2-form-label">Cliente *</label>
-                        <select name="client_id" x-model="form.client_id" required class="dx-v2-ui-input">
+                        <select name="client_id" x-model="form.client_id" required class="dx-v2-form-select" style="width: 100%;">
                             <option value="">-- Seleccionar Cliente --</option>
                             @foreach($clients as $c)
                                 <option value="{{ $c->id }}">{{ $c->name }}</option>
@@ -213,33 +211,27 @@
 
                     <div class="dx-v2-form-group mb-3">
                         <label class="dx-v2-form-label">Número de Serie / Clave *</label>
-                        <input type="text" name="serial_number" x-model="form.serial_number" required placeholder="Ej: NCM-2026-99482X" class="dx-v2-ui-input mono">
+                        <input type="text" name="serial_number" x-model="form.serial_number" required placeholder="Ej: NCM-2026-99482X" class="dx-v2-form-input mono" style="width: 100%;">
                     </div>
 
-                    <div class="grid-2-col mb-3">
-                        <div class="dx-v2-form-group">
-                            <label class="dx-v2-form-label">Tipo / Modalidad</label>
-                            <select name="license_type" x-model="form.license_type" class="dx-v2-ui-input">
-                                <option value="MNTO">NCMATIC MNTO (Mantenimiento)</option>
-                                <option value="ALQ">NCMATIC ALQ (Alquiler)</option>
-                                <option value="PERMANENT">NCmatic Permanente</option>
-                                <option value="TRIAL">NCmatic Prueba / Demostración</option>
-                            </select>
-                        </div>
-                        <div class="dx-v2-form-group">
-                            <label class="dx-v2-form-label">Puestos / Asientos</label>
-                            <input type="number" name="seats" x-model="form.seats" min="1" required class="dx-v2-ui-input">
-                        </div>
+                    <div class="dx-v2-form-group mb-3">
+                        <label class="dx-v2-form-label">Tipo / Modalidad</label>
+                        <select name="license_type" x-model="form.license_type" class="dx-v2-form-select" style="width: 100%;">
+                            <option value="MNTO">NCMATIC MNTO (Mantenimiento)</option>
+                            <option value="ALQ">NCMATIC ALQ (Alquiler)</option>
+                            <option value="PERMANENT">NCmatic Permanente</option>
+                            <option value="TRIAL">NCmatic Prueba / Demostración</option>
+                        </select>
                     </div>
 
                     <div class="grid-2-col mb-3">
                         <div class="dx-v2-form-group">
                             <label class="dx-v2-form-label">Fecha de Expiración</label>
-                            <input type="date" name="expiration_date" x-model="form.expiration_date" class="dx-v2-ui-input">
+                            <input type="date" name="expiration_date" x-model="form.expiration_date" class="dx-v2-form-input" style="width: 100%;">
                         </div>
                         <div class="dx-v2-form-group">
                             <label class="dx-v2-form-label">Estado</label>
-                            <select name="status" x-model="form.status" class="dx-v2-ui-input">
+                            <select name="status" x-model="form.status" class="dx-v2-form-select" style="width: 100%;">
                                 <option value="active">Activo</option>
                                 <option value="dropped">Baja</option>
                                 <option value="expired">Expirado</option>
@@ -249,7 +241,7 @@
 
                     <div class="dx-v2-form-group">
                         <label class="dx-v2-form-label">Notas / Observaciones</label>
-                        <textarea name="notes" x-model="form.notes" rows="3" placeholder="Información sobre la versión, instalación o contrato..." class="dx-v2-ui-input"></textarea>
+                        <textarea name="notes" x-model="form.notes" rows="3" placeholder="Información sobre la versión, instalación o contrato..." class="dx-v2-form-textarea" style="width: 100%;"></textarea>
                     </div>
                 </div>
 
