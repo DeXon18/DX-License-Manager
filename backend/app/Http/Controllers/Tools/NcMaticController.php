@@ -40,7 +40,7 @@ class NcMaticController extends Controller
               ->orWhere('comment', 'like', '%NCmatic%');
         })->orderBy('name', 'asc')->get();
 
-        return view('tools.ncmatic.index', compact('licenses', 'clients', 'search', 'selectedClientId'));
+        return view('tools.ncmatic', compact('licenses', 'clients', 'search', 'selectedClientId'));
     }
 
     public function store(Request $request)
