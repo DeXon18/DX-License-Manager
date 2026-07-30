@@ -49,6 +49,7 @@
         <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'contacts' }" @click="setTab('contacts')">Contactos</button>
         <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'certificates' }" @click="setTab('certificates')">Certificados</button>
         <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'renewals' }" @click="setTab('renewals')">Renovaciones</button>
+        <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'ncmatic' }" @click="setTab('ncmatic')">NCmatic</button>
         <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'enterprise_cloud' }" @click="setTab('enterprise_cloud')">Enterprise Cloud</button>
     </div>
 
@@ -664,6 +665,80 @@
                     <tr>
                         <td colspan="4" class="text-center py-12 muted">
                             No se han registrado renovaciones enviadas para este cliente.
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- NCmatic Tab -->
+    <div x-show="tab === 'ncmatic'" class="tab-content" x-cloak>
+        <div class="card p-0">
+            <div class="card-header flex justify-between items-center px-5 py-4">
+                <h3 class="text-sm font-bold uppercase tracking-wider">Licencias por Número de Serie (NCmatic)</h3>
+                <a href="{{ route('tools.ncmatic.index', ['client_id' => $client->id]) }}" class="dx-v2-ui-btn dx-v2-ui-btn-primary">
+                    <i class="fa-solid fa-plus mr-2"></i> Añadir Licencia NCmatic
+                </a>
+            </div>
+            <div class="dx-v2-ui-table-wrapper">
+                <table class="dx-v2-ui-table">
+                <thead>
+                    <tr>
+                        <th>Número de Serie</th>
+                        <th>Tipo / Modalidad</th>
+                        <th class="text-center">Asientos</th>
+                        <th>Vencimiento</th>
+                        <th>Estado</th>
+                        <th>Notas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($client->ncmaticLicenses()->orderBy('created_at', 'desc')->get() as $lic)
+                    <tr>
+                        <td>
+                            <span class="font-mono bg-muted/20 px-2 py-1 rounded font-bold text-sm">{{ $lic->serial_number }}</span>
+                        </td>
+                        <td>
+                            @php
+                                $typeBadgeClass = match($lic->license_type) {
+                                    'MNTO' => 'badge-info',
+                                    'ALQ' => 'badge-warn',
+                                    'PERMANENT' => 'badge-success',
+                                    default => 'badge-muted'
+                                };
+                            @endphp
+                            <span class="badge {{ $typeBadgeClass }}">{{ $lic->license_type }}</span>
+                        </td>
+                        <td class="text-center font-bold">{{ $lic->seats }}</td>
+                        <td>
+                            @if($lic->expiration_date)
+                                <span class="{{ $lic->expiration_date->isPast() ? 'text-danger font-bold' : '' }}">
+                                    {{ $lic->expiration_date->format('d/m/Y') }}
+                                </span>
+                            @else
+                                <span class="muted">Permanente / Sin fecha</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if($lic->status === 'active')
+                                <span class="badge badge-success">Activo</span>
+                            @elseif($lic->status === 'dropped')
+                                <span class="badge badge-danger">Baja</span>
+                            @else
+                                <span class="badge badge-warn">Expirado</span>
+                            @endif
+                        </td>
+                        <td class="muted text-xs">
+                            {{ $lic->notes ?: '—' }}
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="6" class="text-center py-12 muted">
+                            No se han registrado licencias NCmatic para este cliente.
                         </td>
                     </tr>
                     @endforelse

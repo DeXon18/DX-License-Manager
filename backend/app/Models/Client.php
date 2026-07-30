@@ -61,5 +61,10 @@ class Client extends Model
     {
         return $this->hasMany(EnterpriseCloudAccount::class);
     }
+
+    public function ncmaticLicenses(): HasMany
+    {
+        return $this->hasMany(NcmaticLicense::class);
+    }
 }
 

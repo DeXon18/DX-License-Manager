@@ -173,6 +173,37 @@
 </div>
 @endif
 
+<!-- NCMATIC -->
+<div class="dx-v2-tools-vendor-section" id="tour-ncmatic-tools">
+    <div class="dx-v2-tools-vendor-header">
+        <span class="dx-v2-tools-vendor-label" style="background: rgba(16, 185, 129, 0.1); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.2);">NCmatic</span>
+        <span class="dx-v2-tools-vendor-desc">Gestión de Claves y Números de Serie por Cliente</span>
+        <div class="dx-v2-tools-vendor-line"></div>
+    </div>
+    <div class="dx-v2-tools-grid dx-v2-tools-grid-3">
+        <a class="dx-v2-tools-card" 
+           style="--card-accent: #10B981; --icon-bg: rgba(16, 185, 129, 0.08);"
+           href="{{ route('tools.ncmatic.index') }}">
+            <div class="dx-v2-tools-card-header">
+                <div class="dx-v2-tools-card-header-left">
+                    <div class="dx-v2-tools-icon-box" style="--card-accent: #10B981;">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+                    </div>
+                    <div class="dx-v2-tools-card-name">Gestor NCmatic</div>
+                </div>
+                <span class="dx-v2-tools-badge doc">Serial Numbers</span>
+            </div>
+            <div>
+                <div class="dx-v2-tools-card-desc">Asignación, registro y seguimiento de licencias NCmatic asociadas a números de serie por cliente.</div>
+            </div>
+            <div class="dx-v2-tools-card-footer">
+                <span class="dx-v2-tools-card-meta">Asignación Directa · Trazabilidad</span>
+                <span class="dx-v2-tools-card-cta">Abrir →</span>
+            </div>
+        </a>
+    </div>
+</div>
+
 @endsection
 
 @push('scripts')
