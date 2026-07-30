@@ -76,7 +76,7 @@
     </div>
 </div>
 
-<div class="dx-v2-sys-dash-stats-grid" style="margin-bottom: 24px;">
+<div class="dx-v2-sys-dash-stats-grid" style="grid-template-columns: repeat(5, 1fr) !important; margin-bottom: 24px;">
     {{-- Clientes Registrados --}}
     <div class="dx-v2-sys-dash-stat-card">
         <div class="dx-v2-sys-dash-stat-card-watermark">
@@ -135,6 +135,22 @@
         </div>
         <div class="dx-v2-sys-dash-stat-card-value" style="color: var(--dx-v2-accent, #6366f1) !important;">
             {{ $globalMetrics['moldex_licenses'] }}
+        </div>
+        <div class="dx-v2-sys-dash-stat-card-meta-mono">
+            Licencias Activas
+        </div>
+    </div>
+
+    {{-- Activos NCmatic --}}
+    <div class="dx-v2-sys-dash-stat-card">
+        <div class="dx-v2-sys-dash-stat-card-watermark">
+            <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+        </div>
+        <div class="dx-v2-sys-dash-stat-card-title">
+            NCMATIC
+        </div>
+        <div class="dx-v2-sys-dash-stat-card-value" style="color: var(--dx-v2-accent-alt, #0ea5e9) !important;">
+            {{ $globalMetrics['ncmatic_licenses'] }}
         </div>
         <div class="dx-v2-sys-dash-stat-card-meta-mono">
             Licencias Activas
