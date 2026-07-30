@@ -71,40 +71,31 @@ class MarkSupersededLicenses extends Command
                 }
             }
 
-            // 2. Procesar Flotantes / Sin Host ID (renovación anual del mismo bloque: misma cantidad + mismo mes y día)
+            // 2. Procesar Flotantes / Sin Host ID (Pendientes de MAC)
             $floatingProducts = $allProducts->filter(fn($p) => empty($p->node_locked_host_id))
                 ->groupBy('product_code');
 
             foreach ($floatingProducts as $productCode => $group) {
-                $subGroups = $group->groupBy(function ($item) {
-                    if (!$item->expiration_date) {
-                        return $item->quantity . '|PERMANENT';
+                if ($group->count() <= 1) continue;
+
+                $sorted = $group->sortByDesc(function ($product) {
+                    return $product->expiration_date ? $product->expiration_date->timestamp : PHP_INT_MAX;
+                })->values();
+
+                $latestProduct = $sorted->first();
+
+                foreach ($group as $product) {
+                    if ($product->id !== $latestProduct->id && $product->status !== 'superseded') {
+                        $product->status = 'superseded';
+                        $product->save();
+                        $totalSuperseded++;
+                        $this->line("Producto marcado como superseded (Entrega Anterior Sin MAC): ID {$product->id} - {$product->product_code}");
                     }
-                    return $item->quantity . '|' . $item->expiration_date->format('m-d');
-                });
+                }
 
-                foreach ($subGroups as $subGroup) {
-                    if ($subGroup->count() <= 1) continue;
-
-                    $sorted = $subGroup->sortByDesc(function ($product) {
-                        return $product->expiration_date ? $product->expiration_date->timestamp : PHP_INT_MAX;
-                    })->values();
-
-                    $latestProduct = $sorted->first();
-
-                    foreach ($subGroup as $product) {
-                        if ($product->id !== $latestProduct->id && $product->status !== 'superseded') {
-                            $product->status = 'superseded';
-                            $product->save();
-                            $totalSuperseded++;
-                            $this->line("Producto marcado como superseded (Flotante Anual): ID {$product->id} - {$product->product_code}");
-                        }
-                    }
-
-                    if ($latestProduct->status !== 'active') {
-                        $latestProduct->status = 'active';
-                        $latestProduct->save();
-                    }
+                if ($latestProduct->status !== 'active') {
+                    $latestProduct->status = 'active';
+                    $latestProduct->save();
                 }
             }
         }
