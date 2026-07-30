@@ -21,7 +21,7 @@
 </div>
 
 <div class="grid-main" x-data="{
-    showForm: {{ $selectedClientId ? 'true' : 'false' }},
+    showForm: true,
     editMode: false,
     form: {
         id: '',
@@ -38,21 +38,17 @@
             this.form = { ...data };
             this.showForm = true;
         } else {
-            if (this.showForm && !this.editMode) {
-                this.showForm = false;
-            } else {
-                this.editMode = false;
-                this.form = {
-                    id: '',
-                    client_id: '{{ $selectedClientId ?? '' }}',
-                    serial_number: '',
-                    license_type: 'MNTO',
-                    expiration_date: '',
-                    status: 'active',
-                    notes: ''
-                };
-                this.showForm = true;
-            }
+            this.editMode = false;
+            this.form = {
+                id: '',
+                client_id: '{{ $selectedClientId ?? '' }}',
+                serial_number: '',
+                license_type: 'MNTO',
+                expiration_date: '',
+                status: 'active',
+                notes: ''
+            };
+            this.showForm = true;
         }
     },
     resetForm() {
@@ -66,7 +62,7 @@
             status: 'active',
             notes: ''
         };
-        this.showForm = false;
+        // Do not hide the form, just clear it
     }
 }">
 
@@ -80,9 +76,9 @@
                 </div>
                 <div class="flex items-center gap-2">
                     <span class="dx-v2-tools-ncmatic-badge" x-text="editMode ? 'MODO EDICIÓN' : 'ASIGNACIÓN DE SERIE'"></span>
-                    <button type="button" @click="toggleForm()" class="dx-v2-ui-btn dx-v2-ui-btn-ghost">
-                        <i class="fa-solid" :class="showForm ? 'fa-chevron-up' : 'fa-plus'"></i>
-                        <span x-text="showForm ? ' Ocultar' : ' Nueva Licencia'"></span>
+                    <button type="button" @click="toggleForm()" class="dx-v2-ui-btn dx-v2-ui-btn-ghost" x-show="editMode">
+                        <i class="fa-solid fa-plus"></i>
+                        <span> Nueva Licencia</span>
                     </button>
                 </div>
             </div>
