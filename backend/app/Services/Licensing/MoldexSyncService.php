@@ -145,19 +145,28 @@ class MoldexSyncService
             ->groupBy('product_code');
 
         foreach ($floatingProducts as $productCode => $group) {
-            if ($group->count() > 1) {
-                $sorted = $group->sortByDesc(function ($item) {
-                    return $item->expiration_date ? $item->expiration_date->timestamp : PHP_INT_MAX;
-                })->values();
-
-                $newest = $sorted->first();
-                if ($newest->status !== 'active') {
-                    $newest->update(['status' => 'active']);
+            $subGroups = $group->groupBy(function ($item) {
+                if (!$item->expiration_date) {
+                    return $item->quantity . '|PERMANENT';
                 }
+                return $item->quantity . '|' . $item->expiration_date->format('m-d');
+            });
 
-                for ($i = 1; $i < $sorted->count(); $i++) {
-                    if ($sorted[$i]->status !== 'superseded') {
-                        $sorted[$i]->update(['status' => 'superseded']);
+            foreach ($subGroups as $subGroup) {
+                if ($subGroup->count() > 1) {
+                    $sorted = $subGroup->sortByDesc(function ($item) {
+                        return $item->expiration_date ? $item->expiration_date->timestamp : PHP_INT_MAX;
+                    })->values();
+
+                    $newest = $sorted->first();
+                    if ($newest->status !== 'active') {
+                        $newest->update(['status' => 'active']);
+                    }
+
+                    for ($i = 1; $i < $sorted->count(); $i++) {
+                        if ($sorted[$i]->status !== 'superseded') {
+                            $sorted[$i]->update(['status' => 'superseded']);
+                        }
                     }
                 }
             }
