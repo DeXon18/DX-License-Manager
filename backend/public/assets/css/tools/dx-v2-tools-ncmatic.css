@@ -173,19 +173,19 @@
 
 /* ─── Sidebar Panels ─────────────────────────────────── */
 .dx-v2-tools-ncmatic-sidebar-card {
-  background: var(--dx-v2-surface);
-  border: 1px solid var(--dx-v2-border);
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 16px;
+  background: var(--dx-v2-surface) !important;
+  border: 1px solid var(--dx-v2-border) !important;
+  padding: 20px !important;
+  border-radius: 10px !important;
+  margin-bottom: 16px !important;
 }
 
 .dx-v2-tools-ncmatic-sidebar-title {
-  font-size: 0.694rem;
-  font-weight: 700;
-  color: var(--dx-v2-muted);
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: var(--dx-v2-muted) !important;
   text-transform: uppercase;
-  margin-bottom: 16px;
+  margin-bottom: 16px !important;
   letter-spacing: 0.05em;
 }
 
@@ -196,34 +196,33 @@
 }
 
 .dx-v2-tools-ncmatic-sidebar-code-box {
-  background: var(--dx-v2-raised);
-  padding: 10px;
-  border-radius: 6px;
-  font-family: var(--font-mono, 'IBM Plex Mono', monospace);
-  font-size: 0.8125rem;
-  color: var(--dx-v2-secondary);
-  border-left: 3px solid var(--dx-v2-vendor-ncmatic);
+  background: var(--dx-v2-raised) !important;
+  padding: 10px !important;
+  border-radius: 6px !important;
+  font-family: var(--font-mono, 'IBM Plex Mono', monospace) !important;
+  font-size: 11px !important;
+  color: var(--dx-v2-secondary-base) !important;
+  border-left: 3px solid var(--dx-v2-vendor-ncmatic) !important;
 }
 
 .dx-v2-tools-ncmatic-sidebar-desc {
-  font-size: 0.79rem;
-  color: var(--dx-v2-muted);
-  line-height: 1.5;
-  margin: 0;
+  font-size: 11px !important;
+  color: var(--dx-v2-muted) !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
 }
 
 .dx-v2-tools-ncmatic-sidebar-info {
-  background: var(--dx-v2-vendor-ncmatic-muted);
-  border: 1px solid var(--dx-v2-vendor-ncmatic-border);
-  padding: 16px;
-  border-radius: 10px;
+  margin-top: 16px !important;
+  padding: 16px !important;
+  border: 1px solid var(--dx-v2-border) !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.005) !important;
 }
 
-
-
 .dx-v2-tools-ncmatic-sidebar-info-text {
-  font-size: 0.79rem;
-  color: var(--dx-v2-muted);
-  line-height: 1.5;
-  margin: 0;
+  font-size: 11px !important;
+  color: var(--dx-v2-muted) !important;
+  line-height: 1.6 !important;
+  margin: 0 !important;
 }
