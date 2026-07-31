@@ -63,6 +63,9 @@ class ClientController extends Controller
                     });
                 }
             })
+            ->when($request->letter, function($query) use ($request) {
+                $query->where('name', 'like', $request->letter . '%');
+            })
             ->orderBy('name')
             ->paginate(20);
 

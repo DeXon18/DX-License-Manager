@@ -158,6 +158,28 @@
         </a>
 </div>
 
+<div class="dx-v2-alpha-filter" style="display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 16px; justify-content: flex-start; align-items: center;">
+    @php
+        $currentLetter = request('letter');
+    @endphp
+    
+    <span style="font-size: 13px; font-weight: 500; color: var(--dx-v2-text-muted); margin-right: 8px;">A-Z:</span>
+
+    <a href="{{ route('clients.index', array_merge(request()->except('letter'), ['page' => 1])) }}" 
+       class="dx-v2-ui-btn dx-v2-ui-btn-outline" 
+       style="padding: 4px 8px; min-width: 32px; text-align: center; height: 28px; line-height: 18px; font-size: 12px; {{ !$currentLetter ? 'background: var(--dx-v2-accent-alt); color: #fff; border-color: var(--dx-v2-accent-alt);' : '' }}">
+       Todos
+    </a>
+    
+    @foreach(range('A', 'Z') as $letter)
+        <a href="{{ route('clients.index', array_merge(request()->all(), ['letter' => $letter, 'page' => 1])) }}" 
+           class="dx-v2-ui-btn dx-v2-ui-btn-outline"
+           style="padding: 4px 8px; min-width: 32px; text-align: center; height: 28px; line-height: 18px; font-size: 12px; {{ $currentLetter === $letter ? 'background: var(--dx-v2-accent-alt); color: #fff; border-color: var(--dx-v2-accent-alt);' : '' }}">
+            {{ $letter }}
+        </a>
+    @endforeach
+</div>
+
 <div class="card">
     <table class="table">
         <thead>
