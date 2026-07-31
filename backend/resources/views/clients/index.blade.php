@@ -159,7 +159,7 @@
 </div>
 
 <div class="card">
-    <div class="card-header">
+    <div class="card-header dx-v2-clients-alpha-header">
         <div class="dx-v2-clients-alpha-container">
             @php
                 $currentLetter = request('letter');

@@ -96,15 +96,28 @@
 }
 
 /* Filtro Alfabético */
+.dx-v2-clients-alpha-header {
+  padding: 8px 24px !important;
+  background: rgba(255,255,255,0.01) !important;
+}
+[data-theme="light"] .dx-v2-clients-alpha-header {
+  background: rgba(0,0,0,0.01) !important;
+}
 .dx-v2-clients-alpha-container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  flex-wrap: nowrap;
+  gap: 2px;
   align-items: center;
+  width: 100%;
+  overflow-x: auto;
+}
+.dx-v2-clients-alpha-container::-webkit-scrollbar {
+  height: 0px;
 }
 .dx-v2-clients-alpha-label {
-  font-size: 13px;
-  font-weight: 500;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
   color: var(--dx-v2-text-muted);
   margin-right: 8px;
 }
@@ -112,15 +125,15 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 28px;
-  height: 28px;
-  padding: 0 8px;
-  font-size: 12px;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--dx-v2-text-muted);
   background: transparent;
   border: 1px solid transparent;
-  border-radius: var(--dx-v2-rounded-md);
+  border-radius: var(--dx-v2-rounded-sm);
   text-decoration: none;
   transition: all 0.2s ease;
 }
