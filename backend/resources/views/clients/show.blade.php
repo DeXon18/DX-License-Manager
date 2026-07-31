@@ -306,7 +306,7 @@
                                             </td>
                                             <td class="dx-v2-clients-host-mono">
                                                 @if($isMissingMac && !$isSuperseded)
-                                                    <span class="dx-v2-clients-expiry-status warning" style="font-size: 10px; padding: 2px 6px; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;">
+                                                    <span class="dx-v2-clients-expiry-status warning">
                                                         <i class="fa-solid fa-triangle-exclamation"></i> Pendiente MAC
                                                     </span>
                                                 @else
@@ -336,7 +336,9 @@
                                             </td>
                                             <td>
                                                 @if($isSuperseded)
-                                                    <span class="dx-v2-clients-expiry-status warning" style="font-size: 10px; padding: 2px 6px; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;"><i class="fa-solid fa-arrow-rotate-left"></i> REEMPLAZADA</span>
+                                                    <span class="dx-v2-clients-expiry-status warning" title="REEMPLAZADA">
+                                                        <i class="fa-solid fa-arrow-rotate-left"></i>
+                                                    </span>
                                                 @else
                                                     @php
                                                         $startDate = $product->start_date;
@@ -364,9 +366,8 @@
                                                             $text = 'ACTIVA';
                                                         }
                                                     @endphp
-                                                    <span class="dx-v2-clients-expiry-status {{ $statusClass }}">
+                                                    <span class="dx-v2-clients-expiry-status {{ $statusClass }}" title="{{ $text }}">
                                                         <i class="{{ $icon }}"></i>
-                                                        {{ $text }}
                                                     </span>
                                                 @endif
                                             </td>
