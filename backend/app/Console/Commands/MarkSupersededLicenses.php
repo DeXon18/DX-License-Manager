@@ -13,7 +13,7 @@ class MarkSupersededLicenses extends Command
      *
      * @var string
      */
-    protected $signature = 'dx:mark-superseded';
+    protected $signature = 'dx:mark-superseded {--reset : Restaura primero todos los productos a active antes de reevaluar}';
 
     /**
      * The console command description.
@@ -28,44 +28,33 @@ class MarkSupersededLicenses extends Command
     public function handle()
     {
         $this->info("Iniciando la revisión retroactiva de licencias...");
+        
+        if ($this->option('reset')) {
+            $resetCount = \App\Models\LicenseInventoryProduct::where('status', 'superseded')->update(['status' => 'active']);
+            $this->info("Restauradas {$resetCount} licencias de superseded a active.");
+        }
+
         $daemons = LicenseInventoryDaemon::with('products')->get();
         $totalSuperseded = 0;
 
         foreach ($daemons as $daemon) {
-            $products = $daemon->products;
+            $allProducts = $daemon->products;
             
-            // Agrupar por producto y host id
-            $groupedProducts = $products->groupBy(function ($product) {
-                return $product->product_code . '_' . ($product->node_locked_host_id ?? 'floating');
-            });
-
-            foreach ($groupedProducts as $key => $group) {
-                if ($group->count() <= 1) {
-                    continue;
-                }
-
-                // Filtrar para ignorar los que ya están superseded (opcional, o procesarlos todos)
-                // Encontrar el producto con la fecha de expiración más lejana
-                $latestProduct = $group->sortByDesc(function ($product) {
-                    // Si no hay fecha (permanente), lo tratamos como la fecha más lejana posible
-                    return $product->expiration_date ? $product->expiration_date->timestamp : PHP_INT_MAX;
-                })->first();
-
-                // Marcar el resto como superseded
-                foreach ($group as $product) {
-                    if ($product->id !== $latestProduct->id && $product->status !== 'superseded') {
+            // Ya no agrupamos por MAC para marcar como 'superseded' porque las renovaciones futuras coexisten
+            foreach ($allProducts as $product) {
+                // Solo caducamos licencias cuyo expiration_date ya pasó
+                if ($product->expiration_date && $product->expiration_date->format('Y') !== '9999' && $product->expiration_date->isPast()) {
+                    if ($product->status !== 'superseded') {
                         $product->status = 'superseded';
                         $product->save();
                         $totalSuperseded++;
-                        $this->line("Producto marcado como superseded: ID {$product->id} - {$product->product_code}");
+                        $this->line("Producto marcado como superseded por caducidad: ID {$product->id} - {$product->product_code}");
                     }
-                }
-                
-                // Asegurarse de que el último está activo (si fue marcado como inactive antes)
-                if ($latestProduct->status !== 'active') {
-                    $latestProduct->status = 'active';
-                    $latestProduct->save();
-                    $this->line("Producto restaurado a active: ID {$latestProduct->id} - {$latestProduct->product_code}");
+                } else {
+                    if ($product->status !== 'active') {
+                        $product->status = 'active';
+                        $product->save();
+                    }
                 }
             }
         }
@@ -73,6 +62,6 @@ class MarkSupersededLicenses extends Command
         $this->info("Revisión completada. Total de licencias marcadas como superseded: {$totalSuperseded}");
         Log::info("Comando dx:mark-superseded completado. {$totalSuperseded} licencias actualizadas.");
         
-        return Command::SUCCESS;
+        return \Symfony\Component\Console\Command\Command::SUCCESS;
     }
 }

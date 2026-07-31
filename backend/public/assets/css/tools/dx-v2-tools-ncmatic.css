@@ -1,0 +1,228 @@
+/**
+ * @module    dx-v2-tools-ncmatic
+ * @desc      Estilos del Gestor de Licencias NCmatic en el sistema NOC Pro.
+ * @afecta    [tools/ncmatic/index.blade.php]
+ * @version   3.9.5
+ */
+
+/* ─── Variables de Vendor NCmatic ─────────────────────── */
+:root {
+  --dx-v2-vendor-ncmatic: #10B981;
+  --dx-v2-vendor-ncmatic-muted: rgba(16, 185, 129, 0.1);
+  --dx-v2-vendor-ncmatic-border: rgba(16, 185, 129, 0.25);
+}
+
+/* ─── Header ─────────────────────────────────────────── */
+.dx-v2-tools-ncmatic-header-layout {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.dx-v2-tools-ncmatic-header-icon {
+  background: var(--dx-v2-vendor-ncmatic-muted);
+  color: var(--dx-v2-vendor-ncmatic);
+  width: 42px;
+  height: 42px;
+  border-radius: var(--dx-v2-rounded-md, 8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: 1px solid var(--dx-v2-vendor-ncmatic-border);
+  font-size: 18px;
+}
+
+.dx-v2-tools-ncmatic-header-title {
+  margin: 0;
+  font-size: 1.602rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-display, 'Outfit', sans-serif);
+}
+
+.dx-v2-tools-ncmatic-header-sub {
+  margin: 4px 0 0 0;
+  font-size: 0.889rem;
+  color: var(--dx-v2-muted);
+  font-family: var(--font-sans, 'Inter', sans-serif);
+}
+
+.dx-v2-tools-ncmatic-vendor-label {
+  font-size: 0.694rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--dx-v2-vendor-ncmatic-muted);
+  color: var(--dx-v2-vendor-ncmatic);
+  border: 1px solid var(--dx-v2-vendor-ncmatic-border);
+  font-family: var(--font-sans, 'Inter', sans-serif);
+}
+
+/* ─── Cards & Header Layout ───────────────────────────── */
+.dx-v2-tools-ncmatic-card {
+  margin-bottom: 24px;
+}
+
+.dx-v2-tools-ncmatic-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--dx-v2-border);
+}
+
+.dx-v2-tools-ncmatic-card-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dx-v2-tools-ncmatic-card-icon {
+  color: var(--dx-v2-vendor-ncmatic);
+}
+
+.dx-v2-tools-ncmatic-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.dx-v2-tools-ncmatic-badge {
+  background: var(--dx-v2-vendor-ncmatic-muted);
+  color: var(--dx-v2-vendor-ncmatic);
+  border: 1px solid var(--dx-v2-vendor-ncmatic-border);
+  font-size: 0.694rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-family: var(--font-sans, 'Inter', sans-serif);
+}
+
+.dx-v2-tools-ncmatic-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.dx-v2-tools-ncmatic-form-grid-secondary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.dx-v2-tools-ncmatic-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  border-top: 1px solid var(--dx-v2-border);
+  padding-top: 16px;
+  margin-top: 8px;
+}
+
+.dx-v2-tools-ncmatic-btn-submit {
+  background: var(--dx-v2-vendor-ncmatic);
+  border-color: var(--dx-v2-vendor-ncmatic);
+  color: #ffffff;
+}
+
+.dx-v2-tools-ncmatic-btn-submit:hover {
+  background: #059669;
+  border-color: #059669;
+}
+
+/* ─── Search Container ───────────────────────────────── */
+.dx-v2-tools-ncmatic-search-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.dx-v2-tools-ncmatic-search-input-wrap {
+  flex: 1;
+  min-width: 280px;
+  position: relative;
+}
+
+.dx-v2-tools-ncmatic-search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--dx-v2-muted);
+  font-size: 13px;
+}
+
+.dx-v2-tools-ncmatic-search-input {
+  padding-left: 36px;
+  width: 100%;
+}
+
+.dx-v2-tools-ncmatic-select-wrap {
+  width: 260px;
+}
+
+/* ─── Sidebar Panels ─────────────────────────────────── */
+.dx-v2-tools-ncmatic-sidebar-card {
+  background: var(--dx-v2-surface) !important;
+  border: 1px solid var(--dx-v2-border) !important;
+  padding: 20px !important;
+  border-radius: 10px !important;
+  margin-bottom: 16px !important;
+}
+
+.dx-v2-tools-ncmatic-sidebar-title {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: var(--dx-v2-muted) !important;
+  text-transform: uppercase;
+  margin-bottom: 16px !important;
+  letter-spacing: 0.05em;
+}
+
+.dx-v2-tools-ncmatic-sidebar-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dx-v2-tools-ncmatic-sidebar-code-box {
+  background: var(--dx-v2-raised) !important;
+  padding: 10px !important;
+  border-radius: 6px !important;
+  font-family: var(--font-mono, 'IBM Plex Mono', monospace) !important;
+  font-size: 11px !important;
+  color: var(--dx-v2-secondary-base) !important;
+  border-left: 3px solid var(--dx-v2-vendor-ncmatic) !important;
+}
+
+.dx-v2-tools-ncmatic-sidebar-desc {
+  font-size: 11px !important;
+  color: var(--dx-v2-muted) !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+}
+
+.dx-v2-tools-ncmatic-sidebar-info {
+  margin-top: 16px !important;
+  padding: 16px !important;
+  border: 1px solid var(--dx-v2-border) !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.005) !important;
+}
+
+.dx-v2-tools-ncmatic-sidebar-info-text {
+  font-size: 11px !important;
+  color: var(--dx-v2-muted) !important;
+  line-height: 1.6 !important;
+  margin: 0 !important;
+}

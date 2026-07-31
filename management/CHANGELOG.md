@@ -2,7 +2,55 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.6.3
+> **Version:** v3.9.0
+
+## [2026-07-31 10:45] — Feature: Soporte de Fecha de Inicio en Licencias y Ajustes UI ✅
+
+### Added
+- **Licencias**: Se añadió soporte para parsear la fecha de inicio (`START=...`) de los archivos de licencia procesados por n8n (webhook) y sincronizarla en base de datos (`start_date`).
+- **UI / Inventario**: Se muestra la columna "Inicio" en la tabla de inventario y se calcula el estado "PENDIENTE DE ACTIVACIÓN" si la fecha de inicio es futura.
+- **Diseño**: Refinamiento estético en la tabla de inventario para que el ancho de las columnas numéricas y fechas se ajuste a su contenido y la descripción técnica tome el espacio restante sin romper el texto.
+
+## [2026-07-31 08:16] — Bugfix: Hostname en Licencias Temporales Siemens ✅
+
+### Fixed
+- **Motor de Licencias**: Solucionado un bug en `NXSuiteService`, `StarCcmService` y `HeedsService` donde las licencias temporales no reemplazaban `YourHostname` por `localhost` debido a una comprobación errónea sobre el campo equivocado (`$hostname === 'ANY'` en lugar de `$hostid === 'ANY'`). Ahora el sistema garantiza que los servidores temporales se reescriben correctamente a `localhost`.
+
+## [2026-07-31 07:35] — Feature: Filtro Alfabético Integrado (NOC Pro) ✅
+
+### Added
+- **UI / Inventario**: Añadido un filtro alfabético (A-Z) en el directorio de clientes (`/clientes`) para búsqueda rápida.
+- **Diseño NOC Pro**: El abecedario se ha integrado orgánicamente dentro de la cabecera de la tabla (`.card-header`) usando botones compactos. El diseño distribuye uniformemente las letras en una sola línea a lo ancho de toda la pantalla (`justify-content: space-between`), unificando el control de filtros con el diseño estructural del panel y eliminando estilos en línea en favor de clases CSS puras (`dx-v2-clients-alpha-btn`).
+
+## [2026-07-30 17:20] — Feature: Módulo de Gestión de Licencias NCmatic por Número de Serie ✅
+
+### Added
+- **Base de Datos & Modelo**: Creada migración `ncmatic_licenses` y modelo `NcmaticLicense` con soporte para vinculación a cliente (`client_id`), número de serie (`serial_number`), modalidad (`license_type`: MNTO, ALQ, PERMANENT, TRIAL), asientos (`seats`), vencimiento (`expiration_date`), estado (`status`) y observaciones (`notes`).
+- **Herramientas / Gestor NCmatic**: Creado controlador `NcMaticController` y vista dedicada en `/herramientas/ncmatic` con buscador en tiempo real por número de serie o cliente, filtros y modal de alta/edición interactivo.
+- **Ficha de Cliente**: Integrada la pestaña **NCmatic** en `/clientes/{id}` para visualizar el inventario de seriales asignados al cliente con botón de alta directa.
+- **UI / Sistema de Diseño**: Diseñado siguiendo estrictamente el sistema de componentes del proyecto `DESIGN.md` (clases nativas NOC Pro, tokens de color CSS, badges de estado, fuentes Outfit e IBM Plex Mono para seriales sin inline styles).
+
+## [2026-07-30 16:50] — Feature: Selector de Año y Filtros Dinámicos en el Planificador de Renovaciones ✅
+
+### Added
+- **Planificador de Renovaciones**: Añadido selector dinámico de **Año** en la cabecera de `/planificador` (junto al selector de Mes), obteniendo automáticamente los años disponibles en los contratos de la base de datos (ej. 2026, 2027, 2028, etc.).
+- **Filtros de Estado**: Barra de filtros por estado disponible en cualquier año consultado, con selección desmarcada por defecto para ver la totalidad de contratos del mes/año seleccionado de manera limpia.
+
+## [2026-07-30 14:30] — Fix: Refinamiento del Algoritmo de Renovaciones y Licencias Superseded ✅
+
+### Fixed
+- **Inventario / Licencias**: Refinada la lógica de resolución de reemplazos (`superseded`) en `InventorySyncService.php`, `MoldexSyncService.php` y el comando `dx:mark-superseded`:
+  - **Node-Locked (con MAC)**: Se comparan únicamente entre licencias con la misma MAC. La versión de fecha más lejana queda `active` y las versiones anteriores pasan a `superseded`.
+  - **Flotantes / Paquetes**: Se agrupan únicamente por misma cantidad y mismo día/mes de vencimiento (ciclo de renovación anual del mismo paquete).
+  - **Compras Independientes**: Las compras o licencias de distintas fechas de expiración o cantidades diferentes permanecen como registros `active` independientes.
+  - **Vencimiento Postergado**: Una licencia anterior solo pasa al estado `superseded` al día siguiente de vencer su fecha de expiración (`isPast()`), manteniéndose vigente en el portal hasta el último día de contrato.
+- **UI (Ficha de Cliente)**: Añadido botón toggle interactivo `Reemplazadas` en la cabecera del servidor/daemon en `/clientes/{id}` para desplegar u ocultar el histórico de licencias reemplazadas de forma limpia.
+
+## [2026-07-17 10:30] — Hotfix: Agrupación de Errores de Telemetría IA ✅
+
+### Fixed
+- **UI / Telemetría**: Corregido bug en `AiAuditCostController` que separaba los errores idénticos en múltiples filas debido a prefijos divergentes (`Status 404:` vs `Fallo en API openrouter: (Status 404)`). Ahora se usa Regex para extraer el JSON y agrupar uniformemente bajo un formato limpio (`Error 404:`).
+- **Servicios IA**: Estandarizado el mensaje de excepción en `ClientAiNormalizationService.php` para coincidir con `ChatbotService.php` a futuro.
 
 ## [2026-07-08 12:01] — Feature: Telemetría de Fallos de IA ✅
 

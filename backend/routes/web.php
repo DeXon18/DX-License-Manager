@@ -72,6 +72,10 @@ Route::middleware(['auth.jwt'])->group(function () {
     Route::post('/herramientas/cod/{uuid}/upload-signed', [\App\Http\Controllers\Tools\CodController::class, 'uploadSigned'])->name('tools.cod.upload-signed');
     Route::get('/herramientas/cod/download-signed', [\App\Http\Controllers\Tools\CodController::class, 'downloadSigned'])->name('tools.cod.download-signed');
 
+    Route::get('/herramientas/ncmatic', [\App\Http\Controllers\Tools\NcMaticController::class, 'index'])->name('tools.ncmatic.index');
+    Route::post('/herramientas/ncmatic', [\App\Http\Controllers\Tools\NcMaticController::class, 'store'])->name('tools.ncmatic.store');
+    Route::delete('/herramientas/ncmatic/{license}', [\App\Http\Controllers\Tools\NcMaticController::class, 'destroy'])->name('tools.ncmatic.destroy');
+
     Route::get('/herramientas/imputacion-horas', [\App\Http\Controllers\TimeTrackingController::class, 'index'])->name('tools.time-tracking.index');
     Route::get('/herramientas/imputacion-horas/search', [\App\Http\Controllers\TimeTrackingController::class, 'search'])->name('tools.time-tracking.search');
 

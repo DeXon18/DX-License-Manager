@@ -29,6 +29,7 @@ class ClientController extends Controller
         $clients = Client::withCount([
             'contracts',
             'inventoryDaemons',
+            'ncmaticLicenses',
             'inventoryDaemons as siemens_daemons_count' => function($query) {
                 $query->where('daemon', 'not like', '%moldex%');
             },
@@ -43,17 +44,27 @@ class ClientController extends Controller
                       ->orWhereHas('contracts', function($cq) use ($search) {
                           $cq->where('contract_number', 'like', '%' . $search . '%')
                             ->orWhere('status', 'like', '%' . $search . '%');
+                      })
+                      ->orWhereHas('ncmaticLicenses', function($nq) use ($search) {
+                          $nq->where('serial_number', 'like', '%' . $search . '%');
                       });
                 });
             })
             ->when($hasInventory, function($query) use ($vendorFilter) {
-                $query->whereHas('inventoryDaemons', function($q) use ($vendorFilter) {
-                    if ($vendorFilter === 'siemens') {
-                        $q->where('daemon', 'not like', '%moldex%');
-                    } elseif ($vendorFilter === 'moldex') {
-                        $q->where('daemon', 'like', '%moldex%');
-                    }
-                });
+                if ($vendorFilter === 'ncmatic') {
+                    $query->whereHas('ncmaticLicenses');
+                } else {
+                    $query->whereHas('inventoryDaemons', function($q) use ($vendorFilter) {
+                        if ($vendorFilter === 'siemens') {
+                            $q->where('daemon', 'not like', '%moldex%');
+                        } elseif ($vendorFilter === 'moldex') {
+                            $q->where('daemon', 'like', '%moldex%');
+                        }
+                    });
+                }
+            })
+            ->when($request->letter, function($query) use ($request) {
+                $query->where('name', 'like', $request->letter . '%');
             })
             ->orderBy('name')
             ->paginate(20);
@@ -63,6 +74,7 @@ class ClientController extends Controller
             'total_contracts' => Contract::count(),
             'siemens_licenses' => \App\Models\LicenseInventoryDaemon::where('daemon', 'not like', '%moldex%')->count(),
             'moldex_licenses' => \App\Models\LicenseInventoryDaemon::where('daemon', 'like', '%moldex%')->count(),
+            'ncmatic_licenses' => \App\Models\NcmaticLicense::count(),
         ];
 
         return view('clients.index', compact('clients', 'globalMetrics'));

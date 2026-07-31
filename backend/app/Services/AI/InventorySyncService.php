@@ -54,6 +54,7 @@ class InventorySyncService
             $productCode = $prodData['product_code'];
             $hostId = $prodData['node_locked_host_id'] ?? null;
 
+            $startDate = $this->parseDate($prodData['start_date'] ?? null);
             $expDate = $this->parseDate($prodData['expiration_date'] ?? null);
 
             LicenseInventoryProduct::updateOrCreate(
@@ -61,6 +62,7 @@ class InventorySyncService
                     'daemon_id' => $daemon->id,
                     'product_code' => $productCode,
                     'node_locked_host_id' => $hostId,
+                    'start_date' => $startDate,
                     'expiration_date' => $expDate,
                 ],
                 [
@@ -78,35 +80,24 @@ class InventorySyncService
     }
 
     /**
-     * Identifica duplicados por producto+MAC y deja activo solo el que tiene la fecha mayor.
-     * El resto pasa a estado 'superseded'.
+     * Identifica duplicados y renovaciones (superseded) respetando licencias independientes.
+     * - Node-locked (con MAC): la versión con fecha más lejana reemplaza a las versiones anteriores con la misma MAC.
+     * - Flotantes (sin MAC): solo se reemplaza una licencia anterior si coincide la cantidad y el día/mes de expiración (renovación anual del mismo bloque).
      */
     private function resolveSupersededProducts($daemonId)
     {
-        $products = LicenseInventoryProduct::where('daemon_id', $daemonId)
-            ->get()
-            ->groupBy(function ($item) {
-                return $item->product_code . '|' . $item->node_locked_host_id;
-            });
+        $allProducts = LicenseInventoryProduct::where('daemon_id', $daemonId)->get();
 
-        foreach ($products as $group) {
-            if ($group->count() > 1) {
-                // Ordenar por fecha de expiración descendente (null = permanent = siempre gana)
-                $sorted = $group->sortByDesc(function ($item) {
-                    return $item->expiration_date ? $item->expiration_date->timestamp : PHP_INT_MAX;
-                })->values();
-
-                // El primero (índice 0) es el más reciente -> activo
-                $newest = $sorted->first();
-                if ($newest->status !== 'active') {
-                    $newest->update(['status' => 'active']);
+        foreach ($allProducts as $product) {
+            // Ya no agrupamos por MAC para marcar como 'superseded' porque las renovaciones futuras coexisten
+            // simplemente marcamos como 'superseded' (o caducadas) las licencias cuyo expiration_date ya pasó de forma natural
+            if ($product->expiration_date && $product->expiration_date->format('Y') !== '9999' && $product->expiration_date->isPast()) {
+                if ($product->status !== 'superseded') {
+                    $product->update(['status' => 'superseded']);
                 }
-
-                // Los demás -> superseded
-                for ($i = 1; $i < $sorted->count(); $i++) {
-                    if ($sorted[$i]->status !== 'superseded') {
-                        $sorted[$i]->update(['status' => 'superseded']);
-                    }
+            } else {
+                if ($product->status !== 'active') {
+                    $product->update(['status' => 'active']);
                 }
             }
         }
@@ -164,7 +155,7 @@ class InventorySyncService
         
         $specialCases = ['permanent', '9999-12-31', 'any', 'uncounted'];
         if (in_array(strtolower($dateStr), $specialCases)) {
-            return null;
+            return '9999-12-31';
         }
 
         try {

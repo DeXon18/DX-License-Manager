@@ -33,7 +33,49 @@
     </div>
 </div>
 
-    <div class="dx-v2-planner-header-grid">
+    <div class="dx-v2-planner-header-grid" style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+        <!-- Selector de Año (Custom Dropdown) -->
+        <div class="dx-v2-planner-month-picker" 
+             x-data="{ open: false, selectedYear: {{ $year }} }">
+            <i class="fa-solid fa-calendar-check dx-v2-planner-month-picker-icon"></i>
+            <div>
+                <button @click="open = !open" @click.away="open = false" type="button" class="dx-v2-planner-month-btn">
+                    <span x-text="selectedYear"></span>
+                    <i class="fa-solid fa-chevron-down" :style="open ? 'transform: rotate(180deg)' : ''"></i>
+                </button>
+
+                <div x-show="open" 
+                     x-transition:enter="transition ease-out duration-100"
+                     x-transition:enter-start="opacity-0 transform scale-95"
+                     x-transition:enter-end="opacity-100 transform scale-100"
+                     x-transition:leave="transition ease-in duration-75"
+                     x-transition:leave-start="opacity-100 transform scale-100"
+                     x-transition:leave-end="opacity-0 transform scale-95"
+                     class="dx-v2-planner-dropdown"
+                     :style="{ display: open ? 'block' : 'none' }">
+                    <div class="dx-v2-planner-dropdown-container">
+                        @foreach($availableYears as $yr)
+                            <div @click="selectedYear = {{ $yr }}; open = false; $nextTick(() => $refs.yearForm.submit())" 
+                                 class="dx-v2-planner-dropdown-item {{ $year == $yr ? 'active' : '' }}">
+                                <span x-text="'{{ $yr }}'"></span>
+                                @if($year == $yr)
+                                    <i class="fa-solid fa-check"></i>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+            <form action="{{ route('renewal-planner.index') }}" method="GET" x-ref="yearForm" style="display: none;">
+                <input type="hidden" name="year" :value="selectedYear">
+                <input type="hidden" name="month" value="{{ $month }}">
+                @foreach($selectedStatuses as $s)
+                    <input type="hidden" name="statuses[]" value="{{ $s }}">
+                @endforeach
+            </form>
+        </div>
+
         <!-- Selector de Mes (Custom Dropdown) -->
         <div class="dx-v2-planner-month-picker" 
              x-data="{ open: false, selected: {{ $month }}, selectedName: '{{ strtoupper(\Carbon\Carbon::create(2024, $month, 1)->translatedFormat('F')) }}' }">
@@ -71,6 +113,7 @@
             </div>
 
             <form action="{{ route('renewal-planner.index') }}" method="GET" x-ref="monthForm" style="display: none;">
+                <input type="hidden" name="year" value="{{ $year }}">
                 <input type="hidden" name="month" :value="selected">
                 @foreach($selectedStatuses as $s)
                     <input type="hidden" name="statuses[]" value="{{ $s }}">
@@ -78,10 +121,11 @@
             </form>
         </div>
 
-        <!-- Filtros de Estado -->
-        <div class="dx-v2-planner-filters-wrap">
+        <!-- Filtros de Estado (Disponibles en todos los años) -->
+        <div class="dx-v2-planner-filters-wrap" style="flex: 1;">
             <span class="dx-v2-planner-filter-label">Filtrar por:</span>
             <form action="{{ route('renewal-planner.index') }}" method="GET" id="filter-form" class="dx-v2-planner-filter-form">
+                <input type="hidden" name="year" value="{{ $year }}">
                 <input type="hidden" name="month" value="{{ $month }}">
                 @foreach($availableStatuses as $status)
                     @php
@@ -108,7 +152,7 @@
                 @endforeach
 
                 @if(count($selectedStatuses) > 0)
-                    <a href="{{ route('renewal-planner.index', ['month' => $month]) }}" class="dx-v2-planner-filter-clear">
+                    <a href="{{ route('renewal-planner.index', ['year' => $year, 'month' => $month]) }}" class="dx-v2-planner-filter-clear">
                         <i class="fa-solid fa-trash-can"></i>
                         <span>LIMPIAR</span>
                     </a>

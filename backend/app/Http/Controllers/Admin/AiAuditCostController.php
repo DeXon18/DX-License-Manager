@@ -211,12 +211,33 @@ class AiAuditCostController extends Controller
             ->paginate(15);
 
         // 9. Estadísticas de fallos (Mes Actual)
-        $failureStats = AiTokenLog::where('created_at', '>=', $currentMonth)
+        $rawFailureStats = AiTokenLog::where('created_at', '>=', $currentMonth)
             ->where('status', 'failed')
             ->select('model', 'error_message', DB::raw('COUNT(*) as error_count'))
             ->groupBy('model', 'error_message')
             ->orderByDesc('error_count')
             ->get();
+
+        // Agrupar mensajes equivalentes con distintos prefijos (ej: "Status 404:" vs "Fallo en API... (Status 404)")
+        $groupedFailures = [];
+        foreach ($rawFailureStats as $stat) {
+            $msg = $stat->error_message;
+            if (preg_match('/(?:Status |\(Status )(\d+)[):]\s*(.*)/', $msg, $matches)) {
+                $msg = "Error " . $matches[1] . ": " . $matches[2];
+            }
+            
+            $key = $stat->model . '|' . $msg;
+            if (!isset($groupedFailures[$key])) {
+                $groupedFailures[$key] = (object)[
+                    'model' => $stat->model,
+                    'error_message' => $msg,
+                    'error_count' => 0
+                ];
+            }
+            $groupedFailures[$key]->error_count += $stat->error_count;
+        }
+        
+        $failureStats = collect(array_values($groupedFailures))->sortByDesc('error_count')->values();
 
         return view('admin.system.ai-costs', compact(
             'totalTokensThisMonth',

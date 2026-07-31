@@ -9,12 +9,10 @@
             <span class="current">Directorio</span>
         </div>
         <h1 class="page-title">Gestión de <span>Clientes</span></h1>
-        <p class="page-subtitle" style="white-space: nowrap;">Visualización y búsqueda de cuentas del ecosistema.</p>
-    </div>
-    <div class="dx-v2-page-header-actions" style="flex-direction: column; align-items: flex-end; gap: 8px;">
+        <p class="page-subtitle" style="white-space: nowrap; margin-bottom: 16px;">Visualización y búsqueda de cuentas del ecosistema.</p>
 
-        <div class="search-box dx-v2-clients-search-box" style="margin: 0; flex-wrap: wrap; justify-content: flex-end;">
-            <form action="{{ route('clients.index') }}" method="GET" class="dx-v2-clients-search-form" style="min-width: 400px; width: 100%; max-width: 500px; flex: 1;">
+        <div class="search-box dx-v2-clients-search-box" style="margin: 0; display: flex; gap: 12px; align-items: center; flex-wrap: nowrap;">
+            <form action="{{ route('clients.index') }}" method="GET" class="dx-v2-clients-search-form" style="min-width: 300px; max-width: 500px; flex: 1;">
                 <svg class="dx-v2-clients-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
@@ -22,58 +20,15 @@
                     placeholder="Buscar clientes por nombre o identificador..." class="dx-v2-form-input dx-v2-clients-search-input"
                     x-on:input.debounce.500ms="$el.closest('form').submit()">
             </form>
-
-            <div class="filter-actions dx-v2-clients-filter-actions">
-                @php
-                    $hasInv = session('client_has_inventory', false);
-                    $currentVendor = session('client_inventory_vendor', 'all');
-                @endphp
-
-                <div class="inventory-filter-group">
-                    <div class="dx-v2-clients-seg-control">
-                        <!-- OFF -->
-                        <a href="{{ route('clients.index', array_merge(request()->except('has_inventory'), ['clear_inventory' => 1])) }}"
-                           class="dx-v2-clients-seg-item {{ !$hasInv ? 'active off' : '' }}" title="Desactivar filtros">
-                            <div class="dx-v2-clients-seg-icon"><i class="fa-solid fa-ban"></i></div>
-                            <span class="dx-v2-clients-seg-text">OFF</span>
-                        </a>
-
-                        <!-- ALL -->
-                        <a href="{{ route('clients.index', array_merge(request()->all(), ['has_inventory' => 1, 'vendor_filter' => 'all'])) }}"
-                           class="dx-v2-clients-seg-item {{ $hasInv && $currentVendor === 'all' ? 'active all' : '' }}" title="Todos los vendors">
-                            <div class="dx-v2-clients-seg-icon"><i class="fa-solid fa-layer-group"></i></div>
-                            <span class="dx-v2-clients-seg-text">ALL</span>
-                        </a>
-
-                        <!-- SIEMENS -->
-                        <a href="{{ route('clients.index', array_merge(request()->all(), ['has_inventory' => 1, 'vendor_filter' => 'siemens'])) }}"
-                           class="dx-v2-clients-seg-item {{ $hasInv && $currentVendor === 'siemens' ? 'active siemens' : '' }}" title="Solo Siemens">
-                            <div class="dx-v2-clients-seg-icon"><i class="fa-solid fa-microchip"></i></div>
-                            <span class="dx-v2-clients-seg-text">Siemens</span>
-                        </a>
-
-                        <!-- MOLDEX -->
-                        <a href="{{ route('clients.index', array_merge(request()->all(), ['has_inventory' => 1, 'vendor_filter' => 'moldex'])) }}"
-                           class="dx-v2-clients-seg-item {{ $hasInv && $currentVendor === 'moldex' ? 'active moldex' : '' }}" title="Solo Moldex3D">
-                            <div class="dx-v2-clients-seg-icon"><i class="fa-solid fa-cube"></i></div>
-                            <span class="dx-v2-clients-seg-text">Moldex</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <a href="{{ route('clients.unified') }}" class="btn-secondary" style="white-space: nowrap; height: 38px; display: flex; align-items: center; gap: 8px;">
-                <i class="fa-solid fa-link"></i> Licencias Unificadas
-            </a>
         </div>
     </div>
 </div>
 
-<div class="dx-v2-sys-dash-stats-grid" style="margin-bottom: 24px;">
+<div class="dx-v2-sys-dash-stats-grid" style="grid-template-columns: repeat(5, 1fr) !important; margin-bottom: 24px;">
     {{-- Clientes Registrados --}}
     <div class="dx-v2-sys-dash-stat-card">
         <div class="dx-v2-sys-dash-stat-card-watermark">
-            <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 4-4H5a4 4 0 0 4-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 4-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </div>
         <div class="dx-v2-sys-dash-stat-card-title">
             CLIENTES REGISTRADOS
@@ -133,9 +88,98 @@
             Licencias Activas
         </div>
     </div>
+
+    {{-- Activos NCmatic --}}
+    <div class="dx-v2-sys-dash-stat-card">
+        <div class="dx-v2-sys-dash-stat-card-watermark">
+            <svg width="84" height="84" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
+        </div>
+        <div class="dx-v2-sys-dash-stat-card-title">
+            NCMATIC
+        </div>
+        <div class="dx-v2-sys-dash-stat-card-value" style="color: var(--dx-v2-accent-alt, #0ea5e9) !important;">
+            {{ $globalMetrics['ncmatic_licenses'] }}
+        </div>
+        <div class="dx-v2-sys-dash-stat-card-meta-mono">
+            Licencias Activas
+        </div>
+    </div>
+</div>
+
+<div class="dx-v2-table-toolbar" style="display: flex; gap: 12px; align-items: center; justify-content: flex-start; margin-bottom: 16px; flex-wrap: wrap;">
+    <div class="filter-actions dx-v2-clients-filter-actions">
+            @php
+                $hasInv = session('client_has_inventory', false);
+                $currentVendor = session('client_inventory_vendor', 'all');
+            @endphp
+
+            <div class="inventory-filter-group">
+                <div class="dx-v2-clients-seg-control">
+                    <!-- OFF -->
+                    <a href="{{ route('clients.index', array_merge(request()->except('has_inventory'), ['clear_inventory' => 1])) }}"
+                       class="dx-v2-clients-seg-item {{ !$hasInv ? 'active off' : '' }}" title="Desactivar filtros">
+                        <div class="dx-v2-clients-seg-icon"><i class="fa-solid fa-ban"></i></div>
+                        <span class="dx-v2-clients-seg-text">OFF</span>
+                    </a>
+
+                    <!-- ALL -->
+                    <a href="{{ route('clients.index', array_merge(request()->all(), ['has_inventory' => 1, 'vendor_filter' => 'all'])) }}"
+                       class="dx-v2-clients-seg-item {{ $hasInv && $currentVendor === 'all' ? 'active all' : '' }}" title="Todos los vendors">
+                        <div class="dx-v2-clients-seg-icon"><i class="fa-solid fa-layer-group"></i></div>
+                        <span class="dx-v2-clients-seg-text">ALL</span>
+                    </a>
+
+                    <!-- SIEMENS -->
+                    <a href="{{ route('clients.index', array_merge(request()->all(), ['has_inventory' => 1, 'vendor_filter' => 'siemens'])) }}"
+                       class="dx-v2-clients-seg-item {{ $hasInv && $currentVendor === 'siemens' ? 'active siemens' : '' }}" title="Solo Siemens">
+                        <div class="dx-v2-clients-seg-icon"><i class="fa-solid fa-microchip"></i></div>
+                        <span class="dx-v2-clients-seg-text">Siemens</span>
+                    </a>
+
+                    <!-- MOLDEX -->
+                    <a href="{{ route('clients.index', array_merge(request()->all(), ['has_inventory' => 1, 'vendor_filter' => 'moldex'])) }}"
+                       class="dx-v2-clients-seg-item {{ $hasInv && $currentVendor === 'moldex' ? 'active moldex' : '' }}" title="Solo Moldex3D">
+                        <div class="dx-v2-clients-seg-icon"><i class="fa-solid fa-cube"></i></div>
+                        <span class="dx-v2-clients-seg-text">Moldex</span>
+                    </a>
+
+                    <!-- NCMATIC -->
+                    <a href="{{ route('clients.index', array_merge(request()->all(), ['has_inventory' => 1, 'vendor_filter' => 'ncmatic'])) }}"
+                       class="dx-v2-clients-seg-item {{ $hasInv && $currentVendor === 'ncmatic' ? 'active' : '' }}" title="Solo NCmatic">
+                        <div class="dx-v2-clients-seg-icon"><i class="fa-solid fa-key"></i></div>
+                        <span class="dx-v2-clients-seg-text">NCmatic</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <a href="{{ route('clients.unified') }}" class="dx-v2-ui-btn dx-v2-ui-btn-primary" style="white-space: nowrap; height: 38px; display: flex; align-items: center; padding: 0 16px;">
+            <i class="fa-solid fa-link" style="margin-right: 6px;"></i> Unificadas
+        </a>
 </div>
 
 <div class="card">
+    <div class="card-header dx-v2-clients-alpha-header">
+        <div class="dx-v2-clients-alpha-container">
+            @php
+                $currentLetter = request('letter');
+            @endphp
+            
+            <span class="dx-v2-clients-alpha-label">A-Z:</span>
+
+            <a href="{{ route('clients.index', array_merge(request()->except('letter'), ['page' => 1])) }}" 
+               class="dx-v2-clients-alpha-btn {{ !$currentLetter ? 'active' : '' }}">
+               Todos
+            </a>
+            
+            @foreach(range('A', 'Z') as $letter)
+                <a href="{{ route('clients.index', array_merge(request()->all(), ['letter' => $letter, 'page' => 1])) }}" 
+                   class="dx-v2-clients-alpha-btn {{ $currentLetter === $letter ? 'active' : '' }}">
+                    {{ $letter }}
+                </a>
+            @endforeach
+        </div>
+    </div>
     <table class="table">
         <thead>
             <tr>
@@ -152,7 +196,7 @@
                 <td>
                     <div class="dx-v2-clients-flex-align">
                         <div class="font-bold">{{ $client->name }}</div>
-                        @if($client->inventory_daemons_count > 0)
+                        @if($client->inventory_daemons_count > 0 || $client->ncmatic_licenses_count > 0)
                             <span title="Licencias Detectadas" class="dx-v2-clients-pulse-warning pulse-soft">
                                 <i class="fa-solid fa-database dx-v2-clients-db-icon"></i>
                             </span>
@@ -173,7 +217,13 @@
                                 <span class="dx-v2-clients-badge-sub">Moldex3D</span>
                             </span>
                         @endif
-                        @if($client->inventory_daemons_count == 0)
+                        @if($client->ncmatic_licenses_count > 0)
+                            <span class="badge" style="background: rgba(16, 185, 129, 0.12); color: #10B981; border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 4px; padding: 2px 6px; font-size: 11px; display: inline-flex; align-items: center; gap: 4px;">
+                                <span>{{ $client->ncmatic_licenses_count }}</span>
+                                <span class="dx-v2-clients-badge-sub">NCmatic</span>
+                            </span>
+                        @endif
+                        @if($client->inventory_daemons_count == 0 && $client->ncmatic_licenses_count == 0)
                             <span class="muted text-xs">—</span>
                         @endif
                     </div>

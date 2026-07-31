@@ -49,6 +49,9 @@
         <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'contacts' }" @click="setTab('contacts')">Contactos</button>
         <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'certificates' }" @click="setTab('certificates')">Certificados</button>
         <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'renewals' }" @click="setTab('renewals')">Renovaciones</button>
+        @if($client->ncmaticLicenses()->exists())
+        <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'ncmatic' }" @click="setTab('ncmatic')">NCmatic</button>
+        @endif
         <button class="dx-v2-clients-tab-link" :class="{ 'active': tab === 'enterprise_cloud' }" @click="setTab('enterprise_cloud')">Enterprise Cloud</button>
     </div>
 
@@ -172,6 +175,7 @@
                     @foreach($daemons as $daemon)
                         @php
                             $droppedProductsCount = $daemon->products->where('status', 'dropped')->count();
+                            $supersededProductsCount = $daemon->products->where('status', 'superseded')->count();
                         @endphp
                         <div x-data="{ showSuperseded: false, showDroppedProducts: false }" 
                              class="dx-v2-clients-daemon-card {{ $daemon->vendor }} {{ !empty($daemon->additional_sold_tos) ? 'unified-card' : '' }}"
@@ -223,6 +227,16 @@
                                     </div>
                                 </div>
                                 
+                                @if($supersededProductsCount > 0)
+                                    <div class="dx-v2-clients-daemon-header-col">
+                                        <span class="tech-label">Reemplazadas</span>
+                                        <button @click="showSuperseded = !showSuperseded" class="dx-v2-clients-daemon-badge" style="cursor: pointer; background: rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.1); color: var(--muted); display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px;">
+                                            <i class="fa-solid" :class="showSuperseded ? 'fa-eye-slash' : 'fa-eye'" style="font-size: 10px;"></i>
+                                            <span x-text="showSuperseded ? 'Ocultar' : 'Ver ({{ $supersededProductsCount }})'"></span>
+                                        </button>
+                                    </div>
+                                @endif
+
                                 @if($droppedProductsCount > 0)
                                     <div class="dx-v2-clients-daemon-header-col">
                                         <span class="tech-label">Prod. en Baja</span>
@@ -265,10 +279,12 @@
                                 <thead>
                                     <tr>
                                         <th>Producto</th>
-                                        <th>Descripción Técnica</th>
+                                        <th class="dx-v2-table-nowrap">Descripción Técnica</th>
                                         <th>Host ID (MAC)</th>
                                         <th class="text-center">Cant.</th>
+                                        <th>Inicio</th>
                                         <th>Expiración</th>
+                                        <th class="text-center">Estado</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -285,12 +301,12 @@
                                             @if($isSuperseded) x-show="showSuperseded" x-cloak x-transition @endif
                                             @if($isDropped) x-show="showDroppedProducts" x-cloak x-transition @endif>
                                             <td class="dx-v2-clients-product-code">{{ $product->product_code }}</td>
-                                            <td>
+                                            <td class="dx-v2-table-nowrap" title="{{ $product->description }}">
                                                 {{ $product->description }}
                                             </td>
                                             <td class="dx-v2-clients-host-mono">
                                                 @if($isMissingMac && !$isSuperseded)
-                                                    <span class="dx-v2-clients-expiry-status warning" style="font-size: 10px; padding: 2px 6px; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;">
+                                                    <span class="dx-v2-clients-expiry-status warning">
                                                         <i class="fa-solid fa-triangle-exclamation"></i> Pendiente MAC
                                                     </span>
                                                 @else
@@ -301,31 +317,57 @@
                                                 <div class="dx-v2-clients-qty-badge">{{ $product->quantity }}</div>
                                             </td>
                                             <td>
+                                                @if($product->start_date)
+                                                    {{ $product->start_date->format('d/m/Y') }}
+                                                @else
+                                                    —
+                                                @endif
+                                            </td>
+                                            <td>
                                                 @if($isSuperseded)
-                                                    <span class="dx-v2-clients-expiry-status warning" style="font-size: 10px; padding: 2px 6px; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;"><i class="fa-solid fa-arrow-rotate-left"></i> Reemplazada</span>
+                                                    <span style="font-size: 13px; font-weight: 500; color: var(--gray-500);">Reemplazada</span>
+                                                @else
+                                                    @if($product->expiration_date && $product->expiration_date->format('Y') !== '9999')
+                                                        <span style="font-size: 13px; font-weight: 500;">{{ $product->expiration_date->format('d/m/Y') }}</span>
+                                                    @else
+                                                        <span style="font-size: 13px; font-weight: 500; color: var(--gray-500);">—</span>
+                                                    @endif
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                @if($isSuperseded)
+                                                    <span class="dx-v2-clients-expiry-status warning" title="REEMPLAZADA">
+                                                        <i class="fa-solid fa-arrow-rotate-left"></i>
+                                                    </span>
                                                 @else
                                                     @php
+                                                        $startDate = $product->start_date;
                                                         $expiration = $product->expiration_date;
-                                                        $isExpired = $expiration?->isPast();
-                                                        $diffInDays = $expiration ? now()->diffInDays($expiration, false) : null;
                                                         
-                                                        if ($isExpired) {
-                                                            $statusClass = 'expired';
-                                                            $icon = 'fa-solid fa-circle-xmark';
-                                                        } elseif ($diffInDays !== null && $diffInDays >= 0 && $diffInDays <= 30) {
-                                                            $statusClass = 'warning';
-                                                            $icon = 'fa-solid fa-triangle-exclamation';
+                                                        if ($startDate && $startDate->isFuture()) {
+                                                            $statusClass = 'text-gray-500';
+                                                            $icon = 'fa-solid fa-clock';
+                                                            $text = 'PENDIENTE DE ACTIVACIÓN';
                                                         } elseif (!$expiration) {
+                                                            $statusClass = 'text-gray-500';
+                                                            $icon = 'fa-solid fa-circle-question';
+                                                            $text = 'FECHA NO DETERMINADA';
+                                                        } elseif ($expiration->format('Y') == '9999') {
                                                             $statusClass = 'permanent';
                                                             $icon = 'fa-solid fa-infinity';
+                                                            $text = 'PERMANENTE';
+                                                        } elseif ($expiration->isPast()) {
+                                                            $statusClass = 'expired';
+                                                            $icon = 'fa-solid fa-circle-xmark';
+                                                            $text = 'CADUCADA';
                                                         } else {
                                                             $statusClass = 'default';
                                                             $icon = 'fa-solid fa-calendar-check';
+                                                            $text = 'ACTIVA';
                                                         }
                                                     @endphp
-                                                    <span class="dx-v2-clients-expiry-status {{ $statusClass }}">
+                                                    <span class="dx-v2-clients-expiry-status {{ $statusClass }}" title="{{ $text }}">
                                                         <i class="{{ $icon }}"></i>
-                                                        {{ $expiration ? $expiration->format('d/m/Y') : 'PERMANENTE' }}
                                                     </span>
                                                 @endif
                                             </td>
@@ -661,6 +703,80 @@
             </div>
         </div>
     </div>
+
+    <!-- NCmatic Tab -->
+    @if($client->ncmaticLicenses()->exists())
+    <div x-show="tab === 'ncmatic'" class="tab-content" x-cloak>
+        <div class="card p-0">
+            <div class="card-header flex justify-between items-center px-5 py-4">
+                <h3 class="text-sm font-bold uppercase tracking-wider">Licencias por Número de Serie (NCmatic)</h3>
+                <a href="{{ route('tools.ncmatic.index', ['client_id' => $client->id]) }}" class="dx-v2-ui-btn dx-v2-ui-btn-primary">
+                    <i class="fa-solid fa-plus mr-2"></i> Añadir Licencia NCmatic
+                </a>
+            </div>
+            <div class="dx-v2-ui-table-wrapper">
+                <table class="dx-v2-ui-table">
+                <thead>
+                    <tr>
+                        <th>Número de Serie</th>
+                        <th>Tipo / Modalidad</th>
+                        <th>Vencimiento</th>
+                        <th>Estado</th>
+                        <th>Notas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($client->ncmaticLicenses()->orderBy('created_at', 'desc')->get() as $lic)
+                    <tr>
+                        <td>
+                            <span class="mono" style="font-size: 13px; font-weight: 700;">{{ $lic->serial_number }}</span>
+                        </td>
+                        <td>
+                            @php
+                                $typeBadgeClass = match($lic->license_type) {
+                                    'MNTO' => 'badge-info',
+                                    'ALQ' => 'badge-warn',
+                                    'PERMANENT' => 'badge-success',
+                                    default => 'badge-muted'
+                                };
+                            @endphp
+                            <span class="badge {{ $typeBadgeClass }}">{{ $lic->license_type }}</span>
+                        </td>
+                        <td>
+                            @if($lic->expiration_date)
+                                <span class="{{ $lic->expiration_date->isPast() ? 'badge badge-danger' : 'mono' }}">
+                                    {{ $lic->expiration_date->format('d/m/Y') }}
+                                </span>
+                            @else
+                                <span class="badge badge-muted">Permanente</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if($lic->status === 'active')
+                                <span class="badge badge-success">Activo</span>
+                            @elseif($lic->status === 'dropped')
+                                <span class="badge badge-danger">Baja</span>
+                            @else
+                                <span class="badge badge-warn">Expirado</span>
+                            @endif
+                        </td>
+                        <td class="body-sm">
+                            {{ $lic->notes ?: '—' }}
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="text-center py-12 muted">
+                            No se han registrado licencias NCmatic para este cliente.
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+    @endif
 
     <!-- Enterprise Cloud Tab -->
     <div x-show="tab === 'enterprise_cloud'" class="tab-content" x-cloak>

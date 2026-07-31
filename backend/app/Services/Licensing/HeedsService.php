@@ -171,7 +171,7 @@ class HeedsService
                     // Reemplazo YourHostname por localhost SÓLO si tiene COMPOSITE
                     if ($hostname === 'YourHostname' && str_contains($hostid, 'COMPOSITE=')) {
                         $hostname = 'localhost';
-                    } elseif ($isTemporal && $hostname === 'ANY') {
+                    } elseif ($isTemporal && $hostid === 'ANY') {
                         $hostname = 'localhost';
                     }
 

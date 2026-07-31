@@ -75,12 +75,14 @@ class MoldexSyncService
 
             // 3. Sincronizar Productos
             foreach ($parsedData['products'] as $prodData) {
+                $startDate = $this->parseDate($prodData['start_date'] ?? null);
                 $expDate = $this->parseDate($prodData['expiration']);
 
                 LicenseInventoryProduct::updateOrCreate(
                     [
                         'daemon_id'    => $daemon->id,
                         'product_code' => $prodData['code'],
+                        'start_date'   => $startDate,
                         'expiration_date' => $expDate,
                     ],
                     [
@@ -106,32 +108,23 @@ class MoldexSyncService
     }
 
     /**
-     * Identifica duplicados por producto+MAC y deja activo solo el que tiene la fecha mayor.
-     * El resto pasa a estado 'superseded'.
+     * Identifica duplicados y renovaciones (superseded) respetando licencias independientes.
+     * - Node-locked (con MAC): la versión con fecha más lejana reemplaza a las versiones anteriores con la misma MAC.
+     * - Flotantes (sin MAC): solo se reemplaza una licencia anterior si coincide la cantidad y el día/mes de expiración (renovación anual del mismo bloque).
      */
     private function resolveSupersededProducts($daemonId)
     {
-        $products = LicenseInventoryProduct::where('daemon_id', $daemonId)
-            ->get()
-            ->groupBy(function ($item) {
-                return $item->product_code . '|' . $item->node_locked_host_id;
-            });
+        $allProducts = LicenseInventoryProduct::where('daemon_id', $daemonId)->get();
 
-        foreach ($products as $group) {
-            if ($group->count() > 1) {
-                $sorted = $group->sortByDesc(function ($item) {
-                    return $item->expiration_date ? $item->expiration_date->timestamp : PHP_INT_MAX;
-                })->values();
-
-                $newest = $sorted->first();
-                if ($newest->status !== 'active') {
-                    $newest->update(['status' => 'active']);
+        foreach ($allProducts as $product) {
+            // Ya no agrupamos por MAC para marcar como 'superseded' porque las renovaciones futuras coexisten
+            if ($product->expiration_date && $product->expiration_date->format('Y') !== '9999' && $product->expiration_date->isPast()) {
+                if ($product->status !== 'superseded') {
+                    $product->update(['status' => 'superseded']);
                 }
-
-                for ($i = 1; $i < $sorted->count(); $i++) {
-                    if ($sorted[$i]->status !== 'superseded') {
-                        $sorted[$i]->update(['status' => 'superseded']);
-                    }
+            } else {
+                if ($product->status !== 'active') {
+                    $product->update(['status' => 'active']);
                 }
             }
         }
@@ -143,7 +136,8 @@ class MoldexSyncService
      */
     private function parseDate($dateStr): ?string
     {
-        if (!$dateStr || strtolower($dateStr) === 'permanent') return null;
+        if (!$dateStr) return null;
+        if (strtolower($dateStr) === 'permanent' || $dateStr === '9999-12-31') return '9999-12-31';
 
         try {
             // Moldex suele usar YYYYMMDD o YYYY/MM/DD

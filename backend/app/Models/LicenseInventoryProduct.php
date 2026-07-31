@@ -13,13 +13,15 @@ class LicenseInventoryProduct extends Model
         'product_code',
         'description',
         'quantity',
+        'start_date',
         'expiration_date',
         'node_locked_host_id',
         'status',
     ];
 
     protected $casts = [
-        'expiration_date' => 'date',
+        'start_date' => 'datetime',
+        'expiration_date' => 'datetime',
     ];
 
     public function daemon(): BelongsTo

@@ -1,5 +1,5 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-07-08 12:09  
+> Última actualización: 2026-07-31 10:45  
 > Sesión en: Windows (Agent)  
 > Rama activa: dev
 
@@ -7,7 +7,7 @@
 
 ## Estado General
 
-**Fase actual:** Mantenimiento y Features (Telemetría IA)  
+**Fase actual:** Soporte Fecha Inicio Licencias (v3.9.1)  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,36 +15,36 @@
 
 ## Qué se hizo en esta sesión
 
-- Implementación de la funcionalidad "Telemetría de Fallos y Errores de IA".
-- Creada migración en Base de Datos para añadir campos `status` y `error_message` en la tabla `ai_token_logs`.
-- Modificados `ClientAiNormalizationService` y `ChatbotService` para atrapar excepciones y registrar fallos de forma segura antes de realizar el fallback.
-- Añadido un nuevo panel UI (NOC Pro) en la vista de Costes (`ai-costs.blade.php`) listando el conteo de errores por modelo.
-- Fusión de los cambios desde `feature/ai-failure-telemetry` a `dev` y luego a `main`.
-- Despliegue completado en Producción (`portal.dxpro.es`) saltándose `git pull origin main` vía pull local en el servidor, ya que el push a origin estaba bloqueado por permisos HTTPS. Cero errores 502 detectados en Producción.
-- Documentación y Changelog (v3.6.3) actualizados.
+- **Soporte de Fecha de Inicio en Licencias y Ajustes UI (`v3.9.1`):**
+  - **Licencias:** Parseo de la fecha de inicio (`START=...`) de los archivos procesados por n8n (webhook) y guardado en `start_date`.
+  - **UI / Inventario:** Añadida columna "Inicio" y cálculo del estado "PENDIENTE DE ACTIVACIÓN".
+  - **Diseño:** Tabla de inventario balanceada, usando nowrap para la descripción y permitiendo ajuste automático sin hacks CSS.
+
+- **Selector de Año y Filtros en Planificador de Renovaciones (`v3.8.0`):**
+  - Selector dinámico de año y barra de filtros por estado en `/planificador`.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Por favor, abre tu terminal local o cliente Git en Windows y realiza un **Push a Origin** de las ramas `dev` y `main` para subir los cambios a GitHub. (Las credenciales HTTPS locales requerían interacción).
+Revisar con Oskar nuevas solicitudes o módulos adicionales requeridos.
 
 ### Tareas siguientes
-1. Continuar con el ROADMAP de funcionalidades o mantenimiento.
-2. Revisar si existen otras áreas donde inyectar la misma telemetría de errores.
+1. Evaluar tareas del BACKLOG / ROADMAP.
 
 ---
 
 ## Contexto técnico importante
 
-- El paso a Producción se hizo sincronizando el repositorio directamente en la máquina virtual (pulling de `/opt/web-projects/DX-License-Manager-DEV` desde `/opt/web-projects/DX-License-Manager`) seguido de `./scripts/deploy.sh prod`. Esto permitió saltar la barrera de HTTPS para que pudieras testearlo hoy mismo sin esperas.
+- Las licencias NCmatic se asocian por `serial_number` y se vinculan a los clientes con contratos NCmatic.
+- La vista `/clientes` mantiene la cuadrícula de 4 tarjetas KPI (`dx-v2-sys-dash-stats-grid`).
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-Ninguno. Producción está 100% sana y corriendo la última versión (v3.6.3).
+Ninguno. Todos los stacks operando con normalidad.
 
 ---
 
@@ -62,12 +62,9 @@ Ninguno. Producción está 100% sana y corriendo la última versión (v3.6.3).
 ## Comandos útiles para la próxima sesión
 
 ```bash
-# Arrancar beta si está down
-docker compose --project-directory /opt/web-projects/DX-License-Manager-DEV -f /opt/web-projects/DX-License-Manager-DEV/infra/docker-compose.beta.yml up -d
+# Limpiar caché de vistas en Beta
+docker exec dx-php-beta php artisan view:clear
 
-# Entrar al contenedor PHP
-docker exec -it dx-php-beta sh
-
-# Ver logs en tiempo real
-docker compose --project-directory /opt/web-projects/DX-License-Manager-DEV -f /opt/web-projects/DX-License-Manager-DEV/infra/docker-compose.beta.yml logs -f nginx-beta
+# Ver logs de PHP Beta
+docker compose --project-directory . -f infra/docker-compose.beta.yml logs --tail=50 dx-php-beta
 ```
