@@ -1,0 +1,6 @@
+tree 514bab83bd5cb3a4614a54e5f351cdb27d1f5e40
+parent 58431cb31c5649818522bbde5d8e80e392794823
+author DeXon (Oskar) <dexon18@gmail.com> 1785414530 +0200
+committer DeXon (Oskar) <dexon18@gmail.com> 1785414530 +0200
+
+docs(changelog): v3.7.0 refinamiento de algoritmo de renovaciones superseded y boton toggle ui

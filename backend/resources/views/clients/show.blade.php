@@ -279,10 +279,12 @@
                                 <thead>
                                     <tr>
                                         <th>Producto</th>
-                                        <th>Descripción Técnica</th>
+                                        <th class="dx-v2-table-nowrap">Descripción Técnica</th>
                                         <th>Host ID (MAC)</th>
                                         <th class="text-center">Cant.</th>
+                                        <th>Inicio</th>
                                         <th>Expiración</th>
+                                        <th class="text-center">Estado</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -299,12 +301,12 @@
                                             @if($isSuperseded) x-show="showSuperseded" x-cloak x-transition @endif
                                             @if($isDropped) x-show="showDroppedProducts" x-cloak x-transition @endif>
                                             <td class="dx-v2-clients-product-code">{{ $product->product_code }}</td>
-                                            <td>
+                                            <td class="dx-v2-table-nowrap" title="{{ $product->description }}">
                                                 {{ $product->description }}
                                             </td>
                                             <td class="dx-v2-clients-host-mono">
                                                 @if($isMissingMac && !$isSuperseded)
-                                                    <span class="dx-v2-clients-expiry-status warning" style="font-size: 10px; padding: 2px 6px; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;">
+                                                    <span class="dx-v2-clients-expiry-status warning">
                                                         <i class="fa-solid fa-triangle-exclamation"></i> Pendiente MAC
                                                     </span>
                                                 @else
@@ -315,31 +317,57 @@
                                                 <div class="dx-v2-clients-qty-badge">{{ $product->quantity }}</div>
                                             </td>
                                             <td>
+                                                @if($product->start_date)
+                                                    {{ $product->start_date->format('d/m/Y') }}
+                                                @else
+                                                    —
+                                                @endif
+                                            </td>
+                                            <td>
                                                 @if($isSuperseded)
-                                                    <span class="dx-v2-clients-expiry-status warning" style="font-size: 10px; padding: 2px 6px; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;"><i class="fa-solid fa-arrow-rotate-left"></i> Reemplazada</span>
+                                                    <span style="font-size: 13px; font-weight: 500; color: var(--gray-500);">Reemplazada</span>
+                                                @else
+                                                    @if($product->expiration_date && $product->expiration_date->format('Y') !== '9999')
+                                                        <span style="font-size: 13px; font-weight: 500;">{{ $product->expiration_date->format('d/m/Y') }}</span>
+                                                    @else
+                                                        <span style="font-size: 13px; font-weight: 500; color: var(--gray-500);">—</span>
+                                                    @endif
+                                                @endif
+                                            </td>
+                                            <td class="text-center">
+                                                @if($isSuperseded)
+                                                    <span class="dx-v2-clients-expiry-status warning" title="REEMPLAZADA">
+                                                        <i class="fa-solid fa-arrow-rotate-left"></i>
+                                                    </span>
                                                 @else
                                                     @php
+                                                        $startDate = $product->start_date;
                                                         $expiration = $product->expiration_date;
-                                                        $isExpired = $expiration?->isPast();
-                                                        $diffInDays = $expiration ? now()->diffInDays($expiration, false) : null;
                                                         
-                                                        if ($isExpired) {
-                                                            $statusClass = 'expired';
-                                                            $icon = 'fa-solid fa-circle-xmark';
-                                                        } elseif ($diffInDays !== null && $diffInDays >= 0 && $diffInDays <= 30) {
-                                                            $statusClass = 'warning';
-                                                            $icon = 'fa-solid fa-triangle-exclamation';
+                                                        if ($startDate && $startDate->isFuture()) {
+                                                            $statusClass = 'text-gray-500';
+                                                            $icon = 'fa-solid fa-clock';
+                                                            $text = 'PENDIENTE DE ACTIVACIÓN';
                                                         } elseif (!$expiration) {
+                                                            $statusClass = 'text-gray-500';
+                                                            $icon = 'fa-solid fa-circle-question';
+                                                            $text = 'FECHA NO DETERMINADA';
+                                                        } elseif ($expiration->format('Y') == '9999') {
                                                             $statusClass = 'permanent';
                                                             $icon = 'fa-solid fa-infinity';
+                                                            $text = 'PERMANENTE';
+                                                        } elseif ($expiration->isPast()) {
+                                                            $statusClass = 'expired';
+                                                            $icon = 'fa-solid fa-circle-xmark';
+                                                            $text = 'CADUCADA';
                                                         } else {
                                                             $statusClass = 'default';
                                                             $icon = 'fa-solid fa-calendar-check';
+                                                            $text = 'ACTIVA';
                                                         }
                                                     @endphp
-                                                    <span class="dx-v2-clients-expiry-status {{ $statusClass }}">
+                                                    <span class="dx-v2-clients-expiry-status {{ $statusClass }}" title="{{ $text }}">
                                                         <i class="{{ $icon }}"></i>
-                                                        {{ $expiration ? $expiration->format('d/m/Y') : 'PERMANENTE' }}
                                                     </span>
                                                 @endif
                                             </td>

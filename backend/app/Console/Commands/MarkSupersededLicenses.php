@@ -40,70 +40,20 @@ class MarkSupersededLicenses extends Command
         foreach ($daemons as $daemon) {
             $allProducts = $daemon->products;
             
-            // 1. Procesar Node-locked (con MAC no nula)
-            $nodeLockedGroups = $allProducts->whereNotNull('node_locked_host_id')
-                ->filter(fn($p) => trim($p->node_locked_host_id) !== '')
-                ->groupBy(function ($item) {
-                    return $item->product_code . '|' . $item->node_locked_host_id;
-                });
-
-            foreach ($nodeLockedGroups as $group) {
-                if ($group->count() <= 1) continue;
-
-                $sorted = $group->sortByDesc(function ($product) {
-                    return $product->expiration_date ? $product->expiration_date->timestamp : PHP_INT_MAX;
-                })->values();
-
-                $latestProduct = $sorted->first();
-
-                foreach ($group as $product) {
-                    if ($product->id !== $latestProduct->id && $product->status !== 'superseded') {
+            // Ya no agrupamos por MAC para marcar como 'superseded' porque las renovaciones futuras coexisten
+            foreach ($allProducts as $product) {
+                // Solo caducamos licencias cuyo expiration_date ya pasó
+                if ($product->expiration_date && $product->expiration_date->format('Y') !== '9999' && $product->expiration_date->isPast()) {
+                    if ($product->status !== 'superseded') {
                         $product->status = 'superseded';
                         $product->save();
                         $totalSuperseded++;
-                        $this->line("Producto marcado como superseded (MAC): ID {$product->id} - {$product->product_code}");
+                        $this->line("Producto marcado como superseded por caducidad: ID {$product->id} - {$product->product_code}");
                     }
-                }
-                
-                if ($latestProduct->status !== 'active') {
-                    $latestProduct->status = 'active';
-                    $latestProduct->save();
-                }
-            }
-
-            // 2. Procesar Flotantes / Sin Host ID (renovación anual del mismo bloque: misma cantidad + mismo mes y día)
-            $floatingProducts = $allProducts->filter(fn($p) => empty($p->node_locked_host_id))
-                ->groupBy('product_code');
-
-            foreach ($floatingProducts as $productCode => $group) {
-                $subGroups = $group->groupBy(function ($item) {
-                    if (!$item->expiration_date) {
-                        return $item->quantity . '|PERMANENT';
-                    }
-                    return $item->quantity . '|' . $item->expiration_date->format('m-d');
-                });
-
-                foreach ($subGroups as $subGroup) {
-                    if ($subGroup->count() <= 1) continue;
-
-                    $sorted = $subGroup->sortByDesc(function ($product) {
-                        return $product->expiration_date ? $product->expiration_date->timestamp : PHP_INT_MAX;
-                    })->values();
-
-                    $latestProduct = $sorted->first();
-
-                    foreach ($subGroup as $product) {
-                        if ($product->id !== $latestProduct->id && $product->status !== 'superseded') {
-                            $product->status = 'superseded';
-                            $product->save();
-                            $totalSuperseded++;
-                            $this->line("Producto marcado como superseded (Flotante Anual): ID {$product->id} - {$product->product_code}");
-                        }
-                    }
-
-                    if ($latestProduct->status !== 'active') {
-                        $latestProduct->status = 'active';
-                        $latestProduct->save();
+                } else {
+                    if ($product->status !== 'active') {
+                        $product->status = 'active';
+                        $product->save();
                     }
                 }
             }

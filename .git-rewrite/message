@@ -1,0 +1,1 @@
+fix(code-quality): actualizar cast de expiration_date a datetime y resolver avisos de tipo del linter
