@@ -284,6 +284,7 @@
                                         <th class="text-center">Cant.</th>
                                         <th>Inicio</th>
                                         <th>Expiración</th>
+                                        <th>Estado</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -324,7 +325,18 @@
                                             </td>
                                             <td>
                                                 @if($isSuperseded)
-                                                    <span class="dx-v2-clients-expiry-status warning" style="font-size: 10px; padding: 2px 6px; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;"><i class="fa-solid fa-arrow-rotate-left"></i> Reemplazada</span>
+                                                    <span style="font-size: 13px; font-weight: 500; color: var(--gray-500);">Reemplazada</span>
+                                                @else
+                                                    @if($product->expiration_date && $product->expiration_date->format('Y') !== '9999')
+                                                        <span style="font-size: 13px; font-weight: 500;">{{ $product->expiration_date->format('d/m/Y') }}</span>
+                                                    @else
+                                                        <span style="font-size: 13px; font-weight: 500; color: var(--gray-500);">—</span>
+                                                    @endif
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($isSuperseded)
+                                                    <span class="dx-v2-clients-expiry-status warning" style="font-size: 10px; padding: 2px 6px; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;"><i class="fa-solid fa-arrow-rotate-left"></i> REEMPLAZADA</span>
                                                 @else
                                                     @php
                                                         $startDate = $product->start_date;
@@ -352,15 +364,10 @@
                                                             $text = 'ACTIVA';
                                                         }
                                                     @endphp
-                                                    <div style="display: flex; flex-direction: column; gap: 2px;">
-                                                        @if($expiration && $expiration->format('Y') !== '9999')
-                                                            <span style="font-size: 13px; font-weight: 500;">{{ $expiration->format('d/m/Y') }}</span>
-                                                        @endif
-                                                        <span class="dx-v2-clients-expiry-status {{ $statusClass }}">
-                                                            <i class="{{ $icon }}"></i>
-                                                            {{ $text }}
-                                                        </span>
-                                                    </div>
+                                                    <span class="dx-v2-clients-expiry-status {{ $statusClass }}">
+                                                        <i class="{{ $icon }}"></i>
+                                                        {{ $text }}
+                                                    </span>
                                                 @endif
                                             </td>
                                             <td class="text-right" style="display: flex; gap: 4px; justify-content: flex-end; align-items: center; height: 100%;">
