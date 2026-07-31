@@ -12,9 +12,16 @@
         <p class="page-subtitle" style="white-space: nowrap;">Visualización y búsqueda de cuentas del ecosistema.</p>
     </div>
     <div class="dx-v2-page-header-actions" style="display: flex; align-items: center; justify-content: flex-end; gap: 12px; flex-wrap: nowrap;">
-        <a href="{{ route('clients.unified') }}" class="dx-v2-ui-btn dx-v2-ui-btn-primary" style="white-space: nowrap; height: 38px; display: flex; align-items: center; padding: 0 16px;">
-            <i class="fa-solid fa-link" style="margin-right: 6px;"></i> Licencias Unificadas
-        </a>
+        <div class="search-box dx-v2-clients-search-box" style="margin: 0; display: flex; gap: 12px; align-items: center; flex-wrap: nowrap;">
+            <form action="{{ route('clients.index') }}" method="GET" class="dx-v2-clients-search-form" style="min-width: 250px; max-width: 350px; flex: 1;">
+                <svg class="dx-v2-clients-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                </svg>
+                <input type="text" name="search" value="{{ request('search') }}"
+                    placeholder="Buscar clientes por nombre o identificador..." class="dx-v2-form-input dx-v2-clients-search-input"
+                    x-on:input.debounce.500ms="$el.closest('form').submit()">
+            </form>
+        </div>
     </div>
 </div>
 
@@ -101,17 +108,7 @@
 </div>
 
 <div class="dx-v2-table-toolbar" style="display: flex; gap: 12px; align-items: center; justify-content: flex-start; margin-bottom: 16px; flex-wrap: wrap;">
-    <div class="search-box dx-v2-clients-search-box" style="margin: 0; display: flex; gap: 12px; align-items: center; flex-wrap: nowrap;">
-        <form action="{{ route('clients.index') }}" method="GET" class="dx-v2-clients-search-form" style="min-width: 250px; max-width: 350px; flex: 1;">
-            <svg class="dx-v2-clients-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-            </svg>
-            <input type="text" name="search" value="{{ request('search') }}"
-                placeholder="Buscar clientes por nombre o identificador..." class="dx-v2-form-input dx-v2-clients-search-input"
-                x-on:input.debounce.500ms="$el.closest('form').submit()">
-        </form>
-
-        <div class="filter-actions dx-v2-clients-filter-actions">
+    <div class="filter-actions dx-v2-clients-filter-actions">
             @php
                 $hasInv = session('client_has_inventory', false);
                 $currentVendor = session('client_inventory_vendor', 'all');
@@ -156,7 +153,10 @@
                 </div>
             </div>
         </div>
-    </div>
+
+        <a href="{{ route('clients.unified') }}" class="dx-v2-ui-btn dx-v2-ui-btn-primary" style="white-space: nowrap; height: 38px; display: flex; align-items: center; padding: 0 16px;">
+            <i class="fa-solid fa-link" style="margin-right: 6px;"></i> Unificadas
+        </a>
 </div>
 
 <div class="card">
