@@ -106,7 +106,7 @@
 .dx-v2-clients-alpha-container {
   display: flex;
   flex-wrap: nowrap;
-  gap: 2px;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
   overflow-x: auto;
