@@ -122,52 +122,39 @@ class MoldexSyncService
             });
 
         foreach ($nodeLockedGroups as $group) {
-            if ($group->count() > 1) {
-                $sorted = $group->sortByDesc(function ($item) {
-                    return $item->expiration_date ? $item->expiration_date->timestamp : PHP_INT_MAX;
-                })->values();
+            $sorted = $group->sortByDesc(function ($item) {
+                return $item->expiration_date ? $item->expiration_date->timestamp : PHP_INT_MAX;
+            })->values();
 
-                $newest = $sorted->first();
+            $newest = $sorted->first();
+            if ($newest->expiration_date && $newest->expiration_date->isPast()) {
+                if ($newest->status !== 'superseded') {
+                    $newest->update(['status' => 'superseded']);
+                }
+            } else {
                 if ($newest->status !== 'active') {
                     $newest->update(['status' => 'active']);
                 }
+            }
 
-                for ($i = 1; $i < $sorted->count(); $i++) {
-                    if ($sorted[$i]->status !== 'superseded') {
-                        $sorted[$i]->update(['status' => 'superseded']);
-                    }
+            for ($i = 1; $i < $sorted->count(); $i++) {
+                if ($sorted[$i]->status !== 'superseded') {
+                    $sorted[$i]->update(['status' => 'superseded']);
                 }
             }
         }
 
         // 2. Procesar Flotantes / Sin Host ID (Pendientes de MAC / Machine ID)
-        $floatingProducts = $allProducts->filter(fn($p) => empty($p->node_locked_host_id))
-            ->groupBy('product_code');
+        $floatingProducts = $allProducts->filter(fn($p) => empty($p->node_locked_host_id));
 
-        foreach ($floatingProducts as $productCode => $group) {
-            $subGroups = $group->groupBy(function ($item) {
-                if (!$item->expiration_date) {
-                    return $item->quantity . '|PERMANENT';
+        foreach ($floatingProducts as $product) {
+            if ($product->expiration_date && $product->expiration_date->isPast()) {
+                if ($product->status !== 'superseded') {
+                    $product->update(['status' => 'superseded']);
                 }
-                return $item->quantity . '|' . $item->expiration_date->format('m-d');
-            });
-
-            foreach ($subGroups as $subGroup) {
-                if ($subGroup->count() > 1) {
-                    $sorted = $subGroup->sortByDesc(function ($item) {
-                        return $item->expiration_date ? $item->expiration_date->timestamp : PHP_INT_MAX;
-                    })->values();
-
-                    $newest = $sorted->first();
-                    if ($newest->status !== 'active') {
-                        $newest->update(['status' => 'active']);
-                    }
-
-                    for ($i = 1; $i < $sorted->count(); $i++) {
-                        if ($sorted[$i]->status !== 'superseded') {
-                            $sorted[$i]->update(['status' => 'superseded']);
-                        }
-                    }
+            } else {
+                if ($product->status !== 'active') {
+                    $product->update(['status' => 'active']);
                 }
             }
         }
@@ -179,7 +166,8 @@ class MoldexSyncService
      */
     private function parseDate($dateStr): ?string
     {
-        if (!$dateStr || strtolower($dateStr) === 'permanent') return null;
+        if (!$dateStr) return null;
+        if (strtolower($dateStr) === 'permanent' || $dateStr === '9999-12-31') return '9999-12-31';
 
         try {
             // Moldex suele usar YYYYMMDD o YYYY/MM/DD

@@ -94,60 +94,43 @@ class InventorySyncService
             });
 
         foreach ($nodeLockedGroups as $group) {
-            if ($group->count() > 1) {
-                $sorted = $group->sortByDesc(function ($item) {
-                    return $item->expiration_date ? $item->expiration_date->timestamp : PHP_INT_MAX;
-                })->values();
+            $sorted = $group->sortByDesc(function ($item) {
+                return $item->expiration_date ? $item->expiration_date->timestamp : PHP_INT_MAX;
+            })->values();
 
-                $newest = $sorted->first();
+            $newest = $sorted->first();
+            // El más nuevo es active a menos que ya esté caducado
+            if ($newest->expiration_date && $newest->expiration_date->isPast()) {
+                if ($newest->status !== 'superseded') {
+                    $newest->update(['status' => 'superseded']);
+                }
+            } else {
                 if ($newest->status !== 'active') {
                     $newest->update(['status' => 'active']);
                 }
+            }
 
-                for ($i = 1; $i < $sorted->count(); $i++) {
-                    // Solo marcar como superseded si la licencia ya ha caducado (al día siguiente)
-                    if ($sorted[$i]->expiration_date && $sorted[$i]->expiration_date->isPast()) {
-                        if ($sorted[$i]->status !== 'superseded') {
-                            $sorted[$i]->update(['status' => 'superseded']);
-                        }
-                    }
+            // El resto (versiones antiguas) siempre son superseded
+            for ($i = 1; $i < $sorted->count(); $i++) {
+                if ($sorted[$i]->status !== 'superseded') {
+                    $sorted[$i]->update(['status' => 'superseded']);
                 }
             }
         }
 
-        // 2. Procesar Flotantes / Sin Host ID (Pendientes de MAC / Paquetes)
-        $floatingProducts = $allProducts->filter(fn($p) => empty($p->node_locked_host_id))
-            ->groupBy('product_code');
+        // 2. Procesar Flotantes / Sin Host ID (Paquetes aditivos)
+        $floatingProducts = $allProducts->filter(fn($p) => empty($p->node_locked_host_id));
 
-        foreach ($floatingProducts as $productCode => $group) {
-            // Agrupar por paquete (misma cantidad + mismo mes y día de expiración)
-            $subGroups = $group->groupBy(function ($item) {
-                if (!$item->expiration_date) {
-                    return $item->quantity . '|PERMANENT';
+        foreach ($floatingProducts as $product) {
+            // Las licencias flotantes son aditivas. Nunca se sobrescriben por otras licencias más nuevas,
+            // simplemente se caducan de forma independiente cuando pasa su fecha.
+            if ($product->expiration_date && $product->expiration_date->isPast()) {
+                if ($product->status !== 'superseded') {
+                    $product->update(['status' => 'superseded']);
                 }
-                return $item->quantity . '|' . $item->expiration_date->format('m-d');
-            });
-
-            foreach ($subGroups as $subGroup) {
-                if ($subGroup->count() > 1) {
-                    // Ordenar por año/timestamp descendente (la versión de 2027 reemplaza a la de 2026)
-                    $sorted = $subGroup->sortByDesc(function ($item) {
-                        return $item->expiration_date ? $item->expiration_date->timestamp : PHP_INT_MAX;
-                    })->values();
-
-                    $newest = $sorted->first();
-                    if ($newest->status !== 'active') {
-                        $newest->update(['status' => 'active']);
-                    }
-
-                    for ($i = 1; $i < $sorted->count(); $i++) {
-                        // Solo marcar como superseded si la licencia ya ha caducado (al día siguiente)
-                        if ($sorted[$i]->expiration_date && $sorted[$i]->expiration_date->isPast()) {
-                            if ($sorted[$i]->status !== 'superseded') {
-                                $sorted[$i]->update(['status' => 'superseded']);
-                            }
-                        }
-                    }
+            } else {
+                if ($product->status !== 'active') {
+                    $product->update(['status' => 'active']);
                 }
             }
         }
@@ -205,7 +188,7 @@ class InventorySyncService
         
         $specialCases = ['permanent', '9999-12-31', 'any', 'uncounted'];
         if (in_array(strtolower($dateStr), $specialCases)) {
-            return null;
+            return '9999-12-31';
         }
 
         try {

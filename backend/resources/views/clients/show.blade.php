@@ -320,26 +320,34 @@
                                                 @else
                                                     @php
                                                         $expiration = $product->expiration_date;
-                                                        $isExpired = $expiration?->isPast();
-                                                        $diffInDays = $expiration ? now()->diffInDays($expiration, false) : null;
+                                                        $isExpired = $expiration && $expiration->format('Y') !== '9999' ? $expiration->isPast() : false;
+                                                        $diffInDays = $expiration && $expiration->format('Y') !== '9999' ? now()->diffInDays($expiration, false) : null;
                                                         
-                                                        if ($isExpired) {
+                                                        if (!$expiration) {
+                                                            $statusClass = 'text-gray-500'; // Estilo gris
+                                                            $icon = 'fa-solid fa-circle-question';
+                                                            $text = 'FECHA NO DETERMINADA';
+                                                        } elseif ($expiration->format('Y') == '9999') {
+                                                            $statusClass = 'permanent';
+                                                            $icon = 'fa-solid fa-infinity';
+                                                            $text = 'PERMANENTE';
+                                                        } elseif ($isExpired) {
                                                             $statusClass = 'expired';
                                                             $icon = 'fa-solid fa-circle-xmark';
+                                                            $text = $expiration->format('d/m/Y');
                                                         } elseif ($diffInDays !== null && $diffInDays >= 0 && $diffInDays <= 30) {
                                                             $statusClass = 'warning';
                                                             $icon = 'fa-solid fa-triangle-exclamation';
-                                                        } elseif (!$expiration) {
-                                                            $statusClass = 'permanent';
-                                                            $icon = 'fa-solid fa-infinity';
+                                                            $text = $expiration->format('d/m/Y');
                                                         } else {
                                                             $statusClass = 'default';
                                                             $icon = 'fa-solid fa-calendar-check';
+                                                            $text = $expiration->format('d/m/Y');
                                                         }
                                                     @endphp
                                                     <span class="dx-v2-clients-expiry-status {{ $statusClass }}">
                                                         <i class="{{ $icon }}"></i>
-                                                        {{ $expiration ? $expiration->format('d/m/Y') : 'PERMANENTE' }}
+                                                        {{ $text }}
                                                     </span>
                                                 @endif
                                             </td>

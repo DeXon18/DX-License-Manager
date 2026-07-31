@@ -48,62 +48,54 @@ class MarkSupersededLicenses extends Command
                 });
 
             foreach ($nodeLockedGroups as $group) {
-                if ($group->count() <= 1) continue;
-
                 $sorted = $group->sortByDesc(function ($product) {
                     return $product->expiration_date ? $product->expiration_date->timestamp : PHP_INT_MAX;
                 })->values();
 
                 $latestProduct = $sorted->first();
 
-                foreach ($group as $product) {
-                    if ($product->id !== $latestProduct->id && $product->status !== 'superseded') {
-                        $product->status = 'superseded';
-                        $product->save();
+                // El último siempre activo a menos que haya caducado
+                if ($latestProduct->expiration_date && $latestProduct->expiration_date->isPast()) {
+                    if ($latestProduct->status !== 'superseded') {
+                        $latestProduct->status = 'superseded';
+                        $latestProduct->save();
                         $totalSuperseded++;
-                        $this->line("Producto marcado como superseded (MAC): ID {$product->id} - {$product->product_code}");
+                        $this->line("Producto marcado como superseded por caducidad (MAC): ID {$latestProduct->id} - {$latestProduct->product_code}");
                     }
-                }
-                
-                if ($latestProduct->status !== 'active') {
-                    $latestProduct->status = 'active';
-                    $latestProduct->save();
-                }
-            }
-
-            // 2. Procesar Flotantes / Sin Host ID (renovación anual del mismo bloque: misma cantidad + mismo mes y día)
-            $floatingProducts = $allProducts->filter(fn($p) => empty($p->node_locked_host_id))
-                ->groupBy('product_code');
-
-            foreach ($floatingProducts as $productCode => $group) {
-                $subGroups = $group->groupBy(function ($item) {
-                    if (!$item->expiration_date) {
-                        return $item->quantity . '|PERMANENT';
-                    }
-                    return $item->quantity . '|' . $item->expiration_date->format('m-d');
-                });
-
-                foreach ($subGroups as $subGroup) {
-                    if ($subGroup->count() <= 1) continue;
-
-                    $sorted = $subGroup->sortByDesc(function ($product) {
-                        return $product->expiration_date ? $product->expiration_date->timestamp : PHP_INT_MAX;
-                    })->values();
-
-                    $latestProduct = $sorted->first();
-
-                    foreach ($subGroup as $product) {
-                        if ($product->id !== $latestProduct->id && $product->status !== 'superseded') {
-                            $product->status = 'superseded';
-                            $product->save();
-                            $totalSuperseded++;
-                            $this->line("Producto marcado como superseded (Flotante Anual): ID {$product->id} - {$product->product_code}");
-                        }
-                    }
-
+                } else {
                     if ($latestProduct->status !== 'active') {
                         $latestProduct->status = 'active';
                         $latestProduct->save();
+                    }
+                }
+
+                // Los demás (antiguos) son superseded siempre
+                for ($i = 1; $i < $sorted->count(); $i++) {
+                    $product = $sorted[$i];
+                    if ($product->status !== 'superseded') {
+                        $product->status = 'superseded';
+                        $product->save();
+                        $totalSuperseded++;
+                        $this->line("Producto marcado como superseded por reemplazo (MAC): ID {$product->id} - {$product->product_code}");
+                    }
+                }
+            }
+
+            // 2. Procesar Flotantes / Sin Host ID (Paquetes aditivos)
+            $floatingProducts = $allProducts->filter(fn($p) => empty($p->node_locked_host_id));
+
+            foreach ($floatingProducts as $product) {
+                if ($product->expiration_date && $product->expiration_date->isPast()) {
+                    if ($product->status !== 'superseded') {
+                        $product->status = 'superseded';
+                        $product->save();
+                        $totalSuperseded++;
+                        $this->line("Producto flotante marcado como superseded por caducidad: ID {$product->id} - {$product->product_code}");
+                    }
+                } else {
+                    if ($product->status !== 'active') {
+                        $product->status = 'active';
+                        $product->save();
                     }
                 }
             }
