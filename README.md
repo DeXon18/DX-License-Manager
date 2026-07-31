@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-3.0.1-388BFD?style=for-the-badge" alt="Version">
+  <img src="https://img.shields.io/badge/Version-3.9.1-388BFD?style=for-the-badge" alt="Version">
   <img src="https://img.shields.io/badge/Stack-Laravel_11_|_PHP_8.4-FF2D20?style=for-the-badge&logo=laravel" alt="Laravel">
   <img src="https://img.shields.io/badge/Engine-AI_Gemini_Flash-9171ff?style=for-the-badge" alt="AI Gemini Engine">
   <img src="https://img.shields.io/badge/CSS-Modular_35_Files-007aff?style=for-the-badge" alt="CSS Modular architecture">
@@ -78,6 +78,7 @@ Ecosistema administrativo que sincroniza las licencias instaladas reales (Invent
 
 - **Gestor Multi-Site:** Identificación consolidada de clientes con múltiples Sold-Tos e instalaciones distribuidas con estética industrial limpia ("Gold Thread watermark").
 - **Traffic-Light Alerts:** Indicadores semánticos en tiempo real sobre la salud y caducidad de los contratos.
+- **Soporte de Software de Terceros:** Gestión integral de Módulos NCmatic por número de serie integrados en la ficha del cliente, y trazabilidad temporal extendida mediante fechas de inicio (Start Dates).
 
 ### 4. System NOC Dashboard & Fleet Monitor
 

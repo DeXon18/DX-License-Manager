@@ -1,13 +1,13 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-07-31 10:45  
-> Sesión en: Windows (Agent)  
+> Última actualización: 2026-07-31 11:10  
+> Sesión en: indeterminado  
 > Rama activa: dev
 
 ---
 
 ## Estado General
 
-**Fase actual:** Soporte Fecha Inicio Licencias (v3.9.1)  
+**Fase actual:** Pase a producción de Funcionalidad Start Date (v3.9.1) completado.
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,36 +15,33 @@
 
 ## Qué se hizo en esta sesión
 
-- **Soporte de Fecha de Inicio en Licencias y Ajustes UI (`v3.9.1`):**
-  - **Licencias:** Parseo de la fecha de inicio (`START=...`) de los archivos procesados por n8n (webhook) y guardado en `start_date`.
-  - **UI / Inventario:** Añadida columna "Inicio" y cálculo del estado "PENDIENTE DE ACTIVACIÓN".
-  - **Diseño:** Tabla de inventario balanceada, usando nowrap para la descripción y permitiendo ajuste automático sin hacks CSS.
-
-- **Selector de Año y Filtros en Planificador de Renovaciones (`v3.8.0`):**
-  - Selector dinámico de año y barra de filtros por estado en `/planificador`.
+- Despliegue de la funcionalidad de "Start Date" (Fecha de Inicio) en la rama `main` y en Producción.
+- Resolución de un Error 500 en Producción tras el despliegue mediante la ejecución de migraciones forzadas, asignación de permisos `chmod -R 777` en las carpetas `storage` y `bootstrap/cache`, y limpieza de cachés (`view:clear`, `cache:clear`).
+- Resolución de un Error 502 en Beta (Dev) reiniciando el contenedor `nginx-beta`.
+- Mejora estética en las tablas de clientes (`dx-v2-clients.css`), eliminando los anchos forzados y sustituyéndolos por ajustes dinámicos de navegador.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Revisar con Oskar nuevas solicitudes o módulos adicionales requeridos.
+Revisar el BACKLOG con el desarrollador para asignar la próxima tarea o bugfix a implementar.
 
 ### Tareas siguientes
-1. Evaluar tareas del BACKLOG / ROADMAP.
+1. Continuar con roadmap (Módulo NCmatic u otros pendientes).
 
 ---
 
 ## Contexto técnico importante
 
-- Las licencias NCmatic se asocian por `serial_number` y se vinculan a los clientes con contratos NCmatic.
-- La vista `/clientes` mantiene la cuadrícula de 4 tarjetas KPI (`dx-v2-sys-dash-stats-grid`).
+- Al desplegar código, si las vistas fallan con "Permission denied" en `file_put_contents`, SIEMPRE debe limpiarse la caché de las vistas (`php artisan view:clear`) y asegurar que los permisos de `/storage/framework/views` son `777`.
+- Al realizar un despliegue, el servidor de Producción suele tener un pequeño retraso a través de GitHub Actions; verificar que la rama está sincronizada mediante Git en SSH local antes de correr migraciones.
 
 ---
 
 ## Bloqueos o problemas sin resolver
 
-Ninguno. Todos los stacks operando con normalidad.
+Ninguno
 
 ---
 
@@ -62,9 +59,12 @@ Ninguno. Todos los stacks operando con normalidad.
 ## Comandos útiles para la próxima sesión
 
 ```bash
-# Limpiar caché de vistas en Beta
-docker exec dx-php-beta php artisan view:clear
+# Arrancar beta si está down
+docker compose --project-directory /opt/web-projects/DX-License-Manager-DEV -f /opt/web-projects/DX-License-Manager-DEV/infra/docker-compose.beta.yml up -d
 
-# Ver logs de PHP Beta
-docker compose --project-directory . -f infra/docker-compose.beta.yml logs --tail=50 dx-php-beta
+# Entrar al contenedor PHP
+docker exec -it dx-php-beta sh
+
+# Ver logs en tiempo real
+docker compose --project-directory /opt/web-projects/DX-License-Manager-DEV -f /opt/web-projects/DX-License-Manager-DEV/infra/docker-compose.beta.yml logs -f nginx-beta
 ```
