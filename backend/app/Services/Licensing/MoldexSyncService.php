@@ -75,12 +75,14 @@ class MoldexSyncService
 
             // 3. Sincronizar Productos
             foreach ($parsedData['products'] as $prodData) {
+                $startDate = $this->parseDate($prodData['start_date'] ?? null);
                 $expDate = $this->parseDate($prodData['expiration']);
 
                 LicenseInventoryProduct::updateOrCreate(
                     [
                         'daemon_id'    => $daemon->id,
                         'product_code' => $prodData['code'],
+                        'start_date'   => $startDate,
                         'expiration_date' => $expDate,
                     ],
                     [
@@ -114,41 +116,9 @@ class MoldexSyncService
     {
         $allProducts = LicenseInventoryProduct::where('daemon_id', $daemonId)->get();
 
-        // 1. Procesar Node-locked (con MAC no nula)
-        $nodeLockedGroups = $allProducts->whereNotNull('node_locked_host_id')
-            ->filter(fn($p) => trim($p->node_locked_host_id) !== '')
-            ->groupBy(function ($item) {
-                return $item->product_code . '|' . $item->node_locked_host_id;
-            });
-
-        foreach ($nodeLockedGroups as $group) {
-            $sorted = $group->sortByDesc(function ($item) {
-                return $item->expiration_date ? $item->expiration_date->timestamp : PHP_INT_MAX;
-            })->values();
-
-            $newest = $sorted->first();
-            if ($newest->expiration_date && $newest->expiration_date->isPast()) {
-                if ($newest->status !== 'superseded') {
-                    $newest->update(['status' => 'superseded']);
-                }
-            } else {
-                if ($newest->status !== 'active') {
-                    $newest->update(['status' => 'active']);
-                }
-            }
-
-            for ($i = 1; $i < $sorted->count(); $i++) {
-                if ($sorted[$i]->status !== 'superseded') {
-                    $sorted[$i]->update(['status' => 'superseded']);
-                }
-            }
-        }
-
-        // 2. Procesar Flotantes / Sin Host ID (Pendientes de MAC / Machine ID)
-        $floatingProducts = $allProducts->filter(fn($p) => empty($p->node_locked_host_id));
-
-        foreach ($floatingProducts as $product) {
-            if ($product->expiration_date && $product->expiration_date->isPast()) {
+        foreach ($allProducts as $product) {
+            // Ya no agrupamos por MAC para marcar como 'superseded' porque las renovaciones futuras coexisten
+            if ($product->expiration_date && $product->expiration_date->format('Y') !== '9999' && $product->expiration_date->isPast()) {
                 if ($product->status !== 'superseded') {
                     $product->update(['status' => 'superseded']);
                 }

@@ -282,6 +282,7 @@
                                         <th>Descripción Técnica</th>
                                         <th>Host ID (MAC)</th>
                                         <th class="text-center">Cant.</th>
+                                        <th>Inicio</th>
                                         <th>Expiración</th>
                                         <th></th>
                                     </tr>
@@ -315,40 +316,51 @@
                                                 <div class="dx-v2-clients-qty-badge">{{ $product->quantity }}</div>
                                             </td>
                                             <td>
+                                                @if($product->start_date)
+                                                    {{ $product->start_date->format('d/m/Y') }}
+                                                @else
+                                                    —
+                                                @endif
+                                            </td>
+                                            <td>
                                                 @if($isSuperseded)
                                                     <span class="dx-v2-clients-expiry-status warning" style="font-size: 10px; padding: 2px 6px; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;"><i class="fa-solid fa-arrow-rotate-left"></i> Reemplazada</span>
                                                 @else
                                                     @php
+                                                        $startDate = $product->start_date;
                                                         $expiration = $product->expiration_date;
-                                                        $isExpired = $expiration && $expiration->format('Y') !== '9999' ? $expiration->isPast() : false;
-                                                        $diffInDays = $expiration && $expiration->format('Y') !== '9999' ? now()->diffInDays($expiration, false) : null;
                                                         
-                                                        if (!$expiration) {
-                                                            $statusClass = 'text-gray-500'; // Estilo gris
+                                                        if ($startDate && $startDate->isFuture()) {
+                                                            $statusClass = 'text-gray-500';
+                                                            $icon = 'fa-solid fa-clock';
+                                                            $text = 'PENDIENTE DE ACTIVACIÓN';
+                                                        } elseif (!$expiration) {
+                                                            $statusClass = 'text-gray-500';
                                                             $icon = 'fa-solid fa-circle-question';
                                                             $text = 'FECHA NO DETERMINADA';
                                                         } elseif ($expiration->format('Y') == '9999') {
                                                             $statusClass = 'permanent';
                                                             $icon = 'fa-solid fa-infinity';
                                                             $text = 'PERMANENTE';
-                                                        } elseif ($isExpired) {
+                                                        } elseif ($expiration->isPast()) {
                                                             $statusClass = 'expired';
                                                             $icon = 'fa-solid fa-circle-xmark';
-                                                            $text = $expiration->format('d/m/Y');
-                                                        } elseif ($diffInDays !== null && $diffInDays >= 0 && $diffInDays <= 30) {
-                                                            $statusClass = 'warning';
-                                                            $icon = 'fa-solid fa-triangle-exclamation';
-                                                            $text = $expiration->format('d/m/Y');
+                                                            $text = 'CADUCADA';
                                                         } else {
                                                             $statusClass = 'default';
                                                             $icon = 'fa-solid fa-calendar-check';
-                                                            $text = $expiration->format('d/m/Y');
+                                                            $text = 'ACTIVA';
                                                         }
                                                     @endphp
-                                                    <span class="dx-v2-clients-expiry-status {{ $statusClass }}">
-                                                        <i class="{{ $icon }}"></i>
-                                                        {{ $text }}
-                                                    </span>
+                                                    <div style="display: flex; flex-direction: column; gap: 2px;">
+                                                        @if($expiration && $expiration->format('Y') !== '9999')
+                                                            <span style="font-size: 13px; font-weight: 500;">{{ $expiration->format('d/m/Y') }}</span>
+                                                        @endif
+                                                        <span class="dx-v2-clients-expiry-status {{ $statusClass }}">
+                                                            <i class="{{ $icon }}"></i>
+                                                            {{ $text }}
+                                                        </span>
+                                                    </div>
                                                 @endif
                                             </td>
                                             <td class="text-right" style="display: flex; gap: 4px; justify-content: flex-end; align-items: center; height: 100%;">

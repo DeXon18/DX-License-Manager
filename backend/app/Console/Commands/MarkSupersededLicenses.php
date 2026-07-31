@@ -40,57 +40,15 @@ class MarkSupersededLicenses extends Command
         foreach ($daemons as $daemon) {
             $allProducts = $daemon->products;
             
-            // 1. Procesar Node-locked (con MAC no nula)
-            $nodeLockedGroups = $allProducts->whereNotNull('node_locked_host_id')
-                ->filter(fn($p) => trim($p->node_locked_host_id) !== '')
-                ->groupBy(function ($item) {
-                    return $item->product_code . '|' . $item->node_locked_host_id;
-                });
-
-            foreach ($nodeLockedGroups as $group) {
-                $sorted = $group->sortByDesc(function ($product) {
-                    return $product->expiration_date ? $product->expiration_date->timestamp : PHP_INT_MAX;
-                })->values();
-
-                $latestProduct = $sorted->first();
-
-                // El último siempre activo a menos que haya caducado
-                if ($latestProduct->expiration_date && $latestProduct->expiration_date->isPast()) {
-                    if ($latestProduct->status !== 'superseded') {
-                        $latestProduct->status = 'superseded';
-                        $latestProduct->save();
-                        $totalSuperseded++;
-                        $this->line("Producto marcado como superseded por caducidad (MAC): ID {$latestProduct->id} - {$latestProduct->product_code}");
-                    }
-                } else {
-                    if ($latestProduct->status !== 'active') {
-                        $latestProduct->status = 'active';
-                        $latestProduct->save();
-                    }
-                }
-
-                // Los demás (antiguos) son superseded siempre
-                for ($i = 1; $i < $sorted->count(); $i++) {
-                    $product = $sorted[$i];
+            // Ya no agrupamos por MAC para marcar como 'superseded' porque las renovaciones futuras coexisten
+            foreach ($allProducts as $product) {
+                // Solo caducamos licencias cuyo expiration_date ya pasó
+                if ($product->expiration_date && $product->expiration_date->format('Y') !== '9999' && $product->expiration_date->isPast()) {
                     if ($product->status !== 'superseded') {
                         $product->status = 'superseded';
                         $product->save();
                         $totalSuperseded++;
-                        $this->line("Producto marcado como superseded por reemplazo (MAC): ID {$product->id} - {$product->product_code}");
-                    }
-                }
-            }
-
-            // 2. Procesar Flotantes / Sin Host ID (Paquetes aditivos)
-            $floatingProducts = $allProducts->filter(fn($p) => empty($p->node_locked_host_id));
-
-            foreach ($floatingProducts as $product) {
-                if ($product->expiration_date && $product->expiration_date->isPast()) {
-                    if ($product->status !== 'superseded') {
-                        $product->status = 'superseded';
-                        $product->save();
-                        $totalSuperseded++;
-                        $this->line("Producto flotante marcado como superseded por caducidad: ID {$product->id} - {$product->product_code}");
+                        $this->line("Producto marcado como superseded por caducidad: ID {$product->id} - {$product->product_code}");
                     }
                 } else {
                     if ($product->status !== 'active') {
