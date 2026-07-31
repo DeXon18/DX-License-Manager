@@ -158,27 +158,28 @@
         </a>
 </div>
 
-<div class="dx-v2-clients-alpha-container">
-    @php
-        $currentLetter = request('letter');
-    @endphp
-    
-    <span class="dx-v2-clients-alpha-label">A-Z:</span>
-
-    <a href="{{ route('clients.index', array_merge(request()->except('letter'), ['page' => 1])) }}" 
-       class="dx-v2-clients-alpha-btn {{ !$currentLetter ? 'active' : '' }}">
-       Todos
-    </a>
-    
-    @foreach(range('A', 'Z') as $letter)
-        <a href="{{ route('clients.index', array_merge(request()->all(), ['letter' => $letter, 'page' => 1])) }}" 
-           class="dx-v2-clients-alpha-btn {{ $currentLetter === $letter ? 'active' : '' }}">
-            {{ $letter }}
-        </a>
-    @endforeach
-</div>
-
 <div class="card">
+    <div class="card-header">
+        <div class="dx-v2-clients-alpha-container">
+            @php
+                $currentLetter = request('letter');
+            @endphp
+            
+            <span class="dx-v2-clients-alpha-label">A-Z:</span>
+
+            <a href="{{ route('clients.index', array_merge(request()->except('letter'), ['page' => 1])) }}" 
+               class="dx-v2-clients-alpha-btn {{ !$currentLetter ? 'active' : '' }}">
+               Todos
+            </a>
+            
+            @foreach(range('A', 'Z') as $letter)
+                <a href="{{ route('clients.index', array_merge(request()->all(), ['letter' => $letter, 'page' => 1])) }}" 
+                   class="dx-v2-clients-alpha-btn {{ $currentLetter === $letter ? 'active' : '' }}">
+                    {{ $letter }}
+                </a>
+            @endforeach
+        </div>
+    </div>
     <table class="table">
         <thead>
             <tr>
