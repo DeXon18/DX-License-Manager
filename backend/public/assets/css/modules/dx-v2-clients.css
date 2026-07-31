@@ -95,6 +95,49 @@
   border-color: rgba(237, 28, 36, 0.3);
 }
 
+/* Filtro Alfabético */
+.dx-v2-clients-alpha-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.dx-v2-clients-alpha-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dx-v2-text-muted);
+  margin-right: 8px;
+}
+.dx-v2-clients-alpha-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--dx-v2-text-muted);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--dx-v2-rounded-md);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.dx-v2-clients-alpha-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--dx-v2-primary-base);
+}
+[data-theme="light"] .dx-v2-clients-alpha-btn:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+.dx-v2-clients-alpha-btn.active {
+  background: rgba(56, 139, 253, 0.1);
+  color: var(--dx-v2-accent-base);
+  border: 1px solid rgba(56, 139, 253, 0.2);
+}
+
 /* Listado / Tabla Clientes */
 .dx-v2-clients-search-box {
   width: 100%;
