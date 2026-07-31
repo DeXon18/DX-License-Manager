@@ -279,12 +279,12 @@
                                 <thead>
                                     <tr>
                                         <th>Producto</th>
-                                        <th>Descripción Técnica</th>
+                                        <th class="dx-v2-table-nowrap">Descripción Técnica</th>
                                         <th>Host ID (MAC)</th>
                                         <th class="text-center">Cant.</th>
                                         <th>Inicio</th>
                                         <th>Expiración</th>
-                                        <th>Estado</th>
+                                        <th class="text-center">Estado</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -301,7 +301,7 @@
                                             @if($isSuperseded) x-show="showSuperseded" x-cloak x-transition @endif
                                             @if($isDropped) x-show="showDroppedProducts" x-cloak x-transition @endif>
                                             <td class="dx-v2-clients-product-code">{{ $product->product_code }}</td>
-                                            <td>
+                                            <td class="dx-v2-table-nowrap" title="{{ $product->description }}">
                                                 {{ $product->description }}
                                             </td>
                                             <td class="dx-v2-clients-host-mono">
@@ -334,7 +334,7 @@
                                                     @endif
                                                 @endif
                                             </td>
-                                            <td>
+                                            <td class="text-center">
                                                 @if($isSuperseded)
                                                     <span class="dx-v2-clients-expiry-status warning" title="REEMPLAZADA">
                                                         <i class="fa-solid fa-arrow-rotate-left"></i>

@@ -1112,3 +1112,10 @@
 .dx-v2-clients-btn-profile {
   white-space: nowrap;
 }
+
+/* Reducción de padding para que la tabla sea más compacta */
+.dx-v2-clients-inv-table th,
+.dx-v2-clients-inv-table td {
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
