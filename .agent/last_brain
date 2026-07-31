@@ -1,6 +1,6 @@
-Rama activa: dev. Versión: v3.9.0.
-Último trabajo: Creación del Módulo de Licencias NCmatic por Número de Serie (tabla ncmatic_licenses, modelo NcmaticLicense, controlador NcMaticController, rutas, vistas en /herramientas/ncmatic y ficha cliente /clientes/{id}), refactorización a clases nativas NOC Pro segun DESIGN.md, eliminación del campo asientos/puestos (fijo en 1), filtro de clientes por contrato NCmatic e integración de badge y filtro NCmatic en /clientes.
-Estado: Todos los cambios funcionando y verificados. MariaDB limpia y sincronizada.
-Próximo paso inmediato: Revisar con Oskar nuevas herramientas o necesidades de licencias.
+Rama activa: dev. Versión: v3.9.1.
+Último trabajo: Pase a producción de la funcionalidad Start Date. Resolución de incidencias 500/502 en los entornos Beta y Producción post-despliegue mediante reset, migración forzada y limpieza de caché de vistas. Reescritura del CSS de la tabla para anchos dinámicos naturales.
+Estado: Beta y Producción están limpios, operativos y sin errores (302 OK en login). 
+Próximo paso inmediato: Revisar siguientes requerimientos en BACKLOG o ROADMAP con Oskar.
 Bloqueos: Ninguno.
 Stack beta: running. Stack prod: running.
