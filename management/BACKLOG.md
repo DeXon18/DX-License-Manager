@@ -37,6 +37,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Feature: Soporte de Fecha de Inicio en Licencias y Ajustes UI ✅
+- **Completada:** 2026-07-31
+- **Rama:** `feature/start-date-support`
+- **Resumen:** Se añadió soporte para parsear la fecha de inicio (`START=...`) enviada por n8n y sincronizarla en base de datos. Ajustes finos de CSS en la tabla de inventario para soportar la nueva columna de manera equilibrada y natural, sin romper la lectura.
+- **PR:** Pendiente de merge a dev
+
 ### Feature: Migración Avanzada RBAC a Spatie y Rediseño UI ✅
 - **Completada:** 2026-07-03
 - **Rama:** `feature/advanced-rbac`
