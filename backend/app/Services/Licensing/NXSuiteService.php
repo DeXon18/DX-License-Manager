@@ -57,7 +57,7 @@ class NXSuiteService
         // Reemplazar YourHostname por localhost SÓLO si tiene un COMPOSITE
         if ($hostname === 'YourHostname' && str_contains($hostid, 'COMPOSITE=')) {
             $hostname = 'localhost';
-        } elseif ($isTemporal7Days && $hostname === 'ANY') {
+        } elseif ($isTemporal7Days && $hostid === 'ANY') {
             $hostname = 'localhost';
         }
 
