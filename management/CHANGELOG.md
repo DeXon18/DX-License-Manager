@@ -4,6 +4,12 @@
 
 > **Version:** v3.9.0
 
+## [2026-07-31 07:35] — Feature: Filtro Alfabético Integrado (NOC Pro) ✅
+
+### Added
+- **UI / Inventario**: Añadido un filtro alfabético (A-Z) en el directorio de clientes (`/clientes`) para búsqueda rápida.
+- **Diseño NOC Pro**: El abecedario se ha integrado orgánicamente dentro de la cabecera de la tabla (`.card-header`) usando botones compactos. El diseño distribuye uniformemente las letras en una sola línea a lo ancho de toda la pantalla (`justify-content: space-between`), unificando el control de filtros con el diseño estructural del panel y eliminando estilos en línea en favor de clases CSS puras (`dx-v2-clients-alpha-btn`).
+
 ## [2026-07-30 17:20] — Feature: Módulo de Gestión de Licencias NCmatic por Número de Serie ✅
 
 ### Added
