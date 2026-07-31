@@ -9,11 +9,10 @@
             <span class="current">Directorio</span>
         </div>
         <h1 class="page-title">Gestión de <span>Clientes</span></h1>
-        <p class="page-subtitle" style="white-space: nowrap;">Visualización y búsqueda de cuentas del ecosistema.</p>
-    </div>
-    <div class="dx-v2-page-header-actions" style="display: flex; align-items: center; justify-content: flex-end; gap: 12px; flex-wrap: nowrap;">
+        <p class="page-subtitle" style="white-space: nowrap; margin-bottom: 16px;">Visualización y búsqueda de cuentas del ecosistema.</p>
+
         <div class="search-box dx-v2-clients-search-box" style="margin: 0; display: flex; gap: 12px; align-items: center; flex-wrap: nowrap;">
-            <form action="{{ route('clients.index') }}" method="GET" class="dx-v2-clients-search-form" style="min-width: 250px; max-width: 350px; flex: 1;">
+            <form action="{{ route('clients.index') }}" method="GET" class="dx-v2-clients-search-form" style="min-width: 300px; max-width: 500px; flex: 1;">
                 <svg class="dx-v2-clients-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
