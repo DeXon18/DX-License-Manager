@@ -4,6 +4,11 @@
 
 > **Version:** v3.9.0
 
+## [2026-07-31 08:16] — Bugfix: Hostname en Licencias Temporales Siemens ✅
+
+### Fixed
+- **Motor de Licencias**: Solucionado un bug en `NXSuiteService`, `StarCcmService` y `HeedsService` donde las licencias temporales no reemplazaban `YourHostname` por `localhost` debido a una comprobación errónea sobre el campo equivocado (`$hostname === 'ANY'` en lugar de `$hostid === 'ANY'`). Ahora el sistema garantiza que los servidores temporales se reescriben correctamente a `localhost`.
+
 ## [2026-07-31 07:35] — Feature: Filtro Alfabético Integrado (NOC Pro) ✅
 
 ### Added
