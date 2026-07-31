@@ -4,6 +4,13 @@
 
 > **Version:** v3.9.0
 
+## [2026-07-31 10:45] — Feature: Soporte de Fecha de Inicio en Licencias y Ajustes UI ✅
+
+### Added
+- **Licencias**: Se añadió soporte para parsear la fecha de inicio (`START=...`) de los archivos de licencia procesados por n8n (webhook) y sincronizarla en base de datos (`start_date`).
+- **UI / Inventario**: Se muestra la columna "Inicio" en la tabla de inventario y se calcula el estado "PENDIENTE DE ACTIVACIÓN" si la fecha de inicio es futura.
+- **Diseño**: Refinamiento estético en la tabla de inventario para que el ancho de las columnas numéricas y fechas se ajuste a su contenido y la descripción técnica tome el espacio restante sin romper el texto.
+
 ## [2026-07-31 08:16] — Bugfix: Hostname en Licencias Temporales Siemens ✅
 
 ### Fixed

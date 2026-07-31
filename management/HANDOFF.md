@@ -1,5 +1,5 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-07-30 17:30  
+> Última actualización: 2026-07-31 10:45  
 > Sesión en: Windows (Agent)  
 > Rama activa: dev
 
@@ -7,7 +7,7 @@
 
 ## Estado General
 
-**Fase actual:** Módulo NCmatic & Mejoras UX (v3.9.0)  
+**Fase actual:** Soporte Fecha Inicio Licencias (v3.9.1)  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,13 +15,10 @@
 
 ## Qué se hizo en esta sesión
 
-- **Módulo de Licencias NCmatic por Número de Serie (`v3.9.0`):**
-  - **Base de Datos & Modelo:** Creada migración `ncmatic_licenses` y modelo `NcmaticLicense` con relación `belongsTo(Client)` y `hasMany(NcmaticLicense)` en `Client`.
-  - **Gestor NCmatic:** Creado `NcMaticController` y la vista `/herramientas/ncmatic` con buscador en tiempo real por número de serie, cliente o notas, selector de clientes por contrato NCmatic y modal interactivo para alta y edición.
-  - **Simplificación de Puestos:** Eliminado el campo de puestos/asientos (fijado en 1 por número de serie individual).
-  - **Ficha de Cliente (`/clientes/{id}`):** Integrada la pestaña **NCmatic** para ver y gestionar licencias asignadas al cliente.
-  - **Directorio Principal (`/clientes`):** Integrado el filtro **NCmatic** en la barra de control segmentado, badge verde esmeralda para el recuento de seriales y mantenida la cuadrícula armónica de 4 tarjetas KPI.
-  - **Cumplimiento `DESIGN.md`:** Todo el diseño refactorizado a clases nativas del sistema (`dx-v2-form-input`, `dx-v2-form-select`, `modal-overlay`, `modal-content`) sin inline styles.
+- **Soporte de Fecha de Inicio en Licencias y Ajustes UI (`v3.9.1`):**
+  - **Licencias:** Parseo de la fecha de inicio (`START=...`) de los archivos procesados por n8n (webhook) y guardado en `start_date`.
+  - **UI / Inventario:** Añadida columna "Inicio" y cálculo del estado "PENDIENTE DE ACTIVACIÓN".
+  - **Diseño:** Tabla de inventario balanceada, usando nowrap para la descripción y permitiendo ajuste automático sin hacks CSS.
 
 - **Selector de Año y Filtros en Planificador de Renovaciones (`v3.8.0`):**
   - Selector dinámico de año y barra de filtros por estado en `/planificador`.
