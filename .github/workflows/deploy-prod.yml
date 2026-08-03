@@ -21,4 +21,4 @@ jobs:
             cd /opt/web-projects/Production
             git checkout main
             git pull origin main
-            docker compose --project-directory . -f infra/docker-compose.prod.yml up -d
+            docker compose --project-name dx-license-manager --project-directory . -f infra/docker-compose.prod.yml up -d
