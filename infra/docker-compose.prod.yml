@@ -16,6 +16,8 @@ services:
     build:
       context: ./infra/php
     container_name: dx-php-prod
+    group_add:
+      - "991"
     restart: always
     mem_limit: 768m
     env_file: ./infra/.env.prod
