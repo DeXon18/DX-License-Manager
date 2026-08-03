@@ -79,6 +79,7 @@ services:
     command: ["php", "artisan", "schedule:work"]
 
   mariadb-prod:
+    stop_grace_period: 60s
     image: mariadb:10.11
     container_name: dx-mariadb-prod
     restart: always
@@ -110,6 +111,7 @@ services:
   node-prod:
     image: node:20-alpine
     container_name: dx-node-prod
+    restart: unless-stopped
     volumes:
       - ./backend:/var/www/html
       - ./infra/.env.prod:/var/www/html/.env
