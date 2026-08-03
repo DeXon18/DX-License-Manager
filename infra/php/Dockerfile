@@ -48,3 +48,13 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 RUN git config --system --add safe.directory /var/www/html
 
 WORKDIR /var/www/html
+
+# PHP-FPM workers: access to Docker socket GID 991
+RUN set -eux; \
+    group_name="$(awk -F: '$3 == 991 { print $1; exit }' /etc/group)"; \
+    if [ -z "$group_name" ]; then \
+        group_name="dockerhost"; \
+        addgroup -g 991 "$group_name"; \
+    fi; \
+    id -nG www-data | tr ' ' '\n' | grep -qx "$group_name" || \
+        addgroup www-data "$group_name"
