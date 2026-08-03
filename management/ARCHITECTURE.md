@@ -6,7 +6,7 @@ Este documento documenta la separación absoluta de los entornos de Producción 
 
 | Componente | Entorno de Producción | Entorno de Desarrollo (Beta) |
 | :--- | :--- | :--- |
-| **Ruta en Servidor** | `/opt/web-projects/DX-License-Manager` | `/opt/web-projects/DX-License-Manager-DEV` |
+| **Ruta en Servidor** | `/opt/web-projects/Production` | `/opt/web-projects/Development` |
 | **Rama Git Activa** | `main` | `dev` (o `feature/*`) |
 | **Punto de Montaje** | Monta el código de la rama `main` en crudo. | Monta el código de la rama `dev` en crudo. |
 
@@ -48,8 +48,8 @@ Este es el punto más crítico para la seguridad y la integridad de los datos de
 
 | Workflow | Rama | Destino SSH | Acción |
 | :--- | :--- | :--- | :--- |
-| `deploy-prod.yml` | Push a `main` | `/opt/web-projects/DX-License-Manager` | Pull de `main` y up de `prod.yml` |
-| `deploy-beta.yml` | Push a `dev` | `/opt/web-projects/DX-License-Manager-DEV` | Pull de `dev` y up de `beta.yml` |
+| `deploy-prod.yml` | Push a `main` | `/opt/web-projects/Production` | Pull de `main` y up de `prod.yml` |
+| `deploy-beta.yml` | Push a `dev` | `/opt/web-projects/Development` | Pull de `dev` y up de `beta.yml` |
 
 **Riesgo Eliminado:** El pipeline respeta la estructura física. Un push a `dev` jamás sobreescribirá la carpeta de Producción ni cruzará ramas. Los pases a Producción requieren un merge explícito a `main`.
 

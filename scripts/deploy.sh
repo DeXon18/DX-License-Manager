@@ -6,8 +6,15 @@
 
 set -e
 
-ENV=${1:-beta}
-PROJECT_DIR="/opt/web-projects/DX-License-Manager"
+ENV="${1:-beta}"
+case "$ENV" in
+    prod) PROJECT_DIR="/opt/web-projects/Production" ;;
+    beta) PROJECT_DIR="/opt/web-projects/Development" ;;
+    *)
+        echo "Uso: $0 {prod|beta}" >&2
+        exit 2
+        ;;
+esac
 COMPOSE_FILE="infra/docker-compose.${ENV}.yml"
 
 echo "🚀 Desplegando entorno: $ENV"
