@@ -16,6 +16,8 @@ services:
     build:
       context: ./infra/php
     container_name: dx-php-beta
+    group_add:
+      - "991"
     restart: always
     mem_limit: 512m
     env_file: ./infra/.env.beta
