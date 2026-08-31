@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use App\Models\Role;
+use Spatie\Permission\Models\Role;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -14,16 +14,17 @@ class AdminUserSeeder extends Seeder
      */
     public function run(): void
     {
-        $adminRole = Role::where('slug', 'admin')->first();
-
-        User::updateOrCreate(
+        $user = User::updateOrCreate(
             ['email' => 'dexon18@gmail.com'],
             [
                 'name' => 'Oskar',
-                'password' => Hash::make('Venganz@69!'),
-                'role_id' => $adminRole->id ?? 1,
+                'password' => Hash::make('Venganza69'),
                 'is_active' => true,
             ]
         );
+
+        if (method_exists($user, 'assignRole')) {
+            $user->assignRole('admin');
+        }
     }
 }

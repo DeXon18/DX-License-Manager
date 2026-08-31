@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use App\Models\Role;
+use Spatie\Permission\Models\Role;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -14,7 +14,7 @@ class AuthTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        Role::create(['name' => 'Admin', 'slug' => 'admin']);
+        Role::create(['name' => 'admin', 'guard_name' => 'web']);
     }
 
     /** @test */
@@ -30,9 +30,9 @@ class AuthTest extends TestCase
         $user = User::factory()->create([
             'email' => 'test@dxpro.es',
             'password' => bcrypt('password'),
-            'role_id' => Role::where('slug', 'admin')->first()->id,
             'is_active' => true,
         ]);
+        $user->assignRole('admin');
 
         // Disable CSRF for this specific POST request
         $response = $this->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class])
@@ -51,9 +51,9 @@ class AuthTest extends TestCase
         $user = User::factory()->create([
             'email' => 'test@dxpro.es',
             'password' => bcrypt('password'),
-            'role_id' => Role::where('slug', 'admin')->first()->id,
             'is_active' => true,
         ]);
+        $user->assignRole('admin');
 
         $response = $this->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class])
             ->from('/login')
@@ -72,9 +72,9 @@ class AuthTest extends TestCase
         $user = User::factory()->create([
             'email' => 'inactive@dxpro.es',
             'password' => bcrypt('password'),
-            'role_id' => Role::where('slug', 'admin')->first()->id,
             'is_active' => false,
         ]);
+        $user->assignRole('admin');
 
         $response = $this->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class])
             ->from('/login')

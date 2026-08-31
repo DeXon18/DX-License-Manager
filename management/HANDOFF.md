@@ -1,5 +1,5 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-07-31 11:10  
+> Última actualización: 2026-08-31 09:40  
 > Sesión en: indeterminado  
 > Rama activa: dev
 
@@ -7,7 +7,7 @@
 
 ## Estado General
 
-**Fase actual:** Pase a producción de Funcionalidad Start Date (v3.9.1) completado.
+**Fase actual:** Fase 19 / Estabilización v3.9.2 (Actualización de URLs & n8n Callback)  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,27 +15,32 @@
 
 ## Qué se hizo en esta sesión
 
-- Despliegue de la funcionalidad de "Start Date" (Fecha de Inicio) en la rama `main` y en Producción.
-- Resolución de un Error 500 en Producción tras el despliegue mediante la ejecución de migraciones forzadas, asignación de permisos `chmod -R 777` en las carpetas `storage` y `bootstrap/cache`, y limpieza de cachés (`view:clear`, `cache:clear`).
-- Resolución de un Error 502 en Beta (Dev) reiniciando el contenedor `nginx-beta`.
-- Mejora estética en las tablas de clientes (`dx-v2-clients.css`), eliminando los anchos forzados y sustituyéndolos por ajustes dinámicos de navegador.
+- Actualización de dominios y URLs principales:
+  - Desarrollo/Beta: `https://soporteays-dev.dxpro.es` (APP_URL y AUDIT_CALLBACK_URL).
+  - Producción: `https://soporteays.dxpro.es` (APP_URL y AUDIT_CALLBACK_URL).
+- Configuración de Nginx: añadido `soporteays-dev.dxpro.es` a `server_name` en `infra/nginx/beta.conf` y resuelta la incidencia 502 al refrescar la resolución FastCGI.
+- Sincronización del callback de n8n (`AUDIT_CALLBACK_URL`) en ambos entornos para garantizar el retorno de datos tras auditorías de licencias.
+- Restauración de la base de datos MariaDB Beta desde el último backup `beta_system_2026-07-29_01-00-01.sql`.
+- Actualización de `AdminUserSeeder` y `AuthTest` adaptándolos a Spatie RBAC (gestión de roles por `name`), restableciendo la contraseña del administrador a `Venganza69`.
+- Verificación exhaustiva de endpoints HTTP en Beta y Producción (ambos respondiendo HTTP 200 en login).
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Revisar el BACKLOG con el desarrollador para asignar la próxima tarea o bugfix a implementar.
+Revisar el BACKLOG con Oskar para iniciar el siguiente módulo o requerimiento funcional.
 
 ### Tareas siguientes
-1. Continuar con roadmap (Módulo NCmatic u otros pendientes).
+1. Continuar con tareas pendientes del Roadmap.
+2. Desarrollos futuros en inventario y visor de procesamiento asíncrono.
 
 ---
 
 ## Contexto técnico importante
 
-- Al desplegar código, si las vistas fallan con "Permission denied" en `file_put_contents`, SIEMPRE debe limpiarse la caché de las vistas (`php artisan view:clear`) y asegurar que los permisos de `/storage/framework/views` son `777`.
-- Al realizar un despliegue, el servidor de Producción suele tener un pequeño retraso a través de GitHub Actions; verificar que la rama está sincronizada mediante Git en SSH local antes de correr migraciones.
+- Al actualizar variables de entorno en `infra/.env.beta` o `infra/.env.prod`, es obligatorio reiniciar/recrear los contenedores PHP para que recarguen las variables del host, y posteriormente reiniciar Nginx para que resuelva la nueva IP de upstream de Docker.
+- El proyecto utiliza Spatie Permission (`spatie/laravel-permission`), por lo que los roles se gestionan mediante `assignRole('nombre_rol')` en lugar de la columna legacy `role_id`.
 
 ---
 
@@ -49,8 +54,8 @@ Ninguno
 
 | Archivo | Estado |
 |:---|:---|
-| `infra/.env.prod` | ✅ configurado |
-| `infra/.env.beta` | ✅ configurado |
+| `infra/.env.prod` | ✅ configurado (`https://soporteays.dxpro.es`) |
+| `infra/.env.beta` | ✅ configurado (`https://soporteays-dev.dxpro.es`) |
 | `backend/.env` | ✅ configurado |
 | `backend/vendor/` | ✅ instalado |
 
@@ -60,11 +65,11 @@ Ninguno
 
 ```bash
 # Arrancar beta si está down
-docker compose --project-directory /opt/web-projects/Development -f /opt/web-projects/Development/infra/docker-compose.beta.yml up -d
+docker compose --project-name dx-license-manager-dev --project-directory /opt/web-projects/Development -f /opt/web-projects/Development/infra/docker-compose.beta.yml up -d
 
 # Entrar al contenedor PHP
 docker exec -it dx-php-beta sh
 
 # Ver logs en tiempo real
-docker compose --project-directory /opt/web-projects/Development -f /opt/web-projects/Development/infra/docker-compose.beta.yml logs -f nginx-beta
+docker compose --project-name dx-license-manager-dev --project-directory /opt/web-projects/Development -f /opt/web-projects/Development/infra/docker-compose.beta.yml logs -f nginx-beta
 ```

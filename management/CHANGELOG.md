@@ -2,7 +2,17 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.9.0
+> **Version:** v3.9.2
+
+## [2026-08-31 09:35] — Config & Fix: Actualización de URLs del Portal (Dev/Prod), N8N Callback y Acceso ✅
+
+### Changed
+- **Configuración de URLs**: Actualizadas las URLs de la aplicación tanto en entorno de Desarrollo (`https://soporteays-dev.dxpro.es`) como en Producción (`https://soporteays.dxpro.es`).
+- **Nginx**: Actualizado `server_name` en `infra/nginx/beta.conf` para resolver el nuevo dominio `soporteays-dev.dxpro.es` y evitar errores 502 por cambio de IP FastCGI.
+- **N8N Callback**: Sincronizada `AUDIT_CALLBACK_URL` en `infra/.env.beta` y `infra/.env.prod` para que las auditorías de licencias procesadas por n8n retornen correctamente a la nueva dirección.
+
+### Fixed
+- **Seeders & Auth**: Corregido `AdminUserSeeder` y la suite de tests `AuthTest` adaptándolos al sistema de roles dinámicos Spatie RBAC. Reseteada la contraseña de acceso del administrador en la base de datos Beta.
 
 ## [2026-07-31 10:45] — Feature: Soporte de Fecha de Inicio en Licencias y Ajustes UI ✅
 
