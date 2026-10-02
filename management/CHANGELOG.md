@@ -2,7 +2,14 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.9.5
+> **Version:** v3.9.6
+
+## [2026-10-02 10:48] — Security & Fix: Endurecimiento de IA y Chatbot (Auditoría Cloudflare AI-AND-LLM) ✅
+
+### Fixed & Hardened
+- **Prevención de Confused Deputy en Herramientas Mutacionales (AI-01)**: En `ChatbotService.php`, se incorpora control de autorización estricto (`hasMutationPermission()`) en las herramientas de escritura (`create_contact`, `update_contact`, `create_enterprise_cloud_account`). Los usuarios con rol de sólo lectura (`viewer`) quedan bloqueados de alterar el estado de la base de datos a través de lenguaje natural y *function calling*, reservando la capacidad exclusivamente a roles con privilegios (`admin`, `technician`, `staff`).
+- **Aislamiento de Caché Semántica por Usuario (AI-02)**: En `ChatbotService.php`, la clave de la caché en Redis se particiona determinísticamente por identificador de usuario (`chatbot_query_{$userId}_...`), evitando fugas de contexto o respuestas cruzadas (*cross-tenant / cross-user context bleed*) entre usuarios de distintos niveles de acceso.
+- **Testing**: Añadida prueba en `ChatbotTest.php` (`chatbot_service_denies_mutations_to_viewer_role`) verificando el rechazo de operaciones mutacionales a usuarios `viewer` (6 tests PASSED al 100%).
 
 ## [2026-10-02 10:40] — Security & Fix: Endurecimiento de Autenticación, JWT y Sesiones (Auditoría Cloudflare) ✅
 
