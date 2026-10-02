@@ -1,6 +1,6 @@
-Rama activa: feature/session-duration-8h. Versión: v3.9.4.
-Último trabajo: Ampliación de la sesión JWT a 8 horas (480 min) en AuthController, JwtAuth y JwtService con tests pasando al 100%.
-Estado: Tests AuthTest pasando sin errores. Listo para merge a dev y despliegue.
-Próximo paso inmediato: Validar y merge a dev/main según indicación de Oskar.
+Rama activa: chore/install-cloudflare-security-audit. Versión: v3.9.4.
+Último trabajo: Instalación e integración completa de la skill oficial cloudflare-security-audit en .agent/skills/ y registro en INDEX.md.
+Estado: Archivos sincronizados y validados.
+Próximo paso inmediato: Validar y merge a dev según indicación de Oskar.
 Bloqueos: Ninguno.
 Stack beta: running. Stack prod: running.

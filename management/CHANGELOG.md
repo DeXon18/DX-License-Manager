@@ -4,6 +4,13 @@
 
 > **Version:** v3.9.4
 
+## [2026-10-02 10:30] — Tooling & Security: Integración de la Skill Cloudflare Security Audit ✅
+
+### Added
+- **Skill de Auditoría Avanzada**: Integrada la skill oficial de Cloudflare (`.agent/skills/cloudflare-security-audit/`) con su metodología de 6 fases: Reconocimiento, Caza por cobertura (*Hunting*), Validación de candidatos por contra-prueba (*Disprover*), Registro estructurado de hallazgos (*Coverage Ledger* y *Findings Schema*), Verificación independiente y Reporte neutral.
+- **Clases de Ataque Especializadas**: Añadidos analizadores exhaustivos para `WEB-PROTOCOL-AND-AUTH.md`, `AI-AND-LLM.md`, `ATTACK-CLASSES.md`, `CLOUD-AND-DEPLOYMENT.md`, `CLIENT-SIDE.md`, `DATA-ISOLATION-AND-LIFECYCLE.md` y scripts de validación CJS.
+- **Índice del Agente**: Registrada la nueva capacidad en [.agent/INDEX.md](file:///z:/SoporteAYS/Development/.agent/INDEX.md).
+
 ## [2026-10-02 10:20] — Feature: Ampliación de Duración de Sesión a Jornada Completa (8 Horas) ✅
 
 ### Changed

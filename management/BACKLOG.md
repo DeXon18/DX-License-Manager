@@ -37,6 +37,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Tooling & Security: Integración de la Skill Cloudflare Security Audit ✅
+- **Completada:** 2026-10-02
+- **Rama:** `chore/install-cloudflare-security-audit`
+- **Resumen:** Instalada la skill oficial de Cloudflare en `.agent/skills/cloudflare-security-audit/` con su motor de auditoría defensiva en 6 fases, verificadores de contra-prueba, clases de ataque web/auth/IA y scripts de validación de esquemas.
+- **PR:** Pendiente de merge a dev
+
 ### Feature: Ampliación de Duración de Sesión a 8 Horas (Jornada Completa) ✅
 - **Completada:** 2026-10-02
 - **Rama:** `feature/session-duration-8h`
