@@ -58,10 +58,8 @@ class StarCcmService
             }
         }
 
-        // 6. Extraer Fecha de Expiración del primer INCREMENT o FEATURE
-        if (preg_match('/(?:INCREMENT|FEATURE)\s+\S+\s+cdlmd\s+\S+\s+(\d+-\w+-\d+|permanent)/i', $content, $m)) {
-            $metadata['expiration'] = $m[1];
-        }
+        // 6. Extraer Fecha de Expiración mínima de todas las líneas INCREMENT o FEATURE
+        $metadata['expiration'] = $this->extractMinExpirationDate($content);
 
         // 7. Determinar si es Unificada
         if (!empty($metadata['other_installs'])) {
@@ -178,5 +176,45 @@ class StarCcmService
         }
 
         return implode("\n", $transformedLines);
+    }
+
+    /**
+     * Extrae la fecha de expiración mínima de todas las líneas INCREMENT/FEATURE.
+     */
+    private function extractMinExpirationDate(string $content): ?string
+    {
+        if (!preg_match_all('/(?:INCREMENT|FEATURE)\s+\S+\s+(?:ugslmd|saltd|cdlmd|RCTECH)\s+[\d.]+\s+(\d+-\w+-\d+|permanent)/i', $content, $matches)) {
+            return null;
+        }
+
+        $dates = $matches[1];
+        $minDate = null;
+        $minTimestamp = null;
+        $hasPermanent = false;
+
+        foreach ($dates as $rawDate) {
+            if (strtolower($rawDate) === 'permanent') {
+                $hasPermanent = true;
+                continue;
+            }
+
+            try {
+                $dt = new \DateTime($rawDate);
+                $ts = $dt->getTimestamp();
+
+                if ($minTimestamp === null || $ts < $minTimestamp) {
+                    $minTimestamp = $ts;
+                    $minDate = $rawDate;
+                }
+            } catch (\Exception $e) {
+                continue;
+            }
+        }
+
+        if ($minDate !== null) {
+            return $minDate;
+        }
+
+        return $hasPermanent ? 'permanent' : null;
     }
 }
