@@ -2,7 +2,16 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.9.6
+> **Version:** v3.9.7
+
+## [2026-10-02 11:26] — Feature: Sincronización Automática del Catálogo de Modelos y Precios OpenRouter ✅
+
+### Added
+- **Servicio de Sincronización (`OpenRouterSyncService`)**: Consulta en tiempo real la API pública y gratuita de OpenRouter (`https://openrouter.ai/api/v1/models`) para mantener al día los precios (`price_prompt`, `price_completion`), el flag de gratuidad (`is_free`) y la disponibilidad de modelos sin coste de tokens.
+- **Detección de Modelos Descatalogados y Blindaje de Rutas**: Los modelos que desaparecen de OpenRouter se marcan automáticamente como inactivos (`is_active = false`) en lugar de eliminarse, preservando el histórico. Si alguna ruta activa de IA (`ai_routes`) depende de un modelo descatalogado (como primario o fallback), el sistema emite una alerta preventiva visible en la UI y registra un log de advertencia con la tarea afectada.
+- **Acción Manual en UI (AI Routing Hub)**: Añadido botón "Sincronizar con OpenRouter" con microinteracción visual en `/admin/system/ai-routing`, permitiendo al administrador refrescar precios y catálogo con un solo clic.
+- **Comando Artisan (`ai:sync-models`)**: Creado comando de consola programable para cron o tareas periódicas de mantenimiento.
+- **Testing**: Batería de pruebas automatizadas en `OpenRouterSyncTest.php` validando actualización de precios, inactivación de obsoletos, advertencia de rutas comprometidas y ejecución del controlador (100% PASSING).
 
 ## [2026-10-02 10:48] — Security & Fix: Endurecimiento de IA y Chatbot (Auditoría Cloudflare AI-AND-LLM) ✅
 

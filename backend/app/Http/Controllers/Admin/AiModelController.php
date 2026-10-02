@@ -57,6 +57,22 @@ class AiModelController extends Controller
         return back()->with('success', 'Estado del modelo actualizado.');
     }
 
+    public function sync(\App\Services\AI\OpenRouterSyncService $syncService)
+    {
+        $result = $syncService->sync();
+
+        if ($result['success']) {
+            $msg = $result['message'];
+            if (!empty($result['broken_routes'])) {
+                $affected = implode(', ', array_map(fn($r) => "{$r['task']} ({$r['type']})", $result['broken_routes']));
+                return back()->with('warning', "{$msg} ⚠️ ATENCIÓN: Las siguientes rutas utilizan modelos descatalogados: {$affected}. Por favor, reasígnalas.");
+            }
+            return back()->with('success', $msg);
+        }
+
+        return back()->with('error', $result['message']);
+    }
+
     public function updateRoute(Request $request, $task_name)
     {
         $validated = $request->validate([

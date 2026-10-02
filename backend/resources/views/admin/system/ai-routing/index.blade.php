@@ -26,6 +26,22 @@
             </div>
         @endif
 
+        @if(session('warning'))
+            <div class="card" style="margin-bottom: 24px; border-color: var(--dx-v2-warning-border, #f59e0b); background: var(--dx-v2-warning-bg, rgba(245, 158, 11, 0.1));">
+                <div class="card-body" style="padding: 12px 16px !important; color: var(--dx-v2-warning, #f59e0b); font-weight: 500;">
+                    {{ session('warning') }}
+                </div>
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="card" style="margin-bottom: 24px; border-color: var(--dx-v2-danger-border, #ef4444); background: var(--dx-v2-danger-bg, rgba(239, 68, 68, 0.1));">
+                <div class="card-body" style="padding: 12px 16px !important; color: var(--dx-v2-danger, #ef4444); font-weight: 500;">
+                    {{ session('error') }}
+                </div>
+            </div>
+        @endif
+
         <!-- Segmented Control / Tabs Header -->
         <div style="display: flex; gap: 8px; margin-bottom: 24px; border-bottom: 1px solid var(--dx-v2-border); padding-bottom: 8px;">
             <button @click="activeTab = 'router'" 
@@ -107,11 +123,17 @@
 
         <!-- TAB: CATALOG -->
         <div x-show="activeTab === 'catalog'" style="display: none;">
-            <div class="card">
-                <div class="card-header">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
                     <div style="display: flex; align-items: center; gap: 8px;">
                         <span class="card-title">Listado de Modelos</span>
                     </div>
+                    <form action="{{ route('admin.system.ai-routing.sync') }}" method="POST" style="margin: 0;">
+                        @csrf
+                        <button type="submit" class="btn-primary" style="display: flex; align-items: center; gap: 6px; padding: 6px 14px; font-size: 12px;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                            Sincronizar con OpenRouter
+                        </button>
+                    </form>
                 </div>
                 
                 <div style="overflow-x: auto;">
