@@ -2,7 +2,14 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.9.2
+> **Version:** v3.9.3
+
+## [2026-10-02 10:10] — Feature: Estrategia de Fecha Mínima de Expiración en Licencias Siemens ✅
+
+### Added
+- **Nombrado de Licencias**: Implementado escaneo exhaustivo de todas las líneas `INCREMENT` y `FEATURE` en `NXSuiteService`, `StarCcmService` y `HeedsService` para extraer la fecha de caducidad mínima (más próxima a vencer).
+- **Consistencia Comercial**: En licencias con módulos mixtos o escalonados (por ejemplo, licencias principales que vencen en 2027 pero con módulos temporales o adicionales que caducan en 2026), el archivo se nombra con la fecha más restrictiva (`...Valida_DD-Mmm-YYYY.lic`), evitando inconsistencias y falsas expectativas de validez al cliente.
+- **Testing Unitario**: Añadidas pruebas unitarias en `NXSuiteMechanismTest`, `StarCcmTest` y `HeedsTest` validando casos de fechas múltiples, licencias 100% permanentes y casos de clientes reales (Goimek).
 
 ## [2026-08-31 09:35] — Config & Fix: Actualización de URLs del Portal (Dev/Prod), N8N Callback y Acceso ✅
 
