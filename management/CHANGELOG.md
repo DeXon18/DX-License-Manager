@@ -2,7 +2,24 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.9.0
+> **Version:** v3.9.3
+
+## [2026-10-02 10:10] — Feature: Estrategia de Fecha Mínima de Expiración en Licencias Siemens ✅
+
+### Added
+- **Nombrado de Licencias**: Implementado escaneo exhaustivo de todas las líneas `INCREMENT` y `FEATURE` en `NXSuiteService`, `StarCcmService` y `HeedsService` para extraer la fecha de caducidad mínima (más próxima a vencer).
+- **Consistencia Comercial**: En licencias con módulos mixtos o escalonados (por ejemplo, licencias principales que vencen en 2027 pero con módulos temporales o adicionales que caducan en 2026), el archivo se nombra con la fecha más restrictiva (`...Valida_DD-Mmm-YYYY.lic`), evitando inconsistencias y falsas expectativas de validez al cliente.
+- **Testing Unitario**: Añadidas pruebas unitarias en `NXSuiteMechanismTest`, `StarCcmTest` y `HeedsTest` validando casos de fechas múltiples, licencias 100% permanentes y casos de clientes reales (Goimek).
+
+## [2026-08-31 09:35] — Config & Fix: Actualización de URLs del Portal (Dev/Prod), N8N Callback y Acceso ✅
+
+### Changed
+- **Configuración de URLs**: Actualizadas las URLs de la aplicación tanto en entorno de Desarrollo (`https://soporteays-dev.dxpro.es`) como en Producción (`https://soporteays.dxpro.es`).
+- **Nginx**: Actualizado `server_name` en `infra/nginx/beta.conf` para resolver el nuevo dominio `soporteays-dev.dxpro.es` y evitar errores 502 por cambio de IP FastCGI.
+- **N8N Callback**: Sincronizada `AUDIT_CALLBACK_URL` en `infra/.env.beta` y `infra/.env.prod` para que las auditorías de licencias procesadas por n8n retornen correctamente a la nueva dirección.
+
+### Fixed
+- **Seeders & Auth**: Corregido `AdminUserSeeder` y la suite de tests `AuthTest` adaptándolos al sistema de roles dinámicos Spatie RBAC. Reseteada la contraseña de acceso del administrador en la base de datos Beta.
 
 ## [2026-07-31 10:45] — Feature: Soporte de Fecha de Inicio en Licencias y Ajustes UI ✅
 

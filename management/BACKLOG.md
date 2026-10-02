@@ -37,6 +37,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Feature: Extracción de Fecha Mínima de Expiración en Licencias Siemens ✅
+- **Completada:** 2026-10-02
+- **Rama:** `feature/license-min-expiration-date`
+- **Resumen:** Se actualizó la extracción de fecha de caducidad en `NXSuiteService`, `StarCcmService` y `HeedsService` para escanear todas las líneas `INCREMENT`/`FEATURE`. Si una licencia contiene fechas escalonadas o módulos temporales/adicionales que vencen antes, se utiliza la fecha mínima (más próxima en el tiempo) para el nombrado del archivo (`Valida_DD-Mmm-YYYY.lic`), evitando generar confusión al cliente.
+- **PR:** Pendiente de merge a dev
+
 ### Feature: Soporte de Fecha de Inicio en Licencias y Ajustes UI ✅
 - **Completada:** 2026-07-31
 - **Rama:** `feature/start-date-support`

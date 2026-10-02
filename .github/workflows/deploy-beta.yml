@@ -21,4 +21,4 @@ jobs:
             cd /opt/web-projects/Development
             git checkout dev
             git pull origin dev
-            docker compose --project-directory . -f infra/docker-compose.beta.yml up -d
+            docker compose --project-name dx-license-manager-dev --project-directory . -f infra/docker-compose.beta.yml up -d
