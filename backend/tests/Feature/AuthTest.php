@@ -86,4 +86,35 @@ class AuthTest extends TestCase
         $response->assertRedirect('/login');
         $response->assertSessionHasErrors('email');
     }
+
+    /** @test */
+    public function jwt_service_embeds_nbf_and_rejects_future_tokens(): void
+    {
+        $jwtService = app(\App\Services\Auth\JwtService::class);
+        $token = $jwtService->generate(['sub' => 1, 'name' => 'Test User']);
+
+        $decoded = $jwtService->decode($token);
+        $this->assertNotNull($decoded);
+        $this->assertArrayHasKey('nbf', $decoded);
+        $this->assertArrayHasKey('iat', $decoded);
+
+        // Token with future nbf (>60s) should fail decode
+        $reflection = new \ReflectionClass($jwtService);
+        $property = $reflection->getProperty('secret');
+        $property->setAccessible(true);
+        $secret = $property->getValue($jwtService);
+
+        $futureHeader = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(json_encode(['typ' => 'JWT', 'alg' => 'HS256'])));
+        $futurePayload = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(json_encode([
+            'sub' => 1,
+            'iat' => time(),
+            'nbf' => time() + 300,
+            'exp' => time() + 3600
+        ])));
+        $sig = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(hash_hmac('sha256', "{$futureHeader}.{$futurePayload}", $secret, true)));
+        $futureToken = "{$futureHeader}.{$futurePayload}.{$sig}";
+
+        $this->assertNull($jwtService->decode($futureToken));
+    }
 }
+

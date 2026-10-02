@@ -2,7 +2,15 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.9.4
+> **Version:** v3.9.5
+
+## [2026-10-02 10:40] — Security & Fix: Endurecimiento de Autenticación, JWT y Sesiones (Auditoría Cloudflare) ✅
+
+### Fixed & Hardened
+- **Invalidación Inmediata de Sesiones en Cambio de Contraseña (AUTH-01)**: En [ProfileController.php](file:///z:/SoporteAYS/Development/backend/app/Http/Controllers/ProfileController.php), al cambiar la contraseña del usuario se registra la marca temporal en Redis (`user:pwd_changed:{id}`) y se refresca el token de la sesión activa. [JwtAuth.php](file:///z:/SoporteAYS/Development/backend/app/Http/Middleware/JwtAuth.php) verifica esta marca y revoca de forma instantánea cualquier sesión concurrente que porte un JWT emitido con anterioridad (`iat < pwd_changed_at`).
+- **Blindaje de Claims Temporales JWT (AUTH-02)**: En [JwtService.php](file:///z:/SoporteAYS/Development/backend/app/Services/Auth/JwtService.php), se incorpora el claim `nbf` (*not before*) y se añade validación estricta frente a tokens con fechas futuras o desvíos anómalos de reloj (`iat > now + 60s`), mitigando ataques de pre-generación o reutilización no autorizada.
+- **Mantenimiento y Purga de Blacklist en Redis (AUTH-03)**: Integrada en [JwtAuth.php](file:///z:/SoporteAYS/Development/backend/app/Http/Middleware/JwtAuth.php) una purga probabilística (1% de requests concurrentes) sobre el ZSET `jwt_blacklist` vía `zremrangebyscore`, garantizando el reciclado de memoria y previniendo acumulación indebida de claves revocadas.
+- **Testing**: Ampliada la batería de pruebas en [AuthTest.php](file:///z:/SoporteAYS/Development/backend/tests/Feature/AuthTest.php) verificando el rechazo de tokens futuros y la integridad del claim `nbf` (5 tests PASSED al 100%).
 
 ## [2026-10-02 10:30] — Tooling & Security: Integración de la Skill Cloudflare Security Audit ✅
 
