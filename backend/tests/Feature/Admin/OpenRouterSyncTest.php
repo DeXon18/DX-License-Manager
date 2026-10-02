@@ -22,6 +22,7 @@ class OpenRouterSyncTest extends TestCase
 
         \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
         $this->withoutMiddleware();
+        \Illuminate\Database\Eloquent\Model::preventLazyLoading(true);
         $this->adminUser = User::factory()->create();
         $this->adminUser->assignRole('admin');
     }

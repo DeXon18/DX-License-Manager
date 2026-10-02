@@ -78,7 +78,8 @@ class OpenRouterSyncService
             // Comprobar si hay rutas afectadas por modelos deprecados
             $brokenRoutes = [];
             if (!empty($deprecatedModelIds)) {
-                $routes = AiRoute::whereIn('primary_model_id', $deprecatedModelIds)
+                $routes = AiRoute::with(['primaryModel', 'fallbackModel'])
+                    ->whereIn('primary_model_id', $deprecatedModelIds)
                     ->orWhereIn('fallback_model_id', $deprecatedModelIds)
                     ->get();
 
@@ -89,7 +90,7 @@ class OpenRouterSyncService
                     $brokenRoutes[] = [
                         'task' => $route->task_name,
                         'type' => $isPrimary ? 'primary' : 'fallback',
-                        'model_name' => $isPrimary ? $route->primaryModel->name : $route->fallbackModel->name,
+                        'model_name' => $isPrimary ? ($route->primaryModel?->name ?? 'N/A') : ($route->fallbackModel?->name ?? 'N/A'),
                     ];
 
                     Log::warning("OpenRouterSync: La ruta '{$route->task_name}' utiliza un modelo descatalogado.", [
