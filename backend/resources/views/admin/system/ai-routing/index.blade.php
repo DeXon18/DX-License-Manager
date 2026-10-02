@@ -93,11 +93,20 @@
                                         <div class="dx-v2-form-group" style="margin-bottom: 0 !important;">
                                             <label class="dx-v2-form-label" style="color: var(--dx-v2-success) !important;">Primary Model</label>
                                             <select name="primary_model_id" class="dx-v2-form-select">
-                                                @foreach($models as $m)
-                                                    <option value="{{ $m->id }}" {{ $route->primary_model_id == $m->id ? 'selected' : '' }}>
-                                                        {{ $m->name }}
-                                                    </option>
-                                                @endforeach
+                                                <optgroup label="🌟 Modelos Gratuitos ($0)">
+                                                    @foreach($models->where('is_free', true) as $m)
+                                                        <option value="{{ $m->id }}" {{ $route->primary_model_id == $m->id ? 'selected' : '' }}>
+                                                            {{ $m->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </optgroup>
+                                                <optgroup label="💎 Modelos PRO / Pago">
+                                                    @foreach($models->where('is_free', false) as $m)
+                                                        <option value="{{ $m->id }}" {{ $route->primary_model_id == $m->id ? 'selected' : '' }}>
+                                                            {{ $m->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </optgroup>
                                             </select>
                                         </div>
                                         
@@ -105,11 +114,20 @@
                                             <label class="dx-v2-form-label" style="color: var(--dx-v2-warning) !important;">Fallback Model (Anti-429)</label>
                                             <select name="fallback_model_id" class="dx-v2-form-select">
                                                 <option value="">-- Ninguno (Falla si el primario cae) --</option>
-                                                @foreach($models as $m)
-                                                    <option value="{{ $m->id }}" {{ $route->fallback_model_id == $m->id ? 'selected' : '' }}>
-                                                        {{ $m->name }}
-                                                    </option>
-                                                @endforeach
+                                                <optgroup label="🌟 Modelos Gratuitos ($0)">
+                                                    @foreach($models->where('is_free', true) as $m)
+                                                        <option value="{{ $m->id }}" {{ $route->fallback_model_id == $m->id ? 'selected' : '' }}>
+                                                            {{ $m->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </optgroup>
+                                                <optgroup label="💎 Modelos PRO / Pago">
+                                                    @foreach($models->where('is_free', false) as $m)
+                                                        <option value="{{ $m->id }}" {{ $route->fallback_model_id == $m->id ? 'selected' : '' }}>
+                                                            {{ $m->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </optgroup>
                                             </select>
                                         </div>
                                     </div>
@@ -132,13 +150,22 @@
                             <button type="button" class="catalog-filter-btn" onclick="filterCatalog('pro')" id="btn-filter-pro" style="padding: 4px 10px; font-size: 11px; font-weight: 600; border-radius: 4px; border: none; cursor: pointer; background: transparent; color: var(--dx-v2-muted);">PRO / Pago</button>
                         </div>
                     </div>
-                    <form action="{{ route('admin.system.ai-routing.sync') }}" method="POST" style="margin: 0;">
-                        @csrf
-                        <button type="submit" class="btn-primary" style="display: flex; align-items: center; gap: 6px; padding: 6px 14px; font-size: 12px;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-                            Sincronizar con OpenRouter
-                        </button>
-                    </form>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <form action="{{ route('admin.system.ai-routing.purge') }}" method="POST" style="margin: 0;" onsubmit="return confirm('¿Eliminar todos los modelos descatalogados o inactivos del catálogo?');">
+                            @csrf
+                            <button type="submit" class="btn-secondary" style="display: flex; align-items: center; gap: 6px; padding: 6px 12px; font-size: 12px; color: var(--dx-v2-danger); border-color: var(--dx-v2-border);">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                Limpiar Descatalogados
+                            </button>
+                        </form>
+                        <form action="{{ route('admin.system.ai-routing.sync') }}" method="POST" style="margin: 0;">
+                            @csrf
+                            <button type="submit" class="btn-primary" style="display: flex; align-items: center; gap: 6px; padding: 6px 14px; font-size: 12px;">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                                Sincronizar con OpenRouter
+                            </button>
+                        </form>
+                    </div>
                 </div>
                 
                 <div style="overflow-x: auto;">

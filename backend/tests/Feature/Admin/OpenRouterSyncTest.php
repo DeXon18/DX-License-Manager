@@ -174,4 +174,46 @@ class OpenRouterSyncTest extends TestCase
         $this->assertTrue($router->is_free);
         $this->assertTrue($router->is_active);
     }
+
+    public function test_purge_removes_inactive_models_and_reassigns_routes_cleanly(): void
+    {
+        $activeModel = AiModel::create([
+            'openrouter_id' => 'openrouter/free',
+            'name' => 'Free Router',
+            'is_free' => true,
+            'is_active' => true,
+        ]);
+
+        $inactiveModel = AiModel::create([
+            'openrouter_id' => 'legacy/obsolete-v0',
+            'name' => 'Obsolete Model',
+            'is_free' => true,
+            'is_active' => false,
+        ]);
+
+        $route = AiRoute::create([
+            'task_name' => 'chatbot',
+            'primary_model_id' => $inactiveModel->id,
+            'fallback_model_id' => $inactiveModel->id,
+            'description' => 'Chatbot test',
+        ]);
+
+        $service = new OpenRouterSyncService();
+        $result = $service->purgeInactiveModels();
+
+        $this->assertTrue($result['success']);
+        $this->assertEquals(1, $result['deleted']);
+
+        $this->assertDatabaseMissing('ai_models', ['id' => $inactiveModel->id]);
+
+        $route->refresh();
+        $this->assertEquals($activeModel->id, $route->primary_model_id);
+        $this->assertEquals($activeModel->id, $route->fallback_model_id);
+
+        $response = $this->actingAs($this->adminUser)
+            ->post(route('admin.system.ai-routing.purge'));
+
+        $response->assertRedirect();
+        $response->assertSessionHas('success');
+    }
 }

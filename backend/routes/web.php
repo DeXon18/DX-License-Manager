@@ -145,6 +145,7 @@ Route::middleware(['auth.jwt'])->group(function () {
         Route::prefix('system/ai-routing')->name('system.ai-routing.')->group(function () {
             Route::get('/', [\App\Http\Controllers\Admin\AiModelController::class, 'index'])->name('index');
             Route::post('/sync', [\App\Http\Controllers\Admin\AiModelController::class, 'sync'])->name('sync');
+            Route::post('/purge', [\App\Http\Controllers\Admin\AiModelController::class, 'purgeDeprecated'])->name('purge');
             Route::post('/models', [\App\Http\Controllers\Admin\AiModelController::class, 'storeModel'])->name('models.store');
             Route::post('/models/{aiModel}/toggle', [\App\Http\Controllers\Admin\AiModelController::class, 'toggleModel'])->name('models.toggle');
             Route::put('/routes/{task_name}', [\App\Http\Controllers\Admin\AiModelController::class, 'updateRoute'])->name('routes.update');

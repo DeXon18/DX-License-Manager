@@ -73,6 +73,17 @@ class AiModelController extends Controller
         return back()->with('error', $result['message']);
     }
 
+    public function purgeDeprecated(\App\Services\AI\OpenRouterSyncService $syncService)
+    {
+        $result = $syncService->purgeInactiveModels();
+
+        if ($result['success']) {
+            return back()->with('success', $result['message']);
+        }
+
+        return back()->with('error', 'Error al purgar los modelos descatalogados.');
+    }
+
     public function updateRoute(Request $request, $task_name)
     {
         $validated = $request->validate([

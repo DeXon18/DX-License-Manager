@@ -186,10 +186,49 @@ class OpenRouterSyncService
                 'success' => false,
                 'total_remote' => 0,
                 'updated' => 0,
+                'added_free' => 0,
                 'deprecated' => 0,
                 'broken_routes' => [],
                 'message' => "Error al sincronizar con OpenRouter: " . $e->getMessage()
             ];
         }
+    }
+
+    /**
+     * Purga los modelos descatalogados (inactivos) y reasigna cualquier ruta a un modelo gratuito válido.
+     */
+    public function purgeInactiveModels(): array
+    {
+        $inactive = AiModel::where('is_active', false)->get();
+        if ($inactive->isEmpty()) {
+            return [
+                'success' => true,
+                'deleted' => 0,
+                'message' => 'No hay modelos descatalogados para eliminar. El catálogo está limpio.'
+            ];
+        }
+
+        $fallbackModel = AiModel::where('openrouter_id', 'openrouter/free')->first() 
+            ?? AiModel::where('is_free', true)->where('is_active', true)->first();
+
+        $inactiveIds = $inactive->pluck('id')->toArray();
+
+        // Reasignar rutas si apuntan a un modelo inactivo
+        if ($fallbackModel) {
+            AiRoute::whereIn('primary_model_id', $inactiveIds)->update([
+                'primary_model_id' => $fallbackModel->id
+            ]);
+            AiRoute::whereIn('fallback_model_id', $inactiveIds)->update([
+                'fallback_model_id' => $fallbackModel->id
+            ]);
+        }
+
+        $deletedCount = AiModel::whereIn('id', $inactiveIds)->delete();
+
+        return [
+            'success' => true,
+            'deleted' => $deletedCount,
+            'message' => "Se han eliminado {$deletedCount} modelos descatalogados del catálogo con éxito."
+        ];
     }
 }
