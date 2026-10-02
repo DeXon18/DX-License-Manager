@@ -89,14 +89,26 @@ class StarCcmTest extends TestCase
 
     public function test_it_replaces_yourhostname_only_with_composite()
     {
-        // 1. Without COMPOSITE (e.g. ANY) -> should NOT replace
+        // 1. Temporal ANY -> should replace to localhost
         $contentTemp = "SERVER YourHostname ANY 1999\nVENDOR cdlmd";
         $transformedTemp = $this->starService->transform($contentTemp, true);
-        $this->assertStringContainsString('SERVER YourHostname ANY 29000', $transformedTemp);
+        $this->assertStringContainsString('SERVER localhost ANY 29000', $transformedTemp);
 
         // 2. With COMPOSITE -> should replace
         $contentContract = "SERVER YourHostname COMPOSITE=XYZ 1999\nVENDOR cdlmd";
         $transformedContract = $this->starService->transform($contentContract);
         $this->assertStringContainsString('SERVER localhost COMPOSITE=XYZ 29000', $transformedContract);
+    }
+
+    public function test_it_extracts_minimum_expiration_date()
+    {
+        $content = "SERVER srv1 ANY 1999\n" .
+                   "VENDOR cdlmd\n" .
+                   "INCREMENT f1 cdlmd 2026.06 15-oct-2027 1 SIGN=\"AAA\"\n" .
+                   "INCREMENT f2 cdlmd 2026.06 01-feb-2026 1 SIGN=\"BBB\"\n" .
+                   "INCREMENT f3 cdlmd 2026.06 permanent 1 SIGN=\"CCC\"\n";
+
+        $meta = $this->starService->extractMetadata($content);
+        $this->assertEquals('01-feb-2026', $meta['expiration']);
     }
 }

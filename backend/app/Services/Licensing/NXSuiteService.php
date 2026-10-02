@@ -214,10 +214,8 @@ class NXSuiteService
             }
         }
 
-        // 6. Extraer Fecha de Caducidad del primer INCREMENT o FEATURE
-        if (preg_match('/(?:INCREMENT|FEATURE)\s+\S+\s+(ugslmd|saltd|cdlmd|RCTECH)\s+[\d.]+\s+(\d+-\w+-\d+|permanent)/i', $content, $matches)) {
-            $metadata['expiration'] = $matches[2];
-        }
+        // 6. Extraer Fecha de Caducidad mínima entre todos los INCREMENT o FEATURE
+        $metadata['expiration'] = $this->extractMinExpirationDate($content);
 
         // 7. Determinar Tipo
         $metadata['type'] = $this->detectType($content, $metadata);
@@ -233,5 +231,47 @@ class NXSuiteService
         }
 
         return $metadata;
+    }
+
+    /**
+     * Extrae la fecha de expiración mínima (más próxima a vencer) de todas las líneas INCREMENT/FEATURE.
+     * Si no hay fechas o todas son permanent, retorna 'permanent' o null.
+     */
+    private function extractMinExpirationDate(string $content): ?string
+    {
+        if (!preg_match_all('/(?:INCREMENT|FEATURE)\s+\S+\s+(?:ugslmd|saltd|cdlmd|RCTECH)\s+[\d.]+\s+(\d+-\w+-\d+|permanent)/i', $content, $matches)) {
+            return null;
+        }
+
+        $dates = $matches[1];
+        $minDate = null;
+        $minTimestamp = null;
+        $hasPermanent = false;
+
+        foreach ($dates as $rawDate) {
+            if (strtolower($rawDate) === 'permanent') {
+                $hasPermanent = true;
+                continue;
+            }
+
+            try {
+                $dt = new \DateTime($rawDate);
+                $ts = $dt->getTimestamp();
+
+                if ($minTimestamp === null || $ts < $minTimestamp) {
+                    $minTimestamp = $ts;
+                    $minDate = $rawDate;
+                }
+            } catch (\Exception $e) {
+                // Si alguna fecha tiene formato corrupto, ignorar
+                continue;
+            }
+        }
+
+        if ($minDate !== null) {
+            return $minDate;
+        }
+
+        return $hasPermanent ? 'permanent' : null;
     }
 }

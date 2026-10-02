@@ -1,6 +1,6 @@
-Rama activa: dev. Versión: v3.9.2.
-Último trabajo: Actualización de dominios y URLs del portal a soporteays-dev.dxpro.es (Beta) y soporteays.dxpro.es (Prod). Sincronización de AUDIT_CALLBACK_URL para retornos n8n y actualización de server_name en beta.conf. Restauración de MariaDB Beta desde backup e implementación de compatibilidad Spatie en AdminUserSeeder / AuthTest.
-Estado: Beta y Producción están limpios, operativos y sin errores (200 OK en login en ambos entornos).
-Próximo paso inmediato: Revisar siguientes tareas en BACKLOG o ROADMAP con Oskar.
+Rama activa: feature/license-min-expiration-date. Versión: v3.9.2.
+Último trabajo: Implementación de la estrategia de fecha mínima de caducidad en el nombrado de licencias Siemens (NXSuite, StarCCM, Heeds) para evitar confusión cuando una licencia tiene fechas escalonadas o módulos que vencen antes.
+Estado: Tests unitarios 100% pasando (18 tests, 28 assertions), logs limpios.
+Próximo paso inmediato: Validar con Oskar y decidir merge a dev si procede.
 Bloqueos: Ninguno.
 Stack beta: running. Stack prod: running.

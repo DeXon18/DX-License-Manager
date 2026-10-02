@@ -7,7 +7,7 @@
 
 ## Estado General
 
-**Fase actual:** Fase 19 / Estabilización v3.9.2 (Actualización de URLs & n8n Callback)  
+**Fase actual:** Fase 19 / Estabilización v3.9.2 (Estrategia Fecha Mínima de Expiración)  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,24 +15,21 @@
 
 ## Qué se hizo en esta sesión
 
-- Actualización de dominios y URLs principales:
-  - Desarrollo/Beta: `https://soporteays-dev.dxpro.es` (APP_URL y AUDIT_CALLBACK_URL).
-  - Producción: `https://soporteays.dxpro.es` (APP_URL y AUDIT_CALLBACK_URL).
-- Configuración de Nginx: añadido `soporteays-dev.dxpro.es` a `server_name` en `infra/nginx/beta.conf` y resuelta la incidencia 502 al refrescar la resolución FastCGI.
-- Sincronización del callback de n8n (`AUDIT_CALLBACK_URL`) en ambos entornos para garantizar el retorno de datos tras auditorías de licencias.
-- Restauración de la base de datos MariaDB Beta desde el último backup `beta_system_2026-07-29_01-00-01.sql`.
-- Actualización de `AdminUserSeeder` y `AuthTest` adaptándolos a Spatie RBAC (gestión de roles por `name`), restableciendo la contraseña del administrador a `Venganza69`.
-- Verificación exhaustiva de endpoints HTTP en Beta y Producción (ambos respondiendo HTTP 200 en login).
+- Implementación de la **Estrategia de Fecha Mínima de Expiración** en licencias Siemens:
+  - Modificados `NXSuiteService`, `StarCcmService` y `HeedsService` para escanear todas las líneas `INCREMENT`/`FEATURE`.
+  - Ahora se toma la fecha más próxima en el tiempo (mínima) para el nombrado del archivo (`Valida_DD-Mmm-YYYY.lic`), evitando inconsistencias en licencias con módulos de vencimiento escalonado.
+  - Añadidos tests unitarios en `NXSuiteMechanismTest`, `StarCcmTest` y `HeedsTest` con cobertura completa (18 tests pasando).
+  - Verificados logs limpios en PHP-FPM Beta.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Revisar el BACKLOG con Oskar para iniciar el siguiente módulo o requerimiento funcional.
+Merge de `feature/license-min-expiration-date` a `dev` previa aprobación de Oskar.
 
 ### Tareas siguientes
-1. Continuar con tareas pendientes del Roadmap.
+1. Continuar con tareas del BACKLOG / ROADMAP.
 2. Desarrollos futuros en inventario y visor de procesamiento asíncrono.
 
 ---
