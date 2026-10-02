@@ -26,8 +26,10 @@ class JwtService
         $expiration = $expiration ?? 480;
         $header = json_encode(['typ' => 'JWT', 'alg' => 'HS256']);
         
-        $payload['exp'] = time() + ($expiration * 60);
-        $payload['iat'] = time();
+        $now = time();
+        $payload['exp'] = $now + ($expiration * 60);
+        $payload['iat'] = $now;
+        $payload['nbf'] = $now;
         $payloadJson = json_encode($payload);
 
         $base64UrlHeader = $this->base64UrlEncode($header);
@@ -66,9 +68,23 @@ class JwtService
             return null;
         }
 
+        $now = time();
+
         // Check Expiration
-        if (isset($decodedPayload['exp']) && $decodedPayload['exp'] < time()) {
+        if (isset($decodedPayload['exp']) && $decodedPayload['exp'] < $now) {
             Log::info("JWT Expired");
+            return null;
+        }
+
+        // Check Not Before (nbf)
+        if (isset($decodedPayload['nbf']) && $decodedPayload['nbf'] > ($now + 60)) {
+            Log::warning("JWT Not active yet (nbf in future)");
+            return null;
+        }
+
+        // Reject token issued in the far future (clock drift protection > 60s)
+        if (isset($decodedPayload['iat']) && $decodedPayload['iat'] > ($now + 60)) {
+            Log::warning("JWT Issued in future (iat drift)");
             return null;
         }
 

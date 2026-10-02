@@ -37,6 +37,25 @@ class ProfileController extends Controller
                 return back()->withErrors(['current_password' => 'La contraseña actual no es correcta.']);
             }
             $user->password = Hash::make($request->new_password);
+
+            // Invalida todos los tokens emitidos antes de este momento en Redis (AUTH-01)
+            $now = time();
+            \Illuminate\Support\Facades\Redis::set("user:pwd_changed:{$user->id}", $now, 'EX', 28800);
+
+            // Generar nuevo token inmediatamente para la sesión actual
+            $jwtService = app(\App\Services\Auth\JwtService::class);
+            $freshToken = $jwtService->generate([
+                'sub' => $user->id,
+                'name' => $user->name,
+                'role' => $user->roles->first()->name ?? 'viewer',
+            ], 480);
+            $cookie = cookie('jwt_token', $freshToken, 480, null, null, true, true, false, 'Strict');
+
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->save();
+
+            return back()->with('success', 'Perfil y contraseña actualizados correctamente. Otras sesiones han sido revocadas.')->withCookie($cookie);
         }
 
         $user->name = $request->name;

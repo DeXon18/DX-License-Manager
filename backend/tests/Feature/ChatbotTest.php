@@ -16,8 +16,11 @@ class ChatbotTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'admin', 'guard_name' => 'web']);
+        \Spatie\Permission\Models\Role::firstOrCreate(['name' => 'viewer', 'guard_name' => 'web']);
         $this->withoutMiddleware(); // Bypass JWT session middleware for simplified isolation testing
         $this->user = User::factory()->create();
+        $this->user->assignRole('admin');
     }
 
     /** @test */
@@ -125,20 +128,41 @@ class ChatbotTest extends TestCase
     }
 
     /** @test */
+    public function chatbot_service_denies_mutations_to_viewer_role(): void
+    {
+        $viewer = User::factory()->create();
+        $viewer->assignRole('viewer');
+        $this->actingAs($viewer);
+
+        $service = resolve(ChatbotService::class);
+        $method = new \ReflectionMethod(ChatbotService::class, 'callTool');
+
+        $result = $method->invoke($service, 'create_contact', [
+            'client_id' => 1,
+            'name' => 'Intento Viewer',
+            'email' => 'viewer@empresa.com'
+        ]);
+
+        $this->assertFalse($result['success']);
+        $this->assertStringContainsString('Permiso denegado', $result['error']);
+    }
+
+    /** @test */
     public function chatbot_service_respects_session_mutation_limits(): void
     {
+        $this->actingAs($this->user);
+
         // Crear un request simulado con sesión activa en el contenedor
         $request = \Illuminate\Http\Request::create('/chatbot/query', 'POST');
         $request->setLaravelSession(resolve('session.store'));
         $this->app->instance('request', $request);
 
-        // Forzar límite de mutaciones a 5 en la sesión actual
-        session(['chatbot_mutations_count' => 5]);
+        // Forzar límite de mutaciones a 50 en la sesión actual
+        session(['chatbot_mutations_count' => 50]);
 
         $service = resolve(ChatbotService::class);
         
         $method = new \ReflectionMethod(ChatbotService::class, 'callTool');
-        $method->setAccessible(true);
 
         // Intentar invocar una herramienta mutacional (create_contact) con el límite alcanzado
         $result = $method->invoke($service, 'create_contact', [

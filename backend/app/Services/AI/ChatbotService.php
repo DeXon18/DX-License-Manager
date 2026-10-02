@@ -25,11 +25,12 @@ class ChatbotService
      */
     public function query(array $chatHistory): array
     {
-        // 1. Verificar Caché Semántica
-        $cacheKey = 'chatbot_query_' . md5(json_encode($chatHistory));
+        // 1. Verificar Caché Semántica aislada por usuario (AI-02)
+        $userId = auth()->id() ?? 'guest';
+        $cacheKey = "chatbot_query_{$userId}_" . md5(json_encode($chatHistory));
         
         if (Cache::has($cacheKey)) {
-            Log::info("ChatbotService: Sirviendo respuesta desde Caché Semántica (0 tokens consumidos).");
+            Log::info("ChatbotService: Sirviendo respuesta desde Caché Semántica de usuario {$userId} (0 tokens consumidos).");
             $cachedResponse = Cache::get($cacheKey);
             // Evitar que el controlador registre tokens repetidos
             $cachedResponse['usage_metadata'] = null; 
@@ -605,6 +606,17 @@ class ChatbotService
         throw new \Exception("Bucle OpenAI [{$providerName}] superó el límite de iteraciones.");
     }
 
+    private function hasMutationPermission(): bool
+    {
+        $user = auth()->user();
+        if (!$user) {
+            return false;
+        }
+
+        // Requiere rol con permisos de escritura (admin, technician o staff)
+        return $user->hasAnyRole(['admin', 'technician', 'staff']);
+    }
+
     private function checkAndIncrementMutationLimit(): bool
     {
         $session = request()->hasSession() ? request()->session() : null;
@@ -633,6 +645,9 @@ class ChatbotService
             case 'search_servers_by_hardware':
                 return $this->toolSearchServersByHardware($args['hw_query'] ?? '');
             case 'create_contact':
+                if (!$this->hasMutationPermission()) {
+                    return ['success' => false, 'error' => 'Permiso denegado: Tu rol de usuario no tiene autorización para crear o modificar contactos. Se requiere rol de técnico o administrador.'];
+                }
                 if (!$this->checkAndIncrementMutationLimit()) {
                     return ['success' => false, 'error' => 'Límite de mutaciones de contacto por sesión superado (máximo 50). Por favor, contacta con un administrador.'];
                 }
@@ -650,6 +665,9 @@ class ChatbotService
             case 'search_contacts':
                 return $this->toolSearchContacts($args['query'] ?? '');
             case 'update_contact':
+                if (!$this->hasMutationPermission()) {
+                    return ['success' => false, 'error' => 'Permiso denegado: Tu rol de usuario no tiene autorización para modificar contactos. Se requiere rol de técnico o administrador.'];
+                }
                 if (!$this->checkAndIncrementMutationLimit()) {
                     return ['success' => false, 'error' => 'Límite de mutaciones de contacto por sesión superado (máximo 50). Por favor, contacta con un administrador.'];
                 }
@@ -664,6 +682,9 @@ class ChatbotService
             case 'list_clients_without_contacts':
                 return $this->toolListClientsWithoutContacts();
             case 'create_enterprise_cloud_account':
+                if (!$this->hasMutationPermission()) {
+                    return ['success' => false, 'error' => 'Permiso denegado: Tu rol de usuario no tiene autorización para registrar cuentas Enterprise Cloud. Se requiere rol de técnico o administrador.'];
+                }
                 if (!$this->checkAndIncrementMutationLimit()) {
                     return ['success' => false, 'error' => 'Límite de mutaciones por sesión superado. Por favor, recarga la página.'];
                 }

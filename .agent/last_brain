@@ -1,6 +1,6 @@
-Rama activa: main. Versión: v3.9.4.
-Último trabajo: Despliegue a Producción (main) de la ampliación de duración de sesión JWT a 8 horas (480 min). Backup previo verificado en Producción y cero tiempo de inactividad.
-Estado: Beta y Producción están limpios, operativos y sin errores (200 OK en login).
-Próximo paso inmediato: Revisar siguientes requerimientos en BACKLOG o ROADMAP con Oskar.
+Rama activa: chore/install-cloudflare-security-audit. Versión: v3.9.4.
+Último trabajo: Instalación e integración completa de la skill oficial cloudflare-security-audit en .agent/skills/ y registro en INDEX.md.
+Estado: Archivos sincronizados y validados.
+Próximo paso inmediato: Validar y merge a dev según indicación de Oskar.
 Bloqueos: Ninguno.
 Stack beta: running. Stack prod: running.

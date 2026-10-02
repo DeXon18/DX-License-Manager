@@ -2,13 +2,35 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.9.4
+> **Version:** v3.9.6
+
+## [2026-10-02 10:48] — Security & Fix: Endurecimiento de IA y Chatbot (Auditoría Cloudflare AI-AND-LLM) ✅
+
+### Fixed & Hardened
+- **Prevención de Confused Deputy en Herramientas Mutacionales (AI-01)**: En `ChatbotService.php`, se incorpora control de autorización estricto (`hasMutationPermission()`) en las herramientas de escritura (`create_contact`, `update_contact`, `create_enterprise_cloud_account`). Los usuarios con rol de sólo lectura (`viewer`) quedan bloqueados de alterar el estado de la base de datos a través de lenguaje natural y *function calling*, reservando la capacidad exclusivamente a roles con privilegios (`admin`, `technician`, `staff`).
+- **Aislamiento de Caché Semántica por Usuario (AI-02)**: En `ChatbotService.php`, la clave de la caché en Redis se particiona determinísticamente por identificador de usuario (`chatbot_query_{$userId}_...`), evitando fugas de contexto o respuestas cruzadas (*cross-tenant / cross-user context bleed*) entre usuarios de distintos niveles de acceso.
+- **Testing**: Añadida prueba en `ChatbotTest.php` (`chatbot_service_denies_mutations_to_viewer_role`) verificando el rechazo de operaciones mutacionales a usuarios `viewer` (6 tests PASSED al 100%).
+
+## [2026-10-02 10:40] — Security & Fix: Endurecimiento de Autenticación, JWT y Sesiones (Auditoría Cloudflare) ✅
+
+### Fixed & Hardened
+- **Invalidación Inmediata de Sesiones en Cambio de Contraseña (AUTH-01)**: En `ProfileController.php`, al cambiar la contraseña del usuario se registra la marca temporal en Redis (`user:pwd_changed:{id}`) y se refresca el token de la sesión activa. `JwtAuth.php` verifica esta marca y revoca de forma instantánea cualquier sesión concurrente que porte un JWT emitido con anterioridad (`iat < pwd_changed_at`).
+- **Blindaje de Claims Temporales JWT (AUTH-02)**: En `JwtService.php`, se incorpora el claim `nbf` (*not before*) y se añade validación estricta frente a tokens con fechas futuras o desvíos anómalos de reloj (`iat > now + 60s`), mitigando ataques de pre-generación o reutilización no autorizada.
+- **Mantenimiento y Purga de Blacklist en Redis (AUTH-03)**: Integrada en `JwtAuth.php` una purga probabilística (1% de requests concurrentes) sobre el ZSET `jwt_blacklist` vía `zremrangebyscore`, garantizando el reciclado de memoria y previniendo acumulación indebida de claves revocadas.
+- **Testing**: Ampliada la batería de pruebas en `AuthTest.php` verificando el rechazo de tokens futuros y la integridad del claim `nbf` (5 tests PASSED al 100%).
+
+## [2026-10-02 10:30] — Tooling & Security: Integración de la Skill Cloudflare Security Audit ✅
+
+### Added
+- **Skill de Auditoría Avanzada**: Integrada la skill oficial de Cloudflare (`.agent/skills/cloudflare-security-audit/`) con su metodología de 6 fases: Reconocimiento, Caza por cobertura (*Hunting*), Validación de candidatos por contra-prueba (*Disprover*), Registro estructurado de hallazgos (*Coverage Ledger* y *Findings Schema*), Verificación independiente y Reporte neutral.
+- **Clases de Ataque Especializadas**: Añadidos analizadores exhaustivos para `WEB-PROTOCOL-AND-AUTH.md`, `AI-AND-LLM.md`, `ATTACK-CLASSES.md`, `CLOUD-AND-DEPLOYMENT.md`, `CLIENT-SIDE.md`, `DATA-ISOLATION-AND-LIFECYCLE.md` y scripts de validación CJS.
+- **Índice del Agente**: Registrada la nueva capacidad en `.agent/INDEX.md`.
 
 ## [2026-10-02 10:20] — Feature: Ampliación de Duración de Sesión a Jornada Completa (8 Horas) ✅
 
 ### Changed
 - **Autenticación & JWT**: Incrementada la duración de sesión de 30 minutos a 8 horas (480 minutos).
-- **Cookies & Persistencia**: La Cookie segura `jwt_token` se genera ahora con 480 minutos tanto en el login inicial ([AuthController.php](file:///z:/SoporteAYS/Development/backend/app/Http/Controllers/Auth/AuthController.php)) como en la rotación transparente por actividad ([JwtAuth.php](file:///z:/SoporteAYS/Development/backend/app/Http/Middleware/JwtAuth.php)), permitiendo trabajar toda la jornada sin interrupciones ni cierres inesperados de sesión.
+- **Cookies & Persistencia**: La Cookie segura `jwt_token` se genera ahora con 480 minutos tanto en el login inicial (`AuthController.php`) como en la rotación transparente por actividad (`JwtAuth.php`), permitiendo trabajar toda la jornada sin interrupciones ni cierres inesperados de sesión.
 - **Telemetría Redis**: Ajustado el TTL de usuario activo a 28800 segundos (8 horas).
 
 ## [2026-10-02 10:10] — Feature: Estrategia de Fecha Mínima de Expiración en Licencias Siemens ✅

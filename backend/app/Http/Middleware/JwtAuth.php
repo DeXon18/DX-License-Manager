@@ -69,16 +69,39 @@ class JwtAuth
             return redirect('/login')->withErrors(['session' => 'Usuario no encontrado o inactivo.']);
         }
 
+        // AUTH-01: Verificar si la contraseña fue cambiada con posterioridad a la emisión del token (iat)
+        $pwdChangedAt = (int) \Illuminate\Support\Facades\Redis::get("user:pwd_changed:{$user->id}");
+        $iat = $decoded['iat'] ?? 0;
+        if ($pwdChangedAt && $iat < $pwdChangedAt) {
+            \Illuminate\Support\Facades\Log::warning("JWT: Sesión revocada tras cambio de contraseña", [
+                'user_id' => $user->id,
+                'token_iat' => $iat,
+                'pwd_changed_at' => $pwdChangedAt,
+            ]);
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json(['error' => 'Password changed. Please login again.'], 401);
+            }
+            return redirect('/login')->withErrors(['session' => 'Tu contraseña ha cambiado. Por favor, inicia sesión de nuevo.']);
+        }
+
         // Authenticate user
         Auth::login($user);
 
         // Track active user in Redis (8 hours TTL = 28800s)
         \Illuminate\Support\Facades\Redis::set("user:active:{$user->id}", now()->toIso8601String(), 'EX', 28800);
 
+        // AUTH-03: Limpieza probabilística (1% de requests) del ZSET jwt_blacklist para evitar fuga de memoria en Redis
+        if (random_int(1, 100) === 1) {
+            try {
+                \Illuminate\Support\Facades\Redis::zremrangebyscore('jwt_blacklist', '-inf', time());
+            } catch (\Throwable $e) {
+                // Silencioso para no degradar el flujo principal
+            }
+        }
+
         $response = $next($request);
 
         // SMART ROTATION: Solo rotar si el token tiene más de 5 minutos (evitar spam de tokens)
-        $iat = $decoded['iat'] ?? 0;
         $shouldRotate = (time() - $iat) > 300; // 5 minutos
 
         if (!$graceTime && $shouldRotate) {
