@@ -12,12 +12,59 @@ class OpenRouterSyncService
     protected string $apiUrl = 'https://openrouter.ai/api/v1/models';
 
     /**
+     * Top 10 modelos gratuitos líderes ordenados por preferencia de uso, calidad y contexto.
+     */
+    public const TOP_FREE_MODELS = [
+        'openrouter/free' => [
+            'name' => 'OpenRouter Free Router (Gratis)',
+            'weekly_limit' => 5000000,
+        ],
+        'google/gemma-4-31b-it:free' => [
+            'name' => 'Google Gemma 4 31B Instruct (Gratis)',
+            'weekly_limit' => 5000000,
+        ],
+        'google/gemma-4-26b-a4b-it:free' => [
+            'name' => 'Google Gemma 4 26B MoE (Gratis)',
+            'weekly_limit' => 5000000,
+        ],
+        'qwen/qwen3.8-27b:free' => [
+            'name' => 'Qwen 3.8 27B Vision (Gratis)',
+            'weekly_limit' => 5000000,
+        ],
+        'nvidia/nemotron-3.5-lightning:free' => [
+            'name' => 'NVIDIA Nemotron 3.5 Lightning 1M (Gratis)',
+            'weekly_limit' => 5000000,
+        ],
+        'nvidia/nemotron-3-ultra-550b-a55b:free' => [
+            'name' => 'NVIDIA Nemotron 3 Ultra 550B (Gratis)',
+            'weekly_limit' => 5000000,
+        ],
+        'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free' => [
+            'name' => 'NVIDIA Nemotron 3 Nano Omni (Gratis)',
+            'weekly_limit' => 5000000,
+        ],
+        'thinkingmachines/inkling:free' => [
+            'name' => 'Thinking Machines Inkling 1M (Gratis)',
+            'weekly_limit' => 5000000,
+        ],
+        'thinkingmachines/inkling-small:free' => [
+            'name' => 'Thinking Machines Inkling Small (Gratis)',
+            'weekly_limit' => 5000000,
+        ],
+        'cohere/north-mini-code:free' => [
+            'name' => 'Cohere North Mini Code (Gratis)',
+            'weekly_limit' => 5000000,
+        ],
+    ];
+
+    /**
      * Sincroniza los modelos locales con la API pública de OpenRouter.
      *
      * @return array [
      *   'success' => bool,
      *   'total_remote' => int,
      *   'updated' => int,
+     *   'added_free' => int,
      *   'deprecated' => int,
      *   'broken_routes' => array,
      *   'message' => string
@@ -42,6 +89,28 @@ class OpenRouterSyncService
             foreach ($remoteData as $m) {
                 if (isset($m['id'])) {
                     $remoteModels[$m['id']] = $m;
+                }
+            }
+
+            // 1. Asegurar la presencia y activación de los Top 10 modelos Free si existen remotamente
+            $addedFreeCount = 0;
+            foreach (self::TOP_FREE_MODELS as $freeId => $meta) {
+                if (isset($remoteModels[$freeId])) {
+                    $remote = $remoteModels[$freeId];
+                    $promptPrice = floatval($remote['pricing']['prompt'] ?? 0);
+                    $completionPrice = floatval($remote['pricing']['completion'] ?? 0);
+
+                    $model = AiModel::firstOrNew(['openrouter_id' => $freeId]);
+                    if (!$model->exists) {
+                        $model->name = $meta['name'];
+                        $model->weekly_tokens_limit = $meta['weekly_limit'];
+                        $addedFreeCount++;
+                    }
+                    $model->price_prompt = $promptPrice;
+                    $model->price_completion = $completionPrice;
+                    $model->is_free = true;
+                    $model->is_active = true;
+                    $model->save();
                 }
             }
 
@@ -104,9 +173,10 @@ class OpenRouterSyncService
                 'success' => true,
                 'total_remote' => count($remoteModels),
                 'updated' => $updatedCount,
+                'added_free' => $addedFreeCount,
                 'deprecated' => $deprecatedCount,
                 'broken_routes' => $brokenRoutes,
-                'message' => "Catálogo sincronizado con éxito. {$updatedCount} modelos actualizados, {$deprecatedCount} descatalogados."
+                'message' => "Catálogo sincronizado con éxito. {$updatedCount} modelos actualizados, {$addedFreeCount} nuevos gratuitos añadidos, {$deprecatedCount} descatalogados."
             ];
 
         } catch (\Exception $e) {

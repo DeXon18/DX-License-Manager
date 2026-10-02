@@ -9,9 +9,11 @@
 ### Added
 - **Servicio de Sincronización (`OpenRouterSyncService`)**: Consulta en tiempo real la API pública y gratuita de OpenRouter (`https://openrouter.ai/api/v1/models`) para mantener al día los precios (`price_prompt`, `price_completion`), el flag de gratuidad (`is_free`) y la disponibilidad de modelos sin coste de tokens.
 - **Detección de Modelos Descatalogados y Blindaje de Rutas**: Los modelos que desaparecen de OpenRouter se marcan automáticamente como inactivos (`is_active = false`) en lugar de eliminarse, preservando el histórico. Si alguna ruta activa de IA (`ai_routes`) depende de un modelo descatalogado (como primario o fallback), el sistema emite una alerta preventiva visible en la UI y registra un log de advertencia con la tarea afectada.
+- **Auto-incorporación de los Top 10 Modelos Gratuitos Líderes**: El sincronizador detecta y registra automáticamente los 10 mejores modelos gratuitos disponibles en OpenRouter (`openrouter/free`, `google/gemma-4-31b-it:free`, `google/gemma-4-26b-a4b-it:free`, `qwen/qwen3.8-27b:free`, `nvidia/nemotron-3.5-lightning:free`, `nvidia/nemotron-3-ultra-550b-a55b:free`, `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free`, `thinkingmachines/inkling:free`, `thinkingmachines/inkling-small:free` y `cohere/north-mini-code:free`), activándolos con límites semanales configurados por defecto.
+- **Filtros Rápidos en UI**: Incorporados selectores en el catálogo ("Todos", "🌟 Top Gratuitos" y "PRO / Pago") junto con ordenación dinámica por volumen de tokens consumidos por los usuarios (`data-usage`).
 - **Acción Manual en UI (AI Routing Hub)**: Añadido botón "Sincronizar con OpenRouter" con microinteracción visual en `/admin/system/ai-routing`, permitiendo al administrador refrescar precios y catálogo con un solo clic.
 - **Comando Artisan (`ai:sync-models`)**: Creado comando de consola programable para cron o tareas periódicas de mantenimiento.
-- **Testing**: Batería de pruebas automatizadas en `OpenRouterSyncTest.php` validando actualización de precios, inactivación de obsoletos, advertencia de rutas comprometidas y ejecución del controlador (100% PASSING).
+- **Testing**: Batería de pruebas automatizadas en `OpenRouterSyncTest.php` validando actualización de precios, inactivación de obsoletos, advertencia de rutas comprometidas, auto-incorporación del Top 10 Free y ejecución del controlador (100% PASSING con 4 tests y 23 assertions).
 
 ## [2026-10-02 10:48] — Security & Fix: Endurecimiento de IA y Chatbot (Auditoría Cloudflare AI-AND-LLM) ✅
 

@@ -123,9 +123,14 @@
 
         <!-- TAB: CATALOG -->
         <div x-show="activeTab === 'catalog'" style="display: none;">
-                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-                    <div style="display: flex; align-items: center; gap: 8px;">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+                    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
                         <span class="card-title">Listado de Modelos</span>
+                        <div style="display: flex; gap: 6px; background: var(--dx-v2-bg); padding: 3px; border-radius: 6px; border: 1px solid var(--dx-v2-border);">
+                            <button type="button" class="catalog-filter-btn active" onclick="filterCatalog('all')" id="btn-filter-all" style="padding: 4px 10px; font-size: 11px; font-weight: 600; border-radius: 4px; border: none; cursor: pointer; background: var(--dx-v2-primary-btn-bg, #0284c7); color: #fff;">Todos</button>
+                            <button type="button" class="catalog-filter-btn" onclick="filterCatalog('free')" id="btn-filter-free" style="padding: 4px 10px; font-size: 11px; font-weight: 600; border-radius: 4px; border: none; cursor: pointer; background: transparent; color: var(--dx-v2-muted);">🌟 Top Gratuitos</button>
+                            <button type="button" class="catalog-filter-btn" onclick="filterCatalog('pro')" id="btn-filter-pro" style="padding: 4px 10px; font-size: 11px; font-weight: 600; border-radius: 4px; border: none; cursor: pointer; background: transparent; color: var(--dx-v2-muted);">PRO / Pago</button>
+                        </div>
                     </div>
                     <form action="{{ route('admin.system.ai-routing.sync') }}" method="POST" style="margin: 0;">
                         @csrf
@@ -318,6 +323,33 @@
                 iconSpan.style.color = 'var(--dx-v2-accent)';
             } else {
                 iconSpan.innerHTML = '';
+            }
+        });
+    }
+
+    function filterCatalog(type) {
+        const rows = document.querySelectorAll('.model-row');
+        const buttons = document.querySelectorAll('.catalog-filter-btn');
+
+        buttons.forEach(btn => {
+            btn.style.background = 'transparent';
+            btn.style.color = 'var(--dx-v2-muted)';
+        });
+
+        const activeBtn = document.getElementById(`btn-filter-${type}`);
+        if (activeBtn) {
+            activeBtn.style.background = 'var(--dx-v2-primary-btn-bg, #0284c7)';
+            activeBtn.style.color = '#fff';
+        }
+
+        rows.forEach(row => {
+            const isFree = parseInt(row.getAttribute('data-free')) === 1;
+            if (type === 'all') {
+                row.style.display = '';
+            } else if (type === 'free') {
+                row.style.display = isFree ? '' : 'none';
+            } else if (type === 'pro') {
+                row.style.display = !isFree ? '' : 'none';
             }
         });
     }

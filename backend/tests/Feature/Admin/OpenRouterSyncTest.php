@@ -137,4 +137,41 @@ class OpenRouterSyncTest extends TestCase
         $response->assertRedirect(route('admin.system.ai-routing.index'));
         $response->assertSessionHas('success');
     }
+
+    public function test_sync_auto_imports_top_free_models_and_activates_them(): void
+    {
+        Http::fake([
+            'openrouter.ai/api/v1/models' => Http::response([
+                'data' => [
+                    [
+                        'id' => 'google/gemma-4-31b-it:free',
+                        'name' => 'Google: Gemma 4 31B (free)',
+                        'pricing' => ['prompt' => '0', 'completion' => '0'],
+                    ],
+                    [
+                        'id' => 'openrouter/free',
+                        'name' => 'Free Models Router',
+                        'pricing' => ['prompt' => '0', 'completion' => '0'],
+                    ],
+                ],
+            ], 200),
+        ]);
+
+        $service = new OpenRouterSyncService();
+        $result = $service->sync();
+
+        $this->assertTrue($result['success']);
+        $this->assertEquals(2, $result['added_free']);
+
+        $gemma = AiModel::where('openrouter_id', 'google/gemma-4-31b-it:free')->first();
+        $this->assertNotNull($gemma);
+        $this->assertTrue($gemma->is_free);
+        $this->assertTrue($gemma->is_active);
+        $this->assertEquals(5000000, $gemma->weekly_tokens_limit);
+
+        $router = AiModel::where('openrouter_id', 'openrouter/free')->first();
+        $this->assertNotNull($router);
+        $this->assertTrue($router->is_free);
+        $this->assertTrue($router->is_active);
+    }
 }
