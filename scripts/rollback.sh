@@ -6,16 +6,23 @@
 
 set -e
 
-ENV=`${1:-beta}
-PROJECT_DIR="/opt/web-projects/DX-License-Manager"
-COMPOSE_FILE="infra/docker-compose.`${ENV}.yml"
+ENV="${1:-beta}"
+case "$ENV" in
+    prod) PROJECT_DIR="/opt/web-projects/Production" ;;
+    beta) PROJECT_DIR="/opt/web-projects/Development" ;;
+    *)
+        echo "Uso: $0 {prod|beta}" >&2
+        exit 2
+        ;;
+esac
+COMPOSE_FILE="infra/docker-compose.${ENV}.yml"
 
 echo "⏪ Iniciando rollback en entorno: `$ENV"
 cd `$PROJECT_DIR
 
 echo "📥 Volviendo al commit anterior..."
 git revert HEAD --no-edit
-git push origin `$([ "`$ENV" = "prod" ] && echo "main" || echo "dev")
+git push origin "$([ "$ENV" = "prod" ] && echo main || echo dev)"
 
 echo "🐳 Reiniciando contenedores..."
 docker compose -f `$COMPOSE_FILE up -d --build
