@@ -37,6 +37,12 @@ El desarrollador inicia. El agente espera.
 
 ## ✅ Completado
 
+### Feature: Ampliación de Duración de Sesión a 8 Horas (Jornada Completa) ✅
+- **Completada:** 2026-10-02
+- **Rama:** `feature/session-duration-8h`
+- **Resumen:** Se incrementó la duración de la sesión y expiración del JWT de 30 minutos a 8 horas (480 minutos) tanto en el login inicial como en la renovación automática por actividad en `JwtAuth`, permitiendo trabajar toda la jornada sin cierres inesperados.
+- **PR:** Pendiente de merge a dev
+
 ### Feature: Extracción de Fecha Mínima de Expiración en Licencias Siemens ✅
 - **Completada:** 2026-10-02
 - **Rama:** `feature/license-min-expiration-date`

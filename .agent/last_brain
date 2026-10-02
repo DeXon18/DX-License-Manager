@@ -1,5 +1,5 @@
-Rama activa: main. Versión: v3.9.3.
-Último trabajo: Despliegue a Producción (main) de la feature de extracción de fecha mínima de expiración en licencias Siemens (NXSuite, StarCCM, Heeds). Backup previo verificado en Producción (7.6MB) y cero tiempo de inactividad.
+Rama activa: main. Versión: v3.9.4.
+Último trabajo: Despliegue a Producción (main) de la ampliación de duración de sesión JWT a 8 horas (480 min). Backup previo verificado en Producción y cero tiempo de inactividad.
 Estado: Beta y Producción están limpios, operativos y sin errores (200 OK en login).
 Próximo paso inmediato: Revisar siguientes requerimientos en BACKLOG o ROADMAP con Oskar.
 Bloqueos: Ninguno.

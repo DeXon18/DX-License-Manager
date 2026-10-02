@@ -1,5 +1,5 @@
 # HANDOFF — DX License Manager
-> Última actualización: 2026-10-02 10:10  
+> Última actualización: 2026-10-02 10:20  
 > Sesión en: indeterminado  
 > Rama activa: main
 
@@ -7,7 +7,7 @@
 
 ## Estado General
 
-**Fase actual:** Despliegue a Producción v3.9.3 (Estrategia Fecha Mínima de Expiración) ✅  
+**Fase actual:** Despliegue a Producción v3.9.4 (Duración de Sesión 8h) ✅  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,12 +15,14 @@
 
 ## Qué se hizo en esta sesión
 
-- Despliegue seguro a Producción (`main`) de la **Estrategia de Fecha Mínima de Expiración** en licencias Siemens:
-  - Modificados `NXSuiteService`, `StarCcmService` y `HeedsService` para escanear todas las líneas `INCREMENT`/`FEATURE`.
-  - Ahora se toma la fecha más próxima en el tiempo (mínima) para el nombrado del archivo (`Valida_DD-Mmm-YYYY.lic`), evitando inconsistencias en licencias con módulos de vencimiento escalonado.
-  - Añadidos tests unitarios en `NXSuiteMechanismTest`, `StarCcmTest` y `HeedsTest` con cobertura completa (18 tests pasando).
-  - Backup preventivo verificado en Producción previo al despliegue (`prod_manual_2026-10-02_08-08-23.sql`, 7.6MB).
-  - CHANGELOG.md incrementado a `v3.9.3`.
+- Despliegue a Producción de v3.9.3 (Fecha Mínima de Expiración en licencias).
+- Despliegue seguro a Producción (`main`) de la **Ampliación de Sesión JWT a 8 Horas (480 minutos)**:
+  - `AuthController.php`: token y cookie inicial extendidos a 480 min.
+  - `JwtAuth.php`: renovación por rotación extendida a 480 min y Redis active TTL a 28800s.
+  - `JwtService.php`: expiración por defecto elevada a 480 min.
+  - Verificada la suite `AuthTest` pasando al 100%.
+  - Backup preventivo en Producción verificado (`prod_manual_...sql`).
+  - CHANGELOG.md incrementado a `v3.9.4`.
 
 ---
 
