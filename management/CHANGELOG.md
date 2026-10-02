@@ -2,7 +2,18 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.9.6
+> **Version:** v3.9.7
+
+## [2026-10-02 11:26] — Feature: Sincronización Automática del Catálogo de Modelos y Precios OpenRouter ✅
+
+### Added
+- **Servicio de Sincronización (`OpenRouterSyncService`)**: Consulta en tiempo real la API pública y gratuita de OpenRouter (`https://openrouter.ai/api/v1/models`) para mantener al día los precios (`price_prompt`, `price_completion`), el flag de gratuidad (`is_free`) y la disponibilidad de modelos sin coste de tokens.
+- **Detección de Modelos Descatalogados y Blindaje de Rutas**: Los modelos que desaparecen de OpenRouter se marcan automáticamente como inactivos (`is_active = false`) en lugar de eliminarse, preservando el histórico. Si alguna ruta activa de IA (`ai_routes`) depende de un modelo descatalogado (como primario o fallback), el sistema emite una alerta preventiva visible en la UI y registra un log de advertencia con la tarea afectada.
+- **Auto-incorporación de los Top 10 Modelos Gratuitos Líderes**: El sincronizador detecta y registra automáticamente los 10 mejores modelos gratuitos disponibles en OpenRouter (`openrouter/free`, `google/gemma-4-31b-it:free`, `google/gemma-4-26b-a4b-it:free`, `qwen/qwen3.8-27b:free`, `nvidia/nemotron-3.5-lightning:free`, `nvidia/nemotron-3-ultra-550b-a55b:free`, `nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free`, `thinkingmachines/inkling:free`, `thinkingmachines/inkling-small:free` y `cohere/north-mini-code:free`), activándolos con límites semanales configurados por defecto.
+- **Filtros Rápidos en UI**: Incorporados selectores en el catálogo ("Todos", "🌟 Top Gratuitos" y "PRO / Pago") junto con ordenación dinámica por volumen de tokens consumidos por los usuarios (`data-usage`).
+- **Purga Segura y Botón "Limpiar Descatalogados"**: Implementado método `purgeInactiveModels()` y acción en UI para eliminar de la BD los modelos que ya no existen en OpenRouter, reasignando de forma transparente cualquier ruta activa a modelos líderes para evitar errores de integridad referencial.
+- **Enrutador de Tareas Categorizado**: Los selectores de `Primary Model` y `Fallback Model` agrupan los modelos disponibles mediante `<optgroup>` ("🌟 Modelos Gratuitos ($0)" y "💎 Modelos PRO / Pago"), manteniendo las rutas apuntando a modelos activos de máxima confiabilidad.
+- **Testing**: Batería de pruebas automatizadas en `OpenRouterSyncTest.php` validando actualización de precios, inactivación de obsoletos, advertencia de rutas comprometidas, auto-incorporación del Top 10 Free, purga con reasignación y ejecución del controlador (100% PASSING con 5 tests y 30 assertions).
 
 ## [2026-10-02 10:48] — Security & Fix: Endurecimiento de IA y Chatbot (Auditoría Cloudflare AI-AND-LLM) ✅
 
