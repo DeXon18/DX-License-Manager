@@ -7,7 +7,7 @@
 
 ## Estado General
 
-**Fase actual:** Fase 19 / Estabilización v3.9.2 (Estrategia Fecha Mínima de Expiración)  
+**Fase actual:** Fase 19 / Estabilización v3.9.4 (Duración de Sesión 8h)  
 **Stack beta:** ✅ running  
 **Stack prod:** ✅ running  
 
@@ -15,18 +15,19 @@
 
 ## Qué se hizo en esta sesión
 
-- Implementación de la **Estrategia de Fecha Mínima de Expiración** en licencias Siemens:
-  - Modificados `NXSuiteService`, `StarCcmService` y `HeedsService` para escanear todas las líneas `INCREMENT`/`FEATURE`.
-  - Ahora se toma la fecha más próxima en el tiempo (mínima) para el nombrado del archivo (`Valida_DD-Mmm-YYYY.lic`), evitando inconsistencias en licencias con módulos de vencimiento escalonado.
-  - Añadidos tests unitarios en `NXSuiteMechanismTest`, `StarCcmTest` y `HeedsTest` con cobertura completa (18 tests pasando).
-  - Verificados logs limpios en PHP-FPM Beta.
+- Despliegue de v3.9.3 a Producción (Fecha Mínima de Expiración en licencias).
+- Implementación de la **Ampliación de Sesión JWT a 8 Horas (480 minutos)**:
+  - `AuthController.php`: token y cookie inicial extendidos a 480 min.
+  - `JwtAuth.php`: renovación por rotación extendida a 480 min y Redis active TTL a 28800s.
+  - `JwtService.php`: expiración por defecto elevada a 480 min.
+  - Verificada la suite `AuthTest` pasando al 100%.
 
 ---
 
 ## Qué falta por hacer (próxima sesión)
 
 ### Tarea inmediata (empezar aquí)
-Merge de `feature/license-min-expiration-date` a `dev` previa aprobación de Oskar.
+Merge de `feature/session-duration-8h` a `dev` y posterior paso a `main` cuando se apruebe.
 
 ### Tareas siguientes
 1. Continuar con tareas del BACKLOG / ROADMAP.

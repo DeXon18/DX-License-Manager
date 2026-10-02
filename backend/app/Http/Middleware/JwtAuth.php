@@ -72,8 +72,8 @@ class JwtAuth
         // Authenticate user
         Auth::login($user);
 
-        // Track active user in Redis (30 min TTL)
-        \Illuminate\Support\Facades\Redis::set("user:active:{$user->id}", now()->toIso8601String(), 'EX', 1800);
+        // Track active user in Redis (8 hours TTL = 28800s)
+        \Illuminate\Support\Facades\Redis::set("user:active:{$user->id}", now()->toIso8601String(), 'EX', 28800);
 
         $response = $next($request);
 
@@ -86,13 +86,13 @@ class JwtAuth
                 'sub' => $user->id,
                 'name' => $user->name,
                 'role' => $decoded['role'] ?? 'viewer',
-            ]);
+            ], 480);
 
             // Blacklistar el viejo con ventana de 120s (más permisivo)
             \Illuminate\Support\Facades\Redis::zadd('jwt_blacklist', time() + 120, $token);
 
-            // Adjuntar nueva cookie (60 min ahora)
-            $response->withCookie(cookie('jwt_token', $newToken, 60, null, null, true, true, false, 'Strict'));
+            // Adjuntar nueva cookie (8 horas / 480 min)
+            $response->withCookie(cookie('jwt_token', $newToken, 480, null, null, true, true, false, 'Strict'));
         }
 
         return $response;

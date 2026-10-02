@@ -2,7 +2,14 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.9.3
+> **Version:** v3.9.4
+
+## [2026-10-02 10:20] — Feature: Ampliación de Duración de Sesión a Jornada Completa (8 Horas) ✅
+
+### Changed
+- **Autenticación & JWT**: Incrementada la duración de sesión de 30 minutos a 8 horas (480 minutos).
+- **Cookies & Persistencia**: La Cookie segura `jwt_token` se genera ahora con 480 minutos tanto en el login inicial ([AuthController.php](file:///z:/SoporteAYS/Development/backend/app/Http/Controllers/Auth/AuthController.php)) como en la rotación transparente por actividad ([JwtAuth.php](file:///z:/SoporteAYS/Development/backend/app/Http/Middleware/JwtAuth.php)), permitiendo trabajar toda la jornada sin interrupciones ni cierres inesperados de sesión.
+- **Telemetría Redis**: Ajustado el TTL de usuario activo a 28800 segundos (8 horas).
 
 ## [2026-10-02 10:10] — Feature: Estrategia de Fecha Mínima de Expiración en Licencias Siemens ✅
 
