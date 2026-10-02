@@ -136,7 +136,6 @@ class ChatbotTest extends TestCase
 
         $service = resolve(ChatbotService::class);
         $method = new \ReflectionMethod(ChatbotService::class, 'callTool');
-        $method->setAccessible(true);
 
         $result = $method->invoke($service, 'create_contact', [
             'client_id' => 1,
@@ -164,7 +163,6 @@ class ChatbotTest extends TestCase
         $service = resolve(ChatbotService::class);
         
         $method = new \ReflectionMethod(ChatbotService::class, 'callTool');
-        $method->setAccessible(true);
 
         // Intentar invocar una herramienta mutacional (create_contact) con el límite alcanzado
         $result = $method->invoke($service, 'create_contact', [

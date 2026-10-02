@@ -101,7 +101,6 @@ class AuthTest extends TestCase
         // Token with future nbf (>60s) should fail decode
         $reflection = new \ReflectionClass($jwtService);
         $property = $reflection->getProperty('secret');
-        $property->setAccessible(true);
         $secret = $property->getValue($jwtService);
 
         $futureHeader = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode(json_encode(['typ' => 'JWT', 'alg' => 'HS256'])));
