@@ -183,16 +183,23 @@ class StarCcmService
      */
     private function extractMinExpirationDate(string $content): ?string
     {
-        if (!preg_match_all('/(?:INCREMENT|FEATURE)\s+\S+\s+(?:ugslmd|saltd|cdlmd|RCTECH)\s+[\d.]+\s+(\d+-\w+-\d+|permanent)/i', $content, $matches)) {
+        if (!preg_match_all('/(?:INCREMENT|FEATURE)\s+(\S+)\s+(?:ugslmd|saltd|cdlmd|RCTECH)\s+[\d.]+\s+(\d+-\w+-\d+|permanent)/i', $content, $matches)) {
             return null;
         }
 
-        $dates = $matches[1];
+        $features = $matches[1];
+        $dates = $matches[2];
         $minDate = null;
         $minTimestamp = null;
         $hasPermanent = false;
 
-        foreach ($dates as $rawDate) {
+        foreach ($dates as $i => $rawDate) {
+            $feature = strtolower($features[$i]);
+            // Omitir marcadores técnicos como server_id
+            if ($feature === 'server_id') {
+                continue;
+            }
+
             if (strtolower($rawDate) === 'permanent') {
                 $hasPermanent = true;
                 continue;
@@ -200,6 +207,13 @@ class StarCcmService
 
             try {
                 $dt = new \DateTime($rawDate);
+                $year = (int) $dt->format('Y');
+
+                // Descartar fechas dummy de marcadores FlexNet (ej. 01-jan-0000 o años <= 1970)
+                if ($year <= 1970) {
+                    continue;
+                }
+
                 $ts = $dt->getTimestamp();
 
                 if ($minTimestamp === null || $ts < $minTimestamp) {

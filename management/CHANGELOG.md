@@ -2,7 +2,13 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.9.7
+> **Version:** v3.9.8
+
+## [2026-10-07 09:07] — Fix: Omisión de Fechas Dummy (01-jan-0000 / server_id) en Nombrado de Licencias ✅
+
+### Fixed
+- **Descarte de Marcadores Dummy de FlexNet (`server_id` / año `<= 1970`)**: En `StarCcmService.php`, `HeedsService.php` y `NXSuiteService.php`, se perfeccionó la extracción de fecha mínima (`extractMinExpirationDate`) para omitir líneas técnicas como `INCREMENT server_id RCTECH 0.1 01-jan-0000` y cualquier fecha con año `<= 1970` (placeholder interno del daemon sin expiración real). Esto previene que una fecha dummy con año 0000 sea erróneamente tomada como la fecha de caducidad más antigua para nombrar el archivo `.lic`.
+- **Testing**: Añadidos tests unitarios en `StarCcmTest.php` y `HeedsTest.php` (`test_it_ignores_dummy_server_id_and_ancient_dates`) verificando que la fecha contractual real prevalece ignorando el marcador `server_id` (100% PASSING).
 
 ## [2026-10-02 11:26] — Feature: Sincronización Automática del Catálogo de Modelos y Precios OpenRouter ✅
 
