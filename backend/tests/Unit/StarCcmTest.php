@@ -111,4 +111,16 @@ class StarCcmTest extends TestCase
         $meta = $this->starService->extractMetadata($content);
         $this->assertEquals('01-feb-2026', $meta['expiration']);
     }
+
+    public function test_it_ignores_dummy_server_id_and_ancient_dates()
+    {
+        $content = "SERVER srv1 ANY 1999\n" .
+                   "VENDOR cdlmd\n" .
+                   "INCREMENT server_id cdlmd 0.1 01-jan-0000 0 SIGN=\"DUMMY\"\n" .
+                   "INCREMENT f1 cdlmd 2026.06 15-oct-2027 1 SIGN=\"AAA\"\n" .
+                   "INCREMENT f2 cdlmd 2026.06 01-jul-2026 1 SIGN=\"BBB\"\n";
+
+        $meta = $this->starService->extractMetadata($content);
+        $this->assertEquals('01-jul-2026', $meta['expiration']);
+    }
 }

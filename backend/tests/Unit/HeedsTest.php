@@ -36,4 +36,16 @@ class HeedsTest extends TestCase
         $meta = $this->heedsService->extractMetadata($content);
         $this->assertEquals('permanent', $meta['expiration']);
     }
+
+    public function test_it_ignores_dummy_server_id_and_ancient_dates()
+    {
+        $content = "SERVER srv1 ANY 1999\n" .
+                   "VENDOR RCTECH\n" .
+                   "INCREMENT server_id RCTECH 0.1 01-jan-0000 0 SIGN=\"DUMMY\"\n" .
+                   "INCREMENT f1 RCTECH 2026.06 15-oct-2027 1 SIGN=\"AAA\"\n" .
+                   "INCREMENT f2 RCTECH 2026.06 20-aug-2026 1 SIGN=\"BBB\"\n";
+
+        $meta = $this->heedsService->extractMetadata($content);
+        $this->assertEquals('20-aug-2026', $meta['expiration']);
+    }
 }

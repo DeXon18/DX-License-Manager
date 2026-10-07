@@ -1,6 +1,6 @@
-Rama activa: chore/install-cloudflare-security-audit. Versión: v3.9.4.
-Último trabajo: Instalación e integración completa de la skill oficial cloudflare-security-audit en .agent/skills/ y registro en INDEX.md.
-Estado: Archivos sincronizados y validados.
-Próximo paso inmediato: Validar y merge a dev según indicación de Oskar.
+Rama activa: dev. Versión: v3.9.7 (desplegada a producción en main).
+Último trabajo: Sincronización automática de modelos y precios con OpenRouter (OpenRouterSyncService, comando ai:sync-models, auto-incorporación Top 10 modelos gratuitos líderes, purga de descatalogados y clasificación optgroup en Enrutador de Tareas).
+Estado: 100% operativo en Dev y Prod. 5 tests automatizados pasando (30 assertions). Rutas activas reasignadas a modelos libres de vanguardia (Gemma 4 31B, Nemotron 3.5 Lightning, Free Router) con fallbacks configurados.
+Próximo paso inmediato: Monitoreo de cuotas semanales de IA y nuevas solicitudes de funcionalidades.
 Bloqueos: Ninguno.
-Stack beta: running. Stack prod: running.
+Stack beta: running (healthy). Stack prod: running (healthy).
