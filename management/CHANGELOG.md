@@ -2,7 +2,14 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.9.8
+> **Version:** v3.10.0
+
+## [2026-11-19 09:32] — Feature: Opciones de Generación en Licencias Siemens (Fecha Opcional) ✅
+
+### Added
+- **Bloque Extensible de Opciones de Generación**: Añadida sección "Opciones de Generación" en las vistas de **NX Suite** (`nx-suite.blade.php`), **STAR-CCM+** (`star-ccm.blade.php`) y **HEEDS** (`heeds.blade.php`), controlada por Alpine.js y estilizada siguiendo `DESIGN.md` en `dx-v2-page-herramientas.css` (con cache busting `?v=4.1.0` en `dx-v2-main.css`).
+- **Fecha de Caducidad Opcional en Nombrado (Desactivada por Defecto)**: Incorporado el parámetro `include_expiration_date` (por defecto `false`) en `NXSuiteController`, `StarCcmController` y `HeedsController`, y en `generateFilename(array $metadata, bool $includeExpirationDate = false)` de `NXSuiteService`, `StarCcmService` y `HeedsService`. Cuando está desmarcado, el archivo generado omite el sufijo `_Valida_{FECHA}`; cuando se marca, lo incluye con normalidad.
+- **Testing**: Actualizados y ampliados los tests unitarios en `NXSuiteMechanismTest.php`, `StarCcmTest.php` y `HeedsTest.php` validando ambos comportamientos (21 tests, 37 assertions PASSED).
 
 ## [2026-10-07 09:07] — Fix: Omisión de Fechas Dummy (01-jan-0000 / server_id) en Nombrado de Licencias ✅
 
