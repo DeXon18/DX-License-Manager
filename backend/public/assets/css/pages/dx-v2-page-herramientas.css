@@ -55,3 +55,37 @@
 .tool-card-add:hover { border-color:var(--dx-v2-border); background:var(--dx-v2-surface); }
 .add-icon  { font-size:18px; color:var(--dx-v2-muted); }
 .add-label { font-size:12px; color:var(--dx-v2-muted); text-align:center; }
+
+/* Opciones de generación en herramientas Siemens */
+.dx-v2-tools-options-box {
+  margin: 16px 0;
+  padding: 12px 16px;
+  background: var(--dx-v2-bg);
+  border: 1px solid var(--dx-v2-border);
+  border-radius: var(--dx-v2-rounded-md);
+}
+.dx-v2-tools-options-title {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--dx-v2-muted);
+  margin-bottom: 8px;
+}
+.dx-v2-tools-options-box .dx-v2-form-checkbox-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  margin: 0;
+}
+.dx-v2-tools-option-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dx-v2-primary);
+}
+.dx-v2-tools-option-hint {
+  font-size: 11px;
+  color: var(--dx-v2-muted);
+  font-family: var(--dx-v2-font-mono);
+}

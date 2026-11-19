@@ -48,4 +48,25 @@ class HeedsTest extends TestCase
         $meta = $this->heedsService->extractMetadata($content);
         $this->assertEquals('20-aug-2026', $meta['expiration']);
     }
+
+    public function test_it_generates_filename_with_optional_expiration_date()
+    {
+        $metadata = [
+            'sold_to'    => '1905294',
+            'client'     => 'TEST CLIENT',
+            'hostname'   => 'SRV1',
+            'version'    => '2026.06',
+            'expiration' => '20-aug-2026',
+            'type'       => 'Contractual',
+        ];
+
+        $this->assertEquals(
+            '1905294_SRV1_TEST_CLIENT_HEEDS_V26.06.lic',
+            $this->heedsService->generateFilename($metadata)
+        );
+        $this->assertEquals(
+            '1905294_SRV1_TEST_CLIENT_HEEDS_V26.06_Valida_20-Aug-2026.lic',
+            $this->heedsService->generateFilename($metadata, true)
+        );
+    }
 }

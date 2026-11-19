@@ -22,6 +22,7 @@
 
 <div class="grid-main" x-data="{ 
         motor: 'salt', 
+        includeExpirationDate: false,
         fileName: '', 
         isDragging: false,
         errorMessage: '',
@@ -116,6 +117,16 @@
                             <div class="dx-v2-tools-nx-dropzone-subtitle">Soporta .lic, .txt, .dat y .cid</div>
                         </div>
                         <input type="file" name="license_file" x-ref="fileInput" id="file-input" style="display: none;" @change="if($event.target.files.length > 0) fileName = $event.target.files[0].name;">
+                    </div>
+
+                    <div class="dx-v2-tools-options-box">
+                        <div class="dx-v2-tools-options-title">Opciones de Generación</div>
+                        <input type="hidden" name="include_expiration_date" :value="includeExpirationDate ? 1 : 0">
+                        <label class="dx-v2-form-checkbox-wrapper">
+                            <input type="checkbox" class="dx-v2-form-checkbox" x-model="includeExpirationDate">
+                            <span class="dx-v2-tools-option-text">Incluir fecha de caducidad en el nombre del archivo</span>
+                            <span class="dx-v2-tools-option-hint">(_Valida_FECHA)</span>
+                        </label>
                     </div>
 
                     <div class="dx-v2-tools-nx-btn-container">

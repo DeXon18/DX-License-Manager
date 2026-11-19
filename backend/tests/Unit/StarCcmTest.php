@@ -54,9 +54,11 @@ class StarCcmTest extends TestCase
             'type'       => 'Contractual'
         ];
 
-        $filename = $this->starService->generateFilename($metadata);
+        $filenameWithoutDate = $this->starService->generateFilename($metadata);
+        $this->assertEquals("1905294_DELL_LM_ESCUELA_TECNICA_STARCCM_V4.36.lic", $filenameWithoutDate);
 
-        $this->assertEquals("1905294_DELL_LM_ESCUELA_TECNICA_STARCCM_V4.36_Valida_07-May-2026.lic", $filename);
+        $filenameWithDate = $this->starService->generateFilename($metadata, true);
+        $this->assertEquals("1905294_DELL_LM_ESCUELA_TECNICA_STARCCM_V4.36_Valida_07-May-2026.lic", $filenameWithDate);
     }
 
     public function test_it_generates_correct_temporal_filename()
@@ -70,9 +72,11 @@ class StarCcmTest extends TestCase
             'type'       => 'Temporal'
         ];
 
-        $filename = $this->starService->generateFilename($metadata);
+        $filenameWithoutDate = $this->starService->generateFilename($metadata);
+        $this->assertEquals("1905294_ESCUELA_TECNICA_STARCCM_V4.36_TEMP.lic", $filenameWithoutDate);
 
-        $this->assertEquals("1905294_ESCUELA_TECNICA_STARCCM_V4.36_TEMP_Valida_07-May-2026.lic", $filename);
+        $filenameWithDate = $this->starService->generateFilename($metadata, true);
+        $this->assertEquals("1905294_ESCUELA_TECNICA_STARCCM_V4.36_TEMP_Valida_07-May-2026.lic", $filenameWithDate);
     }
 
     public function test_it_transforms_to_salt_correctly()

@@ -93,7 +93,7 @@ class HeedsService
     /**
      * Genera el nombre del archivo según el estándar del portal.
      */
-    public function generateFilename(array $metadata): string
+    public function generateFilename(array $metadata, bool $includeExpirationDate = false): string
     {
         $soldTo   = $metadata['sold_to_filename'] ?? $metadata['sold_to'];
         $client   = Str::upper(str_replace([' ', '.', '-'], '_', trim($metadata['client'])));
@@ -102,18 +102,20 @@ class HeedsService
         $rawVersion = $metadata['version'];
         $version = $this->normalizeVersion($rawVersion);
         
-        $date = $this->formatExpirationDate($metadata['expiration'] ?? null);
+        $dateSuffix = $includeExpirationDate
+            ? '_Valida_' . $this->formatExpirationDate($metadata['expiration'] ?? null)
+            : '';
         
         if ($metadata['type'] === 'Unificada') {
-            return "{$soldTo}_Unificada_{$hostname}_{$client}_HEEDS_V{$version}_Valida_{$date}.lic";
+            return "{$soldTo}_Unificada_{$hostname}_{$client}_HEEDS_V{$version}{$dateSuffix}.lic";
         }
 
         if ($metadata['type'] === 'Contractual') {
-            return "{$soldTo}_{$hostname}_{$client}_HEEDS_V{$version}_Valida_{$date}.lic";
+            return "{$soldTo}_{$hostname}_{$client}_HEEDS_V{$version}{$dateSuffix}.lic";
         }
 
         // Temporal
-        return "{$soldTo}_{$client}_HEEDS_V{$version}_TEMP_Valida_{$date}.lic";
+        return "{$soldTo}_{$client}_HEEDS_V{$version}_TEMP{$dateSuffix}.lic";
     }
 
     /**
