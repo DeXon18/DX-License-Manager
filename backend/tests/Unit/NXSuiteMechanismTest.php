@@ -63,9 +63,11 @@ class NXSuiteMechanismTest extends TestCase
             'expiration' => '07-may-2026',
             'type'       => 'Dongle'
         ];
-        $filename = $this->nxService->generateFilename($metadata);
+        $filenameWithoutDate = $this->nxService->generateFilename($metadata);
+        $this->assertEquals("123456_TEST_CLIENT_V1_DongleUSB.lic", $filenameWithoutDate);
 
-        $this->assertEquals("123456_TEST_CLIENT_V1_DongleUSB_Valida_07-May-2026.lic", $filename);
+        $filenameWithDate = $this->nxService->generateFilename($metadata, true);
+        $this->assertEquals("123456_TEST_CLIENT_V1_DongleUSB_Valida_07-May-2026.lic", $filenameWithDate);
     }
 
     /** @test */
@@ -79,10 +81,12 @@ class NXSuiteMechanismTest extends TestCase
             'expiration' => '07-may-2026',
             'type'       => 'Temporal'
         ];
-        $filename = $this->nxService->generateFilename($metadata);
+        $filenameWithoutDate = $this->nxService->generateFilename($metadata);
+        $this->assertEquals("123456_TEST_CLIENT_V1_TEMP.lic", $filenameWithoutDate);
 
+        $filenameWithDate = $this->nxService->generateFilename($metadata, true);
         // Sin hostname en temporales: SOLDTO_CLIENTE_VERSION_TEMP_Valida_FECHA.lic
-        $this->assertEquals("123456_TEST_CLIENT_V1_TEMP_Valida_07-May-2026.lic", $filename);
+        $this->assertEquals("123456_TEST_CLIENT_V1_TEMP_Valida_07-May-2026.lic", $filenameWithDate);
     }
 
     /** @test */
@@ -130,7 +134,7 @@ LIC;
         $metadata = $this->nxService->extractMetadata($content);
         $this->assertEquals('29-jul-2026', $metadata['expiration']);
 
-        $filename = $this->nxService->generateFilename([
+        $filenameWithoutDate = $this->nxService->generateFilename([
             'sold_to' => '1112630',
             'hostname' => 'Giz-Datos',
             'client' => 'GOIMEK S.COOP',
@@ -138,7 +142,17 @@ LIC;
             'expiration' => $metadata['expiration'],
             'type' => 'Standard'
         ]);
+        $this->assertEquals('1112630_GIZ-DATOS_GOIMEK_S_COOP_V26.06.lic', $filenameWithoutDate);
 
-        $this->assertEquals('1112630_GIZ-DATOS_GOIMEK_S_COOP_V26.06_Valida_29-Jul-2026.lic', $filename);
+        $filenameWithDate = $this->nxService->generateFilename([
+            'sold_to' => '1112630',
+            'hostname' => 'Giz-Datos',
+            'client' => 'GOIMEK S.COOP',
+            'version' => '26.06',
+            'expiration' => $metadata['expiration'],
+            'type' => 'Standard'
+        ], true);
+
+        $this->assertEquals('1112630_GIZ-DATOS_GOIMEK_S_COOP_V26.06_Valida_29-Jul-2026.lic', $filenameWithDate);
     }
 }

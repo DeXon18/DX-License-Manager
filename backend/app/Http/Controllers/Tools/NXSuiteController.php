@@ -57,8 +57,9 @@ class NXSuiteController extends Controller
     {
         ini_set('memory_limit', '256M');
         $request->validate([
-            'license_file' => 'required|file|max:10240',
-            'motor'        => 'required|in:legacy,salt',
+            'license_file'            => 'required|file|max:10240',
+            'motor'                   => 'required|in:legacy,salt',
+            'include_expiration_date' => 'nullable|boolean',
         ]);
 
         $file    = $request->file('license_file');
@@ -102,7 +103,8 @@ class NXSuiteController extends Controller
             $transformedContent = preg_replace("/\r\n|\n|\r/", "\r\n", $transformedContent);
 
             // Generar nombre de archivo
-            $filename = $this->nxService->generateFilename($metadata);
+            $includeExpirationDate = $request->boolean('include_expiration_date', false);
+            $filename = $this->nxService->generateFilename($metadata, $includeExpirationDate);
 
             // Lógica de Almacenamiento (Solo si NO es temporal)
             if ($metadata['type'] !== 'Temporal') {

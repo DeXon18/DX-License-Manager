@@ -44,7 +44,8 @@ class HeedsController extends Controller
     {
         ini_set('memory_limit', '256M');
         $request->validate([
-            'license_file' => 'required|file|max:10240',
+            'license_file'            => 'required|file|max:10240',
+            'include_expiration_date' => 'nullable|boolean',
         ]);
 
         $file    = $request->file('license_file');
@@ -85,7 +86,8 @@ class HeedsController extends Controller
             $transformedContent = preg_replace("/\r\n|\n|\r/", "\r\n", $transformedContent);
 
             // 4. Generar nombre de archivo
-            $filename = $this->heedsService->generateFilename($metadata);
+            $includeExpirationDate = $request->boolean('include_expiration_date', false);
+            $filename = $this->heedsService->generateFilename($metadata, $includeExpirationDate);
 
             // 5. Almacenamiento Jerárquico (si no es temporal)
             if ($metadata['type'] !== 'Temporal') {

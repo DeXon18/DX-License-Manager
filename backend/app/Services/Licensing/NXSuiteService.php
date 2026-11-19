@@ -87,7 +87,7 @@ class NXSuiteService
     /**
      * Genera el nombre del archivo según el tipo de licencia y metadatos.
      */
-    public function generateFilename(array $metadata): string
+    public function generateFilename(array $metadata, bool $includeExpirationDate = false): string
     {
         $soldTo   = $metadata['sold_to_filename'] ?? $metadata['sold_to'] ?? 'UNKNOWN';
         $hostname = Str::upper(str_replace([' ', '.'], '', $metadata['hostname'] ?? 'NOHOST'));
@@ -99,24 +99,25 @@ class NXSuiteService
         $rawVersion = $metadata['version'] ?? 'V1';
         $version = str_starts_with(strtoupper($rawVersion), 'V') ? strtoupper($rawVersion) : "V{$rawVersion}";
         
-        // Fecha de caducidad formateada (DD-Mmm-YYYY)
-        $date = $this->formatExpirationDate($metadata['expiration'] ?? null);
+        $dateSuffix = $includeExpirationDate
+            ? '_Valida_' . $this->formatExpirationDate($metadata['expiration'] ?? null)
+            : '';
         
         $type = $metadata['type'] ?? 'Standard';
 
         switch ($type) {
             case 'Temporal':
-                return "{$soldTo}_{$client}_{$version}_TEMP_Valida_{$date}.lic";
+                return "{$soldTo}_{$client}_{$version}_TEMP{$dateSuffix}.lic";
             
             case 'Dongle':
-                return "{$soldTo}_{$client}_{$version}_DongleUSB_Valida_{$date}.lic";
+                return "{$soldTo}_{$client}_{$version}_DongleUSB{$dateSuffix}.lic";
             
             case 'Unificada':
-                return "{$soldTo}_Unificada_{$hostname}_{$client}_{$version}_Valida_{$date}.lic";
+                return "{$soldTo}_Unificada_{$hostname}_{$client}_{$version}{$dateSuffix}.lic";
             
             case 'Standard':
             default:
-                return "{$soldTo}_{$hostname}_{$client}_{$version}_Valida_{$date}.lic";
+                return "{$soldTo}_{$hostname}_{$client}_{$version}{$dateSuffix}.lic";
         }
     }
 
