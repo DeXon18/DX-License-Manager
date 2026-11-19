@@ -2,7 +2,15 @@
 > **Regla:** Nunca eliminar entradas. Las nuevas entradas van siempre al principio.
 > **Regla de Versionado:** Siempre que se realice una operación, la versión debe incrementarse (major, minor o patch) según la magnitud del cambio.
 
-> **Version:** v3.10.0
+> **Version:** v3.10.1
+
+## [2026-11-19 09:59] — Fix: Manejo de Sesión/CSRF Expirado en Login y Ampliación a 8 Horas ✅
+
+### Fixed & Improved
+- **Redirección Limpia ante Error 419 (`TokenMismatchException`)**: En `bootstrap/app.php`, capturada la excepción `HttpException(419)` para peticiones web regenerando el token CSRF y redirigiendo limpiamente a `route('login')` con `old('email')` (excluyendo `password`) y aviso legible, evitando la pantalla genérica de *419 Page Expired*.
+- **Prevención Proactiva en `/login`**: Añadida recarga automática en `login.blade.php` ante restauración desde *bfcache* (`pageshow` con `event.persisted`) o al recuperar el foco tras más de 450 minutos (7,5h) de inactividad.
+- **Sesión de 8 Horas (`SESSION_LIFETIME=480`)**: Alineado `config/session.php` y los entornos (`infra/.env.beta` e `infra/.env.prod`) a 480 minutos (8 horas), igualando la duración del token JWT para evitar expiraciones durante la jornada.
+- **Testing**: Añadido test `expired_csrf_token_redirects_cleanly_to_login_preserving_email` en `AuthTest.php` (6 tests, 23 assertions PASSED).
 
 ## [2026-11-19 09:32] — Feature: Opciones de Generación en Licencias Siemens (Fecha Opcional) ✅
 
