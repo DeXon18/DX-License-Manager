@@ -3,4 +3,5 @@ Rama activa: dev. Versión: v3.9.7 (desplegada a producción en main).
 Estado: 100% operativo en Dev y Prod. 5 tests automatizados pasando (30 assertions). Rutas activas reasignadas a modelos libres de vanguardia (Gemma 4 31B, Nemotron 3.5 Lightning, Free Router) con fallbacks configurados.
 Próximo paso inmediato: Monitoreo de cuotas semanales de IA y nuevas solicitudes de funcionalidades.
 Bloqueos: Ninguno.
-Stack beta: running (healthy). Stack prod: running (healthy).
+Stack beta: running (healthy).
+Stack prod: running (healthy).
