@@ -91,7 +91,7 @@
 <script>
     (function () {
         const loadedAt = Date.now();
-        const MAX_AGE_MS = 90 * 60 * 1000;
+        const MAX_AGE_MS = 450 * 60 * 1000;
 
         window.addEventListener('pageshow', function (event) {
             if (event.persisted) {
