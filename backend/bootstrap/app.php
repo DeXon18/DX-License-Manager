@@ -28,5 +28,21 @@ return Application::configure(basePath: dirname(__DIR__))
         $schedule->command('auth:jwt-cleanup')->daily();
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\HttpException $e, \Illuminate\Http\Request $request) {
+            if ($e->getStatusCode() !== 419) {
+                return null;
+            }
+
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Tu sesión ha expirado. Recarga la página.'], 419);
+            }
+
+            if ($request->hasSession()) {
+                $request->session()->regenerateToken();
+            }
+
+            return redirect()->route('login')
+                ->withInput($request->except('password'))
+                ->withErrors(['email' => 'La sesión del formulario había expirado. Por favor, introduce tus credenciales de nuevo.']);
+        });
     })->create();

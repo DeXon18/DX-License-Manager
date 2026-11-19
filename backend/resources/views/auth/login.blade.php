@@ -88,5 +88,23 @@
     </div>
 </div>
 
+<script>
+    (function () {
+        const loadedAt = Date.now();
+        const MAX_AGE_MS = 90 * 60 * 1000;
+
+        window.addEventListener('pageshow', function (event) {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        });
+
+        document.addEventListener('visibilitychange', function () {
+            if (document.visibilityState === 'visible' && (Date.now() - loadedAt) > MAX_AGE_MS) {
+                window.location.reload();
+            }
+        });
+    })();
+</script>
 </body>
 </html>

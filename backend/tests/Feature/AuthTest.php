@@ -115,5 +115,23 @@ class AuthTest extends TestCase
 
         $this->assertNull($jwtService->decode($futureToken));
     }
+
+    /** @test */
+    public function expired_csrf_token_redirects_cleanly_to_login_preserving_email(): void
+    {
+        $this->app['router']->post('/_test-csrf-expired', function () {
+            throw new \Illuminate\Session\TokenMismatchException('CSRF token mismatch.');
+        })->middleware('web');
+
+        $response = $this->post('/_test-csrf-expired', [
+            'email' => 'oskar@dxpro.es',
+            'password' => 'secret123',
+        ]);
+
+        $response->assertRedirect(route('login'));
+        $response->assertSessionHasErrors('email');
+        $this->assertEquals('oskar@dxpro.es', session()->getOldInput('email'));
+        $this->assertNull(session()->getOldInput('password'));
+    }
 }
 
